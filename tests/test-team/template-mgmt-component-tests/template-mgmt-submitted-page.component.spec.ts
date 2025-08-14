@@ -21,34 +21,28 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 
 function createTemplates(user: TestUser) {
   return {
-    email: TemplateFactory.create({
-      owner: user.owner,
-      clientId: user.clientId,
-      templateType: 'EMAIL',
+    email: {
+      ...TemplateFactory.createEmailTemplate(
+        'valid-email-template',
+        user,
+        'test-template-email'
+      ),
       templateStatus: 'SUBMITTED',
-      id: 'valid-email-template',
-      name: 'test-template-email',
       subject: 'test-template-subject',
       message: 'test example content',
-    }),
-    'text-message': TemplateFactory.create({
-      owner: user.owner,
-      clientId: user.clientId,
-      templateType: 'SMS',
+    },
+    'text-message': {
+      ...TemplateFactory.createSmsTemplate('valid-text-message-template', user),
       templateStatus: 'SUBMITTED',
-      id: 'valid-text-message-template',
+      message: 'test example content',
       name: 'test-template-sms',
-      message: 'test example content',
-    }),
-    'nhs-app': TemplateFactory.create({
-      owner: user.owner,
-      clientId: user.clientId,
-      templateType: 'NHS_APP',
+    },
+    'nhs-app': {
+      ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-template', user),
       templateStatus: 'SUBMITTED',
-      id: 'valid-nhs-app-template',
-      name: 'test-template-nhs-app',
       message: 'test example content',
-    }),
+      name: 'test-template-nhs-app',
+    },
     letter: TemplateFactory.uploadLetterTemplate(
       'valid-submitted-letter-template',
       user,

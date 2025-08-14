@@ -27,7 +27,7 @@ export const createHandler =
     const { templateId, fileName, supplier } =
       LetterProofRepository.parseQuarantineKey(objectKey);
 
-    const owner = await templateRepository.getOwner(templateId);
+    const { owner } = await templateRepository.getOwner(templateId);
 
     const ownerS3Segment = owner.startsWith(clientOwnerPrefix)
       ? owner.slice(clientOwnerPrefix.length)
@@ -68,8 +68,7 @@ export const createHandler =
     }
 
     await templateRepository.setLetterFileVirusScanStatusForProof(
-      owner,
-      templateId,
+      { owner, id: templateId, clientOwned: true },
       fileName,
       virusScanResult,
       supplier

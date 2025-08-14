@@ -21,7 +21,7 @@ test.describe('POST /v1/letter-template', () => {
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
@@ -76,7 +76,8 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     expect(result).toEqual({
@@ -101,7 +102,7 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.owner,
+        owner: `CLIENT#${user1.owner}`,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
@@ -164,7 +165,8 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     expect(result).toEqual({
@@ -184,7 +186,7 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.owner,
+        owner: `CLIENT#${user1.owner}`,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
@@ -301,7 +303,8 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     expect(result.template.templateStatus).toEqual('PENDING_VALIDATION');
@@ -592,7 +595,8 @@ test.describe('POST /v1/letter-template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: result.template.id,
-        owner: userDirectOwner.userId,
+        owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       expect(result).toEqual({

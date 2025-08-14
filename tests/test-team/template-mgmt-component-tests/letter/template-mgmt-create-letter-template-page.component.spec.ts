@@ -20,16 +20,12 @@ test.describe('Upload letter Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   let user: TestUser;
-  let userWithoutClientId: TestUser;
   let userWithoutCampaignId: TestUser;
 
   test.beforeAll(async () => {
     user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    userWithoutClientId = await createAuthHelper().getTestUser(
-      testUsers.User6.userId
-    );
     userWithoutCampaignId = await createAuthHelper().getTestUser(
-      testUsers.User7.userId
+      testUsers.User6.userId
     );
   });
 
@@ -99,6 +95,7 @@ test.describe('Upload letter Template Page', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: previewPageParts![1],
       owner: user.owner,
+      clientOwned: user.clientOwner,
     });
   });
 
@@ -119,7 +116,7 @@ test.describe('Upload letter Template Page', () => {
     ).toHaveText(['Select a letter template PDF']);
   });
 
-  const detailsSections = ['[data-testid="how-to-name-your-template"]'];
+  const detailsSections = ['how-to-name-your-template'];
 
   for (const section of detailsSections) {
     // eslint-disable-next-line no-loop-func
@@ -129,13 +126,18 @@ test.describe('Upload letter Template Page', () => {
       const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
       await createTemplatePage.loadPage();
 
-      await page.locator(`${section} > summary`).click();
-      await expect(page.locator(section)).toHaveAttribute('open');
-      await expect(page.locator(`${section} > div`)).toBeVisible();
+      await page.getByTestId(`${section}-summary`).click();
+      await expect(page.getByTestId(`${section}-details`)).toHaveAttribute(
+        'open',
+        ''
+      );
+      await expect(page.getByTestId(`${section}-text`)).toBeVisible();
 
-      await page.locator(`${section} > summary`).click();
-      await expect(page.locator(section)).not.toHaveAttribute('open');
-      await expect(page.locator(`${section} > div`)).toBeHidden();
+      await page.getByTestId(`${section}-summary`).click();
+      await expect(page.getByTestId(`${section}-details`)).not.toHaveAttribute(
+        'open'
+      );
+      await expect(page.getByTestId(`${section}-text`)).toBeHidden();
     });
   }
 
@@ -169,7 +171,7 @@ test.describe('Upload letter Template Page', () => {
     });
   }
 
-  test.describe('missing client or campaign ID error page', () => {
+  test.describe('missing campaign ID error page', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
     test('redirects to error page when campaign ID is missing', async ({
@@ -183,27 +185,6 @@ test.describe('Upload letter Template Page', () => {
         new TemplateMgmtUploadLetterMissingCampaignClientIdPage(page);
 
       await createTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegment}`
-      );
-
-      await assertMissingClientOrCampaignIdErrorPage(
-        missingClientOrCampaignIdErrorPage
-      );
-    });
-
-    test('redirects to error page when client ID is missing', async ({
-      page,
-      baseURL,
-    }) => {
-      await loginAsUser(userWithoutClientId, page);
-
-      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
-      const missingClientOrCampaignIdErrorPage =
-        new TemplateMgmtUploadLetterMissingCampaignClientIdPage(page);
-
-      createTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegment}`

@@ -1,11 +1,11 @@
 'use client';
 
-import { FormErrorState } from 'nhs-notify-web-template-management-utils';
+import { ErrorState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 
 export const validate = (
   $schema: z.Schema,
-  cb: (value: FormErrorState | undefined) => void
+  cb: (value: ErrorState | undefined) => void
 ) => {
   return (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);

@@ -24,8 +24,8 @@ test.describe('POST /v1/template/:templateId', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User9.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -81,6 +81,7 @@ test.describe('POST /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.post(
@@ -120,6 +121,7 @@ test.describe('POST /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.userId,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.post(
@@ -158,7 +160,8 @@ test.describe('POST /v1/template/:templateId', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.post(
@@ -221,7 +224,8 @@ test.describe('POST /v1/template/:templateId', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.post(
@@ -267,7 +271,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -329,7 +334,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateSMSResponse = await request.post(
@@ -400,7 +406,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -456,7 +463,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
@@ -516,7 +524,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -570,7 +579,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { name: _, ...updateData } =
@@ -615,7 +625,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -659,7 +670,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { message: _, ...updateData } =
@@ -704,7 +716,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -750,7 +763,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -796,7 +810,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -843,7 +858,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -905,7 +921,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateNHSAppResponse = await request.post(
@@ -976,7 +993,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -1032,7 +1050,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -1092,7 +1111,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -1146,7 +1166,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { name: _, ...updateData } =
@@ -1191,7 +1212,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1235,7 +1257,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { message: _, ...updateData } =
@@ -1280,7 +1303,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1326,7 +1350,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1372,7 +1397,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -1435,7 +1461,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateNHSAppResponse = await request.post(
@@ -1506,7 +1533,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -1562,7 +1590,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
@@ -1623,7 +1652,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -1677,7 +1707,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { name: _, ...updateData } =
@@ -1722,7 +1753,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1766,7 +1798,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { subject: _, ...updateData } =
@@ -1811,7 +1844,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1854,7 +1888,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const { message: _, ...updateData } =
@@ -1899,7 +1934,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1945,7 +1981,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.post(
@@ -1993,7 +2030,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -2060,7 +2098,8 @@ test.describe('POST /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: userDirectOwner.userId,
+        owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({

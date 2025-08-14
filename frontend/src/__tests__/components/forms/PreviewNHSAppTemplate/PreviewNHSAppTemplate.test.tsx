@@ -38,7 +38,7 @@ describe('Preview nhs app form renders', () => {
     const container = render(
       <PreviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -59,7 +59,7 @@ describe('Preview nhs app form renders', () => {
     const container = render(
       <PreviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -75,7 +75,7 @@ describe('Preview nhs app form renders', () => {
     const container = render(
       <PreviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          validationError: {
+          errorState: {
             formErrors: [],
             fieldErrors: {
               previewNHSAppTemplateAction: ['Select an option'],
@@ -96,7 +96,7 @@ describe('Preview nhs app form renders', () => {
     render(
       <PreviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -126,7 +126,7 @@ describe('Preview nhs app form renders', () => {
     render(
       <PreviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
           templateStatus: 'NOT_YET_SUBMITTED',

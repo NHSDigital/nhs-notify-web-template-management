@@ -18,8 +18,8 @@ test.describe('GET /v1/templates', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User9.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterEach(async () => {
@@ -61,6 +61,7 @@ test.describe('GET /v1/templates', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // create another template for user 1
@@ -83,6 +84,7 @@ test.describe('GET /v1/templates', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // exercise - request user 1 templates
@@ -148,6 +150,7 @@ test.describe('GET /v1/templates', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // create another template for user 1
@@ -170,6 +173,7 @@ test.describe('GET /v1/templates', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // delete template 1
@@ -228,6 +232,7 @@ test.describe('GET /v1/templates', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const userSharedClientListResponse = await request.get(
@@ -271,6 +276,7 @@ test.describe('GET /v1/templates', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created1.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const response2 = await request.post(
@@ -292,6 +298,7 @@ test.describe('GET /v1/templates', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created2.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       const user1ListResponse = await request.get(

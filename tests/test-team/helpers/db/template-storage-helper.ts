@@ -13,9 +13,11 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from '../types';
 
-type TemplateKey = { owner: string; id: string };
+type TemplateKey = { owner: string; id: string; clientOwned: boolean };
 
 export class TemplateStorageHelper {
+  private readonly clientOwnerPrefix = 'CLIENT#';
+
   private readonly ddbDocClient: DynamoDBDocumentClient =
     DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }));
   private readonly s3 = new S3Client({ region: 'eu-west-2' });
@@ -26,7 +28,13 @@ export class TemplateStorageHelper {
 
   async getTemplate(key: TemplateKey): Promise<Template> {
     const { Item } = await this.ddbDocClient.send(
-      new GetCommand({ TableName: process.env.TEMPLATES_TABLE_NAME, Key: key })
+      new GetCommand({
+        TableName: process.env.TEMPLATES_TABLE_NAME,
+        Key: {
+          id: key.id,
+          owner: key.clientOwned ? `CLIENT#${key.owner}` : key.owner,
+        },
+      })
     );
 
     return Item as Template;
@@ -61,7 +69,16 @@ export class TemplateStorageHelper {
    * Delete templates seeded by calls to seedTemplateData
    */
   public async deleteSeededTemplates() {
-    await this.deleteTemplates(this.seedData);
+    await this.deleteTemplates(
+      this.seedData.map((t) => {
+        const clientOwned = t.owner.startsWith(this.clientOwnerPrefix);
+        const owner = clientOwned
+          ? this.stripClientOwnerPrefix(t.owner)
+          : t.owner;
+
+        return { id: t.id, owner, clientOwned };
+      })
+    );
     this.seedData = [];
   }
 
@@ -89,11 +106,13 @@ export class TemplateStorageHelper {
           new BatchWriteCommand({
             RequestItems: {
               [process.env.TEMPLATES_TABLE_NAME]: chunk.map(
-                ({ id, owner }) => ({
+                ({ id, owner, clientOwned }) => ({
                   DeleteRequest: {
                     Key: {
                       id,
-                      owner,
+                      owner: clientOwned
+                        ? this.addClientOwnerPrefix(owner)
+                        : owner,
                     },
                   },
                 })
@@ -311,5 +330,15 @@ export class TemplateStorageHelper {
 
   private stripClientOwnerPrefix(owner: string) {
     return owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
+  }
+
+  private addClientOwnerPrefix(owner: string) {
+    return `${this.clientOwnerPrefix}${owner}`;
+  }
+
+  private stripClientOwnerPrefix(owner: string) {
+    return owner.startsWith(this.clientOwnerPrefix)
+      ? owner.slice(this.clientOwnerPrefix.length)
+      : owner;
   }
 }

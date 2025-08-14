@@ -35,7 +35,7 @@ describe('CreateEmailTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           emailTemplateName: ['Enter a template name'],
@@ -59,7 +59,7 @@ describe('CreateEmailTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           emailTemplateMessage: ['Template message too long'],

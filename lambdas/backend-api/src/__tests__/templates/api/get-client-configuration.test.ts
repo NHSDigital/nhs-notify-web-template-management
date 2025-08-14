@@ -17,25 +17,35 @@ describe('Template API - get client configuration', () => {
     jest.resetAllMocks();
   });
 
-  test('should return 400 - Invalid request when, no user or client in requestContext', async () => {
-    const { handler, mocks } = setup();
+  test.each([
+    ['undefined', undefined],
+    ['missing clientId', { userId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', user: undefined }],
+  ])(
+    'should return 400 - Invalid request when requestContext is %s',
+    async (_, ctx) => {
+      const { handler, mocks } = setup();
 
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: undefined },
-    });
+      const event = mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: ctx },
+        body: JSON.stringify({ id: 1 }),
+      });
 
-    const result = await handler(event, mock<Context>(), jest.fn());
+      const result = await handler(event, mock<Context>(), jest.fn());
 
-    expect(result).toEqual({
-      statusCode: 400,
-      body: JSON.stringify({
+      expect(result).toEqual({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
-      }),
-    });
+        body: JSON.stringify({
+          statusCode: 400,
+          technicalMessage: 'Invalid request',
+        }),
+      });
 
-    expect(mocks.templateClient.getClientConfiguration).not.toHaveBeenCalled();
-  });
+      expect(
+        mocks.templateClient.getClientConfiguration
+      ).not.toHaveBeenCalled();
+    }
+  );
 
   test('should return error when getting client fails', async () => {
     const { handler, mocks } = setup();

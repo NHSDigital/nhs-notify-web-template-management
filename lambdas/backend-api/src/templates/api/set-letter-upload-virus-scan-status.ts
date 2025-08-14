@@ -29,9 +29,10 @@ export const createHandler =
     const virusScanResult =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
-    const ownerFromDatabase = await templateRepository.getOwner(templateId);
+    const { owner: ownerFromDatabase, clientOwned } =
+      await templateRepository.getOwner(templateId);
 
-    if (!ownerFromDatabase.endsWith(userOrClientId)) {
+    if (ownerFromDatabase !== owner) {
       throw new Error('Database owner and s3 owner mismatch');
     }
 
@@ -45,7 +46,7 @@ export const createHandler =
     });
 
     await templateRepository.setLetterFileVirusScanStatusForUpload(
-      { owner: ownerFromDatabase, id: templateId },
+      { owner: ownerFromDatabase, id: templateId, clientOwned },
       fileType,
       versionId,
       virusScanResult

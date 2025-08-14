@@ -12,7 +12,7 @@ import {
   $EmailTemplateFormSchema,
   processFormActions,
 } from '@forms/EmailTemplateForm/server-action';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
@@ -20,7 +20,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   CreateUpdateEmailTemplate,
   EmailTemplate,
-  FormErrorState,
+  ErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -30,13 +30,13 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import classNames from 'classnames';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
-    errorHeading,
     buttonText,
     templateNameLabelText,
     templateSubjectLineLabelText,
@@ -47,11 +47,11 @@ export const EmailTemplateForm: FC<
 
   const [state, action] = useActionState(processFormActions, initialState);
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($EmailTemplateFormSchema, setValidationError);
+  const formValidate = validate($EmailTemplateFormSchema, setErrorState);
 
   const [emailTemplateName, emailTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -63,13 +63,13 @@ export const EmailTemplateForm: FC<
     useTextInput<HTMLTextAreaElement>(state.message);
 
   const templateNameError =
-    validationError?.fieldErrors.emailTemplateName?.join(', ');
+    errorState?.fieldErrors?.emailTemplateName?.join(', ');
 
   const templateSubjectLineError =
-    validationError?.fieldErrors.emailTemplateSubjectLine?.join(', ');
+    errorState?.fieldErrors?.emailTemplateSubjectLine?.join(', ');
 
   const templateMessageError =
-    validationError?.fieldErrors.emailTemplateMessage?.join(', ');
+    errorState?.fieldErrors?.emailTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
@@ -83,22 +83,27 @@ export const EmailTemplateForm: FC<
         </Link>
       )}
       <NHSNotifyMain>
+        <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
+          <NhsNotifyErrorSummary errorState={errorState} />
+          <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
+            {editMode ? 'Edit ' : 'Create '}
+            {pageHeadingSuffix}
+          </h1>
+        </div>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-email-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {editMode ? 'Edit ' : 'Create '}
-                {pageHeadingSuffix}
-              </h1>
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
+                  templateNameError && 'nhsuk-form-group--error'
+                )}
+              >
                 <Label htmlFor='emailTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
@@ -115,9 +120,11 @@ export const EmailTemplateForm: FC<
                 />
               </div>
               <div
-                className={
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
                   templateSubjectLineError && 'nhsuk-form-group--error'
-                }
+                )}
               >
                 <Label htmlFor='emailTemplateSubjectLine' size='s'>
                   {templateSubjectLineLabelText}
@@ -134,18 +141,20 @@ export const EmailTemplateForm: FC<
                   autoComplete='off'
                 />
               </div>
-              <Textarea
-                label={templateMessageLabelText}
-                labelProps={{ size: 's' }}
-                id='emailTemplateMessage'
-                rows={10}
-                onChange={emailTemplateMessageHandler}
-                value={emailTemplateMessage}
-                error={templateMessageError}
-                errorProps={{ id: 'emailTemplateMessage--error-message' }}
-                data-testid='emailTemplateMessage-input'
-                autoComplete='off'
-              />
+              <div className='nhsuk-form-group nhsuk-u-margin-bottom-8'>
+                <Textarea
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  id='emailTemplateMessage'
+                  rows={12}
+                  onChange={emailTemplateMessageHandler}
+                  value={emailTemplateMessage}
+                  error={templateMessageError}
+                  errorProps={{ id: 'emailTemplateMessage--error-message' }}
+                  data-testid='emailTemplateMessage-input'
+                  autoComplete='off'
+                />
+              </div>
               <NHSNotifyButton
                 type='submit'
                 data-testid='submit-button'
@@ -157,7 +166,7 @@ export const EmailTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='EMAIL' />
+            <MessageFormatting templateType='EMAIL' />
             <ChannelGuidance template='EMAIL' />
           </aside>
         </div>

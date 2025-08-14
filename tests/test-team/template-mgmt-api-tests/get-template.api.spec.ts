@@ -18,8 +18,8 @@ test.describe('GET /v1/template/:templateId', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User9.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -61,6 +61,7 @@ test.describe('GET /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // exercise: make the GET request to retrieve the template
@@ -123,6 +124,7 @@ test.describe('GET /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     // exercise: make the GET request to retrieve the template as user2
@@ -166,6 +168,7 @@ test.describe('GET /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const deleteResponse = await request.delete(
@@ -221,6 +224,7 @@ test.describe('GET /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const response = await request.get(
@@ -262,6 +266,7 @@ test.describe('GET /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       const response = await request.get(

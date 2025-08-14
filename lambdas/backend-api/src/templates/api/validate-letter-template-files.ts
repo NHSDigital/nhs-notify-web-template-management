@@ -45,6 +45,7 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
@@ -126,10 +127,12 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files have been scanned');
     }
 
+    const clientOwned = template.owner.startsWith('CLIENT#');
+
     const downloads = [
       this.letterUploadRepository.download(
         templateId,
-        userOrClientId,
+        owner,
         'pdf-template',
         versionId
       ),
@@ -139,7 +142,7 @@ export class ValidateLetterTemplateFilesLambda {
       downloads.push(
         this.letterUploadRepository.download(
           templateId,
-          userOrClientId,
+          owner,
           'test-data',
           versionId
         )
@@ -154,7 +157,10 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files are available to download');
     }
 
-    const pdf = new TemplatePdf(templateId, userOrClientId, pdfBuff);
+    const pdf = new TemplatePdf(
+      { id: templateId, owner, clientOwned },
+      pdfBuff
+    );
 
     const proofingEnabled = template.proofingEnabled || false;
 
@@ -172,7 +178,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { id: templateId, owner: template.owner },
+        { id: templateId, owner, clientOwned },
         versionId,
         false,
         [],
@@ -187,7 +193,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { id: templateId, owner: template.owner },
+      { id: templateId, owner, clientOwned },
       versionId,
       valid,
       pdf.personalisationParameters,

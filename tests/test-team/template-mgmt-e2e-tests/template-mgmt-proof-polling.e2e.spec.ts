@@ -80,6 +80,7 @@ test.describe('Letter Proof Polling', () => {
       const template = await templateStorageHelper.getTemplate({
         owner: user.owner,
         id: templateId,
+        clientOwned: user.clientOwner,
       });
 
       expect(template.files?.proofs).toEqual({
@@ -121,7 +122,7 @@ test.describe('Letter Proof Polling', () => {
           await templateStorageHelper.getLetterTemplateMetadata(
             process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
             'proofs',
-            { owner: user.owner, id: templateId },
+            { owner: user.owner, id: templateId, clientOwned: true },
             fileName,
             'pdf'
           );
@@ -189,6 +190,7 @@ test.describe('Letter Proof Polling', () => {
       const template = await templateStorageHelper.getTemplate({
         owner: user.owner,
         id: templateId,
+        clientOwned: user.clientOwner,
       });
 
       expect(template.files?.proofs).toEqual({

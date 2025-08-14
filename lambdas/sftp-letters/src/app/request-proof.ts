@@ -80,7 +80,7 @@ export class App {
 
       templateLogger.info('Fetching user Data');
       const files = await this.getFileData(
-        userOrClientId,
+        user.clientId,
         templateId,
         expandedTemplateId,
         pdfVersionId,
@@ -93,7 +93,7 @@ export class App {
 
       templateLogger.info('Acquiring sender lock');
       const locked = await this.templateRepository.acquireLock(
-        owner,
+        user.clientId,
         templateId
       );
 
@@ -108,7 +108,7 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.finaliseLock(owner, templateId);
+        await this.templateRepository.finaliseLock(user.clientId, templateId);
         return 'already-sent';
       }
 
@@ -126,7 +126,7 @@ export class App {
       await sftp.put(files.manifest, dest.manifest);
 
       templateLogger.info('Finalising lock');
-      await this.templateRepository.finaliseLock(owner, templateId);
+      await this.templateRepository.finaliseLock(user.clientId, templateId);
 
       templateLogger.info('Sent proofing request');
 

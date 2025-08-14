@@ -16,6 +16,10 @@ repos:
       - id: forbid-new-submodules
       - id: mixed-line-ending
       - id: pretty-format-json
+        exclude: |
+          (?x)^(
+            package-lock.json
+          )$
         args: ['--autofix']
     # -   id: ...
   - repo: local

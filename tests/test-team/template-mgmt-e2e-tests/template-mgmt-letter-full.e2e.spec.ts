@@ -57,6 +57,7 @@ function create(
     const key = {
       id: templateId,
       owner: user.owner,
+      clientOwned: user.clientOwner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -131,7 +132,7 @@ function continueAfterCreation(page: Page) {
 function requestProof(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { id: string; owner: string; clientOwned: boolean }
 ) {
   return test.step('request and receive proofs', async () => {
     await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
@@ -244,7 +245,7 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { id: string; owner: string; clientOwned: boolean }
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);

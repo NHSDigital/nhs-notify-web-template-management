@@ -61,7 +61,7 @@ export const TemplateSubmitted = ({
                 <h3 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3'>
                   {heading}
                 </h3>
-                <MarkdownContent segments={text} />
+                <MarkdownContent content={text} />
               </React.Fragment>
             );
           })}

@@ -63,7 +63,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -75,7 +75,7 @@ describe('LetterUploadRepository', () => {
         Key: `test-data/${clientId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'test-data',
           'template-id': templateId,
           'version-id': versionId,
@@ -102,7 +102,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': userId,
+          owner: userId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -114,7 +114,7 @@ describe('LetterUploadRepository', () => {
         Key: `test-data/${userId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': userId,
+          owner: userId,
           'file-type': 'test-data',
           'template-id': templateId,
           'version-id': versionId,
@@ -139,7 +139,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,

@@ -6,6 +6,7 @@ import { Template } from '../types';
 type Config = {
   templateId: string;
   templateOwner: string;
+  clientOwned: boolean;
   filePath:
     | 'files.pdfTemplate.virusScanStatus'
     | 'files.testDataCsv.virusScanStatus';
@@ -26,7 +27,9 @@ export class SimulateFailedVirusScan implements IUseCase<Template> {
       new UpdateCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Key: {
-          owner: this.#config.templateOwner,
+          owner: this.#config.clientOwned
+            ? `CLIENT#${this.#config.templateOwner}`
+            : this.#config.templateOwner,
           id: this.#config.templateId,
         },
         UpdateExpression: `SET ${this.#config.filePath} = :virusScanStatus, templateStatus = :virusScanStatusFailedTemplateStatus`,

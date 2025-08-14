@@ -19,13 +19,13 @@ export type FormId =
   | 'create-nhs-app-template-back'
   | 'create-email-template-back';
 
-export type FormErrorState = {
-  formErrors: string[];
-  fieldErrors: Record<string, string[]>;
+export type ErrorState = {
+  formErrors?: string[];
+  fieldErrors?: Record<string, string[]>;
 };
 
 export type FormState = {
-  validationError?: FormErrorState;
+  errorState?: ErrorState;
 };
 
 export type CreateUpdateNHSAppTemplate = Extract<
@@ -131,7 +131,7 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
   AssertExtendsMerged<EmailTemplate> &
   AssertExtendsMerged<SMSTemplate>;
 
-export type TemplateKey = { owner: string; id: string };
+export type TemplateKey = { owner: string; id: string; clientOwned: boolean };
 
 export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
@@ -150,7 +150,3 @@ export type ProofingRequest = {
 };
 
 export type User = { userId: string; clientId: string };
-
-export type UserWithOptionalClient = Omit<User, 'clientId'> & {
-  clientId: string | undefined;
-};

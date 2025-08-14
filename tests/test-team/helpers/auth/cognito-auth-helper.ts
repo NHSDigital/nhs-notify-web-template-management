@@ -18,14 +18,15 @@ import {
 
 type TestUserStaticDetails = {
   userId: string;
-  clientKey: ClientKey | 'NONE';
+  clientKey: ClientKey;
 };
 
 type TestUserDynamicDetails = {
   email: string;
-  clientId: string | undefined;
+  clientId: string;
   password: string;
   owner: string;
+  clientOwner: boolean;
 };
 
 export type TestUserContext = TestUserStaticDetails &
@@ -73,18 +74,25 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'Client1',
   },
   /**
-   * User6 does not belong to a client
+   * User6 has configuration but no campaignId
    */
   User6: {
     userId: 'User6',
-    clientKey: 'NONE',
+    clientKey: 'Client4',
   },
   /**
-   * User7 has configuration but no campaignId
+   * User7 has a client which has the client ownership feature disabled
    */
   User7: {
     userId: 'User7',
-    clientKey: 'Client4',
+    clientKey: 'Client5',
+  },
+  /**
+   * User8 shares a client with the primary user (User1)
+   */
+  User8: {
+    userId: 'User8',
+    clientKey: 'Client1',
   },
   /**
    * User8 has a client which has the client ownership feature disabled
@@ -198,9 +206,13 @@ export class CognitoAuthHelper {
         });
         this.password = password;
       },
+      get clientOwner() {
+        return Boolean(testClients[this.clientKey]?.features.clientOwnership);
+      },
       get owner() {
-        return testClients[this.clientKey]?.features.clientOwnership
-          ? `CLIENT#${this.clientId}`
+        return testClients[this.clientKey]?.features.clientOwnership &&
+          this.clientId
+          ? this.clientId
           : this.userId;
       },
     };
@@ -212,10 +224,7 @@ export class CognitoAuthHelper {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
 
-    const clientId =
-      userDetails.clientKey === 'NONE'
-        ? undefined
-        : `${userDetails.clientKey}--${this.runId}`;
+    const clientId = `${userDetails.clientKey}--${this.runId}`;
 
     const clientAttribute = clientId
       ? [

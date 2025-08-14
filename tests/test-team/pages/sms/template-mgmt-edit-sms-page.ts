@@ -11,7 +11,9 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
 
   public readonly errorSummary: Locator;
 
-  public readonly personalisationFields: Locator;
+  public readonly customPersonalisationFields: Locator;
+
+  public readonly pdsPersonalisationFields: Locator;
 
   public readonly namingYourTemplate: Locator;
 
@@ -28,14 +30,17 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     this.nameInput = page.locator('[id="smsTemplateName"]');
     this.messageTextArea = page.locator('[id="smsTemplateMessage"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
-    this.personalisationFields = page.locator(
-      '[data-testid="personalisation-details"]'
+    this.customPersonalisationFields = page.locator(
+      '[data-testid="custom-personalisation-fields-details"]'
+    );
+    this.pdsPersonalisationFields = page.locator(
+      '[data-testid="pds-personalisation-fields-details"]'
     );
     this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template"]'
+      '[data-testid="how-to-name-your-template-details"]'
     );
-    this.pricingLink = page.locator('[data-testid="sms-pricing-link"]');
-    this.characterCountText = page.locator('[id="character-count"]');
+    this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
+    this.characterCountText = page.getByTestId('character-message-count-0');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(

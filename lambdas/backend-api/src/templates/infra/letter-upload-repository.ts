@@ -38,14 +38,9 @@ export class LetterUploadRepository extends LetterFileRepository {
     pdf: File,
     csv?: File
   ): Promise<ApplicationResult<null>> {
-    const userOrClientId = clientOwnershipEnabled ? user.clientId : user.userId;
+    const owner = clientOwnershipEnabled ? user.clientId : user.userId;
 
-    const pdfKey = this.key(
-      'pdf-template',
-      userOrClientId,
-      templateId,
-      versionId
-    );
+    const pdfKey = this.key('pdf-template', owner, templateId, versionId);
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
@@ -100,7 +95,7 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   async download(
     templateId: string,
-    userOrClientId: string,
+    owner: string,
     fileType: FileType,
     versionId: string
   ): Promise<Uint8Array | void> {
@@ -108,7 +103,7 @@ export class LetterUploadRepository extends LetterFileRepository {
       const { Body } = await this.client.send(
         new GetObjectCommand({
           Bucket: this.internalBucketName,
-          Key: this.key(fileType, userOrClientId, templateId, versionId),
+          Key: this.key(fileType, owner, templateId, versionId),
         })
       );
 

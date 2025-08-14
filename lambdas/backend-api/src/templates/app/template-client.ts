@@ -16,7 +16,6 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $UploadLetterTemplate,
   DatabaseTemplate,
-  UserWithOptionalClient,
   User,
   $LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -80,7 +79,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
-      clientConfigurationResult.data?.features.clientOwnership || false,
+      clientConfigurationResult.data?.features.clientOwnership ?? true,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -190,7 +189,7 @@ export class TemplateClient {
     };
 
     const clientOwnershipEnabled =
-      clientConfigurationResult.data?.features.clientOwnership || false;
+      clientConfigurationResult.data?.features.clientOwnership ?? true;
 
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
@@ -248,7 +247,7 @@ export class TemplateClient {
   async updateTemplate(
     templateId: string,
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient,
+    user: User,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
@@ -293,7 +292,7 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -319,10 +318,7 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async deleteTemplate(
-    templateId: string,
-    user: UserWithOptionalClient
-  ): Promise<Result<void>> {
+  async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
     const deleteResult = await this.templateRepository.delete(templateId, user);
@@ -345,7 +341,7 @@ export class TemplateClient {
 
   async getTemplate(
     templateId: string,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -370,9 +366,7 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(
-    user: UserWithOptionalClient
-  ): Promise<Result<TemplateDto[]>> {
+  async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
     const listResult = await this.templateRepository.list(user);
 
     if (listResult.error) {
@@ -492,7 +486,7 @@ export class TemplateClient {
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
@@ -525,15 +519,15 @@ export class TemplateClient {
   }
 
   async getClientConfiguration(
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<ClientConfiguration>> {
     const log = this.logger.child({
       user,
     });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
