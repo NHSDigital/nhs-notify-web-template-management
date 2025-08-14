@@ -127,6 +127,13 @@ export class ValidateLetterTemplateFilesLambda {
     }
 
     const clientOwned = template.owner.startsWith('CLIENT#');
+    const ownerFromDb = clientOwned ? template.owner.slice(7) : template.owner;
+
+    if (owner !== ownerFromDb) {
+      throw new Error(
+        'Unexpected mismatch between s3 path and database owner field'
+      );
+    }
 
     const downloads = [
       this.letterUploadRepository.download(
@@ -177,7 +184,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { id: templateId, owner: template.owner, clientOwned },
+        { id: templateId, owner, clientOwned },
         versionId,
         false,
         [],
@@ -192,7 +199,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { id: templateId, owner: template.owner, clientOwned },
+      { id: templateId, owner, clientOwned },
       versionId,
       valid,
       pdf.personalisationParameters,
