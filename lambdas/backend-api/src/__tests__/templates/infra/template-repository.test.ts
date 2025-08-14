@@ -2070,18 +2070,12 @@ describe('templateRepository', () => {
     it('updates status to WAITING_FOR_PROOF', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolvesOnce({
-          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .resolvesOnce({
-          Attributes: {
-            // complete template
-            id: 'template-id',
-          },
-        });
+      mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
+        Attributes: {
+          // complete template
+          id: 'template-id',
+        },
+      });
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
@@ -2118,79 +2112,6 @@ describe('templateRepository', () => {
       });
     });
 
-    it('updates status to WAITING_FOR_PROOF when template is user-owned', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolvesOnce({
-          Items: [{ id: 'template-id', owner: userId }],
-        })
-        .on(UpdateCommand)
-        .resolvesOnce({
-          Attributes: {
-            // complete template
-            id: 'template-id',
-          },
-        });
-
-      const result = await templateRepository.proofRequestUpdate(
-        'template-id',
-        user
-      );
-
-      expect(result).toEqual({ data: { id: 'template-id' } });
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND attribute_exists (#id) AND #proofingEnabled = :condition_5_proofingEnabled',
-        ExpressionAttributeNames: {
-          '#id': 'id',
-          '#clientId': 'clientId',
-          '#templateStatus': 'templateStatus',
-          '#templateType': 'templateType',
-          '#updatedAt': 'updatedAt',
-          '#proofingEnabled': 'proofingEnabled',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
-          ':condition_2_templateType': 'LETTER',
-          ':condition_3_clientId': clientId,
-          ':condition_5_proofingEnabled': true,
-          ':templateStatus': 'WAITING_FOR_PROOF',
-          ':updatedAt': '2024-12-27T00:00:00.000Z',
-        },
-        Key: { id: 'template-id', owner: userId },
-        ReturnValues: 'ALL_NEW',
-        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
-        TableName: 'templates',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
-      });
-    });
-
-    test('returns 404 response when GSI query cannot find owned template', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient.on(QueryCommand).resolves({
-        Items: [{ id: templateId, owner: 'someone-else' }],
-      });
-
-      const response = await templateRepository.proofRequestUpdate(
-        'template-id',
-        user
-      );
-
-      expect(response).toEqual({
-        error: {
-          errorMeta: {
-            code: 404,
-            description: 'Template not found',
-          },
-        },
-      });
-    });
-
     it('returns 404 error response when conditional check fails due to template not existing', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -2199,13 +2120,7 @@ describe('templateRepository', () => {
         $metadata: {},
       });
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolvesOnce({
-          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .rejectsOnce(err);
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
@@ -2234,13 +2149,7 @@ describe('templateRepository', () => {
         },
       });
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolvesOnce({
-          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .rejectsOnce(err);
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
@@ -2263,13 +2172,7 @@ describe('templateRepository', () => {
 
       const err = new Error('!');
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolvesOnce({
-          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .rejectsOnce(err);
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',

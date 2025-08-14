@@ -204,17 +204,13 @@ function requestProof(
 
       expect(pdfHrefs.length).toBeGreaterThan(0);
 
-      const ownerPathSegment = templateKey.owner.startsWith('CLIENT#')
-        ? templateKey.owner.slice(7)
-        : templateKey.owner;
-
       const downloadBucketMetadata = await Promise.all(
         pdfHrefs.map((href) => {
           const [, downloadBucketPath] =
             (href as string).match(
               // eslint-disable-next-line security/detect-non-literal-regexp
               new RegExp(
-                `/templates/files/(${ownerPathSegment}/proofs/${templateKey.id}/[^/]+)/?$`
+                `/templates/files/(${templateKey.owner}/proofs/${templateKey.id}/[^/]+)/?$`
               )
             ) ?? [];
 
