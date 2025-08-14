@@ -79,7 +79,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
-      clientConfigurationResult.data?.features.clientOwnership || false,
+      clientConfigurationResult.data?.features.clientOwnership ?? true,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -189,7 +189,7 @@ export class TemplateClient {
     };
 
     const clientOwnershipEnabled =
-      clientConfigurationResult.data?.features.clientOwnership || false;
+      clientConfigurationResult.data?.features.clientOwnership ?? true;
 
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
