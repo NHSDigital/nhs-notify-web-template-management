@@ -47,6 +47,7 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
       aws_dynamodb_table.templates.arn,
     ]
   }
+  
   statement {
     sid    = "AllowProofingSQS"
     effect = "Allow"

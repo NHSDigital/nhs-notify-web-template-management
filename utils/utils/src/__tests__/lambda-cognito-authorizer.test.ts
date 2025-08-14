@@ -397,7 +397,7 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(mockLogger.logMessages).toContainEqual(
       expect.objectContaining({
         level: 'warn',
-        message: 'Neither subject nor clientId matches expected resource owner',
+        message: 'clientId does not match expected resource owner',
       })
     );
   });
