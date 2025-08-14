@@ -163,7 +163,6 @@ export class App {
         templateId: z.string(),
         templateName: z.string(),
         testDataVersionId: z.string().optional(),
-        clientOwned: z.boolean().default(false),
       })
       .parse(JSON.parse(event));
   }

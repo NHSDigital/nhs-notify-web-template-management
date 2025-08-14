@@ -288,7 +288,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      `CLIENT#${clientId}`,
+      clientId,
       templateId
     );
 
