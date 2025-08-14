@@ -45,7 +45,6 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
