@@ -57,7 +57,7 @@ export class ValidateLetterTemplateFilesLambda {
 
     const {
       'template-id': templateId,
-      'user-or-client-id': userOrClientId,
+      owner,
       'version-id': versionId,
     } = metadata;
 
@@ -69,8 +69,8 @@ export class ValidateLetterTemplateFilesLambda {
           is complete, we will know unambiguously that it's a clientId and this
           doubly attempted fetch won't be required
         */
-        userId: userOrClientId,
-        clientId: userOrClientId,
+        userId: owner,
+        clientId: owner,
       });
 
     if (getTemplateError) {

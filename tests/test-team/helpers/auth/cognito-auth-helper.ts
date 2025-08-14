@@ -94,20 +94,6 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User8',
     clientKey: 'Client1',
   },
-  /**
-   * User8 has a client which has the client ownership feature disabled
-   */
-  User8: {
-    userId: 'User8',
-    clientKey: 'Client5',
-  },
-  /**
-   * User9 shares a client with the primary user (User1)
-   */
-  User9: {
-    userId: 'User9',
-    clientKey: 'Client1',
-  },
 };
 
 export type TestUser = TestUserStaticDetails &

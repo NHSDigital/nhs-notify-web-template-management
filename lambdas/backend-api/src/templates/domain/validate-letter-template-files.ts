@@ -48,7 +48,7 @@ export function validateLetterTemplateFiles(
 
   logger.info('Template file validation complete', {
     templateId: pdf.templateId,
-    userOrClientId: pdf.userOrClientId,
+    owner: pdf.owner,
     valid,
     failedTests,
   });

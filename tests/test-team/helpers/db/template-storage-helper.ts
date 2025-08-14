@@ -328,10 +328,6 @@ export class TemplateStorageHelper {
     return `${prefix}/${this.stripClientOwnerPrefix(key.owner)}/${key.id}/${version}.${ext}`;
   }
 
-  private stripClientOwnerPrefix(owner: string) {
-    return owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
-  }
-
   private addClientOwnerPrefix(owner: string) {
     return `${this.clientOwnerPrefix}${owner}`;
   }

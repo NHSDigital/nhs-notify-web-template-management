@@ -242,7 +242,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'pdf-template',
-        'user-or-client-id': 'owner-id',
+        owner: 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });
@@ -255,7 +255,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'test-data',
-        'user-or-client-id': 'owner-id',
+        owner: 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });

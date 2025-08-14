@@ -23,7 +23,7 @@ export const createHandler =
       'file-type': fileType,
       'version-id': versionId,
       'template-id': templateId,
-      'user-or-client-id': userOrClientId,
+      owner,
     } = LetterUploadRepository.parseKey(objectKey);
 
     const virusScanResult =

@@ -11,7 +11,7 @@ test('has the given key attributes', () => {
   );
 
   expect(pdf.templateId).toBe('template-id');
-  expect(pdf.userOrClientId).toBe('template-owner');
+  expect(pdf.owner).toBe('template-owner');
 });
 
 test('parse with no custom personalisation', async () => {
