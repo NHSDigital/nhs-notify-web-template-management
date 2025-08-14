@@ -230,7 +230,7 @@ export class CognitoAuthHelper {
     const tempPassword = CognitoAuthHelper.generatePassword();
 
     const clientName = (clientKey: string): string =>
-      `NHS Test ${clientKey.replace(/([a-z])([A-Z])/g, '$1 $2')}`;
+      `NHS Test ${clientKey.replaceAll(/([a-z])([A-Z])/g, '$1 $2')}`;
 
     const clientId =
       userDetails.clientKey === 'NONE'
@@ -239,12 +239,12 @@ export class CognitoAuthHelper {
 
     const clientAttribute = clientId
       ? [
-        { Name: 'custom:sbx_client_id', Value: clientId },
-        {
-          Name: 'custom:sbx_client_name',
-          Value: clientName(userDetails.clientKey),
-        },
-      ]
+          { Name: 'custom:sbx_client_id', Value: clientId },
+          {
+            Name: 'custom:sbx_client_name',
+            Value: clientName(userDetails.clientKey),
+          },
+        ]
       : [];
 
     const {

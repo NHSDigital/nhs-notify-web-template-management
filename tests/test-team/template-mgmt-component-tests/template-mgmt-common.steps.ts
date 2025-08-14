@@ -159,11 +159,9 @@ export function assertHeaderNavigationLinks({
 
     const messagePlansLink = nav.getByRole('link', { name: 'Message plans' });
 
-    if (routingEnabled) {
-      await expect(messagePlansLink).toBeVisible();
-    } else {
-      await expect(messagePlansLink).toHaveCount(0);
-    }
+    await (routingEnabled
+      ? await expect(messagePlansLink).toBeVisible()
+      : await expect(messagePlansLink).toHaveCount(0));
   });
 }
 

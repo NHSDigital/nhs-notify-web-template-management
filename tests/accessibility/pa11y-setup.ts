@@ -81,7 +81,7 @@ const setup = async () => {
 
   const clientId = 'accessibility-test-client';
 
-  const clientName = 'NHS Accessibility'
+  const clientName = 'NHS Accessibility';
 
   const testUserClient = new TestUserClient(
     backendConfig.userPoolId,
@@ -170,7 +170,7 @@ const setup = async () => {
     userId,
     clientId,
     clientName,
-    userName
+    userName,
   };
 
   writeFileSync('./pa11y-fixtures.json', JSON.stringify(fixtureData, null, 2));

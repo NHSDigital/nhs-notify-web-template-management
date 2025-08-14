@@ -13,8 +13,8 @@ export type PreTokenGenerationV2Event = Omit<
     'claimsAndScopeOverrideDetails'
   > & {
     claimsAndScopeOverrideDetails:
-    | PreTokenGenerationV2TriggerEvent['response']['claimsAndScopeOverrideDetails']
-    | null;
+      | PreTokenGenerationV2TriggerEvent['response']['claimsAndScopeOverrideDetails']
+      | null;
   };
 };
 

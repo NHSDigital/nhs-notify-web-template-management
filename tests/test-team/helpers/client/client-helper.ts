@@ -62,7 +62,7 @@ export class ClientConfigurationHelper {
   constructor(
     private readonly clientSSMKeyPrefix: string,
     private readonly runId: string
-  ) { }
+  ) {}
 
   async setup() {
     return Promise.all(
