@@ -647,13 +647,9 @@ export class TemplateRepository {
 
   async proofRequestUpdate(templateId: string, user: User) {
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
-
-      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
-
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
-        owner,
+        this.clientOwnerKey(user.clientId),
         templateId,
         {
           ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
