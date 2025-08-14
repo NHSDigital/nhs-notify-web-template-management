@@ -1890,8 +1890,7 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier,
-        false
+        defaultLetterSupplier
       );
 
       expect(result).toEqual({
@@ -1966,8 +1965,7 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier,
-        false
+        defaultLetterSupplier
       );
 
       expect(result).toEqual({

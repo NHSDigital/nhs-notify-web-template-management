@@ -14,16 +14,12 @@ export class TemplateLockRepository {
     private readonly lockTtl: number
   ) {}
 
-  async acquireLock(
-    owner: string,
-    id: string,
-    clientOwned: boolean
-  ): Promise<boolean> {
+  async acquireLock(clientId: string, id: string): Promise<boolean> {
     const time = this.getDate().getTime();
 
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      clientOwned ? this.addClientOwnerPrefix(owner) : owner,
+      this.addClientOwnerPrefix(clientId),
       id
     )
       .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
@@ -41,12 +37,12 @@ export class TemplateLockRepository {
     return true;
   }
 
-  async finaliseLock(owner: string, id: string, clientOwned: boolean) {
+  async finaliseLock(clientId: string, id: string) {
     const time = this.getDate().getTime();
 
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      clientOwned ? this.addClientOwnerPrefix(owner) : owner,
+      this.addClientOwnerPrefix(clientId),
       id
     )
       .setLockTimeUnconditional('sftpSendLockTime', time + THIRTY_DAYS_MS)

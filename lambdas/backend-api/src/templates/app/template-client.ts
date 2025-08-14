@@ -449,11 +449,8 @@ export class TemplateClient {
       language,
       letterType,
       name,
-      owner,
       personalisationParameters,
     } = proofLetterValidationResult.data;
-
-    const clientOwned = owner?.startsWith('CLIENT#') || false;
 
     const pdfVersionId = files.pdfTemplate.currentVersion;
     const testDataVersionId = files.testDataCsv?.currentVersion;
@@ -468,8 +465,7 @@ export class TemplateClient {
       language,
       pdfVersionId,
       testDataVersionId,
-      this.defaultLetterSupplier,
-      clientOwned
+      this.defaultLetterSupplier
     );
 
     if (sendQueueResult.error) {
