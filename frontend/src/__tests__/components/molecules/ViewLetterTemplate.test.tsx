@@ -10,7 +10,6 @@ describe('ViewLetterTemplate component', () => {
           {
             templateType: 'LETTER',
             id: 'template-id',
-            owner: 'CLIENT#client-id',
             clientId: 'client-id',
             name: 'Example template',
             templateStatus: 'SUBMITTED',

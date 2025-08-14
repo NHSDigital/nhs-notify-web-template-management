@@ -132,7 +132,6 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'CLIENT#client-id',
           clientId: 'client-id',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
