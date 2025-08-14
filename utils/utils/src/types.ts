@@ -149,7 +149,3 @@ export type ProofingRequest = {
 };
 
 export type User = { userId: string; clientId: string };
-
-export type UserWithOptionalClient = Omit<User, 'clientId'> & {
-  clientId: string | undefined;
-};
