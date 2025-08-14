@@ -47,7 +47,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
       - name: "Repo setup"
         run: |
           npm ci
@@ -61,7 +61,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
       - name: "Repo setup"
         run: |
           npm ci
@@ -90,7 +90,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
       - name: "Repo setup"
         run: |
           npm ci
@@ -106,7 +106,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
       - name: "Repo setup"
         run: |
           npm ci
@@ -123,7 +123,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
       - name: "Run test coverage check"
         run: |
           make test-coverage
@@ -140,7 +140,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to improving relevancy of reporting
       - name: "Download coverage report for SONAR"
