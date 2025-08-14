@@ -12,7 +12,7 @@ import path from 'node:path';
 // pa11y can't interact with a file upload dialogue, so letters must be seeded
 const generateLetterTemplateData = (
   name: string,
-  owner: string,
+  clientId: string,
   virusScanStatus: VirusScanStatus,
   templateStatus: TemplateStatus
 ): LetterTemplate & { owner: string } => {
@@ -20,7 +20,8 @@ const generateLetterTemplateData = (
 
   return {
     name,
-    owner,
+    owner: `CLIENT#${clientId}`,
+    clientId,
     id: randomUUID(),
     templateType: 'LETTER',
     letterType: 'x0',
