@@ -99,43 +99,43 @@ const setup = async () => {
   const templates = [
     generateLetterTemplateData(
       'pa11y-letter-pending-virus-check',
-      userId,
+      clientId,
       'PENDING',
       'PENDING_UPLOAD'
     ),
     generateLetterTemplateData(
       'pa11y-letter-failed-virus-check',
-      userId,
+      clientId,
       'FAILED',
       'VIRUS_SCAN_FAILED'
     ),
     generateLetterTemplateData(
       'pa11y-letter-pending-validation',
-      userId,
+      clientId,
       'PASSED',
       'PENDING_VALIDATION'
     ),
     generateLetterTemplateData(
       'pa11y-letter-failed-validation',
-      userId,
+      clientId,
       'PASSED',
       'VALIDATION_FAILED'
     ),
     generateLetterTemplateData(
       'pa11y-letter-passed-validation',
-      userId,
+      clientId,
       'PASSED',
       'PENDING_PROOF_REQUEST'
     ),
     generateLetterTemplateData(
       'pa11y-letter-proof-requested',
-      userId,
+      clientId,
       'PASSED',
       'WAITING_FOR_PROOF'
     ),
     generateLetterTemplateData(
       'pa11y-letter-proof-available',
-      userId,
+      clientId,
       'PASSED',
       'PROOF_AVAILABLE'
     ),
