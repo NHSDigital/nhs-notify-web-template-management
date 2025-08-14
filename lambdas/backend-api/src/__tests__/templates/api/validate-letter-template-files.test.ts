@@ -28,6 +28,7 @@ jest.mocked(logger).child.mockReturnThis();
 const versionId = 'template-version-id';
 const templateId = 'template-id';
 const userId = 'template-owner';
+const clientId = 'client-id';
 
 function setup() {
   const mocks = {
@@ -148,8 +149,6 @@ describe('guard duty handler', () => {
   test('validates a client-owned template', async () => {
     const { handler, mocks } = setup();
 
-    const clientId = 'clientid';
-
     const event = makeGuardDutyMalwareScanResultNotificationEvent({
       detail: {
         s3ObjectDetails: {
@@ -221,7 +220,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: `CLIENT#${clientId}`, clientOwned: true },
+      { id: templateId, owner: clientId, clientOwned: true },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -1018,7 +1017,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1066,7 +1065,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',

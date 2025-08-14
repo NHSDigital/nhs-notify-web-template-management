@@ -45,6 +45,7 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
@@ -127,13 +128,6 @@ export class ValidateLetterTemplateFilesLambda {
     }
 
     const clientOwned = template.owner.startsWith('CLIENT#');
-    const ownerFromDb = clientOwned ? template.owner.slice(7) : template.owner;
-
-    if (owner !== ownerFromDb) {
-      throw new Error(
-        'Unexpected mismatch between s3 path and database owner field'
-      );
-    }
 
     const downloads = [
       this.letterUploadRepository.download(
