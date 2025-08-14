@@ -47,11 +47,11 @@ export class TemplatePdf {
     private source: Uint8Array
   ) {}
 
-  get templateId() {
+  get templateId(): string {
     return this.templateKey.id;
   }
 
-  get owner() {
+  get owner(): string {
     return this.templateKey.owner;
   }
 
