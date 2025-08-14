@@ -13,31 +13,63 @@ export type PreTokenGenerationV2Event = Omit<
     'claimsAndScopeOverrideDetails'
   > & {
     claimsAndScopeOverrideDetails:
-      | PreTokenGenerationV2TriggerEvent['response']['claimsAndScopeOverrideDetails']
-      | null;
+    | PreTokenGenerationV2TriggerEvent['response']['claimsAndScopeOverrideDetails']
+    | null;
   };
 };
 
 export class PreTokenGenerationLambda {
   handler = async (event: PreTokenGenerationV2Event) => {
     let response = { ...event };
-    const clientId = event.request.userAttributes['custom:sbx_client_id'];
+    const { userAttributes } = event.request;
+
+    const clientId = userAttributes['custom:sbx_client_id'];
+    const clientName = userAttributes['custom:sbx_client_name'];
 
     if (clientId) {
       response = PreTokenGenerationLambda.setTokenClaims(
-        event,
+        response,
         'accessTokenGeneration',
-        {
-          'nhs-notify:client-id': clientId,
-        }
+        { 'nhs-notify:client-id': clientId }
       );
 
       response = PreTokenGenerationLambda.setTokenClaims(
-        event,
+        response,
         'idTokenGeneration',
-        {
-          'nhs-notify:client-id': clientId,
-        }
+        { 'nhs-notify:client-id': clientId }
+      );
+    }
+
+    if (clientName) {
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'idTokenGeneration',
+        { 'nhs-notify:client-name': clientName }
+      );
+    }
+
+    const preferred =
+      userAttributes.preferred_username || userAttributes.display_name;
+
+    if (preferred) {
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'idTokenGeneration',
+        { preferred_username: preferred }
+      );
+    }
+    if (userAttributes.given_name) {
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'idTokenGeneration',
+        { given_name: userAttributes.given_name }
+      );
+    }
+    if (userAttributes.family_name) {
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'idTokenGeneration',
+        { family_name: userAttributes.family_name }
       );
     }
 

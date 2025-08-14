@@ -21,9 +21,19 @@ export class TestUserClient {
   constructor(
     private readonly userPoolId: string,
     private readonly clientSsmPathPrefix: string
-  ) {}
+  ) { }
 
-  async createTestUser(email: string, password: string, clientId: string) {
+  async createTestUser(
+    email: string,
+    password: string,
+    clientId: string,
+    clientName: string = 'NHS Client accessibility',
+    userName: [string, string] | [string, string, string] = [
+      'Dr',
+      'Test',
+      'User',
+    ]
+  ) {
     await this.ssmClient.send(
       new PutParameterCommand({
         Name: `${this.clientSsmPathPrefix}/${clientId}`,
@@ -41,18 +51,13 @@ export class TestUserClient {
         UserPoolId: this.userPoolId,
         Username: email,
         UserAttributes: [
-          {
-            Name: 'email',
-            Value: email,
-          },
-          {
-            Name: 'email_verified',
-            Value: 'true',
-          },
-          {
-            Name: 'custom:sbx_client_id',
-            Value: clientId,
-          },
+          { Name: 'email', Value: email },
+          { Name: 'email_verified', Value: 'true' },
+          { Name: 'custom:sbx_client_id', Value: clientId },
+          { Name: 'custom:sbx_client_name', Value: clientName },
+          { Name: 'given_name', Value: userName[userName.length - 2] },
+          { Name: 'family_name', Value: userName[userName.length - 1] },
+          { Name: 'preferred_username', Value: userName.join(' ') },
         ],
         MessageAction: 'SUPPRESS',
       })

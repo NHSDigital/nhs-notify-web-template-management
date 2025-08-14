@@ -15,4 +15,12 @@ resource "aws_cognito_user_pool" "sandbox" {
     required            = false
     string_attribute_constraints {}
   }
+
+  schema {
+    name                = "sbx_client_name"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
+    string_attribute_constraints {}
+  }
 }
