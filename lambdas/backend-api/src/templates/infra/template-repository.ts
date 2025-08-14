@@ -66,8 +66,7 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string,
-    private readonly enableProofing: boolean
+    private readonly templatesTableName: string
   ) {}
 
   async get(
@@ -367,9 +366,7 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const canRequestProofing = proofingEnabled && this.enableProofing;
-
-    const resolvedPostValidationSuccessStatus = canRequestProofing
+    const resolvedPostValidationSuccessStatus = proofingEnabled
       ? 'PENDING_PROOF_REQUEST'
       : 'NOT_YET_SUBMITTED';
 

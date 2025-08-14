@@ -71,11 +71,6 @@ variable "enable_backup" {
   default     = true
 }
 
-variable "enable_proofing" {
-  type        = bool
-  description = "Enable proofing feature flag"
-}
-
 variable "enable_event_stream" {
   type        = bool
   description = "Enable DynamoDB streaming to EventBridge"

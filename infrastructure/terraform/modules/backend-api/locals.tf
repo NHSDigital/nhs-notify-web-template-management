@@ -29,7 +29,6 @@ locals {
     CLIENT_CONFIG_SSM_KEY_PREFIX            = local.client_ssm_path_prefix
     CLIENT_CONFIG_TTL_SECONDS               = 900
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
-    ENABLE_PROOFING                         = var.enable_proofing
     ENVIRONMENT                             = var.environment
     NODE_OPTIONS                            = "--enable-source-maps"
     REQUEST_PROOF_QUEUE_URL                 = module.sqs_sftp_upload.sqs_queue_url

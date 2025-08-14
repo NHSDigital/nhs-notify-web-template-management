@@ -17,7 +17,6 @@ module "backend_api" {
     USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.sandbox.id
   }
 
-  enable_proofing  = true
   letter_suppliers = {
     WTMMOCK = {
       email_addresses  = [local.sandbox_letter_supplier_mock_recipient]

@@ -3,7 +3,6 @@
 set -euo pipefail
 
 # feature flag
-export NEXT_PUBLIC_ENABLE_PROOFING=true
 export INCLUDE_AUTH_PAGES=true
 
 npm run accessibility-test-setup -w tests/accessibility
