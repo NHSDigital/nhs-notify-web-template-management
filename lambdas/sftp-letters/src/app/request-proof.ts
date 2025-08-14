@@ -29,7 +29,6 @@ export class App {
   ): Promise<'sent' | 'already-sent' | 'failed'> {
     const {
       campaignId,
-      clientOwned,
       language,
       letterType,
       user,
@@ -56,7 +55,6 @@ export class App {
 
     const templateLogger = this.logger.child({
       batchId,
-      clientOwned,
       expandedTemplateId,
       messageId,
       pdfVersionId,
@@ -72,15 +70,13 @@ export class App {
       batchId
     );
 
-    const owner = clientOwned ? user.clientId : user.userId;
-
     try {
       templateLogger.info('Opening SFTP connection');
       await sftp.connect();
 
       templateLogger.info('Fetching user Data');
       const files = await this.getFileData(
-        owner,
+        user.clientId,
         templateId,
         expandedTemplateId,
         pdfVersionId,
@@ -91,9 +87,8 @@ export class App {
 
       templateLogger.info('Acquiring sender lock');
       const locked = await this.templateRepository.acquireLock(
-        owner,
-        templateId,
-        clientOwned
+        user.clientId,
+        templateId
       );
 
       if (!locked) {
@@ -107,11 +102,7 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.finaliseLock(
-          owner,
-          templateId,
-          clientOwned
-        );
+        await this.templateRepository.finaliseLock(user.clientId, templateId);
         return 'already-sent';
       }
 
@@ -129,11 +120,7 @@ export class App {
       await sftp.put(files.manifest, dest.manifest);
 
       templateLogger.info('Finalising lock');
-      await this.templateRepository.finaliseLock(
-        owner,
-        templateId,
-        clientOwned
-      );
+      await this.templateRepository.finaliseLock(user.clientId, templateId);
 
       templateLogger.info('Sent proofing request');
 
@@ -176,7 +163,6 @@ export class App {
         templateId: z.string(),
         templateName: z.string(),
         testDataVersionId: z.string().optional(),
-        clientOwned: z.boolean().default(false),
       })
       .parse(JSON.parse(event));
   }

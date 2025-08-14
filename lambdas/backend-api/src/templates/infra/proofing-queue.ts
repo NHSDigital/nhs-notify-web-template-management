@@ -23,8 +23,7 @@ export class ProofingQueue {
     language: Language,
     pdfVersionId: string,
     testDataVersionId: string | undefined,
-    supplier: string,
-    clientOwned: boolean
+    supplier: string
   ) {
     try {
       const response = await this.sqsClient.send(
@@ -32,7 +31,6 @@ export class ProofingQueue {
           QueueUrl: this.queueUrl,
           MessageBody: JSON.stringify({
             campaignId,
-            clientOwned,
             language,
             letterType,
             pdfVersionId,

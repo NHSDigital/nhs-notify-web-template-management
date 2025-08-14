@@ -7,7 +7,7 @@ import {
 type ClientConfiguration = {
   features: {
     proofing: boolean;
-    clientOwnership?: boolean;
+    clientOwnership: boolean;
   };
   campaignId?: string;
 };
@@ -24,6 +24,7 @@ export const testClients = {
     campaignId: 'Campaign1',
     features: {
       proofing: true,
+      clientOwnership: true,
     },
   },
   /**
@@ -33,6 +34,7 @@ export const testClients = {
     campaignId: 'Campaign2',
     features: {
       proofing: false,
+      clientOwnership: true,
     },
   },
   /**
@@ -46,6 +48,7 @@ export const testClients = {
     campaignId: undefined,
     features: {
       proofing: false,
+      clientOwnership: true,
     },
   },
   /**
