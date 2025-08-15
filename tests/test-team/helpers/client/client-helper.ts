@@ -7,7 +7,8 @@ import {
 type ClientConfiguration = {
   features: {
     proofing: boolean;
-    routing: boolean;
+    // TODO: CCM-11148 Make routing flag required
+    routing?: boolean;
   };
   campaignId?: string;
 };
@@ -62,7 +63,7 @@ export class ClientConfigurationHelper {
   constructor(
     private readonly clientSSMKeyPrefix: string,
     private readonly runId: string
-  ) {}
+  ) { }
 
   async setup() {
     return Promise.all(
