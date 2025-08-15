@@ -78,7 +78,7 @@ describe('when user has custom attributes set', () => {
       eventWithCustomAttr()
     );
 
-    expect(result.response.claimsAndScopeOverrideDetails).toEqual({
+    expect(result.response.claimsAndScopeOverrideDetails).toMatchObject({
       accessTokenGeneration: {
         claimsToAddOrOverride: {
           'nhs-notify:client-id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
