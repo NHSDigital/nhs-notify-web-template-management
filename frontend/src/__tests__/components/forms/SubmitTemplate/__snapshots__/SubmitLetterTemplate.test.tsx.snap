@@ -109,7 +109,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
 </DocumentFragment>
 `;
 
-exports[`SubmitLetterTemplate component should render with proofing flag disabled 1`] = `
+exports[`SubmitLetterTemplate component should render with client proofing disabled 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"

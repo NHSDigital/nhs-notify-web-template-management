@@ -1,8 +1,8 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto, CreateUpdateTemplate } from 'nhs-notify-backend-client';
-import { createHandler } from '@backend-api/templates/api/create';
+import { createHandler } from '@backend-api/templates/api/proof';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 const setup = () => {
   const templateClient = mock<TemplateClient>();
@@ -12,13 +12,13 @@ const setup = () => {
   return { handler, mocks: { templateClient } };
 };
 
-describe('Template API - Create', () => {
+describe('Template API - request proof', () => {
   beforeEach(jest.resetAllMocks);
 
   test.each([
     ['undefined', undefined],
+    ['missing clientId', { userId: 'user-id', clientId: undefined }],
     ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -26,7 +26,7 @@ describe('Template API - Create', () => {
 
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
-        body: JSON.stringify({ id: 1 }),
+        pathParameters: { templateId: 'id' },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -39,31 +39,18 @@ describe('Template API - Create', () => {
         }),
       });
 
-      expect(mocks.templateClient.createTemplate).not.toHaveBeenCalled();
+      expect(mocks.templateClient.requestProof).not.toHaveBeenCalled();
     }
   );
 
-  test('should return 400 - Invalid request when, no body', async () => {
+  test('should return 400 - Invalid request when, no templateId', async () => {
     const { handler, mocks } = setup();
-
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
-      error: {
-        errorMeta: {
-          code: 400,
-          description: 'Validation failed',
-          details: {
-            templateType: 'Invalid input: expected string, received undefined',
-          },
-        },
-      },
-      data: undefined,
-    });
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
-      body: undefined,
+      pathParameters: { templateId: undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -72,23 +59,17 @@ describe('Template API - Create', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Validation failed',
-        details: {
-          templateType: 'Invalid input: expected string, received undefined',
-        },
+        technicalMessage: 'Invalid request',
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      {},
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
-    );
+    expect(mocks.templateClient.requestProof).not.toHaveBeenCalled();
   });
 
-  test('should return error when creating template fails', async () => {
+  test('should return error when requesting proof fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
+    mocks.templateClient.requestProof.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -101,7 +82,7 @@ describe('Template API - Create', () => {
       requestContext: {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
-      body: JSON.stringify({ id: 1 }),
+      pathParameters: { templateId: 'template-id' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -114,8 +95,8 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      { id: 1 },
+    expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
+      'template-id',
       { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
@@ -123,20 +104,30 @@ describe('Template API - Create', () => {
   test('should return template', async () => {
     const { handler, mocks } = setup();
 
-    const create: CreateUpdateTemplate = {
-      name: 'updated-name',
-      message: 'message',
-      templateType: 'SMS',
-    };
-    const response: TemplateDto = {
-      ...create,
+    const response: LetterTemplate = {
       id: 'id',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      templateType: 'LETTER',
+      templateStatus: 'WAITING_FOR_PROOF',
+      name: 'template-name',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+      letterType: 'q4',
+      language: 'fr',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: '61C1267A-0F37-4E1D-831E-494DE2BECC8C',
+          virusScanStatus: 'PASSED',
+        },
+        testDataCsv: {
+          fileName: 'file.csv',
+          currentVersion: 'A8A76934-70F4-4735-8314-51CE097130DB',
+          virusScanStatus: 'PASSED',
+        },
+      },
     };
 
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
+    mocks.templateClient.requestProof.mockResolvedValueOnce({
       data: response,
     });
 
@@ -144,17 +135,17 @@ describe('Template API - Create', () => {
       requestContext: {
         authorizer: { user: 'sub', clientId: 'notify-client-id' },
       },
-      body: JSON.stringify(create),
+      pathParameters: { templateId: 'id' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
     expect(result).toEqual({
-      statusCode: 201,
-      body: JSON.stringify({ statusCode: 201, template: response }),
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
+    expect(mocks.templateClient.requestProof).toHaveBeenCalledWith('id', {
       userId: 'sub',
       clientId: 'notify-client-id',
     });

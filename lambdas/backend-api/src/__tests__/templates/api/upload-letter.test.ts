@@ -189,93 +189,32 @@ describe('upload-letter', () => {
     );
   });
 
-  test('successfully creates template when there is no clientId in auth context', async () => {
-    const { handler, mocks } = setup();
+  test.each([
+    ['undefined', undefined],
+    ['missing clientId', { userId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', user: undefined }],
+  ])(
+    'should return 400 - Invalid request when requestContext is %s',
+    async (_, ctx) => {
+      const { handler, mocks } = setup();
 
-    const pdfFilename = 'template.pdf';
-    const pdfType = 'application/pdf';
+      const event = mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: ctx },
+      });
 
-    const { contentType, multipart } = pdfLetterMultipart(
-      [
-        { _type: 'json', partName: 'template' },
-        {
-          _type: 'file',
-          partName: 'letterPdf',
-          file: pdf,
-          fileName: pdfFilename,
-          fileType: pdfType,
-        },
-      ],
-      initialTemplate
-    );
+      const result = await handler(event, mock<Context>(), jest.fn());
 
-    const event = {
-      body: multipart.toString('base64'),
-      headers: {
-        'Content-Type': contentType,
-      },
-      requestContext: { authorizer: { user: userId } },
-    } as unknown as APIGatewayProxyEvent;
-
-    const templateId = 'generated-template-id';
-
-    const created: TemplateDto = {
-      ...initialTemplate,
-      id: templateId,
-      createdAt: now,
-      updatedAt: now,
-      updatedBy: userId,
-      createdBy: userId,
-      templateStatus: 'PENDING_VALIDATION',
-      files: {
-        pdfTemplate: {
-          fileName: pdfFilename,
-          currentVersion: versionId,
-          virusScanStatus: 'PENDING',
-        },
-      },
-    };
-
-    mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
-      data: created,
-    });
-
-    const result = await handler(event, mock<Context>(), jest.fn());
-
-    expect(result).toEqual({ body: expect.any(String), statusCode: 201 });
-
-    expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
-      statusCode: 201,
-      template: created,
-    });
-
-    expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
-      initialTemplate,
-      { userId, clientId: undefined },
-      new File([pdf], pdfFilename, { type: pdfType }),
-      undefined
-    );
-  });
-
-  test('returns 400 - Invalid request when no user in requestContext', async () => {
-    const { handler, mocks } = setup();
-
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: undefined },
-    });
-
-    const result = await handler(event, mock<Context>(), jest.fn());
-
-    expect(result).toEqual({
-      statusCode: 400,
-      body: JSON.stringify({
+      expect(result).toEqual({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
-      }),
-    });
+        body: JSON.stringify({
+          statusCode: 400,
+          technicalMessage: 'Invalid request',
+        }),
+      });
 
-    expect(mocks.templateClient.uploadLetterTemplate).not.toHaveBeenCalled();
-  });
+      expect(mocks.templateClient.uploadLetterTemplate).not.toHaveBeenCalled();
+    }
+  );
 
   test('returns 400 - Invalid request when no body or Content-Type header', async () => {
     const { handler, mocks } = setup();

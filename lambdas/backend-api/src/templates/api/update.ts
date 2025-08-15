@@ -14,7 +14,7 @@ export function createHandler({
 
     const dto = JSON.parse(event.body || '{}');
 
-    if (!userId || !templateId) {
+    if (!userId || !templateId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 

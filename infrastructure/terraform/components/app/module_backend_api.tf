@@ -21,7 +21,6 @@ module "backend_api" {
 
   enable_backup = var.destination_vault_arn != null ? true : false
 
-  enable_proofing           = var.enable_proofing
   letter_suppliers          = var.letter_suppliers
   log_destination_arn       = local.log_destination_arn
   log_subscription_role_arn = local.acct.log_subscription_role_arn

@@ -27,13 +27,12 @@ jest.mock('node:crypto');
 const templateId = 'abc-def-ghi-jkl-123';
 const templatesTableName = 'templates';
 
-const setup = (enableProofing = false) => {
+const setup = () => {
   const ddbDocClient = mockClient(DynamoDBDocumentClient);
 
   const templateRepository = new TemplateRepository(
     ddbDocClient as unknown as DynamoDBDocumentClient,
-    templatesTableName,
-    enableProofing
+    templatesTableName
   );
 
   return { templateRepository, mocks: { ddbDocClient } };
@@ -189,7 +188,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -206,7 +205,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -241,7 +240,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -306,7 +305,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: emailTemplate.owner,
-        clientId: emailTemplate.clientId,
+        clientId: emailTemplate.clientId!,
       });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
@@ -335,7 +334,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.list({
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({ data: [] });
@@ -350,7 +349,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.list({
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -1456,10 +1455,8 @@ describe('templateRepository', () => {
   });
 
   describe('setLetterValidationResult', () => {
-    describe('when proofing flag is enabled', () => {
-      const proofingEnabled = true;
-
-      const { templateRepository, mocks } = setup(proofingEnabled);
+    describe('when proofing is enabled for the client', () => {
+      const { templateRepository, mocks } = setup();
 
       it('should update the templateStatus to PENDING_PROOF_REQUEST, personalisationParameters and csvHeader when template is valid', async () => {
         await templateRepository.setLetterValidationResult(
@@ -1468,7 +1465,7 @@ describe('templateRepository', () => {
           true,
           ['personalisation', 'parameters'],
           ['csv', 'headers'],
-          proofingEnabled
+          true
         );
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
@@ -1506,7 +1503,7 @@ describe('templateRepository', () => {
           false,
           [],
           [],
-          proofingEnabled
+          true
         );
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
@@ -1534,65 +1531,49 @@ describe('templateRepository', () => {
       });
     });
 
-    describe('when proofing flag is disabled', () => {
-      test.each([
-        {
-          globalProofing: false,
-          clientProofing: false,
-        },
-        {
-          globalProofing: true,
-          clientProofing: false,
-        },
-        {
-          globalProofing: false,
-          clientProofing: true,
-        },
-      ])(
-        'updates the templateStatus to NOT_YET_SUBMITTED when global proofing is $globalProofing and client proofing is $clientProofing',
-        async ({ clientProofing, globalProofing }) => {
-          const { templateRepository, mocks } = setup(globalProofing);
+    describe('when proofing is disabled for the client', () => {
+      test('updates the templateStatus to NOT_YET_SUBMITTED when client proofing is turned off', async () => {
+        const { templateRepository, mocks } = setup();
 
-          await templateRepository.setLetterValidationResult(
-            { owner: 'template-owner', id: 'template-id' },
-            'file-version-id',
-            true,
-            ['personalisation', 'parameters'],
-            ['csv', 'headers'],
-            clientProofing
-          );
+        await templateRepository.setLetterValidationResult(
+          { owner: 'template-owner', id: 'template-id' },
+          'file-version-id',
+          true,
+          ['personalisation', 'parameters'],
+          ['csv', 'headers'],
+          false
+        );
 
-          expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-            TableName: 'templates',
-            Key: { id: 'template-id', owner: 'template-owner' },
-            UpdateExpression:
-              'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
-            ConditionExpression:
-              '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
-            ExpressionAttributeNames: {
-              '#testDataCsvHeaders': 'testDataCsvHeaders',
-              '#file': 'pdfTemplate',
-              '#files': 'files',
-              '#personalisationParameters': 'personalisationParameters',
-              '#templateStatus': 'templateStatus',
-              '#updatedAt': 'updatedAt',
-              '#version': 'currentVersion',
-            },
-            ExpressionAttributeValues: {
-              ':testDataCsvHeaders': ['csv', 'headers'],
-              ':personalisationParameters': ['personalisation', 'parameters'],
-              ':templateStatus': 'NOT_YET_SUBMITTED',
-              ':templateStatusDeleted': 'DELETED',
-              ':templateStatusSubmitted': 'SUBMITTED',
-              ':updatedAt': '2024-12-27T00:00:00.000Z',
-              ':version': 'file-version-id',
-            },
-          });
-        }
-      );
+        expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+          TableName: 'templates',
+          Key: { id: 'template-id', owner: 'template-owner' },
+          UpdateExpression:
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
+          ConditionExpression:
+            '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+          ExpressionAttributeNames: {
+            '#testDataCsvHeaders': 'testDataCsvHeaders',
+            '#file': 'pdfTemplate',
+            '#files': 'files',
+            '#personalisationParameters': 'personalisationParameters',
+            '#templateStatus': 'templateStatus',
+            '#updatedAt': 'updatedAt',
+            '#version': 'currentVersion',
+          },
+          ExpressionAttributeValues: {
+            ':testDataCsvHeaders': ['csv', 'headers'],
+            ':personalisationParameters': ['personalisation', 'parameters'],
+            ':templateStatus': 'NOT_YET_SUBMITTED',
+            ':templateStatusDeleted': 'DELETED',
+            ':templateStatusSubmitted': 'SUBMITTED',
+            ':updatedAt': '2024-12-27T00:00:00.000Z',
+            ':version': 'file-version-id',
+          },
+        });
+      });
 
       it('updates the templateStatus to VALIDATION_FAILED if not valid', async () => {
-        const { templateRepository, mocks } = setup(false);
+        const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
           { owner: 'template-owner', id: 'template-id' },

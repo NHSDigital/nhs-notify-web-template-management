@@ -31,9 +31,6 @@ Object.assign(global, {
  */
 createMocks();
 
-// set feature flag
-process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'true';
-
 // mock unimplemented scrollIntoView
 if (typeof window !== 'undefined') {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();

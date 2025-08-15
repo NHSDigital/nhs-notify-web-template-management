@@ -13,12 +13,9 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}` | 'NONE';
+export type ClientKey = `Client${1 | 2 | 3 | 4}`;
 
-type TestClients = Record<
-  Exclude<ClientKey, 'NONE'>,
-  ClientConfiguration | undefined
->;
+type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
 export const testClients = {
   /**
@@ -55,7 +52,7 @@ export const testClients = {
       routing: false,
     },
   },
-} satisfies TestClients as TestClients & { NONE: undefined };
+} satisfies TestClients;
 
 export class ClientConfigurationHelper {
   private readonly ssmClient = new SSMClient({ region: 'eu-west-2' });

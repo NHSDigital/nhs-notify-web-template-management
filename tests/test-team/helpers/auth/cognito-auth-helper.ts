@@ -17,7 +17,7 @@ import {
 
 type TestUserStaticDetails = {
   userId: string;
-  clientKey: ClientKey | 'NONE';
+  clientKey: ClientKey;
   /**
    * If `userAttributes` is omitted, user will be created with full identity attributes:
    * preferred_username, given_name, and family_name.
@@ -27,8 +27,8 @@ type TestUserStaticDetails = {
 
 type TestUserDynamicDetails = {
   email: string;
+  clientId: string;
   password: string;
-  clientId?: string;
   clientName?: string;
   identityAttributes?: {
     given_name?: string;
@@ -87,17 +87,10 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userAttributes: [],
   },
   /**
-   * User6 does not belong to a client
+   * User6 has configuration but no campaignId
    */
   User6: {
     userId: 'User6',
-    clientKey: 'NONE',
-  },
-  /**
-   * User7 has configuration but no campaignId
-   */
-  User7: {
-    userId: 'User7',
     clientKey: 'Client4',
   },
 };
@@ -232,20 +225,15 @@ export class CognitoAuthHelper {
     const clientName = (clientKey: string): string =>
       `NHS Test ${clientKey.replaceAll(/([a-z])([A-Z])/g, '$1 $2')}`;
 
-    const clientId =
-      userDetails.clientKey === 'NONE'
-        ? undefined
-        : `${userDetails.clientKey}--${this.runId}`;
+    const clientId = `${userDetails.clientKey}--${this.runId}`;
 
-    const clientAttribute = clientId
-      ? [
-          { Name: 'custom:sbx_client_id', Value: clientId },
-          {
-            Name: 'custom:sbx_client_name',
-            Value: clientName(userDetails.clientKey),
-          },
-        ]
-      : [];
+    const clientAttributes = [
+      { Name: 'custom:sbx_client_id', Value: clientId },
+      {
+        Name: 'custom:sbx_client_name',
+        Value: clientName(userDetails.clientKey),
+      },
+    ];
 
     const {
       userId,
@@ -281,7 +269,7 @@ export class CognitoAuthHelper {
             Name,
             Value,
           })),
-          ...clientAttribute,
+          ...clientAttributes,
         ],
         TemporaryPassword: tempPassword,
         MessageAction: 'SUPPRESS',
