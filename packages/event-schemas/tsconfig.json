@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "rootDir": "src"
+  },
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": [
+    "src"
+  ]
+}

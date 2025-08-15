@@ -27,3 +27,4 @@ Syft
 Terraform
 toolchain
 Trufflehog
+Zod
