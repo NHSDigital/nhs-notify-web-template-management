@@ -27,54 +27,20 @@ const redirectMock = jest.mocked(redirect);
 const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('SubmitLetterTemplatePage', () => {
-  const OLD_ENV = { ...process.env };
-
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'true';
   });
 
-  afterAll(() => {
-    process.env = OLD_ENV;
-  });
-
-  test.each([
-    {
-      globalProofing: true,
-      clientProofing: true,
-      expectedProofingEnabled: true,
-    },
-    {
-      globalProofing: false,
-      clientProofing: true,
-      expectedProofingEnabled: false,
-    },
-    {
-      globalProofing: true,
-      clientProofing: false,
-      expectedProofingEnabled: false,
-    },
-    {
-      globalProofing: false,
-      clientProofing: false,
-      expectedProofingEnabled: false,
-    },
-  ])(
-    'should load page with proofingEnabled $expectedProofingEnabled when global proofing is $globalProofing and client proofing is $clientProofing',
-    async ({
-      globalProofing,
-      clientProofing,
-      expectedProofingEnabled: proofingEnabled,
-    }) => {
-      process.env.NEXT_PUBLIC_ENABLE_PROOFING = String(globalProofing);
-
+  test.each([true, false])(
+    'should load page when client proofing is %s',
+    async (clientProofingEnabled) => {
       getTemplateMock.mockResolvedValue({
         ...LETTER_TEMPLATE,
         createdAt: 'today',
         updatedAt: 'today',
       });
 
-      serverIsFeatureEnabledMock.mockResolvedValueOnce(clientProofing);
+      serverIsFeatureEnabledMock.mockResolvedValueOnce(clientProofingEnabled);
 
       const page = await SubmitLetterTemplatePage({
         params: Promise.resolve({
@@ -86,7 +52,7 @@ describe('SubmitLetterTemplatePage', () => {
         <SubmitLetterTemplate
           templateName={LETTER_TEMPLATE.name}
           templateId={LETTER_TEMPLATE.id}
-          proofingEnabled={proofingEnabled}
+          proofingEnabled={clientProofingEnabled}
         />
       );
 
