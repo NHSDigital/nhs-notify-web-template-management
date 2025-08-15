@@ -442,8 +442,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'pickles',
         },
-        user,
-        true
+        user
       );
 
       expect(response).toEqual({
@@ -476,8 +475,7 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          user,
-          true
+          user
         );
 
         expect(response).toEqual({
@@ -503,7 +501,6 @@ describe('templateRepository', () => {
       const response = await templateRepository.create(
         { ...emailProperties, ...createTemplateProperties },
         user,
-        true,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -513,38 +510,6 @@ describe('templateRepository', () => {
           ...emailProperties,
           ...databaseTemplateProperties,
           campaignId: 'campaignId',
-        },
-      });
-    });
-
-    test('created user owned template', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(PutCommand, {
-          TableName: templatesTableName,
-          Item: {
-            ...emailProperties,
-            ...databaseTemplateProperties,
-            campaignId: 'campaignId',
-          },
-        })
-        .resolves({});
-
-      const response = await templateRepository.create(
-        { ...emailProperties, ...createTemplateProperties },
-        user,
-        false,
-        'NOT_YET_SUBMITTED',
-        'campaignId'
-      );
-
-      expect(response).toEqual({
-        data: {
-          ...emailProperties,
-          ...databaseTemplateProperties,
-          campaignId: 'campaignId',
-          owner: userId,
         },
       });
     });

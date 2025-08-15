@@ -12,14 +12,10 @@ test.describe('GET /v1/template/:templateId', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
-  let userDirectOwner: TestUser;
-  let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -60,8 +56,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     // exercise: make the GET request to retrieve the template
@@ -123,8 +118,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     // exercise: make the GET request to retrieve the template as user2
@@ -167,8 +161,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     const deleteResponse = await request.delete(
@@ -197,92 +190,6 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(await response.json()).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
-    });
-  });
-
-  test('user belonging to the same client as the creator can get template', async ({
-    request,
-  }) => {
-    const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
-      templateType: 'NHS_APP',
-    });
-
-    const createResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-        data: template,
-      }
-    );
-
-    expect(createResponse.status()).toBe(201);
-
-    const created = await createResponse.json();
-
-    templateStorageHelper.addAdHocTemplateKey({
-      id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
-    });
-
-    const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-      {
-        headers: {
-          Authorization: await userSharedClient.getAccessToken(),
-        },
-      }
-    );
-
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toEqual({
-      statusCode: 200,
-      template: created.template,
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('can get a user-owned template', async ({ request }) => {
-      const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
-        templateType: 'NHS_APP',
-      });
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: template,
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-
-      const created = await createResponse.json();
-
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
-
-      const response = await request.get(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-        }
-      );
-
-      expect(response.status()).toBe(200);
-      expect(await response.json()).toEqual({
-        statusCode: 200,
-        template: created.template,
-      });
     });
   });
 });

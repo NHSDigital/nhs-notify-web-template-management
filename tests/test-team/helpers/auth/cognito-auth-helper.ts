@@ -12,7 +12,6 @@ import { faker } from '@faker-js/faker';
 import { AuthContextFile } from './auth-context-file';
 import {
   ClientConfigurationHelper,
-  testClients,
   type ClientKey,
 } from '../client/client-helper';
 
@@ -26,7 +25,6 @@ type TestUserDynamicDetails = {
   clientId: string;
   password: string;
   owner: string;
-  clientOwner: boolean;
 };
 
 export type TestUserContext = TestUserStaticDetails &
@@ -191,15 +189,6 @@ export class CognitoAuthHelper {
           password,
         });
         this.password = password;
-      },
-      get clientOwner() {
-        return Boolean(testClients[this.clientKey]?.features.clientOwnership);
-      },
-      get owner() {
-        return testClients[this.clientKey]?.features.clientOwnership &&
-          this.clientId
-          ? this.clientId
-          : this.userId;
       },
     };
 

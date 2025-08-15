@@ -79,7 +79,6 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
-      clientConfigurationResult.data?.features.clientOwnership ?? true,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -188,13 +187,9 @@ export class TemplateClient {
       files,
     };
 
-    const clientOwnershipEnabled =
-      clientConfigurationResult.data?.features.clientOwnership ?? true;
-
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
       user,
-      clientOwnershipEnabled,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -219,7 +214,6 @@ export class TemplateClient {
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
       user,
-      clientOwnershipEnabled,
       versionId,
       pdf,
       csv

@@ -121,7 +121,6 @@ export class TemplateRepository {
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     user: User,
-    enableClientOwnership: boolean,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -129,9 +128,7 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: enableClientOwnership
-        ? this.clientOwnerKey(user.clientId)
-        : user.userId,
+      owner: this.clientOwnerKey(user.clientId),
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,

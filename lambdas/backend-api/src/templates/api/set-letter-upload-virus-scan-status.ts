@@ -38,7 +38,7 @@ export const createHandler =
 
     logger.info('Setting virus scan status', {
       fileType,
-      owner: ownerFromDatabase,
+      owner,
       scanResultStatus,
       templateId,
       versionId,

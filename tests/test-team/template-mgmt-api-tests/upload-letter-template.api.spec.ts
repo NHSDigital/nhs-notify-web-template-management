@@ -17,11 +17,9 @@ test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
@@ -76,8 +74,7 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     expect(result).toEqual({
@@ -102,12 +99,11 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: `CLIENT#${user1.owner}`,
+        owner: user1.userId,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
-        clientId: user1.clientId,
       },
     });
 
@@ -165,8 +161,7 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     expect(result).toEqual({
@@ -186,12 +181,11 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: `CLIENT#${user1.owner}`,
+        owner: user1.userId,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
-        clientId: user1.clientId,
       },
     });
 
@@ -303,8 +297,7 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     expect(result.template.templateStatus).toEqual('PENDING_VALIDATION');
@@ -545,90 +538,6 @@ test.describe('POST /v1/letter-template', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage: 'Failed to validate CSV data',
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('user-owner can create letter template', async ({ request }) => {
-      const { templateData, multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const result = await response.json();
-      const debug = JSON.stringify(result, null, 2);
-
-      expect(response.status(), debug).toBe(201);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        id: result.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
-
-      expect(result).toEqual({
-        statusCode: 201,
-        template: {
-          campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          files: {
-            pdfTemplate: {
-              currentVersion: expect.stringMatching(uuidRegExp),
-              fileName: 'template.pdf',
-              virusScanStatus: 'PENDING',
-            },
-            testDataCsv: {
-              currentVersion: expect.stringMatching(uuidRegExp),
-              fileName: 'test-data.csv',
-              virusScanStatus: 'PENDING',
-            },
-            proofs: {},
-          },
-          id: expect.stringMatching(uuidRegExp),
-          language: 'en',
-          letterType: 'x0',
-          name: templateData.name,
-          owner: userDirectOwner.owner,
-          proofingEnabled: true,
-          templateStatus: 'PENDING_VALIDATION',
-          templateType: templateData.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          clientId: userDirectOwner.clientId,
-        },
-      });
     });
   });
 });

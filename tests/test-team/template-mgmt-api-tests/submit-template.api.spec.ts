@@ -25,14 +25,10 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
-  let userDirectOwner: TestUser;
-  let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -84,8 +80,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     const updateResponse = await request.patch(
@@ -154,15 +149,13 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: templateId,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          templateOwner: user1.userId,
           hasTestData: true,
         })
       );
@@ -267,8 +260,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -276,8 +268,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.template.id,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          templateOwner: user1.userId,
           hasTestData: true,
         })
       );
@@ -364,8 +355,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -373,8 +363,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const failedVirusScanUpdate = await orchestrator.send(
         new SimulateFailedVirusScan({
           templateId: createResult.template.id,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          templateOwner: user1.userId,
           filePath: 'files.pdfTemplate.virusScanStatus',
         })
       );
@@ -450,8 +439,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -505,8 +493,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const start = new Date();
@@ -528,7 +515,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         statusCode: 200,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
-          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -565,8 +551,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -618,8 +603,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -671,8 +655,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const start = new Date();
@@ -694,7 +677,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         statusCode: 200,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
-          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -731,8 +713,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -784,8 +765,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -837,8 +817,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const start = new Date();
@@ -860,7 +839,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         statusCode: 200,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
-          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -898,8 +876,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -951,8 +928,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -982,115 +958,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updateResponseBody).toEqual({
         statusCode: 404,
         technicalMessage: 'Template not found',
-      });
-    });
-  });
-
-  test.describe('shared ownership', () => {
-    test('user belonging to the same client as the creator can submit', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'EMAIL',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
-      });
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
-        {
-          headers: {
-            Authorization: await userSharedClient.getAccessToken(),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(user1.clientId).toBe(userSharedClient.clientId);
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
-          clientId: user1.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: created.template.message,
-          name: created.template.name,
-          subject: created.template.subject,
-          templateStatus: 'SUBMITTED',
-          templateType: created.template.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-        },
-      });
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('user-owner can submit', async ({ request }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'SMS',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        template: {
-          campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
-          clientId: userDirectOwner.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: created.template.message,
-          name: created.template.name,
-          templateStatus: 'SUBMITTED',
-          templateType: created.template.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-        },
       });
     });
   });

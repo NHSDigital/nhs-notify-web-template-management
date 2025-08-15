@@ -108,7 +108,6 @@ export type TemplateSuccess = {
 
 export type ClientFeatures = {
   proofing?: boolean;
-  clientOwnership?: boolean;
 };
 
 export type ClientConfiguration = {

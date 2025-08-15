@@ -18,14 +18,10 @@ test.describe('DELETE /v1/template/:templateId', () => {
   const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
-  let userDirectOwner: TestUser;
-  let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -77,8 +73,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      owner: user1.userId,
     });
 
     const updateResponse = await request.delete(
@@ -144,7 +139,6 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.userId,
-        clientOwned: user1.clientOwner,
       });
 
       expect(response.status(), debug).toBe(201);
@@ -208,8 +202,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       expect(response.status(), debug).toBe(201);
@@ -217,8 +210,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.template.id,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          templateOwner: user1.userId,
           hasTestData: true,
         })
       );
@@ -305,8 +297,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -360,8 +351,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -395,8 +385,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -448,8 +437,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -501,8 +489,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -536,8 +523,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -589,8 +575,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -642,8 +627,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -677,8 +661,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const submitResponse = await request.patch(
@@ -730,8 +713,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        owner: user1.userId,
       });
 
       const deleteResponse = await request.delete(
@@ -762,78 +744,6 @@ test.describe('DELETE /v1/template/:templateId', () => {
         statusCode: 404,
         technicalMessage: 'Template not found',
       });
-    });
-  });
-
-  test.describe('shared ownership', () => {
-    test('user belonging to the same client as the creator can delete', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
-      });
-
-      const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await userSharedClient.getAccessToken(),
-          },
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(204);
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('can delete a user-owned template', async ({ request }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'EMAIL',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
-
-      const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(204);
     });
   });
 });

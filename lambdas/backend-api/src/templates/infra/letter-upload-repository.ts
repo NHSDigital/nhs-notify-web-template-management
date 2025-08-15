@@ -33,14 +33,16 @@ export class LetterUploadRepository extends LetterFileRepository {
   async upload(
     templateId: string,
     user: User,
-    clientOwnershipEnabled: boolean,
     versionId: string,
     pdf: File,
     csv?: File
   ): Promise<ApplicationResult<null>> {
-    const owner = clientOwnershipEnabled ? user.clientId : user.userId;
-
-    const pdfKey = this.key('pdf-template', owner, templateId, versionId);
+    const pdfKey = this.key(
+      'pdf-template',
+      user.clientId,
+      templateId,
+      versionId
+    );
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
@@ -49,7 +51,7 @@ export class LetterUploadRepository extends LetterFileRepository {
         Body: await pdf.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
-          owner,
+          user.clientId,
           templateId,
           versionId,
           'pdf-template'
@@ -58,7 +60,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (csv) {
-      const csvKey = this.key('test-data', owner, templateId, versionId);
+      const csvKey = this.key(
+        'test-data',
+        user.clientId,
+        templateId,
+        versionId
+      );
 
       commands.push(
         new PutObjectCommand({
@@ -67,7 +74,7 @@ export class LetterUploadRepository extends LetterFileRepository {
           Body: await csv.bytes(),
           ChecksumAlgorithm: 'SHA256',
           Metadata: LetterUploadRepository.metadata(
-            owner,
+            user.clientId,
             templateId,
             versionId,
             'test-data'
