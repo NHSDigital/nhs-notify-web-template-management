@@ -120,8 +120,8 @@ export class TemplateRepository {
 
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
-    userId: string,
-    clientId: string | undefined,
+    user: User,
+    enableClientOwnership: boolean,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -129,14 +129,16 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: userId,
-      clientId: clientId,
+      owner: enableClientOwnership
+        ? this.clientOwnerKey(user.clientId)
+        : user.userId,
+      clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
       createdAt: date,
       updatedAt: date,
-      updatedBy: userId,
-      createdBy: userId,
+      updatedBy: user.userId,
+      createdBy: user.userId,
       campaignId,
     };
 
@@ -154,7 +156,7 @@ export class TemplateRepository {
   async update(
     templateId: string,
     template: ValidatedCreateUpdateTemplate,
-    userId: string,
+    user: User,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = [
@@ -181,9 +183,14 @@ export class TemplateRepository {
     ];
 
     try {
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
+
       const result = await this._update(
         templateId,
-        userId,
+        owner,
+        user.userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -211,7 +218,7 @@ export class TemplateRepository {
     }
   }
 
-  async delete(templateId: string, userId: string) {
+  async delete(templateId: string, user: User) {
     const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
 
     const expressionAttributeNames: Record<string, string> = {
@@ -224,9 +231,14 @@ export class TemplateRepository {
     };
 
     try {
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
+
       const result = await this._update(
         templateId,
-        userId,
+        owner,
+        user.userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -239,7 +251,7 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, userId: string) {
+  async submit(templateId: string, user: User) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -256,9 +268,14 @@ export class TemplateRepository {
     ];
 
     try {
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
+
       const result = await this._update(
         templateId,
-        userId,
+        owner,
+        user.userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -281,7 +298,7 @@ export class TemplateRepository {
 
   async updateStatus(
     templateId: string,
-    userId: string,
+    user: User,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
@@ -291,9 +308,14 @@ export class TemplateRepository {
     };
 
     try {
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
+
       const result = await this._update(
         templateId,
-        userId,
+        owner,
+        user.userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -405,7 +427,7 @@ export class TemplateRepository {
       await this.client.send(
         new UpdateCommand({
           TableName: this.templatesTableName,
-          Key: templateKey,
+          Key: this.toDatabaseKey(templateKey),
           UpdateExpression: `SET ${updates.join(' , ')}`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
@@ -435,7 +457,7 @@ export class TemplateRepository {
     const dynamoResponse = await this.client.send(
       new UpdateCommand({
         TableName: this.templatesTableName,
-        Key: templateKey,
+        Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
           'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
         ExpressionAttributeNames: {
@@ -464,7 +486,7 @@ export class TemplateRepository {
     await this.client.send(
       new UpdateCommand({
         TableName: this.templatesTableName,
-        Key: templateKey,
+        Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
           'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
         ExpressionAttributeValues: {
@@ -480,14 +502,11 @@ export class TemplateRepository {
   }
 
   async setLetterFileVirusScanStatusForProof(
-    userId: string,
-    templateId: string,
+    templateKey: TemplateKey,
     fileName: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
     supplier: string
   ) {
-    const templateKey = { owner: userId, id: templateId };
-
     try {
       const updatedItem = await this.appendFileToProofs(
         templateKey,
@@ -534,7 +553,7 @@ export class TemplateRepository {
     }
   }
 
-  async getOwner(id: string): Promise<string> {
+  async getOwner(id: string): Promise<{ owner: string; clientOwned: boolean }> {
     const dbResponse = await this.client.send(
       new QueryCommand({
         TableName: this.templatesTableName,
@@ -550,7 +569,11 @@ export class TemplateRepository {
       throw new Error(`Could not identify item by id ${id}`);
     }
 
-    return dbResponse.Items[0].owner;
+    const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
+
+    const { stripped, owner } = this.stripClientPrefix(ownerWithPossiblePrefix);
+
+    return { owner, clientOwned: stripped };
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -598,7 +621,7 @@ export class TemplateRepository {
       await this.client.send(
         new UpdateCommand({
           TableName: this.templatesTableName,
-          Key: templateKey,
+          Key: this.toDatabaseKey(templateKey),
           UpdateExpression: `SET ${updates.join(' , ')}`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
@@ -620,24 +643,24 @@ export class TemplateRepository {
   }
 
   async proofRequestUpdate(templateId: string, user: User) {
-    const update = new TemplateUpdateBuilder(
-      this.templatesTableName,
-      user.userId,
-      templateId,
-      {
-        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
-        ReturnValues: 'ALL_NEW',
-      }
-    )
-      .setStatus('WAITING_FOR_PROOF')
-      .expectedStatus('PENDING_PROOF_REQUEST')
-      .expectedTemplateType('LETTER')
-      .expectedClientId(user.clientId)
-      .expectTemplateExists()
-      .expectProofingEnabled()
-      .build();
-
     try {
+      const update = new TemplateUpdateBuilder(
+        this.templatesTableName,
+        this.clientOwnerKey(user.clientId),
+        templateId,
+        {
+          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+          ReturnValues: 'ALL_NEW',
+        }
+      )
+        .setStatus('WAITING_FOR_PROOF')
+        .expectedStatus('PENDING_PROOF_REQUEST')
+        .expectedTemplateType('LETTER')
+        .expectedClientId(user.clientId)
+        .expectTemplateExists()
+        .expectProofingEnabled()
+        .build();
+
       const response = await this.client.send(new UpdateCommand(update));
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
@@ -659,6 +682,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
+    owner: string,
     userId: string,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
@@ -677,7 +701,7 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner: userId,
+        owner,
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -718,6 +742,50 @@ export class TemplateRepository {
       }
       throw error;
     }
+  }
+
+  private async getUserTemplateOwner(
+    user: User,
+    templateId: string
+  ): Promise<string | undefined> {
+    const dbResponse = await this.client.send(
+      new QueryCommand({
+        TableName: this.templatesTableName,
+        IndexName: 'QueryById',
+        KeyConditionExpression: 'id = :id',
+        ExpressionAttributeValues: {
+          ':id': templateId,
+        },
+      })
+    );
+
+    return dbResponse.Items?.find(
+      (item) =>
+        item.owner === user.userId ||
+        (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
+    )?.owner;
+  }
+
+  private toDatabaseKey(templateKey: TemplateKey) {
+    return {
+      id: templateKey.id,
+      owner: templateKey.clientOwned
+        ? this.clientOwnerKey(templateKey.owner)
+        : templateKey.owner,
+    };
+  }
+
+  private stripClientPrefix(owner: string) {
+    const clientOwned = owner.startsWith('CLIENT#');
+
+    return {
+      stripped: clientOwned,
+      owner: clientOwned ? owner.slice(7) : owner,
+    };
+  }
+
+  private clientOwnerKey(clientId: string) {
+    return `CLIENT#${clientId}`;
   }
 
   private attributeExpressionsFromMap<T>(

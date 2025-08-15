@@ -16,9 +16,11 @@ test.describe('POST /v1/template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
+  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
@@ -132,13 +134,15 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -178,7 +182,8 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -368,13 +373,15 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -414,7 +421,8 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -576,13 +584,15 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -623,7 +633,8 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -808,6 +819,49 @@ test.describe('POST /v1/template', () => {
         technicalMessage: 'Request failed validation',
         details: {
           message: 'Too big: expected string to have <=100000 characters',
+        },
+      });
+    });
+  });
+
+  test.describe('user-owned templates', () => {
+    test('can create a user-owned template', async ({ request }) => {
+      const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
+        templateType: 'NHS_APP',
+      });
+
+      const response = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+          data: template,
+        }
+      );
+
+      expect(response.status()).toBe(201);
+
+      const created = await response.json();
+
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
+      });
+
+      expect(created).toEqual({
+        statusCode: 201,
+        template: {
+          campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
+          clientId: userDirectOwner.clientId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          message: template.message,
+          name: template.name,
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: template.templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
         },
       });
     });

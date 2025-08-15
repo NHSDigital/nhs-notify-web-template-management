@@ -12,6 +12,7 @@ import { faker } from '@faker-js/faker';
 import { AuthContextFile } from './auth-context-file';
 import {
   ClientConfigurationHelper,
+  testClients,
   type ClientKey,
 } from '../client/client-helper';
 
@@ -24,6 +25,8 @@ type TestUserDynamicDetails = {
   email: string;
   clientId: string;
   password: string;
+  owner: string;
+  clientOwner: boolean;
 };
 
 export type TestUserContext = TestUserStaticDetails &
@@ -45,7 +48,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User2: {
     userId: 'User2',
-    clientKey: 'Client1',
+    clientKey: 'Client5',
   },
   /**
    * User3 idle user that stays stayed in
@@ -76,6 +79,20 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   User6: {
     userId: 'User6',
     clientKey: 'Client4',
+  },
+  /**
+   * User7 has a client which has the client ownership feature disabled
+   */
+  User7: {
+    userId: 'User7',
+    clientKey: 'Client5',
+  },
+  /**
+   * User8 shares a client with the primary user (User1)
+   */
+  User8: {
+    userId: 'User8',
+    clientKey: 'Client1',
   },
 };
 
@@ -174,6 +191,15 @@ export class CognitoAuthHelper {
           password,
         });
         this.password = password;
+      },
+      get clientOwner() {
+        return Boolean(testClients[this.clientKey]?.features.clientOwnership);
+      },
+      get owner() {
+        return testClients[this.clientKey]?.features.clientOwnership &&
+          this.clientId
+          ? this.clientId
+          : this.userId;
       },
     };
 

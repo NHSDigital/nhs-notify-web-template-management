@@ -7,11 +7,12 @@ import {
 type ClientConfiguration = {
   features: {
     proofing: boolean;
+    clientOwnership: boolean;
   };
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -23,6 +24,7 @@ export const testClients = {
     campaignId: 'Campaign1',
     features: {
       proofing: true,
+      clientOwnership: true,
     },
   },
   /**
@@ -32,6 +34,7 @@ export const testClients = {
     campaignId: 'Campaign2',
     features: {
       proofing: false,
+      clientOwnership: true,
     },
   },
   /**
@@ -45,6 +48,17 @@ export const testClients = {
     campaignId: undefined,
     features: {
       proofing: false,
+      clientOwnership: true,
+    },
+  },
+  /**
+   * Client 5 has client ownership of templates disabled
+   */
+  Client5: {
+    campaignId: 'Campaign5',
+    features: {
+      proofing: true,
+      clientOwnership: false,
     },
   },
 } satisfies TestClients;

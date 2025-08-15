@@ -13,7 +13,7 @@ export class UserDataRepository {
   ) {}
 
   async get(
-    owner: string,
+    clientId: string,
     templateId: string,
     pdfVersion: string,
     testDataVersion?: string
@@ -21,7 +21,7 @@ export class UserDataRepository {
     const commands = [
       new GetObjectCommand({
         Bucket: this.bucket,
-        Key: this.pdfPath(owner, templateId, pdfVersion),
+        Key: this.pdfPath(clientId, templateId, pdfVersion),
       }),
     ];
 
@@ -29,7 +29,7 @@ export class UserDataRepository {
       commands.push(
         new GetObjectCommand({
           Bucket: this.bucket,
-          Key: this.csvPath(owner, templateId, testDataVersion),
+          Key: this.csvPath(clientId, templateId, testDataVersion),
         })
       );
     }

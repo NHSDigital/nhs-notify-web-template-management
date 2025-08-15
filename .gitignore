@@ -25,6 +25,7 @@ node_modules
 
 # testing
 /coverage
+acceptance-test-report
 
 # next.js
 /.next/

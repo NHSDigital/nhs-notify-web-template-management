@@ -9,7 +9,7 @@ import { UserDataRepository } from '../../infra/user-data-repository';
 import { Readable } from 'node:stream';
 
 const internalBucket = 'nhs-notify-000000000000-eu-west-2-main-app-internal';
-const owner = 'b4b5db1b-8c76-40bf-b5f7-09c3a01e7236';
+const clientId = 'b4b5db1b-8c76-40bf-b5f7-09c3a01e7236';
 const templateId = '08d34521-1620-45a5-9314-f32eff96bcef';
 const pdfVersion = '8e3ab488-0024-430c-8bec-af3ac22b6c47';
 const testDataVersion = '8e3ab488-0024-430c-8bec-af3ac22b6c47';
@@ -39,7 +39,7 @@ describe('UserDataRepository', () => {
 
     expect(
       await userDataRepository.get(
-        owner,
+        clientId,
         templateId,
         pdfVersion,
         testDataVersion
@@ -49,11 +49,11 @@ describe('UserDataRepository', () => {
     expect(mocks.s3Client).toHaveReceivedCommandTimes(GetObjectCommand, 2);
     expect(mocks.s3Client).toHaveReceivedNthCommandWith(1, GetObjectCommand, {
       Bucket: internalBucket,
-      Key: `pdf-template/${owner}/${templateId}/${pdfVersion}.pdf`,
+      Key: `pdf-template/${clientId}/${templateId}/${pdfVersion}.pdf`,
     });
     expect(mocks.s3Client).toHaveReceivedNthCommandWith(2, GetObjectCommand, {
       Bucket: internalBucket,
-      Key: `test-data/${owner}/${templateId}/${testDataVersion}.csv`,
+      Key: `test-data/${clientId}/${templateId}/${testDataVersion}.csv`,
     });
   });
 
@@ -67,13 +67,13 @@ describe('UserDataRepository', () => {
       .resolvesOnce({ Body: pdf as GetObjectCommandOutput['Body'] });
 
     expect(
-      await userDataRepository.get(owner, templateId, pdfVersion, undefined)
+      await userDataRepository.get(clientId, templateId, pdfVersion, undefined)
     ).toEqual({ pdf });
 
     expect(mocks.s3Client).toHaveReceivedCommandTimes(GetObjectCommand, 1);
     expect(mocks.s3Client).toHaveReceivedCommandWith(GetObjectCommand, {
       Bucket: internalBucket,
-      Key: `pdf-template/${owner}/${templateId}/${pdfVersion}.pdf`,
+      Key: `pdf-template/${clientId}/${templateId}/${pdfVersion}.pdf`,
     });
   });
 
@@ -83,7 +83,7 @@ describe('UserDataRepository', () => {
     mocks.s3Client.on(GetObjectCommand).resolves({ Body: undefined });
 
     await expect(
-      userDataRepository.get(owner, templateId, pdfVersion, testDataVersion)
+      userDataRepository.get(clientId, templateId, pdfVersion, testDataVersion)
     ).rejects.toThrow('Missing body on S3 response');
   });
 });

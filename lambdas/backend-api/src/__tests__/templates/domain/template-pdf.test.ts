@@ -6,7 +6,7 @@ import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 
 test('has the given key attributes', () => {
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     Buffer.from('')
   );
 
@@ -19,7 +19,7 @@ test('parse with no custom personalisation', async () => {
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     file
   );
   await pdf.parse();
@@ -66,7 +66,7 @@ test('parse with custom personalisation', async () => {
     path.resolve(__dirname, '../fixtures/custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     file
   );
   await pdf.parse();
@@ -124,7 +124,7 @@ test('errors if parse is not called before reading personalisation', () => {
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     file
   );
 
@@ -148,7 +148,7 @@ test('errors if file cannot be parsed', async () => {
   );
 
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     file
   );
 
@@ -161,7 +161,7 @@ test('errors if file cannot be opened', async () => {
   );
 
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     file
   );
 

@@ -29,12 +29,17 @@ it('sets the virus scan status on pdf uploads identified by file metadata', asyn
     },
   });
 
+  mocks.templateRepository.getOwner.mockResolvedValueOnce({
+    owner: 'template-owner',
+    clientOwned: true,
+  });
+
   await handler(event);
 
   expect(
     mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     'pdf-template',
     'template-version',
     'PASSED'
@@ -55,12 +60,17 @@ it('sets the virus scan status on csv files identified by file metadata', async 
     },
   });
 
+  mocks.templateRepository.getOwner.mockResolvedValueOnce({
+    owner: 'template-owner',
+    clientOwned: true,
+  });
+
   await handler(event);
 
   expect(
     mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
-    { id: 'template-id', owner: 'template-owner' },
+    { id: 'template-id', owner: 'template-owner', clientOwned: true },
     'test-data',
     'template-version',
     'PASSED'
@@ -84,12 +94,17 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
       },
     });
 
+    mocks.templateRepository.getOwner.mockResolvedValueOnce({
+      owner: 'template-owner',
+      clientOwned: true,
+    });
+
     await handler(event);
 
     expect(
       mocks.templateRepository.setLetterFileVirusScanStatusForUpload
     ).toHaveBeenCalledWith(
-      { id: 'template-id', owner: 'template-owner' },
+      { id: 'template-id', owner: 'template-owner', clientOwned: true },
       'pdf-template',
       'template-version',
       'FAILED'
@@ -172,6 +187,11 @@ it('errors if status update fails', async () => {
     },
   });
 
+  mocks.templateRepository.getOwner.mockResolvedValueOnce({
+    owner: 'template-owner',
+    clientOwned: true,
+  });
+
   const error = new Error('Status Update error');
 
   mocks.templateRepository.setLetterFileVirusScanStatusForUpload.mockRejectedValueOnce(
@@ -179,4 +199,28 @@ it('errors if status update fails', async () => {
   );
 
   await expect(handler(event)).rejects.toThrow(error);
+});
+
+it('errors if owner from database does not match s3 path', async () => {
+  const { handler, mocks } = setup();
+  const event = makeGuardDutyMalwareScanResultNotificationEvent({
+    detail: {
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey:
+          'pdf-template/template-owner/template-id/template-version.pdf',
+        versionId: 'pdf-s3-version-id',
+      },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
+    },
+  });
+
+  mocks.templateRepository.getOwner.mockResolvedValueOnce({
+    owner: 'someone-else',
+    clientOwned: true,
+  });
+
+  await expect(handler(event)).rejects.toThrow(
+    'Database owner and s3 owner mismatch'
+  );
 });

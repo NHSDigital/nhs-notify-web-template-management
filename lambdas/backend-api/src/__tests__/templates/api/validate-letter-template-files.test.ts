@@ -27,7 +27,8 @@ jest.mocked(logger).child.mockReturnThis();
 
 const versionId = 'template-version-id';
 const templateId = 'template-id';
-const owner = 'template-owner';
+const userId = 'template-owner';
+const clientId = 'client-id';
 
 function setup() {
   const mocks = {
@@ -55,7 +56,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -79,8 +80,8 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
-        owner,
         proofingEnabled: false,
+        owner: userId,
       }),
     });
 
@@ -104,24 +105,26 @@ describe('guard duty handler', () => {
     await handler(event);
 
     expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      userId: owner,
-      clientId: owner,
+      userId: userId,
+      clientId: userId,
     });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      templateId,
+      userId,
       'pdf-template',
       versionId
     );
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      templateId,
+      userId,
       'test-data',
       versionId
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
@@ -134,7 +137,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -145,8 +148,6 @@ describe('guard duty handler', () => {
 
   test('validates a client-owned template', async () => {
     const { handler, mocks } = setup();
-
-    const clientId = 'clientid';
 
     const event = makeGuardDutyMalwareScanResultNotificationEvent({
       detail: {
@@ -198,13 +199,14 @@ describe('guard duty handler', () => {
     });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
-      { id: templateId, owner: clientId },
+      templateId,
+      clientId,
       'pdf-template',
       versionId
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner: clientId },
+      { id: templateId, owner: clientId, clientOwned: true },
       pdfData
     );
 
@@ -218,7 +220,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: `CLIENT#${clientId}` },
+      { id: templateId, owner: clientId, clientOwned: true },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -235,7 +237,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -261,7 +263,7 @@ describe('guard duty handler', () => {
         language: 'fa',
         clientId: 'clientId',
         proofingEnabled: true,
-        owner,
+        owner: userId,
       }),
     });
 
@@ -293,7 +295,7 @@ describe('guard duty handler', () => {
 
     // assert
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
@@ -303,7 +305,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       true,
       ['firstName', 'parameter_1', 'unknown_parameter'],
@@ -320,7 +322,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -345,7 +347,7 @@ describe('guard duty handler', () => {
         templateStatus: 'PENDING_VALIDATION',
         language: undefined,
         proofingEnabled: false,
-        owner,
+        owner: userId,
       }),
     });
 
@@ -383,7 +385,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       false,
       ['firstName', 'parameter_1', 'unknown_parameter'],
@@ -399,7 +401,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -420,7 +422,7 @@ describe('guard duty handler', () => {
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
         proofingEnabled: false,
-        owner,
+        owner: userId,
       }),
     });
 
@@ -438,19 +440,20 @@ describe('guard duty handler', () => {
     await handler(event);
 
     expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      userId: owner,
-      clientId: owner,
+      userId: userId,
+      clientId: userId,
     });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledTimes(1);
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      templateId,
+      userId,
       'pdf-template',
       versionId
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).not.toHaveBeenCalled();
@@ -465,7 +468,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -495,7 +498,7 @@ describe('guard duty handler', () => {
     const event = {
       detail: {
         s3ObjectDetails: {
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
           versionId: 's3-version-id',
         },
         scanResultDetails: {},
@@ -512,7 +515,7 @@ describe('guard duty handler', () => {
       const event = {
         detail: {
           s3ObjectDetails: {
-            objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+            objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
             versionId: 's3-version-id',
           },
           scanResultDetails: {
@@ -530,7 +533,7 @@ describe('guard duty handler', () => {
     const event = {
       detail: {
         s3ObjectDetails: {
-          objectKey: `pdf-template/${owner}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${versionId}.pdf`,
           versionId: 's3-version-id',
         },
         scanResultDetails: {
@@ -564,7 +567,7 @@ describe('guard duty handler', () => {
     const event = {
       detail: {
         s3ObjectDetails: {
-          objectKey: `${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `${userId}/${templateId}/${versionId}.pdf`,
           versionId: 's3-version-id',
         },
         scanResultDetails: {
@@ -581,7 +584,7 @@ describe('guard duty handler', () => {
     const event = {
       detail: {
         s3ObjectDetails: {
-          objectKey: `unknown/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `unknown/${userId}/${templateId}/${versionId}.pdf`,
           versionId: 's3-version-id',
         },
         scanResultDetails: {
@@ -598,7 +601,7 @@ describe('guard duty handler', () => {
     const event = {
       detail: {
         s3ObjectDetails: {
-          objectKey: `pdf-template/${owner}/${templateId}/unexpected-file-name`,
+          objectKey: `pdf-template/${userId}/${templateId}/unexpected-file-name`,
           versionId: 's3-version-id',
         },
         scanResultDetails: {
@@ -617,7 +620,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -651,7 +654,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -681,7 +684,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -722,7 +725,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -763,7 +766,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -804,7 +807,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -845,7 +848,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -886,7 +889,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -927,7 +930,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -970,7 +973,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -994,6 +997,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner: 'CLIENT#client-id',
       }),
     });
 
@@ -1013,7 +1017,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1037,6 +1041,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner: 'CLIENT#client-id',
       }),
     });
 
@@ -1060,7 +1065,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1084,6 +1089,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner: 'CLIENT#client-id',
       }),
     });
 
@@ -1107,7 +1113,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1131,8 +1137,8 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
-        owner,
         proofingEnabled: false,
+        owner: userId,
       }),
     });
 
@@ -1151,7 +1157,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       false,
       [],
@@ -1167,7 +1173,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1191,8 +1197,8 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
-        owner,
         proofingEnabled: false,
+        owner: userId,
       }),
     });
 
@@ -1215,7 +1221,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       false,
       [],
@@ -1231,7 +1237,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           bucketName: 'quarantine-bucket',
-          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          objectKey: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -1255,8 +1261,8 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
-        owner,
         proofingEnabled: false,
+        owner: userId,
       }),
     });
 
@@ -1279,7 +1285,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner },
+      { id: templateId, owner: userId, clientOwned: false },
       versionId,
       false,
       pdf.personalisationParameters,

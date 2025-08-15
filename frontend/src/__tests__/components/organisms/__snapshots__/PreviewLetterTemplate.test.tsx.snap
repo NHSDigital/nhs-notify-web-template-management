@@ -938,7 +938,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   <li>
                     <a
                       data-testid="proof-link_your-proof.pdf"
-                      href="/templates/files/owner/proofs/2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE/your-proof.pdf"
+                      href="/templates/files/client-id/proofs/2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE/your-proof.pdf"
                       rel="noopener noreferrer"
                       target="_blank"
                     >

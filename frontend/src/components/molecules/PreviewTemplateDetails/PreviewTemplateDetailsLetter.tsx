@@ -12,8 +12,6 @@ import concatClassNames from '@utils/concat-class-names';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
-const clientOwnerPrefix = 'CLIENT#';
-
 export default function PreviewTemplateDetailsLetter({
   template,
 }: {
@@ -27,12 +25,7 @@ export default function PreviewTemplateDetailsLetter({
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
       template.templateStatus === 'SUBMITTED') &&
-    template.owner;
-
-  const proofOwner =
-    template.owner && template.owner.startsWith(clientOwnerPrefix)
-      ? template.owner.slice(clientOwnerPrefix.length)
-      : template.owner;
+    template.clientId;
 
   return (
     <>
@@ -77,7 +70,7 @@ export default function PreviewTemplateDetailsLetter({
                   {proofFilenames.map((file) => (
                     <li key={file}>
                       <a
-                        href={`${getBasePath()}/files/${proofOwner}/proofs/${template.id}/${file}`}
+                        href={`${getBasePath()}/files/${template.clientId}/proofs/${template.id}/${file}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         data-testid={`proof-link_${file}`}
