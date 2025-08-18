@@ -44,7 +44,7 @@ test.describe('Request Proof Page', () => {
       `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegment}/${templates.valid.id}`
     );
 
-    await expect(requestProofPage.pageHeader).toContainText(
+    await expect(requestProofPage.pageHeading).toContainText(
       templates.valid.name
     );
 

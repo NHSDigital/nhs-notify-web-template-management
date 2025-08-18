@@ -21,7 +21,7 @@ describe('Header component', () => {
   it('should contain an authentication link', () => {
     render(<NHSNotifyHeader />);
 
-    expect(screen.getByTestId('auth-link')).toBeInTheDocument();
+    expect(screen.getByTestId('sign-in-link')).toBeInTheDocument();
   });
 
   it('should render correctly', () => {

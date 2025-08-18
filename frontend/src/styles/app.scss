@@ -1,4 +1,4 @@
-@use 'nhsuk-frontend/packages/nhsuk.scss' as nhsuk;
+@use 'nhsuk-frontend/dist/nhsuk';
 
 body {
   // This is here because amplify applies a min height which overwrites nhsuk causing a white space
@@ -8,7 +8,7 @@ body {
 code {
   display: inline-block;
   padding: 0.6rem;
-  background-color: nhsuk.$nhsuk-border-color;
+  background-color: var(--nhsuk-border-color);
 }
 
 pre {
@@ -21,8 +21,8 @@ pre {
 }
 
 .notify-confirmation-panel {
-  color: #ffffff;
-  background-color: #007f3b;
+  color: var(--color_nhsuk-white);
+  background-color: var(--color_nhsuk-green);
   text-align: center;
   padding: 1.5rem;
   margin-bottom: 2.5rem;
@@ -31,3 +31,9 @@ pre {
 .inline-form {
   display: inline;
 }
+
+.nhsuk-header__service-logo:has(svg):not(:focus):hover::before {
+  content: none;
+  border: none; // remove the pseudo underline on the logo
+}
+

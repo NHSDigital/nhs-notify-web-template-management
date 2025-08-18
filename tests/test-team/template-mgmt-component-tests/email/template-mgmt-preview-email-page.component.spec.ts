@@ -9,7 +9,7 @@ import {
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -68,7 +68,7 @@ test.describe('Preview Email message template Page', () => {
       `${baseURL}/templates/preview-email-template/${templates.valid.id}`
     );
 
-    await expect(previewEmailTemplatePage.pageHeader).toContainText(
+    await expect(previewEmailTemplatePage.pageHeading).toContainText(
       'test-template-email'
     );
 
@@ -90,7 +90,7 @@ test.describe('Preview Email message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

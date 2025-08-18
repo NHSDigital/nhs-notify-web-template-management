@@ -8,6 +8,7 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateStatus, VirusScanStatus } from 'nhs-notify-backend-client';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
+import { faker } from '@faker-js/faker';
 
 // pa11y can't interact with a file upload dialogue, so letters must be seeded
 const generateLetterTemplateData = (
@@ -80,15 +81,22 @@ const setup = async () => {
 
   const clientId = 'accessibility-test-client';
 
+  const clientName = 'NHS Accessibility';
+
   const testUserClient = new TestUserClient(
     backendConfig.userPoolId,
     backendConfig.clientSsmPathPrefix
   );
 
+  const givenName = faker.person.firstName();
+  const familyName = faker.person.lastName();
+  const userName = ['Dr', givenName, familyName];
+
   const { userId } = await testUserClient.createTestUser(
     testEmail,
     testPassword,
-    clientId
+    clientId,
+    clientName
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(
@@ -161,6 +169,8 @@ const setup = async () => {
     templateIds,
     userId,
     clientId,
+    clientName,
+    userName,
   };
 
   writeFileSync('./pa11y-fixtures.json', JSON.stringify(fixtureData, null, 2));

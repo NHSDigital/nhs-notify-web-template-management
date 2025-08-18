@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
@@ -73,7 +73,7 @@ test.describe('Copy Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/copy-template/${templates.email.id}`
     );
-    await expect(copyTemplatePage.pageHeader).toHaveText(
+    await expect(copyTemplatePage.pageHeading).toHaveText(
       `Copy '${templates.email.name}'`
     );
   });
@@ -87,7 +87,7 @@ test.describe('Copy Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertGoBackLink(props);

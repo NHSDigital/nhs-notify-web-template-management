@@ -310,6 +310,9 @@
         "properties": {
           "proofing": {
             "type": "boolean"
+          },
+          "routing": {
+            "type": "boolean"
           }
         },
         "required": [],

@@ -127,7 +127,7 @@ export const NhsAppTemplateForm: FC<
                 />
                 <JsEnabled>
                   <MarkdownContent
-                    id='character-count'
+                    testId='character-count'
                     content={characterCountText}
                     variables={{ characters: nhsAppTemplateMessage.length }}
                   />
