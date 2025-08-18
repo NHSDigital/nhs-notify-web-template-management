@@ -1,4 +1,4 @@
-function truncate(str: string, maxLength: number): string {
+export function truncate(str: string, maxLength: number): string {
   const trimmed = str.trimEnd();
 
   if (trimmed.length <= maxLength) {
