@@ -1068,13 +1068,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       });
     });
 
-    test('user-owner can submit letter template', async ({ request }) => {
+    test('user-owner can submit letter template with proofing disabled', async ({
+      request,
+    }) => {
       const templateId = crypto.randomUUID();
 
       const template = {
         ...TemplateFactory.uploadLetterTemplate(
           templateId,
-          user1,
+          userProofingDisabled,
           templateId,
           'NOT_YET_SUBMITTED'
         ),
@@ -1100,8 +1102,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
-          clientId: user1.clientId,
+          campaignId: testClients[userProofingDisabled.clientKey]?.campaignId,
+          clientId: userProofingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           name: template.name,
@@ -1116,6 +1118,75 @@ test.describe('POST /v1/template/:templateId/submit', () => {
               virusScanStatus: 'PASSED',
             }),
             proofs: {},
+            testDataCsv: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+          },
+        },
+      });
+    });
+
+    test('user-owner can submit letter template with proofing enabled', async ({
+      request,
+    }) => {
+      const templateId = crypto.randomUUID();
+
+      const baseTemplateData = TemplateFactory.uploadLetterTemplate(
+        templateId,
+        user1,
+        templateId,
+        'PROOF_AVAILABLE'
+      );
+
+      const proofs = {
+        'first.pdf': {
+          virusScanStatus: 'PASSED',
+          supplier: 'WTMMOCK',
+          fileName: 'first.pdf',
+        },
+      };
+
+      const template = {
+        ...baseTemplateData,
+        owner: user1.userId,
+        proofingEnabled: true,
+        files: { ...baseTemplateData.files, proofs },
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name: template.name,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          language: template.language,
+          proofingEnabled: true,
+          letterType: template.letterType,
+          files: {
+            pdfTemplate: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+            proofs,
             testDataCsv: expect.objectContaining({
               virusScanStatus: 'PASSED',
             }),
