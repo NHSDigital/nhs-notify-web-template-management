@@ -183,30 +183,6 @@ exports[`NhsNotifyHeaderWithAccount when unauthenticated matches snapshot (unaut
         </ul>
       </nav>
     </div>
-    <nav
-      aria-label="Menu"
-      class="nhsuk-header__navigation"
-      data-testid="navigation-links"
-    >
-      <div
-        class="nhsuk-header__navigation-container nhsuk-width-container"
-      >
-        <ul
-          class="nhsuk-header__navigation-list"
-        >
-          <li
-            class="nhsuk-header__navigation-item"
-          >
-            <a
-              class="nhsuk-header__navigation-link"
-              href="/message-templates"
-            >
-              Templates
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
   </header>
 </DocumentFragment>
 `;
