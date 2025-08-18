@@ -15,6 +15,8 @@ import {
   type ClientKey,
 } from '../client/client-helper';
 
+export type UserIdentityAttributes = 'given_name' | 'family_name' | 'preferred_username';
+
 type TestUserStaticDetails = {
   userId: string;
   clientKey: ClientKey;
@@ -22,7 +24,7 @@ type TestUserStaticDetails = {
    * If `userAttributes` is omitted, user will be created with full identity attributes:
    * preferred_username, given_name, and family_name.
    */
-  userAttributes?: Array<'given_name' | 'family_name' | 'preferred_username'>;
+  userAttributes?: Array<UserIdentityAttributes>;
 };
 
 type TestUserDynamicDetails = {
@@ -30,11 +32,7 @@ type TestUserDynamicDetails = {
   clientId: string;
   password: string;
   clientName?: string;
-  identityAttributes?: {
-    given_name?: string;
-    family_name?: string;
-    preferred_username?: string;
-  };
+  identityAttributes?: Partial<Record<UserIdentityAttributes, string>>;
 };
 
 export type TestUserContext = TestUserStaticDetails &
@@ -237,10 +235,10 @@ export class CognitoAuthHelper {
 
     const {
       userId,
-      userAttributes = ['preferred_username', 'given_name', 'family_name'],
+      userAttributes = ['preferred_username', 'given_name', 'family_name'] as UserIdentityAttributes[],
     } = userDetails;
 
-    const identityAttributes: Record<string, string> = {};
+    const identityAttributes: Partial<Record<UserIdentityAttributes, string>> = {};
 
     if (userAttributes.includes('given_name'))
       identityAttributes.given_name = 'Test';
