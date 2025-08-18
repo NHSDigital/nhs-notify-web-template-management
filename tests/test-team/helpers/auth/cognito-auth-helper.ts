@@ -248,7 +248,7 @@ export class CognitoAuthHelper {
         'preferred_username',
         'given_name',
         'family_name',
-      ] as UserIdentityAttributes[],
+      ]
     } = userDetails;
 
     const identityAttributes: Partial<Record<UserIdentityAttributes, string>> =
