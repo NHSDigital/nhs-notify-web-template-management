@@ -51,12 +51,20 @@ export class UserDataRepository {
     };
   }
 
-  private pdfPath(owner: string, templateId: string, version: string): string {
-    return path.join('pdf-template', owner, templateId, `${version}.pdf`);
+  private pdfPath(
+    clientId: string,
+    templateId: string,
+    version: string
+  ): string {
+    return path.join('pdf-template', clientId, templateId, `${version}.pdf`);
   }
 
-  private csvPath(owner: string, templateId: string, version: string): string {
-    return path.join('test-data', owner, templateId, `${version}.csv`);
+  private csvPath(
+    clientId: string,
+    templateId: string,
+    version: string
+  ): string {
+    return path.join('test-data', clientId, templateId, `${version}.csv`);
   }
 
   private getReadableBody(

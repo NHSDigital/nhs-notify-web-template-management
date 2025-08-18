@@ -5,7 +5,7 @@ import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
 
-const { email, templateIds, userId, clientId } = JSON.parse(
+const { email, templateIds, clientId } = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
@@ -24,7 +24,7 @@ const teardown = async () => {
         new DeleteCommand({
           TableName: backendConfig.templatesTableName,
           Key: {
-            owner: userId,
+            owner: `CLIENT#${clientId}`,
             id,
           },
         })

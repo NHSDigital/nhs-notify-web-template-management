@@ -24,7 +24,6 @@ type TestUserDynamicDetails = {
   email: string;
   clientId: string;
   password: string;
-  owner: string;
 };
 
 export type TestUserContext = TestUserStaticDetails &

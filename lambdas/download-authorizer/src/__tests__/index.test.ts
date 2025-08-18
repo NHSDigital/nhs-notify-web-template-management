@@ -171,13 +171,13 @@ describe('download authorizer handler', () => {
 });
 
 describe('parseRequest', () => {
-  test('path defaults to empty string if owner segment cant be extracted', () => {
+  test('path defaults to empty string if clientId segment cant be extracted', () => {
     const uri = '';
     const request = mock<CloudFrontRequest>(
       makeEvent(uri, 'cookie').Records[0].cf.request
     );
 
-    expect(parseRequest(request).ownerPathComponent).toBe('');
+    expect(parseRequest(request).clientIdPathComponent).toBe('');
   });
 
   test('cookie header defaults to empty string if it is not present on request', () => {

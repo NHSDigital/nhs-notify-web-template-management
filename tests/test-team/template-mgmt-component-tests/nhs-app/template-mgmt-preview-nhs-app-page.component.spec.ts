@@ -28,7 +28,7 @@ async function createTemplates() {
       updatedAt: new Date().toISOString(),
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
-      owner: user.owner,
+      owner: `CLIENT#${user.clientId}`,
     } as Template,
     valid: {
       ...TemplateFactory.createNhsAppTemplate(

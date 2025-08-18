@@ -56,7 +56,7 @@ export class ValidateLetterTemplateFilesLambda {
 
     const {
       'template-id': templateId,
-      owner,
+      'client-id': clientId,
       'version-id': versionId,
     } = metadata;
 
@@ -68,8 +68,8 @@ export class ValidateLetterTemplateFilesLambda {
           is complete, we will know unambiguously that it's a clientId and this
           doubly attempted fetch won't be required
         */
-        userId: owner,
-        clientId: owner,
+        userId: clientId,
+        clientId: clientId,
       });
 
     if (getTemplateError) {
@@ -131,7 +131,7 @@ export class ValidateLetterTemplateFilesLambda {
     const downloads = [
       this.letterUploadRepository.download(
         templateId,
-        owner,
+        clientId,
         'pdf-template',
         versionId
       ),
@@ -141,7 +141,7 @@ export class ValidateLetterTemplateFilesLambda {
       downloads.push(
         this.letterUploadRepository.download(
           templateId,
-          owner,
+          clientId,
           'test-data',
           versionId
         )
@@ -156,10 +156,7 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files are available to download');
     }
 
-    const pdf = new TemplatePdf(
-      { id: templateId, owner, clientOwned },
-      pdfBuff
-    );
+    const pdf = new TemplatePdf({ templateId, clientId, clientOwned }, pdfBuff);
 
     const proofingEnabled = template.proofingEnabled || false;
 
@@ -177,7 +174,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { id: templateId, owner, clientOwned },
+        { templateId, clientId, clientOwned },
         versionId,
         false,
         [],
@@ -192,7 +189,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { id: templateId, owner, clientOwned },
+      { templateId, clientId, clientOwned },
       versionId,
       valid,
       pdf.personalisationParameters,

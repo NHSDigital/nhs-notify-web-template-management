@@ -73,8 +73,8 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: result.template.id,
-      owner: user1.userId,
+      templateId: result.template.id,
+      clientId: user1.clientId,
     });
 
     expect(result).toEqual({
@@ -99,11 +99,12 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.userId,
+        owner: `CLIENT#${user1.clientId}`,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        clientId: user1.clientId,
       },
     });
 
@@ -160,8 +161,8 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: result.template.id,
-      owner: user1.userId,
+      templateId: result.template.id,
+      clientId: user1.clientId,
     });
 
     expect(result).toEqual({
@@ -181,11 +182,12 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.userId,
+        owner: `CLIENT#${user1.clientId}`,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        clientId: user1.clientId,
       },
     });
 
@@ -296,8 +298,8 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: result.template.id,
-      owner: user1.userId,
+      templateId: result.template.id,
+      clientId: user1.clientId,
     });
 
     expect(result.template.templateStatus).toEqual('PENDING_VALIDATION');

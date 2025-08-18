@@ -93,9 +93,8 @@ test.describe('Upload letter Template Page', () => {
     const previewPageParts = page.url().match(previewPageRegex);
     expect(previewPageParts?.length).toEqual(2);
     templateStorageHelper.addAdHocTemplateKey({
-      id: previewPageParts![1],
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId: previewPageParts![1],
+      clientId: user.clientId,
     });
   });
 

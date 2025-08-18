@@ -1386,7 +1386,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'pdf-template.pdf',
         'PASSED',
         'MBA'
@@ -1437,7 +1437,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: userId, id: 'template-id', clientOwned: false },
+        { clientId: userId, templateId: 'template-id', clientOwned: false },
         'pdf-template.pdf',
         'PASSED',
         'MBA'
@@ -1488,7 +1488,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'pdf-template.pdf',
         'FAILED',
         'MBA'
@@ -1530,7 +1530,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1557,7 +1557,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1573,7 +1573,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1594,7 +1594,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1603,8 +1603,8 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('getOwner', () => {
-    it('gets owner', async () => {
+  describe('getClientId', () => {
+    it('gets client owner', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
@@ -1615,12 +1615,12 @@ describe('templateRepository', () => {
         ],
       });
 
-      const owner = await templateRepository.getOwner('template-id');
+      const owner = await templateRepository.getClientId('template-id');
 
-      expect(owner).toEqual({ owner: 'template-owner', clientOwned: true });
+      expect(owner).toEqual({ clientId: 'template-owner', clientOwned: true });
     });
 
-    it('gets owner when template is user-owned', async () => {
+    it('gets userId when template is user-owned', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
@@ -1631,9 +1631,9 @@ describe('templateRepository', () => {
         ],
       });
 
-      const owner = await templateRepository.getOwner('template-id');
+      const owner = await templateRepository.getClientId('template-id');
 
-      expect(owner).toEqual({ owner: 'template-owner', clientOwned: false });
+      expect(owner).toEqual({ clientId: 'template-owner', clientOwned: false });
     });
 
     it('errors when owner cannot be found', async () => {
@@ -1644,7 +1644,7 @@ describe('templateRepository', () => {
       });
 
       await expect(() =>
-        templateRepository.getOwner('template-id')
+        templateRepository.getClientId('template-id')
       ).rejects.toThrow('Could not identify item by id template-id');
     });
   });
@@ -1654,7 +1654,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'pdf-template',
         'pdf-version-id',
         'PASSED'
@@ -1689,7 +1689,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'test-data',
         'csv-version-id',
         'PASSED'
@@ -1724,7 +1724,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'pdf-template',
         'pdf-version-id',
         'FAILED'
@@ -1760,7 +1760,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id', clientOwned: true },
         'test-data',
         'csv-version-id',
         'FAILED'
@@ -1805,8 +1805,8 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
           {
-            owner: ownerWithClientPrefix,
-            id: 'template-id',
+            clientId: ownerWithClientPrefix,
+            templateId: 'template-id',
             clientOwned: true,
           },
           'test-data',
@@ -1823,7 +1823,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'test-data',
           'csv-version-id',
           'FAILED'
@@ -1838,7 +1838,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to PENDING_PROOF_REQUEST, personalisationParameters and csvHeader when template is valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1876,7 +1876,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to VALIDATION_FAILED when template is not valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -1914,7 +1914,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1954,7 +1954,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -1999,7 +1999,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -2017,8 +2017,8 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterValidationResult(
           {
-            owner: 'template-owner',
-            id: ownerWithClientPrefix,
+            templateId: 'template-owner',
+            clientId: ownerWithClientPrefix,
             clientOwned: true,
           },
           'file-version-id',

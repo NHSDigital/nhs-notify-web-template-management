@@ -124,7 +124,7 @@ describe('guard duty handler', () => {
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
@@ -137,7 +137,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -206,7 +206,7 @@ describe('guard duty handler', () => {
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner: clientId, clientOwned: true },
+      { templateId, clientId, clientOwned: true },
       pdfData
     );
 
@@ -220,7 +220,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: clientId, clientOwned: true },
+      { templateId, clientId, clientOwned: true },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -295,7 +295,7 @@ describe('guard duty handler', () => {
 
     // assert
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
@@ -305,7 +305,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       true,
       ['firstName', 'parameter_1', 'unknown_parameter'],
@@ -385,7 +385,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       false,
       ['firstName', 'parameter_1', 'unknown_parameter'],
@@ -453,7 +453,7 @@ describe('guard duty handler', () => {
     );
 
     expect(mocks.TemplatePdf).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       pdfData
     );
     expect(mocks.TestDataCsv).not.toHaveBeenCalled();
@@ -468,7 +468,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       true,
       pdf.personalisationParameters,
@@ -1157,7 +1157,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       false,
       [],
@@ -1221,7 +1221,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       false,
       [],
@@ -1285,7 +1285,7 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
-      { id: templateId, owner: userId, clientOwned: false },
+      { templateId, clientId: userId, clientOwned: false },
       versionId,
       false,
       pdf.personalisationParameters,

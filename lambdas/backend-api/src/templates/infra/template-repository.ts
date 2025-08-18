@@ -550,7 +550,9 @@ export class TemplateRepository {
     }
   }
 
-  async getOwner(id: string): Promise<{ owner: string; clientOwned: boolean }> {
+  async getClientId(
+    id: string
+  ): Promise<{ clientId: string; clientOwned: boolean }> {
     const dbResponse = await this.client.send(
       new QueryCommand({
         TableName: this.templatesTableName,
@@ -568,9 +570,11 @@ export class TemplateRepository {
 
     const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
 
-    const { stripped, owner } = this.stripClientPrefix(ownerWithPossiblePrefix);
+    const { stripped, clientId } = this.stripClientPrefix(
+      ownerWithPossiblePrefix
+    );
 
-    return { owner, clientOwned: stripped };
+    return { clientId, clientOwned: stripped };
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -765,10 +769,10 @@ export class TemplateRepository {
 
   private toDatabaseKey(templateKey: TemplateKey) {
     return {
-      id: templateKey.id,
+      id: templateKey.templateId,
       owner: templateKey.clientOwned
-        ? this.clientOwnerKey(templateKey.owner)
-        : templateKey.owner,
+        ? this.clientOwnerKey(templateKey.clientId)
+        : templateKey.clientId,
     };
   }
 
@@ -777,7 +781,7 @@ export class TemplateRepository {
 
     return {
       stripped: clientOwned,
-      owner: clientOwned ? owner.slice(7) : owner,
+      clientId: clientOwned ? owner.slice(7) : owner,
     };
   }
 
