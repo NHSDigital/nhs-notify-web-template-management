@@ -1,3 +1,4 @@
+import { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
 import type {
