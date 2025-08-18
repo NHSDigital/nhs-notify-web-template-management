@@ -41,9 +41,7 @@ test.each([
   'calls dependencies as expected for a %s virus scan',
   async (scanResultStatus, virusScanStatus, s3Expectation) => {
     const templateRepository = mockDeep<TemplateRepository>({
-      getClientId: jest
-        .fn()
-        .mockReturnValue({ clientId: 'template-owner', clientOwned: true }),
+      getClientId: jest.fn().mockReturnValue('template-owner'),
     });
     const letterFileRepository = mockDeep<LetterFileRepository>();
 
@@ -73,7 +71,6 @@ test.each([
       {
         clientId: 'template-owner',
         templateId: 'template-id',
-        clientOwned: true,
       },
       'proof.pdf',
       virusScanStatus,

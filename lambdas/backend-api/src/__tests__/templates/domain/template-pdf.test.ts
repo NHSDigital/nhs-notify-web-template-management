@@ -9,7 +9,6 @@ test('has the given key attributes', () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     Buffer.from('')
   );
@@ -26,7 +25,6 @@ test('parse with no custom personalisation', async () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     file
   );
@@ -77,7 +75,6 @@ test('parse with custom personalisation', async () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     file
   );
@@ -139,7 +136,6 @@ test('errors if parse is not called before reading personalisation', () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     file
   );
@@ -167,7 +163,6 @@ test('errors if file cannot be parsed', async () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     file
   );
@@ -184,7 +179,6 @@ test('errors if file cannot be opened', async () => {
     {
       templateId: 'template-id',
       clientId: 'template-owner',
-      clientOwned: true,
     },
     file
   );

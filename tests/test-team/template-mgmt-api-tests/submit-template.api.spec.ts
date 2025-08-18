@@ -27,11 +27,13 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
+  let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userProofingDisabled = await authHelper.getTestUser(testUsers.User4.userId);
   });
 
   test.afterAll(async () => {
@@ -1026,7 +1028,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('user-owned templates', () => {
-    test('user-owner can submit', async ({ request }) => {
+    test('user-owner can submit digital template', async ({ request }) => {
       const templateId = crypto.randomUUID();
 
       const template = {
@@ -1062,6 +1064,62 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+    });
+
+    test('user-owner can submit letter template', async ({ request }) => {
+      const templateId = crypto.randomUUID();
+
+      const template = {
+        ...TemplateFactory.uploadLetterTemplate(
+          templateId,
+          user1,
+          templateId,
+          'NOT_YET_SUBMITTED'
+        ),
+        owner: userProofingDisabled.userId,
+        proofingEnabled: false,
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await userProofingDisabled.getAccessToken(),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name: template.name,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          language: template.language,
+          proofingEnabled: false,
+          letterType: template.letterType,
+          files: {
+            pdfTemplate: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+            proofs: {},
+            testDataCsv: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+          },
         },
       });
     });

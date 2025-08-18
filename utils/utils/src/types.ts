@@ -134,7 +134,6 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
 export type TemplateKey = {
   clientId: string;
   templateId: string;
-  clientOwned: boolean;
 };
 
 export type FileType = 'pdf-template' | 'test-data' | 'proofs';

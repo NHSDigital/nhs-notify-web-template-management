@@ -18,7 +18,7 @@ test.describe('GET /v1/template/:templateId', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {

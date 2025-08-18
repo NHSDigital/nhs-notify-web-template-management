@@ -98,7 +98,6 @@ test.describe('SFTP proof request send', () => {
       templateName: template.name,
       testDataVersionId: csvVersionId,
       user: { userId: user.userId, clientId: user.clientId },
-      clientOwned: true,
     };
 
     await sqsHelper.sendMessage(

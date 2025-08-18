@@ -57,13 +57,14 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   files: null,
   language: null,
   letterType: null,
-  owner: null,
   personalisationParameters: null,
   templateType: null,
   proofingEnabled: null,
 };
 
 export class TemplateRepository {
+  private readonly clientOwnerPrefix = 'CLIENT#';
+
   constructor(
     private readonly client: DynamoDBDocumentClient,
     private readonly templatesTableName: string
@@ -550,9 +551,7 @@ export class TemplateRepository {
     }
   }
 
-  async getClientId(
-    id: string
-  ): Promise<{ clientId: string; clientOwned: boolean }> {
+  async getClientId(id: string): Promise<string> {
     const dbResponse = await this.client.send(
       new QueryCommand({
         TableName: this.templatesTableName,
@@ -570,11 +569,7 @@ export class TemplateRepository {
 
     const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
 
-    const { stripped, clientId } = this.stripClientPrefix(
-      ownerWithPossiblePrefix
-    );
-
-    return { clientId, clientOwned: stripped };
+    return this.stripClientPrefix(ownerWithPossiblePrefix);
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -770,19 +765,12 @@ export class TemplateRepository {
   private toDatabaseKey(templateKey: TemplateKey) {
     return {
       id: templateKey.templateId,
-      owner: templateKey.clientOwned
-        ? this.clientOwnerKey(templateKey.clientId)
-        : templateKey.clientId,
+      owner: this.clientOwnerKey(templateKey.clientId),
     };
   }
 
   private stripClientPrefix(owner: string) {
-    const clientOwned = owner.startsWith('CLIENT#');
-
-    return {
-      stripped: clientOwned,
-      clientId: clientOwned ? owner.slice(7) : owner,
-    };
+    return owner.slice(this.clientOwnerPrefix.length);
   }
 
   private clientOwnerKey(clientId: string) {

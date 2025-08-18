@@ -126,8 +126,6 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files have been scanned');
     }
 
-    const clientOwned = template.owner.startsWith('CLIENT#');
-
     const downloads = [
       this.letterUploadRepository.download(
         templateId,
@@ -156,7 +154,7 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files are available to download');
     }
 
-    const pdf = new TemplatePdf({ templateId, clientId, clientOwned }, pdfBuff);
+    const pdf = new TemplatePdf({ templateId, clientId }, pdfBuff);
 
     const proofingEnabled = template.proofingEnabled || false;
 
@@ -174,7 +172,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { templateId, clientId, clientOwned },
+        { templateId, clientId },
         versionId,
         false,
         [],
@@ -189,7 +187,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { templateId, clientId, clientOwned },
+      { templateId, clientId },
       versionId,
       valid,
       pdf.personalisationParameters,
