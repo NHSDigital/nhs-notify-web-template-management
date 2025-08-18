@@ -39,7 +39,11 @@ it('sets the virus scan status on pdf uploads identified by file metadata', asyn
   expect(
     mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
-    { templateId: 'template-id', clientId: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+      clientOwned: true,
+    },
     'pdf-template',
     'template-version',
     'PASSED'
@@ -70,7 +74,11 @@ it('sets the virus scan status on csv files identified by file metadata', async 
   expect(
     mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
-    { templateId: 'template-id', clientId: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+      clientOwned: true,
+    },
     'test-data',
     'template-version',
     'PASSED'
@@ -104,7 +112,11 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
     expect(
       mocks.templateRepository.setLetterFileVirusScanStatusForUpload
     ).toHaveBeenCalledWith(
-      { templateId: 'template-id', clientId: 'template-owner', clientOwned: true },
+      {
+        templateId: 'template-id',
+        clientId: 'template-owner',
+        clientOwned: true,
+      },
       'pdf-template',
       'template-version',
       'FAILED'
