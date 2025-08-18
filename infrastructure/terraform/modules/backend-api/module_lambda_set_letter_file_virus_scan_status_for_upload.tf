@@ -52,19 +52,6 @@ data "aws_iam_policy_document" "set_file_virus_scan_status_for_upload" {
   }
 
   statement {
-    sid    = "AllowDynamoGSIAccess"
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:Query",
-    ]
-
-    resources = [
-      "${aws_dynamodb_table.templates.arn}/index/QueryById",
-    ]
-  }
-
-  statement {
     sid    = "AllowKMSAccessDynamoDB"
     effect = "Allow"
 

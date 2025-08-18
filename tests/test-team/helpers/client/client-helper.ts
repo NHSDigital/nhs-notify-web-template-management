@@ -11,7 +11,7 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4 | 5}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -45,15 +45,6 @@ export const testClients = {
     campaignId: undefined,
     features: {
       proofing: false,
-    },
-  },
-  /**
-   * Client 5 has client ownership of templates disabled
-   */
-  Client5: {
-    campaignId: 'Campaign5',
-    features: {
-      proofing: true,
     },
   },
 } satisfies TestClients;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`guard duty handler errors if cannot parse version id in the event 1`] = `"Unexpected object key "pdf-template/template-owner/template-id/unexpected-file-name""`;
+exports[`guard duty handler errors if cannot parse version id in the event 1`] = `"Unexpected object key "pdf-template/client-id/template-id/unexpected-file-name""`;
 
 exports[`guard duty handler errors if the event has unknown file-type 1`] = `
 "[
@@ -19,7 +19,7 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
 ]"
 `;
 
-exports[`guard duty handler errors if the event is missing file-type 1`] = `"Unexpected object key "template-owner/template-id/template-version-id.pdf""`;
+exports[`guard duty handler errors if the event is missing file-type 1`] = `"Unexpected object key "client-id/template-id/template-version-id.pdf""`;
 
 exports[`guard duty handler errors if the event is missing object key 1`] = `
 "[
@@ -53,7 +53,7 @@ exports[`guard duty handler errors if the event is missing scan result 1`] = `
 ]"
 `;
 
-exports[`guard duty handler errors if the event is missing template id 1`] = `"Unexpected object key "pdf-template/template-owner/template-version-id.pdf""`;
+exports[`guard duty handler errors if the event is missing template id 1`] = `"Unexpected object key "pdf-template/client-id/template-version-id.pdf""`;
 
 exports[`guard duty handler errors if the event is missing template owner 1`] = `"Unexpected object key "pdf-template/template-id/template-version-id.pdf""`;
 

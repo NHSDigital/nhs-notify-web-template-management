@@ -32,7 +32,7 @@ export class TemplateStorageHelper {
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Key: {
           id: key.templateId,
-          owner: `CLIENT#${key.clientId}`,
+          owner: this.addClientOwnerPrefix(key.clientId),
         },
       })
     );

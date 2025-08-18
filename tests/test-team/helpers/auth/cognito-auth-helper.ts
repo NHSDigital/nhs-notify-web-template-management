@@ -45,7 +45,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User2: {
     userId: 'User2',
-    clientKey: 'Client5',
+    clientKey: 'Client2',
   },
   /**
    * User3 idle user that stays stayed in
