@@ -57,6 +57,7 @@ export function assertHeaderWhenSignedOut({ page, id }: CommonStepsProps) {
     await expect(page.signOutLink).toBeHidden();
     await expect(page.headerAccountDisplayName).toBeHidden();
     await expect(page.headerAccountClientName).toBeHidden();
+    await expect(page.headerNavigationLinks).toHaveCount(0);
   });
 }
 
@@ -80,6 +81,7 @@ export function assertHeaderWhenSignedIn({
     await expect(page.headerAccountClientName).toContainText(
       expectedClientName
     );
+    await expect(page.headerNavigationLinks).toBeVisible();
   });
 }
 
@@ -141,7 +143,7 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
   });
 }
 
-export function assertHeaderNavigationLinks({
+export function assertHeaderNavigationLinksWhenSignedIn({
   page,
   id,
   routingEnabled,
@@ -162,6 +164,17 @@ export function assertHeaderNavigationLinks({
     await (routingEnabled
       ? await expect(messagePlansLink).toBeVisible()
       : await expect(messagePlansLink).toHaveCount(0));
+  });
+}
+
+export function assertHeaderNavigationLinksWhenSignedOut({
+  page,
+  id,
+}: CommonStepsProps) {
+  return test.step('header does not display navigation links when signed out', async () => {
+    await page.loadPage(id);
+
+    await expect(page.headerNavigationLinks).toHaveCount(0);
   });
 }
 

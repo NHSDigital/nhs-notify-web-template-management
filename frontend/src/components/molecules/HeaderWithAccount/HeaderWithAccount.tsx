@@ -124,30 +124,37 @@ const NhsNotifyHeaderWithAccount = ({
           </ul>
         </nav>
       </div>
-      <nav
-        className='nhsuk-header__navigation'
-        aria-label={headerContent.navigationMenu.ariaLabel}
-        data-testid='navigation-links'
-      >
-        <div className='nhsuk-header__navigation-container nhsuk-width-container'>
-          <ul className='nhsuk-header__navigation-list'>
-            {headerContent.navigationMenu.links
-              .filter(({ feature }) => feature !== 'routing' || routingEnabled)
-              .map(({ text, href }, index) => {
-                return (
-                  <li
-                    className='nhsuk-header__navigation-item'
-                    key={`item-${index}`}
-                  >
-                    <Link className='nhsuk-header__navigation-link' href={href}>
-                      {text}
-                    </Link>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-      </nav>
+      {authStatus === 'authenticated' && (
+        <nav
+          className='nhsuk-header__navigation'
+          aria-label={headerContent.navigationMenu.ariaLabel}
+          data-testid='navigation-links'
+        >
+          <div className='nhsuk-header__navigation-container nhsuk-width-container'>
+            <ul className='nhsuk-header__navigation-list'>
+              {headerContent.navigationMenu.links
+                .filter(
+                  ({ feature }) => feature !== 'routing' || routingEnabled
+                )
+                .map(({ text, href }, index) => {
+                  return (
+                    <li
+                      className='nhsuk-header__navigation-item'
+                      key={`item-${index}`}
+                    >
+                      <Link
+                        className='nhsuk-header__navigation-link'
+                        href={href}
+                      >
+                        {text}
+                      </Link>
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+        </nav>
+      )}
     </header>
   );
 };

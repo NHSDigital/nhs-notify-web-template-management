@@ -70,6 +70,14 @@ describe('NhsNotifyHeaderWithAccount', () => {
       expect(mockGetIdTokenClaims).not.toHaveBeenCalled();
     });
 
+    it('does not show the navigation links', async () => {
+      render(<NhsNotifyHeaderWithAccount />);
+
+      await screen.findByTestId('page-header');
+
+      expect(screen.queryByTestId('navigation-links')).not.toBeInTheDocument();
+    });
+
     it('matches snapshot (unauthenticated)', async () => {
       const container = render(<NhsNotifyHeaderWithAccount />);
 
@@ -155,56 +163,56 @@ describe('NhsNotifyHeaderWithAccount', () => {
 
       expect(container.asFragment()).toMatchSnapshot();
     });
-  });
 
-  describe(`with 'routing' flag enabled`, () => {
-    it('renders both the navigation links with correct hrefs', async () => {
-      render(<NhsNotifyHeaderWithAccount features={{ routing: true }} />);
+    describe(`with 'routing' flag enabled`, () => {
+      it('renders both the navigation links with correct hrefs', async () => {
+        render(<NhsNotifyHeaderWithAccount features={{ routing: true }} />);
 
-      await screen.findByTestId('page-header');
+        await screen.findByTestId('page-header');
 
-      const nav = screen.getByTestId('navigation-links');
+        const nav = screen.getByTestId('navigation-links');
 
-      const templatesLink = within(nav).getByRole('link', {
-        name: 'Templates',
+        const templatesLink = within(nav).getByRole('link', {
+          name: 'Templates',
+        });
+        expect(templatesLink).toHaveAttribute('href', '/message-templates');
+
+        const plansLink = within(nav).getByRole('link', {
+          name: 'Message plans',
+        });
+        expect(plansLink).toHaveAttribute(
+          'href',
+          '/templates-and-message-plans/message-plans'
+        );
       });
-      expect(templatesLink).toHaveAttribute('href', '/message-templates');
-
-      const plansLink = within(nav).getByRole('link', {
-        name: 'Message plans',
-      });
-      expect(plansLink).toHaveAttribute(
-        'href',
-        '/templates-and-message-plans/message-plans'
-      );
-    });
-  });
-
-  describe(`with 'routing' flag disabled`, () => {
-    it('renders the templates link with correct href', async () => {
-      render(<NhsNotifyHeaderWithAccount features={{ routing: false }} />);
-
-      await screen.findByTestId('page-header');
-
-      const nav = screen.getByTestId('navigation-links');
-
-      const templatesLink = within(nav).getByRole('link', {
-        name: 'Templates',
-      });
-      expect(templatesLink).toHaveAttribute('href', '/message-templates');
     });
 
-    it('should not render the message plans link', async () => {
-      render(<NhsNotifyHeaderWithAccount features={{ routing: false }} />);
+    describe(`with 'routing' flag disabled`, () => {
+      it('renders the templates link with correct href', async () => {
+        render(<NhsNotifyHeaderWithAccount features={{ routing: false }} />);
 
-      await screen.findByTestId('page-header');
+        await screen.findByTestId('page-header');
 
-      const nav = screen.getByTestId('navigation-links');
+        const nav = screen.getByTestId('navigation-links');
 
-      const plansLink = within(nav).queryByRole('link', {
-        name: 'Message plans',
+        const templatesLink = within(nav).getByRole('link', {
+          name: 'Templates',
+        });
+        expect(templatesLink).toHaveAttribute('href', '/message-templates');
       });
-      expect(plansLink).not.toBeInTheDocument();
+
+      it('should not render the message plans link', async () => {
+        render(<NhsNotifyHeaderWithAccount features={{ routing: false }} />);
+
+        await screen.findByTestId('page-header');
+
+        const nav = screen.getByTestId('navigation-links');
+
+        const plansLink = within(nav).queryByRole('link', {
+          name: 'Message plans',
+        });
+        expect(plansLink).not.toBeInTheDocument();
+      });
     });
   });
 });
