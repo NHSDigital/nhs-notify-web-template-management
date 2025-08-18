@@ -21,14 +21,14 @@ export class TestUserClient {
   constructor(
     private readonly userPoolId: string,
     private readonly clientSsmPathPrefix: string
-  ) {}
+  ) { }
 
   async createTestUser(
     email: string,
     password: string,
     clientId: string,
     clientName: string = 'NHS Client accessibility',
-    userName: [string, string] | [string, string, string] = [
+    displayUsernameParts: [string, string] | [string, string, string] = [
       'Dr',
       'Test',
       'User',
@@ -55,9 +55,9 @@ export class TestUserClient {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'custom:sbx_client_id', Value: clientId },
           { Name: 'custom:sbx_client_name', Value: clientName },
-          { Name: 'given_name', Value: userName.at(-2) },
-          { Name: 'family_name', Value: userName.at(-1) },
-          { Name: 'preferred_username', Value: userName.join(' ') },
+          { Name: 'given_name', Value: displayUsernameParts.at(-2) },
+          { Name: 'family_name', Value: displayUsernameParts.at(-1) },
+          { Name: 'preferred_username', Value: displayUsernameParts.join(' ') },
         ],
         MessageAction: 'SUPPRESS',
       })
