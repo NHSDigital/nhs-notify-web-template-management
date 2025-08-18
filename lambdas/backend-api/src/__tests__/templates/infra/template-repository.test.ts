@@ -1599,6 +1599,22 @@ describe('templateRepository', () => {
       expect(owner).toEqual('template-owner');
     });
 
+    it('gets clientId when template is user-owned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: 'user-owner',
+          },
+        ],
+      });
+
+      const owner = await templateRepository.getClientId('template-id');
+
+      expect(owner).toEqual('user-owner');
+    });
+
     it('errors when owner cannot be found', async () => {
       const { templateRepository, mocks } = setup();
 

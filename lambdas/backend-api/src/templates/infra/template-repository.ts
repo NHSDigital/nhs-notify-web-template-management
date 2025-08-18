@@ -770,7 +770,9 @@ export class TemplateRepository {
   }
 
   private stripClientPrefix(owner: string) {
-    return owner.slice(this.clientOwnerPrefix.length);
+    return owner.startsWith(this.clientOwnerPrefix)
+      ? owner.slice(this.clientOwnerPrefix.length)
+      : owner;
   }
 
   private clientOwnerKey(clientId: string) {
