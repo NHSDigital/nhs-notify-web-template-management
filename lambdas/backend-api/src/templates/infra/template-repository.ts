@@ -18,7 +18,6 @@ import type {
   FileType,
   TemplateKey,
   User,
-  UserWithOptionalClient,
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -67,13 +66,12 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string,
-    private readonly enableProofing: boolean
+    private readonly templatesTableName: string
   ) {}
 
   async get(
     templateId: string,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
       const cmd = new BatchGetCommand({
@@ -81,9 +79,7 @@ export class TemplateRepository {
           [this.templatesTableName]: {
             Keys: [
               { id: templateId, owner: user.userId },
-              ...(user.clientId
-                ? [{ id: templateId, owner: `CLIENT#${user.clientId}` }]
-                : []),
+              { id: templateId, owner: `CLIENT#${user.clientId}` },
             ],
           },
         },
@@ -340,12 +336,10 @@ export class TemplateRepository {
     return items;
   }
 
-  async list(
-    user: UserWithOptionalClient
-  ): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  async list(user: User): Promise<ApplicationResult<DatabaseTemplate[]>> {
     try {
       const queryResults = await Promise.all([
-        ...(user.clientId ? [this.listQuery(`CLIENT#${user.clientId}`)] : []),
+        this.listQuery(`CLIENT#${user.clientId}`),
         this.listQuery(user.userId),
       ]);
 
@@ -372,9 +366,7 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const canRequestProofing = proofingEnabled && this.enableProofing;
-
-    const resolvedPostValidationSuccessStatus = canRequestProofing
+    const resolvedPostValidationSuccessStatus = proofingEnabled
       ? 'PENDING_PROOF_REQUEST'
       : 'NOT_YET_SUBMITTED';
 

@@ -17,6 +17,33 @@ describe('Template API - List', () => {
     jest.resetAllMocks();
   });
 
+  test.each([
+    ['undefined', undefined],
+    ['missing user', { clientId: 'client-id', user: undefined }],
+    ['missing client', { clientId: undefined, user: 'user-id' }],
+  ])(
+    'should return 400 - Invalid request when requestContext is %s',
+    async (_, ctx) => {
+      const { handler, mocks } = setup();
+
+      const event = mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: ctx },
+      });
+
+      const result = await handler(event, mock<Context>(), jest.fn());
+
+      expect(result).toEqual({
+        statusCode: 400,
+        body: JSON.stringify({
+          statusCode: 400,
+          technicalMessage: 'Invalid request',
+        }),
+      });
+
+      expect(mocks.templateClient.listTemplates).not.toHaveBeenCalled();
+    }
+  );
+
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const { handler, mocks } = setup();
 

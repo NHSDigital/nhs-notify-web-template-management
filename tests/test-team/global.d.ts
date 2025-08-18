@@ -5,7 +5,6 @@ declare global {
       CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
-      NEXT_PUBLIC_ENABLE_PROOFING: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
       SFTP_ENVIRONMENT: string;

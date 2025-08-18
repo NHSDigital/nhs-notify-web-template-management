@@ -17,12 +17,12 @@ import {
 
 type TestUserStaticDetails = {
   userId: string;
-  clientKey: ClientKey | 'NONE';
+  clientKey: ClientKey;
 };
 
 type TestUserDynamicDetails = {
   email: string;
-  clientId: string | undefined;
+  clientId: string;
   password: string;
 };
 
@@ -71,17 +71,10 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'Client1',
   },
   /**
-   * User6 does not belong to a client
+   * User6 has configuration but no campaignId
    */
   User6: {
     userId: 'User6',
-    clientKey: 'NONE',
-  },
-  /**
-   * User7 has configuration but no campaignId
-   */
-  User7: {
-    userId: 'User7',
     clientKey: 'Client4',
   },
 };
@@ -191,10 +184,7 @@ export class CognitoAuthHelper {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
 
-    const clientId =
-      userDetails.clientKey === 'NONE'
-        ? undefined
-        : `${userDetails.clientKey}--${this.runId}`;
+    const clientId = `${userDetails.clientKey}--${this.runId}`;
 
     const clientAttribute = clientId
       ? [
