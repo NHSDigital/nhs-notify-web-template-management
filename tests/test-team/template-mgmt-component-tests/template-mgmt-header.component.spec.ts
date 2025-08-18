@@ -49,6 +49,7 @@ test.describe('Header component', () => {
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
+    await assertHeaderLogoLink({ page: startPage });
     await assertHeaderWhenSignedOut({ page: startPage });
     await assertSignInLink({ page: startPage });
     await assertClickHeaderLogoRedirectsToStartPage({
@@ -64,13 +65,13 @@ test.describe('Header component', () => {
 
     await loginAsUser(userWithAllIdentityAttributes, page);
 
+    await assertHeaderLogoLink({ page: startPage });
     await assertHeaderWhenSignedIn({
       page: startPage,
       expectedDisplayName:
         userWithRoutingEnabled.identityAttributes?.preferred_username ?? '',
       expectedClientName: userWithRoutingEnabled.clientName ?? '',
     });
-
     await assertSignOutLink({ page: startPage });
   });
 
@@ -87,7 +88,6 @@ test.describe('Header component', () => {
         userWithRoutingEnabled.identityAttributes?.preferred_username ?? '',
       expectedClientName: userWithRoutingEnabled.clientName ?? '',
     });
-
     await assertSignOutLink({ page: startPage });
   });
 
@@ -95,6 +95,7 @@ test.describe('Header component', () => {
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
+
     await loginAsUser(userWithGivenAndFamilyNameOnly, page);
 
     const expectedName = `Dr ${userWithGivenAndFamilyNameOnly.identityAttributes?.given_name} ${userWithGivenAndFamilyNameOnly.identityAttributes?.family_name}`;
@@ -110,6 +111,7 @@ test.describe('Header component', () => {
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
+
     await loginAsUser(userWithNoIdentityAttributes, page);
 
     await assertHeaderWhenSignedIn({
@@ -136,6 +138,7 @@ test.describe('Header component', () => {
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
+
     await loginAsUser(userWithRoutingDisabled, page);
 
     await assertHeaderNavigationLinks({
@@ -148,6 +151,7 @@ test.describe('Header component', () => {
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
+
     await loginAsUser(userWithNoClient, page);
 
     await assertHeaderWhenSignedIn({

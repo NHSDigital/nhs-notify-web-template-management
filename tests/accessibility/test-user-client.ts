@@ -21,7 +21,7 @@ export class TestUserClient {
   constructor(
     private readonly userPoolId: string,
     private readonly clientSsmPathPrefix: string
-  ) { }
+  ) {}
 
   async createTestUser(
     email: string,

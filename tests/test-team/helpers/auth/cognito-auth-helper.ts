@@ -15,7 +15,10 @@ import {
   type ClientKey,
 } from '../client/client-helper';
 
-export type UserIdentityAttributes = 'given_name' | 'family_name' | 'preferred_username';
+export type UserIdentityAttributes =
+  | 'given_name'
+  | 'family_name'
+  | 'preferred_username';
 
 type TestUserStaticDetails = {
   userId: string;
@@ -169,12 +172,16 @@ export class CognitoAuthHelper {
       }
 
       if (userCtx.refreshToken) {
-        return (await this.refreshUserSessionTokens(id, userCtx.refreshToken))
-          .accessToken;
+        const refeshedTokens = await this.refreshUserSessionTokens(
+          id,
+          userCtx.refreshToken
+        );
+        return refeshedTokens.accessToken;
       }
     }
 
-    return (await this.passwordAuth(id)).accessToken;
+    const authTokens = await this.passwordAuth(id);
+    return authTokens.accessToken;
   }
 
   public async getIdToken(id: string): Promise<string> {
@@ -185,11 +192,15 @@ export class CognitoAuthHelper {
     }
 
     if (userCtx?.refreshToken) {
-      return (await this.refreshUserSessionTokens(id, userCtx.refreshToken))
-        .idToken;
+      const refeshedTokens = await this.refreshUserSessionTokens(
+        id,
+        userCtx.refreshToken
+      );
+      return refeshedTokens.idToken;
     }
 
-    return (await this.passwordAuth(id)).idToken;
+    const authTokens = await this.passwordAuth(id);
+    return authTokens.idToken;
   }
 
   public async getTestUser(id: string): Promise<TestUser> {
@@ -220,25 +231,28 @@ export class CognitoAuthHelper {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
 
-    const clientName = (clientKey: string): string =>
-      `NHS Test ${clientKey.replaceAll(/([a-z])([A-Z])/g, '$1 $2')}`;
-
     const clientId = `${userDetails.clientKey}--${this.runId}`;
+    const clientName = `NHS Test ${userDetails.clientKey.replaceAll(/([a-z])([A-Z])/g, '$1 $2')}`;
 
     const clientAttributes = [
       { Name: 'custom:sbx_client_id', Value: clientId },
       {
         Name: 'custom:sbx_client_name',
-        Value: clientName(userDetails.clientKey),
+        Value: clientName,
       },
     ];
 
     const {
       userId,
-      userAttributes = ['preferred_username', 'given_name', 'family_name'] as UserIdentityAttributes[],
+      userAttributes = [
+        'preferred_username',
+        'given_name',
+        'family_name',
+      ] as UserIdentityAttributes[],
     } = userDetails;
 
-    const identityAttributes: Partial<Record<UserIdentityAttributes, string>> = {};
+    const identityAttributes: Partial<Record<UserIdentityAttributes, string>> =
+      {};
 
     if (userAttributes.includes('given_name'))
       identityAttributes.given_name = 'Test';
@@ -284,7 +298,7 @@ export class CognitoAuthHelper {
           '',
         clientId: clientId,
         clientKey: userDetails.clientKey,
-        clientName: clientName(userDetails.clientKey),
+        clientName: clientName,
         identityAttributes,
         password: tempPassword,
       }
