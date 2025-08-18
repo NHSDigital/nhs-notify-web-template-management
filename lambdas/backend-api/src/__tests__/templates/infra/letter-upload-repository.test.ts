@@ -1,3 +1,4 @@
+import { Blob, File } from 'node:buffer';
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
