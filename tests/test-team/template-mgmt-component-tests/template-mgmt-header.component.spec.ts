@@ -2,7 +2,8 @@ import { test } from '@playwright/test';
 import {
   assertHeaderWhenSignedOut,
   assertHeaderWhenSignedIn,
-  assertHeaderNavigationLinks,
+  assertHeaderNavigationLinksWhenSignedIn,
+  assertHeaderNavigationLinksWhenSignedOut,
   assertSignInLink,
   assertSignOutLink,
   assertHeaderLogoLink,
@@ -51,6 +52,7 @@ test.describe('Header component', () => {
 
     await assertHeaderLogoLink({ page: startPage });
     await assertHeaderWhenSignedOut({ page: startPage });
+    await assertHeaderNavigationLinksWhenSignedOut({ page: startPage });
     await assertSignInLink({ page: startPage });
     await assertClickHeaderLogoRedirectsToStartPage({
       page: startPage,
@@ -128,7 +130,7 @@ test.describe('Header component', () => {
 
     await loginAsUser(userWithRoutingEnabled, page);
 
-    await assertHeaderNavigationLinks({
+    await assertHeaderNavigationLinksWhenSignedIn({
       page: startPage,
       routingEnabled: true,
     });
@@ -141,7 +143,7 @@ test.describe('Header component', () => {
 
     await loginAsUser(userWithRoutingDisabled, page);
 
-    await assertHeaderNavigationLinks({
+    await assertHeaderNavigationLinksWhenSignedIn({
       page: startPage,
       routingEnabled: false,
     });
@@ -161,7 +163,7 @@ test.describe('Header component', () => {
       expectedClientName: '',
     });
 
-    await assertHeaderNavigationLinks({
+    await assertHeaderNavigationLinksWhenSignedIn({
       page: startPage,
       routingEnabled: false,
     });
