@@ -6,6 +6,7 @@ import {
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { $DynamoDBTemplate, PublishableEventRecord } from './input-schemas';
 import { Event, $Event } from './output-schemas';
+import { shouldPublish } from './should-publish';
 
 export class EventBuilder {
   constructor(
