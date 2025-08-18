@@ -740,7 +740,7 @@ export class TemplateRepository {
     }
   }
 
-  private async getUserTemplateOwner(
+  async getUserTemplateOwner(
     user: User,
     templateId: string
   ): Promise<string | undefined> {
@@ -755,11 +755,17 @@ export class TemplateRepository {
       })
     );
 
-    return dbResponse.Items?.find(
+    const items = dbResponse.Items?.filter(
       (item) =>
         item.owner === user.userId ||
         (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
-    )?.owner;
+    );
+
+    if (items && items?.length > 1) {
+      throw new Error('Unexpectedly found more than one template owner');
+    }
+
+    return items?.[0]?.owner;
   }
 
   private toDatabaseKey(templateKey: TemplateKey) {

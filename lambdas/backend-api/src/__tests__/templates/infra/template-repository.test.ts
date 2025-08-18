@@ -1628,6 +1628,72 @@ describe('templateRepository', () => {
     });
   });
 
+  describe('getUserTemplateOwner', () => {
+    test('gets owner field based on templateId', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: ownerWithClientPrefix,
+          },
+        ],
+      });
+
+      const owner = await templateRepository.getUserTemplateOwner(
+        user,
+        templateId
+      );
+
+      expect(owner).toEqual(ownerWithClientPrefix);
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExpressionAttributeValues: { ':id': templateId },
+        IndexName: 'QueryById',
+        KeyConditionExpression: 'id = :id',
+        TableName: templatesTableName,
+      });
+    });
+
+    test('returns undefined if one template exists, but does not match user', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: 'someone-else',
+          },
+        ],
+      });
+
+      const owner = await templateRepository.getUserTemplateOwner(
+        user,
+        'template-id'
+      );
+
+      expect(owner).toBeUndefined();
+    });
+
+    test('throws if more than one owner matches the user', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: ownerWithClientPrefix,
+          },
+          {
+            owner: user.userId,
+          },
+        ],
+      });
+
+      await expect(
+        templateRepository.getUserTemplateOwner(user, 'template-id')
+      ).rejects.toThrow('Unexpectedly found more than one template owner');
+    });
+  });
+
   describe('setLetterFileVirusScanStatusForUpload', () => {
     it('updates the virusScanStatus on the pdfTemplate field when the status is PASSED', async () => {
       const { templateRepository, mocks } = setup();
