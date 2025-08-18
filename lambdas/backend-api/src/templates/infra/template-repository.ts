@@ -72,14 +72,14 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    user: User
+    user: { clientId: string; userId?: string }
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
       const cmd = new BatchGetCommand({
         RequestItems: {
           [this.templatesTableName]: {
             Keys: [
-              { id: templateId, owner: user.userId },
+              ...(user.userId ? [{ id: templateId, owner: user.userId }] : []),
               { id: templateId, owner: `CLIENT#${user.clientId}` },
             ],
           },

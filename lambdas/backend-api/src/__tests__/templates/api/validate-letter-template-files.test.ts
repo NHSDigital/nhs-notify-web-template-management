@@ -104,7 +104,6 @@ describe('guard duty handler', () => {
     await handler(event);
 
     expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      userId: clientId,
       clientId: clientId,
     });
 
@@ -356,7 +355,6 @@ describe('guard duty handler', () => {
     await handler(event);
 
     expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      userId: clientId,
       clientId,
     });
 

@@ -306,18 +306,48 @@ describe('templateRepository', () => {
       });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
-        userId: emailTemplate.owner,
-        clientId: emailTemplate.clientId!,
+        userId: user.userId,
+        clientId: user.clientId,
       });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
         RequestItems: {
           templates: {
             Keys: [
-              { id: 'abc-def-ghi-jkl-123', owner: emailTemplate.owner },
+              { id: 'abc-def-ghi-jkl-123', owner: user.userId },
               {
                 id: 'abc-def-ghi-jkl-123',
-                owner: `CLIENT#${emailTemplate.clientId}`,
+                owner: `CLIENT#${user.clientId}`,
+              },
+            ],
+          },
+        },
+      });
+
+      expect(response).toEqual({ data: emailTemplate });
+    });
+
+    test('should return template when userId is undefined (template is known to be client-owned)', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [emailTemplate],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        clientId: user.clientId,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: `CLIENT#${user.clientId}`,
               },
             ],
           },

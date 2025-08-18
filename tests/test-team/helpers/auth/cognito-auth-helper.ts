@@ -110,7 +110,7 @@ export class CognitoAuthHelper {
 
   private notifyClientHelper: ClientConfigurationHelper;
 
-  private client = new CognitoIdentityProviderClient();
+  private client = new CognitoIdentityProviderClient({ region: 'eu-west-2' });
 
   constructor(
     public runId: string,
