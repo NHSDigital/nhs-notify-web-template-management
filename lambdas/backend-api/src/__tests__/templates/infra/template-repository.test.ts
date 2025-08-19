@@ -1628,7 +1628,7 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('getUserTemplateOwner', () => {
+  describe('assertTemplateOwnership', () => {
     test('gets owner field based on templateId', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -1640,7 +1640,7 @@ describe('templateRepository', () => {
         ],
       });
 
-      const owner = await templateRepository.getUserTemplateOwner(
+      const owner = await templateRepository.assertTemplateOwnership(
         user,
         templateId
       );
@@ -1666,7 +1666,7 @@ describe('templateRepository', () => {
         ],
       });
 
-      const owner = await templateRepository.getUserTemplateOwner(
+      const owner = await templateRepository.assertTemplateOwnership(
         user,
         'template-id'
       );
@@ -1689,7 +1689,7 @@ describe('templateRepository', () => {
       });
 
       await expect(
-        templateRepository.getUserTemplateOwner(user, 'template-id')
+        templateRepository.assertTemplateOwnership(user, 'template-id')
       ).rejects.toThrow('Unexpectedly found more than one template owner');
     });
   });

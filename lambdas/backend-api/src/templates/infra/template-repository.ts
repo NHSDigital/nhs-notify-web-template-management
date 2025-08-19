@@ -181,7 +181,7 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -229,7 +229,7 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -266,7 +266,7 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -306,7 +306,7 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -740,7 +740,7 @@ export class TemplateRepository {
     }
   }
 
-  async getUserTemplateOwner(
+  async assertTemplateOwnership(
     user: User,
     templateId: string
   ): Promise<string | undefined> {
