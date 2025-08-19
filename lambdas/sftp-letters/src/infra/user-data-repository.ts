@@ -13,7 +13,7 @@ export class UserDataRepository {
   ) {}
 
   async get(
-    owner: string,
+    clientId: string,
     templateId: string,
     pdfVersion: string,
     testDataVersion?: string
@@ -21,7 +21,7 @@ export class UserDataRepository {
     const commands = [
       new GetObjectCommand({
         Bucket: this.bucket,
-        Key: this.pdfPath(owner, templateId, pdfVersion),
+        Key: this.pdfPath(clientId, templateId, pdfVersion),
       }),
     ];
 
@@ -29,7 +29,7 @@ export class UserDataRepository {
       commands.push(
         new GetObjectCommand({
           Bucket: this.bucket,
-          Key: this.csvPath(owner, templateId, testDataVersion),
+          Key: this.csvPath(clientId, templateId, testDataVersion),
         })
       );
     }
@@ -51,12 +51,20 @@ export class UserDataRepository {
     };
   }
 
-  private pdfPath(owner: string, templateId: string, version: string): string {
-    return path.join('pdf-template', owner, templateId, `${version}.pdf`);
+  private pdfPath(
+    clientId: string,
+    templateId: string,
+    version: string
+  ): string {
+    return path.join('pdf-template', clientId, templateId, `${version}.pdf`);
   }
 
-  private csvPath(owner: string, templateId: string, version: string): string {
-    return path.join('test-data', owner, templateId, `${version}.csv`);
+  private csvPath(
+    clientId: string,
+    templateId: string,
+    version: string
+  ): string {
+    return path.join('test-data', clientId, templateId, `${version}.csv`);
   }
 
   private getReadableBody(

@@ -99,7 +99,7 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE',
-          owner: 'owner',
+          clientId: 'client-id',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
@@ -134,7 +134,6 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
-          owner: 'owner',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -259,7 +258,6 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
-          owner: 'owner',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',

@@ -13,7 +13,7 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -48,7 +48,17 @@ export const testClients = {
   Client4: {
     campaignId: undefined,
     features: {
-      proofing: false,
+      proofing: true,
+      routing: false,
+    },
+  },
+  /**
+   * Client5 has proofing enabled
+   */
+  Client5: {
+    campaignId: 'Campaign5',
+    features: {
+      proofing: true,
       routing: false,
     },
   },
@@ -60,7 +70,7 @@ export class ClientConfigurationHelper {
   constructor(
     private readonly clientSSMKeyPrefix: string,
     private readonly runId: string
-  ) {}
+  ) { }
 
   async setup() {
     return Promise.all(

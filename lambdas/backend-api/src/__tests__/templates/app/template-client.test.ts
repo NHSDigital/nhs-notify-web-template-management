@@ -182,8 +182,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -234,8 +233,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -292,8 +290,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -366,7 +363,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { version: _, ...expectedDto } = finalTemplate;
+      const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -400,15 +397,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: true },
-        user.userId,
-        user.clientId,
+        user,
         'PENDING_UPLOAD',
         'campaignId'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         versionId,
         pdf,
         csv
@@ -416,7 +412,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         'PENDING_VALIDATION'
       );
     });
@@ -512,7 +508,7 @@ describe('templateClient', () => {
           updatedAt: updateTime,
         };
 
-        const { version: _, ...expectedDto } = finalTemplate;
+        const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
 
         mocks.templateRepository.create.mockResolvedValueOnce({
           data: initialCreatedTemplate,
@@ -548,8 +544,7 @@ describe('templateClient', () => {
 
         expect(mocks.templateRepository.create).toHaveBeenCalledWith(
           { ...dataWithFiles, proofingEnabled: expected },
-          user.userId,
-          user.clientId,
+          user,
           'PENDING_UPLOAD',
           'campaignId'
         );
@@ -797,8 +792,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
         'PENDING_UPLOAD',
         undefined
       );
@@ -923,15 +917,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
         'PENDING_UPLOAD',
         undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         versionId,
         pdf,
         undefined
@@ -1012,15 +1005,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
         'PENDING_UPLOAD',
         undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         versionId,
         pdf,
         undefined
@@ -1028,7 +1020,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         'PENDING_VALIDATION'
       );
     });
@@ -1212,7 +1204,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1262,7 +1254,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1307,7 +1299,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1531,7 +1523,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1571,7 +1563,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1605,7 +1597,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1919,7 +1911,6 @@ describe('templateClient', () => {
           },
         },
         id: templateId,
-        owner: user.userId,
         language: 'en',
         letterType: 'x1',
         name: templateName,
@@ -1988,7 +1979,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -2022,7 +2013,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({

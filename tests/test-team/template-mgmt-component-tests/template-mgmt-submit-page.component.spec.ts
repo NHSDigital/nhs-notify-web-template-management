@@ -46,7 +46,7 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'EMAIL',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createEmailTemplate(
@@ -78,7 +78,7 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'SMS',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createSmsTemplate(
@@ -107,7 +107,7 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'NHS_APP',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createNhsAppTemplate(
@@ -139,7 +139,7 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'LETTER',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
       } as Template,
       submit: TemplateFactory.uploadLetterTemplate(
         'submit-letter-submit-template',
