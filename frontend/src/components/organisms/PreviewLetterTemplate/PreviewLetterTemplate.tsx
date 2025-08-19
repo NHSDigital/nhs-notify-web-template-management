@@ -12,6 +12,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 type ButtonDetails = { text: string; href: string };
 
@@ -63,9 +64,9 @@ export function PreviewLetterTemplate({
 
   return (
     <>
-      <BackLink href={`${basePath}/message-templates`} id='back-link'>
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' id='back-link' passHref legacyBehavior>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>

@@ -6,7 +6,6 @@ import {
   HintText,
   Label,
   Textarea,
-  BackLink,
 } from 'nhsuk-react-components';
 import {
   $CreateNhsAppTemplateSchema,
@@ -33,6 +32,7 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
@@ -73,7 +73,7 @@ export const NhsAppTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <BackLink>{backLinkText}</BackLink>
+          <NotifyBackLink>{backLinkText}</NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>

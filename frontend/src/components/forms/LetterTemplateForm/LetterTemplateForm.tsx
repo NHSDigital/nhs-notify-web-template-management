@@ -7,7 +7,6 @@ import {
   HintText,
   Label,
   Select,
-  BackLink,
   WarningCallout,
 } from 'nhsuk-react-components';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
@@ -31,6 +30,7 @@ import { $UploadLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
 import { Language } from 'nhs-notify-backend-client';
 import Link from 'next/link';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<UploadLetterTemplate>
@@ -98,7 +98,7 @@ export const LetterTemplateForm: FC<
   return (
     <>
       <Link href='/choose-a-template-type' passHref legacyBehavior>
-        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+        <NotifyBackLink data-testid='back-to-templates-link'>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

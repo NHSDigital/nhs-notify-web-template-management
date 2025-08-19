@@ -10,7 +10,6 @@ import {
   Label,
   Textarea,
   TextInput,
-  BackLink,
 } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
@@ -32,6 +31,7 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
@@ -72,7 +72,7 @@ export const SmsTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <BackLink>{backLinkText}</BackLink>
+          <NotifyBackLink>{backLinkText}</NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>
