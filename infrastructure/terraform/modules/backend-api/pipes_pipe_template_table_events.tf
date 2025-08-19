@@ -1,4 +1,6 @@
 resource "aws_pipes_pipe" "template_table_events" {
+  depends_on = [module.sqs_template_table_events_pipe_dlq, module.sqs_template_mgmt_events]
+
   name               = "${local.csi}-template-table-events"
   role_arn           = aws_iam_role.pipe_template_table_events.arn
   source             = aws_dynamodb_table.templates.stream_arn
@@ -22,7 +24,7 @@ resource "aws_pipes_pipe" "template_table_events" {
   }
 
   target_parameters {
-      input_template = "{\"dynamodb\": <$.dynamodb>,\"eventID\": <$.eventID>,\"eventName\": <$.eventName>,\"eventSource\": <$.eventSource>,\"tableName\": \"${aws_dynamodb_table.templates.name}\"}"
+    input_template = "{\"dynamodb\": <$.dynamodb>,\"eventID\": <$.eventID>,\"eventName\": <$.eventName>,\"eventSource\": <$.eventSource>,\"tableName\": \"${aws_dynamodb_table.templates.name}\"}"
 
     sqs_queue_parameters {
       message_group_id         = "$.dynamodb.Keys.id.S"
