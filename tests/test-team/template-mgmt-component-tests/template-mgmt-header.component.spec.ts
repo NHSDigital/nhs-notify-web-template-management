@@ -126,6 +126,7 @@ test.describe('Header component', () => {
   });
 
   // TODO: CCM-11148 Enable test once routing flag is implemented
+  // eslint-disable-next-line playwright/no-skipped-test
   test.skip('when user belongs to client with routing enabled, header shows both Templates and Message plans links', async ({
     page,
   }) => {
