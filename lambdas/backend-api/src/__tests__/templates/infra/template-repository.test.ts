@@ -1648,10 +1648,16 @@ describe('templateRepository', () => {
       expect(owner).toEqual(ownerWithClientPrefix);
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
-        ExpressionAttributeValues: { ':id': templateId },
+        ExpressionAttributeValues: {
+          ':id': templateId,
+          ':clientOwner': ownerWithClientPrefix,
+          ':userId': userId,
+        },
         IndexName: 'QueryById',
         KeyConditionExpression: 'id = :id',
         TableName: templatesTableName,
+        FilterExpression: '#owner = :userId OR #owner = :clientOwner',
+        ExpressionAttributeNames: { '#owner': 'owner' },
       });
     });
 

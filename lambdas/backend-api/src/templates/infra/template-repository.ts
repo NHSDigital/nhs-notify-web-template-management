@@ -749,9 +749,13 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         IndexName: 'QueryById',
         KeyConditionExpression: 'id = :id',
+        ExpressionAttributeNames: { '#owner': 'owner' },
         ExpressionAttributeValues: {
           ':id': templateId,
+          ':clientOwner': this.clientOwnerKey(user.clientId),
+          ':userId': user.userId,
         },
+        FilterExpression: '#owner = :userId OR #owner = :clientOwner',
       })
     );
 
