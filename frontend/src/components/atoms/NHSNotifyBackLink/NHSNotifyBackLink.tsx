@@ -1,15 +1,19 @@
-import React, { PropsWithChildren, ComponentPropsWithoutRef } from 'react';
+import React, { HTMLProps, ElementType, ReactNode } from 'react';
 import classNames from 'classnames';
 
-export function NotifyBackLink<T extends 'a' | 'button' = 'a'>({
-  children,
-  className,
-  asElement: Component = 'a',
-  ...rest
-}: PropsWithChildren<{
-  asElement?: T;
+interface NotifyBackLinkProps<T extends HTMLElement = HTMLAnchorElement>
+  extends HTMLProps<T> {
+  asElement?: ElementType;
   className?: string;
-}> & ComponentPropsWithoutRef<T>) {
+  children: ReactNode;
+}
+
+export function NotifyBackLink<T extends HTMLElement = HTMLAnchorElement>({
+  asElement: Component = 'a',
+  className,
+  children,
+  ...rest
+}: NotifyBackLinkProps<T>) {
   return (
     <Component className={classNames('nhsuk-back-link', className)} {...rest}>
       {children}
