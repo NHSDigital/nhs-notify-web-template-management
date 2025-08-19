@@ -231,8 +231,8 @@ test.describe('Create SMS message template Page', () => {
       const previewPageParts = page.url().match(previewPageRegex);
       expect(previewPageParts?.length).toEqual(2);
       templateStorageHelper.addAdHocTemplateKey({
-        id: previewPageParts![1],
-        owner: user.userId,
+        templateId: previewPageParts![1],
+        clientId: user.clientId,
       });
     });
   });

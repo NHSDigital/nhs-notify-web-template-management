@@ -214,8 +214,8 @@ test.describe('Create Email message template Page', () => {
       expect(previewPageParts?.length).toEqual(2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: previewPageParts![1],
-        owner: user.userId,
+        templateId: previewPageParts![1],
+        clientId: user.clientId,
       });
     });
   });

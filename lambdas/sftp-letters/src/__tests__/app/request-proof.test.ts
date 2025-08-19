@@ -203,7 +203,7 @@ describe('App', () => {
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId,
       pdfVersionId,
       testDataVersionId
@@ -232,7 +232,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId
     );
 
@@ -288,7 +288,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId
     );
 
@@ -397,7 +397,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId
     );
 
@@ -502,7 +502,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId
     );
 
@@ -542,7 +542,7 @@ describe('App', () => {
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      userId,
+      clientId,
       templateId,
       pdfVersionId,
       testDataVersionId

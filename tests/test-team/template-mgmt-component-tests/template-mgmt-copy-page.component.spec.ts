@@ -171,8 +171,8 @@ test.describe('Copy Template Page', () => {
         ).toBeDefined();
 
         templateStorageHelper.addAdHocTemplateKey({
-          id: newTemplateId!,
-          owner: user.userId,
+          templateId: newTemplateId!,
+          clientId: user.clientId,
         });
 
         await copyTemplatePage.navigateTo(
