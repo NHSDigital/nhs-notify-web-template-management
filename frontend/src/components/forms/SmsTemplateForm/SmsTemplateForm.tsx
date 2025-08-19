@@ -5,12 +5,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
-import {
-  HintText,
-  Label,
-  Textarea,
-  TextInput,
-} from 'nhsuk-react-components';
+import { HintText, Label, Textarea, TextInput } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
   ErrorState,

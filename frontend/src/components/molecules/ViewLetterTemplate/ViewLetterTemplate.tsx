@@ -19,7 +19,9 @@ export function ViewLetterTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <NotifyBackLink data-testid='back-to-templates-link'>{backLinkText}</NotifyBackLink>
+        <NotifyBackLink data-testid='back-to-templates-link'>
+          {backLinkText}
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
