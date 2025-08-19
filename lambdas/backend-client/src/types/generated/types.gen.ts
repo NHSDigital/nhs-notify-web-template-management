@@ -78,7 +78,6 @@ export type LetterFiles = {
 
 export type LetterProperties = UploadLetterProperties & {
   files: LetterFiles;
-  owner?: string;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
 };
@@ -108,7 +107,6 @@ export type TemplateSuccess = {
 
 export type ClientFeatures = {
   proofing?: boolean;
-  clientOwnership?: boolean;
 };
 
 export type ClientConfiguration = {

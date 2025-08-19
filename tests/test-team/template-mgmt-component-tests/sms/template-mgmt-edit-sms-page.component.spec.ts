@@ -31,7 +31,7 @@ function createTemplates(user: TestUser) {
     noSmsTemplateType: TemplateFactory.create({
       id: 'no-sms-template-type-template',
       templateType: 'EMAIL',
-      owner: user.owner,
+      owner: `CLIENT#${user.clientId}`,
       clientId: user.clientId,
       name: 'no-sms-template-type-template',
     }),

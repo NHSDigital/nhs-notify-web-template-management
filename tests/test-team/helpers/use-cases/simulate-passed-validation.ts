@@ -5,9 +5,8 @@ import { Template } from '../types';
 
 type Config = {
   templateId: string;
-  templateOwner: string;
+  clientId: string;
   hasTestData: boolean;
-  clientOwned: boolean;
 };
 
 export class SimulatePassedValidation implements IUseCase<Template> {
@@ -25,9 +24,8 @@ export class SimulatePassedValidation implements IUseCase<Template> {
       new UpdateCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Key: {
-          owner: this.#config.clientOwned
-            ? `CLIENT#${this.#config.templateOwner}`
-            : this.#config.templateOwner,
+          owner: `CLIENT#${this.#config.clientId}`,
+
           id: this.#config.templateId,
         },
         UpdateExpression: [

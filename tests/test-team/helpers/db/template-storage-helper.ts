@@ -13,7 +13,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from '../types';
 
-type TemplateKey = { owner: string; id: string; clientOwned: boolean };
+type TemplateKey = { clientId: string; templateId: string };
 
 export class TemplateStorageHelper {
   private readonly clientOwnerPrefix = 'CLIENT#';
@@ -31,8 +31,8 @@ export class TemplateStorageHelper {
       new GetCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Key: {
-          id: key.id,
-          owner: key.clientOwned ? `CLIENT#${key.owner}` : key.owner,
+          id: key.templateId,
+          owner: this.addClientOwnerPrefix(key.clientId),
         },
       })
     );
@@ -70,14 +70,10 @@ export class TemplateStorageHelper {
    */
   public async deleteSeededTemplates() {
     await this.deleteTemplates(
-      this.seedData.map((t) => {
-        const clientOwned = t.owner.startsWith(this.clientOwnerPrefix);
-        const owner = clientOwned
-          ? this.stripClientOwnerPrefix(t.owner)
-          : t.owner;
-
-        return { id: t.id, owner, clientOwned };
-      })
+      this.seedData.map(({ id, owner }) => ({
+        id,
+        owner,
+      }))
     );
     this.seedData = [];
   }
@@ -93,11 +89,16 @@ export class TemplateStorageHelper {
    * Delete templates referenced by calls to addAdHocTemplateKey from database and associated files from s3
    */
   async deleteAdHocTemplates() {
-    await this.deleteTemplates(this.adHocTemplateKeys);
+    await this.deleteTemplates(
+      this.adHocTemplateKeys.map(({ templateId, clientId }) => ({
+        id: templateId,
+        owner: this.addClientOwnerPrefix(clientId),
+      }))
+    );
     this.adHocTemplateKeys = [];
   }
 
-  private async deleteTemplates(keys: TemplateKey[]) {
+  private async deleteTemplates(keys: { id: string; owner: string }[]) {
     const dbChunks = TemplateStorageHelper.chunk(keys);
 
     await Promise.all(
@@ -106,13 +107,11 @@ export class TemplateStorageHelper {
           new BatchWriteCommand({
             RequestItems: {
               [process.env.TEMPLATES_TABLE_NAME]: chunk.map(
-                ({ id, owner, clientOwned }) => ({
+                ({ id, owner }) => ({
                   DeleteRequest: {
                     Key: {
                       id,
-                      owner: clientOwned
-                        ? this.addClientOwnerPrefix(owner)
-                        : owner,
+                      owner,
                     },
                   },
                 })
@@ -123,9 +122,9 @@ export class TemplateStorageHelper {
       )
     );
 
-    const files = keys.flatMap((key) => [
-      `pdf-template/${key.owner}/${key.id}.pdf`,
-      `test-data/${key.owner}/${key.id}.csv`,
+    const files = keys.flatMap(({ id, owner }) => [
+      `pdf-template/${this.stripClientOwnerPrefix(owner)}/${id}.pdf`,
+      `test-data/${this.stripClientOwnerPrefix(owner)}/${id}.csv`,
     ]);
 
     const s3Chunks = TemplateStorageHelper.chunk(files, 1000);
@@ -321,7 +320,7 @@ export class TemplateStorageHelper {
     version: string,
     ext: string
   ) {
-    return `${prefix}/${key.owner}/${key.id}/${version}.${ext}`;
+    return `${prefix}/${key.clientId}/${key.templateId}/${version}.${ext}`;
   }
 
   private addClientOwnerPrefix(owner: string) {

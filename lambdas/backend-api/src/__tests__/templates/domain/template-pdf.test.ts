@@ -6,12 +6,15 @@ import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 
 test('has the given key attributes', () => {
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     Buffer.from('')
   );
 
   expect(pdf.templateId).toBe('template-id');
-  expect(pdf.owner).toBe('template-owner');
+  expect(pdf.clientId).toBe('template-owner');
 });
 
 test('parse with no custom personalisation', async () => {
@@ -19,7 +22,10 @@ test('parse with no custom personalisation', async () => {
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     file
   );
   await pdf.parse();
@@ -66,7 +72,10 @@ test('parse with custom personalisation', async () => {
     path.resolve(__dirname, '../fixtures/custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     file
   );
   await pdf.parse();
@@ -124,7 +133,10 @@ test('errors if parse is not called before reading personalisation', () => {
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     file
   );
 
@@ -148,7 +160,10 @@ test('errors if file cannot be parsed', async () => {
   );
 
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     file
   );
 
@@ -161,7 +176,10 @@ test('errors if file cannot be opened', async () => {
   );
 
   const pdf = new TemplatePdf(
-    { id: 'template-id', owner: 'template-owner', clientOwned: true },
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
     file
   );
 

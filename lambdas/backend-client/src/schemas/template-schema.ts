@@ -98,8 +98,6 @@ export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
 export const $LetterProperties = schemaFor<LetterProperties>()(
   $UploadLetterProperties.extend({
     files: $LetterFiles,
-    // TODO: CCM-10432 - remove, not needed after client migration
-    owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
   })

@@ -85,7 +85,7 @@ test.describe('Manage templates page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(`CLIENT#${user.clientId}`);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

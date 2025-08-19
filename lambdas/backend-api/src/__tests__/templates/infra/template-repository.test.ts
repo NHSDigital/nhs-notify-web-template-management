@@ -306,18 +306,48 @@ describe('templateRepository', () => {
       });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
-        userId: emailTemplate.owner,
-        clientId: emailTemplate.clientId!,
+        userId: user.userId,
+        clientId: user.clientId,
       });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
         RequestItems: {
           templates: {
             Keys: [
-              { id: 'abc-def-ghi-jkl-123', owner: emailTemplate.owner },
+              { id: 'abc-def-ghi-jkl-123', owner: user.userId },
               {
                 id: 'abc-def-ghi-jkl-123',
-                owner: `CLIENT#${emailTemplate.clientId}`,
+                owner: `CLIENT#${user.clientId}`,
+              },
+            ],
+          },
+        },
+      });
+
+      expect(response).toEqual({ data: emailTemplate });
+    });
+
+    test('should return template when userId is undefined (template is known to be client-owned)', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [emailTemplate],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        clientId: user.clientId,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: `CLIENT#${user.clientId}`,
               },
             ],
           },
@@ -442,8 +472,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'pickles',
         },
-        user,
-        true
+        user
       );
 
       expect(response).toEqual({
@@ -476,8 +505,7 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          user,
-          true
+          user
         );
 
         expect(response).toEqual({
@@ -503,7 +531,6 @@ describe('templateRepository', () => {
       const response = await templateRepository.create(
         { ...emailProperties, ...createTemplateProperties },
         user,
-        true,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -513,38 +540,6 @@ describe('templateRepository', () => {
           ...emailProperties,
           ...databaseTemplateProperties,
           campaignId: 'campaignId',
-        },
-      });
-    });
-
-    test('created user owned template', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(PutCommand, {
-          TableName: templatesTableName,
-          Item: {
-            ...emailProperties,
-            ...databaseTemplateProperties,
-            campaignId: 'campaignId',
-          },
-        })
-        .resolves({});
-
-      const response = await templateRepository.create(
-        { ...emailProperties, ...createTemplateProperties },
-        user,
-        false,
-        'NOT_YET_SUBMITTED',
-        'campaignId'
-      );
-
-      expect(response).toEqual({
-        data: {
-          ...emailProperties,
-          ...databaseTemplateProperties,
-          campaignId: 'campaignId',
-          owner: userId,
         },
       });
     });
@@ -1421,7 +1416,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'pdf-template.pdf',
         'PASSED',
         'MBA'
@@ -1452,57 +1447,6 @@ describe('templateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
-        UpdateExpression:
-          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
-        ExpressionAttributeValues: {
-          ':templateStatusWaitingForProof': 'WAITING_FOR_PROOF',
-          ':templateStatusProofAvailable': 'PROOF_AVAILABLE',
-          ':updatedAt': new Date().toISOString(),
-        },
-        ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
-      });
-    });
-
-    it('adds the virus scan status of the proof to the database record and updates the template status if scan status is passed, template is user-owned', async () => {
-      const { templateRepository, mocks } = setup();
-      mocks.ddbDocClient.on(UpdateCommand).resolves({
-        Attributes: {
-          templateStatus: 'WAITING_FOR_PROOF',
-        },
-      });
-
-      await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: userId, id: 'template-id', clientOwned: false },
-        'pdf-template.pdf',
-        'PASSED',
-        'MBA'
-      );
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        TableName: 'templates',
-        Key: { id: 'template-id', owner: userId },
-        UpdateExpression:
-          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
-        ConditionExpression:
-          'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
-        ExpressionAttributeNames: {
-          '#fileName': 'pdf-template.pdf',
-        },
-        ExpressionAttributeValues: {
-          ':templateStatusDeleted': 'DELETED',
-          ':templateStatusSubmitted': 'SUBMITTED',
-          ':updatedAt': new Date().toISOString(),
-          ':virusScanResult': {
-            fileName: 'pdf-template.pdf',
-            virusScanStatus: 'PASSED',
-            supplier: 'MBA',
-          },
-        },
-      });
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        TableName: 'templates',
-        Key: { id: 'template-id', owner: userId },
         UpdateExpression:
           'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
         ExpressionAttributeValues: {
@@ -1523,7 +1467,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'pdf-template.pdf',
         'FAILED',
         'MBA'
@@ -1565,7 +1509,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1592,7 +1536,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1608,7 +1552,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1629,7 +1573,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1638,8 +1582,8 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('getOwner', () => {
-    it('gets owner', async () => {
+  describe('getClientId', () => {
+    it('gets clientId', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
@@ -1650,25 +1594,25 @@ describe('templateRepository', () => {
         ],
       });
 
-      const owner = await templateRepository.getOwner('template-id');
+      const owner = await templateRepository.getClientId('template-id');
 
-      expect(owner).toEqual({ owner: 'template-owner', clientOwned: true });
+      expect(owner).toEqual('template-owner');
     });
 
-    it('gets owner when template is user-owned', async () => {
+    it('gets clientId when template is user-owned', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
         Items: [
           {
-            owner: 'template-owner',
+            owner: 'user-owner',
           },
         ],
       });
 
-      const owner = await templateRepository.getOwner('template-id');
+      const owner = await templateRepository.getClientId('template-id');
 
-      expect(owner).toEqual({ owner: 'template-owner', clientOwned: false });
+      expect(owner).toEqual('user-owner');
     });
 
     it('errors when owner cannot be found', async () => {
@@ -1679,8 +1623,80 @@ describe('templateRepository', () => {
       });
 
       await expect(() =>
-        templateRepository.getOwner('template-id')
+        templateRepository.getClientId('template-id')
       ).rejects.toThrow('Could not identify item by id template-id');
+    });
+  });
+
+  describe('assertTemplateOwnership', () => {
+    test('gets owner field based on templateId', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: ownerWithClientPrefix,
+          },
+        ],
+      });
+
+      const owner = await templateRepository.assertTemplateOwnership(
+        user,
+        templateId
+      );
+
+      expect(owner).toEqual(ownerWithClientPrefix);
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExpressionAttributeValues: {
+          ':id': templateId,
+          ':clientOwner': ownerWithClientPrefix,
+          ':userId': userId,
+        },
+        IndexName: 'QueryById',
+        KeyConditionExpression: 'id = :id',
+        TableName: templatesTableName,
+        FilterExpression: '#owner = :userId OR #owner = :clientOwner',
+        ExpressionAttributeNames: { '#owner': 'owner' },
+      });
+    });
+
+    test('returns undefined if one template exists, but does not match user', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: 'someone-else',
+          },
+        ],
+      });
+
+      const owner = await templateRepository.assertTemplateOwnership(
+        user,
+        'template-id'
+      );
+
+      expect(owner).toBeUndefined();
+    });
+
+    test('throws if more than one owner matches the user', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: ownerWithClientPrefix,
+          },
+          {
+            owner: user.userId,
+          },
+        ],
+      });
+
+      await expect(
+        templateRepository.assertTemplateOwnership(user, 'template-id')
+      ).rejects.toThrow('Unexpectedly found more than one template owner');
     });
   });
 
@@ -1689,7 +1705,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'pdf-template',
         'pdf-version-id',
         'PASSED'
@@ -1724,7 +1740,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'test-data',
         'csv-version-id',
         'PASSED'
@@ -1759,7 +1775,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'pdf-template',
         'pdf-version-id',
         'FAILED'
@@ -1795,7 +1811,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientId, id: 'template-id', clientOwned: true },
+        { clientId, templateId: 'template-id' },
         'test-data',
         'csv-version-id',
         'FAILED'
@@ -1840,9 +1856,8 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
           {
-            owner: ownerWithClientPrefix,
-            id: 'template-id',
-            clientOwned: true,
+            clientId: ownerWithClientPrefix,
+            templateId: 'template-id',
           },
           'test-data',
           'csv-version-id',
@@ -1858,7 +1873,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'test-data',
           'csv-version-id',
           'FAILED'
@@ -1873,7 +1888,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to PENDING_PROOF_REQUEST, personalisationParameters and csvHeader when template is valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1911,7 +1926,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to VALIDATION_FAILED when template is not valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'file-version-id',
           false,
           [],
@@ -1949,7 +1964,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1989,7 +2004,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'file-version-id',
           false,
           [],
@@ -2034,7 +2049,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterValidationResult(
-          { owner: clientId, id: 'template-id', clientOwned: true },
+          { clientId, templateId: 'template-id' },
           'file-version-id',
           false,
           [],
@@ -2052,9 +2067,8 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterValidationResult(
           {
-            owner: 'template-owner',
-            id: ownerWithClientPrefix,
-            clientOwned: true,
+            templateId: 'template-owner',
+            clientId: ownerWithClientPrefix,
           },
           'file-version-id',
           false,

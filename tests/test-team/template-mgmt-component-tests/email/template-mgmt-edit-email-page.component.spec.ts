@@ -31,7 +31,7 @@ function createTemplates(user: TestUser) {
       id: 'no-email-template-type-template',
       templateType: 'NHS_APP',
       name: 'no-email-template-type-template',
-      owner: user.owner,
+      owner: `CLIENT#${user.clientId}`,
       clientId: user.clientId,
     }),
     previousData: {

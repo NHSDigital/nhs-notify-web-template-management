@@ -6,24 +6,24 @@ import {
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
+import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('GET /v1/templates', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
-  let userDirectOwner: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterEach(async () => {
     await templateStorageHelper.deleteAdHocTemplates();
+    await templateStorageHelper.deleteSeededTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -59,9 +59,8 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: created1.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created1.template.id,
+      clientId: user1.clientId,
     });
 
     // create another template for user 1
@@ -82,9 +81,8 @@ test.describe('GET /v1/templates', () => {
     const created2 = await response2.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: created2.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created2.template.id,
+      clientId: user1.clientId,
     });
 
     // exercise - request user 1 templates
@@ -148,9 +146,8 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: created1.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created1.template.id,
+      clientId: user1.clientId,
     });
 
     // create another template for user 1
@@ -171,9 +168,8 @@ test.describe('GET /v1/templates', () => {
     const created2 = await response2.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: created2.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created2.template.id,
+      clientId: user1.clientId,
     });
 
     // delete template 1
@@ -230,9 +226,8 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      id: created1.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created1.template.id,
+      clientId: user1.clientId,
     });
 
     const userSharedClientListResponse = await request.get(
@@ -257,55 +252,29 @@ test.describe('GET /v1/templates', () => {
 
   test.describe('user-owned templates', () => {
     test('can list user-owned templates', async ({ request }) => {
-      const response1 = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-          }),
-        }
+      const userOwnedTemplateId = crypto.randomUUID();
+      const clientOwnedTemplateId = crypto.randomUUID();
+
+      const userOwnedTemplate = {
+        ...TemplateFactory.createEmailTemplate(userOwnedTemplateId, user1),
+        owner: user1.userId,
+      };
+
+      const clientOwnedTemplate = TemplateFactory.createNhsAppTemplate(
+        clientOwnedTemplateId,
+        user1
       );
 
-      expect(response1.status()).toBe(201);
-
-      const created1 = await response1.json();
-
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created1.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: user1.clientOwner,
-      });
-
-      const response2 = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'SMS',
-          }),
-        }
-      );
-
-      expect(response2.status()).toBe(201);
-
-      const created2 = await response2.json();
-
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created2.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
+      await templateStorageHelper.seedTemplateData([
+        clientOwnedTemplate,
+        userOwnedTemplate,
+      ]);
 
       const user1ListResponse = await request.get(
         `${process.env.API_BASE_URL}/v1/templates`,
         {
           headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
+            Authorization: await user1.getAccessToken(),
           },
         }
       );
@@ -314,11 +283,22 @@ test.describe('GET /v1/templates', () => {
 
       const user1ResponseBody = await user1ListResponse.json();
 
+      const {
+        owner: _1,
+        version: _2,
+        ...userOwnedCreatedTemplate
+      } = userOwnedTemplate;
+      const {
+        owner: _3,
+        version: _4,
+        ...clientOwnedCreatedTemplate
+      } = clientOwnedTemplate;
+
       expect(user1ResponseBody).toEqual({
         statusCode: 200,
         templates: expect.arrayContaining([
-          created1.template,
-          created2.template,
+          userOwnedCreatedTemplate,
+          clientOwnedCreatedTemplate,
         ]),
       });
 

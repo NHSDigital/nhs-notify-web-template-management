@@ -51,7 +51,7 @@ export class TemplateLockRepository {
     return await this.client.send(new UpdateCommand(update));
   }
 
-  private addClientOwnerPrefix(owner: string) {
-    return `CLIENT#${owner}`;
+  private addClientOwnerPrefix(clientId: string) {
+    return `CLIENT#${clientId}`;
   }
 }

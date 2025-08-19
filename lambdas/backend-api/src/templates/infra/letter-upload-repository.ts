@@ -11,7 +11,7 @@ import { LetterFileRepository } from './letter-file-repository';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
-  owner: string;
+  'client-id': string;
   'template-id': string;
   'version-id': string;
 };
@@ -24,7 +24,7 @@ const $FileType: z.ZodType<FileType> = z.enum([
 
 const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
   'file-type': $FileType,
-  owner: z.string(),
+  'client-id': z.string(),
   'template-id': z.string(),
   'version-id': z.string(),
 });
@@ -33,14 +33,16 @@ export class LetterUploadRepository extends LetterFileRepository {
   async upload(
     templateId: string,
     user: User,
-    clientOwnershipEnabled: boolean,
     versionId: string,
     pdf: File,
     csv?: File
   ): Promise<ApplicationResult<null>> {
-    const owner = clientOwnershipEnabled ? user.clientId : user.userId;
-
-    const pdfKey = this.key('pdf-template', owner, templateId, versionId);
+    const pdfKey = this.key(
+      'pdf-template',
+      user.clientId,
+      templateId,
+      versionId
+    );
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
@@ -49,7 +51,7 @@ export class LetterUploadRepository extends LetterFileRepository {
         Body: await pdf.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
-          owner,
+          user.clientId,
           templateId,
           versionId,
           'pdf-template'
@@ -58,7 +60,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (csv) {
-      const csvKey = this.key('test-data', owner, templateId, versionId);
+      const csvKey = this.key(
+        'test-data',
+        user.clientId,
+        templateId,
+        versionId
+      );
 
       commands.push(
         new PutObjectCommand({
@@ -67,7 +74,7 @@ export class LetterUploadRepository extends LetterFileRepository {
           Body: await csv.bytes(),
           ChecksumAlgorithm: 'SHA256',
           Metadata: LetterUploadRepository.metadata(
-            owner,
+            user.clientId,
             templateId,
             versionId,
             'test-data'
@@ -114,7 +121,7 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   static parseKey(key: string): LetterUploadMetadata {
     const keyParts = key.split('/');
-    const [type, owner, templateId, filename = ''] = keyParts;
+    const [type, clientId, templateId, filename = ''] = keyParts;
     const filenameParts = filename.split('.');
     const [versionId, extension] = filenameParts;
 
@@ -123,7 +130,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     }
 
     const parsed = LetterUploadRepository.metadata(
-      owner,
+      clientId,
       templateId,
       versionId,
       type
@@ -141,21 +148,21 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   private key(
     type: FileType,
-    owner: string,
+    clientId: string,
     templateId: string,
     versionId: string
   ) {
-    return `${type}/${owner}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
+    return `${type}/${clientId}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
   }
 
   private static metadata(
-    owner: string,
+    clientId: string,
     templateId: string,
     versionId: string,
     type: string
   ): LetterUploadMetadata {
     return $LetterUploadMetadata.parse({
-      owner,
+      'client-id': clientId,
       'file-type': type,
       'template-id': templateId,
       'version-id': versionId,

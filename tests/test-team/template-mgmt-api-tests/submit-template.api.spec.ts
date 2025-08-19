@@ -18,6 +18,7 @@ import {
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
 import { testClients } from '../helpers/client/client-helper';
+import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
@@ -25,18 +26,19 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
-  let userDirectOwner: TestUser;
   let userSharedClient: TestUser;
+  let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userProofingDisabled = await authHelper.getTestUser(testUsers.User4.userId);
   });
 
   test.afterAll(async () => {
     await templateStorageHelper.deleteAdHocTemplates();
+    await templateStorageHelper.deleteSeededTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -83,9 +85,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      id: created.template.id,
-      owner: user1.owner,
-      clientOwned: user1.clientOwner,
+      templateId: created.template.id,
+      clientId: user1.clientId,
     });
 
     const updateResponse = await request.patch(
@@ -153,16 +154,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status(), debug).toBe(201);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: templateId,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: templateId,
+        clientId: user1.clientId,
       });
 
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          clientId: user1.clientId,
           hasTestData: true,
         })
       );
@@ -266,9 +265,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: createResult.template.id,
+        clientId: user1.clientId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -276,8 +274,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.template.id,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          clientId: user1.clientId,
           hasTestData: true,
         })
       );
@@ -363,9 +360,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: createResult.template.id,
+        clientId: user1.clientId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -373,8 +369,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const failedVirusScanUpdate = await orchestrator.send(
         new SimulateFailedVirusScan({
           templateId: createResult.template.id,
-          templateOwner: user1.owner,
-          clientOwned: user1.clientOwner,
+          clientId: user1.clientId,
           filePath: 'files.pdfTemplate.virusScanStatus',
         })
       );
@@ -449,9 +444,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: createResult.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: createResult.template.id,
+        clientId: user1.clientId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -504,9 +498,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const start = new Date();
@@ -564,9 +557,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
@@ -617,9 +609,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
@@ -670,9 +661,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const start = new Date();
@@ -730,9 +720,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
@@ -783,9 +772,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
@@ -836,9 +824,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const start = new Date();
@@ -897,9 +884,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
@@ -950,9 +936,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
@@ -1005,9 +990,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.owner,
-        clientOwned: user1.clientOwner,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       const updateResponse = await request.patch(
@@ -1044,32 +1028,21 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('user-owned templates', () => {
-    test('user-owner can submit', async ({ request }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'SMS',
-          }),
-        }
-      );
+    test('user-owner can submit digital template', async ({ request }) => {
+      const templateId = crypto.randomUUID();
 
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: userDirectOwner.owner,
-        clientOwned: userDirectOwner.clientOwner,
-      });
+      const template = {
+        ...TemplateFactory.createEmailTemplate(templateId, user1),
+        owner: user1.userId,
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await userDirectOwner.getAccessToken(),
+            Authorization: await user1.getAccessToken(),
           },
         }
       );
@@ -1081,15 +1054,143 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
-          clientId: userDirectOwner.clientId,
+          campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
-          message: created.template.message,
-          name: created.template.name,
+          message: template.message,
+          subject: template.subject,
+          name: template.name,
           templateStatus: 'SUBMITTED',
-          templateType: created.template.templateType,
+          templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+    });
+
+    test('user-owner can submit letter template with proofing disabled', async ({
+      request,
+    }) => {
+      const templateId = crypto.randomUUID();
+
+      const template = {
+        ...TemplateFactory.uploadLetterTemplate(
+          templateId,
+          userProofingDisabled,
+          templateId,
+          'NOT_YET_SUBMITTED'
+        ),
+        owner: userProofingDisabled.userId,
+        proofingEnabled: false,
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await userProofingDisabled.getAccessToken(),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          campaignId: testClients[userProofingDisabled.clientKey]?.campaignId,
+          clientId: userProofingDisabled.clientId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name: template.name,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          language: template.language,
+          proofingEnabled: false,
+          letterType: template.letterType,
+          files: {
+            pdfTemplate: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+            proofs: {},
+            testDataCsv: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+          },
+        },
+      });
+    });
+
+    test('user-owner can submit letter template with proofing enabled', async ({
+      request,
+    }) => {
+      const templateId = crypto.randomUUID();
+
+      const baseTemplateData = TemplateFactory.uploadLetterTemplate(
+        templateId,
+        user1,
+        templateId,
+        'PROOF_AVAILABLE'
+      );
+
+      const proofs = {
+        'first.pdf': {
+          virusScanStatus: 'PASSED',
+          supplier: 'WTMMOCK',
+          fileName: 'first.pdf',
+        },
+      };
+
+      const template = {
+        ...baseTemplateData,
+        owner: user1.userId,
+        proofingEnabled: true,
+        files: { ...baseTemplateData.files, proofs },
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name: template.name,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          language: template.language,
+          proofingEnabled: true,
+          letterType: template.letterType,
+          files: {
+            pdfTemplate: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+            proofs,
+            testDataCsv: expect.objectContaining({
+              virusScanStatus: 'PASSED',
+            }),
+          },
         },
       });
     });

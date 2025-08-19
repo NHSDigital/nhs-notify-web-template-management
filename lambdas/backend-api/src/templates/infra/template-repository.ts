@@ -57,13 +57,14 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   files: null,
   language: null,
   letterType: null,
-  owner: null,
   personalisationParameters: null,
   templateType: null,
   proofingEnabled: null,
 };
 
 export class TemplateRepository {
+  private readonly clientOwnerPrefix = 'CLIENT#';
+
   constructor(
     private readonly client: DynamoDBDocumentClient,
     private readonly templatesTableName: string
@@ -71,14 +72,14 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    user: User
+    user: { clientId: string; userId?: string }
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
       const cmd = new BatchGetCommand({
         RequestItems: {
           [this.templatesTableName]: {
             Keys: [
-              { id: templateId, owner: user.userId },
+              ...(user.userId ? [{ id: templateId, owner: user.userId }] : []),
               { id: templateId, owner: `CLIENT#${user.clientId}` },
             ],
           },
@@ -121,7 +122,6 @@ export class TemplateRepository {
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     user: User,
-    enableClientOwnership: boolean,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -129,9 +129,7 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: enableClientOwnership
-        ? this.clientOwnerKey(user.clientId)
-        : user.userId,
+      owner: this.clientOwnerKey(user.clientId),
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
@@ -183,7 +181,7 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -231,7 +229,7 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -268,7 +266,7 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -308,7 +306,7 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.getUserTemplateOwner(user, templateId);
+      const owner = await this.assertTemplateOwnership(user, templateId);
 
       if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
@@ -553,7 +551,7 @@ export class TemplateRepository {
     }
   }
 
-  async getOwner(id: string): Promise<{ owner: string; clientOwned: boolean }> {
+  async getClientId(id: string): Promise<string> {
     const dbResponse = await this.client.send(
       new QueryCommand({
         TableName: this.templatesTableName,
@@ -571,9 +569,7 @@ export class TemplateRepository {
 
     const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
 
-    const { stripped, owner } = this.stripClientPrefix(ownerWithPossiblePrefix);
-
-    return { owner, clientOwned: stripped };
+    return this.stripClientPrefix(ownerWithPossiblePrefix);
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -744,7 +740,7 @@ export class TemplateRepository {
     }
   }
 
-  private async getUserTemplateOwner(
+  async assertTemplateOwnership(
     user: User,
     templateId: string
   ): Promise<string | undefined> {
@@ -753,35 +749,40 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         IndexName: 'QueryById',
         KeyConditionExpression: 'id = :id',
+        ExpressionAttributeNames: { '#owner': 'owner' },
         ExpressionAttributeValues: {
           ':id': templateId,
+          ':clientOwner': this.clientOwnerKey(user.clientId),
+          ':userId': user.userId,
         },
+        FilterExpression: '#owner = :userId OR #owner = :clientOwner',
       })
     );
 
-    return dbResponse.Items?.find(
+    const items = dbResponse.Items?.filter(
       (item) =>
         item.owner === user.userId ||
         (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
-    )?.owner;
+    );
+
+    if (items && items?.length > 1) {
+      throw new Error('Unexpectedly found more than one template owner');
+    }
+
+    return items?.[0]?.owner;
   }
 
   private toDatabaseKey(templateKey: TemplateKey) {
     return {
-      id: templateKey.id,
-      owner: templateKey.clientOwned
-        ? this.clientOwnerKey(templateKey.owner)
-        : templateKey.owner,
+      id: templateKey.templateId,
+      owner: this.clientOwnerKey(templateKey.clientId),
     };
   }
 
   private stripClientPrefix(owner: string) {
-    const clientOwned = owner.startsWith('CLIENT#');
-
-    return {
-      stripped: clientOwned,
-      owner: clientOwned ? owner.slice(7) : owner,
-    };
+    return owner.startsWith(this.clientOwnerPrefix)
+      ? owner.slice(this.clientOwnerPrefix.length)
+      : owner;
   }
 
   private clientOwnerKey(clientId: string) {

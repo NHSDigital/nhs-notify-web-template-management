@@ -48,11 +48,11 @@ export class TemplatePdf {
   ) {}
 
   get templateId(): string {
-    return this.templateKey.id;
+    return this.templateKey.templateId;
   }
 
-  get owner(): string {
-    return this.templateKey.owner;
+  get clientId(): string {
+    return this.templateKey.clientId;
   }
 
   async parse() {

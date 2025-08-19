@@ -25,10 +25,10 @@ export const createHandler =
     const { templateId, fileName, supplier } =
       LetterProofRepository.parseQuarantineKey(objectKey);
 
-    const { owner } = await templateRepository.getOwner(templateId);
+    const clientId = await templateRepository.getClientId(templateId);
 
     const internalKey = LetterProofRepository.getInternalKey(
-      owner,
+      clientId,
       templateId,
       fileName
     );
@@ -37,7 +37,7 @@ export const createHandler =
 
     if (virusScanResult === 'PASSED') {
       const downloadKey = LetterProofRepository.getDownloadKey(
-        owner,
+        clientId,
         templateId,
         fileName
       );
@@ -62,7 +62,7 @@ export const createHandler =
     }
 
     await templateRepository.setLetterFileVirusScanStatusForProof(
-      { owner, id: templateId, clientOwned: true },
+      { clientId, templateId },
       fileName,
       virusScanResult,
       supplier

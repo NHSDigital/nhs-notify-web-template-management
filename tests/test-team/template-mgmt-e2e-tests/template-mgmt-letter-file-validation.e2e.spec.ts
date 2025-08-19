@@ -51,9 +51,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -139,9 +138,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -211,18 +209,16 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.owner,
-        clientOwned: user.clientOwner,
+        templateId,
+        clientId: user.clientId,
       });
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
@@ -291,9 +287,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -367,9 +362,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -418,18 +412,16 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.owner,
-        clientOwned: user.clientOwner,
+        templateId,
+        clientId: user.clientId,
       });
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
@@ -469,9 +461,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -515,9 +506,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -565,9 +555,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -618,9 +607,8 @@ test.describe('letter file validation', () => {
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);

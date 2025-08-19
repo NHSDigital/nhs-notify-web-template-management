@@ -64,9 +64,8 @@ test.describe('SFTP proof request send', () => {
     };
 
     const key = {
-      id: templateId,
-      owner: user.owner,
-      clientOwned: user.clientOwner,
+      templateId,
+      clientId: user.clientId,
     };
 
     const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
@@ -99,7 +98,6 @@ test.describe('SFTP proof request send', () => {
       templateName: template.name,
       testDataVersionId: csvVersionId,
       user: { userId: user.userId, clientId: user.clientId },
-      clientOwned: true,
     };
 
     await sqsHelper.sendMessage(
