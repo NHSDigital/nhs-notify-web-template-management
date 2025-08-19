@@ -1,5 +1,8 @@
 resource "aws_pipes_pipe" "template_table_events" {
-  depends_on = [module.sqs_template_table_events_pipe_dlq, module.sqs_template_mgmt_events]
+  depends_on = [
+    module.sqs_template_table_events_pipe_dlq.sqs_queue_arn,
+    module.sqs_template_mgmt_events.sqs_queue_arn
+  ]
 
   name               = "${local.csi}-template-table-events"
   role_arn           = aws_iam_role.pipe_template_table_events.arn
