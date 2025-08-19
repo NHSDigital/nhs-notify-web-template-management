@@ -78,8 +78,7 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
-      user.userId,
-      user.clientId,
+      user,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -190,8 +189,7 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
-      user.userId,
-      user.clientId,
+      user,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -215,7 +213,7 @@ export class TemplateClient {
 
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
-      user.userId,
+      user,
       versionId,
       pdf,
       csv
@@ -265,7 +263,7 @@ export class TemplateClient {
     const updateResult = await this.templateRepository.update(
       templateId,
       validationResult.data,
-      user.userId,
+      user,
       expectedStatus
     );
 
@@ -292,10 +290,7 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user.userId
-    );
+    const submitResult = await this.templateRepository.submit(templateId, user);
 
     if (submitResult.error) {
       log
@@ -320,10 +315,7 @@ export class TemplateClient {
   async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
-    const deleteResult = await this.templateRepository.delete(
-      templateId,
-      user.userId
-    );
+    const deleteResult = await this.templateRepository.delete(templateId, user);
 
     if (deleteResult.error) {
       log
@@ -488,7 +480,7 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      user.userId,
+      user,
       status
     );
 

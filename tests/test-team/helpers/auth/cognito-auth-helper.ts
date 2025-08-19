@@ -45,7 +45,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User2: {
     userId: 'User2',
-    clientKey: 'Client1',
+    clientKey: 'Client4',
   },
   /**
    * User3 idle user that stays stayed in
@@ -77,6 +77,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User6',
     clientKey: 'Client4',
   },
+  /**
+   * User7 shares a client with the primary user (User1)
+   */
+  User7: {
+    userId: 'User7',
+    clientKey: 'Client1',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
@@ -103,7 +110,7 @@ export class CognitoAuthHelper {
 
   private notifyClientHelper: ClientConfigurationHelper;
 
-  private client = new CognitoIdentityProviderClient();
+  private client = new CognitoIdentityProviderClient({ region: 'eu-west-2' });
 
   constructor(
     public runId: string,

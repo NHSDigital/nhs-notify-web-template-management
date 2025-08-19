@@ -78,8 +78,8 @@ test.describe('Letter Proof Polling', () => {
       );
 
       const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
+        clientId: user.clientId,
+        templateId: templateId,
       });
 
       expect(template.files?.proofs).toEqual({
@@ -121,7 +121,7 @@ test.describe('Letter Proof Polling', () => {
           await templateStorageHelper.getLetterTemplateMetadata(
             process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
             'proofs',
-            { owner: user.userId, id: templateId },
+            { clientId: user.clientId, templateId },
             fileName,
             'pdf'
           );
@@ -132,7 +132,7 @@ test.describe('Letter Proof Polling', () => {
 
         const downloadPdf = await templateStorageHelper.getS3Metadata(
           process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
-          `${user.userId}/proofs/${templateId}/${fileName}.pdf`
+          `${user.clientId}/proofs/${templateId}/${fileName}.pdf`
         );
 
         expect(downloadPdf?.ChecksumSHA256).toEqual(
@@ -187,8 +187,8 @@ test.describe('Letter Proof Polling', () => {
     // check for expected results
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
+        clientId: user.clientId,
+        templateId,
       });
 
       expect(template.files?.proofs).toEqual({

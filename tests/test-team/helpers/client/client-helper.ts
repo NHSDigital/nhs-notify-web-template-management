@@ -44,7 +44,7 @@ export const testClients = {
   Client4: {
     campaignId: undefined,
     features: {
-      proofing: false,
+      proofing: true,
     },
   },
 } satisfies TestClients;

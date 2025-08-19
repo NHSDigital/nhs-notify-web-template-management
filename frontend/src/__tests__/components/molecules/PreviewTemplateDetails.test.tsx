@@ -132,7 +132,7 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'owner',
+          clientId: 'client-id',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
@@ -200,43 +200,5 @@ describe('PreviewTemplateDetailsLetter', () => {
     );
 
     expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('If the template is client-owned, the clientId is used to construct download link', () => {
-    const { getByTestId } = render(
-      <PreviewTemplateDetailsLetter
-        template={{
-          createdAt: '2025-01-13T10:19:25.579Z',
-          files: {
-            pdfTemplate: {
-              fileName: 'file.pdf',
-              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: 'PASSED',
-            },
-            proofs: {
-              'a.pdf': {
-                fileName: 'a.pdf',
-                virusScanStatus: 'PASSED',
-                supplier: 'MBA',
-              },
-            },
-          },
-          id: 'template-id',
-          language: 'en',
-          letterType: 'x0',
-          name: 'Example letter',
-          owner: 'CLIENT#client',
-          templateStatus: 'PROOF_AVAILABLE',
-          templateType: 'LETTER',
-          updatedAt: '2025-01-13T10:19:25.579Z',
-        }}
-      />
-    );
-
-    const link = getByTestId('proof-link_a.pdf');
-    expect(link).toHaveAttribute(
-      'href',
-      '/templates/files/client/proofs/template-id/a.pdf'
-    );
   });
 });
