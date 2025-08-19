@@ -72,16 +72,11 @@ test('parse with custom personalisation', async () => {
     path.resolve(__dirname, '../fixtures/custom-personalisation.pdf')
   );
   const pdf = new TemplatePdf(
-<<<<<<< HEAD
     {
       templateId: 'template-id',
       clientId: 'template-owner',
     },
     file
-=======
-    { id: 'template-id', owner: 'template-owner' },
-    new Uint8Array(file)
->>>>>>> 1184641e (CCM-11026: test revert package lock)
   );
   await pdf.parse();
 
