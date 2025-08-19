@@ -18,7 +18,8 @@ repos:
       - id: pretty-format-json
         exclude: |
           (?x)^(
-            package-lock.json
+            package-lock.json|
+            packages/event-schemas/schemas/[^/]+/[^/]+\.json
           )$
         args: ['--autofix']
     # -   id: ...
