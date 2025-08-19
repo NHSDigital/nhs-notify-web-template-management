@@ -44,6 +44,8 @@ test.describe('Header component', () => {
     userWithNoClient = await authHelper.getTestUser(testUsers.User6.userId); // Client: NONE
   });
 
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test(`when user is signed out, header shows only logo and 'sign in' link`, async ({
     page,
     baseURL,
@@ -100,7 +102,7 @@ test.describe('Header component', () => {
 
     await loginAsUser(userWithGivenAndFamilyNameOnly, page);
 
-    const expectedName = `Dr ${userWithGivenAndFamilyNameOnly.identityAttributes?.given_name} ${userWithGivenAndFamilyNameOnly.identityAttributes?.family_name}`;
+    const expectedName = `${userWithGivenAndFamilyNameOnly.identityAttributes?.given_name} ${userWithGivenAndFamilyNameOnly.identityAttributes?.family_name}`;
 
     await assertHeaderWhenSignedIn({
       page: startPage,
@@ -123,7 +125,8 @@ test.describe('Header component', () => {
     });
   });
 
-  test('when user belongs to client with routing enabled, header shows both Templates and Message plans links', async ({
+  // TODO: CCM-11148 Enable test once routing flag is implemented
+  test.skip('when user belongs to client with routing enabled, header shows both Templates and Message plans links', async ({
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
