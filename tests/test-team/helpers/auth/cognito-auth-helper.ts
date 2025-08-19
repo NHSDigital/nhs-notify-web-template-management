@@ -11,7 +11,9 @@ import {
 import { faker } from '@faker-js/faker';
 import { AuthContextFile } from './auth-context-file';
 import {
+  ClientConfiguration,
   ClientConfigurationHelper,
+  testClients,
   type ClientKey,
 } from '../client/client-helper';
 
@@ -100,6 +102,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   User7: {
     userId: 'User7',
     clientKey: 'Client1',
+  },
+  /**
+   * User8 has a client with no client name set
+   */
+  User8: {
+    userId: 'User8',
+    clientKey: 'Client6',
   },
 };
 
@@ -239,14 +248,15 @@ export class CognitoAuthHelper {
     const tempPassword = CognitoAuthHelper.generatePassword();
 
     const clientId = `${userDetails.clientKey}--${this.runId}`;
-    const clientName = `NHS Test ${userDetails.clientKey.replaceAll(/([a-z])([A-Z])/g, '$1 $2')}`;
+    const clientConfig: ClientConfiguration | undefined =
+      testClients[userDetails.clientKey];
+    const clientName = clientConfig?.name;
 
     const clientAttributes = [
       { Name: 'custom:sbx_client_id', Value: clientId },
-      {
-        Name: 'custom:sbx_client_name',
-        Value: clientName,
-      },
+      ...(clientName
+        ? [{ Name: 'custom:sbx_client_name', Value: clientName }]
+        : []),
     ];
 
     const {

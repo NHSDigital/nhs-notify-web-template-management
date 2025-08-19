@@ -23,7 +23,7 @@ test.describe('Header component', () => {
   let userWithNoIdentityAttributes: TestUser;
   let userWithRoutingEnabled: TestUser;
   let userWithRoutingDisabled: TestUser;
-  let userWithNoClient: TestUser;
+  let userWithNoClientName: TestUser;
 
   test.beforeAll(async () => {
     const authHelper = createAuthHelper();
@@ -41,7 +41,7 @@ test.describe('Header component', () => {
     userWithRoutingDisabled = await authHelper.getTestUser(
       testUsers.User3.userId
     ); // Client2: routing disabled
-    userWithNoClient = await authHelper.getTestUser(testUsers.User6.userId); // Client: NONE
+    userWithNoClientName = await authHelper.getTestUser(testUsers.User8.userId); // Client5: No client name
   });
 
   test.use({ storageState: { cookies: [], origins: [] } });
@@ -153,17 +153,17 @@ test.describe('Header component', () => {
     });
   });
 
-  test('when user belongs to no client, header still renders correctly without client name', async ({
+  test('when user belongs to a client with no name set, header still renders correctly without client name', async ({
     page,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
-    await loginAsUser(userWithNoClient, page);
+    await loginAsUser(userWithNoClientName, page);
 
     await assertHeaderWhenSignedIn({
       page: startPage,
       expectedDisplayName:
-        userWithNoClient.identityAttributes?.preferred_username ?? '',
+        userWithNoClientName.identityAttributes?.preferred_username ?? '',
       expectedClientName: '',
     });
 
