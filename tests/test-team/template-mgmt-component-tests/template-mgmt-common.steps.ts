@@ -92,7 +92,10 @@ export function assertHeaderLogoLink({ page, id }: CommonStepsProps) {
     const logoLink = page.headerLogoLink;
 
     await expect(logoLink).toBeVisible();
-    await expect(logoLink).toHaveAttribute('href', '/message-templates');
+    await expect(logoLink).toHaveAttribute(
+      'href',
+      '/templates/message-templates'
+    );
     await expect(logoLink).toHaveAttribute(
       'aria-label',
       'NHS Notify templates'
