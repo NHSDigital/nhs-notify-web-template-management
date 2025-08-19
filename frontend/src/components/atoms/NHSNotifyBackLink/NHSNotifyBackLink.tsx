@@ -1,19 +1,18 @@
-import React, { HTMLProps, ElementType, ReactNode } from 'react';
+import React, { HTMLProps } from 'react';
 import classNames from 'classnames';
 
-interface NotifyBackLinkProps<T extends HTMLElement = HTMLAnchorElement>
-  extends HTMLProps<T> {
-  asElement?: ElementType;
+interface NotifyBackLinkProps extends HTMLProps<HTMLAnchorElement> {
+  asElement?: React.ElementType;
   className?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-export function NotifyBackLink<T extends HTMLElement = HTMLAnchorElement>({
+function NotifyBackLink({
   asElement: Component = 'a',
   className,
   children,
   ...rest
-}: NotifyBackLinkProps<T>) {
+}: NotifyBackLinkProps) {
   return (
     <Component className={classNames('nhsuk-back-link', className)} {...rest}>
       {children}
