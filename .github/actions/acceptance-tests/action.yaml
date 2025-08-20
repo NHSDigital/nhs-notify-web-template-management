@@ -27,6 +27,13 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: terraform-output-${{ inputs.targetComponent }}
+
+    - name: Set up npm caching
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.18.2'
+        cache: npm
+
     - name: "Repo setup"
       shell: bash
       run: |
