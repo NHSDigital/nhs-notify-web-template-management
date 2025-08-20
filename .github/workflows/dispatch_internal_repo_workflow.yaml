@@ -65,7 +65,7 @@ jobs:
             --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
             --arg targetComponent ${{ inputs.targetComponent }} \
             --arg terraformAction "${{ inputs.terraformAction }}" \
-            --arg callerRunId "${GITHUB_RUN_ID}" \
+            --arg callerRunId "${GITHUB_RUN_ID}-${GITHUB_JOB}" \
             '{
               "ref": "${{ inputs.internalRef }}",
               "inputs": (
@@ -112,6 +112,7 @@ jobs:
                   contains("'${{ inputs.targetAccountGroup }}'") and
                   contains("'${{ inputs.targetComponent }}'") and
                   contains("'${{ inputs.terraformAction }}'"))
+                | select(.path == ".github/workflows/'${{ inputs.targetWorkflow }}'")
                 | .url')
 
             if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
