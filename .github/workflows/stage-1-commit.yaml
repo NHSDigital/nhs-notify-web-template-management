@@ -207,6 +207,7 @@ jobs:
       contents: read
     outputs:
       changed: ${{ steps.check.outputs.changed }}
+      main_version: ${{ steps.check.outputs.main_version }}
 
     steps:
       - name: "Checkout code"
