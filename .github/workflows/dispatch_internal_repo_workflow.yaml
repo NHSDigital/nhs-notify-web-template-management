@@ -65,6 +65,7 @@ jobs:
             --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
             --arg targetComponent ${{ inputs.targetComponent }} \
             --arg terraformAction "${{ inputs.terraformAction }}" \
+            --arg callerRunId "${GITHUB_RUN_ID}" \
             '{
               "ref": "${{ inputs.internalRef }}",
               "inputs": (
@@ -74,7 +75,8 @@ jobs:
                   "releaseVersion": $releaseVersion,
                   "targetEnvironment": $targetEnvironment,
                   "targetAccountGroup": $targetAccountGroup,
-                  "targetComponent": $targetComponent
+                  "targetComponent": $targetComponent,
+                  "callerRunId": $callerRunId
                 }
               )
             }')
@@ -93,16 +95,20 @@ jobs:
           echo "Workflow triggered. Waiting for the workflow to complete.."
 
           # Poll GitHub API to check the workflow status
+          callerRunId="${GITHUB_RUN_ID}"
+
           workflow_run_url=""
-          for i in {1..12}; do
+          for i in {1..18}; do
             workflow_run_url=$(curl -s \
               -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer ${{ secrets.PR_TRIGGER_PAT }}" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch&status=in_progress" \
-              | jq -r '.workflow_runs[]
+              "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch" \
+              | jq -r --arg callerRunId "$callerRunId" \
+                '.workflow_runs[]
                 | select(.name
-                | contains("'${{ inputs.targetEnvironment }}'") and
+                | contains("caller:" + $callerRunId) and
+                  contains("'${{ inputs.targetEnvironment }}'") and
                   contains("'${{ inputs.targetAccountGroup }}'") and
                   contains("'${{ inputs.targetComponent }}'") and
                   contains("'${{ inputs.terraformAction }}'"))
