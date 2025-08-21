@@ -97,7 +97,7 @@ jobs:
           echo "Workflow triggered. Waiting for the workflow to complete.."
 
           # Poll GitHub API to check the workflow status
-          callerRunId="${GITHUB_RUN_ID}"
+          callerRunId="${GITHUB_RUN_ID}-${GITHUB_JOB}"
 
           workflow_run_url=""
           for i in {1..18}; do
