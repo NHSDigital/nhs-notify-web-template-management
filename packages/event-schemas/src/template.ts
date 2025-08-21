@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const templateStatuses = [
+const templateStatuses = [
   'DELETED',
   'NOT_YET_SUBMITTED',
   'PENDING_PROOF_REQUEST',
@@ -47,29 +47,32 @@ const languages = [
 
 const letterTypes = ['q4', 'x0', 'x1'];
 
-const $BaseTemplateDataFields = z.object({
+export const $TemplateStatus = z.enum(templateStatuses);
+
+const $TemplateEventV1BaseData = z.object({
   owner: z.string(),
   id: z.string(),
   clientId: z.string().optional(),
   createdAt: z.string(),
   createdBy: z.string().optional(),
   name: z.string(),
-  templateStatus: z.enum(templateStatuses),
+  templateStatus: $TemplateStatus,
   updatedAt: z.string(),
   updatedBy: z.string().optional(),
 });
 
-// fields by template type
-const $EmailDataFields = $BaseTemplateDataFields.extend({
+const $EmailTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   subject: z.string(),
   templateType: z.literal('EMAIL'),
 });
-const $NhsAppDataFields = $BaseTemplateDataFields.extend({
+
+const $NhsAppTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   templateType: z.literal('NHS_APP'),
 });
-const $LetterDataFields = $BaseTemplateDataFields.extend({
+
+const $LetterTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   files: z.object({
     proofs: z
       .record(
@@ -83,15 +86,17 @@ const $LetterDataFields = $BaseTemplateDataFields.extend({
   templateType: z.literal('LETTER'),
   language: z.enum(languages),
   letterType: z.enum(letterTypes),
+  personalisationParameters: z.array(z.string()),
 });
-const $SmsDataFields = $BaseTemplateDataFields.extend({
+
+const $SmsTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   templateType: z.literal('SMS'),
 });
 
-export const $TemplateSavedDataFields = z.discriminatedUnion('templateType', [
-  $EmailDataFields,
-  $NhsAppDataFields,
-  $LetterDataFields,
-  $SmsDataFields,
+export const $TemplateEventV1Data = z.discriminatedUnion('templateType', [
+  $EmailTemplateEventV1Data,
+  $NhsAppTemplateEventV1Data,
+  $LetterTemplateEventV1Data,
+  $SmsTemplateEventV1Data,
 ]);

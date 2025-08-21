@@ -14,7 +14,7 @@
     "nhs-notify-web-template-management-utils": "*",
     "node-cache": "^5.1.2",
     "ssh2-sftp-client": "^9.1.0",
-    "zod": "^4.0.5"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@swc/core": "^1.11.3",
