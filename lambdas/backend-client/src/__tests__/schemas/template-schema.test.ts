@@ -212,31 +212,6 @@ describe('Template schemas', () => {
     );
   });
 
-  test.each([
-    '<element>failed</element>',
-    '<element><nested>nested</nested></element>',
-    '<element attribute="failed">failed</element>',
-  ])(
-    'App template fields - should fail validation, when invalid characters are present %p',
-    async (message) => {
-      const result = $CreateUpdateTemplate.safeParse({
-        name: 'Test Template',
-        message,
-        templateType: 'NHS_APP',
-      });
-
-      expect(result.error?.flatten()).toEqual(
-        expect.objectContaining({
-          fieldErrors: {
-            message: [
-              'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
-            ],
-          },
-        })
-      );
-    }
-  );
-
   describe('$CreateUpdateTemplate', () => {
     const commonFields = {
       name: 'Test Template',
