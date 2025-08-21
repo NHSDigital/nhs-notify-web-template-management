@@ -59,7 +59,9 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePageNonDynamic {
   }
 
   async waitForPageToLoad() {
-    const characterCountLocator = this.page.locator('[data-testid="character-message-count-0"]');
+    const characterCountLocator = this.page.locator(
+      '[data-testid="character-message-count-0"]'
+    );
     await expect(characterCountLocator).toBeVisible();
   }
 
