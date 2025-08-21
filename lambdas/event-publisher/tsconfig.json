@@ -1,4 +1,13 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@nhsdigital/nhs-notify-event-schemas-template-management": [
+        "../../packages/event-schemas/src/index.ts"
+      ]
+    },
+    "resolveJsonModule": true
+  },
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": [
     "src/**/*"

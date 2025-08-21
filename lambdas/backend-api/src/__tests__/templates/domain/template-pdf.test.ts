@@ -10,7 +10,7 @@ test('has the given key attributes', () => {
       templateId: 'template-id',
       clientId: 'template-owner',
     },
-    Buffer.from('')
+    Uint8Array.from('')
   );
 
   expect(pdf.templateId).toBe('template-id');
@@ -26,7 +26,7 @@ test('parse with no custom personalisation', async () => {
       templateId: 'template-id',
       clientId: 'template-owner',
     },
-    file
+    new Uint8Array(file)
   );
   await pdf.parse();
 
@@ -76,7 +76,7 @@ test('parse with custom personalisation', async () => {
       templateId: 'template-id',
       clientId: 'template-owner',
     },
-    file
+    new Uint8Array(file)
   );
   await pdf.parse();
 
