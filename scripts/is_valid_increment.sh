@@ -1,3 +1,6 @@
+#!/usr/bin/bash
+# Determines whether a version increment to a package is valid
+
 is_valid_increment() {
   local current="$1"
   local next="$2"
