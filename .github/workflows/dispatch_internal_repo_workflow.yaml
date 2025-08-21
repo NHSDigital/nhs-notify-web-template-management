@@ -59,27 +59,29 @@ jobs:
         shell: bash
         run: |
           DISPATCH_EVENT=$(jq -ncM \
-            --arg infraRepoName "${{ inputs.infraRepoName }}" \
-            --arg releaseVersion ${{ inputs.releaseVersion }} \
-            --arg targetEnvironment ${{ inputs.targetEnvironment }} \
-            --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
-            --arg targetComponent ${{ inputs.targetComponent }} \
-            --arg terraformAction "${{ inputs.terraformAction }}" \
-            --arg callerRunId "${GITHUB_RUN_ID}-${GITHUB_JOB}" \
-            '{
-              "ref": "${{ inputs.internalRef }}",
-              "inputs": (
-                (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
-                (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
-                {
-                  "releaseVersion": $releaseVersion,
-                  "targetEnvironment": $targetEnvironment,
-                  "targetAccountGroup": $targetAccountGroup,
-                  "targetComponent": $targetComponent,
-                  "callerRunId": $callerRunId
-                }
-              )
-            }')
+          --arg infraRepoName "${{ inputs.infraRepoName }}" \
+          --arg releaseVersion ${{ inputs.releaseVersion }} \
+          --arg targetEnvironment ${{ inputs.targetEnvironment }} \
+          --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
+          --arg targetComponent ${{ inputs.targetComponent }} \
+          --arg terraformAction "${{ inputs.terraformAction }}" \
+          --arg callerRunId "${GITHUB_RUN_ID}-${GITHUB_JOB}" \
+          --arg targetWorkflow "${{ inputs.targetWorkflow }}" \
+          '{
+            "ref": "${{ inputs.internalRef }}",
+            "inputs": (
+              (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
+              (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
+              {
+                "releaseVersion": $releaseVersion,
+                "targetEnvironment": $targetEnvironment,
+                "targetAccountGroup": $targetAccountGroup,
+                "targetComponent": $targetComponent
+              } +
+              (if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*.yaml"))
+                then { "callerRunId": $callerRunId } else {} end)
+            )
+          }')
 
           # Trigger The workflow
           curl -L \
