@@ -39,6 +39,12 @@ resource "aws_dynamodb_table" "routing_configuration" {
     ]
   }
 
+  global_secondary_index {
+    name               = "QueryById"
+    hash_key           = "id"
+    projection_type    = "KEYS_ONLY"
+  }
+
   stream_enabled   = true
   stream_view_type = "NEW_AND_OLD_IMAGES"
 }
