@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
 
@@ -46,6 +46,18 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     this.saveAndPreviewButton = page.locator(
       '[id="create-sms-template-submit-button"]'
     );
+  }
+
+  async loadPage(templateId: string) {
+    await super.loadPage(templateId);
+    await this.waitForPageToLoad();
+  }
+
+  async waitForPageToLoad() {
+    const characterCountLocator = this.page.locator(
+      '[data-testid="character-message-count-0"]'
+    );
+    await expect(characterCountLocator).toBeVisible();
   }
 
   async clickSaveAndPreviewButton() {

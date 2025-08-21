@@ -273,6 +273,7 @@ test.describe('Edit NHS App Template Page', () => {
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
       await editTemplatePage.loadPage('valid-nhs-app-template');
+      await editTemplatePage.waitForPageToLoad();
       const newTabPromise = page.waitForEvent('popup');
       await page.getByRole('link', { name }).click();
       const newTab = await newTabPromise;

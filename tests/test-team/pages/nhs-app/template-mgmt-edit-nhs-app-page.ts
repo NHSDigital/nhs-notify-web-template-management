@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
 
@@ -42,5 +42,15 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
 
   async clickSaveAndPreviewButton() {
     await this.saveAndPreviewButton.click();
+  }
+
+  async loadPage(templateId: string) {
+    await super.loadPage(templateId);
+    await this.waitForPageToLoad();
+  }
+
+  async waitForPageToLoad() {
+    const characterCountLocator = this.page.locator('[id="character-count-0"]');
+    await expect(characterCountLocator).toBeVisible();
   }
 }
