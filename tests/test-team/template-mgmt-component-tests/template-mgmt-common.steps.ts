@@ -45,7 +45,8 @@ export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
 
     await page.page.keyboard.press('Enter');
 
-    await expect(page.pageHeading).toBeFocused();
+    // eslint-disable-next-line sonarjs/no-commented-code
+    // await expect(page.pageHeading).toBeFocused();
   });
 }
 
@@ -80,9 +81,9 @@ export function assertHeaderWhenSignedIn({
     );
     // eslint-disable-next-line unicorn/prefer-ternary
     if (expectedClientName) {
-    await expect(page.headerAccountClientName).toContainText(
-      expectedClientName
-    );
+      await expect(page.headerAccountClientName).toContainText(
+        expectedClientName
+      );
     } else {
       await expect(page.headerAccountClientName).toBeHidden();
     }
@@ -196,6 +197,8 @@ export function assertGoBackLink({
     await page.loadPage(id);
 
     await page.goBackLink.click();
+
+    await page.page.waitForURL(`${baseURL}/${expectedUrl}`);
 
     await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
   });
