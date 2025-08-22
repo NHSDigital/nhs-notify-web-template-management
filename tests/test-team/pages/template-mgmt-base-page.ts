@@ -62,6 +62,10 @@ export abstract class TemplateMgmtBasePage {
 
   abstract loadPage(templateId?: string): Promise<void>;
 
+  async attemptToLoadPageExpectFailure(templateId?: string) {
+    await this.loadPage(templateId);
+  }
+
   async navigateTo(url: string) {
     await this.page.goto(url);
   }
