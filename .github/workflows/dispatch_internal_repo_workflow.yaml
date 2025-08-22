@@ -65,7 +65,7 @@ jobs:
           --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
           --arg targetComponent ${{ inputs.targetComponent }} \
           --arg terraformAction "${{ inputs.terraformAction }}" \
-          --arg callerRunId "${GITHUB_RUN_ID}-${{ inputs.jobName }}-${GITHUB_RUN_ATTEMPT}"
+          --arg callerRunId "${GITHUB_RUN_ID}-${{ inputs.jobName }}-${GITHUB_RUN_ATTEMPT}"\
           --arg targetWorkflow "${{ inputs.targetWorkflow }}" \
           '{
             "ref": "${{ inputs.internalRef }}",
