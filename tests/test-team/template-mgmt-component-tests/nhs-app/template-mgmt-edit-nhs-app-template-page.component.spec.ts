@@ -273,7 +273,6 @@ test.describe('Edit NHS App Template Page', () => {
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
       await editTemplatePage.loadPage('valid-nhs-app-template');
-      await editTemplatePage.waitForPageToLoad();
       const newTabPromise = page.waitForEvent('popup');
       await page.getByRole('link', { name }).click();
       const newTab = await newTabPromise;
@@ -324,7 +323,7 @@ test.describe('Edit NHS App Template Page', () => {
   test('Invalid template ID test', async ({ page, baseURL }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
     const invalidTemplateId = 'invalid-template-id';
-    await editTemplatePage.loadPage(invalidTemplateId);
+    await editTemplatePage.attemptToLoadPageExpectFailure(invalidTemplateId);
     const errorMessage = page.locator('.nhsuk-heading-xl');
     await Promise.all([
       expect(errorMessage).toBeVisible(),

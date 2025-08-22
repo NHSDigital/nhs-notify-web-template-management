@@ -44,13 +44,17 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
     await this.saveAndPreviewButton.click();
   }
 
+  async waitForPageToLoad() {
+    const characterCountLocator = this.page.locator('[id="character-count-0"]');
+    await expect(characterCountLocator).toBeVisible();
+  }
+
   async loadPage(templateId: string) {
     await super.loadPage(templateId);
     await this.waitForPageToLoad();
   }
 
-  async waitForPageToLoad() {
-    const characterCountLocator = this.page.locator('[id="character-count-0"]');
-    await expect(characterCountLocator).toBeVisible();
+  async attemptToLoadPageExpectFailure(templateId: string) {
+    await super.loadPage(templateId);
   }
 }

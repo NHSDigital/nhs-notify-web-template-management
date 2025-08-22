@@ -53,6 +53,10 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     await this.waitForPageToLoad();
   }
 
+  async attemptToLoadPageExpectFailure(templateId: string) {
+    await super.loadPage(templateId);
+  }
+
   async waitForPageToLoad() {
     const characterCountLocator = this.page.locator(
       '[data-testid="character-message-count-0"]'
