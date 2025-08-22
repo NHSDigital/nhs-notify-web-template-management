@@ -48,7 +48,7 @@ export abstract class TemplateMgmtBasePage {
     this.headerNavigationLinks = page.getByTestId('navigation-links');
 
     this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
+      .locator('.nhsuk-back-link')
       .and(page.getByText('Go back'));
 
     this.pageHeading = page.getByRole('heading', { level: 1 });

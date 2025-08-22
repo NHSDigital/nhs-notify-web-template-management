@@ -36,7 +36,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic
     );
     this.characterCountText = page.getByTestId('character-message-count-0');
     this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
+      .locator('.nhsuk-back-link')
       .and(page.getByText('Back to choose a template type'));
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(
