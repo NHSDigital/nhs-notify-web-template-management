@@ -182,12 +182,6 @@ variable "control_plane_bus_arn" {
   description = "Data plane event bus arn"
 }
 
-variable "enable_proofing" {
-  type        = string
-  description = "Feature flag for proofing"
-  default     = false
-}
-
 variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"

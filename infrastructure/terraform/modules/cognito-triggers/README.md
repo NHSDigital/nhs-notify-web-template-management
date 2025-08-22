@@ -23,11 +23,13 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_pre_authentication_lambda"></a> [pre\_authentication\_lambda](#module\_pre\_authentication\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.11 |
 | <a name="module_pre_token_generation_lambda"></a> [pre\_token\_generation\_lambda](#module\_pre\_token\_generation\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.11 |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_pre_authentication_lambda_function_arn"></a> [pre\_authentication\_lambda\_function\_arn](#output\_pre\_authentication\_lambda\_function\_arn) | n/a |
 | <a name="output_pre_token_generation_lambda_function_arn"></a> [pre\_token\_generation\_lambda\_function\_arn](#output\_pre\_token\_generation\_lambda\_function\_arn) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->

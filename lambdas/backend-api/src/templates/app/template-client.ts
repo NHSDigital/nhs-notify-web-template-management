@@ -1,3 +1,4 @@
+import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
@@ -16,16 +17,15 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $UploadLetterTemplate,
   DatabaseTemplate,
-  UserWithOptionalClient,
   User,
   $LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import { z } from 'zod/v4';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
-import { z } from 'zod/v4';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -48,7 +48,7 @@ export class TemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ template, user });
 
@@ -62,9 +62,9 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -79,8 +79,7 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
-      user.userId,
-      user.clientId,
+      user,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -106,7 +105,7 @@ export class TemplateClient {
 
   async uploadLetterTemplate(
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient,
+    user: User,
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
@@ -145,9 +144,9 @@ export class TemplateClient {
       );
     }
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -191,8 +190,7 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
-      user.userId,
-      user.clientId,
+      user,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -216,7 +214,7 @@ export class TemplateClient {
 
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
-      user.userId,
+      user,
       versionId,
       pdf,
       csv
@@ -244,7 +242,7 @@ export class TemplateClient {
   async updateTemplate(
     templateId: string,
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient,
+    user: User,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
@@ -266,7 +264,7 @@ export class TemplateClient {
     const updateResult = await this.templateRepository.update(
       templateId,
       validationResult.data,
-      user.userId,
+      user,
       expectedStatus
     );
 
@@ -289,14 +287,11 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user.userId
-    );
+    const submitResult = await this.templateRepository.submit(templateId, user);
 
     if (submitResult.error) {
       log
@@ -318,16 +313,10 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async deleteTemplate(
-    templateId: string,
-    user: UserWithOptionalClient
-  ): Promise<Result<void>> {
+  async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
-    const deleteResult = await this.templateRepository.delete(
-      templateId,
-      user.userId
-    );
+    const deleteResult = await this.templateRepository.delete(templateId, user);
 
     if (deleteResult.error) {
       log
@@ -347,7 +336,7 @@ export class TemplateClient {
 
   async getTemplate(
     templateId: string,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -372,9 +361,7 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(
-    user: UserWithOptionalClient
-  ): Promise<Result<TemplateDto[]>> {
+  async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
     const listResult = await this.templateRepository.list(user);
 
     if (listResult.error) {
@@ -398,9 +385,9 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -490,11 +477,11 @@ export class TemplateClient {
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      user.userId,
+      user,
       status
     );
 
@@ -523,15 +510,15 @@ export class TemplateClient {
   }
 
   async getClientConfiguration(
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<ClientConfiguration>> {
     const log = this.logger.child({
       user,
     });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log

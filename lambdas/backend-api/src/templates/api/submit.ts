@@ -15,7 +15,7 @@ export function createHandler({
 
     const templateId = event.pathParameters?.templateId;
 
-    if (!userId || !templateId) {
+    if (!userId || !templateId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 

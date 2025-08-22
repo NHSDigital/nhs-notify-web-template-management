@@ -28,16 +28,12 @@ const SubmitLetterTemplatePage = async (props: PageProps) => {
   }
 
   const clientProofingEnabled = await serverIsFeatureEnabled('proofing');
-  const globalProofingEnabled =
-    process.env.NEXT_PUBLIC_ENABLE_PROOFING === 'true';
-
-  const proofingEnabled = clientProofingEnabled && globalProofingEnabled;
 
   return (
     <SubmitLetterTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      proofingEnabled={proofingEnabled}
+      proofingEnabled={clientProofingEnabled}
     />
   );
 };

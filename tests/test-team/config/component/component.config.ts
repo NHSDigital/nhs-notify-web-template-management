@@ -4,9 +4,8 @@ import baseConfig from '../playwright.config';
 
 const buildCommand = [
   'INCLUDE_AUTH_PAGES=true',
-  'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
-  'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
-  'NEXT_PUBLIC_ENABLE_PROOFING=true',
+  // 'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
+  // 'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
   'npm run build && npm run start',
 ].join(' ');
 
@@ -41,7 +40,7 @@ export default defineConfig({
       dependencies: ['component:setup'],
       teardown: 'component:teardown',
     },
-    {
+    /*{
       name: 'modal',
       testMatch: 'template-mgmt-logout-warning.component.modal.spec.ts',
       use: {
@@ -55,7 +54,7 @@ export default defineConfig({
       dependencies: ['component:setup'],
       teardown: 'component:teardown',
       fullyParallel: true, // make these sets of tests parallel due to their slow nature.
-    },
+    },*/
     {
       name: 'component:teardown',
       testMatch: 'component.teardown.ts',

@@ -12,13 +12,13 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let userProofingEnabled: TestUser;
-  let anotherUser: TestUser;
-  let userWithoutClient: TestUser;
+  let differentClientUser: TestUser;
+  let sameClientUser: TestUser;
 
   test.beforeAll(async () => {
     userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
-    anotherUser = await authHelper.getTestUser(testUsers.User2.userId);
-    userWithoutClient = await authHelper.getTestUser(testUsers.User6.userId);
+    differentClientUser = await authHelper.getTestUser(testUsers.User2.userId);
+    sameClientUser = await authHelper.getTestUser(testUsers.User5.userId);
   });
 
   test.afterAll(async () => {
@@ -48,10 +48,8 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         },
       }
     );
-
     const result = await response.json();
     const debug = JSON.stringify(result, null, 2);
-
     expect(response.status(), debug).toBe(404);
     expect(result).toEqual({
       statusCode: 404,
@@ -59,7 +57,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     });
   });
 
-  test('returns 404 if template exists but is owned by a different user', async ({
+  test('returns 404 if template exists but is owned by a different client', async ({
     request,
   }) => {
     const userProofingEnabledtemplateId = randomUUID();
@@ -77,7 +75,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       `${process.env.API_BASE_URL}/v1/template/${userProofingEnabledtemplateId}/proof`,
       {
         headers: {
-          Authorization: await anotherUser.getAccessToken(),
+          Authorization: await differentClientUser.getAccessToken(),
         },
       }
     );
@@ -228,7 +226,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     });
   });
 
-  test('returns 400 - user without a client cannot request a proof', async ({
+  test('user can request a proof of template created by another user belonging to the same client', async ({
     request,
   }) => {
     const templateId = randomUUID();
@@ -237,10 +235,8 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userWithoutClient,
-        'userWithoutClientTemplate',
-        // template should not reach this status if proofing is not
-        // enabled for the client
+        sameClientUser,
+        'sameClientUserTemplate',
         'PENDING_PROOF_REQUEST'
       ),
       files: {
@@ -250,27 +246,39 @@ test.describe('POST /v1/template/:templateId/proof', () => {
           fileName: 'template.pdf',
         },
       },
+      personalisationParameters: ['nhsNumber'],
     };
+
     await templateStorageHelper.seedTemplateData([template]);
 
-    const proofResponse = await request.post(
+    const start = new Date();
+
+    const requestProofResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
       {
         headers: {
-          Authorization: await userWithoutClient.getAccessToken(),
+          Authorization: await userProofingEnabled.getAccessToken(),
         },
       }
     );
 
-    const result = await proofResponse.json();
-
+    const result = await requestProofResponse.json();
     const debug = JSON.stringify(result, null, 2);
 
-    expect(proofResponse.status(), debug).toBe(400);
+    expect(requestProofResponse.status(), debug).toBe(200);
 
     expect(result).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Invalid request',
+      statusCode: 200,
+      template: expect.objectContaining({
+        name: template.name,
+        templateStatus: 'WAITING_FOR_PROOF',
+        templateType: template.templateType,
+      }),
     });
+
+    expect(result.template.updatedAt).toBeDateRoughlyBetween([
+      start,
+      new Date(),
+    ]);
   });
 });

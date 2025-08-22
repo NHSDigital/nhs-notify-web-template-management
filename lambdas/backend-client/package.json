@@ -3,7 +3,7 @@
     "@hey-api/openapi-ts": "^0.64.13",
     "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
-    "zod": "^4.0.5"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@swc/core": "^1.11.13",

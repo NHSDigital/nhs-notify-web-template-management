@@ -131,7 +131,10 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
   AssertExtendsMerged<EmailTemplate> &
   AssertExtendsMerged<SMSTemplate>;
 
-export type TemplateKey = { owner: string; id: string };
+export type TemplateKey = {
+  clientId: string;
+  templateId: string;
+};
 
 export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
@@ -149,7 +152,3 @@ export type ProofingRequest = {
 };
 
 export type User = { userId: string; clientId: string };
-
-export type UserWithOptionalClient = Omit<User, 'clientId'> & {
-  clientId: string | undefined;
-};

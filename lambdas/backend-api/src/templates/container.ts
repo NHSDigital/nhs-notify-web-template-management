@@ -31,8 +31,7 @@ export function createContainer() {
 
   const templateRepository = new TemplateRepository(
     ddbDocClient,
-    config.templatesTableName,
-    config.enableProofing
+    config.templatesTableName
   );
 
   const letterUploadRepository = new LetterUploadRepository(
@@ -93,12 +92,11 @@ export const uploadLetterFileRepositoryContainer = () => {
 };
 
 export const createTemplateRepositoryContainer = () => {
-  const { templatesTableName, enableProofing } = loadConfig();
+  const { templatesTableName } = loadConfig();
 
   const templateRepository = new TemplateRepository(
     ddbDocClient,
-    templatesTableName,
-    enableProofing
+    templatesTableName
   );
 
   return {

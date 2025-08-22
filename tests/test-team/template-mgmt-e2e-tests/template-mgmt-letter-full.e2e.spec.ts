@@ -55,8 +55,8 @@ function create(
     const templateId = maybeTemplateId as string;
 
     const key = {
-      id: templateId,
-      owner: user.userId,
+      templateId,
+      clientId: user.clientId,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -131,7 +131,7 @@ function continueAfterCreation(page: Page) {
 function requestProof(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { templateId: string; clientId: string }
 ) {
   return test.step('request and receive proofs', async () => {
     await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
@@ -174,7 +174,7 @@ function requestProof(
         proofFilenames.map((filename) =>
           templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            `proofs/WTMMOCK/${templateKey.id}/${filename}`
+            `proofs/WTMMOCK/${templateKey.templateId}/${filename}`
           )
         )
       );
@@ -209,7 +209,7 @@ function requestProof(
             (href as string).match(
               // eslint-disable-next-line security/detect-non-literal-regexp
               new RegExp(
-                `/templates/files/(${templateKey.owner}/proofs/${templateKey.id}/[^/]+)/?$`
+                `/templates/files/(${templateKey.clientId}/proofs/${templateKey.templateId}/[^/]+)/?$`
               )
             ) ?? [];
 
@@ -240,7 +240,7 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { templateId: string; clientId: string }
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);

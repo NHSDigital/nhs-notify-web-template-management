@@ -18,16 +18,6 @@ jest.mock('@forms/SubmitTemplate/server-action', () => ({
   submitTemplate: '/action',
 }));
 
-const OLD_ENV = { ...process.env };
-
-beforeEach(() => {
-  process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'true';
-});
-
-afterAll(() => {
-  process.env = OLD_ENV;
-});
-
 describe('SubmitLetterTemplate component', () => {
   it('should render', () => {
     const container = render(
@@ -41,9 +31,7 @@ describe('SubmitLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('should render with proofing flag disabled', () => {
-    process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'false';
-
+  it('should render with client proofing disabled', () => {
     const container = render(
       <SubmitLetterTemplate
         templateId='template-id'

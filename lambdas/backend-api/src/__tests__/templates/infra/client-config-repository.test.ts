@@ -280,7 +280,7 @@ describe('ClientConfigRepository', () => {
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
-                  message: 'Invalid input: expected object, received undefined',
+                  message: '"undefined" is not valid JSON',
                 }),
               ]),
             }),
@@ -312,7 +312,7 @@ describe('ClientConfigRepository', () => {
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
-                  message: 'Invalid input: expected object, received undefined',
+                  message: '"undefined" is not valid JSON',
                 }),
               ]),
             }),
