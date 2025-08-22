@@ -9,7 +9,7 @@ import {
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -67,7 +67,7 @@ test.describe('Preview SMS message template Page', () => {
 
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
 
-    await expect(previewSmsTemplatePage.pageHeader).toContainText(
+    await expect(previewSmsTemplatePage.pageHeading).toContainText(
       'test-template-sms'
     );
 
@@ -85,7 +85,7 @@ test.describe('Preview SMS message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

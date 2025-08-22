@@ -12,10 +12,10 @@ import content from '@content/content';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { useActionState, useState } from 'react';
-import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { previewNhsAppTemplateAction, schema } from './server-action';
 import { validate } from '@utils/client-validate-form';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewNHSAppTemplate({
   initialState,
@@ -43,9 +43,9 @@ export function PreviewNHSAppTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink id='back-link' data-testid='back-to-templates-link'>
+        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
           {backLinkText}
-        </BackLink>
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

@@ -3,7 +3,7 @@ import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
-  assertNotifyBannerLink,
+  assertClickHeaderLogoRedirectsToStartPage,
   assertSignOutLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -20,7 +20,7 @@ test.describe('Start Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
     );
-    await expect(startPage.pageHeader).toHaveText(
+    await expect(startPage.pageHeading).toHaveText(
       'Create and submit a template to NHS Notify'
     );
   });
@@ -32,7 +32,7 @@ test.describe('Start Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertClickHeaderLogoRedirectsToStartPage(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLinkNotPresent(props);
@@ -55,12 +55,12 @@ test.describe('Start Page', () => {
     const startPage = new TemplateMgmtStartPage(page);
 
     await startPage.loadPage();
-    await startPage.clickNotifyBannerLink();
+    await startPage.clickHeaderLogoLink();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
     );
-    await expect(startPage.pageHeader).toHaveText(
+    await expect(startPage.pageHeading).toHaveText(
       'Create and submit a template to NHS Notify'
     );
   });

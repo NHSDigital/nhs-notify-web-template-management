@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
@@ -63,7 +63,7 @@ test.describe('Delete Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/delete-template/${templates.goBack.id}`
     );
-    await expect(deleteTemplatePage.pageHeader).toHaveText(
+    await expect(deleteTemplatePage.pageHeading).toHaveText(
       `Are you sure you want to delete the template '${templates.goBack.name}'?`
     );
   });
@@ -76,7 +76,7 @@ test.describe('Delete Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertGoBackLinkNotPresent(props);

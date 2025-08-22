@@ -2,28 +2,12 @@
 
 exports[`Client-side validation triggers 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/choose-a-template-type"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/choose-a-template-type"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to choose a template type
-    </a>
-  </div>
+    Back to choose a template type
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -160,7 +144,7 @@ exports[`Client-side validation triggers 1`] = `
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -702,28 +686,12 @@ line 3
 
 exports[`renders page 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/choose-a-template-type"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/choose-a-template-type"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to choose a template type
-    </a>
-  </div>
+    Back to choose a template type
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -860,7 +828,7 @@ exports[`renders page 1`] = `
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -1402,28 +1370,12 @@ line 3
 
 exports[`renders page one error 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/choose-a-template-type"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/choose-a-template-type"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to choose a template type
-    </a>
-  </div>
+    Back to choose a template type
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -1600,7 +1552,7 @@ exports[`renders page one error 1`] = `
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 0 of 5000 characters
               </p>
@@ -2142,28 +2094,12 @@ line 3
 
 exports[`renders page with multiple errors 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/choose-a-template-type"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/choose-a-template-type"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to choose a template type
-    </a>
-  </div>
+    Back to choose a template type
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -2354,7 +2290,7 @@ exports[`renders page with multiple errors 1`] = `
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 0 of 5000 characters
               </p>
@@ -2896,28 +2832,12 @@ line 3
 
 exports[`renders page with preloaded field values 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/choose-a-template-type"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/choose-a-template-type"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to choose a template type
-    </a>
-  </div>
+    Back to choose a template type
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -3054,7 +2974,7 @@ exports[`renders page with preloaded field values 1`] = `
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -3732,7 +3652,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class=""
             >
               <p
-                id="character-count-0"
+                data-testid="character-count-0"
               >
                 16 of 5000 characters
               </p>

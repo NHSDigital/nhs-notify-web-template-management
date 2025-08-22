@@ -5,7 +5,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -33,7 +33,7 @@ test.describe('Create NHS App Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLink({
@@ -49,7 +49,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await createTemplatePage.loadPage();
 
-    await expect(createTemplatePage.pageHeader).toHaveText(
+    await expect(createTemplatePage.pageHeading).toHaveText(
       'Create NHS App message template'
     );
     await createTemplatePage.clickSaveAndPreviewButton();
@@ -94,7 +94,7 @@ test.describe('Create NHS App Template Page', () => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
     await createTemplatePage.loadPage();
-    await expect(createTemplatePage.pageHeader).toHaveText(
+    await expect(createTemplatePage.pageHeading).toHaveText(
       'Create NHS App message template'
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
@@ -111,7 +111,7 @@ test.describe('Create NHS App Template Page', () => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
     await createTemplatePage.loadPage();
-    await expect(createTemplatePage.pageHeader).toHaveText(
+    await expect(createTemplatePage.pageHeading).toHaveText(
       'Create NHS App message template'
     );
     const templateMessage = 'Test Message box';

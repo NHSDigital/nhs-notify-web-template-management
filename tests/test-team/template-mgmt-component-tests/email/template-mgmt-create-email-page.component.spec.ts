@@ -5,7 +5,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -36,7 +36,7 @@ test.describe('Create Email message template Page', () => {
 
     await expect(page).toHaveURL(`${baseURL}/templates/create-email-template`);
 
-    await expect(createEmailTemplatePage.pageHeader).toHaveText(
+    await expect(createEmailTemplatePage.pageHeading).toHaveText(
       'Create email template'
     );
   });
@@ -49,7 +49,7 @@ test.describe('Create Email message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLink({

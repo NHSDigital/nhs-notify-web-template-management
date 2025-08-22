@@ -6,7 +6,7 @@ import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -69,7 +69,7 @@ test.describe('Preview submitted sms message template Page', () => {
       `${baseURL}/templates/preview-submitted-text-message-template/${templates.valid.id}`
     );
 
-    await expect(previewSubmittedSMSTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedSMSTemplatePage.pageHeading).toContainText(
       'test-template-sms'
     );
 
@@ -87,7 +87,7 @@ test.describe('Preview submitted sms message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

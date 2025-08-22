@@ -5,7 +5,7 @@ import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
@@ -100,7 +100,7 @@ test.describe('Manage templates page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLinkNotPresent(props);
@@ -113,7 +113,7 @@ test.describe('Manage templates page', () => {
     const messageTemplatesPage = new MessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
-    await expect(messageTemplatesPage.pageHeader).toHaveText(
+    await expect(messageTemplatesPage.pageHeading).toHaveText(
       'Message templates'
     );
     await expect(messageTemplatesPage.createTemplateButton).toBeVisible();
@@ -182,7 +182,7 @@ test.describe('Manage templates page', () => {
     const messageTemplatesPage = new MessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
-    await expect(messageTemplatesPage.pageHeader).toHaveText(
+    await expect(messageTemplatesPage.pageHeading).toHaveText(
       'Message templates'
     );
     await expect(messageTemplatesPage.createTemplateButton).toBeVisible();

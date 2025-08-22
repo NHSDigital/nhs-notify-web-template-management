@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotifyBackLink matches snapshot (default anchor) 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/somewhere"
+  >
+    Back
+  </a>
+</DocumentFragment>
+`;
+
+exports[`NotifyBackLink matches snapshot when rendered as a button 1`] = `
+<DocumentFragment>
+  <button
+    class="nhsuk-back-link"
+  >
+    Back
+  </button>
+</DocumentFragment>
+`;
