@@ -65,7 +65,7 @@ jobs:
           --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
           --arg targetComponent ${{ inputs.targetComponent }} \
           --arg terraformAction "${{ inputs.terraformAction }}" \
-          --arg callerRunId "${GITHUB_RUN_ID}-${GITHUB_JOB}" \
+          --arg callerRunId "${GITHUB_RUN_ID}-${{ inputs.jobName }}-${GITHUB_RUN_ATTEMPT}"
           --arg targetWorkflow "${{ inputs.targetWorkflow }}" \
           '{
             "ref": "${{ inputs.internalRef }}",
@@ -97,7 +97,7 @@ jobs:
           echo "Workflow triggered. Waiting for the workflow to complete.."
 
           # Poll GitHub API to check the workflow status
-          callerRunId="${GITHUB_RUN_ID}-${GITHUB_JOB}"
+          callerRunId="${GITHUB_RUN_ID}-${{ inputs.jobName }}-${GITHUB_RUN_ATTEMPT}"
 
           workflow_run_url=""
           for i in {1..18}; do
