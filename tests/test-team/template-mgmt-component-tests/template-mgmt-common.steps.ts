@@ -78,9 +78,14 @@ export function assertHeaderWhenSignedIn({
     await expect(page.headerAccountDisplayName).toContainText(
       expectedDisplayName
     );
+    // eslint-disable-next-line unicorn/prefer-ternary
+    if (expectedClientName) {
     await expect(page.headerAccountClientName).toContainText(
       expectedClientName
     );
+    } else {
+      await expect(page.headerAccountClientName).toBeHidden();
+    }
     await expect(page.headerNavigationLinks).toBeVisible();
   });
 }
