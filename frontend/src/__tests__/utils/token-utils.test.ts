@@ -2,7 +2,12 @@
  * @jest-environment node
  */
 import { sign } from 'jsonwebtoken';
-import { decodeJwt, getClaim, getIdTokenClaims } from '@utils/token-utils';
+import {
+  decodeJwt,
+  getClaim,
+  getClientIdFromToken,
+  getIdTokenClaims,
+} from '@utils/token-utils';
 import { JWT } from 'aws-amplify/auth';
 
 describe('token-utils', () => {
@@ -132,6 +137,27 @@ describe('token-utils', () => {
       const claims = getIdTokenClaims(token);
 
       expect(claims.displayName).toBeUndefined();
+    });
+  });
+
+  describe('getClientIdFromToken', () => {
+    test('returns undefined when client ID not found', async () => {
+      const mockAccessToken = sign({}, 'key');
+
+      const clientId = await getClientIdFromToken(mockAccessToken);
+
+      expect(clientId).toBeUndefined();
+    });
+
+    test('retrieves client id from access token param', async () => {
+      const mockAccessToken = sign(
+        { ['nhs-notify:client-id']: 'client2' },
+        'key'
+      );
+
+      const clientId = await getClientIdFromToken(mockAccessToken);
+
+      expect(clientId).toEqual('client2');
     });
   });
 });

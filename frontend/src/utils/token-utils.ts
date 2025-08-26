@@ -12,6 +12,10 @@ export const getClaim = (
   return value == null ? undefined : String(value);
 };
 
+export const getClientIdFromToken = (token: string) => {
+  return getClaim(decodeJwt(token), 'nhs-notify:client-id');
+};
+
 export const getIdTokenClaims = (
   idToken: string
 ): {
