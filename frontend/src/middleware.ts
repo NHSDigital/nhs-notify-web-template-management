@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getSessionServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
+import { getClientIdFromToken } from '@utils/token-utils';
 
 const protectedPaths = [
   /^\/choose-a-template-type$/,
@@ -42,6 +43,7 @@ const publicPaths = [
   /^\/auth\/signin$/,
   /^\/auth\/signout$/,
   /^\/auth\/idle$/,
+  /^\/auth\/request-to-be-added-to-a-service$/,
 ];
 
 function getContentSecurityPolicy(nonce: string) {
@@ -96,14 +98,14 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const { accessToken } = await getSessionServer({ forceRefresh: true });
+  const { accessToken, idToken } = await getSessionServer({
+    forceRefresh: true,
+  });
 
-  if (!accessToken) {
+  if (!accessToken || !idToken) {
     const redirectResponse = NextResponse.redirect(
       new URL(
-        `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}${request.nextUrl.pathname}`
-        )}`,
+        `/auth?redirect=${encodeURIComponent(`${getBasePath()}${pathname}`)}`,
         request.url
       )
     );
@@ -111,6 +113,21 @@ export async function middleware(request: NextRequest) {
     redirectResponse.headers.set('Content-Type', 'text/html');
 
     redirectResponse.cookies.delete('csrf_token');
+
+    return redirectResponse;
+  }
+
+  const hasClientId =
+    getClientIdFromToken(accessToken) || getClientIdFromToken(idToken);
+
+  if (!hasClientId) {
+    const missingClientIdRedirect = new URL(
+      `/auth/request-to-be-added-to-a-service?redirect=${encodeURIComponent(
+        `${getBasePath()}${pathname}`
+      )}`,
+      request.url
+    );
+    const redirectResponse = NextResponse.redirect(missingClientIdRedirect);
 
     return redirectResponse;
   }
