@@ -137,6 +137,6 @@ jobs:
               fi
             fi
 
-            echo "Workflow still running..."
+            echo "Workflow still running...."
             sleep 20
           done
