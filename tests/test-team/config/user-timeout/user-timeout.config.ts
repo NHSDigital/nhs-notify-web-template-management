@@ -4,20 +4,22 @@ import baseConfig from '../playwright.config';
 
 const buildCommand = [
   'INCLUDE_AUTH_PAGES=true',
+  'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
+  'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
   'npm run build && npm run start',
 ].join(' ');
 
 export default defineConfig({
   ...baseConfig,
-  fullyParallel: true,
-  timeout: 60_000, // 30 seconds in the playwright default
+
+  timeout: 30_000, // 30 seconds in the playwright default
   expect: {
     timeout: 10_000, // default is 5 seconds. After creating and previewing sometimes the load is slow on a cold start
   },
   projects: [
     {
-      name: 'e2e:setup',
-      testMatch: 'e2e.setup.ts',
+      name: 'component:setup',
+      testMatch: 'component.setup.ts',
       use: {
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
@@ -26,21 +28,23 @@ export default defineConfig({
       },
     },
     {
-      name: 'e2e',
-      testMatch: '*.e2e.spec.ts',
+      name: 'modal',
+      testMatch: 'template-mgmt-logout-warning.component.modal.spec.ts',
       use: {
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
-        storageState: path.resolve(__dirname, '../.auth/e2e/user.json'),
+        storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
-      dependencies: ['e2e:setup'],
-      teardown: 'e2e:teardown',
+      timeout: 60_000,
+      dependencies: ['component:setup'],
+      teardown: 'component:teardown',
+      fullyParallel: true, // make these sets of tests parallel due to their slow nature.
     },
     {
-      name: 'e2e:teardown',
-      testMatch: 'e2e.teardown.ts',
+      name: 'component:teardown',
+      testMatch: 'component.teardown.ts',
     },
   ],
   /* Run your local dev server before starting the tests */
