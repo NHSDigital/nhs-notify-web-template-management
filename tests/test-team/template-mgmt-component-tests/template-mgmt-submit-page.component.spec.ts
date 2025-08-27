@@ -5,7 +5,7 @@ import { Template } from '../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { assertGoBackButton } from './template-mgmt-submit-common.steps';
@@ -219,7 +219,7 @@ test.describe('Submit template Page', () => {
         `${baseURL}/templates/submit-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`
       );
 
-      await expect(submitTemplatePage.pageHeader).toHaveText(expectedHeading);
+      await expect(submitTemplatePage.pageHeading).toHaveText(expectedHeading);
     });
 
     // eslint-disable-next-line no-loop-func
@@ -232,7 +232,7 @@ test.describe('Submit template Page', () => {
         };
 
         await assertSkipToMainContent(props);
-        await assertNotifyBannerLink(props);
+        await assertHeaderLogoLink(props);
         await assertSignOutLink(props);
         await assertFooterLinks(props);
         await assertGoBackButton({

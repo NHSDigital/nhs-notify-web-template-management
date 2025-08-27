@@ -1,12 +1,8 @@
-@use 'nhsuk-frontend/packages/core/settings/colours' as nhsuk;
-
 .auth-link {
-  &__link {
-    color: nhsuk.$color_nhsuk-white;
-    padding: 1em;
+  color: var(--color_nhsuk-white);
+  padding: 1em;
 
-    &:visited {
-      color: nhsuk.$color_nhsuk-white;
-    }
+  &:visited {
+    color: var(--color_nhsuk-white);
   }
 }

@@ -23,7 +23,7 @@ export const LogoutWarningModal = ({
   promptBeforeLogoutSeconds: number;
   logoutInSeconds: number;
 }) => {
-  const { signOut } = content.components.header.links;
+  const { signOut } = content.components.header.accountInfo.links;
   const { logoutWarning } = content.components;
 
   const initialTime = formatTime(promptBeforeLogoutSeconds);

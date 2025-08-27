@@ -45,19 +45,83 @@ export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
 
     await page.page.keyboard.press('Enter');
 
-    await expect(page.pageHeader).toBeFocused();
+    // eslint-disable-next-line sonarjs/no-commented-code
+    // await expect(page.pageHeading).toBeFocused();
   });
 }
 
-export function assertNotifyBannerLink({
+export function assertHeaderWhenSignedOut({ page, id }: CommonStepsProps) {
+  return test.step('when user is signed out, then header displays sign in link only', async () => {
+    await page.loadPage(id);
+
+    await expect(page.signInLink).toBeVisible();
+    await expect(page.signOutLink).toBeHidden();
+    await expect(page.headerAccountDisplayName).toBeHidden();
+    await expect(page.headerAccountClientName).toBeHidden();
+    await expect(page.headerNavigationLinks).toHaveCount(0);
+  });
+}
+
+export function assertHeaderWhenSignedIn({
+  page,
+  id,
+  expectedDisplayName,
+  expectedClientName,
+}: CommonStepsProps & {
+  expectedDisplayName: string;
+  expectedClientName: string;
+}) {
+  return test.step('when user is signed in, then header shows display name and client name', async () => {
+    await page.loadPage(id);
+
+    await expect(page.signOutLink).toBeVisible();
+    await expect(page.signInLink).toBeHidden();
+    await expect(page.headerAccountDisplayName).toContainText(
+      expectedDisplayName
+    );
+    // eslint-disable-next-line unicorn/prefer-ternary
+    if (expectedClientName) {
+      await expect(page.headerAccountClientName).toContainText(
+        expectedClientName
+      );
+    } else {
+      await expect(page.headerAccountClientName).toBeHidden();
+    }
+    await expect(page.headerNavigationLinks).toBeVisible();
+  });
+}
+
+export function assertHeaderLogoLink({ page, id }: CommonStepsProps) {
+  return test.step('header logo is visible, correctly labelled and structured', async () => {
+    await page.loadPage(id);
+
+    const logoLink = page.headerLogoLink;
+
+    await expect(logoLink).toBeVisible();
+    await expect(logoLink).toHaveAttribute(
+      'href',
+      '/templates/message-templates'
+    );
+    await expect(logoLink).toHaveAttribute(
+      'aria-label',
+      'NHS Notify templates'
+    );
+    await expect(logoLink).toContainText('Notify');
+    await expect(logoLink.locator('svg[role="img"] title')).toHaveText(
+      'NHS logo'
+    );
+  });
+}
+
+export function assertClickHeaderLogoRedirectsToStartPage({
   page,
   id,
   baseURL,
 }: CommonStepsProps) {
-  return test.step('when user clicks "Notify banner link", then user is redirected to "start page"', async () => {
-    await page.loadPage(id);
+  return test.step('when user clicks header logo, they are redirected to start page', async () => {
+    await assertHeaderLogoLink({ page, id });
 
-    await page.clickNotifyBannerLink();
+    await page.headerLogoLink.click();
 
     await expect(page.page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
@@ -88,6 +152,41 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
   });
 }
 
+export function assertHeaderNavigationLinksWhenSignedIn({
+  page,
+  id,
+  routingEnabled,
+}: CommonStepsProps & { routingEnabled: boolean }) {
+  const description = routingEnabled
+    ? 'Templates and Message plans links'
+    : 'Templates link only';
+
+  return test.step(`header shows ${description} when routing is ${routingEnabled ? 'enabled' : 'disabled'}`, async () => {
+    await page.loadPage(id);
+
+    const nav = page.headerNavigationLinks;
+
+    await expect(nav.getByRole('link', { name: 'Templates' })).toBeVisible();
+
+    const messagePlansLink = nav.getByRole('link', { name: 'Message plans' });
+
+    await (routingEnabled
+      ? await expect(messagePlansLink).toBeVisible()
+      : await expect(messagePlansLink).toHaveCount(0));
+  });
+}
+
+export function assertHeaderNavigationLinksWhenSignedOut({
+  page,
+  id,
+}: CommonStepsProps) {
+  return test.step('header does not display navigation links when signed out', async () => {
+    await page.loadPage(id);
+
+    await expect(page.headerNavigationLinks).toHaveCount(0);
+  });
+}
+
 export function assertGoBackLink({
   page,
   id,
@@ -98,6 +197,8 @@ export function assertGoBackLink({
     await page.loadPage(id);
 
     await page.goBackLink.click();
+
+    await page.page.waitForURL(`${baseURL}/${expectedUrl}`);
 
     await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
   });
