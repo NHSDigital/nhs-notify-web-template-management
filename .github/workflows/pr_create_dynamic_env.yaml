@@ -18,7 +18,6 @@ jobs:
       - name: Trigger nhs-notify-internal dynamic environment workflow
         needs: generate-sandbox-name
         uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        secrets: inherit
         with:
           jobName: Sandbox set up
           infraRepoName: nhs-notify-web-template-management
