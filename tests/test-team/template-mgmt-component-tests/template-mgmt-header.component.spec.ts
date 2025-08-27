@@ -48,7 +48,6 @@ test.describe('Header component', () => {
 
   test(`when user is signed out, header shows only logo and 'sign in' link`, async ({
     page,
-    baseURL,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
@@ -56,14 +55,11 @@ test.describe('Header component', () => {
     await assertHeaderWhenSignedOut({ page: startPage });
     await assertHeaderNavigationLinksWhenSignedOut({ page: startPage });
     await assertSignInLink({ page: startPage });
-    await assertClickHeaderLogoRedirectsToStartPage({
-      page: startPage,
-      baseURL,
-    });
   });
 
   test(`when user is signed in, header shows account information and 'sign out' link`, async ({
     page,
+    baseURL,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
@@ -77,6 +73,10 @@ test.describe('Header component', () => {
       expectedClientName: userWithRoutingEnabled.clientName ?? '',
     });
     await assertSignOutLink({ page: startPage });
+    await assertClickHeaderLogoRedirectsToStartPage({
+      page: startPage,
+      baseURL,
+    });
   });
 
   test('when user has all identity attributes, header shows preferred username and client name', async ({
