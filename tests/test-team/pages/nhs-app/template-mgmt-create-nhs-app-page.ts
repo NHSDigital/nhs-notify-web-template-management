@@ -49,7 +49,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic
   }
 
   async waitForPageToLoad() {
-    const characterCountLocator = this.page.locator('[id="character-count-0"]');
+    const characterCountLocator = this.page.getByTestId('character-count-0');
     await expect(characterCountLocator).toBeVisible();
   }
 
