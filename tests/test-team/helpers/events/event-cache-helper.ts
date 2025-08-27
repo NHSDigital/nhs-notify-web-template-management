@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
   ListObjectsV2Command,
   S3Client,
@@ -5,18 +6,19 @@ import {
   SelectObjectContentEventStream,
   _Object,
 } from '@aws-sdk/client-s3';
-import { Template } from '../types';
+import {
+  $TemplateCompletedEventV1,
+  $TemplateDeletedEventV1,
+  $TemplateDraftedEventV1,
+} from '@nhsdigital/nhs-notify-event-schemas-template-management';
 
-interface SNSEnvelope {
-  Message: string;
-}
+const $NHSNotifyTemplateEvent = z.discriminatedUnion('type', [
+  $TemplateCompletedEventV1,
+  $TemplateDraftedEventV1,
+  $TemplateDeletedEventV1,
+]);
 
-// TODO: Remove once we have the proper types merged in
-interface TemplateEvent {
-  id: string;
-  type: string;
-  data: Template;
-}
+type NHSNotifyTemplateEvent = z.infer<typeof $NHSNotifyTemplateEvent>;
 
 export class EventCacheHelper {
   private readonly s3 = new S3Client({ region: 'eu-west-2' });
@@ -25,7 +27,7 @@ export class EventCacheHelper {
   async findEvents(
     from: Date,
     templateIds: string[]
-  ): Promise<TemplateEvent[]> {
+  ): Promise<NHSNotifyTemplateEvent[]> {
     if (templateIds.length === 0) {
       return [];
     }
@@ -80,7 +82,7 @@ export class EventCacheHelper {
   private async queryFileForEvents(
     fileName: string,
     templateIds: string[]
-  ): Promise<TemplateEvent[]> {
+  ): Promise<NHSNotifyTemplateEvent[]> {
     const command = new SelectObjectContentCommand({
       Bucket: this.bucketName,
       Key: fileName,
@@ -101,13 +103,14 @@ export class EventCacheHelper {
       return [];
     }
 
-    return await this.processS3SelectResponse(response.Payload);
+    return await this.processS3SelectResponse(fileName, response.Payload);
   }
 
   private async processS3SelectResponse(
+    fileName: string,
     payload: AsyncIterable<SelectObjectContentEventStream>
-  ): Promise<TemplateEvent[]> {
-    const events: TemplateEvent[] = [];
+  ): Promise<NHSNotifyTemplateEvent[]> {
+    const events: NHSNotifyTemplateEvent[] = [];
 
     for await (const event of payload) {
       if (!event.Records?.Payload) continue;
@@ -118,8 +121,23 @@ export class EventCacheHelper {
         .split('\n')
         .filter((line) => line.trim())
         .map((line) => {
-          const snsWrapper = JSON.parse(line) as SNSEnvelope;
-          return JSON.parse(snsWrapper.Message) as TemplateEvent;
+          const snsWrapper = JSON.parse(line);
+
+          const message = JSON.parse(snsWrapper.Message);
+
+          const { data, success, error } =
+            $NHSNotifyTemplateEvent.safeParse(message);
+
+          if (!success) {
+            throw new Error(
+              `Unrecognized event schema detected in S3 file: ${fileName}`,
+              {
+                cause: { error },
+              }
+            );
+          }
+
+          return data;
         });
 
       events.push(...parsedEvents);

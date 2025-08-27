@@ -10,5 +10,7 @@
       "siblings_only": true
     },
     "MD033": false
-  }
+  },
+  "jestrunner.jestPath": "/Users/benjamin.hansell/projects/nhs-notify-web-template-management/node_modules/jest/bin/jest.js",
+  "jestrunner.projectPath": "/Users/benjamin.hansell/projects/nhs-notify-web-template-management/frontend"
 }

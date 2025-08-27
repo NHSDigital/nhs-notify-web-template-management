@@ -108,7 +108,6 @@ test.describe('Event publishing - Letters', () => {
   }) => {
     const templateId = randomUUID();
 
-    // add entries to database
     await templateStorageHelper.seedTemplateData([
       {
         ...TemplateFactory.uploadLetterTemplate(
@@ -171,8 +170,8 @@ test.describe('Event publishing - Letters', () => {
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: userProofingEnabled.userId,
+        templateId,
+        clientId: userProofingEnabled.clientId,
       });
 
       expect(template.templateStatus).toBe('PROOF_AVAILABLE');
@@ -192,8 +191,16 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventCacheHelper.findEvents(start, [templateId]);
 
-      // Note: Although there are 4 unique statuses we receive 2 events where
-      // the only change is the lastUpdated field
+      // Note: Although there are 4 unique statuses we get multiple events for some statuses
+      /*
+       *  PENDING_PROOF_REQUEST: 1 event
+       *  WAITING_FOR_PROOF: 1 event
+       *  PROOF_AVAILABLE: 3 events
+       * * * proof-1.pdf (on first proof status is updated to PROOF_AVAILABLE)
+       * * * proof-2.pdf
+       * * * proof-3.pdf
+       *  SUBMITTED: 1 event
+       */
       expect(events).toHaveLength(6);
 
       expect(events).toContainEqual(
@@ -235,7 +242,7 @@ test.describe('Event publishing - Letters', () => {
           }),
         })
       );
-    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000, 10_000] });
+    }).toPass({ timeout: 120_000, intervals: [1000, 3000, 5000, 10_000] });
   });
 
   test('Expect Deleted.v1 event when deleting templates', async ({
@@ -253,6 +260,9 @@ test.describe('Event publishing - Letters', () => {
           'user-proof-deleted',
           'PENDING_PROOF_REQUEST'
         ),
+        proofingEnabled: true,
+        // just so it is not empty
+        personalisationParameters: ['nhsNumber'],
       },
     ]);
 

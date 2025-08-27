@@ -18,6 +18,6 @@ module "eventpub" {
   event_cache_buffer_interval        = 0
   sns_success_logging_sample_percent = 0
 
-  data_plane_bus_arn    = "unknown"
-  control_plane_bus_arn = "unknown"
+  data_plane_bus_arn    = "n/a"
+  control_plane_bus_arn = "n/a"
 }

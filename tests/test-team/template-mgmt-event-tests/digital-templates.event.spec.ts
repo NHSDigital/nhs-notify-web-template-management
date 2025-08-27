@@ -53,8 +53,8 @@ test.describe('Event publishing - Digital', () => {
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
-          id: templateId,
-          owner: user1.userId,
+          templateId: templateId,
+          clientId: user1.clientId,
         });
 
         const updateResponse = await request.post(
@@ -150,8 +150,8 @@ test.describe('Event publishing - Digital', () => {
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
-          id: templateId,
-          owner: user1.userId,
+          templateId: templateId,
+          clientId: user1.clientId,
         });
 
         const updateResponse = await request.delete(
