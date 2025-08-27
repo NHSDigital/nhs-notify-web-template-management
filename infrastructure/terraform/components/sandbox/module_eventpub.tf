@@ -18,6 +18,6 @@ module "eventpub" {
   event_cache_buffer_interval        = 0
   sns_success_logging_sample_percent = 0
 
-  data_plane_bus_arn    = "n/a"
-  control_plane_bus_arn = "n/a"
+  data_plane_bus_arn    = "arn:aws:events:eu-west-2:099709604300:event-bus/nhs-main-events-data-plane"
+  control_plane_bus_arn = "arn:aws:events:eu-west-2:099709604300:event-bus/nhs-main-events-control-plane"
 }
