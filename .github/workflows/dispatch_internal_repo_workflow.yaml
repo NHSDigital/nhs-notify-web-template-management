@@ -114,7 +114,7 @@ jobs:
                   --arg targetAccountGroup "${{ inputs.targetAccountGroup }}" \
                   --arg targetComponent "${{ inputs.targetComponent }}" \
                   --arg terraformAction "${{ inputs.terraformAction }}" \
-                '.workflow_runs[]
+                '[.workflow_runs[]
                   | select(.path == ".github/workflows/" + $targetWorkflow)
                   | select(.name
                       | contains($targetEnvironment)
@@ -126,7 +126,7 @@ jobs:
                       then select(.name | contains("caller:" + $callerRunId))
                       else .
                     end
-                  | .url')
+                ] | sort_by(.id) | last | .url')
 
             if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
               ui_url=${workflow_run_url/api./}
