@@ -42,7 +42,13 @@ export class EventCacheHelper {
 
     const results = await Promise.all(eventPromises);
 
-    return results.flat();
+    return results
+      .flat()
+      .sort(
+        (a, b) =>
+          new Date(a.data.updatedAt).getTime() -
+          new Date(b.data.updatedAt).getTime()
+      );
   }
 
   private filterAndSortFiles(files: _Object[], from: Date): _Object[] {

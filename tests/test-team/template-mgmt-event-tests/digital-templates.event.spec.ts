@@ -85,7 +85,7 @@ test.describe('Event publishing - Digital', () => {
         expect(submitResponse.status()).toBe(200);
 
         await expect(async () => {
-          const events = await eventCacheHelper.findEvents(start, [templateId]);
+          const events = await eventCacheHelper.findEventsSorted(start, [templateId]);
 
           expect(events).toHaveLength(3);
 
@@ -166,7 +166,7 @@ test.describe('Event publishing - Digital', () => {
         expect(updateResponse.status()).toBe(204);
 
         await expect(async () => {
-          const events = await eventCacheHelper.findEvents(start, [templateId]);
+          const events = await eventCacheHelper.findEventsSorted(start, [templateId]);
 
           expect(events).toHaveLength(2);
 

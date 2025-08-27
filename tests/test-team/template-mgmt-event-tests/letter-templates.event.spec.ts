@@ -58,7 +58,7 @@ test.describe('Event publishing - Letters', () => {
     await templateStorageHelper.seedTemplateData(templates);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(
+      const events = await eventCacheHelper.findEventsSorted(
         start,
         templates.map((r) => r.id)
       );
@@ -97,7 +97,7 @@ test.describe('Event publishing - Letters', () => {
     expect(submittedResponse.status()).toBe(200);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventCacheHelper.findEventsSorted(start, [templateId]);
 
       expect(events).toHaveLength(0);
     }).toPass({ timeout: 60_000, intervals: [5000] });
@@ -189,7 +189,7 @@ test.describe('Event publishing - Letters', () => {
     expect(submitResponse.status()).toBe(200);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventCacheHelper.findEventsSorted(start, [templateId]);
 
       // Note: Although there are 4 unique statuses we get multiple events for some statuses
       /*
@@ -278,7 +278,7 @@ test.describe('Event publishing - Letters', () => {
     expect(deletedResponse.status()).toBe(204);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventCacheHelper.findEventsSorted(start, [templateId]);
 
       expect(events).toHaveLength(2);
 
