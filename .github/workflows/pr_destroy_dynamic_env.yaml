@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/reusable_internal_repo_build.yaml
     secrets: inherit
     with:
-      jobName: Sandbox set up
+      jobName: Branch tear down
       infraRepoName: nhs-notify-web-template-management
       releaseVersion: main
       targetWorkflow: dispatch-deploy-dynamic-env.yaml
