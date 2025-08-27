@@ -12,7 +12,9 @@ concurrency:
 jobs:
   create-dynamic-environment:
     name: Create Dynamic Environment
-    needs: generate-sandbox-name
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
     secrets: inherit
     with:
