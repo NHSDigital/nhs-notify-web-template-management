@@ -127,7 +127,6 @@ jobs:
                       and contains($targetComponent)
                       and contains($terraformAction)
                   )
-                  |
                     end
                   | .url')
 
