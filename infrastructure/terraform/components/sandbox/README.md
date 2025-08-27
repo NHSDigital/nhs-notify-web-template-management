@@ -28,6 +28,7 @@
 |------|--------|---------|
 | <a name="module_backend_api"></a> [backend\_api](#module\_backend\_api) | ../../modules/backend-api | n/a |
 | <a name="module_cognito_triggers"></a> [cognito\_triggers](#module\_cognito\_triggers) | ../../modules/cognito-triggers | n/a |
+| <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v2.0.16 |
 ## Outputs
 
 | Name | Description |
@@ -38,6 +39,7 @@
 | <a name="output_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#output\_cognito\_user\_pool\_id) | n/a |
 | <a name="output_deployment"></a> [deployment](#output\_deployment) | Deployment details used for post-deployment scripts |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
+| <a name="output_event_cache_bucket_name"></a> [event\_cache\_bucket\_name](#output\_event\_cache\_bucket\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
