@@ -127,9 +127,7 @@ jobs:
                       and contains($targetComponent)
                       and contains($terraformAction)
                   )
-                  | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-                      then select(.name | contains("caller:" + $callerRunId))
-                      else .
+                  |
                     end
                   | .url')
 
