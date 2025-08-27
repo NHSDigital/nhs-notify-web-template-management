@@ -119,7 +119,9 @@ test.describe('Protected Routes Tests', () => {
       const appPage = new PageModel(page);
       const isDynamic = appPage instanceof TemplateMgmtBasePageDynamic;
 
-      await (isDynamic ? appPage.loadPage('template-id') : appPage.loadPage());
+      await (isDynamic
+        ? appPage.attemptToLoadPageExpectFailure('template-id')
+        : appPage.attemptToLoadPageExpectFailure());
 
       const redirectPath = encodeURIComponent(
         isDynamic
