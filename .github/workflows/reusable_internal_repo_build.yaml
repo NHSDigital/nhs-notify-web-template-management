@@ -29,10 +29,6 @@ on:
         type: string
         description: The Terraform component to deploy
         default: plan
-      overrides:
-        type: string
-        description: Comma separated list of pipeline overrides in OVR_XXX=YYYY format
-        default: ""
 
 concurrency:
   group: ${{ inputs.targetEnvironment }}-${{ inputs.targetAccountGroup }}-${{ inputs.targetComponent }}-${{ inputs.terraformAction }}
@@ -59,15 +55,13 @@ jobs:
             --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
             --arg targetComponent ${{ inputs.targetComponent }} \
             --arg terraformAction ${{ inputs.terraformAction }} \
-            --arg overrides ${{ inputs.overrides }} \
             '{ "ref": "main",
               "inputs": {
                 "releaseVersion", $releaseVersion,
                 "targetEnvironment", $targetEnvironment,
                 "targetAccountGroup", $targetAccountGroup,
                 "targetComponent", $targetComponent,
-                "terraformAction", $terraformAction,
-                "overrides", $overrides
+                "terraformAction", $terraformAction
               }
             }')
 

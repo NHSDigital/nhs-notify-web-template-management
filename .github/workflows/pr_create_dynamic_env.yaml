@@ -15,7 +15,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: ./.github/workflows/reusable_internal_repo_build.yaml
+    uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
     secrets: inherit
     with:
       jobName: Sandbox set up

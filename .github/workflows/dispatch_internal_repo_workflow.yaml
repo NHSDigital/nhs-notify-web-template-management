@@ -39,6 +39,10 @@ on:
         type: string
         description: Internal repo reference (branch or tag)
         default: "main"
+      overrides:
+        type: string
+        description: Comma separated list of pipeline overrides in OVR_XXX=YYYY format
+        default: ""
 
 permissions:
   id-token: write
@@ -69,6 +73,7 @@ jobs:
           --arg terraformAction "${{ inputs.terraformAction }}" \
           --arg callerRunId "$callerRunId" \
           --arg targetWorkflow "${{ inputs.targetWorkflow }}" \
+          --arg overrides "${{ inputs.overrides }}" \
           '{
             "ref": "${{ inputs.internalRef }}",
             "inputs": (
@@ -82,6 +87,7 @@ jobs:
               } +
               (if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
                 then { "callerRunId": $callerRunId } else {} end)
+              + (if $overrides != "" then { "overrides": $overrides } else {} end)
             )
           }')
 
@@ -114,6 +120,7 @@ jobs:
                   --arg targetAccountGroup "${{ inputs.targetAccountGroup }}" \
                   --arg targetComponent "${{ inputs.targetComponent }}" \
                   --arg terraformAction "${{ inputs.terraformAction }}" \
+                  --arg overrides "${{ inputs.overrides }}" \
                 '.workflow_runs[]
                   | select(.path == ".github/workflows/" + $targetWorkflow)
                   | select(.name
