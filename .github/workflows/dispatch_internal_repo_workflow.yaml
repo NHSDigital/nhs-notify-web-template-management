@@ -84,9 +84,7 @@ jobs:
                 "targetEnvironment": $targetEnvironment,
                 "targetAccountGroup": $targetAccountGroup,
                 "targetComponent": $targetComponent
-              } +
-              (if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-                then { "callerRunId": $callerRunId } else {} end)
+              }
               + (if $overrides != "" then { "overrides": $overrides } else {} end)
             )
           }')
