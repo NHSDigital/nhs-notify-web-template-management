@@ -12,19 +12,16 @@ concurrency:
 jobs:
   create-dynamic-environment:
     name: Create Dynamic Environment
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Trigger nhs-notify-internal dynamic environment workflow
-        needs: generate-sandbox-name
-        uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        with:
-          jobName: Sandbox set up
-          infraRepoName: nhs-notify-web-template-management
-          releaseVersion: ${{ github.head_ref || github.ref_name }}
-          targetWorkflow: dispatch-deploy-dynamic-env.yaml
-          targetEnvironment: pr${{ github.event.number }}
-          targetAccountGroup: nhs-notify-template-management-dev
-          targetComponent: branch
-          terraformAction: apply
-          overrides: branch_name=${{ github.head_ref || github.ref_name }}
+    needs: generate-sandbox-name
+    uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
+    secrets: inherit
+    with:
+      jobName: Sandbox set up
+      infraRepoName: nhs-notify-web-template-management
+      releaseVersion: ${{ github.head_ref || github.ref_name }}
+      targetWorkflow: dispatch-deploy-dynamic-env.yaml
+      targetEnvironment: pr${{ github.event.number }}
+      targetAccountGroup: nhs-notify-template-management-dev
+      targetComponent: branch
+      terraformAction: apply
+      overrides: branch_name=${{ github.head_ref || github.ref_name }}
