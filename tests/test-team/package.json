@@ -29,6 +29,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test:api": "playwright test --project api -c config/api/api.config.ts",
     "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",
+    "test:user-timeout": "playwright test -c config/user-timeout/user-timeout.config.ts",
     "test:local-ui": "playwright test -c config/component/component.config.ts",
     "test:unit": "echo \"Unit tests not required\"",
     "typecheck": "tsc --noEmit"
