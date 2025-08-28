@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { FetchAuthSessionOptions } from 'aws-amplify/auth';
-import { decodeJwt, getClaim } from './token-utils';
+import { decodeJwt, getClaim, getClientIdFromToken } from './token-utils';
 
 const config = require('@/amplify_outputs.json');
 
@@ -29,7 +29,7 @@ export async function getSessionServer(
   });
 
   const accessToken = session?.tokens?.accessToken?.toString();
-  const clientId = accessToken && getClientId(accessToken);
+  const clientId = accessToken && getClientIdFromToken(accessToken);
 
   const idToken = session?.tokens?.idToken?.toString();
 
@@ -51,8 +51,4 @@ const getAccessTokenParam = async (key: string) => {
 
 export const getSessionId = async () => {
   return getAccessTokenParam('origin_jti');
-};
-
-export const getClientId = (accessToken: string) => {
-  return getClaim(decodeJwt(accessToken), 'nhs-notify:client-id');
 };
