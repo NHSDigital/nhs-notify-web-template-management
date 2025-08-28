@@ -127,7 +127,7 @@ test('returns Deny policy when authorisation succeeds but clientId is missing', 
   );
 });
 
-test('returns Deny policy when authorize succeeds but clientId is empty/whitespace', async () => {
+test('returns Deny policy when authorisation succeeds but clientId is empty/whitespace', async () => {
   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
     success: true,
     subject: 'sub',
