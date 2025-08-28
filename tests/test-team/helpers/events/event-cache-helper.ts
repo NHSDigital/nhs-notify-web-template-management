@@ -33,7 +33,7 @@ export class EventCacheHelper {
     }
 
     const files = await Promise.all(
-      this.filePaths(from).map((path) => {
+      this.buildFilePaths(from).map((path) => {
         return S3Helper.listAll(this.bucketName, path);
       })
     );
@@ -91,12 +91,9 @@ export class EventCacheHelper {
         .split('\n')
         .filter((line) => line.trim())
         .map((line) => {
-          const snsWrapper = JSON.parse(line);
-
-          const message = JSON.parse(snsWrapper.Message);
-
-          const { data, success, error } =
-            $NHSNotifyTemplateEvent.safeParse(message);
+          const { data, success, error } = $NHSNotifyTemplateEvent.safeParse(
+            JSON.parse(line)
+          );
 
           if (!success) {
             throw new Error(
@@ -118,34 +115,32 @@ export class EventCacheHelper {
 
   /*
    * Get files paths for the current hour
-   * and next hour if the different in seconds is greater than toleranceInSeconds
+   * and next hour if the difference in seconds is greater than toleranceInSeconds
    *
    * The way firehose stores files is yyyy/mm/dd/hh.
    * On a boundary of 15:59:58 you'll find files in both 15 and 16 hour folders
    */
-  private filePaths(start: Date, toleranceInSeconds = 30): string[] {
-    const paths = [this.getEventCachePrefix(start)];
+  private buildFilePaths(start: Date, toleranceInSeconds = 30): string[] {
+    const paths = [this.buildPathPrefix(start)];
 
     const end = addHours(start, 1);
 
     const difference = differenceInSeconds(end, start);
 
     if (difference >= toleranceInSeconds) {
-      paths.push(this.getEventCachePrefix(end));
+      paths.push(this.buildPathPrefix(end));
     }
 
     return paths;
   }
 
   private buildS3Query(templateIds: string[]): string {
-    const likeConditions = templateIds
-      .map((id) => `s.Message LIKE '%${id}%'`)
-      .join(' OR ');
+    const formattedIds = templateIds.map((r) => `'${r}'`);
 
-    return `SELECT * FROM S3Object s WHERE ${likeConditions}`;
+    return `SELECT * FROM S3Object s WHERE s.data.id IN (${formattedIds})`;
   }
 
-  private getEventCachePrefix(date: Date): string {
+  private buildPathPrefix(date: Date): string {
     return date
       .toISOString()
       .slice(0, 13)
