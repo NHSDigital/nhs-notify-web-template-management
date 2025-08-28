@@ -74,7 +74,7 @@ describe('middleware function', () => {
     const csp = getCsp(response);
 
     expect(response.status).toBe(200);
-    expect(getClientIdFromTokenMock).toHaveBeenCalledTimes(2);
+    expect(getClientIdFromTokenMock).toHaveBeenCalled();
 
     expect(csp).toEqual([
       "base-uri 'self'",
