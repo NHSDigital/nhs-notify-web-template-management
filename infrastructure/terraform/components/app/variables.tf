@@ -68,6 +68,12 @@ variable "kms_deletion_window" {
   default     = "30"
 }
 
+variable "force_destroy" {
+  type        = bool
+  description = "Boolean to toggle force destroy of bucket. Defaults to true; should be changed in exceptional circumstances"
+  default     = false
+}
+
 variable "parent_acct_environment" {
   type        = string
   description = "Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments"

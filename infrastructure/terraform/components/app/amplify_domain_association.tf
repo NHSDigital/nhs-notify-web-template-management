@@ -13,4 +13,8 @@ resource "aws_amplify_domain_association" "domain" {
     branch_name = var.branch_name
     prefix      = var.url_prefix
   }
+
+  depends_on = [
+    null_resource.initial_amplify_branch_build
+  ]
 }
