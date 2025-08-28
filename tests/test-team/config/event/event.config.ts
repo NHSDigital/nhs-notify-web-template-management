@@ -5,7 +5,6 @@ export default defineConfig({
   ...baseConfig,
 
   timeout: 120_000,
-  workers: 1,
   projects: [
     {
       name: 'event:setup',
@@ -16,6 +15,7 @@ export default defineConfig({
       testMatch: '*.event.spec.ts',
       dependencies: ['event:setup'],
       teardown: 'event:teardown',
+      fullyParallel: true,
     },
     {
       name: 'event:teardown',
