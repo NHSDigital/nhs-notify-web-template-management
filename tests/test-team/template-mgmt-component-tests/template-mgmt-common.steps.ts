@@ -41,10 +41,15 @@ export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
 
     await page.page.keyboard.press('Tab');
 
+    await expect(page.skipLink).toHaveAttribute('href', '#maincontent');
+
     await expect(page.skipLink).toBeFocused();
 
     await page.page.keyboard.press('Enter');
 
+    await expect(page.page.locator('#maincontent')).toBeVisible();
+
+    // TODO: CCM-11939 Reinstate this assertion
     // eslint-disable-next-line sonarjs/no-commented-code
     // await expect(page.pageHeading).toBeFocused();
   });
