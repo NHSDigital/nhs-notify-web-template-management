@@ -98,16 +98,15 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const { accessToken, idToken } = await getSessionServer({
+  const { accessToken } = await getSessionServer({
     forceRefresh: true,
   });
 
-  if (!accessToken || !idToken) {
+  if (!accessToken) {
+    const path = `${getBasePath()}${pathname}`;
+
     const redirectResponse = NextResponse.redirect(
-      new URL(
-        `/auth?redirect=${encodeURIComponent(`${getBasePath()}${pathname}`)}`,
-        request.url
-      )
+      new URL(`/auth?redirect=${encodeURIComponent(path)}`, request.url)
     );
 
     redirectResponse.headers.set('Content-Type', 'text/html');
@@ -117,8 +116,7 @@ export async function middleware(request: NextRequest) {
     return redirectResponse;
   }
 
-  const hasClientId =
-    getClientIdFromToken(accessToken) || getClientIdFromToken(idToken);
+  const hasClientId = getClientIdFromToken(accessToken);
 
   if (!hasClientId) {
     const missingClientIdRedirect = new URL(
