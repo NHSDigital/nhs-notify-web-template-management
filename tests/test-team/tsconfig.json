@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@nhsdigital/nhs-notify-event-schemas-template-management": [
         "../../packages/event-schemas/src/index.ts"

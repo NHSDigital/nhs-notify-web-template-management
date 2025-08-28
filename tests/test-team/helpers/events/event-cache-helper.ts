@@ -1,16 +1,16 @@
 import { z } from 'zod';
 import {
-  ListObjectsV2Command,
   S3Client,
   SelectObjectContentCommand,
   SelectObjectContentEventStream,
-  _Object,
 } from '@aws-sdk/client-s3';
 import {
   $TemplateCompletedEventV1,
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
 } from '@nhsdigital/nhs-notify-event-schemas-template-management';
+import { differenceInSeconds, addHours } from 'date-fns';
+import { S3Helper } from '../s3-helper';
 
 const $NHSNotifyTemplateEvent = z.discriminatedUnion('type', [
   $TemplateCompletedEventV1,
@@ -32,9 +32,13 @@ export class EventCacheHelper {
       return [];
     }
 
-    const files = await this.getAllS3items(this.buildEventCachePrefix(from));
+    const files = await Promise.all(
+      this.filePaths(from).map((path) => {
+        return S3Helper.listAll(this.bucketName, path);
+      })
+    );
 
-    const filteredFiles = this.filterAndSortFiles(files, from);
+    const filteredFiles = S3Helper.filterAndSort(files.flat(), from);
 
     const eventPromises = filteredFiles.map((file) =>
       this.queryFileForEvents(file.Key!, templateIds)
@@ -42,47 +46,7 @@ export class EventCacheHelper {
 
     const results = await Promise.all(eventPromises);
 
-    return results
-      .flat()
-      .sort(
-        (a, b) =>
-          new Date(a.data.updatedAt).getTime() -
-          new Date(b.data.updatedAt).getTime()
-      );
-  }
-
-  private filterAndSortFiles(files: _Object[], from: Date): _Object[] {
-    return files
-      .filter(
-        ({ LastModified }) => (LastModified?.getTime() ?? 0) > from.getTime()
-      )
-      .sort(
-        (a, b) =>
-          (b.LastModified?.getTime() ?? 0) - (a.LastModified?.getTime() ?? 0)
-      );
-  }
-
-  private async getAllS3items(prefix: string): Promise<_Object[]> {
-    const allItems: _Object[] = [];
-    let continuationToken: string | undefined;
-
-    do {
-      const command = new ListObjectsV2Command({
-        Bucket: this.bucketName,
-        Prefix: prefix,
-        ContinuationToken: continuationToken,
-      });
-
-      const response = await this.s3.send(command);
-
-      if (response.Contents) {
-        allItems.push(...response.Contents);
-      }
-
-      continuationToken = response.NextContinuationToken;
-    } while (continuationToken);
-
-    return allItems;
+    return results.flat();
   }
 
   private async queryFileForEvents(
@@ -109,10 +73,10 @@ export class EventCacheHelper {
       return [];
     }
 
-    return await this.processS3SelectResponse(fileName, response.Payload);
+    return await this.parse(fileName, response.Payload);
   }
 
-  private async processS3SelectResponse(
+  private async parse(
     fileName: string,
     payload: AsyncIterable<SelectObjectContentEventStream>
   ): Promise<NHSNotifyTemplateEvent[]> {
@@ -152,6 +116,27 @@ export class EventCacheHelper {
     return events;
   }
 
+  /*
+   * Get files paths for the current hour
+   * and next hour if the different in seconds is greater than toleranceInSeconds
+   *
+   * The way firehose stores files is yyyy/mm/dd/hh.
+   * On a boundary of 15:59:58 you'll find files in both 15 and 16 hour folders
+   */
+  private filePaths(start: Date, toleranceInSeconds = 30): string[] {
+    const paths = [this.getEventCachePrefix(start)];
+
+    const end = addHours(start, 1);
+
+    const difference = differenceInSeconds(end, start);
+
+    if (difference >= toleranceInSeconds) {
+      paths.push(this.getEventCachePrefix(end));
+    }
+
+    return paths;
+  }
+
   private buildS3Query(templateIds: string[]): string {
     const likeConditions = templateIds
       .map((id) => `s.Message LIKE '%${id}%'`)
@@ -160,7 +145,7 @@ export class EventCacheHelper {
     return `SELECT * FROM S3Object s WHERE ${likeConditions}`;
   }
 
-  private buildEventCachePrefix(date: Date): string {
+  private getEventCachePrefix(date: Date): string {
     return date
       .toISOString()
       .slice(0, 13)
