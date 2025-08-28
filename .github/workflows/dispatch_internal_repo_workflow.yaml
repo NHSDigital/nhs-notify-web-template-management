@@ -85,7 +85,7 @@ jobs:
             )
           }')
 
-          # Trigger The workflow
+          # Trigger the workflow
           curl -L \
             --fail \
             --silent \
@@ -114,7 +114,7 @@ jobs:
                   --arg targetAccountGroup "${{ inputs.targetAccountGroup }}" \
                   --arg targetComponent "${{ inputs.targetComponent }}" \
                   --arg terraformAction "${{ inputs.terraformAction }}" \
-                '.workflow_runs[]
+                '[.workflow_runs[]
                   | select(.path == ".github/workflows/" + $targetWorkflow)
                   | select(.name
                       | contains($targetEnvironment)
@@ -126,7 +126,7 @@ jobs:
                       then select(.name | contains("caller:" + $callerRunId))
                       else .
                     end
-                  | .url')
+                ] | sort_by(.id) | last | .url')
 
             if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
               ui_url=${workflow_run_url/api./}
@@ -157,6 +157,12 @@ jobs:
             conclusion=$(echo "$response" | jq -r '.conclusion')
 
             if [ "$status" == "completed" ]; then
+              if [ -z "$conclusion" ] || [ "$conclusion" == "null" ]; then
+                echo "Workflow marked completed but conclusion not yet available, retrying..."
+                sleep 5
+                continue
+              fi
+
               if [ "$conclusion" == "success" ]; then
                 echo "Workflow completed successfully."
                 exit 0
