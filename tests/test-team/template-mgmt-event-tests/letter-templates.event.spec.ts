@@ -12,6 +12,9 @@ import { readFileSync } from 'node:fs';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
+const sleep = (delaySeconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
+
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
@@ -57,14 +60,17 @@ test.describe('Event publishing - Letters', () => {
 
     await templateStorageHelper.seedTemplateData(templates);
 
-    await expect(async () => {
-      const events = await eventCacheHelper.findEvents(
-        start,
-        templates.map((r) => r.id)
-      );
+    // Note: not ideal - but we are expecting 0 events and there can be a delay
+    // in events arriving. We should wait for a moment
+    // 5 seconds seems to largest delay when testing locally
+    await sleep(5);
 
-      expect(events).toHaveLength(0);
-    }).toPass({ timeout: 60_000, intervals: [5000] });
+    const events = await eventCacheHelper.findEvents(
+      start,
+      templates.map((r) => r.id)
+    );
+
+    expect(events).toHaveLength(0);
   });
 
   test('Expect no events when proofingEnabled is false', async ({
@@ -96,11 +102,14 @@ test.describe('Event publishing - Letters', () => {
 
     expect(submittedResponse.status()).toBe(200);
 
-    await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+    // Note: not ideal - but we are expecting 0 events and there can be a delay
+    // in events arriving. We should wait for a moment
+    // 5 seconds seems to largest delay when testing locally
+    await sleep(5);
 
-      expect(events).toHaveLength(0);
-    }).toPass({ timeout: 60_000, intervals: [5000] });
+    const events = await eventCacheHelper.findEvents(start, [templateId]);
+
+    expect(events).toHaveLength(0);
   });
 
   test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates', async ({
