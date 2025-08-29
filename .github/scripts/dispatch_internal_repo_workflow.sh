@@ -160,6 +160,8 @@ fi
 
 echo "[INFO] Workflow trigger request sent successfully, waiting for completion..."
 
+sleep 10 # Wait a few seconds before checking for the presence of the api to account for GitHub updating
+
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
 
