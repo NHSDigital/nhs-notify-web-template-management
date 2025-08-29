@@ -200,7 +200,7 @@ for _ in {1..18}; do
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     # Workflow_run_url is a list of all workflows which were run for this combination of inputs, but are the API uri
-    echo "All the runs ${workflow_run_url[*]}
+    echo "All the runs ${workflow_run_url[*]}"
     workflow_run_url=$(echo "$workflow_run_url" | head -n 1)
 
     # Take the first and strip it back to being an accessible url
