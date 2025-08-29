@@ -176,10 +176,11 @@ workflow_run_url=$(curl -s -L \
           end
         | .url')
 
+
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
-    ui_url=${workflow_run_url/api./}
-    ui_url=${ui_url/\/repos/}
-    echo "[INFO] Found workflow run url: $ui_url"
+    # Get the latest GHA run of this combination of parameters
+    workflow_run_url=$(echo "$workflow_run_url" | head -n 1) 
+    echo "[INFO] Found workflow run url: $workflow_run_url"
     break
   fi
 
