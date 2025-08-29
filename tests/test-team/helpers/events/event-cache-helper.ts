@@ -9,7 +9,12 @@ import {
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
 } from '@nhsdigital/nhs-notify-event-schemas-template-management';
-import { differenceInSeconds, addHours } from 'date-fns';
+import {
+  differenceInSeconds,
+  addHours,
+  startOfHour,
+  endOfHour,
+} from 'date-fns';
 import { S3Helper } from '../s3-helper';
 
 const $NHSNotifyTemplateEvent = z.discriminatedUnion('type', [
@@ -95,16 +100,16 @@ export class EventCacheHelper {
             JSON.parse(line)
           );
 
-          if (!success) {
-            throw new Error(
-              `Unrecognized event schema detected in S3 file: ${fileName}`,
-              {
-                cause: { error },
-              }
-            );
+          if (success) {
+            return data;
           }
 
-          return data;
+          throw new Error(
+            `Unrecognized event schema detected in S3 file: ${fileName}`,
+            {
+              cause: { error },
+            }
+          );
         });
 
       events.push(...parsedEvents);
@@ -123,11 +128,13 @@ export class EventCacheHelper {
   private buildFilePaths(start: Date, toleranceInSeconds = 30): string[] {
     const paths = [this.buildPathPrefix(start)];
 
-    const end = addHours(start, 1);
+    const end = addHours(startOfHour(start), 1);
 
-    const difference = differenceInSeconds(end, start);
+    const difference = differenceInSeconds(endOfHour(start), start, {
+      roundingMethod: 'ceil',
+    });
 
-    if (difference >= toleranceInSeconds) {
+    if (toleranceInSeconds >= difference) {
       paths.push(this.buildPathPrefix(end));
     }
 

@@ -72,7 +72,6 @@ test.describe('Event publishing - Digital', () => {
 
         expect(updateResponse.status()).toBe(200);
 
-        // submit template - should be a completed event SUBMITTED
         const submitResponse = await request.patch(
           `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
           {
