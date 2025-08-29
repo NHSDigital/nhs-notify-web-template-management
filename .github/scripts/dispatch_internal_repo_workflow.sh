@@ -27,7 +27,7 @@
 #     --terraformAction "apply" \
 #     --internalRef "main"
 
-set -e
+set -ex
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -186,13 +186,14 @@ for _ in {1..18}; do
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     # Workflow_run_url is a list of all workflows which were run for this combination of inputs, but are the API uri
-    # take the first and strip it back to being an accessible url
+    workflow_run_url=$(echo "$workflow_run_url" | head -n 1)
+
+    # Take the first and strip it back to being an accessible url
     # Example https://api.github.com/repos/MyOrg/my-repo/actions/runs/12346789 becomes
     # becomes https://github.com/MyOrg/my-repo/actions/runs/12346789
-    workflow_run_url=$(echo "$workflow_run_url" | head -n 1)
-    workflow_run_url=${workflow_run_url/api./} # strips the api. prefix
-    workflow_run_url=${workflow_run_url/\/repos/} # strips the repos/ uri
-    echo "[INFO] Found workflow run url: $workflow_run_url"
+    workflow_run_ui_url=${workflow_run_url/api./} # Strips the api. prefix
+    workflow_run_ui_url=${workflow_run_url/\/repos/} # Strips the repos/ uri
+    echo "[INFO] Found workflow run url: $workflow_run_ui_url"
     break
   fi
 
