@@ -150,31 +150,39 @@ echo "[INFO] Workflow trigger request sent successfully, waiting for completion.
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
 for _ in {1..18}; do
-workflow_run_url=$(curl -s -L \
+
+  response=$(curl -s -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch" \
-    | jq -r \
-        --arg callerRunId "$callerRunId" \
-        --arg targetWorkflow "$targetWorkflow" \
-        --arg targetEnvironment "$targetEnvironment" \
-        --arg targetAccountGroup "$targetAccountGroup" \
-        --arg targetComponent "$targetComponent" \
-        --arg terraformAction "$terraformAction" \
-      '.workflow_runs[]
-        | select(.path == ".github/workflows/" + $targetWorkflow)
-        | select(.name
-            | contains($targetEnvironment)
-            and contains($targetAccountGroup)
-            and contains($targetComponent)
-            and contains($terraformAction)
-        )
-        | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-            then select(.name | contains("caller:" + $callerRunId))
-            else .
-          end
-        | .url')
+    "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch")
+
+  if ! echo "$response" | jq empty 2>/dev/null; then
+    echo "[ERROR] Invalid JSON response from GitHub API during workflow polling:"
+    echo "$response"
+    exit 1
+  fi
+
+  workflow_run_url=$(echo "$response" | jq -r \
+    --arg callerRunId "$callerRunId" \
+    --arg targetWorkflow "$targetWorkflow" \
+    --arg targetEnvironment "$targetEnvironment" \
+    --arg targetAccountGroup "$targetAccountGroup" \
+    --arg targetComponent "$targetComponent" \
+    --arg terraformAction "$terraformAction" \
+    '.workflow_runs[]
+      | select(.path == ".github/workflows/" + $targetWorkflow)
+      | select(.name
+          | contains($targetEnvironment)
+          and contains($targetAccountGroup)
+          and contains($targetComponent)
+          and contains($terraformAction)
+      )
+      | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
+          then select(.name | contains("caller:" + $callerRunId))
+          else .
+        end
+      | .url')
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     # Workflow_run_url is a list of all workflows which were run for this combination of inputs, but are the API uri
