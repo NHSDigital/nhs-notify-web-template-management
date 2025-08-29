@@ -179,7 +179,7 @@ workflow_run_url=$(curl -s -L \
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     # Get the latest GHA run of this combination of parameters
-    workflow_run_url=$(echo "$workflow_run_url" | head -n 1) 
+    workflow_run_url=$(echo "$workflow_run_url" | head -n 1)
     echo "[INFO] Found workflow run url: $workflow_run_url"
     break
   fi
