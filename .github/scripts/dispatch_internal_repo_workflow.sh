@@ -102,7 +102,6 @@ echo "  targetComponent:    $targetComponent"
 echo "  targetAccountGroup: $targetAccountGroup"
 echo "  terraformAction:    $terraformAction"
 echo "  internalRef:        $internalRef"
-echo "==============================================================="
 
 callerRunId="${GITHUB_RUN_ID}-${jobName}-${GITHUB_RUN_ATTEMPT}"
 
@@ -150,37 +149,42 @@ echo "[INFO] Workflow trigger request sent successfully, waiting for completion.
 
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
+
+WORKFLOW_RUN_EVENT=$(jq -r \
+  --arg callerRunId "$callerRunId" \
+  --arg targetWorkflow "$targetWorkflow" \
+  --arg targetEnvironment "$targetEnvironment" \
+  --arg targetAccountGroup "$targetAccountGroup" \
+  --arg targetComponent "$targetComponent" \
+  --arg terraformAction "$terraformAction" \
+  '.workflow_runs[]
+    | select(.path == ".github/workflows/" + $targetWorkflow)
+    | select(.name
+        | contains($targetEnvironment)
+        and contains($targetAccountGroup)
+        and contains($targetComponent)
+        and contains($terraformAction)
+    )
+    | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
+        then select(.name | contains("caller:" + $callerRunId))
+        else .
+      end
+    | .url')
+
+echo "[INFO] Checking for workflow run $WORKFLOW_RUN_EVENT"
+
 for _ in {1..18}; do
-  workflow_run_url=$(curl -s \
+  workflow_run_url=$(curl -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch" \
-    | jq -r \
-        --arg callerRunId "$callerRunId" \
-        --arg targetWorkflow "$targetWorkflow" \
-        --arg targetEnvironment "$targetEnvironment" \
-        --arg targetAccountGroup "$targetAccountGroup" \
-        --arg targetComponent "$targetComponent" \
-        --arg terraformAction "$terraformAction" \
-      '.workflow_runs[]
-        | select(.path == ".github/workflows/" + $targetWorkflow)
-        | select(.name
-            | contains($targetEnvironment)
-            and contains($targetAccountGroup)
-            and contains($targetComponent)
-            and contains($terraformAction)
-        )
-        | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-            then select(.name | contains("caller:" + $callerRunId))
-            else .
-          end
-        | .url')
+    -d "$WORKFLOW_RUN_EVENT" 2>&1)
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     ui_url=${workflow_run_url/api./}
     ui_url=${ui_url/\/repos/}
-  echo "[INFO] Found workflow run url: $ui_url"
+    echo "[INFO] Found workflow run url: $ui_url"
     break
   fi
 
@@ -191,12 +195,14 @@ done
 if [[ -z "$workflow_run_url" || "$workflow_run_url" == null ]]; then
   echo "[ERROR] Failed to get the workflow run url. Exiting."
   exit 1
+else
+  echo "[INFO] Found workflow run url: $workflow_run_url"
 fi
 
 # Wait for workflow completion
 while true; do
   sleep 10
-  response=$(curl -s -L \
+  response=$(curl -L \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "Accept: application/vnd.github+json" \
     "$workflow_run_url")
