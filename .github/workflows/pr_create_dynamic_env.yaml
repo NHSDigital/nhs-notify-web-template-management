@@ -1,4 +1,3 @@
-
 name: PR Create Environment
 
 on:
@@ -28,4 +27,5 @@ jobs:
             --targetEnvironment "pr${{ github.event.number }}" \
             --targetComponent "branch" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --terraformAction "apply"
+            --terraformAction "apply" \
+            --overrides "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"

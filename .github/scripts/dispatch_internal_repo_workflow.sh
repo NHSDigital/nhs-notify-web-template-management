@@ -67,6 +67,10 @@ while [[ $# -gt 0 ]]; do
       internalRef="$2"
       shift 2
       ;;
+    --overrides) # Terraform overrides for passing in extra variables (optional)
+      overrides="$2"
+      shift 2
+      ;;
     *)
     echo "[ERROR] Unknown argument: $1"
       exit 1
@@ -82,6 +86,10 @@ fi
 
 if [[ -z "$jobName" ]]; then
   jobName="${infraRepoName}-${targetComponent}-${terraformAction}"
+fi
+
+if [[ -z "$overrides" ]]; then
+  overrides=""
 fi
 
 if [[ -z "$terraformAction" ]]; then
@@ -102,6 +110,7 @@ echo "  targetComponent:    $targetComponent"
 echo "  targetAccountGroup: $targetAccountGroup"
 echo "  terraformAction:    $terraformAction"
 echo "  internalRef:        $internalRef"
+echo "  overrides:          $overrides"
 
 callerRunId="${GITHUB_RUN_ID}-${jobName}-${GITHUB_RUN_ATTEMPT}"
 
@@ -114,6 +123,7 @@ DISPATCH_EVENT=$(jq -ncM \
   --arg terraformAction "$terraformAction" \
   --arg callerRunId "$callerRunId" \
   --arg targetWorkflow "$targetWorkflow" \
+  --arg overrides "$overrides" \
   '{
     "ref": "'"$internalRef"'",
     "inputs": (
@@ -141,14 +151,17 @@ trigger_response=$(curl -s -L \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/workflows/$targetWorkflow/dispatches" \
   -d "$DISPATCH_EVENT" 2>&1)
+
 if [[ $? -ne 0 ]]; then
   echo "[ERROR] Failed to trigger workflow. Response: $trigger_response"
   exit 1
 fi
+
 echo "[INFO] Workflow trigger request sent successfully, waiting for completion..."
 
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
+
 for _ in {1..18}; do
 
   response=$(curl -s -L \
