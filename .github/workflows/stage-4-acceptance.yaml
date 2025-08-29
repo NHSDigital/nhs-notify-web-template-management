@@ -2,6 +2,11 @@ name: Acceptance stage
 
 on:
   workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+
 
 permissions:
   id-token: write
@@ -25,7 +30,7 @@ jobs:
             --infraRepoName "nhs-notify-web-template-management" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
-            --targetEnvironment "pr${{ github.event.number }}" \
+            --targetEnvironment "pr${{ inputs.pr_number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
             --targetComponent "sandbox" \
             --terraformAction "apply"
@@ -40,6 +45,6 @@ jobs:
             --infraRepoName "nhs-notify-web-template-management" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-contextual-tests-dynamic-env.yaml" \
-            --targetEnvironment "${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}" \
+            --targetEnvironment "pr${{ inputs.pr_number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
             --targetComponent "sandbox"
