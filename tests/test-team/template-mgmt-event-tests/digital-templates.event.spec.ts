@@ -120,7 +120,7 @@ test.describe('Event publishing - Digital', () => {
               }),
             })
           );
-        }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000, 10_000] });
+        }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
       });
 
       test('Expect Deleted.v1 event When deleting templates', async ({
@@ -188,7 +188,7 @@ test.describe('Event publishing - Digital', () => {
               }),
             })
           );
-        }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000, 10_000] });
+        }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
       });
     });
   }
