@@ -59,7 +59,7 @@ while [[ $# -gt 0 ]]; do
       targetAccountGroup="$2"
       shift 2
       ;;
-    --terraformAction) # Terraform action to run (optional, default: "plan")
+    --terraformAction) # Terraform action to run (optional)
       terraformAction="$2"
       shift 2
       ;;
@@ -90,10 +90,6 @@ fi
 
 if [[ -z "$overrides" ]]; then
   overrides=""
-fi
-
-if [[ -z "$terraformAction" ]]; then
-  terraformAction="plan"
 fi
 
 if [[ -z "$internalRef" ]]; then
@@ -145,7 +141,6 @@ echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
 
 trigger_response=$(curl -s -L \
   --fail \
-  --silent \
   -X POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
