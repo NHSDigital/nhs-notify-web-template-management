@@ -13,7 +13,6 @@ permissions:
   contents: read
 
 jobs:
-
   create-sandbox-environment:
     name: Create Sandbox Environment
     runs-on: ubuntu-latest

@@ -45,15 +45,22 @@ jobs:
       matrix:
         component: [acct, app]
 
-    uses: ./.github/workflows/reusable_internal_repo_build.yaml
-    secrets: inherit
-    with:
-      releaseVersion: main
-      targetWorkflow: "dispatch-deploy-static-notify-web-template-management-env.yaml"
-      targetEnvironment: "main"
-      targetAccountGroup: "nhs-notify-template-management-dev"
-      targetComponent: ${{ matrix.component }}
-      terraformAction: "apply"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Updating Main Environment
+        env:
+          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+        run: |
+          bash .github/scripts/dispatch_internal_repo_workflow.sh \
+            --infraRepoName "nhs-notify-web-template-management" \
+            --releaseVersion "main" \
+            --targetWorkflow "dispatch-deploy-static-notify-web-template-management-env.yaml" \
+            --targetEnvironment "main" \
+            --targetAccountGroup "nhs-notify-template-management-dev" \
+            --targetComponent "${{ matrix.component }}" \
+            --terraformAction "apply"
 
   check-event-schemas-version-change:
     name: Check for event schemas package version change
