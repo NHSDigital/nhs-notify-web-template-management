@@ -132,7 +132,7 @@ DISPATCH_EVENT=$(jq -ncM \
 
 echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
 
-trigger_response=$(curl -s-L \
+trigger_response=$(curl -s -L \
   --fail \
   --silent \
   -X POST \
