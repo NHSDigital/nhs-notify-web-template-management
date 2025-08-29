@@ -107,6 +107,7 @@ export type TemplateSuccess = {
 
 export type ClientFeatures = {
   proofing?: boolean;
+  routing?: boolean;
 };
 
 export type ClientConfiguration = {

@@ -5,13 +5,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
-import {
-  HintText,
-  Label,
-  Textarea,
-  TextInput,
-  BackLink,
-} from 'nhsuk-react-components';
+import { HintText, Label, Textarea, TextInput } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
   ErrorState,
@@ -32,6 +26,7 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
@@ -72,7 +67,7 @@ export const SmsTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <BackLink>{backLinkText}</BackLink>
+          <NotifyBackLink>{backLinkText}</NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>

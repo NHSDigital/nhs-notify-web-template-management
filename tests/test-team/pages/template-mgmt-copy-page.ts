@@ -20,7 +20,7 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
     );
 
     this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
+      .locator('.nhsuk-back-link')
       .and(page.getByText('Back to all templates'));
 
     this.continueButton = page.locator(

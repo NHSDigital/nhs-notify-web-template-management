@@ -6,7 +6,7 @@ import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -70,7 +70,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
       `${baseURL}/templates/preview-submitted-nhs-app-template/${templates.valid.id}`
     );
 
-    await expect(previewSubmittedNHSAppTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedNHSAppTemplatePage.pageHeading).toContainText(
       'test-template-nhs-app'
     );
 
@@ -88,7 +88,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
