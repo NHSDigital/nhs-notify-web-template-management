@@ -85,7 +85,7 @@ jobs:
             )
           }')
 
-          # Trigger The workflow
+          # Trigger the workflow
           curl -L \
             --fail \
             --silent \
@@ -157,6 +157,12 @@ jobs:
             conclusion=$(echo "$response" | jq -r '.conclusion')
 
             if [ "$status" == "completed" ]; then
+              if [ -z "$conclusion" ] || [ "$conclusion" == "null" ]; then
+                echo "Workflow marked completed but conclusion not yet available, retrying..."
+                sleep 5
+                continue
+              fi
+
               if [ "$conclusion" == "success" ]; then
                 echo "Workflow completed successfully."
                 exit 0
