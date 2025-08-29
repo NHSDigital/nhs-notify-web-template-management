@@ -166,7 +166,6 @@ for _ in {1..18}; do
     ui_url=${workflow_run_url/api./}
     ui_url=${ui_url/\/repos/}
     echo "Found workflow run url: $ui_url"
-    echo "workflow_run_url=$workflow_run_url" >> "$GITHUB_ENV"
     break
   fi
 
