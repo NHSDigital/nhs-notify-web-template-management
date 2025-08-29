@@ -176,10 +176,14 @@ workflow_run_url=$(curl -s -L \
           end
         | .url')
 
-
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
-    # Get the latest GHA run of this combination of parameters
+    # Workflow_run_url is a list of all workflows which were run for this combination of inputs, but are the API uri
+    # take the first and strip it back to being an accessible url
+    # Example https://api.github.com/repos/MyOrg/my-repo/actions/runs/12346789 becomes
+    # becomes https://github.com/MyOrg/my-repo/actions/runs/12346789
     workflow_run_url=$(echo "$workflow_run_url" | head -n 1)
+    workflow_run_url=${workflow_run_url/api./} # strips the api. prefix
+    workflow_run_url=${workflow_run_url/\/repos/} # strips the repos/ uri
     echo "[INFO] Found workflow run url: $workflow_run_url"
     break
   fi
@@ -191,8 +195,6 @@ done
 if [[ -z "$workflow_run_url" || "$workflow_run_url" == null ]]; then
   echo "[ERROR] Failed to get the workflow run url. Exiting."
   exit 1
-else
-  echo "[INFO] Found workflow run url: $workflow_run_url"
 fi
 
 # Wait for workflow completion
