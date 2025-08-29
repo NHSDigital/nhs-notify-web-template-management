@@ -1,9 +1,6 @@
-import {
-  S3Client,
-  ListObjectsV2Command,
-  GetObjectCommand,
-} from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { Readable } from 'node:stream';
+import { S3Helper } from './s3-helper';
 
 async function streamToString(stream: Readable): Promise<string> {
   return await new Promise((resolve, reject) => {
@@ -21,50 +18,15 @@ export class EmailHelper {
 
   constructor() {}
 
-  async getAllS3Items(prefix: string) {
-    const { Contents = [], ContinuationToken } = await this.s3Client.send(
-      new ListObjectsV2Command({
-        Bucket: this.testEmailBucketName,
-        Prefix: prefix,
-      })
-    );
-
-    let nextToken = ContinuationToken;
-    let s3Items = Contents;
-
-    while (nextToken) {
-      const {
-        Contents: newContents = [],
-        ContinuationToken: newContinuationToken,
-      } = await this.s3Client.send(
-        new ListObjectsV2Command({
-          Bucket: this.testEmailBucketName,
-          Prefix: prefix,
-          ContinuationToken: nextToken,
-        })
-      );
-
-      s3Items = [...s3Items, ...newContents];
-      nextToken = newContinuationToken;
-    }
-
-    return s3Items;
-  }
-
   async getEmailForTemplateId(
     prefix: string,
     templateId: string,
     dateCutoff: Date,
     extraTextToSearch: string
   ) {
-    const s3Items = await this.getAllS3Items(prefix);
+    const s3Items = await S3Helper.listAll(this.testEmailBucketName, prefix);
 
-    const sortedKeys = s3Items
-      .filter(({ LastModified }) => (LastModified ?? 0) > dateCutoff)
-      .sort(
-        (a, b) =>
-          (b.LastModified?.getTime() ?? 0) - (a.LastModified?.getTime() ?? 0)
-      );
+    const sortedKeys = S3Helper.filterAndSort(s3Items, dateCutoff);
 
     // SES does not tell us what the S3 keys are going to be for received emails,
     // so we have to search all recent ones to ensure we get the right one and

@@ -65,3 +65,7 @@ output "test_email_bucket_name" {
 output "test_email_bucket_prefix" {
   value = "emails-${var.environment}"
 }
+
+output "event_cache_bucket_name" {
+  value = module.eventpub.s3_bucket_event_cache.bucket
+}

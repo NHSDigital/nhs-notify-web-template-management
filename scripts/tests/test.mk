@@ -32,6 +32,9 @@ test-ui-e2e: # Run tests from scripts/tests/ui-e2e.sh @Testing
 test-api: # Run tests from scripts/tests/api.sh @Testing
 	make _test name="api"
 
+test-event: # Run tests from scripts/tests/event.sh @Testing
+	make _test name="event"
+
 test: # Run all the test tasks @Testing
 	make \
 		test-unit \
@@ -63,3 +66,4 @@ ${VERBOSE}.SILENT: \
 	test-api \
 	test-ui-e2e \
 	test-unit \
+	test-event \
