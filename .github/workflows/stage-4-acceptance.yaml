@@ -25,7 +25,6 @@ jobs:
           PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
-            --jobName "Create PR Sandbox " \
             --infraRepoName "nhs-notify-web-template-management" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
@@ -40,7 +39,6 @@ jobs:
           PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
-            --jobName "Acceptance tests" \
             --infraRepoName "nhs-notify-web-template-management" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-contextual-tests-dynamic-env.yaml" \

@@ -25,7 +25,6 @@ jobs:
         shell: bash
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
-            --jobName "Destroy PR Dynamic Environment" \
             --infraRepoName "$(echo ${{ github.repository }} | cut -d'/' -f2)" \
             --releaseVersion "main" \
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
@@ -46,7 +45,6 @@ jobs:
           PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
-            --jobName "Sandbox tear down" \
             --infraRepoName "nhs-notify-web-template-management" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \

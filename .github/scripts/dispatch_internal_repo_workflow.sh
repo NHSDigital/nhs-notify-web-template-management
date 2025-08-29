@@ -4,7 +4,6 @@
 
 # Usage:
 #   ./dispatch_internal_repo_workflow.sh \
-#     --jobName <name> \
 #     --infraRepoName <repo> \
 #     --releaseVersion <version> \
 #     --targetWorkflow <workflow.yaml> \
@@ -14,10 +13,9 @@
 #     --terraformAction <action> \
 #     --internalRef <ref>
 #
-# All arguments are required except jobName, terraformAction, and internalRef.
+# All arguments are required except terraformAction, and internalRef.
 # Example:
 #   ./dispatch_internal_repo_workflow.sh \
-#     --jobName "Deploy" \
 #     --infraRepoName "nhs-notify-web-template-management" \
 #     --releaseVersion "v1.2.3" \
 #     --targetWorkflow "deploy.yaml" \
@@ -31,10 +29,6 @@ set -e
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --jobName) # Name of the job triggering the remote workflow (optional)
-      jobName="$2"
-      shift 2
-      ;;
     --infraRepoName) # Name of the infrastructure repo in NHSDigital org (required)
       infraRepoName="$2"
       shift 2
@@ -84,10 +78,6 @@ if [[ -z "$PR_TRIGGER_PAT" ]]; then
   exit 1
 fi
 
-if [[ -z "$jobName" ]]; then
-  jobName="${infraRepoName}-${targetComponent}-${terraformAction}"
-fi
-
 if [[ -z "$overrides" ]]; then
   overrides=""
 fi
@@ -97,7 +87,6 @@ if [[ -z "$internalRef" ]]; then
 fi
 
 echo "==================== Workflow Dispatch Parameters ===================="
-echo "  jobName:            $jobName"
 echo "  infraRepoName:      $infraRepoName"
 echo "  releaseVersion:     $releaseVersion"
 echo "  targetWorkflow:     $targetWorkflow"
@@ -108,8 +97,6 @@ echo "  terraformAction:    $terraformAction"
 echo "  internalRef:        $internalRef"
 echo "  overrides:          $overrides"
 
-callerRunId="${GITHUB_RUN_ID}-${jobName}-${GITHUB_RUN_ATTEMPT}"
-
 DISPATCH_EVENT=$(jq -ncM \
   --arg infraRepoName "$infraRepoName" \
   --arg releaseVersion "$releaseVersion" \
@@ -117,7 +104,6 @@ DISPATCH_EVENT=$(jq -ncM \
   --arg targetAccountGroup "$targetAccountGroup" \
   --arg targetComponent "$targetComponent" \
   --arg terraformAction "$terraformAction" \
-  --arg callerRunId "$callerRunId" \
   --arg targetWorkflow "$targetWorkflow" \
   --arg overrides "$overrides" \
   '{
@@ -131,9 +117,7 @@ DISPATCH_EVENT=$(jq -ncM \
         "targetAccountGroup": $targetAccountGroup,
         "targetComponent": $targetComponent,
         "overrides": $overrides,
-      } +
-      (if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-        then { "callerRunId": $callerRunId } else {} end)
+      }
     )
   }')
 
@@ -175,7 +159,6 @@ for _ in {1..18}; do
   fi
 
   workflow_run_url=$(echo "$response" | jq -r \
-    --arg callerRunId "$callerRunId" \
     --arg targetWorkflow "$targetWorkflow" \
     --arg targetEnvironment "$targetEnvironment" \
     --arg targetAccountGroup "$targetAccountGroup" \
@@ -189,10 +172,6 @@ for _ in {1..18}; do
           and contains($targetComponent)
           and contains($terraformAction)
       )
-      | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-          then select(.name | contains("caller:" + $callerRunId))
-          else .
-        end
       | .url')
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
