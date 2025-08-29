@@ -192,7 +192,7 @@ for _ in {1..18}; do
     # Example https://api.github.com/repos/MyOrg/my-repo/actions/runs/12346789 becomes
     # becomes https://github.com/MyOrg/my-repo/actions/runs/12346789
     workflow_run_ui_url=${workflow_run_url/api./} # Strips the api. prefix
-    workflow_run_ui_url=${workflow_run_url/\/repos/} # Strips the repos/ uri
+    workflow_run_ui_url=${workflow_run_ui_url/\/repos/} # Strips the repos/ uri
     echo "[INFO] Found workflow run url: $workflow_run_ui_url"
     break
   fi
