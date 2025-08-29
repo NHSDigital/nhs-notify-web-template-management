@@ -68,7 +68,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     *)
-      echo "Unknown argument: $1"
+    echo "[ERROR] Unknown argument: $1"
       exit 1
       ;;
   esac
@@ -76,7 +76,7 @@ done
 
 # Set default values if not provided
 if [[ -z "$PR_TRIGGER_PAT" ]]; then
-  echo "Error: PR_TRIGGER_PAT environment variable is not set or is empty."
+  echo "[ERROR] PR_TRIGGER_PAT environment variable is not set or is empty."
   exit 1
 fi
 
@@ -92,6 +92,17 @@ if [[ -z "$internalRef" ]]; then
   internalRef="main"
 fi
 
+echo "==================== Workflow Dispatch Parameters ===================="
+echo "  jobName:            $jobName"
+echo "  infraRepoName:      $infraRepoName"
+echo "  releaseVersion:     $releaseVersion"
+echo "  targetWorkflow:     $targetWorkflow"
+echo "  targetEnvironment:  $targetEnvironment"
+echo "  targetComponent:    $targetComponent"
+echo "  targetAccountGroup: $targetAccountGroup"
+echo "  terraformAction:    $terraformAction"
+echo "  internalRef:        $internalRef"
+echo "==============================================================="
 
 callerRunId="${GITHUB_RUN_ID}-${jobName}-${GITHUB_RUN_ATTEMPT}"
 
@@ -120,8 +131,9 @@ DISPATCH_EVENT=$(jq -ncM \
     )
   }')
 
-# Trigger the workflow
-curl -L \
+echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
+
+trigger_response=$(curl -L \
   --fail \
   --silent \
   -X POST \
@@ -129,9 +141,12 @@ curl -L \
   -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/workflows/$targetWorkflow/dispatches" \
-  -d "$DISPATCH_EVENT"
-
-echo "Workflow triggered. Waiting for the workflow to complete.."
+  -d "$DISPATCH_EVENT" 2>&1)
+if [[ $? -ne 0 ]]; then
+  echo "[ERROR] Failed to trigger workflow. Response: $trigger_response"
+  exit 1
+fi
+echo "[INFO] Workflow trigger request sent successfully, waiting for completion..."
 
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
@@ -165,16 +180,16 @@ for _ in {1..18}; do
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     ui_url=${workflow_run_url/api./}
     ui_url=${ui_url/\/repos/}
-    echo "Found workflow run url: $ui_url"
+  echo "[INFO] Found workflow run url: $ui_url"
     break
   fi
 
-  echo "Waiting for workflow to start..."
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Waiting for workflow to start..."
   sleep 10
 done
 
 if [[ -z "$workflow_run_url" || "$workflow_run_url" == null ]]; then
-  echo "Failed to get the workflow run url. Exiting."
+  echo "[ERROR] Failed to get the workflow run url. Exiting."
   exit 1
 fi
 
@@ -187,24 +202,26 @@ while true; do
     "$workflow_run_url")
 
   status=$(echo "$response" | jq -r '.status')
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow status: $status"
+
   conclusion=$(echo "$response" | jq -r '.conclusion')
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow conclusion: $conclusion"
 
   if [ "$status" == "completed" ]; then
     if [ -z "$conclusion" ] || [ "$conclusion" == "null" ]; then
-      echo "Workflow marked completed but conclusion not yet available, retrying..."
+      echo "[WARN] Workflow marked completed but conclusion not yet available, retrying..."
       sleep 5
       continue
     fi
 
     if [ "$conclusion" == "success" ]; then
-      echo "Workflow completed successfully."
+      echo "[SUCCESS] Workflow completed successfully!"
       exit 0
     else
-      echo "Workflow failed with conclusion: $conclusion"
+      echo "[FAIL] Workflow failed with conclusion: $conclusion"
       exit 1
     fi
   fi
 
-  echo "Workflow still running..."
-  sleep 20
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow still running..."
 done
