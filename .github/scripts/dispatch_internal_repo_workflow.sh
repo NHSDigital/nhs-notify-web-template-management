@@ -27,7 +27,7 @@
 #     --terraformAction "apply" \
 #     --internalRef "main"
 
-set -ex
+set -e
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -217,10 +217,10 @@ while true; do
   status=$(echo "$response" | jq -r '.status')
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow status: $status"
 
-  conclusion=$(echo "$response" | jq -r '.conclusion')
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow conclusion: $conclusion"
-
   if [ "$status" == "completed" ]; then
+    conclusion=$(echo "$response" | jq -r '.conclusion')
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow conclusion: $conclusion"
+
     if [ -z "$conclusion" ] || [ "$conclusion" == "null" ]; then
       echo "[WARN] Workflow marked completed but conclusion not yet available, retrying..."
       sleep 5
