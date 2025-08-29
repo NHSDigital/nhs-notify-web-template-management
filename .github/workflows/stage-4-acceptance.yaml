@@ -8,11 +8,27 @@ permissions:
   contents: read
 
 jobs:
-  acceptance-tests:
-    name: Acceptance Tests
+
+  create-sandbox-environment:
+    name: Create Sandbox Environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5.0.0
+
+      - name: Trigger sandbox environment creation
+        shell: bash
+        env:
+          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+        run: |
+          .github/scripts/dispatch_internal_repo_workflow.sh \
+            --jobName "Create PR Sandbox " \
+            --infraRepoName "nhs-notify-web-template-management" \
+            --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
+            --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
+            --targetEnvironment "pr${{ github.event.number }}" \
+            --targetAccountGroup "nhs-notify-template-management-dev" \
+            --targetComponent "sandbox" \
+            --terraformAction "apply"
 
       - name: Acceptance Tests
         shell: bash
@@ -22,7 +38,7 @@ jobs:
           .github/scripts/dispatch_internal_repo_workflow.sh \
             --jobName "Acceptance tests" \
             --infraRepoName "nhs-notify-web-template-management" \
-            --releaseVersion "${{ github.head_ref || github.ref_name }}" \
+            --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-contextual-tests-dynamic-env.yaml" \
             --targetEnvironment "${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
