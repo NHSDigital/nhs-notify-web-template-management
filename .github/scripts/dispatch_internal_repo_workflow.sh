@@ -133,7 +133,8 @@ DISPATCH_EVENT=$(jq -ncM \
         "releaseVersion": $releaseVersion,
         "targetEnvironment": $targetEnvironment,
         "targetAccountGroup": $targetAccountGroup,
-        "targetComponent": $targetComponent
+        "targetComponent": $targetComponent,
+        "overrides": $overrides,
       } +
       (if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
         then { "callerRunId": $callerRunId } else {} end)
