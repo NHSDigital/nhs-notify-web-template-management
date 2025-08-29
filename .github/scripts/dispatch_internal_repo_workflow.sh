@@ -149,37 +149,32 @@ echo "[INFO] Workflow trigger request sent successfully, waiting for completion.
 
 # Poll GitHub API to check the workflow status
 workflow_run_url=""
-
-WORKFLOW_RUN_EVENT=$(jq -r \
-  --arg callerRunId "$callerRunId" \
-  --arg targetWorkflow "$targetWorkflow" \
-  --arg targetEnvironment "$targetEnvironment" \
-  --arg targetAccountGroup "$targetAccountGroup" \
-  --arg targetComponent "$targetComponent" \
-  --arg terraformAction "$terraformAction" \
-  '.workflow_runs[]
-    | select(.path == ".github/workflows/" + $targetWorkflow)
-    | select(.name
-        | contains($targetEnvironment)
-        and contains($targetAccountGroup)
-        and contains($targetComponent)
-        and contains($terraformAction)
-    )
-    | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
-        then select(.name | contains("caller:" + $callerRunId))
-        else .
-      end
-    | .url')
-
-echo "[INFO] Checking for workflow run $WORKFLOW_RUN_EVENT"
-
 for _ in {1..18}; do
-  workflow_run_url=$(curl -s -L \
+workflow_run_url=$(curl -s -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch" \
-    -d "$WORKFLOW_RUN_EVENT" 2>&1)
+    | jq -r \
+        --arg callerRunId "$callerRunId" \
+        --arg targetWorkflow "$targetWorkflow" \
+        --arg targetEnvironment "$targetEnvironment" \
+        --arg targetAccountGroup "$targetAccountGroup" \
+        --arg targetComponent "$targetComponent" \
+        --arg terraformAction "$terraformAction" \
+      '.workflow_runs[]
+        | select(.path == ".github/workflows/" + $targetWorkflow)
+        | select(.name
+            | contains($targetEnvironment)
+            and contains($targetAccountGroup)
+            and contains($targetComponent)
+            and contains($terraformAction)
+        )
+        | if ($targetWorkflow | test("dispatch-(acceptance|contextual|product|security)-tests-.*\\.yaml"))
+            then select(.name | contains("caller:" + $callerRunId))
+            else .
+          end
+        | .url')
 
   if [[ -n "$workflow_run_url" && "$workflow_run_url" != null ]]; then
     ui_url=${workflow_run_url/api./}
