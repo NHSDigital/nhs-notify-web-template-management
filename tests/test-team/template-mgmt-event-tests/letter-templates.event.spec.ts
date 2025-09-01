@@ -75,7 +75,7 @@ test.describe('Event publishing - Letters', () => {
     expect(events).toHaveLength(0);
   });
 
-  test.only('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates', async ({
+  test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates', async ({
     request,
   }) => {
     const templateId = randomUUID();
@@ -177,8 +177,8 @@ test.describe('Event publishing - Letters', () => {
        * * * add proof-3.pdf
        *  SUBMITTED: 1 update
        */
-      // This check is here mainly to prevent events we don't want to publish from slipping through.
-      // I.E PENDING_UPLOAD statuss
+      // This check is here to prevent events we don't want to publish from slipping through.
+      // I.E PENDING_UPLOAD status.
       expect(events.length).toBeGreaterThanOrEqual(6);
       expect(events.length).toBeLessThanOrEqual(7);
 
