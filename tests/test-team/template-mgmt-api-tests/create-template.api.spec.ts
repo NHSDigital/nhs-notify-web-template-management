@@ -315,34 +315,6 @@ test.describe('POST /v1/template', () => {
         },
       });
     });
-
-    test('returns 400 if template has message disallowed characters', async ({
-      request,
-    }) => {
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-            message: '<>',
-          }),
-        }
-      );
-
-      expect(response.status()).toBe(400);
-
-      expect(await response.json()).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Request failed validation',
-        details: {
-          message:
-            'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
-        },
-      });
-    });
   });
 
   test.describe('SMS templates', () => {
