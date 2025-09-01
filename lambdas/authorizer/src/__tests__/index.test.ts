@@ -101,58 +101,6 @@ test('returns Allow policy on valid token with clientId', async () => {
   );
 });
 
-test('returns Deny policy when authorisation succeeds but clientId is missing', async () => {
-  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
-    success: true,
-    subject: 'sub',
-    clientId: undefined,
-  });
-
-  const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>({
-      requestContext,
-      headers: { Authorization: 'jwt' },
-      type: 'REQUEST',
-    }),
-    mock<Context>(),
-    jest.fn()
-  );
-
-  expect(res).toEqual({
-    ...denyPolicy,
-    context: { user: 'sub' },
-  });
-  expect(mockLogger.warn).toHaveBeenCalledWith(
-    'Authorisation denied: missing clientId'
-  );
-});
-
-test('returns Deny policy when authorisation succeeds but clientId is empty/whitespace', async () => {
-  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
-    success: true,
-    subject: 'sub',
-    clientId: '   ',
-  });
-
-  const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>({
-      requestContext,
-      headers: { Authorization: 'jwt' },
-      type: 'REQUEST',
-    }),
-    mock<Context>(),
-    jest.fn()
-  );
-
-  expect(res).toEqual({
-    ...denyPolicy,
-    context: { user: 'sub' },
-  });
-  expect(mockLogger.warn).toHaveBeenCalledWith(
-    'Authorisation denied: missing clientId'
-  );
-});
-
 test('returns Deny policy on lambda misconfiguration', async () => {
   process.env.USER_POOL_ID = '';
 

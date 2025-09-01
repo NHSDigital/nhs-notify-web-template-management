@@ -65,17 +65,10 @@ export const handler: APIGatewayRequestAuthorizerHandler = async (event) => {
   );
 
   if (authResult.success) {
-    const clientId = authResult.clientId;
-
-    if (!clientId || clientId.trim() === '') {
-      logger.warn('Authorisation denied: missing clientId');
-      return generatePolicy(methodArn, 'Deny', { user: authResult.subject });
-    } else {
-      return generatePolicy(methodArn, 'Allow', {
-        user: authResult.subject,
-        clientId,
-      });
-    }
+    return generatePolicy(methodArn, 'Allow', {
+      user: authResult.subject,
+      clientId: authResult.clientId,
+    });
   }
 
   return generatePolicy(methodArn, 'Deny');
