@@ -1,5 +1,5 @@
 
-# this is not sued for anything other than to keep the eventpub module happy
+# this is not used for anything other than to keep the eventpub module happy
 resource "aws_sns_topic" "events" {
   name = "${local.csi}-events-sns"
 

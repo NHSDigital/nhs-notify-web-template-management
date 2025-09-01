@@ -1,4 +1,9 @@
-import { _Object, ListObjectsV2Command, S3Client } from '@aws-sdk/client-s3';
+import {
+  _Object,
+  ListObjectsV2Command,
+  S3Client,
+  SelectObjectContentCommand,
+} from '@aws-sdk/client-s3';
 
 export class S3Helper {
   private static readonly client = new S3Client({ region: 'eu-west-2' });
@@ -24,6 +29,24 @@ export class S3Helper {
     } while (continuationToken);
 
     return allItems;
+  }
+
+  static async queryJSONLFile(bucket: string, fileName: string, query: string) {
+    const command = new SelectObjectContentCommand({
+      Bucket: bucket,
+      Key: fileName,
+      Expression: query,
+      ExpressionType: 'SQL',
+      InputSerialization: {
+        JSON: { Type: 'LINES' },
+        CompressionType: 'NONE',
+      },
+      OutputSerialization: {
+        JSON: { RecordDelimiter: '\n' },
+      },
+    });
+
+    return S3Helper.client.send(command);
   }
 
   static filterAndSort(files: _Object[], from: Date): _Object[] {

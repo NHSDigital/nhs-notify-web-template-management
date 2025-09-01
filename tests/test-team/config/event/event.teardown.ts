@@ -1,6 +1,6 @@
-import { test as setup } from '@playwright/test';
+import { test as teardown } from '@playwright/test';
 import { createAuthHelper } from '../../helpers/auth/cognito-auth-helper';
 
-setup('event test teardown', async () => {
+teardown('event test teardown', async () => {
   await createAuthHelper().teardown();
 });

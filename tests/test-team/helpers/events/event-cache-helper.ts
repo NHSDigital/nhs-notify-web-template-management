@@ -1,9 +1,5 @@
 import { z } from 'zod';
-import {
-  S3Client,
-  SelectObjectContentCommand,
-  SelectObjectContentEventStream,
-} from '@aws-sdk/client-s3';
+import { SelectObjectContentEventStream } from '@aws-sdk/client-s3';
 import {
   $TemplateCompletedEventV1,
   $TemplateDeletedEventV1,
@@ -26,7 +22,6 @@ const $NHSNotifyTemplateEvent = z.discriminatedUnion('type', [
 type NHSNotifyTemplateEvent = z.infer<typeof $NHSNotifyTemplateEvent>;
 
 export class EventCacheHelper {
-  private readonly s3 = new S3Client({ region: 'eu-west-2' });
   private readonly bucketName = process.env.EVENT_CACHE_BUCKET_NAME;
 
   async findEvents(
@@ -58,21 +53,13 @@ export class EventCacheHelper {
     fileName: string,
     templateIds: string[]
   ): Promise<NHSNotifyTemplateEvent[]> {
-    const command = new SelectObjectContentCommand({
-      Bucket: this.bucketName,
-      Key: fileName,
-      Expression: this.buildS3Query(templateIds),
-      ExpressionType: 'SQL',
-      InputSerialization: {
-        JSON: { Type: 'LINES' },
-        CompressionType: 'NONE',
-      },
-      OutputSerialization: {
-        JSON: { RecordDelimiter: '\n' },
-      },
-    });
+    const formattedIds = templateIds.map((r) => `'${r}'`);
 
-    const response = await this.s3.send(command);
+    const response = await S3Helper.queryJSONLFile(
+      this.bucketName,
+      fileName,
+      `SELECT * FROM S3Object s WHERE s.data.id IN (${formattedIds})`
+    );
 
     if (!response.Payload) {
       return [];
@@ -139,12 +126,6 @@ export class EventCacheHelper {
     }
 
     return paths;
-  }
-
-  private buildS3Query(templateIds: string[]): string {
-    const formattedIds = templateIds.map((r) => `'${r}'`);
-
-    return `SELECT * FROM S3Object s WHERE s.data.id IN (${formattedIds})`;
   }
 
   private buildPathPrefix(date: Date): string {

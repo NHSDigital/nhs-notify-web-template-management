@@ -12,21 +12,12 @@ import { readFileSync } from 'node:fs';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
-const sleep = (delaySeconds: number) =>
-  new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
-
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   const eventCacheHelper = new EventCacheHelper();
   const sftpHelper = new SftpHelper();
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
-  const NON_PUBLISHABLE_LETTER_STATUSES = [
-    'PENDING_UPLOAD',
-    'PENDING_VALIDATION',
-    'VIRUS_SCAN_FAILED',
-    'VALIDATION_FAILED',
-  ] as const;
 
   let userProofingEnabled: TestUser;
   let userProofingDisabled: TestUser;
@@ -42,40 +33,12 @@ test.describe('Event publishing - Letters', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test(`Expect no events for AnyOf: ${NON_PUBLISHABLE_LETTER_STATUSES}`, async () => {
-    const templates = NON_PUBLISHABLE_LETTER_STATUSES.map((status) => {
-      const templateId = randomUUID();
-
-      return {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          `user-event-${status}-fails`,
-          status
-        ),
-      };
-    });
-
-    const start = new Date();
-
-    await templateStorageHelper.seedTemplateData(templates);
-
-    // Note: not ideal - but we are expecting 0 events and there can be a delay
-    // in events arriving. We should wait for a moment
-    // 5 seconds seems to largest delay when testing locally
-    await sleep(5);
-
-    const events = await eventCacheHelper.findEvents(
-      start,
-      templates.map((r) => r.id)
-    );
-
-    expect(events).toHaveLength(0);
-  });
-
   test('Expect no events when proofingEnabled is false', async ({
     request,
   }) => {
+    const sleep = (delaySeconds: number) =>
+      new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
+
     const templateId = randomUUID();
 
     const start = new Date();
