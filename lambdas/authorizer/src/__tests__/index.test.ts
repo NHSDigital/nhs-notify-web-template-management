@@ -43,6 +43,7 @@ const allowPolicy = {
   },
   context: {
     user: 'sub',
+    clientId: 'client-123',
   },
 };
 
@@ -72,10 +73,11 @@ afterEach(() => {
   process.env = originalEnv;
 });
 
-test('returns Allow policy on valid token', async () => {
+test('returns Allow policy on valid token with clientId', async () => {
   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
     success: true,
     subject: 'sub',
+    clientId: 'client-123',
   });
 
   const res = await handler(

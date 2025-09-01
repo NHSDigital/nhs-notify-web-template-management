@@ -175,7 +175,7 @@ describe('LambdaCognitoAuthorizer', () => {
     );
   });
 
-  test('returns failure on token with incorrect client_id claim', async () => {
+  test('returns failure on token with incorrect cognito client_id claim', async () => {
     const jwt = sign(
       {
         token_use: 'access',
@@ -276,6 +276,68 @@ describe('LambdaCognitoAuthorizer', () => {
           expect.objectContaining({
             path: ['nhs-notify:client-id'],
             message: 'Invalid input: expected string, received undefined',
+          }),
+        ]),
+      })
+    );
+  });
+
+  test('returns failure when NHS Notify client ID claim is empty string', async () => {
+    const jwt = sign(
+      {
+        token_use: 'access',
+        client_id: 'user-pool-client-id',
+        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        'nhs-notify:client-id': '',
+      },
+      'key',
+      {
+        keyid: 'key-id',
+      }
+    );
+
+    const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
+
+    expect(res).toEqual({ success: false });
+    expect(mockLogger.logMessages).toContainEqual(
+      expect.objectContaining({
+        level: 'error',
+        message: expect.stringContaining('Failed to authorize'),
+        issues: expect.arrayContaining([
+          expect.objectContaining({
+            path: ['nhs-notify:client-id'],
+            message: 'Too small: expected string to have >=1 characters',
+          }),
+        ]),
+      })
+    );
+  });
+
+  test('returns failure when NHS Notify client ID claim is whitespace', async () => {
+    const jwt = sign(
+      {
+        token_use: 'access',
+        client_id: 'user-pool-client-id',
+        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        'nhs-notify:client-id': '    ',
+      },
+      'key',
+      {
+        keyid: 'key-id',
+      }
+    );
+
+    const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
+
+    expect(res).toEqual({ success: false });
+    expect(mockLogger.logMessages).toContainEqual(
+      expect.objectContaining({
+        level: 'error',
+        message: expect.stringContaining('Failed to authorize'),
+        issues: expect.arrayContaining([
+          expect.objectContaining({
+            path: ['nhs-notify:client-id'],
+            message: 'Too small: expected string to have >=1 characters',
           }),
         ]),
       })
