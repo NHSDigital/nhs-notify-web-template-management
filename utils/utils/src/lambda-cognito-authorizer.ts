@@ -12,7 +12,7 @@ const $AccessToken = z.object({
   client_id: z.string(),
   iss: z.string(),
   token_use: z.string(),
-  'nhs-notify:client-id': z.string(),
+  'nhs-notify:client-id': z.string().trim().nonempty(),
 });
 
 export class LambdaCognitoAuthorizer {
