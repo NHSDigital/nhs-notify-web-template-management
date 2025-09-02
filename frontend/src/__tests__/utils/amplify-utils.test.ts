@@ -3,11 +3,7 @@
  */
 import { sign } from 'jsonwebtoken';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import {
-  getSessionServer,
-  getSessionId,
-  getClientId,
-} from '../../utils/amplify-utils';
+import { getSessionServer, getSessionId } from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
@@ -73,7 +69,10 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined });
+    expect(result).toEqual({
+      accessToken: undefined,
+      clientId: undefined,
+    });
   });
 
   test('getSessionServer - should return undefined properties if an error occurs', async () => {
@@ -83,7 +82,10 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined });
+    expect(result).toEqual({
+      accessToken: undefined,
+      clientId: undefined,
+    });
   });
 
   describe('getSessionId', () => {
@@ -125,27 +127,6 @@ describe('amplify-utils', () => {
       const sessionId = await getSessionId();
 
       expect(sessionId).toEqual('jti');
-    });
-  });
-
-  describe('getClientId', () => {
-    test('returns undefined when client ID not found', async () => {
-      const mockAccessToken = sign({}, 'key');
-
-      const clientId = await getClientId(mockAccessToken);
-
-      expect(clientId).toBeUndefined();
-    });
-
-    test('retrieves client id from access token param', async () => {
-      const mockAccessToken = sign(
-        { ['nhs-notify:client-id']: 'client2' },
-        'key'
-      );
-
-      const clientId = await getClientId(mockAccessToken);
-
-      expect(clientId).toEqual('client2');
     });
   });
 });

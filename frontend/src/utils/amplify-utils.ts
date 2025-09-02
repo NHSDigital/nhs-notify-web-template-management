@@ -5,8 +5,8 @@
 import { cookies } from 'next/headers';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { FetchAuthSessionOptions, JWT } from 'aws-amplify/auth';
-import { jwtDecode } from 'jwt-decode';
+import { FetchAuthSessionOptions } from 'aws-amplify/auth';
+import { decodeJwt, getClaim, getClientIdFromToken } from './token-utils';
 
 const config = require('@/amplify_outputs.json');
 
@@ -17,8 +17,8 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
 ): Promise<{
-  accessToken: string | undefined;
-  clientId: string | undefined;
+  accessToken?: string;
+  clientId?: string;
 }> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
@@ -28,7 +28,7 @@ export async function getSessionServer(
   });
 
   const accessToken = session?.tokens?.accessToken?.toString();
-  const clientId = accessToken && (await getClientId(accessToken));
+  const clientId = accessToken && getClientIdFromToken(accessToken);
 
   return {
     accessToken,
@@ -36,31 +36,15 @@ export async function getSessionServer(
   };
 }
 
-export const getSessionId = async () => {
-  return getAccessTokenParam('origin_jti');
-};
-
-export const getClientId = async (accessToken: string) => {
-  return getJwtPayload('nhs-notify:client-id', accessToken);
-};
-
 const getAccessTokenParam = async (key: string) => {
   const authSession = await getSessionServer();
   const accessToken = authSession.accessToken;
 
   if (!accessToken) return;
 
-  return getJwtPayload(key, accessToken);
+  return getClaim(decodeJwt(accessToken), key);
 };
 
-const getJwtPayload = (key: string, accessToken: string) => {
-  const jwt = jwtDecode<JWT['payload']>(accessToken);
-
-  const value = jwt[key];
-
-  if (!value) {
-    return;
-  }
-
-  return value.toString();
+export const getSessionId = async () => {
+  return getAccessTokenParam('origin_jti');
 };
