@@ -2,11 +2,15 @@ import path from 'node:path';
 import { defineConfig, devices } from '@playwright/test';
 import baseConfig from '../playwright.config';
 
+const PORT = 3001;
+const BASE_URL = `http://localhost:${PORT}`;
+
 const buildCommand = [
   'INCLUDE_AUTH_PAGES=true',
+  `NOTIFY_DOMAIN_NAME=localhost:${PORT}`,
   'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
   'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
-  'npm run build && npm run start',
+  `npm run build && npm run start -- -- -p ${PORT}`,
 ].join(' ');
 
 export default defineConfig({
@@ -21,7 +25,7 @@ export default defineConfig({
       name: 'component:setup',
       testMatch: 'component.setup.ts',
       use: {
-        baseURL: 'http://localhost:3000',
+        baseURL: BASE_URL,
         ...devices['Desktop Chrome'],
         headless: true,
         screenshot: 'only-on-failure',
@@ -32,7 +36,7 @@ export default defineConfig({
       testMatch: 'template-mgmt-logout-warning.component.modal.spec.ts',
       use: {
         screenshot: 'only-on-failure',
-        baseURL: 'http://localhost:3000',
+        baseURL: BASE_URL,
         ...devices['Desktop Chrome'],
         headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
@@ -52,7 +56,7 @@ export default defineConfig({
     timeout: 2 * 60 * 1000, // 2 minutes
     command: buildCommand,
     cwd: path.resolve(__dirname, '../../../..'),
-    url: 'http://localhost:3000/templates/create-and-submit-templates',
+    url: `${BASE_URL}/templates/create-and-submit-templates`,
     reuseExistingServer: !process.env.CI,
     stderr: 'pipe',
   },
