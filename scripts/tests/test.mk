@@ -35,6 +35,9 @@ test-api: # Run tests from scripts/tests/api.sh @Testing
 test-ui-user-timeout: # Run tests from scripts/tests/ui-user-timeout.sh @Testing
 	make _test name="ui-user-timeout"
 
+test-event: # Run tests from scripts/tests/event.sh @Testing
+	make _test name="event"
+
 test: # Run all the test tasks @Testing
 	make \
 		test-unit \
@@ -68,3 +71,4 @@ ${VERBOSE}.SILENT: \
 	test-ui-e2e \
 	test-ui-user-timeout \
 	test-unit \
+	test-event \

@@ -5,6 +5,7 @@ declare global {
       CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
+      EVENT_CACHE_BUCKET_NAME: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
       SFTP_ENVIRONMENT: string;
@@ -14,6 +15,7 @@ declare global {
       TEMPLATES_QUARANTINE_BUCKET_NAME: string;
       TEMPLATES_DOWNLOAD_BUCKET_NAME: string;
       TEST_EMAIL_BUCKET_PREFIX: string;
+      TEST_EMAIL_BUCKET_NAME: string;
     }
   }
 
