@@ -112,7 +112,6 @@ jobs:
         with:
           path: |
             node_modules
-            **/node_modules
           key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
 
@@ -157,7 +156,6 @@ jobs:
         with:
           path: |
             node_modules
-            **/node_modules
           key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
 
@@ -187,7 +185,6 @@ jobs:
         with:
           path: |
             node_modules
-            **/node_modules
           key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
 
