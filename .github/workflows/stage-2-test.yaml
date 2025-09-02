@@ -48,7 +48,7 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup (cached)"
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -63,7 +63,7 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup (cached)"
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -80,8 +80,10 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup (cached)"
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -110,8 +112,10 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup (cached)"
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -127,8 +131,10 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup (cached)"
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
