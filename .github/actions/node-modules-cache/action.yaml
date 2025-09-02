@@ -1,0 +1,38 @@
+name: "Node modules cache + setup"
+description: "Setup Node, restore node_modules cache, and optionally run npm ci on cache miss"
+inputs:
+  node_version:
+    description: "Node.js version"
+    required: true
+  cache_lock_path:
+    description: "Path(s) to package-lock.json for cache key"
+    required: false
+    default: "**/package-lock.json"
+  install_on_miss:
+    description: "Run npm ci when cache is missing"
+    required: false
+    default: "false"
+runs:
+  using: "composite"
+  steps:
+    - name: "Use Node.js"
+      uses: actions/setup-node@v4
+      with:
+        node-version: "${{ inputs.node_version }}"
+        cache: "npm"
+        cache-dependency-path: "${{ inputs.cache_lock_path }}"
+    - name: "Restore node_modules from cache"
+      id: node-modules-cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          **/node_modules
+        key: ${{ runner.os }}-node-${{ inputs.node_version }}-${{ hashFiles(inputs.cache_lock_path) }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ inputs.node_version }}-
+    - name: "Install dependencies (cache miss)"
+      if: steps.node-modules-cache.outputs.cache-hit != 'true' && inputs.install_on_miss == 'true'
+      shell: bash
+      run: |
+        npm ci

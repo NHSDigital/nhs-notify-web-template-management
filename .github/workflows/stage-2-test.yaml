@@ -48,26 +48,12 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Use Node.js"
-        uses: actions/setup-node@v4
+      - name: "Repo setup (cached)"
+        uses: ./.github/actions/node-modules-cache
         with:
-          node-version: "${{ inputs.nodejs_version }}"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
-      - name: "Restore node_modules from cache"
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ inputs.nodejs_version }}-
-      - name: "Install dependencies (cache miss)"
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: |
-          npm ci
+          node_version: "${{ inputs.nodejs_version }}"
+          cache_lock_path: "**/package-lock.json"
+          install_on_miss: "true"
 
   check-generated-dependencies:
     name: "Check generated dependencies"
@@ -77,21 +63,10 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Use Node.js"
-        uses: actions/setup-node@v4
+      - name: "Repo setup (cached)"
+        uses: ./.github/actions/node-modules-cache
         with:
-          node-version: "${{ inputs.nodejs_version }}"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
-      - name: "Restore node_modules from cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ inputs.nodejs_version }}-
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -105,21 +80,8 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Use Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: "${{ inputs.nodejs_version }}"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
-      - name: "Restore node_modules from cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ inputs.nodejs_version }}-
+      - name: "Repo setup (cached)"
+        uses: ./.github/actions/node-modules-cache
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -148,21 +110,8 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Use Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: "${{ inputs.nodejs_version }}"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
-      - name: "Restore node_modules from cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ inputs.nodejs_version }}-
+      - name: "Repo setup (cached)"
+        uses: ./.github/actions/node-modules-cache
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -178,21 +127,8 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Use Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: "${{ inputs.nodejs_version }}"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
-      - name: "Restore node_modules from cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ inputs.nodejs_version }}-
+      - name: "Repo setup (cached)"
+        uses: ./.github/actions/node-modules-cache
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
