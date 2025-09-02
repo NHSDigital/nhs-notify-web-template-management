@@ -17,5 +17,7 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
     }
 
     await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
+
+    await this.waitForPageHeader();
   }
 }

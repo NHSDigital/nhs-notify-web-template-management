@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
@@ -53,15 +53,5 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic 
 
   async clickSaveAndPreviewButton() {
     await this.saveAndPreviewButton.click();
-  }
-
-  async waitForPageToLoad() {
-    const pageHeader = this.page.getByTestId('page-header');
-    await expect(pageHeader).toBeVisible();
-  }
-
-  async loadPage() {
-    await super.loadPage();
-    await this.waitForPageToLoad();
   }
 }

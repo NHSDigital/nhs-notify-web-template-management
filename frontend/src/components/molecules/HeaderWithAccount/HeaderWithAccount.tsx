@@ -58,7 +58,7 @@ const NhsNotifyHeaderWithAccount = ({
       className='nhsuk-header'
       role='banner'
       data-module='nhsuk-header'
-      data-testid='page-header'
+      data-testid={authStatus === 'configuring' ? '' : 'page-header'}
     >
       <div className='nhsuk-header__container nhsuk-width-container'>
         <div className='nhsuk-header__service'>
