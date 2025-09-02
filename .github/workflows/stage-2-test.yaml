@@ -99,6 +99,7 @@ jobs:
           git diff --exit-code
   test-unit:
     name: 'Unit tests'
+    needs: [setup-dependencies]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -143,6 +144,7 @@ jobs:
         if: always()
   test-lint:
     name: 'Linting'
+    needs: [setup-dependencies]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -172,6 +174,7 @@ jobs:
           make test-lint
   test-typecheck:
     name: 'Typecheck'
+    needs: [setup-dependencies]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -200,6 +203,7 @@ jobs:
           make test-typecheck
   test-coverage:
     name: 'Test coverage'
+
     needs: [test-unit]
     runs-on: ubuntu-latest
     timeout-minutes: 5
