@@ -62,7 +62,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
 
       - name: 'Install dependencies'
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
@@ -86,7 +86,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           fail-on-cache-miss: true
 
       - name: 'Generate dependencies'
@@ -112,7 +112,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           fail-on-cache-miss: true
 
       - name: 'Generate dependencies'
@@ -156,7 +156,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           fail-on-cache-miss: true
 
       - name: 'Generate dependencies'
@@ -185,7 +185,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           fail-on-cache-miss: true
 
       - name: 'Generate dependencies'
