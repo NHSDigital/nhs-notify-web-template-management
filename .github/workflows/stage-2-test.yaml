@@ -62,7 +62,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-node-modules-${{ inputs.nodejs_version }}-
             ${{ runner.os }}-node-modules-
