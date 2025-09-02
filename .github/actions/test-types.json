@@ -1,6 +1,7 @@
 [
   "accessibility",
+  "api",
+  "event",
   "ui-component",
-  "ui-e2e",
-  "api"
+  "ui-e2e"
 ]
