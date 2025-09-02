@@ -1,14 +1,13 @@
-import { writeFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
-import { TestUserClient } from './test-user-client';
-import { generate } from 'generate-password';
+import { writeFileSync } from 'node:fs';
+import path from 'node:path';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { generate } from 'generate-password';
 import { TemplateStatus, VirusScanStatus } from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
-import path from 'node:path';
-import { faker } from '@faker-js/faker';
+import { TestUserClient } from './test-user-client';
 
 // pa11y can't interact with a file upload dialogue, so letters must be seeded
 const generateLetterTemplateData = (
@@ -89,8 +88,8 @@ const setup = async () => {
     backendConfig.clientSsmPathPrefix
   );
 
-  const givenName = faker.person.firstName();
-  const familyName = faker.person.lastName();
+  const givenName = 'Orval';
+  const familyName = 'Bergstrom';
   const userName = ['Dr', givenName, familyName];
 
   const { userId } = await testUserClient.createTestUser(
