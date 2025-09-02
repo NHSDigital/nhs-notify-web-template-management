@@ -147,7 +147,7 @@ DISPATCH_EVENT=$(jq -ncM \
 
 echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
 
-trigger_response=$(curl -s -L \
+trigger_response=$(curl -v -L \
   --fail \
   -X POST \
   -H "Accept: application/vnd.github+json" \

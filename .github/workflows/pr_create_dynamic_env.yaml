@@ -1,8 +1,11 @@
 name: PR Create Environment
 
 on:
-  pull_request:
-    types: [labeled, opened, synchronize, reopened, unlabeled, edited]
+  # pull_request:
+  #   types: [labeled, opened, synchronize, reopened, unlabeled, edited]
+  push:
+    branches:
+      - feature/CCM-11942_test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,8 +30,8 @@ jobs:
             --infraRepoName "$(echo ${{ github.repository }} | cut -d'/' -f2)" \
             --releaseVersion "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" \
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
-            --targetEnvironment "pr${{ github.event.number }}" \
+            --targetEnvironment "pr123" \
             --targetComponent "branch" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --terraformAction "apply" \
+            --terraformAction "plan" \
             --overrides "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
