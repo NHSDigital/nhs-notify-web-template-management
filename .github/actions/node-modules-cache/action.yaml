@@ -8,10 +8,6 @@ inputs:
     description: "Path(s) to package-lock.json for cache key"
     required: false
     default: "**/package-lock.json"
-  install_on_miss:
-    description: "Run npm ci when cache is missing"
-    required: false
-    default: "false"
 runs:
   using: "composite"
   steps:
@@ -32,7 +28,7 @@ runs:
         restore-keys: |
           ${{ runner.os }}-node-${{ inputs.node_version }}-
     - name: "Install dependencies (cache miss)"
-      if: steps.node-modules-cache.outputs.cache-hit != 'true' && inputs.install_on_miss == 'true'
+      if: steps.node-modules-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
         npm ci

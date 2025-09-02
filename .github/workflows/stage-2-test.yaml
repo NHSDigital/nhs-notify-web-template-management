@@ -52,8 +52,6 @@ jobs:
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
-          cache_lock_path: "**/package-lock.json"
-          install_on_miss: "true"
 
   check-generated-dependencies:
     name: "Check generated dependencies"

@@ -92,7 +92,7 @@ jobs:
     secrets: inherit
   test-stage: # Recommended maximum execution time is 5 minutes
     name: "Test stage"
-    needs: [metadata]
+    needs: [metadata, commit-stage]
     uses: ./.github/workflows/stage-2-test.yaml
     with:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
