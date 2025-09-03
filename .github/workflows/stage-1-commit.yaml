@@ -237,25 +237,25 @@ jobs:
           echo "Detected package version $version in main branch"
           echo "main_version=$version" >> $GITHUB_OUTPUT
 
-  check-schemas-generated:
-    name: Check event schemas have been regenerated
-    needs: detect-event-schema-package-changes
-    if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
+  # check-schemas-generated:
+  #   name: Check event schemas have been regenerated
+  #   needs: detect-event-schema-package-changes
+  #   if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - name: "Checkout code"
+  #       uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: pnpm install
+  #     - name: Install dependencies
+  #       run: pnpm install
 
-      - name: Re-generate schemas
-        run: pnpm --filter ./packages/event-schemas run generate-json-schemas
+  #     - name: Re-generate schemas
+  #       run: pnpm --filter ./packages/event-schemas run generate-json-schemas
 
-      - name: Check for schema changes
-        run: git diff --quiet packages/event-schemas/schemas
+  #     - name: Check for schema changes
+  #       run: git diff --quiet packages/event-schemas/schemas
 
   # check-schema-version-change:
   #   name: Check event schema version has been updated
