@@ -5,9 +5,9 @@ inputs:
     description: "Node.js version"
     required: true
   cache_lock_path:
-    description: "Path(s) to pnpm-lock.json for cache key"
+    description: "Path(s) to pnpm-lock.yaml for cache key"
     required: false
-    default: "**/pnpm-lock.json"
+    default: "**/pnpm-lock.yaml"
 runs:
   using: "composite"
   steps:
