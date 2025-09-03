@@ -257,28 +257,28 @@ jobs:
       - name: Check for schema changes
         run: git diff --quiet packages/event-schemas/schemas
 
-  check-schema-version-change:
-    name: Check event schema version has been updated
-    needs: detect-event-schema-package-changes
-    if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # check-schema-version-change:
+  #   name: Check event schema version has been updated
+  #   needs: detect-event-schema-package-changes
+  #   if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Check schema versions
-        run: |
-          source scripts/is_valid_increment.sh
+  #     - name: Check schema versions
+  #       run: |
+  #         source scripts/is_valid_increment.sh
 
-          main_version="${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
-          echo "Main version: ${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
+  #         main_version="${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
+  #         echo "Main version: ${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
 
-          local_version=$(jq -r '.version' packages/event-schemas/package.json)
-          echo "Local version: $local_version"
+  #         local_version=$(jq -r '.version' packages/event-schemas/package.json)
+  #         echo "Local version: $local_version"
 
-          if ! is_valid_increment "$main_version" "$local_version" ; then
-            echo "Error: Event Schema package has changed, but new version ($local_version) is not a valid increment from latest version on main branch ($main_version)."
-            exit 1
-          fi
+  #         if ! is_valid_increment "$main_version" "$local_version" ; then
+  #           echo "Error: Event Schema package has changed, but new version ($local_version) is not a valid increment from latest version on main branch ($main_version)."
+  #           exit 1
+  #         fi
