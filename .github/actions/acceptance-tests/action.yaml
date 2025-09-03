@@ -30,14 +30,14 @@ runs:
     - name: "Repo setup"
       shell: bash
       run: |
-        npm ci
+        pnpm run ci
 
     - name: Generate outputs file
       shell: bash
       run: |
         root_dir=${GITHUB_WORKSPACE}
         mv ./terraform_output.json ./sandbox_tf_outputs.json
-        npm run generate-outputs sandbox-output
+        pnpm run generate-outputs sandbox-output
 
     - name: Run test - ${{ inputs.testType }}
       shell: bash

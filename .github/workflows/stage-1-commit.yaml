@@ -249,10 +249,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Re-generate schemas
-        run: npm --workspace packages/event-schemas run generate-json-schemas
+        run: pnpm --filter ./packages/event-schemas run generate-json-schemas
 
       - name: Check for schema changes
         run: git diff --quiet packages/event-schemas/schemas

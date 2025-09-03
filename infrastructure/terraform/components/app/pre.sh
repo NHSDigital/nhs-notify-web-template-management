@@ -1,9 +1,9 @@
 echo "Running app pre.sh"
 
-npm ci
+pnpm install
 
-npm run generate-dependencies --workspaces --if-present
+pnpm run generate-dependencies
 
-npm run lambda-build --workspaces --if-present
+pnpm run lambda-build
 
 $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh

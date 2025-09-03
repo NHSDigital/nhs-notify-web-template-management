@@ -67,7 +67,7 @@ jobs:
           node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies --workspaces --if-present
+          pnpm run generate-dependencies
           git diff --exit-code
 
   test-unit:
@@ -84,7 +84,7 @@ jobs:
           node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies --workspaces --if-present
+          pnpm run generate-dependencies
       - name: "Run unit test suite"
         run: |
           make test-unit
@@ -116,7 +116,7 @@ jobs:
           node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies --workspaces --if-present
+          pnpm run generate-dependencies
       - name: "Run linting"
         run: |
           make test-lint
@@ -135,7 +135,7 @@ jobs:
           node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies --workspaces --if-present
+          pnpm run generate-dependencies
       - name: "Run typecheck"
         run: |
           make test-typecheck

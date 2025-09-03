@@ -1,5 +1,5 @@
 name: "Node modules cache + setup"
-description: "Setup Node, restore node_modules cache, and optionally run npm ci on cache miss"
+description: "Setup Node, restore node_modules cache, and optionally run pnpm install on cache miss"
 inputs:
   node_version:
     description: "Node.js version"
@@ -15,7 +15,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: "${{ inputs.node_version }}"
-        cache: "npm"
+        cache: "pnpm"
         cache-dependency-path: "${{ inputs.cache_lock_path }}"
     - name: "Restore node_modules from cache"
       id: node-modules-cache
@@ -31,4 +31,4 @@ runs:
       if: steps.node-modules-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        npm ci
+        pnpm install

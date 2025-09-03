@@ -10,11 +10,11 @@ echo "ACTION=$ACTION"
 if [ "${ACTION}" == "apply" ]; then
     echo "Building lambdas for distribution"
 
-    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then npm ci; fi
+    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then pnpm install; fi
 
-    npm run generate-dependencies --workspaces --if-present
+    pnpm run generate-dependencies
 
-    npm run lambda-build --workspaces --if-present
+    pnpm run lambda-build
 
     $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
 else

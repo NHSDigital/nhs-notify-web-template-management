@@ -22,7 +22,7 @@
     "accessibility-test-setup": "tsx ./pa11y-setup.ts",
     "accessibility-test-teardown": "tsx ./pa11y-teardown.ts",
     "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "pnpm lint -- --fix",
     "test:accessibility": "pa11y-ci -c .pa11y-ci.js",
     "test:unit": "echo \"Unit tests not required\"",
     "typecheck": "tsc --noEmit"

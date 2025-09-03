@@ -18,7 +18,7 @@ cd "$(git rev-parse --show-toplevel)"
 # tasks in scripts/test.mk.
 
 # run tests
-npm run test:unit --workspaces
+pnpm run test:unit --workspaces
 
 # merge coverage reports
 mkdir -p .reports

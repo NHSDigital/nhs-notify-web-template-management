@@ -71,4 +71,4 @@ trap "rm -f $(pwd)/backend_tfscaffold.tf" EXIT;
 # create the outputs file
 terraform output -json > ${root_dir}/sandbox_tf_outputs.json
 
-npm run create-amplify-outputs file
+pnpm run create-amplify-outputs file

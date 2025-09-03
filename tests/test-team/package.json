@@ -28,7 +28,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "pnpm lint -- --fix",
     "test:api": "playwright test --project api -c config/api/api.config.ts",
     "test:event": "playwright test -c config/event/event.config.ts",
     "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",

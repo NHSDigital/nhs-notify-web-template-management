@@ -45,12 +45,12 @@
     "url": "git+https://github.com/NHSDigital/nhs-notify-web-template-management.git"
   },
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "pnpm clean && tsc",
     "clean": "rm -rf dist",
     "generate-json-schemas": "tsx scripts/generate-json-schemas.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm build",
     "test:unit": "jest",
     "typecheck": "tsc --noEmit"
   },
