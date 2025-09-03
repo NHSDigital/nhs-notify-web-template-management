@@ -60,6 +60,8 @@ jobs:
     needs: [install-dependencies]
     steps:
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Restore node_modules from cache"
@@ -78,6 +80,8 @@ jobs:
     needs: [install-dependencies]
     steps:
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Restore node_modules from cache"
@@ -111,6 +115,8 @@ jobs:
     needs: [install-dependencies]
     steps:
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Restore node_modules from cache"
@@ -131,6 +137,8 @@ jobs:
     needs: [install-dependencies]
     steps:
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Restore node_modules from cache"
@@ -151,6 +159,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Run test coverage check"
