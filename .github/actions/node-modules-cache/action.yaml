@@ -22,10 +22,6 @@ runs:
         cache: "pnpm"
         cache-dependency-path: "${{ inputs.cache_lock_path }}"
 
-    - name: "Enable Corepack (pnpm from packageManager)"
-      shell: bash
-      run: corepack enable
-
     - name: "Prefetch deps to pnpm store"
       shell: bash
       run: pnpm fetch --prefer-offline -r
