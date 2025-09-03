@@ -1,5 +1,5 @@
-name: "Node modules cache + setup"
-description: "Setup Node, restore node_modules cache, and optionally run pnpm install on cache miss"
+name: "Node modules cache + setup (pnpm)"
+description: "Setup Node, cache pnpm store via setup-node, prefetch tarballs, and link node_modules from the store"
 inputs:
   node_version:
     description: "Node.js version"
@@ -11,26 +11,21 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: pnpm/action-setup@v4
-
     - name: "Use Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: "${{ inputs.node_version }}"
         cache: "pnpm"
         cache-dependency-path: "${{ inputs.cache_lock_path }}"
-    - name: "Restore node_modules from cache"
-      id: node-modules-cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          node_modules
-          **/node_modules
-        key: ${{ runner.os }}-node-${{ inputs.node_version }}-${{ hashFiles(inputs.cache_lock_path) }}
-        restore-keys: |
-          ${{ runner.os }}-node-${{ inputs.node_version }}-
-    - name: "Install dependencies (cache miss)"
-      if: steps.node-modules-cache.outputs.cache-hit != 'true'
+
+    - name: "Enable Corepack (pnpm from packageManager)"
       shell: bash
-      run: |
-        pnpm install
+      run: corepack enable
+
+    - name: "Prefetch deps to pnpm store"
+      shell: bash
+      run: pnpm fetch --prefer-offline -r
+
+    - name: "Link node_modules from store"
+      shell: bash
+      run: pnpm install --frozen-lockfile --prefer-offline -r
