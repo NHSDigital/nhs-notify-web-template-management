@@ -17,11 +17,15 @@ export const getClientIdFromToken = (token: string) => {
 };
 
 export const getIdTokenClaims = (
-  idToken: string
+  idToken?: string
 ): {
   clientName?: string;
   displayName?: string;
 } => {
+  if (!idToken) {
+    return {};
+  }
+
   const claims = decodeJwt(idToken);
 
   const clientName = getClaim(claims, 'nhs-notify:client-name');

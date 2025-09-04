@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@styles/app.scss';
-import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
+import { AuthProvider } from '@providers/auth-provider';
+import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
+import { NhsNotifyHeader } from '@molecules/Header/Header';
+import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -54,7 +58,12 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <AuthProvider>
+            <NHSNotifySkipLink />
+            <NhsNotifyHeader />
+            <NHSNotifyContainer>{children}</NHSNotifyContainer>
+            <NHSNotifyFooter />
+          </AuthProvider>
         </CookiesProvider>
       </body>
     </html>

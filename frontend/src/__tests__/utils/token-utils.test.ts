@@ -45,6 +45,10 @@ describe('token-utils', () => {
   });
 
   describe('getIdTokenClaims', () => {
+    it('returns empty object when no token passed', () => {
+      expect(getIdTokenClaims()).toEqual({});
+    });
+
     it('includes clientName when present', () => {
       const token = sign(
         {

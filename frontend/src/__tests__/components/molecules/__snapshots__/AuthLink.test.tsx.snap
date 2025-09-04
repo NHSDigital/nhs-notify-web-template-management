@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AuthLink renders Sign in link when authStatus changes to unauthenticated 1`] = `
+<DocumentFragment>
+  <a
+    class="auth-link"
+    data-testid="sign-in-link"
+    href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+    id="sign-in-link"
+  >
+    Sign in
+  </a>
+</DocumentFragment>
+`;
+
 exports[`AuthLink renders Sign in link when authStatus is configuring 1`] = `
 <DocumentFragment>
   <a
@@ -13,20 +26,7 @@ exports[`AuthLink renders Sign in link when authStatus is configuring 1`] = `
 </DocumentFragment>
 `;
 
-exports[`AuthLink renders Sign in link when authStatus is unauthenticated 1`] = `
-<DocumentFragment>
-  <a
-    class="auth-link"
-    data-testid="sign-in-link"
-    href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
-    id="sign-in-link"
-  >
-    Sign in
-  </a>
-</DocumentFragment>
-`;
-
-exports[`AuthLink renders Sign out link when authStatus is authenticated 1`] = `
+exports[`AuthLink renders Sign out link when authStatus changes to authenticated 1`] = `
 <DocumentFragment>
   <a
     class="auth-link"

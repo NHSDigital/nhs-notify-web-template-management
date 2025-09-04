@@ -1,13 +1,20 @@
 'use client';
 
 import React from 'react';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import type { AuthStatus } from '@aws-amplify/ui';
 import content from '@content/content';
 import styles from './AuthLink.module.scss';
 import classNames from 'classnames';
+import { useAuthStatus } from '@hooks/use-auth-status';
 
-export const AuthLink = ({ className }: { className?: string }) => {
-  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+export const AuthLink = ({
+  className,
+  initialAuthStatus,
+}: {
+  className?: string;
+  initialAuthStatus?: AuthStatus;
+}) => {
+  const authStatus = useAuthStatus(initialAuthStatus);
 
   let id = 'sign-in-link';
   let linkContent = content.components.header.accountInfo.links.signIn;
