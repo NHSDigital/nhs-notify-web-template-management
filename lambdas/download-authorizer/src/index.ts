@@ -15,7 +15,7 @@ export const denial = {
 };
 
 export function parseRequest(request: CloudFrontRequest) {
-  const ownerPathComponent = request.uri.split('/')[1] ?? '';
+  const clientIdPathComponent = request.uri.split('/')[1] ?? '';
 
   const customHeaders = request.origin?.s3?.customHeaders;
   const userPoolId = customHeaders?.['x-user-pool-id']?.[0]?.value;
@@ -33,14 +33,14 @@ export function parseRequest(request: CloudFrontRequest) {
     userPoolId,
     userPoolClientId,
     accessToken,
-    ownerPathComponent,
+    clientIdPathComponent,
   };
 }
 
 export const handler = async (event: CloudFrontRequestEvent) => {
   const { request } = event.Records[0].cf;
 
-  const { userPoolId, userPoolClientId, accessToken, ownerPathComponent } =
+  const { userPoolId, userPoolClientId, accessToken, clientIdPathComponent } =
     parseRequest(request);
 
   if (!userPoolId || !userPoolClientId) {
@@ -59,7 +59,7 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     userPoolId,
     userPoolClientId,
     accessToken,
-    ownerPathComponent
+    clientIdPathComponent
   );
 
   if (authResult.success) return request;

@@ -131,14 +131,15 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -177,8 +178,8 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -314,34 +315,6 @@ test.describe('POST /v1/template', () => {
         },
       });
     });
-
-    test('returns 400 if template has message disallowed characters', async ({
-      request,
-    }) => {
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-            message: '<>',
-          }),
-        }
-      );
-
-      expect(response.status()).toBe(400);
-
-      expect(await response.json()).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Request failed validation',
-        details: {
-          message:
-            'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
-        },
-      });
-    });
   });
 
   test.describe('SMS templates', () => {
@@ -367,14 +340,15 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -413,8 +387,8 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -575,14 +549,15 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created).toEqual({
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -622,8 +597,8 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: user1.userId,
+        templateId: created.template.id,
+        clientId: user1.clientId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');

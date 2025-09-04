@@ -16,7 +16,6 @@ import {
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,
   MAX_SMS_CHARACTER_LENGTH,
-  NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
 import { schemaFor } from './schema-for';
 import {
@@ -68,15 +67,7 @@ export const $EmailProperties = schemaFor<EmailProperties>()(
 export const $NhsAppProperties = schemaFor<NhsAppProperties>()(
   z.object({
     templateType: z.literal('NHS_APP'),
-    message: z
-      .string()
-      .trim()
-      .min(1)
-      .max(MAX_NHS_APP_CHARACTER_LENGTH)
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      .refine((s) => !new RegExp(NHS_APP_DISALLOWED_CHARACTERS, 'gi').test(s), {
-        message: `Message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
-      }),
+    message: z.string().trim().min(1).max(MAX_NHS_APP_CHARACTER_LENGTH),
   })
 );
 
@@ -98,8 +89,6 @@ export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
 export const $LetterProperties = schemaFor<LetterProperties>()(
   $UploadLetterProperties.extend({
     files: $LetterFiles,
-    // TODO: CCM-10432 - remove, not needed after client migration
-    owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
   })
@@ -138,6 +127,7 @@ export const $CreateUpdateTemplate = schemaFor<
 const $TemplateDtoFields = z
   .object({
     campaignId: z.string().optional(),
+    clientId: z.string().optional(),
     createdAt: z.string(),
     id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),

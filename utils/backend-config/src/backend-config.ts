@@ -5,6 +5,7 @@ import fs from 'node:fs';
 export type BackendConfig = {
   apiBaseUrl: string;
   clientSsmPathPrefix: string;
+  eventCacheBucketName: string;
   requestProofQueueUrl: string;
   sftpEnvironment: string;
   sftpPollLambdaName: string;
@@ -24,6 +25,7 @@ export const BackendConfigHelper = {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
+      eventCacheBucketName: process.env.EVENT_CACHE_BUCKET_NAME ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
@@ -45,6 +47,7 @@ export const BackendConfigHelper = {
   toEnv(config: BackendConfig): void {
     process.env.API_BASE_URL = config.apiBaseUrl;
     process.env.CLIENT_SSM_PATH_PREFIX = config.clientSsmPathPrefix;
+    process.env.EVENT_CACHE_BUCKET_NAME = config.eventCacheBucketName;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
@@ -69,6 +72,8 @@ export const BackendConfigHelper = {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
+      eventCacheBucketName:
+        outputsFileContent.event_cache_bucket_name?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',

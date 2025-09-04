@@ -23,16 +23,15 @@ export const createHandler =
       'file-type': fileType,
       'version-id': versionId,
       'template-id': templateId,
-      owner,
+      'client-id': clientId,
     } = LetterUploadRepository.parseKey(objectKey);
 
-    const templateKey = { owner, id: templateId };
     const virusScanResult =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
     logger.info('Setting virus scan status', {
       fileType,
-      owner,
+      clientId,
       scanResultStatus,
       templateId,
       versionId,
@@ -40,7 +39,7 @@ export const createHandler =
     });
 
     await templateRepository.setLetterFileVirusScanStatusForUpload(
-      templateKey,
+      { clientId, templateId },
       fileType,
       versionId,
       virusScanResult

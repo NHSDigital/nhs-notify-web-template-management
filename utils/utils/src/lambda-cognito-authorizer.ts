@@ -12,7 +12,7 @@ const $AccessToken = z.object({
   client_id: z.string(),
   iss: z.string(),
   token_use: z.string(),
-  'nhs-notify:client-id': z.string().optional(),
+  'nhs-notify:client-id': z.string().trim().nonempty(),
 });
 
 export class LambdaCognitoAuthorizer {
@@ -25,7 +25,7 @@ export class LambdaCognitoAuthorizer {
     userPoolId: string,
     userPoolClientId: string,
     jwt: string,
-    expectedSubject?: string
+    expectedResourceOwner?: string
   ): Promise<
     { success: true; subject: string; clientId?: string } | { success: false }
   > {
@@ -90,14 +90,23 @@ export class LambdaCognitoAuthorizer {
         return { success: false };
       }
 
-      if (expectedSubject !== undefined && expectedSubject !== sub) {
-        this.logger.warn('Subject path does not match expected subject');
+      if (
+        expectedResourceOwner !== undefined &&
+        expectedResourceOwner !== notifyClientId
+      ) {
+        this.logger.warn('clientId does not match expected resource owner');
         return { success: false };
       }
 
       return { success: true, subject: sub, clientId: notifyClientId };
     } catch (error) {
-      this.logger.error('Failed to authorize:', error);
+      this.logger
+        .child(
+          error instanceof Error && 'issues' in error
+            ? { issues: error.issues }
+            : {}
+        )
+        .error('Failed to authorize:', error);
       return { success: false };
     }
   }

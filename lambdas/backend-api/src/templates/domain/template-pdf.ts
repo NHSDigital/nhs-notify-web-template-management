@@ -1,4 +1,4 @@
-import type { TemplateKey } from 'nhs-notify-web-template-management-utils';
+import { TemplateKey } from 'nhs-notify-web-template-management-utils';
 import type {
   TextItem,
   TextMarkedContent,
@@ -42,25 +42,24 @@ export class TemplatePdf {
   private parsed = false;
 
   private parameters: string[] = [];
-
   constructor(
-    private key: TemplateKey,
+    private templateKey: TemplateKey,
     private source: Uint8Array
   ) {}
 
   get templateId(): string {
-    return this.key.id;
+    return this.templateKey.templateId;
   }
 
-  get owner(): string {
-    return this.key.owner;
+  get clientId(): string {
+    return this.templateKey.clientId;
   }
 
   async parse() {
     if (!this.parsed) {
       const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
 
-      const loading = getDocument(this.source.buffer);
+      const loading = getDocument(this.source);
 
       const document = await loading.promise;
 

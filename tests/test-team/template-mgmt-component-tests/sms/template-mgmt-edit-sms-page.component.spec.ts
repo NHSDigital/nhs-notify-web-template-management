@@ -31,7 +31,7 @@ function createTemplates(user: TestUser) {
     noSmsTemplateType: TemplateFactory.create({
       id: 'no-sms-template-type-template',
       templateType: 'EMAIL',
-      owner: user.userId,
+      owner: `CLIENT#${user.clientId}`,
       clientId: user.clientId,
       name: 'no-sms-template-type-template',
     }),
@@ -274,7 +274,9 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
 
-      await editSmsTemplatePage.loadPage(templates.noSmsTemplateType.id);
+      await editSmsTemplatePage.attemptToLoadPageExpectFailure(
+        templates.noSmsTemplateType.id
+      );
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -285,7 +287,9 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
 
-      await editSmsTemplatePage.loadPage('/fake-template-id');
+      await editSmsTemplatePage.attemptToLoadPageExpectFailure(
+        '/fake-template-id'
+      );
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
