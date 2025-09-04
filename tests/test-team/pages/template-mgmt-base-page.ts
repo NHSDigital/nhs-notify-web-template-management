@@ -1,4 +1,4 @@
-import { expect, Locator, type Page } from '@playwright/test';
+import { Locator, type Page } from '@playwright/test';
 
 export abstract class TemplateMgmtBasePage {
   readonly page: Page;
@@ -68,11 +68,6 @@ export abstract class TemplateMgmtBasePage {
   }
 
   abstract loadPage(templateId?: string): Promise<void>;
-
-  async waitForPageHeader() {
-    const pageHeader = this.page.getByTestId('page-header');
-    await expect(pageHeader).toBeVisible();
-  }
 
   async attemptToLoadPageExpectFailure(templateId?: string) {
     await this.loadPage(templateId);
