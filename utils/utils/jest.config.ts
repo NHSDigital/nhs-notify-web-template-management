@@ -1,13 +1,13 @@
 import type { Config } from 'jest';
 
 export const baseJestConfig: Config = {
-  preset: 'ts-jest',
-
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
+
+  maxWorkers: '50%',
 
   // The directory where Jest should output its coverage files
   coverageDirectory: './.reports/unit/coverage',
@@ -25,7 +25,7 @@ export const baseJestConfig: Config = {
   },
 
   coveragePathIgnorePatterns: ['/__tests__/'],
-  transform: { '^.+\\.ts$': '@swc/jest' },
+  transform: { '^.+\\.(t|j)sx?$': '@swc/jest' },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 
   // Use this configuration option to add custom reporters to Jest

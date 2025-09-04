@@ -43,7 +43,7 @@
     "lint:fix": "pnpm -r --if-present --parallel --stream --no-bail run lint:fix",
     "lint": "pnpm -r --if-present --parallel --stream --no-bail run lint",
     "start": "pnpm --filter ./frontend run start ",
-    "test:unit": "pnpm -r --if-present --parallel --stream --no-bail run test:unit",
+    "test:unit": "pnpm -r --if-present --workspace-concurrency=2 --no-bail run test:unit",
     "typecheck": "pnpm -r --if-present --parallel --stream --no-bail run typecheck"
   },
   "workspaces": [
