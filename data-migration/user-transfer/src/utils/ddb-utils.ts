@@ -3,14 +3,38 @@ import {
   DynamoDBClient,
   QueryCommand,
   QueryCommandInput,
+  ScanCommand,
+  ScanCommandInput,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
 import { Parameters } from '@/src/utils/constants';
 
 const client = new DynamoDBClient({ region: 'eu-west-2' });
 
+// change 'sandbox' back to 'app' when testing on prod environment
 function getTableName(environment: string) {
-  return `nhs-notify-${environment}-app-api-templates`;
+  return `nhs-notify-${environment}-sandbox-api-templates`;
+}
+
+export async function retrieveAllTemplates(
+  parameters: Parameters
+): Promise<Record<string, AttributeValue>[]> {
+  let allItems: Record<string, AttributeValue>[] = [];
+  let lastEvaluatedKey = undefined;
+  do {
+    const query: ScanCommandInput = {
+      TableName: getTableName(parameters.environment),
+      FilterExpression:
+        'attribute_exists(#owner) AND NOT contains(#owner, :subString)',
+      ExpressionAttributeNames: { '#owner': 'owner' },
+      ExpressionAttributeValues: { ':subString': { S: 'CLIENT#' } },
+    };
+
+    const queryResult = await client.send(new ScanCommand(query));
+    lastEvaluatedKey = queryResult.LastEvaluatedKey;
+    allItems = [...allItems, ...(queryResult.Items ?? [])];
+  } while (lastEvaluatedKey);
+  return allItems;
 }
 
 export async function retrieveTemplates(
@@ -26,7 +50,7 @@ export async function retrieveTemplates(
         '#owner': 'owner',
       },
       ExpressionAttributeValues: {
-        ':owner': { S: parameters.sourceOwner },
+        ':owner': { S: parameters.sourceOwner as string },
       },
       ExclusiveStartKey: lastEvaluatedKey,
     };
@@ -40,9 +64,11 @@ export async function retrieveTemplates(
 
 export async function updateItem(
   item: Record<string, AttributeValue>,
-  parameters: Parameters
+  parameters: Parameters,
+  newClientId: string
 ): Promise<void> {
   const tableName = getTableName(parameters.environment);
+  console.log({ item, parameters, newClientId, tableName });
   await client.send(
     new TransactWriteItemsCommand({
       TransactItems: [
@@ -50,8 +76,10 @@ export async function updateItem(
           Put: {
             Item: {
               ...item,
-              owner: { S: parameters.destinationOwner },
-              updatedAt: { S: new Date().toISOString() },
+              owner: { S: `CLIENT#${newClientId}` },
+              clientId: { S: newClientId },
+              createdBy: item.owner,
+              updatedBy: item.owner,
             },
             TableName: tableName,
           },
@@ -60,7 +88,6 @@ export async function updateItem(
           Delete: {
             Key: {
               owner: item.owner,
-              id: item.id,
             },
             TableName: tableName,
           },
