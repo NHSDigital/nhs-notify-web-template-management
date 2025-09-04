@@ -37,6 +37,7 @@ export default defineConfig({
         headless: true,
         storageState: path.resolve(__dirname, '../.auth/e2e/user.json'),
       },
+      fullyParallel: true,
       dependencies: ['e2e:setup'],
       teardown: 'e2e:teardown',
     },

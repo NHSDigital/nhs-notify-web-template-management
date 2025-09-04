@@ -37,6 +37,7 @@ export default defineConfig({
         headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
+      fullyParallel: true,
       dependencies: ['component:setup'],
       teardown: 'component:teardown',
     },

@@ -5,7 +5,6 @@ export default defineConfig({
   ...baseConfig,
 
   timeout: 10_000,
-  workers: 1,
   projects: [
     {
       name: 'api:setup',
