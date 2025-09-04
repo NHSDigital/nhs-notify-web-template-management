@@ -4,7 +4,6 @@ import baseConfig from '../playwright.config';
 export default defineConfig({
   ...baseConfig,
 
-  workers: 4, // 4 workers is the limit before User Auth starts failing in fully parallel mode
   timeout: 120_000,
   projects: [
     {
