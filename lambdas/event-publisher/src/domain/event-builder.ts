@@ -55,22 +55,31 @@ export class EventBuilder {
   private buildTemplateDatabaseEvent(
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
-    if (!publishableEventRecord.dynamodb.NewImage) {
+    if (
+      !publishableEventRecord.dynamodb.NewImage ||
+      !publishableEventRecord.dynamodb.OldImage
+    ) {
       // if this is a hard delete do not publish an event - we will publish events
       // when the status is set to deleted
       this.logger.debug({
-        description: 'No new image found',
+        description: 'Old image or new image is not present',
         publishableEventRecord,
       });
 
       return undefined;
     }
 
-    const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
+    const dynamoRecordNew = unmarshall(
+      publishableEventRecord.dynamodb.NewImage
+    );
+    const dynamoRecordOld = unmarshall(
+      publishableEventRecord.dynamodb.OldImage
+    );
 
-    const databaseTemplate = $DynamoDBTemplate.parse(dynamoRecord);
+    const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
+    const databaseTemplateOld = $DynamoDBTemplate.parse(dynamoRecordOld);
 
-    if (!shouldPublish(databaseTemplate)) {
+    if (!shouldPublish(databaseTemplateNew, databaseTemplateOld)) {
       this.logger.debug({
         description: 'Not publishing event',
         publishableEventRecord,
@@ -79,14 +88,24 @@ export class EventBuilder {
       return undefined;
     }
 
-    return $Event.parse({
-      ...this.buildTemplateSavedEventMetadata(
-        publishableEventRecord.eventID,
-        databaseTemplate.templateStatus,
-        databaseTemplate.id
-      ),
-      data: dynamoRecord,
-    });
+    try {
+      return $Event.parse({
+        ...this.buildTemplateSavedEventMetadata(
+          publishableEventRecord.eventID,
+          databaseTemplateNew.templateStatus,
+          databaseTemplateNew.id
+        ),
+        data: dynamoRecordNew,
+      });
+    } catch (error) {
+      this.logger
+        .child({
+          description: 'Failed to parse outgoing event',
+          publishableEventRecord,
+        })
+        .error(error);
+      throw error;
+    }
   }
 
   buildEvent(
