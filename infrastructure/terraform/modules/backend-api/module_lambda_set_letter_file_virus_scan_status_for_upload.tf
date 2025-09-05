@@ -1,5 +1,5 @@
 module "lambda_set_file_virus_scan_status_for_upload" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-lambda.zip"
 
   project        = var.project
   environment    = var.environment
