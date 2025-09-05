@@ -8,6 +8,7 @@ import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
+import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -40,6 +41,13 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
+const config = {
+  logoutInSeconds:
+    Number(process.env.NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS) || 900, // 15 minutes force logout
+  promptTimeSeconds:
+    Number(process.env.NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT) || 120, // 2 minutes before logout
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -63,6 +71,10 @@ export default function RootLayout({
             <NhsNotifyHeader />
             <NHSNotifyContainer>{children}</NHSNotifyContainer>
             <NHSNotifyFooter />
+            <LogoutWarningModal
+              logoutInSeconds={config.logoutInSeconds}
+              promptBeforeLogoutSeconds={config.promptTimeSeconds}
+            />
           </AuthProvider>
         </CookiesProvider>
       </body>
