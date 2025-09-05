@@ -55,31 +55,29 @@ export class EventBuilder {
   private buildTemplateDatabaseEvent(
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
-    if (
-      !publishableEventRecord.dynamodb.NewImage ||
-      !publishableEventRecord.dynamodb.OldImage
-    ) {
+    if (!publishableEventRecord.dynamodb.NewImage) {
       // if this is a hard delete do not publish an event - we will publish events
       // when the status is set to deleted
       this.logger.debug({
-        description: 'Old image or new image is not present',
+        description: 'No new image found',
         publishableEventRecord,
       });
 
       return undefined;
     }
-
     const dynamoRecordNew = unmarshall(
       publishableEventRecord.dynamodb.NewImage
     );
-    const dynamoRecordOld = unmarshall(
-      publishableEventRecord.dynamodb.OldImage
-    );
+    const dynamoRecordOld = publishableEventRecord.dynamodb.OldImage
+      ? unmarshall(publishableEventRecord.dynamodb.OldImage)
+      : undefined;
 
     const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
-    const databaseTemplateOld = $DynamoDBTemplate.parse(dynamoRecordOld);
+    const databaseTemplateOld = $DynamoDBTemplate
+      .optional()
+      .parse(dynamoRecordOld);
 
-    if (!shouldPublish(databaseTemplateNew, databaseTemplateOld)) {
+    if (!shouldPublish(databaseTemplateOld, databaseTemplateNew)) {
       this.logger.debug({
         description: 'Not publishing event',
         publishableEventRecord,
@@ -104,6 +102,7 @@ export class EventBuilder {
           publishableEventRecord,
         })
         .error(error);
+
       throw error;
     }
   }

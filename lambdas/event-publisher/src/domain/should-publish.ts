@@ -9,22 +9,29 @@ const publishableLetterStatuses = new Set<DynamoDBTemplate['templateStatus']>([
 ]);
 
 function shouldPublishLetter(
-  current: DynamoDBTemplate,
-  previous: DynamoDBTemplate
+  previous: DynamoDBTemplate | undefined,
+  current: DynamoDBTemplate
 ): boolean {
+  if (current.templateStatus === 'DELETED') {
+    return (
+      previous !== undefined &&
+      publishableLetterStatuses.has(previous.templateStatus) &&
+      !!current.proofingEnabled
+    );
+  }
+
   return (
     publishableLetterStatuses.has(current.templateStatus) &&
-    publishableLetterStatuses.has(previous.templateStatus) &&
     !!current.proofingEnabled
   );
 }
 
 export function shouldPublish(
-  current: DynamoDBTemplate,
-  previous: DynamoDBTemplate
+  previous: DynamoDBTemplate | undefined,
+  current: DynamoDBTemplate
 ) {
   if (current.templateType === 'LETTER') {
-    return shouldPublishLetter(current, previous);
+    return shouldPublishLetter(previous, current);
   }
 
   return true;
