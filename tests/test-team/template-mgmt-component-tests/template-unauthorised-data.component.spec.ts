@@ -66,7 +66,7 @@ test.describe('Unauthorised data access Tests', () => {
     const messageTemplatesPage = new MessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
-    await expect(messageTemplatesPage.pageHeader).toHaveText(
+    await expect(messageTemplatesPage.pageHeading).toHaveText(
       'Message templates'
     );
     await expect(messageTemplatesPage.createTemplateButton).toBeVisible();

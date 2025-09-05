@@ -46,6 +46,7 @@ describe('middleware function', () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
+      idToken: undefined,
     });
 
     const response = await middleware(request);
@@ -64,6 +65,7 @@ describe('middleware function', () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'access-token',
       clientId: 'client1',
+      idToken: 'id-token',
     });
 
     const url = new URL('https://url.com/message-templates');
@@ -95,6 +97,7 @@ describe('middleware function', () => {
   it('if request path is protected, tokens exist BUT token missing client-id, redirect to request-to-be-added page', async () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'access-token',
+      idToken: 'id-token',
     });
 
     getClientIdFromTokenMock.mockReturnValueOnce(undefined);

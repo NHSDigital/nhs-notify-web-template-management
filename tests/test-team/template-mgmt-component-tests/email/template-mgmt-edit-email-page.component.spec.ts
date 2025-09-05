@@ -6,7 +6,7 @@ import {
   assertFooterLinks,
   assertSignOutLink,
   assertGoBackLinkNotPresent,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -72,7 +72,7 @@ test.describe('Edit Email message template Page', () => {
       `${baseURL}/templates/edit-email-template/${templates.valid.id}`
     );
 
-    await expect(editEmailTemplatePage.pageHeader).toHaveText(
+    await expect(editEmailTemplatePage.pageHeading).toHaveText(
       'Edit email template'
     );
   });
@@ -86,7 +86,7 @@ test.describe('Edit Email message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLinkNotPresent(props);

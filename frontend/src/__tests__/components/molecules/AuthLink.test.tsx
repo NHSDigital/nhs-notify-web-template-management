@@ -1,23 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { mockDeep } from 'jest-mock-extended';
-import { type UseAuthenticator, useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthStatus } from '@hooks/use-auth-status';
 import { AuthLink } from '@molecules/AuthLink/AuthLink';
 
-jest.mock('@aws-amplify/ui-react');
+jest.mock('@hooks/use-auth-status');
+const mockUseAuthStatus = jest.mocked(useAuthStatus);
 
 beforeEach(() => {
   jest.resetAllMocks();
-  jest.mocked(useAuthenticator).mockImplementation((cb) => {
-    const context = mockDeep<UseAuthenticator>({
-      authStatus: 'configuring',
-    });
-
-    if (cb) {
-      cb(context);
-    }
-
-    return context;
-  });
+  mockUseAuthStatus.mockReturnValue('configuring');
 });
 
 describe('AuthLink', () => {
@@ -29,27 +19,28 @@ describe('AuthLink', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders Sign in link when authStatus is unauthenticated', async () => {
-    jest.mocked(useAuthenticator).mockReturnValueOnce(
-      mockDeep<UseAuthenticator>({
-        authStatus: 'unauthenticated',
-      })
-    );
-
+  it('renders Sign in link when authStatus changes to unauthenticated', async () => {
     const container = render(<AuthLink />);
+
+    await screen.findByText('Sign in');
+
+    mockUseAuthStatus.mockReturnValue('unauthenticated');
+
+    container.rerender(<AuthLink />);
 
     await screen.findByText('Sign in');
 
     expect(container.asFragment()).toMatchSnapshot();
   });
-  it('renders Sign out link when authStatus is authenticated', async () => {
-    jest.mocked(useAuthenticator).mockReturnValueOnce(
-      mockDeep<UseAuthenticator>({
-        authStatus: 'authenticated',
-      })
-    );
 
+  it('renders Sign out link when authStatus changes to authenticated', async () => {
     const container = render(<AuthLink />);
+
+    await screen.findByText('Sign in');
+
+    mockUseAuthStatus.mockReturnValue('authenticated');
+
+    container.rerender(<AuthLink />);
 
     await screen.findByText('Sign out');
 

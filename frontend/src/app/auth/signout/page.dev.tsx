@@ -1,13 +1,13 @@
 'use client';
 
 import React, { Suspense, useEffect } from 'react';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { signOut } from 'aws-amplify/auth';
 import JsCookie from 'js-cookie';
+import { useAuthStatus } from '@hooks/use-auth-status';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const SignOut = ({ children }: { children: React.ReactNode }) => {
-  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+  const authStatus = useAuthStatus();
 
   useEffect(() => {
     if (authStatus === 'authenticated') {

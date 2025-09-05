@@ -24,10 +24,10 @@ describe('MarkdownContent', () => {
     expect(screen.getByRole('link')).toHaveTextContent('link');
   });
 
-  it('passes ID through if content is a string', () => {
-    render(<MarkdownContent content='This is content' id='content-id' />);
+  it('passes test ID through if content is a string', () => {
+    render(<MarkdownContent content='This is content' testId='content-id' />);
     expect(screen.getByText('This is content')).toHaveAttribute(
-      'id',
+      'data-testid',
       'content-id-0'
     );
   });
@@ -45,19 +45,19 @@ describe('MarkdownContent', () => {
     expect(screen.getByRole('link')).toHaveTextContent('link');
   });
 
-  it('passes indexed IDs to each item if content is an array', () => {
+  it('passes indexed test IDs to each item if content is an array', () => {
     render(
       <MarkdownContent
         content={['First paragraph', 'Second paragraph']}
-        id='content-id'
+        testId='content-id'
       />
     );
 
     const first = screen.getByText('First paragraph');
-    expect(first).toHaveAttribute('id', 'content-id-0');
+    expect(first).toHaveAttribute('data-testid', 'content-id-0');
 
     const second = screen.getByText('Second paragraph');
-    expect(second).toHaveAttribute('id', 'content-id-1');
+    expect(second).toHaveAttribute('data-testid', 'content-id-1');
   });
 
   it('adds correct attributes to links', () => {

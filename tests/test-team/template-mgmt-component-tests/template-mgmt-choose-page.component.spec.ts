@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 
@@ -18,7 +18,7 @@ test.describe('Choose Template Type Page', () => {
     await chooseTemplatePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
-    await expect(chooseTemplatePage.pageHeader).toHaveText(
+    await expect(chooseTemplatePage.pageHeading).toHaveText(
       'Choose a template type to create'
     );
 
@@ -36,7 +36,7 @@ test.describe('Choose Template Type Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertGoBackLinkNotPresent(props);

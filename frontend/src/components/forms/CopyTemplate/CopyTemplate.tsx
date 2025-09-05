@@ -1,7 +1,6 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
@@ -14,6 +13,7 @@ import { $CopyTemplate, copyTemplateAction } from './server-action';
 import { TemplateType, ValidatedTemplateDto } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 
@@ -45,9 +45,9 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink id='back-link' data-testid='back-to-templates-link'>
+        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
           {backLinkText}
-        </BackLink>
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

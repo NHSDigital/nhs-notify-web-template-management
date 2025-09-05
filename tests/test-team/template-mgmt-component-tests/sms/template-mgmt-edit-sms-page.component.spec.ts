@@ -6,7 +6,7 @@ import {
   assertFooterLinks,
   assertSignOutLink,
   assertGoBackLinkNotPresent,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -69,7 +69,7 @@ test.describe('Edit SMS message template Page', () => {
       `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
     );
 
-    await expect(editSmsTemplatePage.pageHeader).toHaveText(
+    await expect(editSmsTemplatePage.pageHeading).toHaveText(
       'Edit text message template'
     );
 
@@ -88,7 +88,7 @@ test.describe('Edit SMS message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLinkNotPresent(props);
