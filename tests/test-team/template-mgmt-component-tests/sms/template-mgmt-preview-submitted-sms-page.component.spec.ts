@@ -23,7 +23,7 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createSmsTemplate(
-        'valid-sms-template-preview-submitted',
+        '58d0e11e-851f-4beb-ac7f-3daa3d671902',
         user
       ),
       name: 'test-template-sms',
@@ -32,7 +32,7 @@ function createTemplates(user: TestUser) {
     },
     invalid: {
       ...TemplateFactory.createSmsTemplate(
-        'invalid-sms-template-preview-submitted',
+        '6c6d70df-0cd9-40c4-9639-1b65874bb8e1',
         user
       ),
       name: 'test-template-sms',

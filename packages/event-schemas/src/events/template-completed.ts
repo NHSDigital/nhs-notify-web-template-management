@@ -7,7 +7,9 @@ const $TemplateCompletedEventV1Data = z.intersection(
   z.object({
     templateStatus: $TemplateStatus.extract(['SUBMITTED']),
   })
-);
+).meta({
+  id: 'TemplateCompletedEventData'
+});
 
 export const $TemplateCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateCompleted.v1'),

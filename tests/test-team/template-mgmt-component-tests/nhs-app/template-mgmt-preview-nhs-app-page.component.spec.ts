@@ -32,7 +32,7 @@ async function createTemplates() {
     } as Template,
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'valid-nhs-app-preview-template',
+        '825c809a-e781-4085-984b-90dc620947ba',
         user
       ),
       name: 'test-template-nhs-app',

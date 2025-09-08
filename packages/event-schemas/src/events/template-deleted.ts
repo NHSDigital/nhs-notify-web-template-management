@@ -7,7 +7,9 @@ const $TemplateDeletedEventV1Data = z.intersection(
   z.object({
     templateStatus: $TemplateStatus.extract(['DELETED']),
   })
-);
+).meta({
+  id: 'TemplateDeletedEventData'
+});
 
 export const $TemplateDeletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateDeleted.v1'),

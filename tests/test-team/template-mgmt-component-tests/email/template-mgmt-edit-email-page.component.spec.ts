@@ -17,18 +17,18 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createEmailTemplate('valid-email-template', user),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', user),
+    valid: TemplateFactory.createEmailTemplate('f26a6c9b-29f5-4280-9b8d-aa692f0aa8aa', user),
+    submit: TemplateFactory.createEmailTemplate('29252087-fbfa-459d-9c05-577223a94ad9', user),
     submitAndReturn: TemplateFactory.createEmailTemplate(
-      'submit-and-return-create-email-template',
+      '2965e999-27d9-48a6-9bed-251c141ce778',
       user
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
-      'go-back-email-template',
+      '66e0051e-c201-4ec7-a318-999b4c63d3b9',
       user
     ),
     noEmailTemplateType: TemplateFactory.create({
-      id: 'no-email-template-type-template',
+      id: 'e61c935f-d4ef-4bd7-b09e-3cdc6cb5923f',
       templateType: 'NHS_APP',
       name: 'no-email-template-type-template',
       owner: `CLIENT#${user.clientId}`,
@@ -36,7 +36,7 @@ function createTemplates(user: TestUser) {
     }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
-        'previous-data-email-template',
+        'c6973bf3-6e56-46b3-9b75-fbfddf746b2f',
         user
       ),
       name: 'previous-data-email-template',

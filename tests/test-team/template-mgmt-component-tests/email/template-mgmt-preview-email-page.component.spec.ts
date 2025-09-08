@@ -22,7 +22,7 @@ async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     empty: {
-      id: 'preview-page-invalid-email-template',
+      id: 'c5925461-034a-460d-8170-d7388f68ed97',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -32,7 +32,7 @@ async function createTemplates() {
     } as Template,
     valid: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-preview-template',
+        '5f879439-f809-45a6-a77f-64e96bc34fc8',
         user
       ),
       name: 'test-template-email',

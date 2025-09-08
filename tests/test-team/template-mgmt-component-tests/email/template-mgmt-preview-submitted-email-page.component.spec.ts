@@ -23,7 +23,7 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-template-preview-submitted',
+        '21f984dd-9701-466e-a166-0afeafd0a23f',
         user
       ),
       name: 'test-template-email',
@@ -33,7 +33,7 @@ function createTemplates(user: TestUser) {
     },
     invalid: {
       ...TemplateFactory.createEmailTemplate(
-        'invalid-email-template-preview-submitted',
+        '201e913d-1c21-4069-a04c-a7760b3dd602',
         user
       ),
       name: 'test-template-email',
