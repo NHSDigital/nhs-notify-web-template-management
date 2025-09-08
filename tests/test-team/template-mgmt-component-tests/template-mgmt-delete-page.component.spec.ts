@@ -19,13 +19,19 @@ import {
 function createTemplates(user: TestUser) {
   return {
     goBack: {
-      ...TemplateFactory.createEmailTemplate('21a27db7-5cb1-4349-a45d-d3679179ee3a', user),
+      ...TemplateFactory.createEmailTemplate(
+        '21a27db7-5cb1-4349-a45d-d3679179ee3a',
+        user
+      ),
       name: 'delete-page-go-back-name',
       message: 'delete-page-go-back-message',
       subject: 'template-subject',
     },
     confirmDigitial: {
-      ...TemplateFactory.createEmailTemplate('c4886dd0-9d84-4968-9af1-5081966b7806', user),
+      ...TemplateFactory.createEmailTemplate(
+        'c4886dd0-9d84-4968-9af1-5081966b7806',
+        user
+      ),
       name: 'delete-page-confirm-email-name',
       message: 'delete-page-confirm-email-message',
       subject: 'template-subject',

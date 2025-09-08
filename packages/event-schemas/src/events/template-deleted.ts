@@ -2,14 +2,16 @@ import { z } from 'zod';
 import { $TemplateEventV1Data, $TemplateStatus } from '../template';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 
-const $TemplateDeletedEventV1Data = z.intersection(
-  $TemplateEventV1Data,
-  z.object({
-    templateStatus: $TemplateStatus.extract(['DELETED']),
-  })
-).meta({
-  id: 'TemplateDeletedEventData'
-});
+const $TemplateDeletedEventV1Data = z
+  .intersection(
+    $TemplateEventV1Data,
+    z.object({
+      templateStatus: $TemplateStatus.extract(['DELETED']),
+    })
+  )
+  .meta({
+    id: 'TemplateDeletedEventData',
+  });
 
 export const $TemplateDeletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateDeleted.v1'),

@@ -95,7 +95,10 @@ async function createTemplates() {
         ...smsFields,
       },
       valid: {
-        ...TemplateFactory.createSmsTemplate('2a37b26c-4e17-436c-a7b6-97ca1a465e91', user),
+        ...TemplateFactory.createSmsTemplate(
+          '2a37b26c-4e17-436c-a7b6-97ca1a465e91',
+          user
+        ),
         ...smsFields,
       },
     },

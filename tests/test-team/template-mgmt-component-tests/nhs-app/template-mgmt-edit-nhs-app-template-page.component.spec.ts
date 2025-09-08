@@ -18,7 +18,10 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createNhsAppTemplate('c1597c0e-67c0-459f-bad9-3828ead548ff', user),
+    valid: TemplateFactory.createNhsAppTemplate(
+      'c1597c0e-67c0-459f-bad9-3828ead548ff',
+      user
+    ),
     submit: TemplateFactory.createNhsAppTemplate(
       '659f83ed-6fce-4176-9f69-42274cdfed1d',
       user

@@ -29,7 +29,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'owner',
       },
       id: {
-        S: 'id',
+        S: '92b676e9-470f-4d04-ab14-965ef145e15d',
       },
       clientId: {
         S: 'client-id',
@@ -189,24 +189,24 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
       },
     },
   },
-  eventID: 'event-id',
+  eventID: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   tableName: 'table-name',
 });
 
 const expectedEvent = (status: string, type: string, dataschema: string) => ({
-  id: 'event-id',
+  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   datacontenttype: 'application/json',
   time: '2022-01-01T09:00:00.000Z',
   source: 'event-source',
   type,
   specversion: '1.0',
   dataschema,
-  dataschemaversion: '1.0.0',
+  dataschemaversion: '1.1.0',
   plane: 'control',
-  subject: 'id',
+  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
   data: {
     owner: 'owner',
-    id: 'id',
+    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
     clientId: 'client-id',
     createdAt: 'created-at',
     createdBy: 'created-by',

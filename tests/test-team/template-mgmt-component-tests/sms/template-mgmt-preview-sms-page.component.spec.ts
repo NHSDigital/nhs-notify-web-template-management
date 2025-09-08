@@ -31,7 +31,10 @@ async function createTemplates() {
       owner: `CLIENT#${user.clientId}`,
     } as Template,
     valid: {
-      ...TemplateFactory.createSmsTemplate('7f41fb5b-7f59-448c-8037-f37c25466455', user),
+      ...TemplateFactory.createSmsTemplate(
+        '7f41fb5b-7f59-448c-8037-f37c25466455',
+        user
+      ),
       name: 'test-template-sms',
       message: 'test-template-message',
     },

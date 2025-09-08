@@ -6,7 +6,7 @@
       "description": "Unique ID for this event",
       "type": "string",
       "format": "uuid",
-      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
     },
     "time": {
       "description": "Time the event was generated",
@@ -36,7 +36,7 @@
       "description": "Unique identifier for the item in the event data",
       "type": "string",
       "format": "uuid",
-      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
     },
     "dataschema": {
       "type": "string",
@@ -69,7 +69,6 @@
   ],
   "$defs": {
     "TemplateDraftedEventData": {
-      "id": "TemplateDraftedEventData",
       "allOf": [
         {
           "anyOf": [
@@ -111,7 +110,6 @@
       ]
     },
     "EmailTemplateEventData": {
-      "id": "EmailTemplateEventData",
       "type": "object",
       "properties": {
         "owner": {
@@ -122,7 +120,7 @@
           "description": "Unique identifier for the template",
           "type": "string",
           "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -199,7 +197,6 @@
       ]
     },
     "NhsAppTemplateEventData": {
-      "id": "NhsAppTemplateEventData",
       "type": "object",
       "properties": {
         "owner": {
@@ -210,7 +207,7 @@
           "description": "Unique identifier for the template",
           "type": "string",
           "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -281,7 +278,6 @@
       ]
     },
     "LetterTemplateEventData": {
-      "id": "LetterTemplateEventData",
       "type": "object",
       "properties": {
         "owner": {
@@ -292,7 +288,7 @@
           "description": "Unique identifier for the template",
           "type": "string",
           "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -437,7 +433,6 @@
       ]
     },
     "SmsTemplateEventData": {
-      "id": "SmsTemplateEventData",
       "type": "object",
       "properties": {
         "owner": {
@@ -448,7 +443,7 @@
           "description": "Unique identifier for the template",
           "type": "string",
           "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
         },
         "clientId": {
           "description": "The client that owns the template",
