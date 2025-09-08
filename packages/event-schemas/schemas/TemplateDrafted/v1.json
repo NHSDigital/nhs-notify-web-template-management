@@ -126,19 +126,23 @@
         },
         "clientId": {
           "description": "The client that owns the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "name": {
           "description": "User-provided template name",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "templateStatus": {
           "description": "Current status of the template",
@@ -158,19 +162,23 @@
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "message": {
           "description": "Message body for the email template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 100000
         },
         "subject": {
           "description": "Subject field for the email template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "templateType": {
           "description": "Template type",
@@ -206,19 +214,23 @@
         },
         "clientId": {
           "description": "The client that owns the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "name": {
           "description": "User-provided template name",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "templateStatus": {
           "description": "Current status of the template",
@@ -238,15 +250,18 @@
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "message": {
           "description": "Message body for the NHS App template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 5000
         },
         "templateType": {
           "description": "Template type",
@@ -281,19 +296,23 @@
         },
         "clientId": {
           "description": "The client that owns the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "name": {
           "description": "User-provided template name",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "templateStatus": {
           "description": "Current status of the template",
@@ -313,11 +332,13 @@
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "files": {
           "description": "Object containing information about proofs attached to the template",
@@ -332,7 +353,8 @@
                 "type": "object",
                 "properties": {
                   "supplier": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 1000
                   }
                 },
                 "required": [
@@ -395,7 +417,8 @@
           "description": "List of personalisation parameters used in the template",
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 1000
           }
         }
       },
@@ -429,19 +452,23 @@
         },
         "clientId": {
           "description": "The client that owns the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "name": {
           "description": "User-provided template name",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "templateStatus": {
           "description": "Current status of the template",
@@ -461,15 +488,18 @@
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 1000
         },
         "message": {
           "description": "Message body for the NHS App template",
-          "type": "string"
+          "type": "string",
+          "maxLength": 918
         },
         "templateType": {
           "description": "Template type",
