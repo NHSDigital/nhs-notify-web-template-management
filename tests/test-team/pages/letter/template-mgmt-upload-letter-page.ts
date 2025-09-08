@@ -27,7 +27,7 @@ export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePageNonDynamic
     this.languageSelect = page.locator('[id="letterTemplateLetterType"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
+      .locator('.nhsuk-back-link')
       .and(page.getByText('Back to choose a template type'));
 
     this.saveAndPreviewButton = page.locator(

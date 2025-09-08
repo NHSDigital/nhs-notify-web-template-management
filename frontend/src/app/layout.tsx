@@ -1,45 +1,52 @@
 import type { Metadata } from 'next';
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@styles/app.scss';
-import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
+import { AuthProvider } from '@providers/auth-provider';
+import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
+import { NhsNotifyHeader } from '@molecules/Header/Header';
+import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyFooter } from '@molecules/Footer/Footer';
+import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,
   description: content.global.mainLayout.description,
   icons: {
-    icon: {
-      url: `${getBasePath()}/lib/assets/favicons/favicon-192x192.png`,
-      sizes: '192x192',
-    },
-    shortcut: {
-      url: `${getBasePath()}/lib/assets/favicons/favicon.ico`,
-      type: 'image/x-icon',
-    },
+    icon: [
+      {
+        url: `${getBasePath()}/assets/images/favicon.ico`,
+        sizes: '48x48',
+      },
+      {
+        url: `${getBasePath()}/assets/images/favicon.svg`,
+        type: 'image/svg+xml',
+        sizes: 'any',
+      },
+    ],
     apple: {
-      url: `${getBasePath()}/lib/assets/favicons/apple-touch-icon-180x180.png`,
+      url: `${getBasePath()}/assets/images/nhsuk-icon-180.png`,
     },
     other: [
       {
         rel: 'mask-icon',
-        url: `${getBasePath()}/lib/assets/favicons/favicon.svg`,
+        url: `${getBasePath()}/assets/images/nhsuk-icon-mask.svg`,
         color: '#005eb8',
       },
     ],
   },
-  other: {
-    'msapplication-TileImage': `${getBasePath()}/lib/assets/favicons/mediumtile-144x144.png`,
-    'msapplication-TileColor': '#005eb8',
-    'msapplication-square70x70logo': `${getBasePath()}/lib/assets/favicons/smalltile-70x70.png`,
-    'msapplication-square150x150logo': `${getBasePath()}/lib/assets/favicons/mediumtile-150x150.png`,
-    'msapplication-wide310x150logo': `${getBasePath()}/lib/assets/favicons/widetile-310x150.png`,
-    'msapplication-square310x310logo': `${getBasePath()}/lib/assets/favicons/largetile-310x310.png`,
-  },
 };
 
 export const dynamic = 'force-dynamic';
+
+const config = {
+  logoutInSeconds:
+    Number(process.env.NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS) || 900, // 15 minutes force logout
+  promptTimeSeconds:
+    Number(process.env.NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT) || 120, // 2 minutes before logout
+};
 
 export default function RootLayout({
   children,
@@ -49,12 +56,26 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <script src={`${getBasePath()}/lib/nhsuk-9.1.0.min.js`} defer />
+        <link rel='manifest' href={`${getBasePath()}/assets/manifest.json`} />
+        <script
+          src={`${getBasePath()}/lib/nhsuk-frontend-10.0.0.min.js`}
+          defer
+          type='module'
+        />
       </head>
       <body suppressHydrationWarning>
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <AuthProvider>
+            <NHSNotifySkipLink />
+            <NhsNotifyHeader />
+            <NHSNotifyContainer>{children}</NHSNotifyContainer>
+            <NHSNotifyFooter />
+            <LogoutWarningModal
+              logoutInSeconds={config.logoutInSeconds}
+              promptBeforeLogoutSeconds={config.promptTimeSeconds}
+            />
+          </AuthProvider>
         </CookiesProvider>
       </body>
     </html>

@@ -2,7 +2,12 @@
  * @jest-environment node
  */
 import { sign } from 'jsonwebtoken';
-import { decodeJwt, getClaim, getClientIdFromToken } from '@utils/token-utils';
+import {
+  decodeJwt,
+  getClaim,
+  getClientIdFromToken,
+  getIdTokenClaims,
+} from '@utils/token-utils';
 import { JWT } from 'aws-amplify/auth';
 
 describe('token-utils', () => {
@@ -36,6 +41,106 @@ describe('token-utils', () => {
       expect(getClaim(claims, 'missing')).toBeUndefined();
       expect(getClaim(claims, 'a')).toBeUndefined();
       expect(getClaim(claims, 'b')).toBeUndefined();
+    });
+  });
+
+  describe('getIdTokenClaims', () => {
+    it('returns empty object when no token passed', () => {
+      expect(getIdTokenClaims()).toEqual({});
+    });
+
+    it('includes clientName when present', () => {
+      const token = sign(
+        {
+          'nhs-notify:client-name': 'Test client',
+        },
+        'secret'
+      );
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.clientName).toBe('Test client');
+    });
+
+    it('returns undefined clientName when no suitable claim exists', () => {
+      const token = sign({ displayName: 'Test name' }, 'secret');
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.clientName).toBeUndefined();
+    });
+
+    it('prefers preferred_username as display name when present', () => {
+      const token = sign(
+        {
+          'nhs-notify:client-name': 'Test client',
+          preferred_username: 'Preferred Name',
+          display_name: 'Display Name',
+          given_name: 'Given',
+          family_name: 'Family',
+          email: 'user@example.com',
+        },
+        'secret'
+      );
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.displayName).toBe('Preferred Name');
+    });
+
+    it('falls back to display_name when preferred_username is missing', () => {
+      const token = sign(
+        {
+          'nhs-notify:client-name': 'Test client',
+          display_name: 'Display Name',
+          given_name: 'Given',
+          family_name: 'Family',
+          email: 'user@example.com',
+        },
+        'secret'
+      );
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.displayName).toBe('Display Name');
+    });
+
+    it('falls back to given_name + family_name when no preferred/display name', () => {
+      const token = sign(
+        {
+          given_name: 'Given',
+          family_name: 'Family',
+          email: 'user@example.com',
+        },
+        'secret'
+      );
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.clientName).toBeUndefined();
+      expect(claims.displayName).toBe('Given Family');
+    });
+
+    it('falls back to email when no preferred/display/full name', () => {
+      const token = sign(
+        {
+          email: 'user@example.com',
+        },
+        'secret'
+      );
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.clientName).toBeUndefined();
+      expect(claims.displayName).toBe('user@example.com');
+    });
+
+    it('returns undefined displayName when no suitable claim exists', () => {
+      const token = sign({ clientName: 'client' }, 'secret');
+
+      const claims = getIdTokenClaims(token);
+
+      expect(claims.displayName).toBeUndefined();
     });
   });
 
