@@ -81,4 +81,10 @@ describe('Footer component', () => {
       screen.getByTestId('nhs-england-copyright-text')
     ).toBeInTheDocument();
   });
+
+  it('matches snapshot', () => {
+    const container = render(<NHSNotifyFooter />);
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

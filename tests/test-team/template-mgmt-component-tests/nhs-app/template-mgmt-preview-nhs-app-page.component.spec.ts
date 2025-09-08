@@ -9,7 +9,7 @@ import {
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -71,7 +71,7 @@ test.describe('Preview NHS App template Page', () => {
 
     await expect(previewNhsAppTemplatePage.submitRadioOption).not.toBeChecked();
 
-    await expect(previewNhsAppTemplatePage.pageHeader).toContainText(
+    await expect(previewNhsAppTemplatePage.pageHeading).toContainText(
       'test-template-nhs-app'
     );
 
@@ -89,7 +89,7 @@ test.describe('Preview NHS App template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
