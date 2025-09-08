@@ -10,15 +10,19 @@ import {
 import { toJSONSchema, type ZodType } from 'zod';
 
 // Converts Zod Schema to JSON Schema and writes to JSON file
-function writeSchema(name: string, schema: ZodType, majorVersion: string) {
+function writeSchema(name: string, schema: ZodType, majorVersion: string, id: string) {
   const outDir = path.resolve(__dirname, '..', 'schemas', name);
   fs.mkdirSync(outDir, { recursive: true });
 
   const jsonSchema = toJSONSchema(schema, { io: 'input' });
+
   const outPath = path.resolve(outDir, `v${majorVersion}.json`);
-  fs.writeFileSync(outPath, `${JSON.stringify(jsonSchema, null, 2)}\n`);
+  fs.writeFileSync(outPath, `${JSON.stringify({
+    ...jsonSchema,
+    '$id': id,
+  }, null, 2)}\n`);
 }
 
-writeSchema('TemplateCompleted', $TemplateCompletedEventV1, '1');
-writeSchema('TemplateDeleted', $TemplateDeletedEventV1, '1');
-writeSchema('TemplateDrafted', $TemplateDraftedEventV1, '1');
+writeSchema('TemplateCompleted', $TemplateCompletedEventV1, '1', 'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json');
+writeSchema('TemplateDeleted', $TemplateDeletedEventV1, '1', 'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json');
+writeSchema('TemplateDrafted', $TemplateDraftedEventV1, '1', 'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json');

@@ -22,7 +22,7 @@ async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     empty: {
-      id: 'preview-page-invalid-sms-template',
+      id: '5ba6daa1-8da3-4477-9f59-10a50a819647',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -31,7 +31,7 @@ async function createTemplates() {
       owner: `CLIENT#${user.clientId}`,
     } as Template,
     valid: {
-      ...TemplateFactory.createSmsTemplate('valid-sms-preview-template', user),
+      ...TemplateFactory.createSmsTemplate('7f41fb5b-7f59-448c-8037-f37c25466455', user),
       name: 'test-template-sms',
       message: 'test-template-message',
     },

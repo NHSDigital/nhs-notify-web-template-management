@@ -23,7 +23,7 @@ function createTemplates(user: TestUser) {
   return {
     email: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-template',
+        'a0a8c3d3-84e1-4fd8-9e9c-53ef4830f03f',
         user,
         'test-template-email'
       ),
@@ -32,19 +32,19 @@ function createTemplates(user: TestUser) {
       message: 'test example content',
     },
     'text-message': {
-      ...TemplateFactory.createSmsTemplate('valid-text-message-template', user),
+      ...TemplateFactory.createSmsTemplate('a17074b5-8936-48b2-b3d6-d5aec045c538', user),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
       name: 'test-template-sms',
     },
     'nhs-app': {
-      ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-template', user),
+      ...TemplateFactory.createNhsAppTemplate('bc924b01-d395-4037-906a-7aae3c660bf4', user),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
       name: 'test-template-nhs-app',
     },
     letter: TemplateFactory.uploadLetterTemplate(
-      'valid-submitted-letter-template',
+      'dec6b9b4-b257-4fdc-b6b4-5eda672b2eac',
       user,
       'test-template-letter',
       'SUBMITTED',

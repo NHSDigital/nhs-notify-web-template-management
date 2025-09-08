@@ -23,7 +23,7 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'valid-nhs-app-template-preview-submitted',
+        '298799c4-bc2c-49b6-b9cc-74e7750261d2',
         user
       ),
       name: 'test-template-nhs-app',
@@ -32,7 +32,7 @@ function createTemplates(user: TestUser) {
     },
     invalid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'invalid-nhs-app-template-preview-submitted',
+        'a0a0d4c9-e18d-4aa9-8973-336a66fbadde',
         user
       ),
       name: 'test-template-nhs-app',
