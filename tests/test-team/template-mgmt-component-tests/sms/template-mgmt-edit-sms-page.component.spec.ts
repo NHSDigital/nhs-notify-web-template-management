@@ -18,8 +18,14 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createSmsTemplate('578d292e-a4ae-411a-a7be-c2f1228b6459', user),
-    submit: TemplateFactory.createSmsTemplate('5b10cafb-ee25-47b6-85eb-540d7dc127b7', user),
+    valid: TemplateFactory.createSmsTemplate(
+      '578d292e-a4ae-411a-a7be-c2f1228b6459',
+      user
+    ),
+    submit: TemplateFactory.createSmsTemplate(
+      '5b10cafb-ee25-47b6-85eb-540d7dc127b7',
+      user
+    ),
     submitAndReturn: TemplateFactory.createSmsTemplate(
       '4a3fd84b-0685-4197-91ed-c058acbe1a61',
       user
@@ -36,7 +42,10 @@ function createTemplates(user: TestUser) {
       name: 'no-sms-template-type-template',
     }),
     previousData: {
-      ...TemplateFactory.createSmsTemplate('bef4d911-b3a6-4faa-99a9-b33505cb4875', user),
+      ...TemplateFactory.createSmsTemplate(
+        'bef4d911-b3a6-4faa-99a9-b33505cb4875',
+        user
+      ),
       name: 'previous-data-sms-template',
       message: 'previous-data-sms-template-message',
     },

@@ -32,13 +32,19 @@ function createTemplates(user: TestUser) {
       message: 'test example content',
     },
     'text-message': {
-      ...TemplateFactory.createSmsTemplate('a17074b5-8936-48b2-b3d6-d5aec045c538', user),
+      ...TemplateFactory.createSmsTemplate(
+        'a17074b5-8936-48b2-b3d6-d5aec045c538',
+        user
+      ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
       name: 'test-template-sms',
     },
     'nhs-app': {
-      ...TemplateFactory.createNhsAppTemplate('bc924b01-d395-4037-906a-7aae3c660bf4', user),
+      ...TemplateFactory.createNhsAppTemplate(
+        'bc924b01-d395-4037-906a-7aae3c660bf4',
+        user
+      ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
       name: 'test-template-nhs-app',

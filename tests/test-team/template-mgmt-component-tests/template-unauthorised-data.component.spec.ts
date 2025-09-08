@@ -17,7 +17,10 @@ function createTemplates(user: TestUser) {
       user,
       'empty-email-template-name'
     ),
-    submit: TemplateFactory.createEmailTemplate('ba569b58-9058-4a4f-a7af-eff103e04c38', user),
+    submit: TemplateFactory.createEmailTemplate(
+      'ba569b58-9058-4a4f-a7af-eff103e04c38',
+      user
+    ),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       'de4c9642-05e6-406a-bc1d-0104a6af455d',
       user,

@@ -17,8 +17,14 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createEmailTemplate('f26a6c9b-29f5-4280-9b8d-aa692f0aa8aa', user),
-    submit: TemplateFactory.createEmailTemplate('29252087-fbfa-459d-9c05-577223a94ad9', user),
+    valid: TemplateFactory.createEmailTemplate(
+      'f26a6c9b-29f5-4280-9b8d-aa692f0aa8aa',
+      user
+    ),
+    submit: TemplateFactory.createEmailTemplate(
+      '29252087-fbfa-459d-9c05-577223a94ad9',
+      user
+    ),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       '2965e999-27d9-48a6-9bed-251c141ce778',
       user
