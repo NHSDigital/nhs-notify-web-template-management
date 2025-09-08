@@ -7,10 +7,12 @@ import {
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
 } from '../src';
-import { keyof, toJSONSchema, type ZodType } from 'zod';
+import { toJSONSchema, type ZodType } from 'zod';
 import { JSONSchema } from 'zod/v4/core';
 
-const fixIdFieldInDefs = (jsonSchema: JSONSchema.JSONSchema): JSONSchema.JSONSchema => {
+const removeIdFieldFromDefs = (
+  jsonSchema: JSONSchema.JSONSchema
+): JSONSchema.JSONSchema => {
   const defs = jsonSchema.$defs ?? {};
 
   const newDefs = Object.entries(defs).map(([key, value]) => {
@@ -21,9 +23,9 @@ const fixIdFieldInDefs = (jsonSchema: JSONSchema.JSONSchema): JSONSchema.JSONSch
 
   return {
     ...jsonSchema,
-    '$defs': Object.fromEntries(newDefs),
+    $defs: Object.fromEntries(newDefs),
   };
-}
+};
 
 // Converts Zod Schema to JSON Schema and writes to JSON file
 function writeSchema(
@@ -37,15 +39,13 @@ function writeSchema(
 
   const jsonSchema = toJSONSchema(schema, { io: 'input' });
 
-
-
   const outPath = path.resolve(outDir, `v${majorVersion}.json`);
   fs.writeFileSync(
     outPath,
     `${JSON.stringify(
       {
-        ...fixIdFieldInDefs(jsonSchema),
-        '$id': id,
+        ...removeIdFieldFromDefs(jsonSchema),
+        $id: id,
       },
       null,
       2
