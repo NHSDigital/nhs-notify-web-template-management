@@ -154,7 +154,7 @@ const $SmsTemplateEventV1Data = $TemplateEventV1BaseData
     }),
   })
   .meta({
-    'id': 'SmsTemplateEventData',
+    id: 'SmsTemplateEventData',
   });
 
 export const $TemplateEventV1Data = z.discriminatedUnion('templateType', [
