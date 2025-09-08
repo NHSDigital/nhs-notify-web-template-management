@@ -296,70 +296,27 @@ test('builds template drafted event', () => {
   );
 });
 
-test('builds template drafted event when no old image is available', () => {
-  const event = eventBuilder.buildEvent({
-    dynamodb: {
-      SequenceNumber: '4',
-      NewImage: {
-        owner: {
-          S: 'owner',
-        },
-        id: {
-          S: 'id',
-        },
-        clientId: {
-          S: 'client-id',
-        },
-        createdAt: {
-          S: 'created-at',
-        },
-        createdBy: {
-          S: 'created-by',
-        },
-        name: {
-          S: 'name',
-        },
-        templateStatus: {
-          S: 'NOT_YET_SUBMITTED',
-        },
-        updatedAt: {
-          S: 'updated-at',
-        },
-        updatedBy: {
-          S: 'updated-by',
-        },
-        templateType: {
-          S: 'NHS_APP',
-        },
-        message: {
-          S: 'app content',
-        },
-      },
-    },
-    eventID: 'event-id',
-    tableName: 'table-name',
-  });
+test('builds event when no old image is available', () => {
+  // although not required by this lambda, an old image would be expected here in real usage
+  const mockEvent = publishableEventRecord('SUBMITTED');
 
-  expect(event).toEqual({
-    ...expectedEvent(
-      'PROOF_AVAILABLE',
-      'uk.nhs.notify.template-management.TemplateDrafted.v1',
-      'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
-    ),
-    data: {
-      clientId: 'client-id',
-      createdAt: 'created-at',
-      createdBy: 'created-by',
-      id: 'id',
-      message: 'app content',
-      name: 'name',
-      owner: 'owner',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      templateType: 'NHS_APP',
-      updatedAt: 'updated-at',
-      updatedBy: 'updated-by',
+  const noOldImage = {
+    ...mockEvent,
+    dynamodb: {
+      SequenceNumber: mockEvent.dynamodb.SequenceNumber,
+      NewImage: mockEvent.dynamodb.NewImage,
     },
-  });
+  };
+
+  const event = eventBuilder.buildEvent(noOldImage);
+
+  expect(event).toEqual(
+    expectedEvent(
+      'SUBMITTED',
+      'uk.nhs.notify.template-management.TemplateCompleted.v1',
+      'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+    )
+  );
 });
 
 test('builds template deleted event', () => {

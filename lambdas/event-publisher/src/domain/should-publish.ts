@@ -12,18 +12,16 @@ function shouldPublishLetter(
   previous: DynamoDBTemplate | undefined,
   current: DynamoDBTemplate
 ): boolean {
+  if (!current.proofingEnabled) return false;
+
   if (current.templateStatus === 'DELETED') {
     return (
       previous !== undefined &&
-      publishableLetterStatuses.has(previous.templateStatus) &&
-      !!current.proofingEnabled
+      publishableLetterStatuses.has(previous.templateStatus)
     );
   }
 
-  return (
-    publishableLetterStatuses.has(current.templateStatus) &&
-    !!current.proofingEnabled
-  );
+  return publishableLetterStatuses.has(current.templateStatus);
 }
 
 export function shouldPublish(

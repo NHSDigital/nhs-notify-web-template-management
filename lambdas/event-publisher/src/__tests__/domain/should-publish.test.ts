@@ -44,21 +44,23 @@ describe('shouldPublish', () => {
     }
   );
 
-  const letterPublishCases: Record<TemplateStatus, boolean> = {
+  type LetterStatus = Exclude<TemplateStatus, 'NOT_YET_SUBMITTED'>;
+
+  const letterPublishCases: Record<LetterStatus, boolean> = {
     DELETED: true,
     PENDING_PROOF_REQUEST: true,
     PROOF_AVAILABLE: true,
     SUBMITTED: true,
     WAITING_FOR_PROOF: true,
-    NOT_YET_SUBMITTED: false,
     PENDING_UPLOAD: false,
     PENDING_VALIDATION: false,
     VALIDATION_FAILED: false,
     VIRUS_SCAN_FAILED: false,
   };
 
+  // not all of these transitions are expected in real usage
   test.each(Object.entries(letterPublishCases) as [TemplateStatus, boolean][])(
-    'templateType LETTER with current status %p should return %p when proofingEnabled is true and status of previous is PENDING_PROOF_REQUEST',
+    'templateType LETTER with current status %p should return %p when proofingEnabled is true and status of previous is not restrictive',
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
@@ -79,8 +81,9 @@ describe('shouldPublish', () => {
     }
   );
 
+  // not all of these transitions are expected in real usage
   test.each(Object.entries(letterPublishCases) as [TemplateStatus, boolean][])(
-    'templateType LETTER with current status DELETED and previous status %p should return %p when proofingEnabled is true',
+    'templateType LETTER with new status DELETED and previous status %p should return %p when proofingEnabled is true',
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
