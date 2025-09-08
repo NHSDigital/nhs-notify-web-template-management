@@ -53,7 +53,7 @@ const $TemplateEventV1BaseData = z.object({
   owner: z.string().meta({
     description: 'The client or user that owns the template',
   }),
-  id: z.uuidv4().meta({
+  id: z.uuid().meta({
     description: 'Unique identifier for the template',
   }),
   clientId: z.string().max(1000).optional().meta({
