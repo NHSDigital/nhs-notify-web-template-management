@@ -365,7 +365,7 @@
           "const": "LETTER"
         },
         "language": {
-          "description": "Langauge the letter template is written in",
+          "description": "Language the letter template is written in",
           "type": "string",
           "enum": [
             "ar",
