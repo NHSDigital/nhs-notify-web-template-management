@@ -205,7 +205,7 @@ test.describe('Edit SMS message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditSmsPage(page);
-        await editTemplatePage.loadPage('valid-sms-template');
+        await editTemplatePage.loadPage(templates.valid.id);
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;
