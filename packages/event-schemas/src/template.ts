@@ -131,7 +131,7 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
       description: 'Template type',
     }),
     language: z.enum(languages).meta({
-      description: 'Langauge the letter template is written in',
+      description: 'Language the letter template is written in',
     }),
     letterType: z.enum(letterTypes).meta({
       description: 'Letter type',
