@@ -343,7 +343,10 @@ export class TemplateClient {
       user,
     });
 
-    const getResult = await this.templateRepository.get(templateId, user);
+    const getResult = await this.templateRepository.get(
+      templateId,
+      user.clientId
+    );
 
     if (getResult.error) {
       log
@@ -362,7 +365,7 @@ export class TemplateClient {
   }
 
   async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
-    const listResult = await this.templateRepository.list(user);
+    const listResult = await this.templateRepository.list(user.clientId);
 
     if (listResult.error) {
       this.logger
