@@ -33,9 +33,9 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createSmsTemplate(
         '7f41fb5b-7f59-448c-8037-f37c25466455',
-        user
+        user,
       ),
-      name: 'test-template-sms',
+      name: 'valid-sms-preview-template',
       message: 'test-template-message',
     },
   };
@@ -71,7 +71,7 @@ test.describe('Preview SMS message template Page', () => {
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewSmsTemplatePage.pageHeading).toContainText(
-      'test-template-sms'
+      templates.valid.name
     );
 
     await expect(previewSmsTemplatePage.messageText).toHaveText(

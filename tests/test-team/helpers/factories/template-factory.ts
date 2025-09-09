@@ -21,25 +21,25 @@ export const TemplateFactory = {
     });
   },
 
-  createSmsTemplate: (id: string, user: TestUser): Template => {
+  createSmsTemplate: (id: string, user: TestUser, name: string = 'test'): Template => {
     return TemplateFactory.create({
       campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
-      name: 'test',
+      name,
       owner: `CLIENT#${user.clientId}`,
       templateType: 'SMS',
     });
   },
 
-  createNhsAppTemplate: (id: string, user: TestUser): Template => {
+  createNhsAppTemplate: (id: string, user: TestUser, name: string = 'test'): Template => {
     return TemplateFactory.create({
       campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
-      name: 'test-name',
+      name,
       owner: `CLIENT#${user.clientId}`,
       templateType: 'NHS_APP',
     });

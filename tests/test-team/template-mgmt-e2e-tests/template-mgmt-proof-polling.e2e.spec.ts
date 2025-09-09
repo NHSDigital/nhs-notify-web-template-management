@@ -34,7 +34,7 @@ test.describe('Letter Proof Polling', () => {
       TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
-        templateId,
+        'test-template-id-proofing-e2e-success',
         'WAITING_FOR_PROOF'
       ),
     ]);
@@ -151,7 +151,7 @@ test.describe('Letter Proof Polling', () => {
       TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
-        templateId,
+        'test-template-id-proofing-e2e-failure',
         'WAITING_FOR_PROOF'
       ),
     ]);

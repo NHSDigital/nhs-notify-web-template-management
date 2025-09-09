@@ -35,7 +35,7 @@ async function createTemplates() {
         '5f879439-f809-45a6-a77f-64e96bc34fc8',
         user
       ),
-      name: 'test-template-email',
+      name: 'valid-email-preview-template',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
     },
@@ -69,7 +69,7 @@ test.describe('Preview Email message template Page', () => {
     );
 
     await expect(previewEmailTemplatePage.pageHeading).toContainText(
-      'test-template-email'
+      templates.valid.name
     );
 
     await expect(previewEmailTemplatePage.subjectLineText).toHaveText(

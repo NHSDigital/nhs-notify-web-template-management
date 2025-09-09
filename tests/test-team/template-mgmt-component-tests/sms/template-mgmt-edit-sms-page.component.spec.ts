@@ -20,19 +20,23 @@ function createTemplates(user: TestUser) {
   return {
     valid: TemplateFactory.createSmsTemplate(
       '578d292e-a4ae-411a-a7be-c2f1228b6459',
-      user
+      user,
+      'edit-sms-page-valid',
     ),
     submit: TemplateFactory.createSmsTemplate(
       '5b10cafb-ee25-47b6-85eb-540d7dc127b7',
-      user
+      user,
+      'edit-sms-page-submit',
     ),
     submitAndReturn: TemplateFactory.createSmsTemplate(
       '4a3fd84b-0685-4197-91ed-c058acbe1a61',
-      user
+      user,
+      'edit-sms-page-submit-and-return',
     ),
     goBackAndReturn: TemplateFactory.createSmsTemplate(
       '5f04230c-21df-4869-a911-7673f3b908fe',
-      user
+      user,
+      'edit-sms-page-go-back-and-return',
     ),
     noSmsTemplateType: TemplateFactory.create({
       id: 'be8a4618-17e5-45c4-855b-c91d55a3ff66',
