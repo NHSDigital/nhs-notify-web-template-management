@@ -169,7 +169,7 @@ test.describe('Edit Email message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditEmailPage(page);
-        await editTemplatePage.loadPage('valid-email-template');
+        await editTemplatePage.loadPage(templates.valid.id);
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;
