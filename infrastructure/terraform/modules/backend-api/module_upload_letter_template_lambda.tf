@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "upload_letter_template_lambda_policy" {
       aws_dynamodb_table.templates.arn,
     ]
   }
-  
+
   statement {
     sid    = "AllowKMSAccess"
     effect = "Allow"
