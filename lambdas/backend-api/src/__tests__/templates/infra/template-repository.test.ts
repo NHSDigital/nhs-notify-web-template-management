@@ -1,7 +1,6 @@
 import 'aws-sdk-client-mock-jest';
 import { randomUUID } from 'node:crypto';
 import {
-  BatchGetCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -1162,20 +1161,20 @@ describe('templateRepository', () => {
       expect(owner).toEqual('template-owner');
     });
 
-    it('gets clientId', async () => {
+    it('errors if owner does not start with CLIENT#', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
         Items: [
           {
-            owner: 'CLIENT#template-owner',
+            owner: 'NOTCLIENT#template-owner',
           },
         ],
       });
 
-      const owner = await templateRepository.getClientId('template-id');
-
-      expect(owner).toEqual('template-owner');
+      await expect(() =>
+        templateRepository.getClientId('template-id')
+      ).rejects.toThrow('Unexpected owner format NOTCLIENT#template-owner');
     });
 
     it('errors when owner cannot be found', async () => {

@@ -311,6 +311,7 @@ export class TemplateRepository {
         const { Items = [], LastEvaluatedKey } = await this.client.send(
           new QueryCommand(input)
         );
+
         input.ExclusiveStartKey = LastEvaluatedKey;
         items.push(...(Items as DatabaseTemplate[]));
       } while (input.ExclusiveStartKey);
