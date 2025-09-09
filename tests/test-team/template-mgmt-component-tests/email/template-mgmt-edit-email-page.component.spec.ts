@@ -19,19 +19,23 @@ function createTemplates(user: TestUser) {
   return {
     valid: TemplateFactory.createEmailTemplate(
       'f26a6c9b-29f5-4280-9b8d-aa692f0aa8aa',
-      user
+      user,
+      'edit-email-page-valid',
     ),
     submit: TemplateFactory.createEmailTemplate(
       '29252087-fbfa-459d-9c05-577223a94ad9',
-      user
+      user,
+      'edit-email-page-submit',
     ),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       '2965e999-27d9-48a6-9bed-251c141ce778',
-      user
+      user,
+      'edit-email-page-submit-and-return',
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
       '66e0051e-c201-4ec7-a318-999b4c63d3b9',
-      user
+      user,
+      'edit-email-page-go-back-and-return',
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'e61c935f-d4ef-4bd7-b09e-3cdc6cb5923f',

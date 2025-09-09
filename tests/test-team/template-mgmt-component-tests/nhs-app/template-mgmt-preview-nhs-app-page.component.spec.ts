@@ -33,9 +33,9 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
         '825c809a-e781-4085-984b-90dc620947ba',
-        user
+        user,
+        'valid-nhs-app-preview-template',
       ),
-      name: 'test-template-nhs-app',
       message: 'test-template-message',
     },
   };
@@ -72,7 +72,7 @@ test.describe('Preview NHS App template Page', () => {
     await expect(previewNhsAppTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewNhsAppTemplatePage.pageHeading).toContainText(
-      'test-template-nhs-app'
+      templates.valid.name
     );
 
     await expect(previewNhsAppTemplatePage.messageText).toHaveText(

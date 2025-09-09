@@ -20,15 +20,18 @@ function createTemplates(user: TestUser) {
   return {
     valid: TemplateFactory.createNhsAppTemplate(
       'c1597c0e-67c0-459f-bad9-3828ead548ff',
-      user
+      user,
+      'edit-nhs-app-template-valid'
     ),
     submit: TemplateFactory.createNhsAppTemplate(
       '659f83ed-6fce-4176-9f69-42274cdfed1d',
-      user
+      user,
+      'edit-nhs-app-template-submit'
     ),
     submitAndReturn: TemplateFactory.createNhsAppTemplate(
       '2570c7b5-469c-43b2-bb59-f2e5352d0001',
-      user
+      user,
+      'edit-nhs-app-template-submit-and-return'
     ),
   };
 }
