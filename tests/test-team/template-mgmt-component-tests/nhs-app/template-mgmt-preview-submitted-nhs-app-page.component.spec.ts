@@ -34,7 +34,7 @@ function createTemplates(user: TestUser) {
       ...TemplateFactory.createNhsAppTemplate(
         'a0a0d4c9-e18d-4aa9-8973-336a66fbadde',
         user,
-        'invalid-nhs-app-template-preview-submitted',
+        'invalid-nhs-app-template-preview-submitted'
       ),
       message: 'test-template-message',
       templateStatus: 'NOT_YET_SUBMITTED',

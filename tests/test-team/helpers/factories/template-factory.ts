@@ -21,7 +21,11 @@ export const TemplateFactory = {
     });
   },
 
-  createSmsTemplate: (id: string, user: TestUser, name: string = 'test'): Template => {
+  createSmsTemplate: (
+    id: string,
+    user: TestUser,
+    name: string = 'test'
+  ): Template => {
     return TemplateFactory.create({
       campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
@@ -33,7 +37,11 @@ export const TemplateFactory = {
     });
   },
 
-  createNhsAppTemplate: (id: string, user: TestUser, name: string = 'test'): Template => {
+  createNhsAppTemplate: (
+    id: string,
+    user: TestUser,
+    name: string = 'test'
+  ): Template => {
     return TemplateFactory.create({
       campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
@@ -68,6 +76,7 @@ export const TemplateFactory = {
         },
         proofs: {},
       },
+      personalisationParameters: [],
       id,
       language: 'en',
       letterType: 'x0',

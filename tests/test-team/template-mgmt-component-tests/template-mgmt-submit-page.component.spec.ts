@@ -24,7 +24,7 @@ async function createTemplates() {
   return {
     email: {
       empty: {
-        id: 'submit-page-invalid-email-template',
+        id: '8cc45601-6ac7-494c-a462-058e549e6e64',
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -76,7 +76,7 @@ async function createTemplates() {
           user
         ),
         name: 'submit-sms-submit-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
       submitAndReturn: {
         ...TemplateFactory.createSmsTemplate(
@@ -84,7 +84,7 @@ async function createTemplates() {
           user
         ),
         name: 'submit-and-return-sms-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
       valid: {
         ...TemplateFactory.createSmsTemplate(
@@ -92,7 +92,7 @@ async function createTemplates() {
           user
         ),
         name: 'valid-sms-submit-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
     },
     'nhs-app': {
@@ -111,7 +111,7 @@ async function createTemplates() {
           user
         ),
         name: 'submit-nhs-app-submit-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
       submitAndReturn: {
         ...TemplateFactory.createNhsAppTemplate(
@@ -119,7 +119,7 @@ async function createTemplates() {
           user
         ),
         name: 'submit-and-return-nhs-app-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
       valid: {
         ...TemplateFactory.createNhsAppTemplate(
@@ -127,7 +127,7 @@ async function createTemplates() {
           user
         ),
         name: 'valid-nhs-app-submit-template',
-        message: 'test-template-message'
+        message: 'test-template-message',
       },
     },
     letter: {
