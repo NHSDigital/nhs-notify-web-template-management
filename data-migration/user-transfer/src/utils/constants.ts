@@ -1,5 +1,6 @@
 export type Parameters = {
-  sourceOwner: string;
-  destinationOwner: string;
+  sourceOwner?: string;
+  destinationOwner?: string;
   environment: string;
+  component: string;
 };

@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { Parameters } from '@/src/utils/constants';
 import { getAccountId } from '@/src/utils/sts-utils';
@@ -13,12 +12,12 @@ export async function backupData(
     return;
   }
 
-  const { environment, sourceOwner, destinationOwner } = parameters;
+  const { environment } = parameters;
   const accountId = await getAccountId();
   const bucketName = `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`;
 
   const timestamp = new Date().toISOString().replaceAll(/[.:T-]/g, '_');
-  const filePath = `user-transfer/${environment}/${timestamp}-source-${sourceOwner}-destination-${destinationOwner}.json`;
+  const filePath = `ownership-transfer/templates/templates-list/${environment}/${timestamp}.json`;
   await writeJsonToFile(filePath, JSON.stringify(items), bucketName);
   console.log(`Backed up data to s3://${bucketName}/${filePath}`);
 }

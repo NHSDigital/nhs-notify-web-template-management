@@ -1,16 +1,42 @@
 import {
   AttributeValue,
+  DeleteItemCommand,
   DynamoDBClient,
+  PutItemCommand,
   QueryCommand,
   QueryCommandInput,
-  TransactWriteItemsCommand,
+  ScanCommand,
+  ScanCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { Parameters } from '@/src/utils/constants';
 
 const client = new DynamoDBClient({ region: 'eu-west-2' });
 
-function getTableName(environment: string) {
-  return `nhs-notify-${environment}-app-api-templates`;
+// change 'sandbox' back to 'app' when testing on prod environment
+function getTableName(parameters: Parameters) {
+  const { environment, component } = parameters;
+  return `nhs-notify-${environment}-${component}-api-templates`;
+}
+
+export async function retrieveAllTemplates(
+  parameters: Parameters
+): Promise<Record<string, AttributeValue>[]> {
+  let allItems: Record<string, AttributeValue>[] = [];
+  let lastEvaluatedKey = undefined;
+  do {
+    const query: ScanCommandInput = {
+      TableName: getTableName(parameters),
+      FilterExpression:
+        'attribute_exists(#owner) AND NOT begins_with(#owner, :subString)',
+      ExpressionAttributeNames: { '#owner': 'owner' },
+      ExpressionAttributeValues: { ':subString': { S: 'CLIENT#' } },
+    };
+
+    const queryResult = await client.send(new ScanCommand(query));
+    lastEvaluatedKey = queryResult.LastEvaluatedKey;
+    allItems = [...allItems, ...(queryResult.Items ?? [])];
+  } while (lastEvaluatedKey);
+  return allItems;
 }
 
 export async function retrieveTemplates(
@@ -20,13 +46,10 @@ export async function retrieveTemplates(
   let lastEvaluatedKey = undefined;
   do {
     const query: QueryCommandInput = {
-      TableName: getTableName(parameters.environment),
+      TableName: getTableName(parameters),
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
-      },
-      ExpressionAttributeValues: {
-        ':owner': { S: parameters.sourceOwner },
       },
       ExclusiveStartKey: lastEvaluatedKey,
     };
@@ -40,32 +63,38 @@ export async function retrieveTemplates(
 
 export async function updateItem(
   item: Record<string, AttributeValue>,
-  parameters: Parameters
+  parameters: Parameters,
+  newClientId: string
 ): Promise<void> {
-  const tableName = getTableName(parameters.environment);
+  const tableName = getTableName(parameters);
+  console.log({ item, parameters, newClientId, tableName });
   await client.send(
-    new TransactWriteItemsCommand({
-      TransactItems: [
-        {
-          Put: {
-            Item: {
-              ...item,
-              owner: { S: parameters.destinationOwner },
-              updatedAt: { S: new Date().toISOString() },
-            },
-            TableName: tableName,
-          },
-        },
-        {
-          Delete: {
-            Key: {
-              owner: item.owner,
-              id: item.id,
-            },
-            TableName: tableName,
-          },
-        },
-      ],
+    new PutItemCommand({
+      Item: {
+        ...item,
+        owner: { S: `CLIENT#${newClientId}` },
+        clientId: { S: newClientId },
+        createdBy: item.owner,
+        updatedBy: item.owner,
+      },
+      TableName: tableName,
     })
   );
+}
+
+export async function deleteItem(
+  item: Record<string, AttributeValue>,
+  parameters: Parameters
+) {
+  const tableName = getTableName(parameters);
+  await client.send(
+    new DeleteItemCommand({
+      Key: {
+        id: item.id,
+        owner: item.owner,
+      },
+      TableName: tableName,
+    })
+  );
+  console.log('Item deleted');
 }
