@@ -7,15 +7,15 @@ import {
   QueryCommandInput,
   ScanCommand,
   ScanCommandInput,
-  TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
 import { Parameters } from '@/src/utils/constants';
 
 const client = new DynamoDBClient({ region: 'eu-west-2' });
 
 // change 'sandbox' back to 'app' when testing on prod environment
-function getTableName(environment: string) {
-  return `nhs-notify-${environment}-sandbox-api-templates`;
+function getTableName(parameters: Parameters) {
+  const { environment, component } = parameters;
+  return `nhs-notify-${environment}-${component}-api-templates`;
 }
 
 export async function retrieveAllTemplates(
@@ -25,9 +25,9 @@ export async function retrieveAllTemplates(
   let lastEvaluatedKey = undefined;
   do {
     const query: ScanCommandInput = {
-      TableName: getTableName(parameters.environment),
+      TableName: getTableName(parameters),
       FilterExpression:
-        'attribute_exists(#owner) AND NOT contains(#owner, :subString)',
+        'attribute_exists(#owner) AND NOT begins_with(#owner, :subString)',
       ExpressionAttributeNames: { '#owner': 'owner' },
       ExpressionAttributeValues: { ':subString': { S: 'CLIENT#' } },
     };
@@ -46,13 +46,10 @@ export async function retrieveTemplates(
   let lastEvaluatedKey = undefined;
   do {
     const query: QueryCommandInput = {
-      TableName: getTableName(parameters.environment),
+      TableName: getTableName(parameters),
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
-      },
-      ExpressionAttributeValues: {
-        ':owner': { S: parameters.sourceOwner as string },
       },
       ExclusiveStartKey: lastEvaluatedKey,
     };
@@ -69,7 +66,7 @@ export async function updateItem(
   parameters: Parameters,
   newClientId: string
 ): Promise<void> {
-  const tableName = getTableName(parameters.environment);
+  const tableName = getTableName(parameters);
   console.log({ item, parameters, newClientId, tableName });
   await client.send(
     new PutItemCommand({
@@ -89,10 +86,11 @@ export async function deleteItem(
   item: Record<string, AttributeValue>,
   parameters: Parameters
 ) {
-  const tableName = getTableName(parameters.environment);
+  const tableName = getTableName(parameters);
   await client.send(
     new DeleteItemCommand({
       Key: {
+        id: item.id,
         owner: item.owner,
       },
       TableName: tableName,

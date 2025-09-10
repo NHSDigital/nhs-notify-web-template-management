@@ -24,6 +24,10 @@ function getParameters(): Parameters {
         type: 'string',
         demandOption: true,
       },
+      component: {
+        type: 'string',
+        demandOption: true,
+      },
     })
     .parseSync();
 }
@@ -33,13 +37,13 @@ async function updateItems(
   parameters: Parameters
 ): Promise<void> {
   for (const item of items) {
-    console.log(item.owner.S);
+    console.log(item.id.S, item.owner.S);
 
     // Get owner id of this item
     const { owner, id, templateType, clientId } = item;
 
     //check if owner doesn't have CLIENT#
-    if (owner.S && !owner.S?.includes('CLIENT#')) {
+    if (owner.S && !owner.S?.startsWith('CLIENT#')) {
       // check the user in cognito, if it exist then pull the client id
       const cognitoUser = await findCognitoUser(owner.S);
 
@@ -65,10 +69,14 @@ async function updateItems(
       // if it matches make the required swaps (clientId, createdby and updatedby)
       // if item doesn't have a client id then create one and do the above
       // update the item and delete the previous one
-      await Promise.all([
-        updateItem(item, parameters, newClientId),
-        deleteItem(item, parameters),
-      ]);
+
+      // migrate and update item
+      await updateItem(item, parameters, newClientId);
+
+      // check if migration was successful
+
+      // delete migrated item
+      await deleteItem(item, parameters);
     }
 
     //
@@ -78,13 +86,10 @@ async function updateItems(
 
       //migrate to a new s3 location
       for (const itemObject of itemObjects) {
-        const versionId = itemObject['Key'].split('/').reverse();
         await Promise.all([
           copyObjects(
             owner.S as string,
             itemObject['Key'],
-            id.S as string,
-            versionId[0],
             clientId.S as string
           ),
           // delete previous objects

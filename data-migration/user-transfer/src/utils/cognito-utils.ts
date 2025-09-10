@@ -68,10 +68,10 @@ async function getUserClientId(
 ): Promise<string | undefined> {
   if (userGroups && userGroups.length > 0) {
     const clientIdGroup = userGroups?.filter((group) =>
-      group.GroupName?.includes('client')
+      group.GroupName?.startsWith('client:')
     );
 
-    return clientIdGroup[0].GroupName?.split(':')[0];
+    return clientIdGroup[0].GroupName?.split(':')[1];
   }
 
   return undefined;
