@@ -52,6 +52,19 @@ data "aws_iam_policy_document" "process_proof" {
   }
 
   statement {
+    sid    = "AllowDynamoGSIAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.templates.arn}/index/QueryById",
+    ]
+  }
+
+  statement {
     sid    = "AllowKMSAccess"
     effect = "Allow"
 
