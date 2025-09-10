@@ -133,7 +133,6 @@ jobs:
   test-contract-provider:
     name: "Test contracts (provider)"
     runs-on: ubuntu-latest
-    permissions:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
