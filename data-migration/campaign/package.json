@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/client-s3": "^3.864.0",
+    "@aws-sdk/client-sts": "^3.864.0",
+    "@aws-sdk/lib-dynamodb": "^3.864.0",
+    "@aws-sdk/client-sqs": "^3.864.0",
+    "yargs": "^17.7.2",
+    "zod": "4.0.17",
+    "nhs-notify-backend-client": "0.0.1"
+  },
+  "description": "",
+  "devDependencies": {
+    "@aws-sdk/types": "^3.862.0",
+    "@tsconfig/node20": "^20.1.5",
+    "@types/node": "^20.17.32",
+    "jest": "^29.7.0",
+    "jest-html-reporter": "^3.10.2",
+    "jest-mock-extended": "^3.0.7",
+    "typescript": "^5.8.2"
+  },
+  "main": "src/handler.ts",
+  "name": "campaign-transfer",
+  "scripts": {
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "test:unit": "jest",
+    "transfer": "tsx src/script.ts",
+    "typecheck": "tsc --noEmit"
+  }
+}
