@@ -52,11 +52,6 @@ jobs:
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
-      - name: "Get workspaces"
-        - run: |
-      echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
-      cat ./package.json >> $GITHUB_ENV
-      echo 'EOF' >> $GITHUB_ENV
 
   check-generated-dependencies:
     name: "Check generated dependencies"
