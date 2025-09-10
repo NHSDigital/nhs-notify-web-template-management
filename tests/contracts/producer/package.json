@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
+    "@nhsdigital/notify-core-consumer-contracts": "^1.1.0",
+    "@pact-foundation/pact": "^15.0.1",
+    "nhs-notify-web-template-management-utils": "^0.0.1"
+  },
+  "name": "nhs-notify-web-template-management-producer-contract-tests",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand"
+  }
+}
