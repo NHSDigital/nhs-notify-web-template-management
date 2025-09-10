@@ -5,7 +5,8 @@ import {
   PutObjectCommandOutput,
   S3Client,
   NotFound,
-  ListObjectsV2Command,
+  paginateListObjectsV2,
+  HeadObjectCommand,
 } from '@aws-sdk/client-s3';
 import { Parameters } from '@/src/utils/constants';
 import { getAccountId } from './sts-utils';
@@ -34,20 +35,33 @@ export async function writeJsonToFile(
   );
 }
 
+async function listItemObjectsWithPaginator(bucket: string) {
+  const itemObjects = [];
+  const paginatedItemObjects = paginateListObjectsV2(
+    {
+      client: s3Client,
+      pageSize: 1000,
+    },
+    { Bucket: bucket }
+  );
+
+  for await (const page of paginatedItemObjects) {
+    if (page.Contents) {
+      itemObjects.push(...page.Contents.map((item) => item.Key));
+    }
+  }
+
+  return itemObjects.length > 0 ? itemObjects : [];
+}
+
 export async function getItemObjects(
   templateId: string
 ): Promise<unknown | void> {
   try {
-    const items = await s3Client.send(
-      new ListObjectsV2Command({
-        Bucket: sourceBucket,
-      })
-    );
+    const items = await listItemObjectsWithPaginator(sourceBucket as string);
 
-    if (items.Contents && items.Contents.length > 0) {
-      const itemObjects = items.Contents?.filter((item) =>
-        item['Key']?.includes(templateId)
-      );
+    if (items.length > 0) {
+      const itemObjects = items.filter((item) => item.includes(templateId));
       return itemObjects;
     } else {
       throw Error;
@@ -64,25 +78,35 @@ export async function getItemObjects(
 export async function copyObjects(
   owner: string,
   sourceKey: string,
-  templateId: string,
-  versionId: string,
   clientId: string
 ) {
   const destinationKey = sourceKey.replace(owner, clientId);
-  console.log({ sourceKey, destinationKey });
+
+  // Get existing metadata
+  const head = await s3Client.send(
+    new HeadObjectCommand({
+      Bucket: sourceBucket,
+      Key: sourceKey,
+    })
+  );
+
+  const existingMetadata = head.Metadata || {};
+
+  // 2. Update just the one key necessary
+  const { ['owner']: _, ...rest } = existingMetadata;
+  const updatedMetadata = {
+    ...rest,
+    ['client-id']: clientId,
+  };
   return await s3Client.send(
     new CopyObjectCommand({
       CopySource: `${sourceBucket}/${sourceKey}`,
       Bucket: sourceBucket,
       Key: destinationKey,
-      Metadata: {
-        'client-id': clientId,
-        'file-type': 'pdf-template',
-        'template-id': templateId,
-        'version-id': versionId,
-      },
+      Metadata: updatedMetadata,
       MetadataDirective: 'REPLACE',
       TaggingDirective: 'COPY',
+      ContentType: head.ContentType,
     })
   );
 }
@@ -102,24 +126,16 @@ export async function backupObject(parameters: Parameters) {
   const bucketName = `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`;
   const key = `ownership-transfer/templates/s3-objects/${environment}/`;
 
-  const items = await s3Client.send(
-    new ListObjectsV2Command({
-      Bucket: sourceBucket,
-    })
-  );
+  const items = await listItemObjectsWithPaginator(sourceBucket as string);
 
-  if (items['Contents'] && items['Contents'].length <= 0) {
-    return;
-  }
+  console.log(`Found ${items.length} objects in S3`);
 
-  console.log(`Found ${items['Contents']?.length} objects in S3`);
-
-  for (const item of items['Contents']) {
+  for (const item of items) {
     await s3Client.send(
       new CopyObjectCommand({
         Bucket: bucketName,
-        Key: key + item.Key,
-        CopySource: `${sourceBucket}/${item.Key}`,
+        Key: key + item,
+        CopySource: `${sourceBucket}/${item}`,
         MetadataDirective: 'COPY',
       })
     );
