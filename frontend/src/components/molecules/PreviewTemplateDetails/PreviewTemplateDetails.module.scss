@@ -1,11 +1,5 @@
-/*
-* NHSUK Colours
-* https://service-manual.nhs.uk/design-system/styles/colour
-*/
-$white: #ffffff;
-
 .preview {
-  background-color: $white;
+  background-color: var(--color_nhsuk-white);
 
   & :global(.nhsuk-summary-list__key) {
     width: 20%;

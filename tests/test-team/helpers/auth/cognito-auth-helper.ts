@@ -11,24 +11,39 @@ import {
 import { faker } from '@faker-js/faker';
 import { AuthContextFile } from './auth-context-file';
 import {
+  ClientConfiguration,
   ClientConfigurationHelper,
+  testClients,
   type ClientKey,
 } from '../client/client-helper';
+
+export type UserIdentityAttributes =
+  | 'given_name'
+  | 'family_name'
+  | 'preferred_username';
 
 type TestUserStaticDetails = {
   userId: string;
   clientKey: ClientKey;
+  /**
+   * If `userAttributes` is omitted, user will be created with full identity attributes:
+   * preferred_username, given_name, and family_name.
+   */
+  userAttributes?: Array<UserIdentityAttributes>;
 };
 
 type TestUserDynamicDetails = {
   email: string;
   clientId: string;
   password: string;
+  clientName?: string;
+  identityAttributes?: Partial<Record<UserIdentityAttributes, string>>;
 };
 
 export type TestUserContext = TestUserStaticDetails &
   TestUserDynamicDetails & {
     accessToken: string;
+    idToken: string;
     refreshToken: string;
   };
 
@@ -42,10 +57,12 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   },
   /**
    * User2 provides an alternative user allowing to check for things like template ownership
+   * User2 is missing preferred_username
    */
   User2: {
     userId: 'User2',
-    clientKey: 'Client4',
+    clientKey: 'Client5',
+    userAttributes: ['given_name', 'family_name'],
   },
   /**
    * User3 idle user that stays stayed in
@@ -65,10 +82,12 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   },
   /**
    * User5 idle user which signs out manually
+   * User5 does not have any name identity claims, defaults to email
    */
   User5: {
     userId: 'User5',
     clientKey: 'Client1',
+    userAttributes: [],
   },
   /**
    * User6 has configuration but no campaignId
@@ -84,6 +103,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User7',
     clientKey: 'Client1',
   },
+  /**
+   * User8 has a client with no client name set
+   */
+  User8: {
+    userId: 'User8',
+    clientKey: 'Client6',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
@@ -95,6 +121,11 @@ export type TestUser = TestUserStaticDetails &
      * Password auth implicitly resets temp password if not logged in previously
      */
     getAccessToken(): Promise<string>;
+    /**
+     * Gets an ID token for a test user
+     * Uses the same fallback logic as getAccessToken
+     */
+    getIdToken(): Promise<string>;
     /**
      * Sets an updated password in local state.
      * The password should already have been updated in Cognito
@@ -163,11 +194,35 @@ export class CognitoAuthHelper {
       }
 
       if (userCtx.refreshToken) {
-        return this.refreshUserAccessToken(id, userCtx.refreshToken);
+        const refeshedTokens = await this.refreshUserSessionTokens(
+          id,
+          userCtx.refreshToken
+        );
+        return refeshedTokens.accessToken;
       }
     }
 
-    return this.passwordAuth(id);
+    const authTokens = await this.passwordAuth(id);
+    return authTokens.accessToken;
+  }
+
+  public async getIdToken(id: string): Promise<string> {
+    const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
+
+    if (userCtx && !CognitoAuthHelper.isTokenExpired(userCtx.idToken)) {
+      return userCtx.idToken;
+    }
+
+    if (userCtx?.refreshToken) {
+      const refeshedTokens = await this.refreshUserSessionTokens(
+        id,
+        userCtx.refreshToken
+      );
+      return refeshedTokens.idToken;
+    }
+
+    const authTokens = await this.passwordAuth(id);
+    return authTokens.idToken;
   }
 
   public async getTestUser(id: string): Promise<TestUser> {
@@ -182,6 +237,7 @@ export class CognitoAuthHelper {
     const user: TestUser = {
       ...userCtx,
       getAccessToken: () => this.getAccessToken(id),
+      getIdToken: () => this.getAccessToken(id),
       async setUpdatedPassword(password) {
         await CognitoAuthHelper.authContextFile.set(runId, id, {
           password,
@@ -198,15 +254,40 @@ export class CognitoAuthHelper {
     const tempPassword = CognitoAuthHelper.generatePassword();
 
     const clientId = `${userDetails.clientKey}--${this.runId}`;
+    const clientConfig: ClientConfiguration | undefined =
+      testClients[userDetails.clientKey];
+    const clientName = clientConfig?.name;
 
-    const clientAttribute = clientId
-      ? [
-          {
-            Name: 'custom:sbx_client_id',
-            Value: clientId,
-          },
-        ]
-      : [];
+    const clientAttributes = [
+      { Name: 'custom:sbx_client_id', Value: clientId },
+      ...(clientName
+        ? [{ Name: 'custom:sbx_client_name', Value: clientName }]
+        : []),
+    ];
+
+    const {
+      userId,
+      userAttributes = ['preferred_username', 'given_name', 'family_name'],
+    } = userDetails;
+
+    const identityAttributes: Partial<Record<UserIdentityAttributes, string>> =
+      {};
+
+    if (userAttributes.includes('given_name'))
+      identityAttributes.given_name = 'Test';
+
+    if (userAttributes.includes('family_name'))
+      identityAttributes.family_name = userId;
+
+    if (userAttributes.includes('preferred_username')) {
+      const name = [
+        identityAttributes.given_name,
+        identityAttributes.family_name,
+      ]
+        .filter(Boolean)
+        .join(' ');
+      identityAttributes.preferred_username = `Dr ${name}`;
+    }
 
     const user = await this.client.send(
       new AdminCreateUserCommand({
@@ -215,7 +296,11 @@ export class CognitoAuthHelper {
         UserAttributes: [
           { Name: 'email', Value: email },
           { Name: 'email_verified', Value: 'True' },
-          ...clientAttribute,
+          ...Object.entries(identityAttributes).map(([Name, Value]) => ({
+            Name,
+            Value,
+          })),
+          ...clientAttributes,
         ],
         TemporaryPassword: tempPassword,
         MessageAction: 'SUPPRESS',
@@ -232,6 +317,8 @@ export class CognitoAuthHelper {
           '',
         clientId: clientId,
         clientKey: userDetails.clientKey,
+        clientName: clientName,
+        identityAttributes,
         password: tempPassword,
       }
     );
@@ -300,19 +387,21 @@ export class CognitoAuthHelper {
     }
 
     const accessToken = authResult.AccessToken || '';
+    const idToken = authResult.IdToken || '';
 
     await CognitoAuthHelper.authContextFile.set(this.runId, id, {
       accessToken,
       refreshToken: authResult.RefreshToken || '',
+      idToken,
     });
 
-    return accessToken;
+    return { accessToken, idToken };
   }
 
-  private async refreshUserAccessToken(
+  private async refreshUserSessionTokens(
     id: string,
     refreshToken: string
-  ): Promise<string> {
+  ): Promise<{ accessToken: string; idToken: string }> {
     const response = await this.client.send(
       new InitiateAuthCommand({
         AuthFlow: 'REFRESH_TOKEN_AUTH',
@@ -324,9 +413,13 @@ export class CognitoAuthHelper {
     await CognitoAuthHelper.authContextFile.set(this.runId, id, {
       accessToken: response.AuthenticationResult?.AccessToken || '',
       refreshToken: response.AuthenticationResult?.RefreshToken || refreshToken,
+      idToken: response.AuthenticationResult?.IdToken || '',
     });
 
-    return response.AuthenticationResult?.AccessToken || '';
+    return {
+      accessToken: response.AuthenticationResult?.AccessToken || '',
+      idToken: response.AuthenticationResult?.IdToken || '',
+    };
   }
 
   static generatePassword() {

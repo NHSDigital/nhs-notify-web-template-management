@@ -6,7 +6,7 @@ import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -81,7 +81,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
     );
 
-    await expect(previewSubmittedLetterTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
       templates.valid.name
     );
   });
@@ -95,7 +95,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

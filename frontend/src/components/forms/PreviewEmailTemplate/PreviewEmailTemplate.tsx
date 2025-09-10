@@ -12,10 +12,10 @@ import {
 import { useActionState, useState } from 'react';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
-import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $FormSchema, previewEmailTemplateAction } from './server-actions';
 import { validate } from '@utils/client-validate-form';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewEmailTemplate({
   initialState,
@@ -44,9 +44,9 @@ export function PreviewEmailTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink id='back-link' data-testid='back-to-templates-link'>
-          Back to all templates
-        </BackLink>
+        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
+          {backLinkText}
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

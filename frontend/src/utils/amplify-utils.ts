@@ -14,12 +14,15 @@ export const { runWithAmplifyServerContext } = createServerRunner({
   config,
 });
 
+export type Session = {
+  accessToken?: string;
+  idToken?: string;
+  clientId?: string;
+};
+
 export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
-): Promise<{
-  accessToken?: string;
-  clientId?: string;
-}> {
+): Promise<Session> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     operation: (ctx) => fetchAuthSession(ctx, options),
@@ -30,8 +33,11 @@ export async function getSessionServer(
   const accessToken = session?.tokens?.accessToken?.toString();
   const clientId = accessToken && getClientIdFromToken(accessToken);
 
+  const idToken = session?.tokens?.idToken?.toString();
+
   return {
     accessToken,
+    idToken,
     clientId,
   };
 }

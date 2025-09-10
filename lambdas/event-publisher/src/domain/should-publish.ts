@@ -8,15 +8,28 @@ const publishableLetterStatuses = new Set<DynamoDBTemplate['templateStatus']>([
   'WAITING_FOR_PROOF',
 ]);
 
-function shouldPublishLetter(data: DynamoDBTemplate): boolean {
-  return (
-    publishableLetterStatuses.has(data.templateStatus) && !!data.proofingEnabled
-  );
+function shouldPublishLetter(
+  previous: DynamoDBTemplate | undefined,
+  current: DynamoDBTemplate
+): boolean {
+  if (!current.proofingEnabled) return false;
+
+  if (current.templateStatus === 'DELETED') {
+    return (
+      previous !== undefined &&
+      publishableLetterStatuses.has(previous.templateStatus)
+    );
+  }
+
+  return publishableLetterStatuses.has(current.templateStatus);
 }
 
-export function shouldPublish(data: DynamoDBTemplate) {
-  if (data.templateType === 'LETTER') {
-    return shouldPublishLetter(data);
+export function shouldPublish(
+  previous: DynamoDBTemplate | undefined,
+  current: DynamoDBTemplate
+) {
+  if (current.templateType === 'LETTER') {
+    return shouldPublishLetter(previous, current);
   }
 
   return true;
