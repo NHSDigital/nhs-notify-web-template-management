@@ -41,30 +41,47 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
+  install-dependencies:
+    name: "Install dependencies"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v5.0.0
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
+
   check-generated-dependencies:
     name: "Check generated dependencies"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
           git diff --exit-code
+
   test-unit:
     name: "Unit tests"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
@@ -84,38 +101,45 @@ jobs:
           name: code-coverage-report
           path: ".reports/lcov.info"
         if: always()
+
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
       - name: "Run linting"
         run: |
           make test-lint
+
   test-typecheck:
     name: "Typecheck"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
       - name: "Run typecheck"
         run: |
           make test-typecheck
+
   test-coverage:
     name: "Test coverage"
     needs: [test-unit]
@@ -130,6 +154,7 @@ jobs:
       - name: "Save the coverage check result"
         run: |
           echo "Nothing to save"
+
   perform-static-analysis:
     name: "Perform static analysis"
     needs: [test-unit]
