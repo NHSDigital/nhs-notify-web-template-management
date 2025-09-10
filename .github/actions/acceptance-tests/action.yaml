@@ -22,12 +22,6 @@ inputs:
 runs:
   using: "composite"
 
-  strategy:
-  fail-fast: false
-  matrix:
-    shardIndex: [1, 2, 3, 4]
-    shardTotal: [4]
-
   steps:
     - name: Fetch terraform output
       uses: actions/download-artifact@v5
@@ -37,9 +31,6 @@ runs:
       shell: bash
       run: |
         npm ci
-
-    - name: Install Playwright browsers
-      run: npx playwright install --with-deps
 
     - name: Generate outputs file
       shell: bash
@@ -51,10 +42,7 @@ runs:
     - name: Run test - ${{ inputs.testType }}
       shell: bash
       run: |
-        npx playwright test --project=component:setup
-        npx playwright test --project=component --no-deps --shard${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-        npx playwright test --project=component:teardown --no-deps
-
+        make test-${{ inputs.testType }}
 
     - name: Archive test results
       uses: actions/upload-artifact@v4

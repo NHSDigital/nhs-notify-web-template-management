@@ -105,7 +105,13 @@ export type TestUser = TestUserStaticDetails &
 
 export class CognitoAuthHelper {
   private static authContextFile = new AuthContextFile(
-    path.resolve(__dirname, '..', '..', '.auth', 'test-auth-context.json')
+    path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '.auth',
+      `test-auth-context-${process.env.PLAYWRIGHT_RUN_ID}_${process.env.SHARD_ID}.json`
+    )
   );
 
   private notifyClientHelper: ClientConfigurationHelper;
@@ -345,8 +351,9 @@ export class CognitoAuthHelper {
 }
 
 export function createAuthHelper() {
+  console.log(`${process.env.PLAYWRIGHT_RUN_ID}_${process.env.SHARD_ID}`);
   return new CognitoAuthHelper(
-    process.env.PLAYWRIGHT_RUN_ID,
+    `${process.env.PLAYWRIGHT_RUN_ID}_${process.env.SHARD_ID}`,
     process.env.COGNITO_USER_POOL_ID,
     process.env.COGNITO_USER_POOL_CLIENT_ID,
     process.env.CLIENT_SSM_PATH_PREFIX
