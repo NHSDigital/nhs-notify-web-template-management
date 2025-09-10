@@ -35,7 +35,7 @@ function createTemplates(user: TestUser) {
       ...TemplateFactory.createSmsTemplate(
         'a17074b5-8936-48b2-b3d6-d5aec045c538',
         user,
-        'submitted-page-sms-template',
+        'submitted-page-sms-template'
       ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
@@ -44,7 +44,7 @@ function createTemplates(user: TestUser) {
       ...TemplateFactory.createNhsAppTemplate(
         'bc924b01-d395-4037-906a-7aae3c660bf4',
         user,
-        'submitted-page-nhs-app-template',
+        'submitted-page-nhs-app-template'
       ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',

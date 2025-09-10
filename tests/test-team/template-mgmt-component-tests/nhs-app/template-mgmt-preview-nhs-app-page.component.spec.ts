@@ -22,7 +22,7 @@ async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     empty: {
-      id: 'preview-page-invalid-nhs-app-template',
+      id: 'c9a43c53-a523-4431-b1cd-60fc7ba183d6',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -34,7 +34,7 @@ async function createTemplates() {
       ...TemplateFactory.createNhsAppTemplate(
         '825c809a-e781-4085-984b-90dc620947ba',
         user,
-        'valid-nhs-app-preview-template',
+        'valid-nhs-app-preview-template'
       ),
       message: 'test-template-message',
     },

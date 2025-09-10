@@ -33,7 +33,7 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createSmsTemplate(
         '7f41fb5b-7f59-448c-8037-f37c25466455',
-        user,
+        user
       ),
       name: 'valid-sms-preview-template',
       message: 'test-template-message',

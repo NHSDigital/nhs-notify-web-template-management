@@ -30,13 +30,6 @@ function createTemplates(user: TestUser) {
       'd78fae9f-5cf3-4e22-8adb-9be7f35c9d1c',
       user
     ),
-    noEmailTemplateType: TemplateFactory.create({
-      id: '431b92ab-1110-42d1-8764-ded5cefb14fc',
-      templateType: 'NHS_APP',
-      owner: `CLIENT#${user.clientId}`,
-      clientId: user.clientId,
-      name: 'no-email-template-type-template-name',
-    }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
         'a5f0bc02-6949-4c8f-9c42-f163d62ee335',
