@@ -17,26 +17,37 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createEmailTemplate('valid-email-template', user),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', user),
+    valid: TemplateFactory.createEmailTemplate(
+      'f26a6c9b-29f5-4280-9b8d-aa692f0aa8aa',
+      user,
+      'edit-email-page-valid'
+    ),
+    submit: TemplateFactory.createEmailTemplate(
+      '29252087-fbfa-459d-9c05-577223a94ad9',
+      user,
+      'edit-email-page-submit'
+    ),
     submitAndReturn: TemplateFactory.createEmailTemplate(
-      'submit-and-return-create-email-template',
-      user
+      '2965e999-27d9-48a6-9bed-251c141ce778',
+      user,
+      'edit-email-page-submit-and-return'
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
-      'go-back-email-template',
-      user
+      '66e0051e-c201-4ec7-a318-999b4c63d3b9',
+      user,
+      'edit-email-page-go-back-and-return'
     ),
     noEmailTemplateType: TemplateFactory.create({
-      id: 'no-email-template-type-template',
+      id: 'e61c935f-d4ef-4bd7-b09e-3cdc6cb5923f',
       templateType: 'NHS_APP',
       name: 'no-email-template-type-template',
+      message: 'no-email-template-type-template-message',
       owner: `CLIENT#${user.clientId}`,
       clientId: user.clientId,
     }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
-        'previous-data-email-template',
+        'c6973bf3-6e56-46b3-9b75-fbfddf746b2f',
         user
       ),
       name: 'previous-data-email-template',
@@ -163,7 +174,7 @@ test.describe('Edit Email message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditEmailPage(page);
-        await editTemplatePage.loadPage('valid-email-template');
+        await editTemplatePage.loadPage(templates.valid.id);
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;

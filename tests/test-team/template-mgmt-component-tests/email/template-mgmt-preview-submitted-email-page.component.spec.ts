@@ -23,20 +23,20 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-template-preview-submitted',
-        user
+        '21f984dd-9701-466e-a166-0afeafd0a23f',
+        user,
+        'valid-email-template-preview-submitted'
       ),
-      name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
       templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createEmailTemplate(
-        'invalid-email-template-preview-submitted',
-        user
+        '201e913d-1c21-4069-a04c-a7760b3dd602',
+        user,
+        'invalid-email-template-preview-submitted'
       ),
-      name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -72,7 +72,7 @@ test.describe('Preview submitted Email message template Page', () => {
     );
 
     await expect(previewSubmittedEmailTemplatePage.pageHeading).toContainText(
-      'test-template-email'
+      templates.valid.name
     );
 
     await expect(previewSubmittedEmailTemplatePage.subjectLineText).toHaveText(

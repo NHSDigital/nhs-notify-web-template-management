@@ -21,26 +21,10 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
-  const emailFields = {
-    name: 'test-template-name',
-    subject: 'test-template-subject-line',
-    message: 'test-template-message',
-  };
-
-  const smsFields = {
-    name: 'test-template-name',
-    message: 'test-template-message',
-  };
-
-  const nhsAppFields = {
-    name: 'test-template-name',
-    message: 'test-template-message',
-  };
-
   return {
     email: {
       empty: {
-        id: 'submit-page-invalid-email-template',
+        id: '8cc45601-6ac7-494c-a462-058e549e6e64',
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -50,29 +34,35 @@ async function createTemplates() {
       } as Template,
       submit: {
         ...TemplateFactory.createEmailTemplate(
-          'submit-email-submit-template',
+          '58c51276-19f8-438a-9d7b-bf8bbfed673c',
           user
         ),
-        ...emailFields,
+        name: 'submit-email-submit-template',
+        subject: 'test-template-subject-line',
+        message: 'test-template-message',
       },
       submitAndReturn: {
         ...TemplateFactory.createEmailTemplate(
-          'submit-and-return-email-template',
+          '00bc8566-6bd3-45d8-b251-4b205d4e4913',
           user
         ),
-        ...emailFields,
+        name: 'submit-and-return-email-template',
+        subject: 'test-template-subject-line',
+        message: 'test-template-message',
       },
       valid: {
         ...TemplateFactory.createEmailTemplate(
-          'valid-email-submit-template',
+          '635ed632-e639-42fa-a328-615cea3bf082',
           user
         ),
-        ...emailFields,
+        name: 'valid-email-submit-template',
+        subject: 'test-template-subject-line',
+        message: 'test-template-message',
       },
     },
     'text-message': {
       empty: {
-        id: 'submit-page-invalid-sms-template',
+        id: 'f5f52951-478d-4d02-a696-a3884a354c3f',
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -82,26 +72,32 @@ async function createTemplates() {
       } as Template,
       submit: {
         ...TemplateFactory.createSmsTemplate(
-          'submit-sms-submit-template',
+          'fd9e4983-460e-475a-af00-4c80615e20b1',
           user
         ),
-        ...smsFields,
+        name: 'submit-sms-submit-template',
+        message: 'test-template-message',
       },
       submitAndReturn: {
         ...TemplateFactory.createSmsTemplate(
-          'submit-and-return-sms-template',
+          'a021ca73-674d-44e7-b48d-b7c1e5514fb5',
           user
         ),
-        ...smsFields,
+        name: 'submit-and-return-sms-template',
+        message: 'test-template-message',
       },
       valid: {
-        ...TemplateFactory.createSmsTemplate('valid-sms-submit-template', user),
-        ...smsFields,
+        ...TemplateFactory.createSmsTemplate(
+          '2a37b26c-4e17-436c-a7b6-97ca1a465e91',
+          user
+        ),
+        name: 'valid-sms-submit-template',
+        message: 'test-template-message',
       },
     },
     'nhs-app': {
       empty: {
-        id: 'submit-page-invalid-nhs-app-template',
+        id: '4cb66d37-19b1-4864-9ab6-2a6baf5ba793',
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -111,29 +107,32 @@ async function createTemplates() {
       } as Template,
       submit: {
         ...TemplateFactory.createNhsAppTemplate(
-          'submit-nhs-app-submit-template',
+          'f27e0e08-a612-4fe4-95ef-35138c2f28f1',
           user
         ),
-        ...nhsAppFields,
+        name: 'submit-nhs-app-submit-template',
+        message: 'test-template-message',
       },
       submitAndReturn: {
         ...TemplateFactory.createNhsAppTemplate(
-          'submit-and-return-nhs-app-template',
+          '395d640b-610a-49bb-9fcd-0f42c521d5fc',
           user
         ),
-        ...nhsAppFields,
+        name: 'submit-and-return-nhs-app-template',
+        message: 'test-template-message',
       },
       valid: {
         ...TemplateFactory.createNhsAppTemplate(
-          'valid-nhs-app-submit-template',
+          '1e0dbdd6-d662-42d8-965c-03b8e331458d',
           user
         ),
-        ...nhsAppFields,
+        name: 'valid-nhs-app-submit-template',
+        message: 'test-template-message',
       },
     },
     letter: {
       empty: {
-        id: 'submit-page-invalid-letter-template',
+        id: '324a6461-16af-4b49-939f-dd3562aa037e',
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -142,19 +141,19 @@ async function createTemplates() {
         owner: `CLIENT#${user.clientId}`,
       } as Template,
       submit: TemplateFactory.uploadLetterTemplate(
-        'submit-letter-submit-template',
+        '525812d2-04ed-4363-941d-8fc4f41ad2c1',
         user,
-        'test-template-name'
+        'submit-letter-submit-template'
       ),
       submitAndReturn: TemplateFactory.uploadLetterTemplate(
-        'submit-and-return-letter-template',
+        'ca0979e2-a8de-40bc-bf59-8cfd946145c5',
         user,
-        'test-template-name'
+        'submit-and-return-letter-template'
       ),
       valid: TemplateFactory.uploadLetterTemplate(
-        'valid-letter-submit-template',
+        '70ab3978-3d07-4ad4-bf58-a8bbe8db45ec',
         user,
-        'test-template-name'
+        'valid-letter-submit-template'
       ),
     },
   };
@@ -184,25 +183,25 @@ test.describe('Submit template Page', () => {
       channelName: 'Email',
       channelIdentifier: 'email',
       PageModel: TemplateMgmtSubmitEmailPage,
-      expectedHeading: "Submit 'test-template-name'",
+      expectedHeading: "Submit 'valid-email-submit-template'",
     },
     {
       channelName: 'SMS',
       channelIdentifier: 'text-message',
       PageModel: TemplateMgmtSubmitSmsPage,
-      expectedHeading: "Submit 'test-template-name'",
+      expectedHeading: "Submit 'valid-sms-submit-template'",
     },
     {
       channelName: 'NHS App',
       channelIdentifier: 'nhs-app',
       PageModel: TemplateMgmtSubmitNhsAppPage,
-      expectedHeading: "Submit 'test-template-name'",
+      expectedHeading: "Submit 'valid-nhs-app-submit-template'",
     },
     {
       channelName: 'Letter',
       channelIdentifier: 'letter',
       PageModel: TemplateMgmtSubmitLetterPage,
-      expectedHeading: "Approve and submit 'test-template-name'",
+      expectedHeading: "Approve and submit 'valid-letter-submit-template'",
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
