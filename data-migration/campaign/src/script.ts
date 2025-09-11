@@ -21,6 +21,12 @@ const $ExpectedTemplate = z.intersection(
     clientId: z.string(),
     personalisationParameters: z.array(z.string()),
     createdBy: z.string(),
+    templateStatus: z.enum([
+      'PENDING_PROOF_REQUEST',
+      'WAITING_FOR_PROOF',
+      'PROOF_AVAILABLE',
+      'SUBMITTED',
+    ]),
   })
 );
 
