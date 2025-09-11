@@ -13,6 +13,7 @@ import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { $TemplateDtoSchema } from 'nhs-notify-backend-client';
 import { z } from 'zod/v4';
 import { GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 const $ExpectedTemplate = z.intersection(
   $TemplateDtoSchema,
@@ -41,6 +42,8 @@ const sqs = new SQSClient({ region: 'eu-west-2' });
 
 const sts = new STSClient({ region: 'eu-west-2' });
 
+const s3 = new S3Client({ region: 'eu-west-2' });
+
 export async function getAccountId(): Promise<string> {
   const callerIdentity = await sts.send(new GetCallerIdentityCommand());
   const accountId = callerIdentity.Account;
@@ -48,6 +51,32 @@ export async function getAccountId(): Promise<string> {
     throw new Error('Unable to get account ID from caller');
   }
   return accountId;
+}
+
+export async function backupData(
+  items: Record<string, unknown>[],
+  clientId: string,
+  newCampaignId: string,
+  accountId: string
+): Promise<void> {
+  console.log(`Found ${items.length} results`);
+  if (items.length <= 0) {
+    return;
+  }
+
+  const timestamp = new Date().toISOString().replaceAll(/[.:T-]/g, '_');
+  const bucketName = `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`;
+  const filePath = `campaign-transfer/${environment}/${timestamp}-${clientId}-${newCampaignId}.json`;
+
+  s3.send(
+    new PutObjectCommand({
+      Bucket: bucketName,
+      Key: filePath,
+      Body: JSON.stringify(items),
+      ContentType: 'application/json',
+    })
+  );
+  console.log(`Backed up data to s3://${bucketName}/${filePath}`);
 }
 
 const { environment, file, newCampaignId, clientId, supplier, realRun } = yargs(
@@ -92,6 +121,27 @@ async function main() {
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean);
+
+  const templates: Record<string, unknown>[] = [];
+
+  for (const id of templateIds) {
+    const key = {
+      id,
+      owner: `CLIENT#${clientId}`,
+    };
+
+    const getResult = await ddb.send(
+      new GetCommand({ TableName: tableName, Key: key })
+    );
+
+    const template = $ExpectedTemplate.parse(getResult.Item);
+
+    templates.push(template);
+  }
+
+  if (realRun) {
+    await backupData(templates, clientId, newCampaignId, acct);
+  }
 
   for (const id of templateIds) {
     const key = {
