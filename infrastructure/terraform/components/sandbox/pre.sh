@@ -10,7 +10,7 @@ echo "ACTION=$ACTION"
 if [ "${ACTION}" == "apply" ]; then
     echo "Building lambdas for distribution"
 
-    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then npm ci; fi
+    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then make dependencies; fi
 
     npm run generate-dependencies --workspaces --if-present
 

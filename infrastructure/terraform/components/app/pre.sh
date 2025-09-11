@@ -1,6 +1,6 @@
 echo "Running app pre.sh"
 
-npm ci
+make dependencies
 
 npm run generate-dependencies --workspaces --if-present
 

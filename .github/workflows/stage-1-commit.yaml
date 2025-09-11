@@ -244,12 +244,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: npm ci
+        run: make dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Re-generate schemas
         run: npm --workspace packages/event-schemas run generate-json-schemas
