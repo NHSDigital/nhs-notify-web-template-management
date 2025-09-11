@@ -7,9 +7,10 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-cd $(git rev-parse --show-toplevel)
 
 if [ "${ACTION}" == "apply" ]; then
+    original_dir=$(pwd)
+    cd $(git rev-parse --show-toplevel)
     echo "Building lambdas for distribution"
 
     if [ -z "$SKIP_SANDBOX_INSTALL" ]; then make dependencies; fi
@@ -19,6 +20,8 @@ if [ "${ACTION}" == "apply" ]; then
     npm run lambda-build --workspaces --if-present
 
     $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
+
+    cd $original_dir
 else
     echo "Skipping lambda build for action $ACTION"
 fi
