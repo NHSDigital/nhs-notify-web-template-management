@@ -6,6 +6,7 @@ echo Running pre.sh
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
+echo "SKIP_SANDBOX_INSTALL=$SKIP_SANDBOX_INSTALL"
 
 
 if [ "${ACTION}" == "apply" ]; then
@@ -13,7 +14,12 @@ if [ "${ACTION}" == "apply" ]; then
     cd $(git rev-parse --show-toplevel)
     echo "Building lambdas for distribution"
 
-    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then make dependencies; fi
+    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then
+      echo "Installing dependencies"
+      make dependencies;
+    else
+      echo "Skipping dependency installation"
+    fi
 
     npm run generate-dependencies --workspaces --if-present
 
