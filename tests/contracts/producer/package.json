@@ -8,6 +8,10 @@
   "name": "nhs-notify-web-template-management-producer-contract-tests",
   "private": true,
   "scripts": {
-    "test": "jest --runInBand"
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest --runInBand",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
   }
 }
