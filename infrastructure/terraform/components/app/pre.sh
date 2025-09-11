@@ -1,5 +1,7 @@
 echo "Running app pre.sh"
 
+cd $(git rev-parse --show-toplevel)
+
 make dependencies
 
 npm run generate-dependencies --workspaces --if-present

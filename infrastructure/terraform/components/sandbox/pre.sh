@@ -7,6 +7,8 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+cd $(git rev-parse --show-toplevel)
+
 if [ "${ACTION}" == "apply" ]; then
     echo "Building lambdas for distribution"
 
