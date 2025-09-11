@@ -27,11 +27,10 @@ runs:
       uses: actions/download-artifact@v5
       with:
         name: terraform-output-${{ inputs.targetComponent }}
-
-    - name: "Restore node_modules from cache"
-      uses: ./.github/actions/node-modules-cache
-      with:
-        node_version: "${{ inputs.nodejs_version }}"
+    - name: "Repo setup"
+      shell: bash
+      run: |
+        npm ci
 
     - name: Generate outputs file
       shell: bash
