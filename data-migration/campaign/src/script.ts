@@ -98,7 +98,7 @@ async function main() {
         new GetCommand({ TableName: tableName, Key: key })
       );
 
-      $ExpectedTemplate.parse(getResult.Item);
+      const template = $ExpectedTemplate.parse(getResult.Item);
 
       console.log(`planning to update ${id}`);
 
@@ -123,11 +123,9 @@ async function main() {
 
       if (!realRun) continue;
 
-      const res = await ddb.send(new UpdateCommand(updateInput));
+      await ddb.send(new UpdateCommand(updateInput));
 
       console.log(`updated ${id}`);
-
-      const template = $ExpectedTemplate.parse(res.Attributes);
 
       const proofRequest = {
         campaignId: newCampaignId,
