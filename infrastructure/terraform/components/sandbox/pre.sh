@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
@@ -10,7 +14,6 @@ echo "SKIP_SANDBOX_INSTALL=$SKIP_SANDBOX_INSTALL"
 
 
 if [ "${ACTION}" == "apply" ]; then
-    original_dir=$(pwd)
     cd $(git rev-parse --show-toplevel)
     echo "Building lambdas for distribution"
 
@@ -27,7 +30,6 @@ if [ "${ACTION}" == "apply" ]; then
 
     $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
 
-    cd $original_dir
 else
     echo "Skipping lambda build for action $ACTION"
 fi

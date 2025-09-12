@@ -1,6 +1,8 @@
-echo "Running app pre.sh"
+#!/usr/bin/env bash
 
-original_dir=$(pwd)
+set -euo pipefail
+
+echo "Running app pre.sh"
 
 cd $(git rev-parse --show-toplevel)
 
@@ -11,5 +13,3 @@ npm run generate-dependencies --workspaces --if-present
 npm run lambda-build --workspaces --if-present
 
 $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
-
-cd $original_dir
