@@ -431,6 +431,8 @@ if [ -f "pre.sh" ]; then
     || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
 
+echo "component pre.sh completed"
+
 # Pull down secret TFVAR file from S3
 # Anti-pattern and security warning: This secrets mechanism provides very little additional security.
 # It permits you to inject secrets directly into terraform without storing them in source control or unencrypted in S3.
