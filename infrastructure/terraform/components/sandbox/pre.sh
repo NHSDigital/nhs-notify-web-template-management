@@ -1,21 +1,18 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
 REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
 
-echo "Running pre.sh latest version"
+echo "Running pre.sh latestest version"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+pushd $(git rev-parse --show-toplevel)
+
 if [ "${ACTION}" == "apply" ]; then
-    cd $(git rev-parse --show-toplevel)
     echo "Building lambdas for distribution"
 
-    if [[ -z "${SKIP_SANDBOX_INSTALL:-}" ]]; then
+    if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
       echo "Installing dependencies"
       make dependencies;
     else
@@ -32,4 +29,4 @@ else
     echo "Skipping lambda build for action $ACTION"
 fi
 
-exit 0
+popd

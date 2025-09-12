@@ -391,7 +391,7 @@ rm -rf ${component_path}/.terraform;
 
 # Run global pre.sh
 if [ -f "pre.sh" ]; then
-  bash pre.sh "${region}" "${environment}" "${action}" \
+  source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Global pre script execution failed with exit code ${?}";
 fi;
 
@@ -427,11 +427,9 @@ fi;
 
 # Run pre.sh
 if [ -f "pre.sh" ]; then
-  bash pre.sh "${region}" "${environment}" "${action}" \
+  source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
-
-echo "component pre.sh completed"
 
 # Pull down secret TFVAR file from S3
 # Anti-pattern and security warning: This secrets mechanism provides very little additional security.
