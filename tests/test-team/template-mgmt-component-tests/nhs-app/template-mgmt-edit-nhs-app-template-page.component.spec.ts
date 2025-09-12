@@ -6,7 +6,7 @@ import {
   assertFooterLinks,
   assertSignOutLink,
   assertGoBackLinkNotPresent,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -55,7 +55,7 @@ test.describe('Edit NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
-    await expect(editTemplatePage.pageHeader).toHaveText(
+    await expect(editTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
   });
@@ -68,7 +68,7 @@ test.describe('Edit NHS App Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLinkNotPresent(props);
@@ -85,7 +85,7 @@ test.describe('Edit NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
-    await expect(editTemplatePage.pageHeader).toHaveText(
+    await expect(editTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('');
@@ -130,7 +130,7 @@ test.describe('Edit NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
-    await expect(editTemplatePage.pageHeader).toHaveText(
+    await expect(editTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
     const templateName = 'NHS Testing 123';
@@ -154,7 +154,7 @@ test.describe('Edit NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
-    await expect(editTemplatePage.pageHeader).toHaveText(
+    await expect(editTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('');

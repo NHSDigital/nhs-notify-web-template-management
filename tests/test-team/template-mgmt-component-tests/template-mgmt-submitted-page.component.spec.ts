@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
@@ -103,7 +103,7 @@ test.describe('Template Submitted Page', () => {
         `${baseURL}/templates/${channelIdentifier}-template-submitted/${templates[channelIdentifier].id}`
       );
 
-      await expect(templateSubmittedPage.pageHeader).toHaveText(
+      await expect(templateSubmittedPage.pageHeading).toHaveText(
         'Template submitted'
       );
 
@@ -126,7 +126,7 @@ test.describe('Template Submitted Page', () => {
         };
 
         await assertSkipToMainContent(props);
-        await assertNotifyBannerLink(props);
+        await assertHeaderLogoLink(props);
         await assertFooterLinks(props);
         await assertSignOutLink(props);
         await assertGoBackLink({

@@ -1,7 +1,6 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
@@ -14,6 +13,7 @@ import { $ChooseTemplate, chooseTemplateAction } from './server-action';
 import { TemplateType } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const ChooseTemplate = ({
   templateTypes,
@@ -44,7 +44,9 @@ export const ChooseTemplate = ({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+        <NotifyBackLink data-testid='back-to-templates-link'>
+          {backLinkText}
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <NhsNotifyErrorSummary errorState={errorState} />

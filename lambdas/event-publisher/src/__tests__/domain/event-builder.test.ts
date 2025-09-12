@@ -1,6 +1,5 @@
-import { mockDeep } from 'jest-mock-extended';
 import { EventBuilder } from '../../domain/event-builder';
-import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { PublishableEventRecord } from '../../domain/input-schemas';
 import { shouldPublish } from '../../domain/should-publish';
 
@@ -18,11 +17,11 @@ beforeEach(() => {
 
 const shouldPublishMock = jest.mocked(shouldPublish);
 
-const mockLogger = mockDeep<Logger>();
+const { logger: mockLogger } = createMockLogger();
 
 const eventBuilder = new EventBuilder('table-name', 'event-source', mockLogger);
 
-const publishableEventRecord = (status: string): PublishableEventRecord => ({
+const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
   dynamodb: {
     SequenceNumber: '4',
     NewImage: {
@@ -45,7 +44,89 @@ const publishableEventRecord = (status: string): PublishableEventRecord => ({
         S: 'name',
       },
       templateStatus: {
-        S: status,
+        S: newStatus,
+      },
+      updatedAt: {
+        S: 'updated-at',
+      },
+      updatedBy: {
+        S: 'updated-by',
+      },
+      templateType: {
+        S: 'LETTER',
+      },
+      language: {
+        S: 'fr',
+      },
+      letterType: {
+        S: 'x0',
+      },
+      proofingEnabled: {
+        BOOL: true,
+      },
+      files: {
+        M: {
+          pdfTemplate: {
+            M: {
+              currentVersion: {
+                S: 'current-version',
+              },
+              fileName: {
+                S: 'file-name',
+              },
+              virusScanStatus: {
+                S: 'PASSED',
+              },
+            },
+          },
+          proofs: {
+            M: {
+              proof1: {
+                M: {
+                  supplier: {
+                    S: 'WTMMOCK',
+                  },
+                  fileName: {
+                    S: 'file-name',
+                  },
+                  virusScanStatus: {
+                    S: 'PASSED',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      personalisationParameters: {
+        L: [
+          {
+            S: 'test',
+          },
+        ],
+      },
+    },
+    OldImage: {
+      owner: {
+        S: 'owner',
+      },
+      id: {
+        S: 'id',
+      },
+      clientId: {
+        S: 'client-id',
+      },
+      createdAt: {
+        S: 'created-at',
+      },
+      createdBy: {
+        S: 'created-by',
+      },
+      name: {
+        S: 'name',
+      },
+      templateStatus: {
+        S: 'PENDING_PROOF_REQUEST',
       },
       updatedAt: {
         S: 'updated-at',
@@ -158,6 +239,37 @@ test('errors on unrecognised event type', () => {
   );
 });
 
+test('errors on output schema validation failure', () => {
+  const valid = publishableEventRecord('SUBMITTED');
+
+  const invalidDomainEventRecord = {
+    ...valid,
+    dynamodb: {
+      ...valid.dynamodb,
+      NewImage: {
+        ...valid.dynamodb.NewImage,
+        language: { N: 0 },
+      },
+    },
+  };
+
+  expect(() =>
+    eventBuilder.buildEvent(
+      invalidDomainEventRecord as unknown as PublishableEventRecord
+    )
+  ).toThrow(
+    expect.objectContaining({
+      name: 'ZodError',
+      issues: [
+        expect.objectContaining({
+          code: 'invalid_value',
+          path: ['data', 'language'],
+        }),
+      ],
+    })
+  );
+});
+
 test('builds template completed event', () => {
   const event = eventBuilder.buildEvent(publishableEventRecord('SUBMITTED'));
 
@@ -180,6 +292,29 @@ test('builds template drafted event', () => {
       'PROOF_AVAILABLE',
       'uk.nhs.notify.template-management.TemplateDrafted.v1',
       'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
+    )
+  );
+});
+
+test('builds event when no old image is available', () => {
+  // although not required by this lambda, an old image would be expected here in real usage
+  const mockEvent = publishableEventRecord('SUBMITTED');
+
+  const noOldImage = {
+    ...mockEvent,
+    dynamodb: {
+      SequenceNumber: mockEvent.dynamodb.SequenceNumber,
+      NewImage: mockEvent.dynamodb.NewImage,
+    },
+  };
+
+  const event = eventBuilder.buildEvent(noOldImage);
+
+  expect(event).toEqual(
+    expectedEvent(
+      'SUBMITTED',
+      'uk.nhs.notify.template-management.TemplateCompleted.v1',
+      'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
     )
   );
 });

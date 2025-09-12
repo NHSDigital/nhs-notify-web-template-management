@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer component matches snapshot 1`] = `
+<DocumentFragment>
+  <footer
+    class="nhsuk-footer"
+    data-testid="page-footer"
+    role="contentinfo"
+  >
+    <div
+      class="nhsuk-width-container"
+    >
+      <div
+        class="nhsuk-footer__meta"
+      >
+        <h2
+          class="nhsuk-u-visually-hidden"
+          data-testid="support-links"
+        >
+          Support links
+        </h2>
+        <ul
+          class="nhsuk-footer__list"
+          data-testid="footer-links"
+        >
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-testid="acceptable-use-policy-statement-link"
+              href="https://digital.nhs.uk/services/nhs-notify/acceptable-use-policy"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acceptable use policy
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-testid="accessibility-statement-link"
+              href="/accessibility"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Accessibility statement
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-testid="cookies-statement-link"
+              href="/cookies"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Cookies
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-testid="privacy-statement-link"
+              href="https://digital.nhs.uk/services/nhs-notify/transparency-notice"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Privacy
+            </a>
+          </li>
+          <li
+            class="nhsuk-footer__list-item"
+          >
+            <a
+              class="nhsuk-footer__list-item-link"
+              data-testid="terms-and-conditions-statement-link"
+              href="https://digital.nhs.uk/services/nhs-notify/terms-and-conditions"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Terms and conditions
+            </a>
+          </li>
+        </ul>
+        <p
+          class="nhsuk-body-s"
+          data-testid="nhs-england-copyright-text"
+        >
+          © NHS England
+        </p>
+      </div>
+    </div>
+  </footer>
+</DocumentFragment>
+`;

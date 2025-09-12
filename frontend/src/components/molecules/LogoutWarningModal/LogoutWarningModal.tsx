@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import { Button } from 'nhsuk-react-components';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Modal } from '@molecules/Modal/Modal';
 import content from '@content/content';
+import { useAuthStatus } from '@hooks/use-auth-status';
+import { Modal } from '@molecules/Modal/Modal';
 import { getBasePath } from '@utils/get-base-path';
 import { formatTime } from './format-time';
 
@@ -23,7 +23,7 @@ export const LogoutWarningModal = ({
   promptBeforeLogoutSeconds: number;
   logoutInSeconds: number;
 }) => {
-  const { signOut } = content.components.header.links;
+  const { signOut } = content.components.header.accountInfo.links;
   const { logoutWarning } = content.components;
 
   const initialTime = formatTime(promptBeforeLogoutSeconds);
@@ -32,7 +32,7 @@ export const LogoutWarningModal = ({
   const pathname = usePathname();
   const [showModal, setShowModal] = useState(false);
   const [remainingTime, setRemainingTime] = useState(initialTime);
-  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+  const authStatus = useAuthStatus();
 
   const idle = () => {
     router.push(

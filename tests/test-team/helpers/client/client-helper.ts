@@ -4,34 +4,41 @@ import {
   SSMClient,
 } from '@aws-sdk/client-ssm';
 
-type ClientConfiguration = {
+export type ClientConfiguration = {
+  campaignId?: string;
   features: {
     proofing: boolean;
+    // TODO: CCM-11148 Make routing flag required
+    routing?: boolean;
   };
-  campaignId?: string;
+  name?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
 export const testClients = {
   /**
-   * Client1 has proofing enabled
+   * Client1 has proofing and routing enabled
    */
   Client1: {
     campaignId: 'Campaign1',
+    name: 'NHS Test Client 1',
     features: {
       proofing: true,
+      routing: true,
     },
   },
   /**
-   * Client2 has proofing disabled
+   * Client2 has proofing and routing disabled
    */
   Client2: {
     campaignId: 'Campaign2',
+    name: 'NHS Test Client 2',
     features: {
       proofing: false,
+      routing: false,
     },
   },
   /**
@@ -43,8 +50,32 @@ export const testClients = {
    */
   Client4: {
     campaignId: undefined,
+    name: 'NHS Test Client 4',
     features: {
       proofing: true,
+      routing: false,
+    },
+  },
+  /**
+   * Client5 is an alternate client to Client1
+   * with proofing enabled
+   */
+  Client5: {
+    campaignId: 'Campaign5',
+    name: 'NHS Test Client 5',
+    features: {
+      proofing: true,
+      routing: false,
+    },
+  },
+  /**
+   * Client6 has no client name set
+   */
+  Client6: {
+    campaignId: 'Campaign6',
+    features: {
+      proofing: true,
+      routing: false,
     },
   },
 } satisfies TestClients;
