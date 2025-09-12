@@ -10,6 +10,10 @@ output "github_pat_ssm_param_name" {
   value = aws_ssm_parameter.github_pat.name
 }
 
+output "github_packages_read_pat_ssm_param_name" {
+  value = aws_ssm_parameter.github_packages_read_pat.name
+}
+
 output "s3_buckets" {
   value = {
     access_logs = {
