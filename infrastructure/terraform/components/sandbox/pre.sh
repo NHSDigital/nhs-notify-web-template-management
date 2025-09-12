@@ -6,11 +6,10 @@ REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
 
-echo Running pre.sh
+echo "Running pre.sh latest version"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
-
 
 if [ "${ACTION}" == "apply" ]; then
     cd $(git rev-parse --show-toplevel)
@@ -32,3 +31,5 @@ if [ "${ACTION}" == "apply" ]; then
 else
     echo "Skipping lambda build for action $ACTION"
 fi
+
+exit 0
