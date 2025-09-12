@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "amplify" {
   }
 
   statement {
-    sid    = "SSMReadGitHubPAT"
+    sid    = "SSMGetGitHubPackagesPAT"
     effect = "Allow"
 
     actions = [
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "amplify" {
     ]
 
     resources = [
-      data.aws_ssm_parameter.github_pat_ssm_param_name.arn
+      data.aws_ssm_parameter.github_packages_read_pat.arn
     ]
   }
 }
