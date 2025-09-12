@@ -1,6 +1,6 @@
 echo "Running app pre.sh"
 
-pushd $(git rev-parse --show-toplevel)
+cd $(git rev-parse --show-toplevel)
 
 make dependencies
 
@@ -10,4 +10,4 @@ npm run lambda-build --workspaces --if-present
 
 $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
 
-popd
+cd -

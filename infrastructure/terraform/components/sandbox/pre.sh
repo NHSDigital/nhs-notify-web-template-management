@@ -7,7 +7,7 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-pushd $(git rev-parse --show-toplevel)
+cd $(git rev-parse --show-toplevel)
 
 if [ "${ACTION}" == "apply" ]; then
     echo "Building lambdas for distribution"
@@ -29,4 +29,4 @@ else
     echo "Skipping lambda build for action $ACTION"
 fi
 
-popd
+cd -
