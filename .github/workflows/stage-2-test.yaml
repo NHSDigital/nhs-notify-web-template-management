@@ -105,17 +105,22 @@ jobs:
       - name: "Run unit test suite"
         run: |
           WORKSPACE=${{ matrix.workspace }} make test-unit
+      - name: Compute safe artifact names
+        id: names
+        shell: bash
+        run: |
+          echo "safe=$(echo '${{ matrix.workspace }}' | tr '/' '-_')" >> "$GITHUB_OUTPUT"
       - name: "Save the result of test suite"
         uses: actions/upload-artifact@v4
         with:
-          name: unit-tests-${{ matrix.workspace }}
-          path: " ${{ matrix.workspace }}/.reports/unit"
+          name: unit-tests-${{ steps.names.outputs.safe }}
+          path: "${{ matrix.workspace }}/.reports/unit"
           include-hidden-files: true
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage-${{ matrix.workspace }}
+          name: code-coverage-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
         if: always()
 
