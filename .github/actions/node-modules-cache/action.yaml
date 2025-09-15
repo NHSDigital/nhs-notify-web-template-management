@@ -9,6 +9,10 @@ inputs:
     description: 'Path(s) to package-lock.json for cache key'
     required: false
     default: '**/package-lock.json'
+  skip_restore:
+    description: 'Skips restoring node_modules'
+    required: false
+    default: false
 
 runs:
   using: 'composite'
@@ -31,6 +35,7 @@ runs:
         key: ${{ runner.os }}-node-${{ inputs.node_version }}-${{ hashFiles(inputs.cache_lock_path) }}
         restore-keys: |
           ${{ runner.os }}-node-${{ inputs.node_version }}-
+        lookup-only: ${{ inputs.skip_restore }}
 
     - name: 'Install dependencies (cache miss)'
       if: steps.node-modules-cache.outputs.cache-hit != 'true'
