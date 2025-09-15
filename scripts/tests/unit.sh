@@ -4,6 +4,9 @@ set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
 
+# read optional first arg; empty means "run all workspaces"
+WORKSPACE="${WORKSPACE:-}"
+
 # This file is for you! Edit it to call your unit test suite. Note that the same
 # file will be called if you run it locally as if you run it on CI.
 
@@ -18,8 +21,17 @@ cd "$(git rev-parse --show-toplevel)"
 # tasks in scripts/test.mk.
 
 # run tests
-npm run test:unit --workspaces
+if [[ -n "$WORKSPACE" ]]; then
+  npm run test:unit --workspace="$WORKSPACE"
+else
+  npm run test:unit --workspaces
 
-# merge coverage reports
-mkdir -p .reports
-TMPDIR="./.reports" ./node_modules/.bin/lcov-result-merger "**/.reports/unit/coverage/lcov.info" ".reports/lcov.info" --ignore "node_modules" --prepend-source-files --prepend-path-fix "../../.."
+  # merge coverage reports
+  mkdir -p .reports
+  TMPDIR="./.reports" ./node_modules/.bin/lcov-result-merger \
+  "**/.reports/unit/coverage/lcov.info" \
+    ".reports/lcov.info" \
+    --ignore "node_modules" \
+    --prepend-source-files \
+    --prepend-path-fix "../../.."
+fi

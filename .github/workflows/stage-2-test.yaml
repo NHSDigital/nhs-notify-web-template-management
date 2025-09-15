@@ -54,6 +54,18 @@ jobs:
           node_version: "${{ inputs.nodejs_version }}"
           skip_restore: true
 
+  discover-workspaces:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get-workspaces.outputs.matrix }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v5.0.0
+      - name: "Get workspaces"
+        id: "get-workspaces"
+        run: |
+          echo "matrix=$(jq '.workspaces' package.json)" >> "$GITHUB_OUTPUT"
+
   check-generated-dependencies:
     name: "Check generated dependencies"
     runs-on: ubuntu-latest
@@ -75,7 +87,9 @@ jobs:
     name: "Unit tests"
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [install-dependencies]
+    needs: [install-dependencies, discover-workspaces]
+    strategy:
+      matrix: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
@@ -88,20 +102,50 @@ jobs:
           npm run generate-dependencies --workspaces --if-present
       - name: "Run unit test suite"
         run: |
-          make test-unit
-      - name: "Save the result of fast test suite"
+          WORKSPACE=${{ matrix.workspace }} make test-unit
+      - name: "Save the result of test suite"
         uses: actions/upload-artifact@v4
         with:
-          name: unit-tests
-          path: "**/.reports/unit"
+          name: unit-tests-${{ matrix.workspace }}
+          path: " ${{ matrix.workspace }}/.reports/unit"
           include-hidden-files: true
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage-report
-          path: ".reports/lcov.info"
+          name: code-coverage-${{ matrix.workspace }}
+          path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
         if: always()
+
+  merge-coverage:
+    name: "Merge coverage"
+    runs-on: ubuntu-latest
+    needs: [test-unit]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: code-coverage-*
+          merge-multiple: false
+          path: ./_cov_parts
+
+      - name: Merge LCOV files
+        run: |
+          set -euo pipefail
+          mkdir -p .reports
+          npx --yes lcov-result-merger \
+            "./_cov_parts/**/lcov.info" \
+            ".reports/lcov.info" \
+            --ignore "node_modules" \
+            --prepend-source-files
+
+      - name: Upload merged LCOV
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-merged
+          path: .reports/lcov.info
 
   test-lint:
     name: "Linting"
@@ -140,21 +184,6 @@ jobs:
       - name: "Run typecheck"
         run: |
           make test-typecheck
-
-  test-coverage:
-    name: "Test coverage"
-    needs: [test-unit]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-      - name: "Run test coverage check"
-        run: |
-          make test-coverage
-      - name: "Save the coverage check result"
-        run: |
-          echo "Nothing to save"
 
   perform-static-analysis:
     name: "Perform static analysis"
