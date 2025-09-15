@@ -64,7 +64,7 @@ jobs:
       - name: "Get workspaces"
         id: "get-workspaces"
         run: |
-          echo "matrix=$(jq '.workspaces' package.json)" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(jq -c '.workspaces' package.json)" >> "$GITHUB_OUTPUT"
 
   check-generated-dependencies:
     name: "Check generated dependencies"
