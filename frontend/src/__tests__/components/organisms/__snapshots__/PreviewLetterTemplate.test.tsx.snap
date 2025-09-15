@@ -2,29 +2,12 @@
 
 exports[`PreviewLetterTemplate component matches snapshot when template language is Right to Left 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -192,29 +175,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is NOT_YET_SUBMITTED 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -345,29 +311,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is PENDING_PROOF_REQUEST 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -498,29 +447,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is PENDING_UPLOAD 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -645,29 +577,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is PENDING_VALIDATION 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -792,29 +707,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is PROOF_AVAILABLE 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -1054,29 +952,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is VALIDATION_FAILED 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -1264,29 +1145,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is VIRUS_SCAN_FAILED 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -1438,29 +1302,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 
 exports[`PreviewLetterTemplate component matches snapshot when template status is WAITING_FOR_PROOF 1`] = `
 <DocumentFragment>
-  <div
+  <a
     class="nhsuk-back-link"
+    href="/message-templates"
   >
-    <a
-      class="nhsuk-back-link__link"
-      href="/templates/message-templates"
-      id="back-link"
-    >
-      <svg
-        aria-hidden="true"
-        class="nhsuk-icon nhsuk-icon__chevron-left"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-        />
-      </svg>
-      Back to all templates
-    </a>
-  </div>
+    Back to all templates
+  </a>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"

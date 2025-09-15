@@ -26,6 +26,7 @@ export const $DynamoDBStreamRecord = z.object({
   eventID: z.string(),
   dynamodb: z.object({
     NewImage: z.record(z.string(), $AttributeValue).optional(),
+    OldImage: z.record(z.string(), $AttributeValue).optional(),
     SequenceNumber: z.string().optional(),
   }),
   tableName: z.string(),

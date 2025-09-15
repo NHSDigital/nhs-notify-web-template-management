@@ -1,31 +1,37 @@
 'use client';
 
 import React from 'react';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import type { AuthStatus } from '@aws-amplify/ui';
 import content from '@content/content';
 import styles from './AuthLink.module.scss';
+import classNames from 'classnames';
+import { useAuthStatus } from '@hooks/use-auth-status';
 
-export const AuthLink = () => {
-  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+export const AuthLink = ({
+  className,
+  initialAuthStatus,
+}: {
+  className?: string;
+  initialAuthStatus?: AuthStatus;
+}) => {
+  const authStatus = useAuthStatus(initialAuthStatus);
 
   let id = 'sign-in-link';
-  let linkContent = content.components.header.links.signIn;
+  let linkContent = content.components.header.accountInfo.links.signIn;
 
   if (authStatus === 'authenticated') {
     id = 'sign-out-link';
-    linkContent = content.components.header.links.signOut;
+    linkContent = content.components.header.accountInfo.links.signOut;
   }
 
   return (
-    <div className={styles['auth-link']} data-testid='auth-link'>
-      <a
-        id={id}
-        className={styles['auth-link__link']}
-        data-testid='auth-link__link'
-        href={linkContent.href}
-      >
-        {linkContent.text}
-      </a>
-    </div>
+    <a
+      id={id}
+      className={classNames(styles['auth-link'], className)}
+      data-testid={id}
+      href={linkContent.href}
+    >
+      {linkContent.text}
+    </a>
   );
 };
