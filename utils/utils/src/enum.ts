@@ -92,7 +92,7 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
 
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
-    NOT_YET_SUBMITTED: 'Not yet submitted',
+    NOT_YET_SUBMITTED: 'Draft',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
     PENDING_PROOF_REQUEST: 'Files uploaded',
@@ -107,7 +107,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
 export const templateStatusToColourMappings = (status: TemplateStatus) =>
   (
     ({
-      NOT_YET_SUBMITTED: undefined,
+      NOT_YET_SUBMITTED: 'green',
       SUBMITTED: 'grey',
       DELETED: undefined,
       PENDING_PROOF_REQUEST: 'blue',

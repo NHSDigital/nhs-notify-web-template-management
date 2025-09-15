@@ -749,10 +749,10 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag"
+            class="nhsuk-tag nhsuk-tag--green"
             data-test-id="status-tag-not-yet-submitted"
           >
-            Not yet submitted
+            Draft
           </strong>
         </dd>
       </div>

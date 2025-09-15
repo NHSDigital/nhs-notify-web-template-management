@@ -156,23 +156,17 @@ test.describe('Manage templates page', () => {
     const email = page.locator(
       'tr:has-text("email-not-yet-submitted_message-templates-page")'
     );
-    await expect(
-      email.getByText('Not yet submitted', { exact: true })
-    ).toBeVisible();
+    await expect(email.getByText('Draft', { exact: true })).toBeVisible();
 
     const sms = page.locator(
       'tr:has-text("sms-not-yet-submitted_message-templates-page")'
     );
-    await expect(
-      sms.getByText('Not yet submitted', { exact: true })
-    ).toBeVisible();
+    await expect(sms.getByText('Draft', { exact: true })).toBeVisible();
 
     const nhsapp = page.locator(
       'tr:has-text("nhs-app-not-yet-submitted_message-templates-page")'
     );
-    await expect(
-      nhsapp.getByText('Not yet submitted', { exact: true })
-    ).toBeVisible();
+    await expect(nhsapp.getByText('Draft', { exact: true })).toBeVisible();
   });
 
   test('should navigate to "choose template" page when create template button is clicked', async ({

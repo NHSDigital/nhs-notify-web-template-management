@@ -109,7 +109,7 @@ describe('alphabeticalLanguageList', () => {
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
     expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(
-      'Not yet submitted'
+      'Draft'
     );
   });
 

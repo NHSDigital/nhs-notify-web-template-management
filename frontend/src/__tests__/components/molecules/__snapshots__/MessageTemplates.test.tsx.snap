@@ -107,9 +107,9 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 Status 
               </span>
               <strong
-                class="nhsuk-tag"
+                class="nhsuk-tag nhsuk-tag--green"
               >
-                Not yet submitted
+                Draft
               </strong>
             </td>
             <td
