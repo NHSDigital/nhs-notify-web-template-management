@@ -116,12 +116,14 @@ jobs:
           name: unit-tests-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit"
           include-hidden-files: true
+          if-no-files-found: ignore
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
+          if-no-files-found: ignore
         if: always()
 
   test-lint:
