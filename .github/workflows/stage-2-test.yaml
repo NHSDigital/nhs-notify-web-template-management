@@ -89,7 +89,9 @@ jobs:
     timeout-minutes: 5
     needs: [install-dependencies, discover-workspaces]
     strategy:
-      matrix: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
+      fail-fast: false
+      matrix:
+         workspace: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
