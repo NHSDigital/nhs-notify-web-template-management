@@ -47,19 +47,19 @@ function findPackageInNodeModules(root: string, packageName: string) {
 
   const packageSegments = packageName.split('/');
 
-  let blah = modulesDir;
+  let current = modulesDir;
 
   while (packageSegments.length > 0) {
-    const current = packageSegments.shift() as string;
+    const currentSegment = packageSegments.shift() as string;
 
-    blah = path.join(blah, current);
+    current = path.join(current, currentSegment);
 
-    if (!fs.existsSync(blah)) {
+    if (!fs.existsSync(current)) {
       return null;
     }
   }
 
-  return blah;
+  return current;
 }
 
 function getPackageInstallDirectory(packageName: string): string {
