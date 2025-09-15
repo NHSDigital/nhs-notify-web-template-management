@@ -6,6 +6,7 @@ const $TemplateDraftedEventV1Data = z.intersection(
   $TemplateEventV1Data,
   z.object({
     templateStatus: $TemplateStatus.exclude(['SUBMITTED', 'DELETED']),
+    foo: z.string(),
   })
 );
 

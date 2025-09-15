@@ -31,36 +31,36 @@ jobs:
             echo "Job not triggered by workflow_dispatch or Merged PR - Skipping 'deploy-main'"
           fi
 
-  deploy-main:
-    needs: check-merge-or-workflow-dispatch
-    name: Deploy changes to main in dev AWS account
-    runs-on: ubuntu-latest
-    if: needs.check-merge-or-workflow-dispatch.outputs.deploy == 'true'
+  # deploy-main:
+  #   needs: check-merge-or-workflow-dispatch
+  #   name: Deploy changes to main in dev AWS account
+  #   runs-on: ubuntu-latest
+  #   if: needs.check-merge-or-workflow-dispatch.outputs.deploy == 'true'
 
-    permissions:
-      id-token: write
-      contents: read
+  #   permissions:
+  #     id-token: write
+  #     contents: read
 
-    strategy:
-      max-parallel: 1
-      matrix:
-        component: [acct, app]
+  #   strategy:
+  #     max-parallel: 1
+  #     matrix:
+  #       component: [acct, app]
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Updating Main Environment
-        env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
-        run: |
-          bash .github/scripts/dispatch_internal_repo_workflow.sh \
-            --releaseVersion "main" \
-            --targetWorkflow "dispatch-deploy-static-notify-web-template-management-env.yaml" \
-            --targetEnvironment "main" \
-            --targetAccountGroup "nhs-notify-template-management-dev" \
-            --targetComponent "${{ matrix.component }}" \
-            --terraformAction "apply"
+  #     - name: Updating Main Environment
+  #       env:
+  #         PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+  #       run: |
+  #         bash .github/scripts/dispatch_internal_repo_workflow.sh \
+  #           --releaseVersion "main" \
+  #           --targetWorkflow "dispatch-deploy-static-notify-web-template-management-env.yaml" \
+  #           --targetEnvironment "main" \
+  #           --targetAccountGroup "nhs-notify-template-management-dev" \
+  #           --targetComponent "${{ matrix.component }}" \
+  #           --terraformAction "apply"
 
   check-event-schemas-version-change:
     name: Check for event schemas package version change
@@ -117,33 +117,33 @@ jobs:
       - name: "Run provider contract tests"
         run: make test-contract-producer
 
-  publish-event-schemas:
-    name: Publish event schemas package to GitHub package registry
-    needs:
-      - check-event-schemas-version-change
-      - test-contract-provider
-    if: needs.check-event-schemas-version-change.outputs.version_changed == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+  # publish-event-schemas:
+  #   name: Publish event schemas package to GitHub package registry
+  #   needs:
+  #     - check-event-schemas-version-change
+  #     - test-contract-provider
+  #   if: needs.check-event-schemas-version-change.outputs.version_changed == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5.0.0
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5.0.0
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.18.2'
-          registry-url: 'https://npm.pkg.github.com'
+  #     - name: Use Node.js 20
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20.18.2'
+  #         registry-url: 'https://npm.pkg.github.com'
 
-      - name: Install dependencies
-        run: make dependencies
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Install dependencies
+  #       run: make dependencies
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to GitHub Packages
-        run: npm publish --workspace packages/event-schemas
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Publish to GitHub Packages
+  #       run: npm publish --workspace packages/event-schemas
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
