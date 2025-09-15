@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         workspace: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
+        workspace: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
