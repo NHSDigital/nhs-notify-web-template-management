@@ -371,14 +371,10 @@
                 "VIRUS_SCAN_FAILED",
                 "WAITING_FOR_PROOF"
               ]
-            },
-            "foo": {
-              "type": "string"
             }
           },
           "required": [
-            "templateStatus",
-            "foo"
+            "templateStatus"
           ]
         }
       ]
