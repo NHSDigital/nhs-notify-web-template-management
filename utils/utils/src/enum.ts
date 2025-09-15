@@ -90,18 +90,28 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
+const statusToDisplayMappings: Record<TemplateStatus, string> = {
+  NOT_YET_SUBMITTED: 'Not yet submitted',
+  SUBMITTED: 'Submitted',
+  DELETED: '', // will not be shown in the UI
+  PENDING_PROOF_REQUEST: 'Files uploaded',
+  PENDING_UPLOAD: 'Checking files',
+  PENDING_VALIDATION: 'Checking files',
+  VALIDATION_FAILED: 'Checks failed',
+  VIRUS_SCAN_FAILED: 'Checks failed',
+  WAITING_FOR_PROOF: 'Waiting for proof',
+  PROOF_AVAILABLE: 'Proof available',
+};
+
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
+  statusToDisplayMappings[status];
+
+export const templateStatusToDisplayMappingsDigital = (
+  status: TemplateStatus
+) =>
   ({
+    ...statusToDisplayMappings,
     NOT_YET_SUBMITTED: 'Draft',
-    SUBMITTED: 'Submitted',
-    DELETED: '', // will not be shown in the UI
-    PENDING_PROOF_REQUEST: 'Files uploaded',
-    PENDING_UPLOAD: 'Checking files',
-    PENDING_VALIDATION: 'Checking files',
-    VALIDATION_FAILED: 'Checks failed',
-    VIRUS_SCAN_FAILED: 'Checks failed',
-    WAITING_FOR_PROOF: 'Waiting for proof',
-    PROOF_AVAILABLE: 'Proof available',
   })[status];
 
 export const templateStatusToColourMappings = (status: TemplateStatus) =>

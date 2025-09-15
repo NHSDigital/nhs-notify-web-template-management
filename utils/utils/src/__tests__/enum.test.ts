@@ -20,6 +20,7 @@ import {
   isRightToLeft,
   languageMapping,
   templateCreationPages,
+  templateStatusToDisplayMappingsDigital,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -109,7 +110,7 @@ describe('alphabeticalLanguageList', () => {
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
     expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(
-      'Draft'
+      'Not yet submitted'
     );
   });
 
@@ -119,6 +120,14 @@ describe('templateStatusToDisplayMappings', () => {
 
   test('DELETED', () => {
     expect(templateStatusToDisplayMappings('DELETED')).toEqual('');
+  });
+});
+
+describe('templateStatusToDisplayMappingsDigital', () => {
+  test('NOT_YET_SUBMITTED', () => {
+    expect(templateStatusToDisplayMappingsDigital('NOT_YET_SUBMITTED')).toEqual(
+      'Draft'
+    );
   });
 });
 
@@ -135,6 +144,7 @@ describe('templateStatusToColourMappings', () => {
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
         PROOF_AVAILABLE: 'orange',
+        NOT_YET_SUBMITTED: 'green',
       };
 
       expect(templateStatusToColourMappings(templateStatus)).toEqual(

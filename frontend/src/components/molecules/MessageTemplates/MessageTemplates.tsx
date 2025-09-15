@@ -15,6 +15,7 @@ import {
   previewSubmittedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
+  templateStatusToDisplayMappingsDigital,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -37,6 +38,11 @@ const typeDisplayMappings = (template: TemplateDto): string =>
   template.language
     ? letterTypeDisplayMappings(template.letterType, template.language)
     : templateTypeDisplayMappings(template.templateType);
+
+const statusToDisplayMapping = (template: TemplateDto): string =>
+  template.templateType === 'LETTER'
+    ? templateStatusToDisplayMappings(template.templateStatus)
+    : templateStatusToDisplayMappingsDigital(template.templateStatus);
 
 export function MessageTemplates({
   templateList,
@@ -86,7 +92,7 @@ export function MessageTemplates({
                       template.templateStatus
                     )}
                   >
-                    {templateStatusToDisplayMappings(template.templateStatus)}
+                    {statusToDisplayMapping(template)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>
