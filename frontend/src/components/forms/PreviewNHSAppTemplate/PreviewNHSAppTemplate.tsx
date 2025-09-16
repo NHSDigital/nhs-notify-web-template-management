@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
-import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
+import {
+  PreviewDigitalTemplate,
+  PreviewDigitalTemplateEditOnly,
+} from '@organisms/PreviewDigitalTemplate';
 import {
   ErrorState,
   NHSAppTemplate,
@@ -19,6 +22,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewNHSAppTemplate({
   initialState,
+  routing,
 }: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -37,8 +41,43 @@ export function PreviewNHSAppTemplate({
   const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
-  const { sectionHeading, form, backLinkText } =
+  const { sectionHeading, form, backLinkText, headerCaption } =
     content.components.previewNHSAppTemplate;
+
+  const EditOnlyPreview = (
+    <PreviewDigitalTemplateEditOnly
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      editPath={`/edit-nhs-app-template/${initialState.id}`}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsNhsApp
+          template={initialState}
+          message={html}
+          caption={headerCaption}
+        />
+      }
+    />
+  );
+
+  const EditSubmitPreview = (
+    <PreviewDigitalTemplate
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      form={{
+        ...form,
+        state: {
+          errorState,
+        },
+        action,
+        formId: 'preview-nhs-app-template',
+        radiosId: 'previewNHSAppTemplateAction',
+        formAttributes: { onSubmit: formValidate },
+      }}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsNhsApp template={initialState} message={html} />
+      }
+    />
+  );
 
   return (
     <>
@@ -50,26 +89,7 @@ export function PreviewNHSAppTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewDigitalTemplate
-              template={initialState}
-              sectionHeading={isFromEditPage ? sectionHeading : undefined}
-              form={{
-                ...form,
-                state: {
-                  errorState,
-                },
-                action,
-                formId: 'preview-nhs-app-template',
-                radiosId: 'previewNHSAppTemplateAction',
-                formAttributes: { onSubmit: formValidate },
-              }}
-              previewDetailsComponent={
-                <PreviewTemplateDetailsNhsApp
-                  template={initialState}
-                  message={html}
-                />
-              }
-            />
+            {routing ? EditOnlyPreview : EditSubmitPreview}
             <p>
               <Link
                 href='/message-templates'

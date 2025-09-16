@@ -15,11 +15,18 @@ import {
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+
+let routingEnabledUser: TestUser;
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+  const authHelper = createAuthHelper();
+  const user = await authHelper.getTestUser(testUsers.User1.userId);
+  routingEnabledUser = await authHelper.getTestUser(testUsers.User9.userId);
+
   return {
     empty: {
       id: 'preview-page-invalid-nhs-app-template',
@@ -38,11 +45,23 @@ async function createTemplates() {
       name: 'test-template-nhs-app',
       message: 'test-template-message',
     },
+    routingEnabled: {
+      ...TemplateFactory.createNhsAppTemplate(
+        'valid-nhs-app-preview-template',
+        routingEnabledUser
+      ),
+      name: 'test-template-nhs-app',
+      message: 'test-template-message',
+    },
   };
 }
 
 test.describe('Preview NHS App template Page', () => {
-  let templates: { empty: Template; valid: Template };
+  let templates: {
+    empty: Template;
+    valid: Template;
+    routingEnabled: Template;
+  };
 
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -77,6 +96,33 @@ test.describe('Preview NHS App template Page', () => {
 
     await expect(previewNhsAppTemplatePage.messageText).toHaveText(
       'test-template-message'
+    );
+  });
+
+  test('when user visits page, then page is loaded, with routing Enabled', async ({
+    baseURL,
+    browser,
+  }) => {
+    const newBrowser = await browser.newContext({ storageState: undefined });
+    const newPage = await newBrowser.newPage();
+    await loginAsUser(routingEnabledUser, newPage);
+
+    const previewPage = new TemplateMgmtPreviewNhsAppPage(newPage);
+
+    await previewPage.loadPage(templates.routingEnabled.id);
+
+    await expect(newPage).toHaveURL(
+      `${baseURL}/templates/preview-nhs-app-template/${templates.routingEnabled.id}`
+    );
+
+    await expect(previewPage.continueButton).toBeHidden();
+
+    await expect(previewPage.editButton).toBeVisible();
+
+    await previewPage.editButton.click();
+
+    await expect(newPage).toHaveURL(
+      `${baseURL}/templates/edit-nhs-app-template/${templates.routingEnabled.id}`
     );
   });
 

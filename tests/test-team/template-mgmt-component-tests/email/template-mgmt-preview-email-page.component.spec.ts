@@ -24,7 +24,6 @@ let routingEnabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
-
   const user = await authHelper.getTestUser(testUsers.User1.userId);
   routingEnabledUser = await authHelper.getTestUser(testUsers.User9.userId);
 
@@ -77,25 +76,21 @@ test.describe('Preview Email message template Page', () => {
     page,
     baseURL,
   }) => {
-    const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+    const previewPage = new TemplateMgmtPreviewEmailPage(page);
 
-    await previewEmailTemplatePage.loadPage(templates.valid.id);
+    await previewPage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-email-template/${templates.valid.id}`
     );
 
-    await expect(previewEmailTemplatePage.pageHeading).toContainText(
-      'test-template-email'
-    );
+    await expect(previewPage.pageHeading).toContainText('test-template-email');
 
-    await expect(previewEmailTemplatePage.subjectLineText).toHaveText(
+    await expect(previewPage.subjectLineText).toHaveText(
       'test-template-subject-line'
     );
 
-    await expect(previewEmailTemplatePage.messageText).toHaveText(
-      'test-template-message'
-    );
+    await expect(previewPage.messageText).toHaveText('test-template-message');
   });
 
   test('when user visits page, then page is loaded, with routing Enabled', async ({
