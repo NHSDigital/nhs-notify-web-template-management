@@ -187,7 +187,7 @@ jobs:
             ".reports/lcov.info" \
             --ignore "node_modules" \
             --prepend-source-files \
-            --prepend-path-fix "../../.."
+            --prepend-path-fix "../../"
 
       - name: Upload merged LCOV
         uses: actions/upload-artifact@v4
