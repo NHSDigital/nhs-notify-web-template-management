@@ -101,34 +101,70 @@ const statusToDisplayMappings: Record<TemplateStatus, string> = {
   VIRUS_SCAN_FAILED: 'Checks failed',
   WAITING_FOR_PROOF: 'Waiting for proof',
   PROOF_AVAILABLE: 'Proof available',
-};
+} as const;
 
-export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
+const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
   statusToDisplayMappings[status];
 
-export const templateStatusToDisplayMappingsDigital = (
-  status: TemplateStatus
-) =>
+const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
   ({
     ...statusToDisplayMappings,
     NOT_YET_SUBMITTED: 'Draft',
   })[status];
 
-export const templateStatusToColourMappings = (status: TemplateStatus) =>
+export const statusToDisplayMapping = (
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
+): string =>
+  template.templateType === 'LETTER'
+    ? templateStatusToDisplayMappingsLetter(template.templateStatus)
+    : templateStatusToDisplayMappingsDigital(template.templateStatus);
+
+type Colour =
+  | 'white'
+  | 'grey'
+  | 'green'
+  | 'aqua-green'
+  | 'blue'
+  | 'purple'
+  | 'pink'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | undefined;
+
+const colourMappings: Record<TemplateStatus, Colour> = {
+  NOT_YET_SUBMITTED: undefined,
+  SUBMITTED: 'grey',
+  DELETED: undefined,
+  PENDING_PROOF_REQUEST: 'blue',
+  PENDING_UPLOAD: 'blue',
+  PENDING_VALIDATION: 'blue',
+  VIRUS_SCAN_FAILED: 'red',
+  VALIDATION_FAILED: 'red',
+  WAITING_FOR_PROOF: 'yellow',
+  PROOF_AVAILABLE: 'orange',
+} as const;
+
+const templateStatusToColourMappingsLetter = (
+  status: TemplateStatus
+): Colour | undefined => colourMappings[status];
+
+const templateStatusToColourMappingsDigital = (
+  status: TemplateStatus
+): Colour | undefined =>
   (
     ({
+      ...colourMappings,
       NOT_YET_SUBMITTED: 'green',
-      SUBMITTED: 'grey',
-      DELETED: undefined,
-      PENDING_PROOF_REQUEST: 'blue',
-      PENDING_UPLOAD: 'blue',
-      PENDING_VALIDATION: 'blue',
-      VIRUS_SCAN_FAILED: 'red',
-      VALIDATION_FAILED: 'red',
-      WAITING_FOR_PROOF: 'yellow',
-      PROOF_AVAILABLE: 'orange',
-    }) as const
+    }) satisfies typeof colourMappings
   )[status];
+
+export const statusToColourMapping = (
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
+) =>
+  template.templateType === 'LETTER'
+    ? templateStatusToColourMappingsLetter(template.templateStatus)
+    : templateStatusToColourMappingsDigital(template.templateStatus);
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({

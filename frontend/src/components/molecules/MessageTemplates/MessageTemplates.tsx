@@ -9,13 +9,12 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
-  templateStatusToColourMappings,
-  templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
-  templateStatusToDisplayMappingsDigital,
+  statusToDisplayMapping,
+  statusToColourMapping,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -38,11 +37,6 @@ const typeDisplayMappings = (template: TemplateDto): string =>
   template.language
     ? letterTypeDisplayMappings(template.letterType, template.language)
     : templateTypeDisplayMappings(template.templateType);
-
-const statusToDisplayMapping = (template: TemplateDto): string =>
-  template.templateType === 'LETTER'
-    ? templateStatusToDisplayMappings(template.templateStatus)
-    : templateStatusToDisplayMappingsDigital(template.templateStatus);
 
 export function MessageTemplates({
   templateList,
@@ -87,11 +81,7 @@ export function MessageTemplates({
                 </Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
-                  <Tag
-                    color={templateStatusToColourMappings(
-                      template.templateStatus
-                    )}
-                  >
+                  <Tag color={statusToColourMapping(template)}>
                     {statusToDisplayMapping(template)}
                   </Tag>
                 </Table.Cell>

@@ -1,9 +1,8 @@
 import { Tag, SummaryList } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
-  templateStatusToDisplayMappings,
-  templateStatusToColourMappings,
-  templateStatusToDisplayMappingsDigital,
+  statusToColourMapping,
+  statusToDisplayMapping,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
@@ -20,11 +19,6 @@ type ContentPreviewField = {
 
 const { rowHeadings, previewTemplateStatusFootnote } =
   content.components.previewTemplateDetails;
-
-const statusToDisplayMapping = (template: TemplateDto): string =>
-  template.templateType === 'LETTER'
-    ? templateStatusToDisplayMappings(template.templateStatus)
-    : templateStatusToDisplayMappingsDigital(template.templateStatus);
 
 export function DetailSection({ children }: { children: React.ReactNode }) {
   return (
@@ -84,7 +78,7 @@ export function StandardDetailRows({
         <SummaryList.Value>
           <Tag
             data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
-            color={templateStatusToColourMappings(template.templateStatus)}
+            color={statusToColourMapping(template)}
           >
             {statusToDisplayMapping(template)}
           </Tag>

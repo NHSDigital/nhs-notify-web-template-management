@@ -174,7 +174,7 @@ exports[`PreviewTemplateDetailsLetter if status is NOT_YET_SUBMITTED, then Not y
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag nhsuk-tag--green"
+            class="nhsuk-tag"
             data-test-id="status-tag-not-yet-submitted"
           >
             Not yet submitted

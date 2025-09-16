@@ -372,7 +372,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--green"
+                class="nhsuk-tag"
               >
                 Not yet submitted
               </strong>
@@ -797,7 +797,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--green"
+                class="nhsuk-tag"
               >
                 Not yet submitted
               </strong>
@@ -1211,7 +1211,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--green"
+                class="nhsuk-tag"
               >
                 Not yet submitted
               </strong>
@@ -1612,7 +1612,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--green"
+                class="nhsuk-tag"
               >
                 Not yet submitted
               </strong>
