@@ -136,7 +136,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      template: expect.objectContaining({
+      data: expect.objectContaining({
         name: template.name,
         templateStatus: 'WAITING_FOR_PROOF',
         templateType: template.templateType,
@@ -269,7 +269,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      template: expect.objectContaining({
+      data: expect.objectContaining({
         name: template.name,
         templateStatus: 'WAITING_FOR_PROOF',
         templateType: template.templateType,

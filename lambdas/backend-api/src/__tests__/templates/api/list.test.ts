@@ -127,7 +127,7 @@ describe('Template API - List', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, templates: [template] }),
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
     });
 
     expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith({

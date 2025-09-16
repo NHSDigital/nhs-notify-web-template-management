@@ -77,7 +77,7 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      template: created.template,
+      data: created.template,
     });
   });
 
@@ -235,7 +235,7 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      template: created.template,
+      data: created.template,
     });
   });
 
@@ -263,7 +263,7 @@ test.describe('GET /v1/template/:templateId', () => {
       expect(response.status()).toBe(200);
       expect(await response.json()).toEqual({
         statusCode: 200,
-        template: created,
+        data: created,
       });
     });
   });

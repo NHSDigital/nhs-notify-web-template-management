@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoutingConfigRepository get returns errors if the database item cannot be parsed 1`] = `
+{
+  "error": {
+    "actualError": [ZodError: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "id"
+    ],
+    "message": "Invalid input: expected string, received undefined"
+  },
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "owner"
+    ],
+    "message": "Invalid input: expected string, received undefined"
+  },
+  {
+    "code": "invalid_value",
+    "values": [
+      "DELETED",
+      "DRAFT"
+    ],
+    "path": [
+      "status"
+    ],
+    "message": "Invalid option: expected one of \\"DELETED\\"|\\"DRAFT\\""
+  }
+]],
+    "errorMeta": {
+      "code": 500,
+      "description": "Error retrieving Routing Config",
+      "details": undefined,
+    },
+  },
+}
+`;

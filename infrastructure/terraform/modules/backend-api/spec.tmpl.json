@@ -57,29 +57,45 @@
         ],
         "type": "object"
       },
-      "UploadLetterProperties": {
+      "ClientConfiguration": {
         "properties": {
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "letterType": {
-            "$ref": "#/components/schemas/LetterType"
-          },
-          "templateType": {
-            "enum": [
-              "LETTER"
-            ],
+          "campaignId": {
             "type": "string"
+          },
+          "features": {
+            "$ref": "#/components/schemas/ClientFeatures"
           }
         },
         "required": [
-          "letterType",
-          "language",
-          "templateType"
+          "features"
         ],
+        "type": "object"
+      },
+      "ClientConfigurationSuccess": {
+        "properties": {
+          "clientConfiguration": {
+            "$ref": "#/components/schemas/ClientConfiguration"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "clientConfiguration",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "ClientFeatures": {
+        "properties": {
+          "proofing": {
+            "type": "boolean"
+          },
+          "routing": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
         "type": "object"
       },
       "CreateUpdateTemplate": {
@@ -270,6 +286,48 @@
         ],
         "type": "object"
       },
+      "RoutingConfig": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoutingConfigStatus"
+          }
+        },
+        "required": [
+          "id",
+          "owner",
+          "status"
+        ],
+        "type": "object"
+      },
+      "RoutingConfigStatus": {
+        "enum": [
+          "DELETED",
+          "DRAFT"
+        ],
+        "type": "string"
+      },
+      "RoutingConfigSuccess": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RoutingConfig"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "SmsProperties": {
         "properties": {
           "message": {
@@ -285,80 +343,6 @@
         "required": [
           "message",
           "templateType"
-        ],
-        "type": "object"
-      },
-      "TemplateSuccess": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "template": {
-            "$ref": "#/components/schemas/TemplateDto"
-          }
-        },
-        "required": [
-          "template",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "ClientFeatures": {
-        "properties": {
-          "proofing": {
-            "type": "boolean"
-          },
-          "routing": {
-            "type": "boolean"
-          }
-        },
-        "required": [],
-        "type": "object"
-      },
-      "ClientConfiguration": {
-        "properties": {
-          "campaignId": {
-            "type": "string"
-          },
-          "features": {
-            "$ref": "#/components/schemas/ClientFeatures"
-          }
-        },
-        "required": [
-          "features"
-        ],
-        "type": "object"
-      },
-      "ClientConfigurationSuccess": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "clientConfiguration": {
-            "$ref": "#/components/schemas/ClientConfiguration"
-          }
-        },
-        "required": [
-          "clientConfiguration",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "TemplateSuccessList": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "templates": {
-            "items": {
-              "$ref": "#/components/schemas/TemplateDto"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "templates",
-          "statusCode"
         ],
         "type": "object"
       },
@@ -401,6 +385,39 @@
         ],
         "type": "string"
       },
+      "TemplateSuccess": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateDto"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "TemplateSuccessList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateDto"
+            },
+            "type": "array"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "TemplateType": {
         "enum": [
           "NHS_APP",
@@ -409,6 +426,31 @@
           "LETTER"
         ],
         "type": "string"
+      },
+      "UploadLetterProperties": {
+        "properties": {
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateType": {
+            "enum": [
+              "LETTER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "letterType",
+          "language",
+          "templateType"
+        ],
+        "type": "object"
       },
       "VersionedFileDetails": {
         "properties": {
@@ -461,6 +503,60 @@
   },
   "openapi": "3.0.1",
   "paths": {
+    "/v1/client-configuration": {
+      "get": {
+        "description": "Get client configuration values for the caller",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get caller client configuration",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/letter-template": {
       "post": {
         "description": "Create a letter template",
@@ -537,6 +633,71 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPLOAD_LETTER_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configuration/{routingConfigId}": {
+      "get": {
+        "description": "Get a routing configuration by ID",
+        "parameters": [
+          {
+            "description": "ID of routing configuration to return",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get a routing configuration by ID",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -988,60 +1149,6 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
-        }
-      }
-    },
-    "/v1/client-configuration": {
-      "get": {
-        "description": "Get client configuration values for the caller",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
-                }
-              }
-            },
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "summary": "Get caller client configuration",
-        "x-amazon-apigateway-integration": {
-          "contentHandling": "CONVERT_TO_TEXT",
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
         }
       }
     }

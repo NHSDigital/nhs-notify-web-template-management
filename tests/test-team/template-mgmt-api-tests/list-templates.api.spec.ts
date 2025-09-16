@@ -102,7 +102,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(user1ResponseBody).toEqual({
       statusCode: 200,
-      templates: expect.arrayContaining([created1.template, created2.template]),
+      data: expect.arrayContaining([created1.template, created2.template]),
     });
 
     expect(user1ResponseBody.templates.length).toBe(2);
@@ -124,7 +124,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(user2ResponseBody).toEqual({
       statusCode: 200,
-      templates: [],
+      data: [],
     });
   });
 
@@ -202,7 +202,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(responseBody).toEqual({
       statusCode: 200,
-      templates: [created2.template],
+      data: [created2.template],
     });
   });
 
@@ -246,7 +246,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(userSharedClientResponseBody).toEqual({
       statusCode: 200,
-      templates: expect.arrayContaining([created1.template]),
+      data: expect.arrayContaining([created1.template]),
     });
   });
 
@@ -296,7 +296,7 @@ test.describe('GET /v1/templates', () => {
 
       expect(user1ResponseBody).toEqual({
         statusCode: 200,
-        templates: expect.arrayContaining([
+        data: expect.arrayContaining([
           userOwnedCreatedTemplate,
           clientOwnedCreatedTemplate,
         ]),

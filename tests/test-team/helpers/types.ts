@@ -62,3 +62,9 @@ export type Template = TypeSpecificProperties & {
   version: number;
   proofingEnabled?: boolean;
 };
+
+export type RoutingConfig = {
+  id: string;
+  owner: string;
+  status: 'DELETED' | 'DRAFT';
+};

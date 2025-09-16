@@ -2,7 +2,7 @@ REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
 
-echo Running pre.sh
+echo "Running sandbox pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"

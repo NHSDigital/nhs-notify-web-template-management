@@ -137,7 +137,7 @@ test.describe('POST /v1/template', () => {
 
       expect(created).toEqual({
         statusCode: 201,
-        template: {
+        data: {
           campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
@@ -346,7 +346,7 @@ test.describe('POST /v1/template', () => {
 
       expect(created).toEqual({
         statusCode: 201,
-        template: {
+        data: {
           campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
@@ -555,7 +555,7 @@ test.describe('POST /v1/template', () => {
 
       expect(created).toEqual({
         statusCode: 201,
-        template: {
+        data: {
           campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),

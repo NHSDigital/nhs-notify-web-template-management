@@ -79,7 +79,7 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(result).toEqual({
       statusCode: 201,
-      template: {
+      data: {
         campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
@@ -166,7 +166,7 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(result).toEqual({
       statusCode: 201,
-      template: {
+      data: {
         campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
