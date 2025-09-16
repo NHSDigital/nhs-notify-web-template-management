@@ -14,13 +14,15 @@ import concatClassNames from '@utils/concat-class-names';
 export default function PreviewTemplateDetailsSms({
   template,
   message,
+  caption,
 }: {
   template: SMSTemplate;
   message: string;
+  caption?: string;
 }) {
   return (
     <>
-      <DetailsHeader templateName={template.name} />
+      <DetailsHeader templateName={template.name} caption={caption} />
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >

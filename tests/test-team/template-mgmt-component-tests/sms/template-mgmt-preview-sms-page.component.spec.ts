@@ -15,11 +15,18 @@ import {
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+
+let routingEnabledUser: TestUser;
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+  const authHelper = createAuthHelper();
+  const user = await authHelper.getTestUser(testUsers.User1.userId);
+  routingEnabledUser = await authHelper.getTestUser(testUsers.User9.userId);
+
   return {
     empty: {
       id: 'preview-page-invalid-sms-template',
@@ -35,12 +42,20 @@ async function createTemplates() {
       name: 'test-template-sms',
       message: 'test-template-message',
     },
+    routingEnabled: {
+      ...TemplateFactory.createSmsTemplate(
+        'valid-sms-preview-template',
+        routingEnabledUser
+      ),
+      name: 'test-template-sms',
+      message: 'test-template-message',
+    },
   };
 }
 
 test.describe('Preview SMS message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
-  let templates: { valid: Template; empty: Template };
+  let templates: { valid: Template; empty: Template; routingEnabled: Template };
 
   test.beforeAll(async () => {
     templates = await createTemplates();
@@ -73,6 +88,33 @@ test.describe('Preview SMS message template Page', () => {
 
     await expect(previewSmsTemplatePage.messageText).toHaveText(
       'test-template-message'
+    );
+  });
+
+  test('when user visits page, then page is loaded, with routing Enabled', async ({
+    baseURL,
+    browser,
+  }) => {
+    const newBrowser = await browser.newContext({ storageState: undefined });
+    const newPage = await newBrowser.newPage();
+    await loginAsUser(routingEnabledUser, newPage);
+
+    const previewPage = new TemplateMgmtPreviewSmsPage(newPage);
+
+    await previewPage.loadPage(templates.routingEnabled.id);
+
+    await expect(newPage).toHaveURL(
+      `${baseURL}/templates/preview-text-message-template/${templates.routingEnabled.id}`
+    );
+
+    await expect(previewPage.continueButton).toBeHidden();
+
+    await expect(previewPage.editButton).toBeVisible();
+
+    await previewPage.editButton.click();
+
+    await expect(newPage).toHaveURL(
+      `${baseURL}/templates/edit-text-message-template/${templates.routingEnabled.id}`
     );
   });
 

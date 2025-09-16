@@ -34,87 +34,135 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Review sms form renders', () => {
-  it('matches snapshot when navigating from manage templates screen', () => {
-    const container = render(
-      <PreviewSMSTemplate
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          errorState: undefined,
-          name: 'test-template-sms',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches snapshot when navigating from edit screen', () => {
-    const mockSearchParams = new Map([['from', 'edit']]);
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
-      get: (key: string) => mockSearchParams.get(key),
-    }));
-
-    const container = render(
-      <PreviewSMSTemplate
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          errorState: undefined,
-          name: 'test-template-sms',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches error snapshot', () => {
-    const container = render(
-      <PreviewSMSTemplate
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          errorState: {
-            formErrors: [],
-            fieldErrors: {
-              previewSMSTemplateAction: ['Select an option'],
+  describe('Routing feature flag - Disabled', () => {
+    it('matches error snapshot', () => {
+      const container = render(
+        <PreviewSMSTemplate
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            errorState: {
+              formErrors: [],
+              fieldErrors: {
+                previewSMSTemplateAction: ['Select an option'],
+              },
             },
-          },
-          name: 'test-template-sms',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
 
-    expect(container.asFragment()).toMatchSnapshot();
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('renders component correctly', () => {
+      render(
+        <PreviewSMSTemplate
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            errorState: undefined,
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(screen.getByTestId('sms-edit-radio')).toHaveAttribute(
+        'value',
+        'sms-edit'
+      );
+
+      expect(screen.getByTestId('sms-submit-radio')).toHaveAttribute(
+        'value',
+        'sms-submit'
+      );
+    });
+
+    test('Client-side validation triggers', () => {
+      const container = render(
+        <PreviewSMSTemplate
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'example',
+            id: 'template-id',
+          })}
+        />
+      );
+      const submitButton = screen.getByRole('button');
+      fireEvent.click(submitButton);
+      expect(container.asFragment()).toMatchSnapshot();
+    });
   });
 
-  it('renders component correctly', () => {
-    render(
-      <PreviewSMSTemplate
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          errorState: undefined,
-          name: 'test-template-sms',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
+  describe('Routing feature flag - Enabled', () => {
+    it('renders component correctly', () => {
+      render(
+        <PreviewSMSTemplate
+          routing={true}
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            errorState: undefined,
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
 
-    expect(screen.getByTestId('sms-edit-radio')).toHaveAttribute(
-      'value',
-      'sms-edit'
-    );
-
-    expect(screen.getByTestId('sms-submit-radio')).toHaveAttribute(
-      'value',
-      'sms-submit'
-    );
+      expect(screen.getByTestId('edit-template-link')).toHaveAttribute(
+        'href',
+        '/templates/edit-text-message-template/template-id'
+      );
+    });
   });
+
+  it.each([true, false])(
+    'matches snapshot when navigating from manage templates screen when routing is %p',
+    (routing) => {
+      const container = render(
+        <PreviewSMSTemplate
+          routing={routing}
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            errorState: undefined,
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
+
+  it.each([true, false])(
+    'matches snapshot when navigating from edit screen when routing is %p',
+    (routing) => {
+      const mockSearchParams = new Map([['from', 'edit']]);
+      (useSearchParams as jest.Mock).mockImplementation(() => ({
+        get: (key: string) => mockSearchParams.get(key),
+      }));
+
+      const container = render(
+        <PreviewSMSTemplate
+          routing={routing}
+          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+            errorState: undefined,
+            name: 'test-template-sms',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 
   it('should render message with markdown', () => {
     const renderMock = jest.mocked(renderSMSMarkdown);
@@ -140,21 +188,5 @@ describe('Review sms form renders', () => {
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'
     );
-  });
-
-  test('Client-side validation triggers', () => {
-    const container = render(
-      <PreviewSMSTemplate
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          name: 'test-template-sms',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'example',
-          id: 'template-id',
-        })}
-      />
-    );
-    const submitButton = screen.getByRole('button');
-    fireEvent.click(submitButton);
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });
