@@ -15,11 +15,19 @@ export type BaseTemplate = {
   name: string;
 };
 
-export type UploadLetterProperties = {
-  files?: LetterFiles;
-  language: Language;
-  letterType: LetterType;
-  templateType: 'LETTER';
+export type ClientConfiguration = {
+  campaignId?: string;
+  features: ClientFeatures;
+};
+
+export type ClientConfigurationSuccess = {
+  clientConfiguration: ClientConfiguration;
+  statusCode: number;
+};
+
+export type ClientFeatures = {
+  proofing?: boolean;
+  routing?: boolean;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -95,34 +103,22 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
+export type RoutingConfig = {
+  id: string;
+  owner: string;
+  status: RoutingConfigStatus;
+};
+
+export type RoutingConfigStatus = 'DELETED' | 'DRAFT';
+
+export type RoutingConfigSuccess = {
+  data: RoutingConfig;
+  statusCode: number;
+};
+
 export type SmsProperties = {
   message: string;
   templateType: 'SMS';
-};
-
-export type TemplateSuccess = {
-  statusCode: number;
-  data: TemplateDto;
-};
-
-export type ClientFeatures = {
-  proofing?: boolean;
-  routing?: boolean;
-};
-
-export type ClientConfiguration = {
-  campaignId?: string;
-  features: ClientFeatures;
-};
-
-export type ClientConfigurationSuccess = {
-  statusCode: number;
-  clientConfiguration: ClientConfiguration;
-};
-
-export type TemplateSuccessList = {
-  statusCode: number;
-  data: Array<TemplateDto>;
 };
 
 export type TemplateDto = BaseCreatedTemplate &
@@ -140,7 +136,24 @@ export type TemplateStatus =
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
 
+export type TemplateSuccess = {
+  data: TemplateDto;
+  statusCode: number;
+};
+
+export type TemplateSuccessList = {
+  data: Array<TemplateDto>;
+  statusCode: number;
+};
+
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
+
+export type UploadLetterProperties = {
+  files?: LetterFiles;
+  language: Language;
+  letterType: LetterType;
+  templateType: 'LETTER';
+};
 
 export type VersionedFileDetails = {
   currentVersion: string;
@@ -150,18 +163,32 @@ export type VersionedFileDetails = {
 
 export type VirusScanStatus = 'PENDING' | 'FAILED' | 'PASSED';
 
-export type RoutingConfig = {
-  id: string;
-  owner: string;
-  status: RoutingConfigStatus;
+export type GetV1ClientConfigurationData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/client-configuration';
 };
 
-export type RoutingConfigStatus = 'DELETED' | 'DRAFT';
-
-export type RoutingConfigSuccess = {
-  statusCode: number;
-  data: RoutingConfig;
+export type GetV1ClientConfigurationErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
 };
+
+export type GetV1ClientConfigurationError =
+  GetV1ClientConfigurationErrors[keyof GetV1ClientConfigurationErrors];
+
+export type GetV1ClientConfigurationResponses = {
+  /**
+   * 200 response
+   */
+  200: ClientConfigurationSuccess;
+};
+
+export type GetV1ClientConfigurationResponse =
+  GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
 
 export type PostV1LetterTemplateData = {
   /**
@@ -192,6 +219,38 @@ export type PostV1LetterTemplateResponses = {
 
 export type PostV1LetterTemplateResponse =
   PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
+
+export type GetV1RoutingConfigurationByRoutingConfigIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of routing configuration to return
+     */
+    routingConfigId: string;
+  };
+  query?: never;
+  url: '/v1/routing-configuration/{routingConfigId}';
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdError =
+  GetV1RoutingConfigurationByRoutingConfigIdErrors[keyof GetV1RoutingConfigurationByRoutingConfigIdErrors];
+
+export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccess;
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
+  GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type PostV1TemplateData = {
   /**
@@ -412,65 +471,6 @@ export type GetV1TemplatesResponses = {
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
-
-export type GetV1ClientConfigurationData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/v1/client-configuration';
-};
-
-export type GetV1ClientConfigurationErrors = {
-  /**
-   * Error
-   */
-  default: Failure;
-};
-
-export type GetV1ClientConfigurationError =
-  GetV1ClientConfigurationErrors[keyof GetV1ClientConfigurationErrors];
-
-export type GetV1ClientConfigurationResponses = {
-  /**
-   * 200 response
-   */
-  200: ClientConfigurationSuccess;
-};
-
-export type GetV1ClientConfigurationResponse =
-  GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
-
-export type GetV1RoutingConfigurationByRoutingConfigIdData = {
-  body?: never;
-  path: {
-    /**
-     * ID of routing configuration to return
-     */
-    routingConfigId: string;
-  };
-  query?: never;
-  url: '/v1/routing-configuration/{routingConfigId}';
-};
-
-export type GetV1RoutingConfigurationByRoutingConfigIdErrors = {
-  /**
-   * Error
-   */
-  default: Failure;
-};
-
-export type GetV1RoutingConfigurationByRoutingConfigIdError =
-  GetV1RoutingConfigurationByRoutingConfigIdErrors[keyof GetV1RoutingConfigurationByRoutingConfigIdErrors];
-
-export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
-  /**
-   * 200 response
-   */
-  200: RoutingConfigSuccess;
-};
-
-export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
-  GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
