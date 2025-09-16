@@ -21,11 +21,20 @@ test.describe('Upload letter Template Page', () => {
 
   let user: TestUser;
   let userWithoutCampaignId: TestUser;
+  let userWithMultipleCampaigns: TestUser;
+  let userWithFallbackCampaignId: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    userWithoutCampaignId = await createAuthHelper().getTestUser(
+    const authHelper = createAuthHelper();
+    user = await authHelper.getTestUser(testUsers.User1.userId);
+    userWithoutCampaignId = await authHelper.getTestUser(
       testUsers.User6.userId
+    );
+    userWithMultipleCampaigns = await authHelper.getTestUser(
+      testUsers.UserWithMultipleCampaigns.userId
+    );
+    userWithFallbackCampaignId = await authHelper.getTestUser(
+      testUsers.UserWithFallbackCampaignId.userId
     );
   });
 
@@ -67,7 +76,7 @@ test.describe('Upload letter Template Page', () => {
     ).toHaveText(['Enter a template name', 'Select a letter template PDF']);
   });
 
-  test('when user submits form with valid data, then the next page is displayed', async ({
+  test('when user with a single campaign ID submits form with valid data, then the next page is displayed', async ({
     page,
   }) => {
     const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
@@ -95,6 +104,105 @@ test.describe('Upload letter Template Page', () => {
     templateStorageHelper.addAdHocTemplateKey({
       templateId: previewPageParts![1],
       clientId: user.clientId,
+    });
+  });
+
+  test.describe('campaign ID tests', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('Validate error messages on the upload letter template page with no template name, campaign ID or pdf', async ({
+      page,
+    }) => {
+      await loginAsUser(userWithMultipleCampaigns, page);
+
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
+
+      await createTemplatePage.loadPage();
+
+      await expect(createTemplatePage.pageHeading).toHaveText(
+        'Upload a letter template'
+      );
+      await createTemplatePage.clickSaveAndPreviewButton();
+      await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+
+      await expect(
+        page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+      ).toHaveText([
+        'Enter a template name',
+        'Choose a campaign ID',
+        'Select a letter template PDF',
+      ]);
+    });
+
+    test('when user with a fallback campaign ID submits form with valid data, then the next page is displayed', async ({
+      page,
+    }) => {
+      await loginAsUser(userWithFallbackCampaignId, page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
+
+      await createTemplatePage.loadPage();
+      await page
+        .locator('[id="letterTemplateName"]')
+        .fill('This is an NHS App template name');
+
+      await page.locator('input[name="letterTemplatePdf"]').click();
+      await page
+        .locator('input[name="letterTemplatePdf"]')
+        .setInputFiles(
+          './fixtures/pdf-upload/with-personalisation/template.pdf'
+        );
+
+      await createTemplatePage.clickSaveAndPreviewButton();
+
+      const previewPageRegex =
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
+
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
+
+      const previewPageParts = page.url().match(previewPageRegex);
+      expect(previewPageParts?.length).toEqual(2);
+      templateStorageHelper.addAdHocTemplateKey({
+        templateId: previewPageParts![1],
+        clientId: user.clientId,
+      });
+    });
+
+    test('when user with a multiple campaign IDs submits form with valid data, then the next page is displayed', async ({
+      page,
+    }) => {
+      await loginAsUser(userWithMultipleCampaigns, page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
+
+      await createTemplatePage.loadPage();
+      await page
+        .locator('[id="letterTemplateName"]')
+        .fill('This is an NHS App template name');
+
+      await page.locator('input[name="letterTemplatePdf"]').click();
+      await page.selectOption('#letterTemplateCampaignId', {
+        value: 'other-campaign-id',
+      });
+      await page
+        .locator('input[name="letterTemplatePdf"]')
+        .setInputFiles(
+          './fixtures/pdf-upload/with-personalisation/template.pdf'
+        );
+
+      await createTemplatePage.clickSaveAndPreviewButton();
+
+      const previewPageRegex =
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
+
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
+
+      const previewPageParts = page.url().match(previewPageRegex);
+      expect(previewPageParts?.length).toEqual(2);
+      templateStorageHelper.addAdHocTemplateKey({
+        templateId: previewPageParts![1],
+        clientId: user.clientId,
+      });
     });
   });
 

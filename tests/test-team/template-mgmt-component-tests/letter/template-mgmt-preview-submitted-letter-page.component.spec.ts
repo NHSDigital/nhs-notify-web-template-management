@@ -84,6 +84,10 @@ test.describe('Preview submitted Letter message template Page', () => {
     await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
       templates.valid.name
     );
+
+    await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
+      templates.valid.campaignId!
+    );
   });
 
   test.describe('Page functionality', () => {

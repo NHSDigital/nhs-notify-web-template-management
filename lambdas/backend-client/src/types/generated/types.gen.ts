@@ -15,7 +15,11 @@ export type BaseTemplate = {
   name: string;
 };
 
-export type UploadLetterProperties = {
+export type UploadLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
+};
+
+export type BaseLetterTemplateProperties = {
   files?: LetterFiles;
   language: Language;
   letterType: LetterType;
@@ -76,7 +80,7 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = UploadLetterProperties & {
+export type LetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
@@ -112,6 +116,7 @@ export type ClientFeatures = {
 
 export type ClientConfiguration = {
   campaignId?: string;
+  campaignIds?: Array<string>;
   features: ClientFeatures;
 };
 

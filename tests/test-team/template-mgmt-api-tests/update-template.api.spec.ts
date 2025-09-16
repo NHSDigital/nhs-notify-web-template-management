@@ -11,7 +11,6 @@ import {
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import { testClients } from '../helpers/client/client-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('POST /v1/template/:templateId', () => {
@@ -190,6 +189,7 @@ test.describe('POST /v1/template/:templateId', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -232,6 +232,7 @@ test.describe('POST /v1/template/:templateId', () => {
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
           language: 'en',
           letterType: 'x0',
           templateStatus: 'SUBMITTED',
@@ -293,7 +294,6 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -822,7 +822,6 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1351,7 +1350,6 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1974,7 +1972,6 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -2030,7 +2027,6 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),

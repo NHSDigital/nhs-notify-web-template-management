@@ -61,7 +61,7 @@ export const TemplateFactory = {
     virusScanStatus = 'PASSED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: 'campaign-id',
       clientId: user.clientId,
       files: {
         pdfTemplate: {

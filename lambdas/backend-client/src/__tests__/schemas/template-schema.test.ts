@@ -35,7 +35,7 @@ describe('Template schemas', () => {
       },
     },
   ])(
-    '%p.templateType - should fail validation, when max character length exceeded',
+    '$data.templateType - should fail validation, when max character length exceeded',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
 
@@ -82,12 +82,13 @@ describe('Template schemas', () => {
       data: {
         name: ' ',
         templateType: 'LETTER',
+        campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
       },
     },
   ])(
-    '%p.templateType - should fail validation, when name, message or subject is whitespace',
+    '$data.templateType - should fail validation, when name, message or subject is whitespace',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
       const errorMessage = 'Too small: expected string to have >=1 characters';
@@ -137,12 +138,13 @@ describe('Template schemas', () => {
       data: {
         name: '',
         templateType: 'LETTER',
+        campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
       },
     },
   ])(
-    '%p - should fail validation, when name, message or subject is empty',
+    '$data.templateType - should fail validation, when name, message or subject is empty',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
       const errorMessage = 'Too small: expected string to have >=1 characters';
@@ -199,6 +201,7 @@ describe('Template schemas', () => {
   test('Letter template fields - should fail validation, when no letterType', async () => {
     const result = $UploadLetterProperties.safeParse({
       name: 'Test Template',
+      campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
     });
@@ -236,6 +239,7 @@ describe('Template schemas', () => {
       },
       {
         ...commonFields,
+        campaignId: 'campaign-id',
         templateType: 'LETTER',
         letterType: 'x0',
         language: 'en',
