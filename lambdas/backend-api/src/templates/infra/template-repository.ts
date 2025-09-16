@@ -33,7 +33,7 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-type WithAttachments<T> = T extends { templateType: 'LETTER' }
+export type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
 
@@ -138,7 +138,9 @@ export class TemplateRepository {
       updatedAt: date,
       updatedBy: user.userId,
       createdBy: user.userId,
-      campaignId,
+      ...(template.templateType === 'LETTER' && {
+        campaignId,
+      }),
     };
 
     try {

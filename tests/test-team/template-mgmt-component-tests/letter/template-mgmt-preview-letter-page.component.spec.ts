@@ -132,6 +132,10 @@ test.describe('Preview Letter template Page', () => {
       templates.notYetSubmitted.name
     );
 
+    await expect(previewLetterTemplatePage.campaignId).toContainText(
+      templates.notYetSubmitted.campaignId!
+    );
+
     await previewLetterTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);

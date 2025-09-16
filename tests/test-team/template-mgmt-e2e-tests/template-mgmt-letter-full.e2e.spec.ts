@@ -25,7 +25,8 @@ function create(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
   user: TestUser,
-  expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST'
+  expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST',
+  campaignId?: string
 ) {
   return test.step('upload PDF and test data, files are validated', async () => {
     const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
@@ -33,6 +34,12 @@ function create(
     await createTemplatePage.loadPage();
 
     await createTemplatePage.nameInput.fill('Valid Letter Template');
+
+    if (campaignId) {
+      await page.selectOption('#letterTemplateCampaignId', {
+        value: 'other-campaign-id',
+      });
+    }
 
     await createTemplatePage.setPdfFile(
       pdfUploadFixtures.withPersonalisation.pdf.filepath
@@ -288,7 +295,7 @@ test.describe('letter complete e2e journey', () => {
 
   test.beforeAll(async () => {
     userWithProofing = await createAuthHelper().getTestUser(
-      testUsers.User1.userId
+      testUsers.UserWithMultipleCampaigns.userId
     );
     userWithoutProofing = await createAuthHelper().getTestUser(
       testUsers.User3.userId
@@ -310,7 +317,8 @@ test.describe('letter complete e2e journey', () => {
       page,
       templateStorageHelper,
       userWithProofing,
-      'PENDING_PROOF_REQUEST'
+      'PENDING_PROOF_REQUEST',
+      'campaign-id'
     );
 
     await continueAfterCreation(page);
