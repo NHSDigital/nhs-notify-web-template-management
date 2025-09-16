@@ -41,98 +41,162 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
+  install-dependencies:
+    name: "Install dependencies"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v5.0.0
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
+          skip_restore: true
+
+  discover-workspaces:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get-workspaces.outputs.matrix }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v5.0.0
+      - name: "Get workspaces"
+        id: "get-workspaces"
+        run: |
+          echo "matrix=$(jq -c '.workspaces' package.json)" >> "$GITHUB_OUTPUT"
+
   check-generated-dependencies:
     name: "Check generated dependencies"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
           git diff --exit-code
+
   test-unit:
     name: "Unit tests"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies, discover-workspaces]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
       - name: "Run unit test suite"
         run: |
-          make test-unit
-      - name: "Save the result of fast test suite"
+          WORKSPACE=${{ matrix.workspace }} make test-unit
+      - name: Compute safe artifact names
+        id: names
+        shell: bash
+        run: |
+          echo "safe=$(echo '${{ matrix.workspace }}' | tr '/' '-_')" >> "$GITHUB_OUTPUT"
+      - name: "Save the result of test suite"
         uses: actions/upload-artifact@v4
         with:
-          name: unit-tests
-          path: "**/.reports/unit"
+          name: unit-tests-${{ steps.names.outputs.safe }}
+          path: "${{ matrix.workspace }}/.reports/unit"
           include-hidden-files: true
+          if-no-files-found: ignore
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage-report
-          path: ".reports/lcov.info"
+          name: code-coverage-${{ steps.names.outputs.safe }}
+          path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
+          if-no-files-found: ignore
         if: always()
+
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
       - name: "Run linting"
         run: |
           make test-lint
+
   test-typecheck:
     name: "Typecheck"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: [install-dependencies]
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
-      - name: "Repo setup"
-        run: |
-          npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
       - name: "Run typecheck"
         run: |
           make test-typecheck
-  test-coverage:
-    name: "Test coverage"
-    needs: [test-unit]
+
+  merge-coverage:
+    name: "Merge coverage"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    needs: [test-unit]
     steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-      - name: "Run test coverage check"
+      - uses: actions/checkout@v5
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: code-coverage-*
+          merge-multiple: false
+          path: ./_cov_parts
+
+      - name: Merge LCOV files
         run: |
-          make test-coverage
-      - name: "Save the coverage check result"
-        run: |
-          echo "Nothing to save"
+          set -euo pipefail
+          mkdir -p .reports
+          npx --yes lcov-result-merger \
+            "./_cov_parts/**/lcov.info" \
+            ".reports/lcov.info" \
+            --ignore "node_modules" \
+            --prepend-source-files
+
+      - name: Upload merged LCOV
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: .reports/lcov.info
+
   perform-static-analysis:
     name: "Perform static analysis"
-    needs: [test-unit]
+    needs: [test-unit, merge-coverage]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
