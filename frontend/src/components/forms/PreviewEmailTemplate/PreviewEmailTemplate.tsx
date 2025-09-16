@@ -26,7 +26,7 @@ export function PreviewEmailTemplate({
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { form, sectionHeading, backLinkText, headerCaption } =
+  const { form, sectionHeading, backLinkText } =
     content.components.previewEmailTemplate;
 
   const [state, action] = useActionState(
@@ -55,7 +55,6 @@ export function PreviewEmailTemplate({
           template={initialState}
           subject={templateSubjectLine}
           message={html}
-          caption={headerCaption}
         />
       }
     />

@@ -46,12 +46,21 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-nhs app
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-nhs app
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -290,12 +299,21 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-nhs app
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-nhs app
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -514,12 +532,21 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
         >
           Template saved
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-nhs app
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-nhs app
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -1006,12 +1033,21 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-nhs app
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-nhs app
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >

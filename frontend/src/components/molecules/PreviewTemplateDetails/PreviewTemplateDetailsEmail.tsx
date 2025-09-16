@@ -15,16 +15,14 @@ export default function PreviewTemplateDetailsEmail({
   template,
   subject,
   message,
-  caption,
 }: {
   template: EmailTemplate;
   subject: string;
   message: string;
-  caption?: string;
 }) {
   return (
     <>
-      <DetailsHeader templateName={template.name} caption={caption} />
+      <DetailsHeader templateName={template.name} />
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >

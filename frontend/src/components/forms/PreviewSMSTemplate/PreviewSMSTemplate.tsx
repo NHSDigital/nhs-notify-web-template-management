@@ -26,7 +26,7 @@ export function PreviewSMSTemplate({
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { sectionHeading, form, backLinkText, headerCaption } =
+  const { sectionHeading, form, backLinkText } =
     content.components.previewSMSTemplate;
 
   const [state, action] = useActionState(
@@ -50,11 +50,7 @@ export function PreviewSMSTemplate({
       sectionHeading={isFromEditPage ? sectionHeading : undefined}
       editPath={`/edit-text-message-template/${initialState.id}`}
       previewDetailsComponent={
-        <PreviewTemplateDetailsSms
-          template={initialState}
-          message={html}
-          caption={headerCaption}
-        />
+        <PreviewTemplateDetailsSms template={initialState} message={html} />
       }
     />
   );

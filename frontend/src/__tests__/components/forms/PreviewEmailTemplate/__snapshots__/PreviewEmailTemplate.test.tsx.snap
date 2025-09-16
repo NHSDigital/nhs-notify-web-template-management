@@ -46,12 +46,21 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-email
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-email
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -315,12 +324,21 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-email
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-email
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -564,12 +582,21 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
         >
           Template saved
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-email
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-email
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -966,12 +993,21 @@ exports[`Preview email form renders matches snapshot when navigating from manage
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-email
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-email
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >

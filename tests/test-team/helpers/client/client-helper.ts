@@ -22,7 +22,6 @@ export const testClients = {
   /**
    * Client1 has proofing enabled and routing disabled
    * This is the default client for the component tests.
-   * TODO: make default true when routing is always on
    */
   Client1: {
     campaignId: 'Campaign1',

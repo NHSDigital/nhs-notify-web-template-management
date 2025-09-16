@@ -470,7 +470,6 @@ const previewEmailTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
-  headerCaption: 'Template',
 };
 
 const previewLetterFooter: Partial<Record<TemplateStatus, string[]>> = {
@@ -539,7 +538,6 @@ const previewNHSAppTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
-  headerCaption: 'Template',
 };
 
 const previewSMSTemplate = {
@@ -572,7 +570,6 @@ const previewSMSTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
-  headerCaption: 'Template',
 };
 
 const previewTemplateStatusFootnote: Partial<Record<TemplateStatus, string>> = {
@@ -590,6 +587,7 @@ const previewTemplateDetails = {
     examplePersonalisationFile: 'Example personalisation file',
   },
   previewTemplateStatusFootnote,
+  headerCaption: 'Template',
 };
 
 const error404 = {

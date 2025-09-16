@@ -41,7 +41,7 @@ export function PreviewNHSAppTemplate({
   const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
-  const { sectionHeading, form, backLinkText, headerCaption } =
+  const { sectionHeading, form, backLinkText } =
     content.components.previewNHSAppTemplate;
 
   const EditOnlyPreview = (
@@ -50,11 +50,7 @@ export function PreviewNHSAppTemplate({
       sectionHeading={isFromEditPage ? sectionHeading : undefined}
       editPath={`/edit-nhs-app-template/${initialState.id}`}
       previewDetailsComponent={
-        <PreviewTemplateDetailsNhsApp
-          template={initialState}
-          message={html}
-          caption={headerCaption}
-        />
+        <PreviewTemplateDetailsNhsApp template={initialState} message={html} />
       }
     />
   );
