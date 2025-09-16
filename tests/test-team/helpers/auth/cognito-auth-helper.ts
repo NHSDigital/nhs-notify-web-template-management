@@ -110,6 +110,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User8',
     clientKey: 'Client6',
   },
+  /**
+   * User9 has a routing enabled
+   */
+  User9: {
+    userId: 'User9',
+    clientKey: 'Client7',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &

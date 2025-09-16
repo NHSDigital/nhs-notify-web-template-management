@@ -1,13 +1,16 @@
 import { mockDeep } from 'jest-mock-extended';
 import { render, screen } from '@testing-library/react';
-import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
+import {
+  PreviewDigitalTemplate,
+  PreviewDigitalTemplateEditOnly,
+} from '@organisms/PreviewDigitalTemplate';
 import {
   EmailTemplate,
   FormState,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
-describe('PreviewDigitalTemplate component', () => {
+describe('PreviewDigitalTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
   it('matches snapshot', () => {
@@ -101,5 +104,39 @@ describe('PreviewDigitalTemplate component', () => {
     ).toHaveTextContent('Example heading');
 
     expect(screen.getByTestId('submit-button')).toHaveTextContent('Continue');
+  });
+});
+
+describe('PreviewDigitalTemplateEditOnly', () => {
+  it('matches snapshot', () => {
+    const container = render(
+      <PreviewDigitalTemplateEditOnly
+        sectionHeading={undefined}
+        template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
+          name: 'Example NHS APP template',
+        })}
+        editPath='/edit-nhs-app-template/template-id'
+        previewDetailsComponent={<>Preview</>}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot with section heading', () => {
+    const container = render(
+      <PreviewDigitalTemplateEditOnly
+        sectionHeading='Template saved'
+        template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
+          name: 'Example NHS APP template',
+        })}
+        editPath='/edit-nhs-app-template/template-id'
+        previewDetailsComponent={<>Preview</>}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

@@ -120,6 +120,135 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`PreviewTemplateDetailsEmail matches snapshot with caption 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example Email template
+    </h1>
+  </div>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Email
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--grey"
+            data-test-id="status-tag-submitted"
+          >
+            Submitted
+          </strong>
+        </dd>
+      </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-0"
+            id="preview-heading-subject"
+          >
+            Subject
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+            id="preview-content-subject"
+          >
+            email subject
+          </div>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-1"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-1"
+            id="preview-content-message"
+          >
+            email content
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected) 1`] = `
 <DocumentFragment>
   <h1
@@ -790,6 +919,110 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`PreviewTemplateDetailsNhsApp matches snapshot with caption 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example template
+    </h1>
+  </div>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          NHS App message
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag"
+            data-test-id="status-tag-not-yet-submitted"
+          >
+            Not yet submitted
+          </strong>
+        </dd>
+      </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-0"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+            id="preview-content-message"
+          >
+            app content
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
 <DocumentFragment>
   <h1
@@ -798,6 +1031,110 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
   >
     SMS template
   </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Text message (SMS)
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--grey"
+            data-test-id="status-tag-submitted"
+          >
+            Submitted
+          </strong>
+        </dd>
+      </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-0"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+            id="preview-content-message"
+          >
+            SMS content
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsSms matches snapshot with caption 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      SMS template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >

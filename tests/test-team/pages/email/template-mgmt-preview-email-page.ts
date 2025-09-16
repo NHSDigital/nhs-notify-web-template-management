@@ -16,6 +16,8 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
 
   public readonly continueButton: Locator;
 
+  public readonly editButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -30,6 +32,7 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator(
       '[id="preview-email-template-submit-button"]'
     );
+    this.editButton = page.locator('[data-testid="edit-template-link"]');
   }
 
   async clickContinueButton() {

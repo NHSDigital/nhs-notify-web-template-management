@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
+import {
+  PreviewDigitalTemplate,
+  PreviewDigitalTemplateEditOnly,
+} from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   EmailTemplate,
@@ -19,10 +22,11 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewEmailTemplate({
   initialState,
+  routing,
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { form, sectionHeading, backLinkText } =
+  const { form, sectionHeading, backLinkText, headerCaption } =
     content.components.previewEmailTemplate;
 
   const [state, action] = useActionState(
@@ -41,6 +45,46 @@ export function PreviewEmailTemplate({
   const html = renderEmailMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
+  const EditOnlyPreview = (
+    <PreviewDigitalTemplateEditOnly
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      editPath={`/edit-email-template/${initialState.id}`}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsEmail
+          template={initialState}
+          subject={templateSubjectLine}
+          message={html}
+          caption={headerCaption}
+        />
+      }
+    />
+  );
+
+  const EditSubmitPreview = (
+    <PreviewDigitalTemplate
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      form={{
+        ...form,
+        state: {
+          errorState,
+        },
+        action,
+        formId: 'preview-email-template',
+        radiosId: 'previewEmailTemplateAction',
+        formAttributes: { onSubmit: formValidate },
+      }}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsEmail
+          template={initialState}
+          subject={templateSubjectLine}
+          message={html}
+        />
+      }
+    />
+  );
+
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
@@ -51,27 +95,7 @@ export function PreviewEmailTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewDigitalTemplate
-              template={initialState}
-              sectionHeading={isFromEditPage ? sectionHeading : undefined}
-              form={{
-                ...form,
-                state: {
-                  errorState,
-                },
-                action,
-                formId: 'preview-email-template',
-                radiosId: 'previewEmailTemplateAction',
-                formAttributes: { onSubmit: formValidate },
-              }}
-              previewDetailsComponent={
-                <PreviewTemplateDetailsEmail
-                  template={initialState}
-                  subject={templateSubjectLine}
-                  message={html}
-                />
-              }
-            />
+            {routing ? EditOnlyPreview : EditSubmitPreview}
             <p>
               <Link
                 href='/message-templates'

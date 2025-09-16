@@ -34,91 +34,142 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Preview email form renders', () => {
-  it('matches snapshot when navigating from manage templates screen', () => {
-    const container = render(
-      <PreviewEmailTemplate
-        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          errorState: undefined,
-          name: 'test-template-email',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          subject: 'template-subject-line',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches snapshot when navigating from edit screen', () => {
-    const mockSearchParams = new Map([['from', 'edit']]);
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
-      get: (key: string) => mockSearchParams.get(key),
-    }));
-
-    const container = render(
-      <PreviewEmailTemplate
-        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          errorState: undefined,
-          name: 'test-template-email',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          subject: 'template-subject-line',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches error snapshot', () => {
-    const container = render(
-      <PreviewEmailTemplate
-        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          errorState: {
-            formErrors: [],
-            fieldErrors: {
-              previewEmailTemplateAction: ['Select an option'],
+  describe('Routing feature flag - Disabled', () => {
+    it('matches error snapshot', () => {
+      const container = render(
+        <PreviewEmailTemplate
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: {
+              formErrors: [],
+              fieldErrors: {
+                previewEmailTemplateAction: ['Select an option'],
+              },
             },
-          },
-          name: 'test-template-email',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          subject: 'template-subject-line',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
 
-    expect(container.asFragment()).toMatchSnapshot();
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('renders component correctly', () => {
+      render(
+        <PreviewEmailTemplate
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: undefined,
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(screen.getByTestId('email-edit-radio')).toHaveAttribute(
+        'value',
+        'email-edit'
+      );
+
+      expect(screen.getByTestId('email-submit-radio')).toHaveAttribute(
+        'value',
+        'email-submit'
+      );
+    });
+
+    test('Client-side validation triggers', () => {
+      const container = render(
+        <PreviewEmailTemplate
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: undefined,
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+      const submitButton = screen.getByTestId('submit-button');
+      fireEvent.click(submitButton);
+      expect(container.asFragment()).toMatchSnapshot();
+    });
   });
 
-  it('renders component correctly', () => {
-    render(
-      <PreviewEmailTemplate
-        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          errorState: undefined,
-          name: 'test-template-email',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          subject: 'template-subject-line',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
+  describe('Routing feature flag - Enabled', () => {
+    it('renders component correctly', () => {
+      render(
+        <PreviewEmailTemplate
+          routing={true}
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: undefined,
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
 
-    expect(screen.getByTestId('email-edit-radio')).toHaveAttribute(
-      'value',
-      'email-edit'
-    );
-
-    expect(screen.getByTestId('email-submit-radio')).toHaveAttribute(
-      'value',
-      'email-submit'
-    );
+      expect(screen.getByTestId('edit-template-link')).toHaveAttribute(
+        'href',
+        '/templates/edit-email-template/template-id'
+      );
+    });
   });
+
+  it.each([true, false])(
+    'matches snapshot when navigating from manage templates screen, when routing is %p',
+    (routing) => {
+      const container = render(
+        <PreviewEmailTemplate
+          routing={routing}
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: undefined,
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
+
+  it.each([true, false])(
+    'matches snapshot when navigating from edit screen when routing is %p',
+    (routing) => {
+      const mockSearchParams = new Map([['from', 'edit']]);
+      (useSearchParams as jest.Mock).mockImplementation(() => ({
+        get: (key: string) => mockSearchParams.get(key),
+      }));
+
+      const container = render(
+        <PreviewEmailTemplate
+          routing={routing}
+          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+            errorState: undefined,
+            name: 'test-template-email',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            subject: 'template-subject-line',
+            message: 'message',
+            id: 'template-id',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 
   it('should should render subject line and message with markdown', () => {
     const renderMock = jest.mocked(renderEmailMarkdown);
@@ -148,23 +199,5 @@ describe('Preview email form renders', () => {
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'
     );
-  });
-
-  test('Client-side validation triggers', () => {
-    const container = render(
-      <PreviewEmailTemplate
-        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          errorState: undefined,
-          name: 'test-template-email',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          subject: 'template-subject-line',
-          message: 'message',
-          id: 'template-id',
-        })}
-      />
-    );
-    const submitButton = screen.getByTestId('submit-button');
-    fireEvent.click(submitButton);
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

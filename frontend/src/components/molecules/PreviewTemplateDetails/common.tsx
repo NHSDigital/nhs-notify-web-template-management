@@ -102,15 +102,25 @@ export function StandardDetailRows({
 
 export function DetailsHeader({
   templateName,
+  caption,
 }: Readonly<{
   templateName: string;
+  caption?: string;
 }>): JSX.Element {
-  return (
+  const header = (
     <h1
       data-testid='preview-message__heading'
       className={styles.preview__heading}
     >
       {templateName}
     </h1>
+  );
+  return caption ? (
+    <div className='nhsuk-u-reading-width'>
+      <span className='nhsuk-caption-l'>Template</span>
+      {header}
+    </div>
+  ) : (
+    header
   );
 }

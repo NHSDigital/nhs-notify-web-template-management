@@ -470,6 +470,7 @@ const previewEmailTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
+  headerCaption: 'Template',
 };
 
 const previewLetterFooter: Partial<Record<TemplateStatus, string[]>> = {
@@ -538,6 +539,7 @@ const previewNHSAppTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
+  headerCaption: 'Template',
 };
 
 const previewSMSTemplate = {
@@ -570,6 +572,7 @@ const previewSMSTemplate = {
     },
   },
   backLinkText: backToAllTemplates,
+  headerCaption: 'Template',
 };
 
 const previewTemplateStatusFootnote: Partial<Record<TemplateStatus, string>> = {
@@ -1004,6 +1007,10 @@ const requestProof = {
   },
 };
 
+const previewDigitalTemplateEditOnly = {
+  editButton: 'Edit template',
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1011,21 +1018,22 @@ const content = {
     chooseTemplate,
     copyTemplate,
     deleteTemplate,
+    errorSummary,
     footer,
     header,
-    errorSummary,
     logoutWarning,
     messageFormatting,
     nameYourTemplate,
     personalisation,
+    previewDigitalTemplateEditOnly,
     previewEmailTemplate,
     previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
     requestProof,
-    submitTemplate,
     submitLetterTemplate,
+    submitTemplate,
     templateFormEmail,
     templateFormLetter,
     templateFormNhsApp,

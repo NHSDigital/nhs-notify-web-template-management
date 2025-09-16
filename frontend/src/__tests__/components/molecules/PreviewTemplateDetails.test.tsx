@@ -23,6 +23,26 @@ describe('PreviewTemplateDetailsNhsApp', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot with caption', () => {
+    const container = render(
+      <PreviewTemplateDetailsNhsApp
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          message: 'app message message',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'NHS_APP',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+        message='app content'
+        caption='Template'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
 
 describe('PreviewTemplateDetailsEmail', () => {
@@ -46,6 +66,28 @@ describe('PreviewTemplateDetailsEmail', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot with caption', () => {
+    const container = render(
+      <PreviewTemplateDetailsEmail
+        template={{
+          id: 'template-id',
+          name: 'Example Email template',
+          message: 'email message message',
+          subject: 'subject',
+          templateStatus: 'SUBMITTED',
+          templateType: 'EMAIL',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+        message='email content'
+        subject='email subject'
+        caption='Template'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
 
 describe('PreviewTemplateDetailsSms', () => {
@@ -62,6 +104,26 @@ describe('PreviewTemplateDetailsSms', () => {
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         message='SMS content'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot with caption', () => {
+    const container = render(
+      <PreviewTemplateDetailsSms
+        template={{
+          id: 'template-id',
+          name: 'SMS template',
+          message: 'SMS message',
+          templateStatus: 'SUBMITTED',
+          templateType: 'SMS',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+        message='SMS content'
+        caption='Template'
       />
     );
 

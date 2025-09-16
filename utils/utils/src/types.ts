@@ -72,6 +72,7 @@ export type TemplateSubmittedPageProps = {
 
 export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
+  routing?: boolean;
 };
 
 export type ActionPageProps = {
