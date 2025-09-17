@@ -81,7 +81,7 @@ export class TemplateApiClient {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       this._client.post<TemplateSuccess>(
-        `/v1/template/${templateId}`,
+        `/v1/template/${encodeURIComponent(templateId)}`,
         template,
         {
           headers: { Authorization: token },
@@ -105,7 +105,7 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.get<TemplateSuccess>(`/v1/template/${templateId}`, {
+      this._client.get<TemplateSuccess>(`/v1/template/${encodeURIComponent(templateId)}`, {
         headers: { Authorization: token },
       })
     );
@@ -172,7 +172,7 @@ export class TemplateApiClient {
     owner: string
   ): Promise<Result<void>> {
     const response = await catchAxiosError(
-      this._client.delete<TemplateSuccess>(`/v1/template/${templateId}`, {
+      this._client.delete<TemplateSuccess>(`/v1/template/${encodeURIComponent(templateId)}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: owner,
@@ -197,7 +197,7 @@ export class TemplateApiClient {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       this._client.post<TemplateSuccess>(
-        `/v1/template/${templateId}/proof`,
+        `/v1/template/${encodeURIComponent(templateId)}/proof`,
         undefined,
         {
           headers: {
