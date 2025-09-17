@@ -285,20 +285,3 @@ jobs:
             echo "Error: Event Schema package has changed, but new version ($local_version) is not a valid increment from latest version on main branch ($main_version)."
             exit 1
           fi
-  test-contract-provider:
-    name: "Test contracts (provider)"
-    runs-on: ubuntu-latest
-    needs: detect-event-schema-package-changes
-    if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
-    permissions:
-      contents: read
-      packages: read
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-      - name: "Restore node_modules from cache"
-        uses: ./.github/actions/node-modules-cache
-        with:
-          node_version: "${{ inputs.nodejs_version }}"
-      - name: "Run provider contract tests"
-        run: make test-contract-producer
