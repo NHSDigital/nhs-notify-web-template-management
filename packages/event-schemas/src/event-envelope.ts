@@ -8,9 +8,13 @@ const $CloudEvent = z.object({
   id: z.string().max(1000).meta({
     description: 'Unique ID for this event',
   }),
-  time: z.iso.datetime().meta({
-    description: 'Time the event was generated',
-  }),
+  // informal ISO datetime
+  time: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
+    .meta({
+      description: 'Time the event was generated',
+    }),
   type: z.string().meta({
     description: 'Type of event',
   }),

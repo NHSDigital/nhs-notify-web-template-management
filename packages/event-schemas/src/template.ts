@@ -51,17 +51,26 @@ export const $TemplateStatus = z.enum(templateStatuses);
 
 const $TemplateEventV1BaseData = z.object({
   owner: z.string().meta({
-    description: 'The client or user that owns the template',
+    description: 'The client that owns the template',
   }),
-  id: z.uuid().meta({
-    description: 'Unique identifier for the template',
-  }),
+  // informal UUID
+  id: z
+    .string()
+    // eslint-disable-next-line security/detect-unsafe-regex
+    .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/)
+    .meta({
+      description: 'Unique identifier for the template',
+    }),
   clientId: z.string().max(1000).optional().meta({
     description: 'The client that owns the template',
   }),
-  createdAt: z.string().max(1000).meta({
-    description: 'Timestamp for when the template was initially created',
-  }),
+  // informal ISO datetime
+  createdAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
+    .meta({
+      description: 'Timestamp for when the template was initially created',
+    }),
   createdBy: z.string().max(1000).optional().meta({
     description:
       'Unique identifier for the user that initially created the template',
@@ -72,9 +81,13 @@ const $TemplateEventV1BaseData = z.object({
   templateStatus: $TemplateStatus.meta({
     description: 'Current status of the template',
   }),
-  updatedAt: z.string().max(1000).meta({
-    description: 'Timestamp for when the template was most recently updated',
-  }),
+  // informal ISO datetime
+  updatedAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
+    .meta({
+      description: 'Timestamp for when the template was most recently updated',
+    }),
   updatedBy: z.string().max(1000).optional().meta({
     description:
       'Unique identifier for the user that most recently updated the template',
@@ -131,10 +144,12 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
       description: 'Template type',
     }),
     language: z.enum(languages).meta({
-      description: 'Language the letter template is written in',
+      description:
+        'ISO 639 language code for the language the letter template is written in',
     }),
     letterType: z.enum(letterTypes).meta({
-      description: 'Letter type',
+      description:
+        'Letter type - q4:British Sign Language, x1:Large Print, x0:Standard',
     }),
     personalisationParameters: z.array(z.string().max(1000)).meta({
       description: 'List of personalisation parameters used in the template',

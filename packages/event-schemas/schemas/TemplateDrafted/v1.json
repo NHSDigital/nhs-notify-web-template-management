@@ -10,8 +10,7 @@
     "time": {
       "description": "Time the event was generated",
       "type": "string",
-      "format": "date-time",
-      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
     },
     "type": {
       "type": "string",
@@ -112,14 +111,13 @@
       "type": "object",
       "properties": {
         "owner": {
-          "description": "The client or user that owns the template",
+          "description": "The client that owns the template",
           "type": "string"
         },
         "id": {
           "description": "Unique identifier for the template",
           "type": "string",
-          "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -129,7 +127,7 @@
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
@@ -160,7 +158,7 @@
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
@@ -199,14 +197,13 @@
       "type": "object",
       "properties": {
         "owner": {
-          "description": "The client or user that owns the template",
+          "description": "The client that owns the template",
           "type": "string"
         },
         "id": {
           "description": "Unique identifier for the template",
           "type": "string",
-          "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -216,7 +213,7 @@
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
@@ -247,7 +244,7 @@
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
@@ -280,14 +277,13 @@
       "type": "object",
       "properties": {
         "owner": {
-          "description": "The client or user that owns the template",
+          "description": "The client that owns the template",
           "type": "string"
         },
         "id": {
           "description": "Unique identifier for the template",
           "type": "string",
-          "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -297,7 +293,7 @@
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
@@ -328,7 +324,7 @@
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
@@ -365,7 +361,7 @@
           "const": "LETTER"
         },
         "language": {
-          "description": "Language the letter template is written in",
+          "description": "ISO 639 language code for the language the letter template is written in",
           "type": "string",
           "enum": [
             "ar",
@@ -400,7 +396,7 @@
           ]
         },
         "letterType": {
-          "description": "Letter type",
+          "description": "Letter type - q4:British Sign Language, x1:Large Print, x0:Standard",
           "type": "string",
           "enum": [
             "q4",
@@ -435,14 +431,13 @@
       "type": "object",
       "properties": {
         "owner": {
-          "description": "The client or user that owns the template",
+          "description": "The client that owns the template",
           "type": "string"
         },
         "id": {
           "description": "Unique identifier for the template",
           "type": "string",
-          "format": "uuid",
-          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "clientId": {
           "description": "The client that owns the template",
@@ -452,7 +447,7 @@
         "createdAt": {
           "description": "Timestamp for when the template was initially created",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "createdBy": {
           "description": "Unique identifier for the user that initially created the template",
@@ -483,7 +478,7 @@
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
-          "maxLength": 1000
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
         },
         "updatedBy": {
           "description": "Unique identifier for the user that most recently updated the template",
