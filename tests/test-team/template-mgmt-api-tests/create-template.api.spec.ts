@@ -131,7 +131,7 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -150,11 +150,11 @@ test.describe('POST /v1/template', () => {
         },
       });
 
-      expect(created.template.createdAt).toBeDateRoughlyBetween([
+      expect(created.data.createdAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(created.template.createdAt).toEqual(created.template.updatedAt);
+      expect(created.data.createdAt).toEqual(created.data.updatedAt);
     });
 
     test('ignores template status if given - template cannot be submitted at create time', async ({
@@ -178,11 +178,11 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
-      expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
+      expect(created.data.templateStatus).toEqual('NOT_YET_SUBMITTED');
     });
 
     test('returns 400 if template has no name', async ({ request }) => {
@@ -340,7 +340,7 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -359,11 +359,11 @@ test.describe('POST /v1/template', () => {
         },
       });
 
-      expect(created.template.createdAt).toBeDateRoughlyBetween([
+      expect(created.data.createdAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(created.template.createdAt).toEqual(created.template.updatedAt);
+      expect(created.data.createdAt).toEqual(created.data.updatedAt);
     });
 
     test('ignores template status if given - template cannot be submitted at create time', async ({
@@ -387,11 +387,11 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
-      expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
+      expect(created.data.templateStatus).toEqual('NOT_YET_SUBMITTED');
     });
 
     test('returns 400 if template has no name', async ({ request }) => {
@@ -549,7 +549,7 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -569,11 +569,11 @@ test.describe('POST /v1/template', () => {
         },
       });
 
-      expect(created.template.createdAt).toBeDateRoughlyBetween([
+      expect(created.data.createdAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(created.template.createdAt).toEqual(created.template.updatedAt);
+      expect(created.data.createdAt).toEqual(created.data.updatedAt);
     });
 
     test('ignores template status if given - template cannot be submitted at create time', async ({
@@ -597,11 +597,11 @@ test.describe('POST /v1/template', () => {
       const created = await response.json();
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
-      expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
+      expect(created.data.templateStatus).toEqual('NOT_YET_SUBMITTED');
     });
 
     test('returns 400 if template has no name', async ({ request }) => {

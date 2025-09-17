@@ -76,12 +76,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const updateResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user2.getAccessToken(),
@@ -141,14 +141,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.template.id,
+        templateId: createResult.data.id,
         clientId: user1.clientId,
       });
 
       expect(response.status(), debug).toBe(201);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -205,7 +205,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.template.id,
+        templateId: createResult.data.id,
         clientId: user1.clientId,
       });
 
@@ -213,14 +213,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
       await orchestrator.send(
         new SimulatePassedValidation({
-          templateId: createResult.template.id,
+          templateId: createResult.data.id,
           clientId: user1.clientId,
           hasTestData: true,
         })
       );
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -236,7 +236,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       ).toBe(200);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -300,14 +300,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const debug = JSON.stringify(createResult, null, 2);
 
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.template.id,
+        templateId: createResult.data.id,
         clientId: user1.clientId,
       });
 
       expect(createResponse.status(), debug).toBe(201);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -318,7 +318,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const failedDeleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -354,12 +354,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -388,12 +388,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -404,7 +404,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -440,12 +440,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -456,7 +456,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const failedDeleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -492,12 +492,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -526,12 +526,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -542,7 +542,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -578,12 +578,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -594,7 +594,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const failedDeleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -630,12 +630,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -664,12 +664,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -680,7 +680,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -716,12 +716,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -732,7 +732,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const failedDeleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -770,12 +770,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),

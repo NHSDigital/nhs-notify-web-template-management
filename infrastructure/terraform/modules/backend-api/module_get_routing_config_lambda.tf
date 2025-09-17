@@ -1,5 +1,5 @@
 module "get_routing_config_lambda" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.21/terraform-lambda.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-lambda.zip"
 
   project        = var.project
   environment    = var.environment
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "get_routing_config_lambda_policy" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:BatchGetItem",
+      "dynamodb:GetItem",
     ]
 
     resources = [

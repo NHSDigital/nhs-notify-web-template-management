@@ -25,9 +25,9 @@ module "lambda_event_publisher" {
   }
 
   lambda_env_vars = {
-    SNS_TOPIC_ARN = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
+    SNS_TOPIC_ARN        = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
-    EVENT_SOURCE = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
+    EVENT_SOURCE         = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
   }
 
   function_s3_bucket      = var.function_s3_bucket

@@ -59,7 +59,7 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created1.template.id,
+      templateId: created1.data.id,
       clientId: user1.clientId,
     });
 
@@ -81,7 +81,7 @@ test.describe('GET /v1/templates', () => {
     const created2 = await response2.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created2.template.id,
+      templateId: created2.data.id,
       clientId: user1.clientId,
     });
 
@@ -102,10 +102,10 @@ test.describe('GET /v1/templates', () => {
 
     expect(user1ResponseBody).toEqual({
       statusCode: 200,
-      data: expect.arrayContaining([created1.template, created2.template]),
+      data: expect.arrayContaining([created1.data, created2.data]),
     });
 
-    expect(user1ResponseBody.templates.length).toBe(2);
+    expect(user1ResponseBody.data.length).toBe(2);
 
     // exercise - request user 2 templates (they have no templates)
     const user2ListResponse = await request.get(
@@ -146,7 +146,7 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created1.template.id,
+      templateId: created1.data.id,
       clientId: user1.clientId,
     });
 
@@ -168,14 +168,14 @@ test.describe('GET /v1/templates', () => {
     const created2 = await response2.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created2.template.id,
+      templateId: created2.data.id,
       clientId: user1.clientId,
     });
 
     // delete template 1
 
     const deleteResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${created1.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created1.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -202,7 +202,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(responseBody).toEqual({
       statusCode: 200,
-      data: [created2.template],
+      data: [created2.data],
     });
   });
 
@@ -226,7 +226,7 @@ test.describe('GET /v1/templates', () => {
     const created1 = await response1.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created1.template.id,
+      templateId: created1.data.id,
       clientId: user1.clientId,
     });
 
@@ -246,7 +246,7 @@ test.describe('GET /v1/templates', () => {
 
     expect(userSharedClientResponseBody).toEqual({
       statusCode: 200,
-      data: expect.arrayContaining([created1.template]),
+      data: expect.arrayContaining([created1.data]),
     });
   });
 
@@ -302,7 +302,7 @@ test.describe('GET /v1/templates', () => {
         ]),
       });
 
-      expect(user1ResponseBody.templates.length).toBe(2);
+      expect(user1ResponseBody.data.length).toBe(2);
     });
   });
 });
