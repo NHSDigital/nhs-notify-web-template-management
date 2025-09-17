@@ -35,7 +35,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'client-id',
       },
       createdAt: {
-        S: 'created-at',
+        S: '2022-01-01T09:00:00.000Z',
       },
       createdBy: {
         S: 'created-by',
@@ -47,7 +47,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: newStatus,
       },
       updatedAt: {
-        S: 'updated-at',
+        S: '2022-01-01T09:00:01.000Z',
       },
       updatedBy: {
         S: 'updated-by',
@@ -117,7 +117,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'client-id',
       },
       createdAt: {
-        S: 'created-at',
+        S: '2022-01-01T09:00:00.000Z',
       },
       createdBy: {
         S: 'created-by',
@@ -129,7 +129,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'PENDING_PROOF_REQUEST',
       },
       updatedAt: {
-        S: 'updated-at',
+        S: '2022-01-01T09:00:01.000Z',
       },
       updatedBy: {
         S: 'updated-by',
@@ -208,9 +208,9 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
     owner: 'owner',
     id: '92b676e9-470f-4d04-ab14-965ef145e15d',
     clientId: 'client-id',
-    createdAt: 'created-at',
+    createdAt: '2022-01-01T09:00:00.000Z',
     createdBy: 'created-by',
-    updatedAt: 'updated-at',
+    updatedAt: '2022-01-01T09:00:01.000Z',
     updatedBy: 'updated-by',
     personalisationParameters: ['test'],
     templateType: 'LETTER',
