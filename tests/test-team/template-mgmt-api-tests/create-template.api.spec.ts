@@ -108,7 +108,7 @@ test.describe('POST /v1/template', () => {
   });
 
   test.describe('NHS_APP templates', () => {
-    test.only('returns 201 if template is valid', async ({ request }) => {
+    test('returns 201 if template is valid', async ({ request }) => {
       const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
         templateType: 'NHS_APP',
       });
