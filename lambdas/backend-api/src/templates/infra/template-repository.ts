@@ -53,14 +53,12 @@ const smsAttributes: Record<keyof SmsProperties, null> = {
   message: null,
 };
 
-const letterAttributes: Record<keyof LetterProperties, null> = {
+const letterAttributes: Record<keyof UploadLetterProperties, null> = {
   files: null,
   language: null,
   letterType: null,
-  personalisationParameters: null,
   templateType: null,
-  proofingEnabled: null,
-  supplierReferences: null,
+  campaignId: null,
 };
 
 export class TemplateRepository {
@@ -824,7 +822,7 @@ export class TemplateRepository {
     }
     if (template.templateType === 'LETTER') {
       expressions.push(
-        ...this.attributeExpressionsFromMap<LetterProperties>(letterAttributes)
+        ...this.attributeExpressionsFromMap<UploadLetterProperties>(letterAttributes)
       );
     }
     return expressions;
@@ -855,7 +853,7 @@ export class TemplateRepository {
       names = this.attributeNamesFromMap<SmsProperties>(smsAttributes);
     }
     if (template.templateType === 'LETTER') {
-      names = this.attributeNamesFromMap<LetterProperties>(letterAttributes);
+      names = this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
     }
 
     return names;

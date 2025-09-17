@@ -169,6 +169,7 @@ describe('Template schemas', () => {
       letterType: 'x1',
       language: 'ar',
       name: 'letter',
+      campaignId: 'campaign-id',
     };
 
     const result = $CreateUpdateNonLetter.safeParse(letter);
