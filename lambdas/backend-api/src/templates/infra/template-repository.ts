@@ -3,7 +3,6 @@ import {
   EmailProperties,
   ErrorCase,
   LetterFiles,
-  LetterProperties,
   NhsAppProperties,
   SmsProperties,
   TemplateStatus,
@@ -817,7 +816,9 @@ export class TemplateRepository {
     }
     if (template.templateType === 'LETTER') {
       expressions.push(
-        ...this.attributeExpressionsFromMap<UploadLetterProperties>(letterAttributes)
+        ...this.attributeExpressionsFromMap<UploadLetterProperties>(
+          letterAttributes
+        )
       );
     }
     return expressions;
@@ -848,7 +849,8 @@ export class TemplateRepository {
       names = this.attributeNamesFromMap<SmsProperties>(smsAttributes);
     }
     if (template.templateType === 'LETTER') {
-      names = this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
+      names =
+        this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
     }
 
     return names;

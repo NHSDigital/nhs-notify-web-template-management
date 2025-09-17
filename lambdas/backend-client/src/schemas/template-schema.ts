@@ -79,14 +79,11 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-export const $BaseLetterTemplateProperties =
-  schemaFor<BaseLetterTemplateProperties>()(
-    z.object({
-      templateType: z.literal('LETTER'),
-      letterType: z.enum(LETTER_TYPE_LIST),
-      language: z.enum(LANGUAGE_LIST),
-    })
-  );
+export const $BaseLetterTemplateProperties = z.object({
+  templateType: z.literal('LETTER'),
+  letterType: z.enum(LETTER_TYPE_LIST),
+  language: z.enum(LANGUAGE_LIST),
+});
 
 export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
   $BaseLetterTemplateProperties.extend({
