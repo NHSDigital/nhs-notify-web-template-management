@@ -16,6 +16,7 @@ const initialState: UploadLetterTemplate = {
   name: 'name',
   letterType: 'x0',
   language: 'en',
+  campaignId: 'campaign-id',
 };
 
 describe('UploadLetterTemplate server actions', () => {
