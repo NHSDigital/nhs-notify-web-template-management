@@ -33,6 +33,7 @@ jq '
   .dependencies["@nhsdigital/nhs-notify-event-schemas-template-management"] = "file:../../../packages/event-schemas"
 ' package.json > package.json.tmp && mv package.json.tmp package.json
 
+$ROOT_DIR/scripts/set_github_token.sh
 
 # Install isolated from workspace graph
 npm install \
