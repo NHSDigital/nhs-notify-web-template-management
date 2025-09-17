@@ -1,0 +1,223 @@
+import fs from 'node:fs';
+import process from 'node:process';
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  UpdateCommand,
+  UpdateCommandInput,
+} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
+import { $TemplateDtoSchema } from 'nhs-notify-backend-client';
+import { z } from 'zod/v4';
+import { GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+
+const $ExpectedTemplate = z.intersection(
+  $TemplateDtoSchema,
+  z.object({
+    templateType: z.literal('LETTER'),
+    clientId: z.string(),
+    personalisationParameters: z.array(z.string()),
+    createdBy: z.string(),
+    templateStatus: z.enum([
+      'PENDING_PROOF_REQUEST',
+      'WAITING_FOR_PROOF',
+      'PROOF_AVAILABLE',
+      'SUBMITTED',
+    ]),
+  })
+);
+
+const ddb = DynamoDBDocumentClient.from(
+  new DynamoDBClient({ region: 'eu-west-2' }),
+  {
+    marshallOptions: { removeUndefinedValues: true },
+  }
+);
+
+const sqs = new SQSClient({ region: 'eu-west-2' });
+
+const sts = new STSClient({ region: 'eu-west-2' });
+
+const s3 = new S3Client({ region: 'eu-west-2' });
+
+export async function getAccountId(): Promise<string> {
+  const callerIdentity = await sts.send(new GetCallerIdentityCommand());
+  const accountId = callerIdentity.Account;
+  if (!accountId) {
+    throw new Error('Unable to get account ID from caller');
+  }
+  return accountId;
+}
+
+export async function backupData(
+  items: Record<string, unknown>[],
+  clientId: string,
+  newCampaignId: string,
+  accountId: string
+): Promise<void> {
+  console.log(`Found ${items.length} results`);
+  if (items.length <= 0) {
+    return;
+  }
+
+  const timestamp = new Date().toISOString().replaceAll(/[.:T-]/g, '_');
+  const bucketName = `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`;
+  const filePath = `campaign-transfer/${environment}/${timestamp}-${clientId}-${newCampaignId}.json`;
+
+  s3.send(
+    new PutObjectCommand({
+      Bucket: bucketName,
+      Key: filePath,
+      Body: JSON.stringify(items),
+      ContentType: 'application/json',
+    })
+  );
+  console.log(`Backed up data to s3://${bucketName}/${filePath}`);
+}
+
+const { environment, file, newCampaignId, clientId, supplier, realRun } = yargs(
+  hideBin(process.argv)
+)
+  .options({
+    environment: {
+      type: 'string',
+      demandOption: true,
+    },
+    clientId: {
+      type: 'string',
+      demandOption: true,
+    },
+    file: {
+      type: 'string',
+      demandOption: true,
+    },
+    newCampaignId: {
+      type: 'string',
+      demandOption: true,
+    },
+    supplier: {
+      type: 'string',
+      default: 'MBA',
+    },
+    realRun: {
+      type: 'boolean',
+      default: false,
+    },
+  })
+  .parseSync();
+
+async function main() {
+  const acct = await getAccountId();
+
+  const tableName = `nhs-notify-${environment}-app-api-templates`;
+
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  const templateIds = fs
+    .readFileSync(file, 'utf8')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const templates: Record<string, unknown>[] = [];
+
+  for (const id of templateIds) {
+    const key = {
+      id,
+      owner: `CLIENT#${clientId}`,
+    };
+
+    const getResult = await ddb.send(
+      new GetCommand({ TableName: tableName, Key: key })
+    );
+
+    const template = $ExpectedTemplate.parse(getResult.Item);
+
+    templates.push(template);
+  }
+
+  if (realRun) {
+    await backupData(templates, clientId, newCampaignId, acct);
+  }
+
+  for (const id of templateIds) {
+    const key = {
+      id,
+      owner: `CLIENT#${clientId}`,
+    };
+
+    try {
+      const getResult = await ddb.send(
+        new GetCommand({ TableName: tableName, Key: key })
+      );
+
+      const template = $ExpectedTemplate.parse(getResult.Item);
+
+      console.log(`planning to update ${id}`);
+
+      const updateInput: UpdateCommandInput = {
+        TableName: tableName,
+        Key: key,
+        UpdateExpression:
+          'SET templateStatus = :waitingForProofProofStatus, files.proofs = :emptyObj, campaignId = :newId REMOVE sftpSendLockTime',
+        ExpressionAttributeValues: {
+          ':newId': newCampaignId,
+          ':pendingProofStatus': 'PENDING_PROOF_REQUEST',
+          ':waitingForProofProofStatus': 'WAITING_FOR_PROOF',
+          ':proofAvailableStatus': 'PROOF_AVAILABLE',
+          ':submittedStatus': 'SUBMITTED',
+          ':emptyObj': {},
+        },
+        ConditionExpression:
+          'attribute_exists(id) AND templateStatus in (:pendingProofStatus, :waitingForProofProofStatus, :submittedStatus, :proofAvailableStatus)',
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+      };
+
+      if (!realRun) continue;
+
+      await ddb.send(new UpdateCommand(updateInput));
+
+      console.log(`updated ${id}`);
+
+      const proofRequest = {
+        campaignId: newCampaignId,
+        language: template.language,
+        letterType: template.letterType,
+        pdfVersionId: template.files.pdfTemplate.currentVersion,
+        personalisationParameters: template.personalisationParameters,
+        supplier,
+        templateId: id,
+        templateName: template.name,
+        testDataVersionId: template.files.testDataCsv?.currentVersion,
+        user: { userId: template.createdBy, clientId: template.clientId },
+      };
+
+      await sqs.send(
+        new SendMessageCommand({
+          QueueUrl: `https://sqs.eu-west-2.amazonaws.com/${acct}/nhs-notify-${environment}-app-sftp-upload-queue`,
+          MessageBody: JSON.stringify(proofRequest),
+        })
+      );
+    } catch (error) {
+      console.error(`failed to process ${id}`);
+      throw error;
+    }
+
+    console.log(`requested proof for ${id}`);
+  }
+
+  if (!realRun) {
+    console.log('run with --realRun to perform updates');
+  }
+}
+
+// eslint-disable-next-line unicorn/prefer-top-level-await
+main().catch((error) => {
+  console.error(error);
+  // eslint-disable-next-line unicorn/no-process-exit
+  process.exit(1);
+});
