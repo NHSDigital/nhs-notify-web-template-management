@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtPreviewNhsAppPage } from '../../pages/nhs-app/template-mgmt-preview-nhs-app-page';
@@ -25,7 +26,9 @@ let routingEnabledUser: TestUser;
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingEnabledUser = await authHelper.getTestUser(testUsers.User9.userId);
+  routingEnabledUser = await authHelper.getTestUser(
+    testUsers.RoutingEnabledUser.userId
+  );
 
   return {
     empty: {
@@ -46,10 +49,7 @@ async function createTemplates() {
       message: 'test-template-message',
     },
     routingEnabled: {
-      ...TemplateFactory.createNhsAppTemplate(
-        'valid-nhs-app-preview-template',
-        routingEnabledUser
-      ),
+      ...TemplateFactory.createNhsAppTemplate(randomUUID(), routingEnabledUser),
       name: 'test-template-nhs-app',
       message: 'test-template-message',
     },
@@ -99,31 +99,33 @@ test.describe('Preview NHS App template Page', () => {
     );
   });
 
-  test('when user visits page, then page is loaded, with routing Enabled', async ({
-    baseURL,
-    browser,
-  }) => {
-    const newBrowser = await browser.newContext({ storageState: undefined });
-    const newPage = await newBrowser.newPage();
-    await loginAsUser(routingEnabledUser, newPage);
+  test.describe('Routing feature flag enabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
 
-    const previewPage = new TemplateMgmtPreviewNhsAppPage(newPage);
+    test('when user visits page, then page is loaded, with routing Enabled', async ({
+      baseURL,
+      page,
+    }) => {
+      await loginAsUser(routingEnabledUser, page);
 
-    await previewPage.loadPage(templates.routingEnabled.id);
+      const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
 
-    await expect(newPage).toHaveURL(
-      `${baseURL}/templates/preview-nhs-app-template/${templates.routingEnabled.id}`
-    );
+      await previewPage.loadPage(templates.routingEnabled.id);
 
-    await expect(previewPage.continueButton).toBeHidden();
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-nhs-app-template/${templates.routingEnabled.id}`
+      );
 
-    await expect(previewPage.editButton).toBeVisible();
+      await expect(previewPage.continueButton).toBeHidden();
 
-    await previewPage.editButton.click();
+      await expect(previewPage.editButton).toBeVisible();
 
-    await expect(newPage).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.routingEnabled.id}`
-    );
+      await previewPage.editButton.click();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/edit-nhs-app-template/${templates.routingEnabled.id}`
+      );
+    });
   });
 
   test.describe('Page functionality', () => {

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtPreviewEmailPage } from '../../pages/email/template-mgmt-preview-email-page';
@@ -25,7 +26,9 @@ let routingEnabledUser: TestUser;
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingEnabledUser = await authHelper.getTestUser(testUsers.User9.userId);
+  routingEnabledUser = await authHelper.getTestUser(
+    testUsers.RoutingEnabledUser.userId
+  );
 
   return {
     empty: {
@@ -47,10 +50,7 @@ async function createTemplates() {
       message: 'test-template-message',
     } as Template,
     routingEnabled: {
-      ...TemplateFactory.createEmailTemplate(
-        'valid-email-preview-template',
-        routingEnabledUser
-      ),
+      ...TemplateFactory.createEmailTemplate(randomUUID(), routingEnabledUser),
       name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
@@ -93,31 +93,33 @@ test.describe('Preview Email message template Page', () => {
     await expect(previewPage.messageText).toHaveText('test-template-message');
   });
 
-  test('when user visits page, then page is loaded, with routing Enabled', async ({
-    baseURL,
-    browser,
-  }) => {
-    const newBrowser = await browser.newContext({ storageState: undefined });
-    const newPage = await newBrowser.newPage();
-    await loginAsUser(routingEnabledUser, newPage);
+  test.describe('Routing feature flag enabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
 
-    const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(newPage);
+    test('when user visits page, then page is loaded', async ({
+      page,
+      baseURL,
+    }) => {
+      await loginAsUser(routingEnabledUser, page);
 
-    await previewEmailTemplatePage.loadPage(templates.routingEnabled.id);
+      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-    await expect(newPage).toHaveURL(
-      `${baseURL}/templates/preview-email-template/${templates.routingEnabled.id}`
-    );
+      await previewEmailTemplatePage.loadPage(templates.routingEnabled.id);
 
-    await expect(previewEmailTemplatePage.continueButton).toBeHidden();
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-email-template/${templates.routingEnabled.id}`
+      );
 
-    await expect(previewEmailTemplatePage.editButton).toBeVisible();
+      await expect(previewEmailTemplatePage.continueButton).toBeHidden();
 
-    await previewEmailTemplatePage.editButton.click();
+      await expect(previewEmailTemplatePage.editButton).toBeVisible();
 
-    await expect(newPage).toHaveURL(
-      `${baseURL}/templates/edit-email-template/${templates.routingEnabled.id}`
-    );
+      await previewEmailTemplatePage.editButton.click();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/edit-email-template/${templates.routingEnabled.id}`
+      );
+    });
   });
 
   test.describe('Page functionality', () => {

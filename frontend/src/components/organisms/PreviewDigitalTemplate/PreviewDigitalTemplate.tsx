@@ -36,9 +36,9 @@ export function PreviewDigitalTemplate({
 
 const { editButton } = content.components.previewDigitalTemplateEditOnly;
 
-export function PreviewDigitalTemplateEditOnly({
-  ...props
-}: PreviewTemplateRoutingProps) {
+export function PreviewDigitalTemplateEditOnly(
+  props: PreviewTemplateRoutingProps
+) {
   return (
     <>
       {props.sectionHeading && (
