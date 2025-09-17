@@ -37,7 +37,7 @@ function create(
 
     if (campaignId) {
       await page.selectOption('#letterTemplateCampaignId', {
-        value: 'other-campaign-id',
+        value: campaignId,
       });
     }
 

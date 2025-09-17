@@ -1,5 +1,4 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { apiFailure, apiSuccess } from './responses';
 import { getLetterUploadParts } from '../app/get-letter-upload-parts';
 import { TemplateClient } from '../app/template-client';
@@ -32,7 +31,7 @@ export function createHandler({
 
     const { data: created, error: createTemplateError } =
       await templateClient.uploadLetterTemplate(
-        template as UploadLetterTemplate,
+        template,
         { userId, clientId },
         pdf,
         csv

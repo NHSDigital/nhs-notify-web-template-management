@@ -414,6 +414,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           name: undefined,
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -462,6 +463,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -514,6 +516,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -557,6 +560,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {

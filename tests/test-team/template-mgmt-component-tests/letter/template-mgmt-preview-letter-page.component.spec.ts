@@ -132,8 +132,12 @@ test.describe('Preview Letter template Page', () => {
       templates.notYetSubmitted.name
     );
 
+    if (!templates.notYetSubmitted.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
     await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.notYetSubmitted.campaignId!
+      templates.notYetSubmitted.campaignId
     );
 
     await previewLetterTemplatePage.clickContinueButton();

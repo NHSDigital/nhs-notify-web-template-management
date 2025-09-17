@@ -1101,7 +1101,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[userProofingDisabled.clientKey]?.campaignId,
+          campaignId: 'campaign-id',
           clientId: userProofingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),

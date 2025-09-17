@@ -120,7 +120,7 @@ describe('UploadLetterTemplatePage', () => {
     );
   });
 
-  it('should redirect to error page when neither campaignIds is present and empty', async () => {
+  it('should redirect to error page when campaignIds is present and empty', async () => {
     const mockRedirect = jest.mocked(redirect);
 
     mockGetSessionServer.mockResolvedValueOnce({
