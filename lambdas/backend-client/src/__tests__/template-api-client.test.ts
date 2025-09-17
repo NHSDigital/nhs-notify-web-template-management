@@ -95,6 +95,7 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
         language: 'de',
         letterType: 'x1',
+        campaignId: 'campaign-id',
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' })
@@ -147,6 +148,7 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
         language: 'de',
         letterType: 'x1',
+        campaignId: 'campaign-id',
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),

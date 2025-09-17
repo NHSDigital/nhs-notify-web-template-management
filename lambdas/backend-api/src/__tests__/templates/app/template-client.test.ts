@@ -168,6 +168,7 @@ describe('templateClient', () => {
         name: 'name',
         letterType: 'x0',
         language: 'en',
+        campaignId: 'campaign-id',
       };
 
       const result = await templateClient.createTemplate(data, user);
@@ -1259,6 +1260,7 @@ describe('templateClient', () => {
         templateType: 'LETTER',
         language: 'it',
         letterType: 'x1',
+        campaignId: 'campaign-id',
       };
 
       const result = await templateClient.updateTemplate(
