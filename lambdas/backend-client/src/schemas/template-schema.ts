@@ -11,7 +11,6 @@ import {
   NhsAppProperties,
   SmsProperties,
   TemplateDto,
-  BaseLetterTemplateProperties,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
