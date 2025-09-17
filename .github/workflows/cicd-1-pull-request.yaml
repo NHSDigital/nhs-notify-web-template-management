@@ -11,9 +11,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: false
 
-permissions:
-  packages: read  # This is required to install packages from GitHub package registry
-
 jobs:
   metadata:
     name: "Set CI/CD metadata"
@@ -84,6 +81,8 @@ jobs:
     name: Install / cache dependencies
     needs: [metadata]
     runs-on: ubuntu-latest
+    permissions:
+      packages: read
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
