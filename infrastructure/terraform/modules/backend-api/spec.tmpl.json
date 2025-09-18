@@ -58,14 +58,6 @@
         "type": "object"
       },
       "CascadeGroup": {
-        "discriminator": {
-          "mapping": {
-            "accessible": "#/components/schemas/CascadeGroupAccessible",
-            "standard": "#/components/schemas/CascadeGroupStandard",
-            "translations": "#/components/schemas/CascadeGroupTranslations"
-          },
-          "propertyName": "name"
-        },
         "oneOf": [
           {
             "$ref": "#/components/schemas/CascadeGroupAccessible"

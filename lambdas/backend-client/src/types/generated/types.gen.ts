@@ -16,34 +16,28 @@ export type BaseTemplate = {
 };
 
 export type CascadeGroup =
-  | ({
-      name?: 'accessible';
-    } & CascadeGroupAccessible)
-  | ({
-      name?: 'translations';
-    } & CascadeGroupTranslations)
-  | ({
-      name?: 'standard';
-    } & CascadeGroupStandard);
+  | CascadeGroupAccessible
+  | CascadeGroupTranslations
+  | CascadeGroupStandard;
+
+export type CascadeGroupAccessible = CascadeGroupBase & {
+  accessibleFormat: Array<LetterType>;
+  name?: 'accessible';
+};
 
 export type CascadeGroupBase = {
   name: CascadeGroupName;
 };
 
-export type CascadeGroupAccessible = CascadeGroupBase & {
-  name?: 'accessible';
-  accessibleFormat: Array<LetterType>;
-};
-
 export type CascadeGroupName = 'accessible' | 'standard' | 'translations';
-
-export type CascadeGroupTranslations = CascadeGroupBase & {
-  name?: 'translations';
-  language: Array<Language>;
-};
 
 export type CascadeGroupStandard = CascadeGroupBase & {
   name?: 'standard';
+};
+
+export type CascadeGroupTranslations = CascadeGroupBase & {
+  language: Array<Language>;
+  name?: 'translations';
 };
 
 export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
@@ -54,14 +48,14 @@ export type CascadeItemBase = {
   channelType: ChannelType;
 };
 
-export type CascadeItemWithDefault = CascadeItemBase & {
-  defaultTemplateId: string;
-};
-
 export type CascadeItemWithConditional = CascadeItemBase & {
   conditionalTemplates: Array<
     ConditionalTemplateLanguage | ConditionalTemplateAccessible
   >;
+};
+
+export type CascadeItemWithDefault = CascadeItemBase & {
+  defaultTemplateId: string;
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -83,13 +77,13 @@ export type ClientFeatures = {
   routing?: boolean;
 };
 
-export type ConditionalTemplateLanguage = {
-  language: Language;
+export type ConditionalTemplateAccessible = {
+  accessibleFormat: LetterType;
   templateId: string;
 };
 
-export type ConditionalTemplateAccessible = {
-  accessibleFormat: LetterType;
+export type ConditionalTemplateLanguage = {
+  language: Language;
   templateId: string;
 };
 
@@ -168,8 +162,8 @@ export type ProofFileDetails = {
 
 export type RoutingConfig = {
   campaignId: string;
-  cascadeGroupOverrides: Array<CascadeGroup>;
   cascade: Array<CascadeItem>;
+  cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
   createdBy: string;
