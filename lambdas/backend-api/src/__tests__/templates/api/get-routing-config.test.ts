@@ -1,9 +1,9 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 import { createHandler } from '@backend-api/templates/api/get-routing-config';
+import { routingConfig } from '../fixtures/routing-config';
 
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: mock<Logger>({
@@ -112,12 +112,6 @@ describe('GetRoutingConfig handler', () => {
 
   test('should return routing config', async () => {
     const { handler, mocks } = setup();
-
-    const routingConfig: RoutingConfig = {
-      id: '3690d344-731f-4f60-9047-2c63c96623a2',
-      owner: 'nhs-notify-client-id',
-      status: 'DRAFT',
-    };
 
     mocks.routingConfigClient.getRoutingConfig.mockResolvedValueOnce({
       data: routingConfig,

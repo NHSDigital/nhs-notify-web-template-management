@@ -3,7 +3,7 @@ import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 import {
   $RoutingConfig,
   ErrorCase,
-  RoutingConfig,
+  type RoutingConfig,
 } from 'nhs-notify-backend-client';
 
 export class RoutingConfigRepository {

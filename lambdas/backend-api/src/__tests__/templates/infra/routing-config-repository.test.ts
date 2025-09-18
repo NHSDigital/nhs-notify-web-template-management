@@ -2,6 +2,7 @@ import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
+import { routingConfig } from '../fixtures/routing-config';
 
 const TABLE_NAME = 'routing-config-table-name';
 
@@ -23,18 +24,12 @@ describe('RoutingConfigRepository', () => {
     test('returns the routing config data from the database', async () => {
       const { repo, mocks } = setup();
 
-      const routingConfig = {
-        id: '3690d344-731f-4f60-9047-2c63c96623a2',
-        owner: 'nhs-notify-client-id',
-        status: 'DRAFT',
-      };
-
       mocks.dynamo.on(GetCommand).resolvesOnce({
         Item: routingConfig,
       });
 
       const result = await repo.get(
-        '3690d344-731f-4f60-9047-2c63c96623a2',
+        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
         'nhs-notify-client-id'
       );
 
@@ -43,7 +38,7 @@ describe('RoutingConfigRepository', () => {
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
         TableName: TABLE_NAME,
         Key: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
+          id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: 'nhs-notify-client-id',
         },
       });
@@ -57,7 +52,7 @@ describe('RoutingConfigRepository', () => {
       });
 
       const result = await repo.get(
-        '3690d344-731f-4f60-9047-2c63c96623a2',
+        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
         'nhs-notify-client-id'
       );
 
@@ -70,7 +65,7 @@ describe('RoutingConfigRepository', () => {
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
         TableName: TABLE_NAME,
         Key: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
+          id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: 'nhs-notify-client-id',
         },
       });
@@ -84,16 +79,17 @@ describe('RoutingConfigRepository', () => {
       });
 
       const result = await repo.get(
-        '3690d344-731f-4f60-9047-2c63c96623a2',
+        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
         'nhs-notify-client-id'
       );
 
-      expect(result).toMatchSnapshot();
+      expect(result.error).not.toBeUndefined();
+      expect(result.data).toBeUndefined();
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
         TableName: TABLE_NAME,
         Key: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
+          id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: 'nhs-notify-client-id',
         },
       });

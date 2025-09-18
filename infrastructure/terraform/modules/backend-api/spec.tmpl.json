@@ -57,6 +57,226 @@
         ],
         "type": "object"
       },
+      "CascadeGroup": {
+        "discriminator": {
+          "mapping": {
+            "accessible": "#/components/schemas/CascadeGroupAccessible",
+            "standard": "#/components/schemas/CascadeGroupStandard",
+            "translations": "#/components/schemas/CascadeGroupTranslations"
+          },
+          "propertyName": "name"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupAccessible"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeGroupTranslations"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeGroupStandard"
+          }
+        ]
+      },
+      "CascadeGroupAccessible": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "accessibleFormat": {
+                "items": {
+                  "$ref": "#/components/schemas/LetterType"
+                },
+                "type": "array"
+              },
+              "name": {
+                "enum": [
+                  "accessible"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "accessibleFormat"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeGroupBase": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/CascadeGroupName"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "CascadeGroupName": {
+        "enum": [
+          "accessible",
+          "standard",
+          "translations"
+        ],
+        "type": "string"
+      },
+      "CascadeGroupStandard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "enum": [
+                  "standard"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeGroupTranslations": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "language": {
+                "items": {
+                  "$ref": "#/components/schemas/Language"
+                },
+                "type": "array"
+              },
+              "name": {
+                "enum": [
+                  "translations"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "language"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeItem": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemWithDefault"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeItemWithConditional"
+          }
+        ]
+      },
+      "CascadeItemBase": {
+        "properties": {
+          "cascadeGroups": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroupName"
+            },
+            "type": "array"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "channelType": {
+            "$ref": "#/components/schemas/ChannelType"
+          }
+        },
+        "required": [
+          "cascadeGroups",
+          "channel",
+          "channelType"
+        ],
+        "type": "object"
+      },
+      "CascadeItemWithConditional": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemBase"
+          },
+          {
+            "not": {
+              "required": [
+                "defaultTemplateId"
+              ]
+            },
+            "properties": {
+              "conditionalTemplates": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                    }
+                  ]
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "conditionalTemplates"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeItemWithDefault": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemBase"
+          },
+          {
+            "not": {
+              "required": [
+                "conditionalTemplates"
+              ]
+            },
+            "properties": {
+              "defaultTemplateId": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "defaultTemplateId"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "Channel": {
+        "enum": [
+          "EMAIL",
+          "LETTER",
+          "NHSAPP",
+          "SMS"
+        ],
+        "type": "string"
+      },
+      "ChannelType": {
+        "enum": [
+          "primary",
+          "secondary"
+        ],
+        "type": "string"
+      },
       "ClientConfiguration": {
         "properties": {
           "campaignId": {
@@ -96,6 +316,40 @@
           }
         },
         "required": [],
+        "type": "object"
+      },
+      "ConditionalTemplateAccessible": {
+        "additionalProperties": false,
+        "properties": {
+          "accessibleFormat": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessibleFormat",
+          "templateId"
+        ],
+        "type": "object"
+      },
+      "ConditionalTemplateLanguage": {
+        "additionalProperties": false,
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "templateId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "language",
+          "templateId"
+        ],
         "type": "object"
       },
       "CreateUpdateTemplate": {
@@ -288,8 +542,36 @@
       },
       "RoutingConfig": {
         "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "cascade": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeItem"
+            },
+            "type": "array"
+          },
+          "cascadeGroupOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroup"
+            },
+            "type": "array"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
           "id": {
             "format": "uuid",
+            "type": "string"
+          },
+          "name": {
             "type": "string"
           },
           "owner": {
@@ -297,17 +579,35 @@
           },
           "status": {
             "$ref": "#/components/schemas/RoutingConfigStatus"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
           }
         },
         "required": [
+          "campaignId",
+          "cascadeGroupOverrides",
+          "cascade",
+          "clientId",
+          "createdAt",
+          "createdBy",
+          "displayCategory",
           "id",
+          "name",
           "owner",
-          "status"
+          "status",
+          "updatedAt",
+          "updatedBy"
         ],
         "type": "object"
       },
       "RoutingConfigStatus": {
         "enum": [
+          "COMPLETED",
           "DELETED",
           "DRAFT"
         ],

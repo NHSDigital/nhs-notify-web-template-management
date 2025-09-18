@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended';
 import type { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
+import { routingConfig } from '../fixtures/routing-config';
 
 function setup() {
   const repo = mock<RoutingConfigRepository>();
@@ -16,11 +17,7 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       mocks.routingConfigRepository.get.mockResolvedValueOnce({
-        data: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
-          owner: 'nhs-notify-client-id',
-          status: 'DRAFT',
-        },
+        data: routingConfig,
       });
 
       const result = await client.getRoutingConfig(
@@ -29,11 +26,7 @@ describe('RoutingConfigClient', () => {
       );
 
       expect(result).toEqual({
-        data: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
-          owner: 'nhs-notify-client-id',
-          status: 'DRAFT',
-        },
+        data: routingConfig,
       });
 
       expect(mocks.routingConfigRepository.get).toHaveBeenCalledWith(
@@ -72,11 +65,7 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       mocks.routingConfigRepository.get.mockResolvedValueOnce({
-        data: {
-          id: '3690d344-731f-4f60-9047-2c63c96623a2',
-          owner: 'nhs-notify-client-id',
-          status: 'DELETED',
-        },
+        data: { ...routingConfig, status: 'DELETED' },
       });
 
       const result = await client.getRoutingConfig(

@@ -15,6 +15,59 @@ export type BaseTemplate = {
   name: string;
 };
 
+export type CascadeGroup =
+  | ({
+      name?: 'accessible';
+    } & CascadeGroupAccessible)
+  | ({
+      name?: 'translations';
+    } & CascadeGroupTranslations)
+  | ({
+      name?: 'standard';
+    } & CascadeGroupStandard);
+
+export type CascadeGroupBase = {
+  name: CascadeGroupName;
+};
+
+export type CascadeGroupAccessible = CascadeGroupBase & {
+  name?: 'accessible';
+  accessibleFormat: Array<LetterType>;
+};
+
+export type CascadeGroupName = 'accessible' | 'standard' | 'translations';
+
+export type CascadeGroupTranslations = CascadeGroupBase & {
+  name?: 'translations';
+  language: Array<Language>;
+};
+
+export type CascadeGroupStandard = CascadeGroupBase & {
+  name?: 'standard';
+};
+
+export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+
+export type CascadeItemBase = {
+  cascadeGroups: Array<CascadeGroupName>;
+  channel: Channel;
+  channelType: ChannelType;
+};
+
+export type CascadeItemWithDefault = CascadeItemBase & {
+  defaultTemplateId: string;
+};
+
+export type CascadeItemWithConditional = CascadeItemBase & {
+  conditionalTemplates: Array<
+    ConditionalTemplateLanguage | ConditionalTemplateAccessible
+  >;
+};
+
+export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
+
+export type ChannelType = 'primary' | 'secondary';
+
 export type ClientConfiguration = {
   campaignId?: string;
   features: ClientFeatures;
@@ -28,6 +81,16 @@ export type ClientConfigurationSuccess = {
 export type ClientFeatures = {
   proofing?: boolean;
   routing?: boolean;
+};
+
+export type ConditionalTemplateLanguage = {
+  language: Language;
+  templateId: string;
+};
+
+export type ConditionalTemplateAccessible = {
+  accessibleFormat: LetterType;
+  templateId: string;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -104,12 +167,21 @@ export type ProofFileDetails = {
 };
 
 export type RoutingConfig = {
+  campaignId: string;
+  cascadeGroupOverrides: Array<CascadeGroup>;
+  cascade: Array<CascadeItem>;
+  clientId: string;
+  createdAt: string;
+  createdBy: string;
   id: string;
+  name: string;
   owner: string;
   status: RoutingConfigStatus;
+  updatedAt: string;
+  updatedBy: string;
 };
 
-export type RoutingConfigStatus = 'DELETED' | 'DRAFT';
+export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
 
 export type RoutingConfigSuccess = {
   data: RoutingConfig;
