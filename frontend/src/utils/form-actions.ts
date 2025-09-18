@@ -9,6 +9,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { randomUUID } from 'node:crypto';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -194,4 +195,40 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     });
 
   return sortedData;
+}
+
+export async function getRoutingConfigs(): Promise<
+  {
+    name: string;
+    id: string;
+    lastUpdated: string;
+    status: 'DRAFT' | 'PRODUCTION';
+  }[]
+> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  return [
+    {
+      name: 'Static routing plan 1',
+      id: randomUUID(),
+      lastUpdated: new Date().toString(),
+      status: 'DRAFT',
+    },
+    {
+      name: 'Static routing plan 2',
+      id: randomUUID(),
+      lastUpdated: new Date().toString(),
+      status: 'DRAFT',
+    },
+    {
+      name: 'Static routing plan 3',
+      id: randomUUID(),
+      lastUpdated: new Date('2025-09-14').toString(),
+      status: 'DRAFT',
+    },
+  ];
 }
