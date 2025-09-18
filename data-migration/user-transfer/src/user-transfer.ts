@@ -9,7 +9,11 @@ import {
 } from '@/src/utils/ddb-utils';
 import { backupData } from '@/src/utils/backup-utils';
 import { Parameters } from '@/src/utils/constants';
-import { findCognitoUser, getUserGroup } from './utils/cognito-utils';
+import {
+  findCognitoUser,
+  getUserGroup,
+  listCognitoUsers,
+} from './utils/cognito-utils';
 import {
   backupObject,
   copyObjects,
@@ -103,7 +107,10 @@ async function updateItems(
 export async function performTransfer() {
   const parameters = getParameters();
   const items = await retrieveAllTemplates(parameters);
-  await backupData(items, parameters);
-  await backupObject(parameters);
-  await updateItems(items, parameters);
+  console.log({ items });
+  console.log(await listCognitoUsers());
+  // retrieve all user (id and clientId) in cognito and save to a JSON file
+  // await backupData(items, parameters);
+  // await backupObject(parameters);
+  // await updateItems(items, parameters);
 }

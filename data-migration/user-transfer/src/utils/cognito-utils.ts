@@ -6,11 +6,15 @@ import {
   UserType,
   GroupType,
 } from '@aws-sdk/client-cognito-identity-provider';
+import { ListBackupsCommandOutput } from '@aws-sdk/client-dynamodb';
+import { fromIni } from '@aws-sdk/credential-providers';
 
+const COGNITO_PROFILE = process.env.COGNITO_ACCOUNT;
 const cognito = new CognitoIdentityProviderClient({
-  region: 'eu-west-2',
+  region: process.env.REGION,
+  credentials: fromIni({ profile: COGNITO_PROFILE }),
 });
-const USER_POOL_ID = 'eu-west-2_OX5mAA0VI';
+const USER_POOL_ID = process.env.USER_POOL_ID;
 
 interface CognitoUserBasics {
   username: string;
@@ -18,6 +22,17 @@ interface CognitoUserBasics {
   clientIdAttr?: string;
   poolId: string;
   user?: UserType;
+}
+
+export async function listCognitoUsers(): Promise<
+  ListBackupsCommandOutput | undefined
+> {
+  const command = new ListUsersCommand({
+    UserPoolId: 'eu-west-2_lGFnZO7vx',
+  });
+
+  const response = await cognito.send(command);
+  return response;
 }
 
 export async function findCognitoUser(
@@ -39,7 +54,7 @@ export async function findCognitoUser(
       username: user.Username!,
       sub,
       clientIdAttr,
-      poolId: USER_POOL_ID,
+      poolId: USER_POOL_ID as string,
       user,
     };
   }
