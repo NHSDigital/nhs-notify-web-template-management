@@ -18,25 +18,39 @@ import {
 
 function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createSmsTemplate('valid-sms-template', user),
-    submit: TemplateFactory.createSmsTemplate('submit-sms-template', user),
+    valid: TemplateFactory.createSmsTemplate(
+      '578d292e-a4ae-411a-a7be-c2f1228b6459',
+      user,
+      'edit-sms-page-valid'
+    ),
+    submit: TemplateFactory.createSmsTemplate(
+      '5b10cafb-ee25-47b6-85eb-540d7dc127b7',
+      user,
+      'edit-sms-page-submit'
+    ),
     submitAndReturn: TemplateFactory.createSmsTemplate(
-      'submit-and-return-create-sms-template',
-      user
+      '4a3fd84b-0685-4197-91ed-c058acbe1a61',
+      user,
+      'edit-sms-page-submit-and-return'
     ),
     goBackAndReturn: TemplateFactory.createSmsTemplate(
-      'go-back-sms-template',
-      user
+      '5f04230c-21df-4869-a911-7673f3b908fe',
+      user,
+      'edit-sms-page-go-back-and-return'
     ),
     noSmsTemplateType: TemplateFactory.create({
-      id: 'no-sms-template-type-template',
+      id: 'be8a4618-17e5-45c4-855b-c91d55a3ff66',
       templateType: 'EMAIL',
       owner: `CLIENT#${user.clientId}`,
       clientId: user.clientId,
       name: 'no-sms-template-type-template',
+      message: 'no-sms-template-type-template-message',
     }),
     previousData: {
-      ...TemplateFactory.createSmsTemplate('previous-data-sms-template', user),
+      ...TemplateFactory.createSmsTemplate(
+        'bef4d911-b3a6-4faa-99a9-b33505cb4875',
+        user
+      ),
       name: 'previous-data-sms-template',
       message: 'previous-data-sms-template-message',
     },
@@ -196,7 +210,7 @@ test.describe('Edit SMS message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditSmsPage(page);
-        await editTemplatePage.loadPage('valid-sms-template');
+        await editTemplatePage.loadPage(templates.valid.id);
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;

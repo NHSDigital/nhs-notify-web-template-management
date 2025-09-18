@@ -23,19 +23,19 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'valid-nhs-app-template-preview-submitted',
-        user
+        '298799c4-bc2c-49b6-b9cc-74e7750261d2',
+        user,
+        'valid-nhs-app-template-preview-submitted'
       ),
-      name: 'test-template-nhs-app',
       message: 'test-template-message',
       templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'invalid-nhs-app-template-preview-submitted',
-        user
+        'a0a0d4c9-e18d-4aa9-8973-336a66fbadde',
+        user,
+        'invalid-nhs-app-template-preview-submitted'
       ),
-      name: 'test-template-nhs-app',
       message: 'test-template-message',
       templateStatus: 'NOT_YET_SUBMITTED',
     },
@@ -71,7 +71,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
     );
 
     await expect(previewSubmittedNHSAppTemplatePage.pageHeading).toContainText(
-      'test-template-nhs-app'
+      templates.valid.name
     );
 
     await expect(previewSubmittedNHSAppTemplatePage.messageText).toHaveText(
