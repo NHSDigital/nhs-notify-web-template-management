@@ -1,8 +1,0 @@
-@use 'nhsuk-frontend/dist/nhsuk' as nhsuk;
-
-:root {
-  --nhsuk-white: #{nhsuk.nhsuk-colour("white")};
-  --nhsuk-blue: #{nhsuk.nhsuk-colour("blue")};
-  --nhsuk-green: #{nhsuk.nhsuk-colour("green")};
-  --nhsuk-border-color: #{nhsuk.nhsuk-colour("border-color")};
-}
