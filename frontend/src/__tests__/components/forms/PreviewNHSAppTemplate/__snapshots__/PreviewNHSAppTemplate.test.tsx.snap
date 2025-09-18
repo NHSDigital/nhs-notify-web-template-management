@@ -105,10 +105,10 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
@@ -358,10 +358,10 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
@@ -591,10 +591,10 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
@@ -812,10 +812,10 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
@@ -952,10 +952,10 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
@@ -1092,10 +1092,10 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-test-id="status-tag-not-yet-submitted"
                 >
-                  Not yet submitted
+                  Draft
                 </strong>
               </dd>
             </div>
