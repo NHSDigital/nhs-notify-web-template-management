@@ -157,7 +157,7 @@ test.describe('Copy Template Page', () => {
           })
           .first();
 
-        await expect(templateRow).toContainText('Not yet submitted');
+        await expect(templateRow).toContainText('Draft');
 
         const copyUrl = await templateRow
           .getByText('Copy', { exact: true })
