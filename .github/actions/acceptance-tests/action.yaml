@@ -29,8 +29,7 @@ runs:
         name: terraform-output-${{ inputs.targetComponent }}
     - name: "Repo setup"
       shell: bash
-      run: |
-        npm ci
+      run: make dependencies
 
     - name: Generate outputs file
       shell: bash

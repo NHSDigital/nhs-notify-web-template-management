@@ -72,7 +72,7 @@ jobs:
     needs: detect-terraform-changes
     if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
     permissions:
-        contents: write
+      contents: write
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
@@ -248,8 +248,10 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm ci
+      - name: "Restore node_modules from cache"
+        uses: ./.github/actions/node-modules-cache
+        with:
+          node_version: "${{ inputs.nodejs_version }}"
 
       - name: Re-generate schemas
         run: npm --workspace packages/event-schemas run generate-json-schemas

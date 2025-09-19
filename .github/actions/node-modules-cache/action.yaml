@@ -40,5 +40,6 @@ runs:
     - name: 'Install dependencies (cache miss)'
       if: steps.node-modules-cache.outputs.cache-hit != 'true'
       shell: bash
-      run: |
-        npm ci
+      run: make dependencies
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
