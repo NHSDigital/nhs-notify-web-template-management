@@ -32,7 +32,7 @@ async function createTemplates() {
 
   return {
     empty: {
-      id: 'preview-page-invalid-sms-template',
+      id: '5ba6daa1-8da3-4477-9f59-10a50a819647',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -41,8 +41,11 @@ async function createTemplates() {
       owner: `CLIENT#${user.clientId}`,
     } as Template,
     valid: {
-      ...TemplateFactory.createSmsTemplate('valid-sms-preview-template', user),
-      name: 'test-template-sms',
+      ...TemplateFactory.createSmsTemplate(
+        '7f41fb5b-7f59-448c-8037-f37c25466455',
+        user
+      ),
+      name: 'valid-sms-preview-template',
       message: 'test-template-message',
     },
     routingEnabled: {
@@ -83,7 +86,7 @@ test.describe('Preview SMS message template Page', () => {
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewSmsTemplatePage.pageHeading).toContainText(
-      'test-template-sms'
+      templates.valid.name
     );
 
     await expect(previewSmsTemplatePage.messageText).toHaveText(

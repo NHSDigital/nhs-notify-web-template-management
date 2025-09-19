@@ -13,30 +13,26 @@ import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-m
 function createTemplates(user: TestUser) {
   return {
     empty: TemplateFactory.createEmailTemplate(
-      'empty-email-template',
+      '3636a80b-e083-443d-b6d6-c942d0eafaee',
       user,
       'empty-email-template-name'
     ),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', user),
+    submit: TemplateFactory.createEmailTemplate(
+      'ba569b58-9058-4a4f-a7af-eff103e04c38',
+      user
+    ),
     submitAndReturn: TemplateFactory.createEmailTemplate(
-      'submit-and-return-create-email-template',
+      'de4c9642-05e6-406a-bc1d-0104a6af455d',
       user,
       'submit-and-return-create-email-template-name'
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
-      'go-back-email-template',
+      'd78fae9f-5cf3-4e22-8adb-9be7f35c9d1c',
       user
     ),
-    noEmailTemplateType: TemplateFactory.create({
-      id: 'no-email-template-type-template',
-      templateType: 'NHS_APP',
-      owner: `CLIENT#${user.clientId}`,
-      clientId: user.clientId,
-      name: 'no-email-template-type-template-name',
-    }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
-        'previous-data-email-template',
+        'a5f0bc02-6949-4c8f-9c42-f163d62ee335',
         user
       ),
       name: 'previous-data-email-template',
