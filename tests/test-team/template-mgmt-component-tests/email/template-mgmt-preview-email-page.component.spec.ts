@@ -58,7 +58,7 @@ async function createTemplates() {
   };
 }
 
-test.describe.only('Preview Email message template Page', () => {
+test.describe('Preview Email message template Page', () => {
   let templates: {
     empty: Template;
     valid: Template;
