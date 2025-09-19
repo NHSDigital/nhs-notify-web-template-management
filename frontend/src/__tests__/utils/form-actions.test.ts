@@ -15,6 +15,7 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
+  getRoutingConfigs,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -687,6 +688,45 @@ describe('form-actions', () => {
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
       );
+    });
+  });
+
+  describe('getRoutingConfigs', () => {
+    test('should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(getRoutingConfigs()).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+
+    test('should return a list of routing configs', async () => {
+      const configs = await getRoutingConfigs();
+
+      expect(configs).toEqual([
+        {
+          name: 'Static routing plan 1',
+          id: expect.anything(),
+          lastUpdated: new Date().toString(),
+          status: 'DRAFT',
+        },
+        {
+          name: 'Static routing plan 2',
+          id: expect.anything(),
+          lastUpdated: new Date().toString(),
+          status: 'DRAFT',
+        },
+        {
+          name: 'Static routing plan 3',
+          id: expect.anything(),
+          lastUpdated: new Date('2025-09-14').toString(),
+          status: 'DRAFT',
+        },
+      ]);
     });
   });
 });
