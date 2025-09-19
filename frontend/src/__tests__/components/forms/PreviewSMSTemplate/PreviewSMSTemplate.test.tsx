@@ -101,7 +101,7 @@ describe('Review sms form renders', () => {
     it('renders component correctly', () => {
       render(
         <PreviewSMSTemplate
-          routing={true}
+          routingEnabled={true}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',
@@ -124,7 +124,7 @@ describe('Review sms form renders', () => {
     (routing) => {
       const container = render(
         <PreviewSMSTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',
@@ -149,7 +149,7 @@ describe('Review sms form renders', () => {
 
       const container = render(
         <PreviewSMSTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',

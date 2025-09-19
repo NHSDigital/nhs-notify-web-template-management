@@ -30,10 +30,13 @@ const PreviewSMSTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const routing = await serverIsFeatureEnabled('routing');
+  const routingEnabled = await serverIsFeatureEnabled('routing');
 
   return (
-    <PreviewSMSTemplate initialState={validatedTemplate} routing={routing} />
+    <PreviewSMSTemplate
+      initialState={validatedTemplate}
+      routingEnabled={routingEnabled}
+    />
   );
 };
 

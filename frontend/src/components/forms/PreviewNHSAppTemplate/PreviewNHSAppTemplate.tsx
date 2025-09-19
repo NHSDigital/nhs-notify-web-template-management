@@ -22,7 +22,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewNHSAppTemplate({
   initialState,
-  routing,
+  routingEnabled,
 }: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -85,7 +85,7 @@ export function PreviewNHSAppTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            {routing ? EditOnlyPreview : EditSubmitPreview}
+            {routingEnabled ? EditOnlyPreview : EditSubmitPreview}
             <p>
               <Link
                 href='/message-templates'

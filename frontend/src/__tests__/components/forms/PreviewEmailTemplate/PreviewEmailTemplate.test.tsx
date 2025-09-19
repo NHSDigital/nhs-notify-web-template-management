@@ -105,7 +105,7 @@ describe('Preview email form renders', () => {
     it('renders component correctly', () => {
       render(
         <PreviewEmailTemplate
-          routing={true}
+          routingEnabled={true}
           initialState={mockDeep<TemplateFormState<EmailTemplate>>({
             errorState: undefined,
             name: 'test-template-email',
@@ -129,7 +129,7 @@ describe('Preview email form renders', () => {
     (routing) => {
       const container = render(
         <PreviewEmailTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<EmailTemplate>>({
             errorState: undefined,
             name: 'test-template-email',
@@ -155,7 +155,7 @@ describe('Preview email form renders', () => {
 
       const container = render(
         <PreviewEmailTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<EmailTemplate>>({
             errorState: undefined,
             name: 'test-template-email',

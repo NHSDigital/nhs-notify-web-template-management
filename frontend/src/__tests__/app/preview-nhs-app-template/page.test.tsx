@@ -64,7 +64,10 @@ describe('PreviewNhsAppTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewNHSAppTemplate initialState={nhsAppTemplate} routing={true} />
+      <PreviewNHSAppTemplate
+        initialState={nhsAppTemplate}
+        routingEnabled={true}
+      />
     );
   });
 

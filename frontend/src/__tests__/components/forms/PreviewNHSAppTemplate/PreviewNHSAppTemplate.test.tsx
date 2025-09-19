@@ -101,7 +101,7 @@ describe('Preview nhs app form renders', () => {
     it('renders component correctly', () => {
       render(
         <PreviewNHSAppTemplate
-          routing={true}
+          routingEnabled={true}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',
@@ -124,7 +124,7 @@ describe('Preview nhs app form renders', () => {
     (routing) => {
       const container = render(
         <PreviewNHSAppTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',
@@ -149,7 +149,7 @@ describe('Preview nhs app form renders', () => {
 
       const container = render(
         <PreviewNHSAppTemplate
-          routing={routing}
+          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',

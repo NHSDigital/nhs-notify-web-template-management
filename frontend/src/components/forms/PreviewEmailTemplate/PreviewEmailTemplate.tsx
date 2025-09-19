@@ -22,7 +22,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewEmailTemplate({
   initialState,
-  routing,
+  routingEnabled,
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -94,7 +94,7 @@ export function PreviewEmailTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            {routing ? EditOnlyPreview : EditSubmitPreview}
+            {routingEnabled ? EditOnlyPreview : EditSubmitPreview}
             <p>
               <Link
                 href='/message-templates'

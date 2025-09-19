@@ -64,7 +64,7 @@ describe('PreviewSMSTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewSMSTemplate initialState={smsTemplate} routing={true} />
+      <PreviewSMSTemplate initialState={smsTemplate} routingEnabled={true} />
     );
   });
 

@@ -33,7 +33,10 @@ const PreviewEmailTemplatePage = async (props: PageProps) => {
   const routing = await serverIsFeatureEnabled('routing');
 
   return (
-    <PreviewEmailTemplate initialState={validatedTemplate} routing={routing} />
+    <PreviewEmailTemplate
+      initialState={validatedTemplate}
+      routingEnabled={routing}
+    />
   );
 };
 

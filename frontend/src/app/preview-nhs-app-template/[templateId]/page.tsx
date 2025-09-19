@@ -30,10 +30,13 @@ const PreviewNhsAppTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const routing = await serverIsFeatureEnabled('routing');
+  const routingEnabled = await serverIsFeatureEnabled('routing');
 
   return (
-    <PreviewNHSAppTemplate initialState={validatedTemplate} routing={routing} />
+    <PreviewNHSAppTemplate
+      initialState={validatedTemplate}
+      routingEnabled={routingEnabled}
+    />
   );
 };
 

@@ -21,13 +21,13 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
-let routingEnabledUser: TestUser;
+let routingDisabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingEnabledUser = await authHelper.getTestUser(
-    testUsers.RoutingEnabledUser.userId
+  routingDisabledUser = await authHelper.getTestUser(
+    testUsers.RoutingDisabled.userId
   );
 
   return {
@@ -48,8 +48,8 @@ async function createTemplates() {
       name: 'valid-sms-preview-template',
       message: 'test-template-message',
     },
-    routingEnabled: {
-      ...TemplateFactory.createSmsTemplate(randomUUID(), routingEnabledUser),
+    routingDisabled: {
+      ...TemplateFactory.createSmsTemplate(randomUUID(), routingDisabledUser),
       name: 'test-template-sms',
       message: 'test-template-message',
     },
@@ -58,7 +58,11 @@ async function createTemplates() {
 
 test.describe('Preview SMS message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
-  let templates: { valid: Template; empty: Template; routingEnabled: Template };
+  let templates: {
+    valid: Template;
+    empty: Template;
+    routingDisabled: Template;
+  };
 
   test.beforeAll(async () => {
     templates = await createTemplates();
@@ -73,54 +77,21 @@ test.describe('Preview SMS message template Page', () => {
     page,
     baseURL,
   }) => {
-    const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+    const previewPage = new TemplateMgmtPreviewSmsPage(page);
 
-    await previewSmsTemplatePage.loadPage(templates.valid.id);
+    await previewPage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-text-message-template/${templates.valid.id}`
     );
 
-    await expect(previewSmsTemplatePage.editRadioOption).not.toBeChecked();
+    await expect(previewPage.pageHeading).toContainText(templates.valid.name);
 
-    await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
+    await expect(previewPage.messageText).toHaveText('test-template-message');
 
-    await expect(previewSmsTemplatePage.pageHeading).toContainText(
-      templates.valid.name
-    );
+    await expect(previewPage.continueButton).toBeHidden();
 
-    await expect(previewSmsTemplatePage.messageText).toHaveText(
-      'test-template-message'
-    );
-  });
-
-  test.describe('Routing feature flag enabled', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test('when user visits page, then page is loaded, with routing Enabled', async ({
-      baseURL,
-      page,
-    }) => {
-      await loginAsUser(routingEnabledUser, page);
-
-      const previewPage = new TemplateMgmtPreviewSmsPage(page);
-
-      await previewPage.loadPage(templates.routingEnabled.id);
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-text-message-template/${templates.routingEnabled.id}`
-      );
-
-      await expect(previewPage.continueButton).toBeHidden();
-
-      await expect(previewPage.editButton).toBeVisible();
-
-      await previewPage.editButton.click();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/edit-text-message-template/${templates.routingEnabled.id}`
-      );
-    });
+    await expect(previewPage.editButton).toBeVisible();
   });
 
   test.describe('Page functionality', () => {
@@ -139,37 +110,18 @@ test.describe('Preview SMS message template Page', () => {
       await assertBackToAllTemplatesBottomLink(props);
     });
 
-    test('when user submits form with "Edit" data, then the "Create text message template" page is displayed', async ({
+    test('when user clicks "Edit template", then the "Edit SMS template" page is displayed', async ({
       baseURL,
       page,
     }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(templates.valid.id);
+      await previewPage.loadPage(templates.valid.id);
 
-      await previewSmsTemplatePage.editRadioOption.click();
-
-      await previewSmsTemplatePage.clickContinueButton();
+      await previewPage.editButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
-      );
-    });
-
-    test('when user submits form with "Submit" data, then the "Are you sure you want to submit" page is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
-
-      await previewSmsTemplatePage.loadPage(templates.valid.id);
-
-      await previewSmsTemplatePage.submitRadioOption.click();
-
-      await previewSmsTemplatePage.clickContinueButton();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-text-message-template/${templates.valid.id}`
       );
     });
   });
@@ -179,9 +131,9 @@ test.describe('Preview SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(templates.empty.id);
+      await previewPage.loadPage(templates.empty.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -190,35 +142,111 @@ test.describe('Preview SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage('/fake-template-id');
+      await previewPage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
+  });
 
-    test('when user submits page with no data, then an error is displayed', async ({
+  // This whole suite can removed once routing is permanently enabled.
+  test.describe('Routing disabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('when user visits page, then page is loaded', async ({
       page,
+      baseURL,
     }) => {
-      const errorMessage = 'Select an option';
+      await loginAsUser(routingDisabledUser, page);
 
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(templates.valid.id);
+      await previewPage.loadPage(templates.routingDisabled.id);
 
-      await previewSmsTemplatePage.clickContinueButton();
-
-      await expect(previewSmsTemplatePage.errorSummary).toBeVisible();
-
-      const selectOptionErrorLink = previewSmsTemplatePage.errorSummary.locator(
-        '[href="#previewSMSTemplateAction"]'
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-text-message-template/${templates.routingDisabled.id}`
       );
 
-      await expect(selectOptionErrorLink).toHaveText(errorMessage);
+      await expect(previewPage.editRadioOption).not.toBeChecked();
 
-      await selectOptionErrorLink.click();
+      await expect(previewPage.submitRadioOption).not.toBeChecked();
 
-      await expect(page.locator('#previewSMSTemplateAction')).toBeInViewport();
+      await expect(previewPage.pageHeading).toContainText(
+        templates.routingDisabled.name
+      );
+
+      await expect(previewPage.messageText).toHaveText('test-template-message');
+    });
+
+    test.describe('Page functionality', () => {
+      test('when user submits form with "Edit" data, then the "Create SMS template" page is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.editRadioOption.click();
+
+        await previewPage.clickContinueButton();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/edit-text-message-template/${templates.routingDisabled.id}`
+        );
+      });
+
+      test('when user submits form with "Submit" data, then the "Are you sure you want to submit" page is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.submitRadioOption.click();
+
+        await previewPage.clickContinueButton();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/submit-text-message-template/${templates.routingDisabled.id}`
+        );
+      });
+    });
+
+    test.describe('Error handling', () => {
+      test('when user submits page with no data, then an error is displayed', async ({
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const errorMessage = 'Select an option';
+
+        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const selectOptionErrorLink = previewPage.errorSummary.locator(
+          '[href="#previewSMSTemplateAction"]'
+        );
+
+        await expect(selectOptionErrorLink).toHaveText(errorMessage);
+
+        await selectOptionErrorLink.click();
+
+        await expect(
+          page.locator('#previewSMSTemplateAction')
+        ).toBeInViewport();
+      });
     });
   });
 });

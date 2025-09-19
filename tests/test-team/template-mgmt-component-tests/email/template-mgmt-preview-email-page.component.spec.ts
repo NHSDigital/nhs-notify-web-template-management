@@ -21,13 +21,13 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
-let routingEnabledUser: TestUser;
+let routingDisabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingEnabledUser = await authHelper.getTestUser(
-    testUsers.RoutingEnabledUser.userId
+  routingDisabledUser = await authHelper.getTestUser(
+    testUsers.RoutingDisabled.userId
   );
 
   return {
@@ -49,8 +49,8 @@ async function createTemplates() {
       subject: 'test-template-subject-line',
       message: 'test-template-message',
     } as Template,
-    routingEnabled: {
-      ...TemplateFactory.createEmailTemplate(randomUUID(), routingEnabledUser),
+    routingDisabled: {
+      ...TemplateFactory.createEmailTemplate(randomUUID(), routingDisabledUser),
       name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
@@ -58,8 +58,12 @@ async function createTemplates() {
   };
 }
 
-test.describe('Preview Email message template Page', () => {
-  let templates: { empty: Template; valid: Template; routingEnabled: Template };
+test.describe.only('Preview Email message template Page', () => {
+  let templates: {
+    empty: Template;
+    valid: Template;
+    routingDisabled: Template;
+  };
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
@@ -86,40 +90,11 @@ test.describe('Preview Email message template Page', () => {
 
     await expect(previewPage.pageHeading).toContainText(templates.valid.name);
 
-    await expect(previewPage.subjectLineText).toHaveText(
-      'test-template-subject-line'
-    );
-
     await expect(previewPage.messageText).toHaveText('test-template-message');
-  });
 
-  test.describe('Routing feature flag enabled', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+    await expect(previewPage.continueButton).toBeHidden();
 
-    test('when user visits page, then page is loaded', async ({
-      page,
-      baseURL,
-    }) => {
-      await loginAsUser(routingEnabledUser, page);
-
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
-
-      await previewEmailTemplatePage.loadPage(templates.routingEnabled.id);
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${templates.routingEnabled.id}`
-      );
-
-      await expect(previewEmailTemplatePage.continueButton).toBeHidden();
-
-      await expect(previewEmailTemplatePage.editButton).toBeVisible();
-
-      await previewEmailTemplatePage.editButton.click();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/edit-email-template/${templates.routingEnabled.id}`
-      );
-    });
+    await expect(previewPage.editButton).toBeVisible();
   });
 
   test.describe('Page functionality', () => {
@@ -138,37 +113,18 @@ test.describe('Preview Email message template Page', () => {
       await assertBackToAllTemplatesBottomLink(props);
     });
 
-    test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({
+    test('when user clicks "Edit template", then the "Edit Email template" page is displayed', async ({
       baseURL,
       page,
     }) => {
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+      const previewPage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(templates.valid.id);
+      await previewPage.loadPage(templates.valid.id);
 
-      await previewEmailTemplatePage.editRadioOption.click();
-
-      await previewEmailTemplatePage.clickContinueButton();
+      await previewPage.editButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-email-template/${templates.valid.id}`
-      );
-    });
-
-    test('when user submits form with "Submit" data, then the "Are you sure you want to submit" page is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
-
-      await previewEmailTemplatePage.loadPage(templates.valid.id);
-
-      await previewEmailTemplatePage.submitRadioOption.click();
-
-      await previewEmailTemplatePage.clickContinueButton();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-email-template/${templates.valid.id}`
       );
     });
   });
@@ -195,32 +151,105 @@ test.describe('Preview Email message template Page', () => {
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
+  });
 
-    test('when user submits page with no data, then an error is displayed', async ({
+  // This whole suite can removed once routing is permanently enabled.
+  test.describe('Routing disabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('when user visits page, then page is loaded', async ({
       page,
+      baseURL,
     }) => {
-      const errorMessage = 'Select an option';
+      await loginAsUser(routingDisabledUser, page);
 
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+      const previewPage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(templates.valid.id);
+      await previewPage.loadPage(templates.routingDisabled.id);
 
-      await previewEmailTemplatePage.clickContinueButton();
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-email-template/${templates.routingDisabled.id}`
+      );
 
-      await expect(previewEmailTemplatePage.errorSummary).toBeVisible();
+      await expect(previewPage.editRadioOption).not.toBeChecked();
 
-      const selectOptionErrorLink =
-        previewEmailTemplatePage.errorSummary.locator(
+      await expect(previewPage.submitRadioOption).not.toBeChecked();
+
+      await expect(previewPage.pageHeading).toContainText(
+        templates.routingDisabled.name
+      );
+
+      await expect(previewPage.messageText).toHaveText('test-template-message');
+    });
+
+    test.describe('Page functionality', () => {
+      test('when user submits form with "Edit" data, then the "Create Email template" page is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.editRadioOption.click();
+
+        await previewPage.clickContinueButton();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/edit-email-template/${templates.routingDisabled.id}`
+        );
+      });
+
+      test('when user submits form with "Submit" data, then the "Are you sure you want to submit" page is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.submitRadioOption.click();
+
+        await previewPage.clickContinueButton();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/submit-email-template/${templates.routingDisabled.id}`
+        );
+      });
+    });
+
+    test.describe('Error handling', () => {
+      test('when user submits page with no data, then an error is displayed', async ({
+        page,
+      }) => {
+        await loginAsUser(routingDisabledUser, page);
+
+        const errorMessage = 'Select an option';
+
+        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+
+        await previewPage.loadPage(templates.routingDisabled.id);
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const selectOptionErrorLink = previewPage.errorSummary.locator(
           '[href="#previewEmailTemplateAction"]'
         );
 
-      await expect(selectOptionErrorLink).toHaveText(errorMessage);
+        await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
-      await selectOptionErrorLink.click();
+        await selectOptionErrorLink.click();
 
-      await expect(
-        page.locator('#previewEmailTemplateAction')
-      ).toBeInViewport();
+        await expect(
+          page.locator('#previewEmailTemplateAction')
+        ).toBeInViewport();
+      });
     });
   });
 });

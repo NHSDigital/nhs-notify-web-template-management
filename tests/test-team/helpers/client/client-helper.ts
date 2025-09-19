@@ -14,13 +14,13 @@ export type ClientConfiguration = {
   name?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithRoutingEnabled'}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6 | 'RoutingDisabled'}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
 export const testClients = {
   /**
-   * Client1 has proofing enabled and routing disabled
+   * Client1 has proofing and routing enabled
    * This is the default client for the component tests.
    */
   Client1: {
@@ -28,7 +28,7 @@ export const testClients = {
     name: 'NHS Test Client 1',
     features: {
       proofing: true,
-      routing: false,
+      routing: true,
     },
   },
   /**
@@ -79,12 +79,15 @@ export const testClients = {
       routing: false,
     },
   },
-  ClientWithRoutingEnabled: {
-    campaignId: 'Campaign7',
-    name: 'NHS Test Client 7',
+  /**
+   * ClientRoutingDisabled has routing disabled
+   */
+  ClientRoutingDisabled: {
+    campaignId: 'RoutingDisabled',
+    name: 'NHS Test Client RoutingDisabled',
     features: {
       proofing: true,
-      routing: true,
+      routing: false,
     },
   },
 } satisfies TestClients;

@@ -66,7 +66,10 @@ describe('PreviewEmailTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewEmailTemplate initialState={emailTemplate} routing={true} />
+      <PreviewEmailTemplate
+        initialState={emailTemplate}
+        routingEnabled={true}
+      />
     );
   });
 
