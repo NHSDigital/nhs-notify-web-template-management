@@ -1111,6 +1111,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           language: template.language,
           proofingEnabled: false,
           letterType: template.letterType,
+          personalisationParameters: [],
           files: {
             pdfTemplate: expect.objectContaining({
               virusScanStatus: 'PASSED',
@@ -1179,6 +1180,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           updatedAt: expect.stringMatching(isoDateRegExp),
           language: template.language,
           proofingEnabled: true,
+          personalisationParameters: [],
           letterType: template.letterType,
           files: {
             pdfTemplate: expect.objectContaining({
