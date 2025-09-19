@@ -107,9 +107,9 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 Status 
               </span>
               <strong
-                class="nhsuk-tag"
+                class="nhsuk-tag nhsuk-tag--green"
               >
-                Not yet submitted
+                Draft
               </strong>
             </td>
             <td
@@ -283,7 +283,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               >
                 Type 
               </span>
-              Standard letter - French
+              Standard letter
             </td>
             <td
               class="nhsuk-table__cell"
@@ -328,6 +328,94 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               <div
                 class="actionLinksWrapper"
               />
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-letter-template/4"
+              >
+                Template 4
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag"
+              >
+                Not yet submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 4"
+                    data-testid="delete-link"
+                    href="/delete-template/4"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -620,7 +708,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
               >
                 Type 
               </span>
-              Standard letter - French
+              Standard letter
             </td>
             <td
               class="nhsuk-table__cell"
@@ -665,6 +753,94 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
               <div
                 class="actionLinksWrapper"
               />
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-letter-template/4"
+              >
+                Template 4
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag"
+              >
+                Not yet submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 4"
+                    data-testid="delete-link"
+                    href="/delete-template/4"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -946,7 +1122,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               >
                 Type 
               </span>
-              Standard letter - French
+              Standard letter
             </td>
             <td
               class="nhsuk-table__cell"
@@ -991,6 +1167,94 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               <div
                 class="actionLinksWrapper"
               />
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-letter-template/4"
+              >
+                Template 4
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag"
+              >
+                Not yet submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 4"
+                    data-testid="delete-link"
+                    href="/delete-template/4"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -1259,7 +1523,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               >
                 Type 
               </span>
-              Standard letter - French
+              Standard letter
             </td>
             <td
               class="nhsuk-table__cell"
@@ -1304,6 +1568,94 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               <div
                 class="actionLinksWrapper"
               />
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-letter-template/4"
+              >
+                Template 4
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag"
+              >
+                Not yet submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 4"
+                    data-testid="delete-link"
+                    href="/delete-template/4"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>
