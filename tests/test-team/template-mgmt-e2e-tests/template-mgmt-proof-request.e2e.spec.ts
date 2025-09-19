@@ -121,7 +121,7 @@ test.describe('SFTP proof request send', () => {
       process.env.SFTP_ENVIRONMENT
     );
 
-    const expandedTemplateId = [
+    const supplierReference = [
       user.clientId,
       campaignId,
       templateId,
@@ -132,23 +132,23 @@ test.describe('SFTP proof request send', () => {
     const pdfLocation = path.join(
       sftpBase,
       'templates',
-      expandedTemplateId,
-      `${expandedTemplateId}.pdf`
+      supplierReference,
+      `${supplierReference}.pdf`
     );
 
-    const batchId = `${expandedTemplateId}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
+    const batchId = `${supplierReference}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
 
     const batchLocation = path.join(
       sftpBase,
       'batches',
-      expandedTemplateId,
+      supplierReference,
       `${batchId}.csv`
     );
 
     const manifestLocation = path.join(
       sftpBase,
       'batches',
-      expandedTemplateId,
+      supplierReference,
       `${batchId}_MANIFEST.csv`
     );
 

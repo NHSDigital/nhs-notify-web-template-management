@@ -43,7 +43,7 @@ export class App {
     const { sftpClient: sftp, baseUploadDir } =
       await this.sftpSupplierClientRepository.getClient(supplier);
 
-    const expandedTemplateId = this.getExpandedTemplateId({
+    const supplierReference = this.getSupplierReference({
       clientId: user.clientId,
       campaignId,
       letterType,
@@ -51,11 +51,11 @@ export class App {
       templateId,
     });
 
-    const batchId = this.batch.getId(expandedTemplateId, pdfVersionId);
+    const batchId = this.batch.getId(supplierReference, pdfVersionId);
 
     const templateLogger = this.logger.child({
       batchId,
-      expandedTemplateId,
+      supplierReference,
       messageId,
       pdfVersionId,
       supplier,
@@ -66,7 +66,7 @@ export class App {
 
     const dest = this.getFileDestinations(
       baseUploadDir,
-      expandedTemplateId,
+      supplierReference,
       batchId
     );
 
@@ -78,7 +78,7 @@ export class App {
       const files = await this.getFileData(
         user.clientId,
         templateId,
-        expandedTemplateId,
+        supplierReference,
         pdfVersionId,
         testDataVersionId,
         personalisationParameters,
@@ -86,10 +86,13 @@ export class App {
       );
 
       templateLogger.info('Acquiring sender lock');
-      const locked = await this.templateRepository.acquireLock(
-        user.clientId,
-        templateId
-      );
+      const locked =
+        await this.templateRepository.acquireLockAndSetSupplierReference(
+          user.clientId,
+          templateId,
+          supplier,
+          supplierReference
+        );
 
       if (!locked) {
         templateLogger.warn(
@@ -127,7 +130,7 @@ export class App {
       // send email to supplier
       await this.emailClient.sendProofRequestedEmailToSupplier(
         templateId,
-        expandedTemplateId,
+        supplierReference,
         templateName,
         supplier
       );
@@ -170,7 +173,7 @@ export class App {
   private async getFileData(
     clientId: string,
     templateId: string,
-    expandedTemplateId: string,
+    supplierReference: string,
     pdfVersion: string,
     testDataVersion: string | undefined,
     fields: string[],
@@ -188,7 +191,7 @@ export class App {
       : undefined;
 
     const batchRows = this.batch.buildBatch(
-      expandedTemplateId,
+      supplierReference,
       fields,
       parsedTestData
     );
@@ -198,7 +201,7 @@ export class App {
     const batchCsv = await serialiseCsv(batchRows, batchHeader);
 
     const manifest = this.batch.buildManifest(
-      expandedTemplateId,
+      supplierReference,
       batchId,
       batchCsv
     );
@@ -218,7 +221,7 @@ export class App {
     };
   }
 
-  private getExpandedTemplateId({
+  private getSupplierReference({
     clientId,
     campaignId,
     letterType,

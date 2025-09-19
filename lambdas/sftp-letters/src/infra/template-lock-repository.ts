@@ -14,7 +14,12 @@ export class TemplateLockRepository {
     private readonly lockTtl: number
   ) {}
 
-  async acquireLock(clientId: string, id: string): Promise<boolean> {
+  async acquireLockAndSetSupplierReference(
+    clientId: string,
+    id: string,
+    supplier: string,
+    supplierReference: string
+  ): Promise<boolean> {
     const time = this.getDate().getTime();
 
     const update = new TemplateUpdateBuilder(
@@ -23,6 +28,7 @@ export class TemplateLockRepository {
       id
     )
       .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
+      .setSupplierReference(supplier, supplierReference)
       .build();
 
     try {

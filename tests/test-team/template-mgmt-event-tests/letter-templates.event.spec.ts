@@ -136,7 +136,7 @@ test.describe('Event publishing - Letters', () => {
       './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
     );
 
-    const expandedTemplateId = [
+    const supplierReference = [
       userProofingEnabled.clientId,
       'campaign',
       templateId,
@@ -146,15 +146,15 @@ test.describe('Event publishing - Letters', () => {
 
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-1.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-1.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-2.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-2.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-3.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-3.pdf`
     );
 
     const requestProofResponse = await request.post(

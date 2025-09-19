@@ -49,6 +49,15 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  setSupplierReference(supplier: string, supplierReference: string) {
+    this.updateBuilder.setValueInMap(
+      'supplierReferences',
+      supplier,
+      supplierReference
+    );
+    return this;
+  }
+
   setLockTimeUnconditional(lockField: 'sftpSendLockTime', timeMs: number) {
     this.updateBuilder.setValue(lockField, timeMs);
     return this;

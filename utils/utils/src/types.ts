@@ -114,6 +114,7 @@ export type DatabaseTemplate = {
   templateType: TemplateType;
   updatedAt: string;
   updatedBy?: string;
+  supplierReferences?: Record<string, string>;
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {

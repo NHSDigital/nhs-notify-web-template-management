@@ -70,7 +70,7 @@ export class App {
         );
       } else {
         logger.info('Unexpected non-directory item found', {
-          expandedTemplateId: idFolder,
+          supplierReference: idFolder,
         });
       }
     }
@@ -80,28 +80,28 @@ export class App {
     return (await sftpClient.exists(path)) === 'd';
   }
 
-  private getInternalTemplateId(expandedTemplateId: string) {
-    return expandedTemplateId.split('_')[2];
+  private getInternalTemplateId(supplierReference: string) {
+    return supplierReference.split('_')[2];
   }
 
   private async pollIdFolder(
     sftpClient: SftpClient,
     baseSftpPath: string,
     baseS3Path: string,
-    expandedTemplateId: string,
+    supplierReference: string,
     logger: Logger
   ) {
     const proofFiles = await sftpClient.list(
-      `${baseSftpPath}/${expandedTemplateId}`
+      `${baseSftpPath}/${supplierReference}`
     );
-    const templateId = this.getInternalTemplateId(expandedTemplateId);
-    const idLogger = logger.child({ expandedTemplateId, templateId });
+    const templateId = this.getInternalTemplateId(supplierReference);
+    const idLogger = logger.child({ supplierReference, templateId });
 
     for (const proofFile of proofFiles) {
       if (proofFile.type === '-' && templateId) {
         await this.copyFileToS3(
           sftpClient,
-          `${baseSftpPath}/${expandedTemplateId}/${proofFile.name}`,
+          `${baseSftpPath}/${supplierReference}/${proofFile.name}`,
           `${baseS3Path}/${templateId}/${proofFile.name}`,
           idLogger
         );

@@ -145,7 +145,7 @@ function requestProof(
 
     const template = await templateStorageHelper.getTemplate(templateKey);
 
-    const expandedTemplateId = [
+    const supplierReference = [
       template.clientId,
       template.campaignId,
       template.id,
@@ -153,7 +153,7 @@ function requestProof(
       template.letterType,
     ].join('_');
 
-    const batchId = `${expandedTemplateId}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+    const batchId = `${supplierReference}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
 
     const proofFilenames = Array.from(
       { length: 3 },
@@ -233,7 +233,7 @@ function requestProof(
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
 
-    return expandedTemplateId;
+    return supplierReference;
   });
 }
 
@@ -258,7 +258,7 @@ function submit(
 }
 
 function checkEmail(
-  expandedTemplateId: string,
+  supplierReference: string,
   testStart: Date,
   emailTitle: string,
   extraTextToSearch: string
@@ -267,12 +267,12 @@ function checkEmail(
     await expect(async () => {
       const emailContents = await emailHelper.getEmailForTemplateId(
         process.env.TEST_EMAIL_BUCKET_PREFIX,
-        expandedTemplateId,
+        supplierReference,
         testStart,
         extraTextToSearch
       );
 
-      expect(emailContents).toContain(expandedTemplateId);
+      expect(emailContents).toContain(supplierReference);
       expect(emailContents).toContain('Valid Letter Template'); // template name
       expect(emailContents).toContain(emailTitle);
       expect(emailContents).toContain(extraTextToSearch);
@@ -315,14 +315,14 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    const expandedTemplateId = await requestProof(
+    const supplierReference = await requestProof(
       page,
       templateStorageHelper,
       templateKey
     );
 
     await checkEmail(
-      expandedTemplateId,
+      supplierReference,
       testStart,
       'Proof Requested',
       'proof-requested-sender'
@@ -331,7 +331,7 @@ test.describe('letter complete e2e journey', () => {
     await submit(page, templateStorageHelper, templateKey);
 
     await checkEmail(
-      expandedTemplateId,
+      supplierReference,
       testStart,
       'Template Submitted',
       'template-submitted-sender'
