@@ -630,6 +630,35 @@ describe('UpdateExpressionBuilder', () => {
     });
   });
 
+  describe('setValueInMap', () => {
+    test('correctly sets value in map', () => {
+      const builder = new UpdateCommandBuilder<
+        Record<string, Record<string, string>>
+      >(mockTableName, mockEntityKeys);
+
+      const res = builder
+        .setValueInMap(
+          'supplierReferences',
+          'supplier',
+          'supplier-reference-value'
+        )
+        .finalise();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeValues: {
+          ':supplier': 'supplier-reference-value',
+        },
+        ExpressionAttributeNames: {
+          '#supplier': 'supplier',
+          '#supplierReferences': 'supplierReferences',
+        },
+        UpdateExpression: `SET #supplierReferences.#supplier = :supplier`,
+      });
+    });
+  });
+
   describe('setValueInList', () => {
     test('fields are correctly populated when performing single set with value', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(

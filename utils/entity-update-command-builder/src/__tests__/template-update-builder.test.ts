@@ -167,6 +167,39 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
+  describe('setSupplierReference', () => {
+    test('sets supplier reference', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setSupplierReference('supplier', 'supplier-reference-value')
+        .build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#supplierReferences': 'supplierReferences',
+          '#supplier': 'supplier',
+          '#updatedAt': 'updatedAt',
+        },
+        ExpressionAttributeValues: {
+          ':supplier': 'supplier-reference-value',
+          ':updatedAt': '2025-01-01T09:00:00.000Z',
+        },
+        Key: {
+          id: 'Hello2',
+          owner: 'Hello1',
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression:
+          'SET #supplierReferences.#supplier = :supplier, #updatedAt = :updatedAt',
+      });
+    });
+  });
+
   describe('setLockTime', () => {
     test('sets lock time if no lock exists', () => {
       const builder = new TemplateUpdateBuilder(

@@ -73,6 +73,19 @@ export class UpdateCommandBuilder<Entity> {
     return this;
   }
 
+  setValueInMap<
+    V,
+    T extends Prop<Entity>,
+    K extends Extract<Entity[T], Record<string, V>>[string],
+  >(attributeName: T, mapKey: string, value: K) {
+    this._expressionAttributeNames[`#${attributeName}`] = attributeName;
+    this._expressionAttributeNames[`#${mapKey}`] = mapKey;
+    this._expressionAttributeValues[`:${mapKey}`] = value;
+    this._updateExpressionSet.SET[attributeName] =
+      `#${attributeName}.#${mapKey} = :${mapKey}`;
+    return this;
+  }
+
   setValueInOrCreateList<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attributeName: T,
     value: K
