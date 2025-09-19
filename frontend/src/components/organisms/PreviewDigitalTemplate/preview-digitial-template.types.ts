@@ -14,3 +14,14 @@ export type PreviewTemplateProps = {
     | typeof PreviewTemplateDetailsSms
   >;
 };
+
+export type PreviewTemplateRoutingProps = {
+  sectionHeading: string | undefined;
+  template: TemplateDto;
+  editPath: string;
+  previewDetailsComponent: React.ReactElement<
+    | typeof PreviewTemplateDetailsEmail
+    | typeof PreviewTemplateDetailsNhsApp
+    | typeof PreviewTemplateDetailsSms
+  >;
+};

@@ -9,6 +9,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import content from '@content/content';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
@@ -29,7 +30,14 @@ const PreviewNhsAppTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewNHSAppTemplate initialState={validatedTemplate} />;
+  const routingEnabled = await serverIsFeatureEnabled('routing');
+
+  return (
+    <PreviewNHSAppTemplate
+      initialState={validatedTemplate}
+      routingEnabled={routingEnabled}
+    />
+  );
 };
 
 export default PreviewNhsAppTemplatePage;

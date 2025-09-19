@@ -19,12 +19,21 @@ exports[`ViewEmailTemplate component matches submitted snapshot 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Example template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example template
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >

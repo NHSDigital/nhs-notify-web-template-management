@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
+import {
+  PreviewDigitalTemplate,
+  PreviewDigitalTemplateEditOnly,
+} from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   ErrorState,
@@ -19,6 +22,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewSMSTemplate({
   initialState,
+  routingEnabled,
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -40,6 +44,37 @@ export function PreviewSMSTemplate({
   const html = renderSMSMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
+  const EditOnlyPreview = (
+    <PreviewDigitalTemplateEditOnly
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      editPath={`/edit-text-message-template/${initialState.id}`}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsSms template={initialState} message={html} />
+      }
+    />
+  );
+
+  const EditSubmitPreview = (
+    <PreviewDigitalTemplate
+      template={initialState}
+      sectionHeading={isFromEditPage ? sectionHeading : undefined}
+      form={{
+        ...form,
+        state: {
+          errorState,
+        },
+        action,
+        formId: 'preview-sms-template',
+        radiosId: 'previewSMSTemplateAction',
+        formAttributes: { onSubmit: formValidate },
+      }}
+      previewDetailsComponent={
+        <PreviewTemplateDetailsSms template={initialState} message={html} />
+      }
+    />
+  );
+
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
@@ -50,26 +85,7 @@ export function PreviewSMSTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewDigitalTemplate
-              template={initialState}
-              sectionHeading={isFromEditPage ? sectionHeading : undefined}
-              form={{
-                ...form,
-                state: {
-                  errorState,
-                },
-                action,
-                formId: 'preview-sms-template',
-                radiosId: 'previewSMSTemplateAction',
-                formAttributes: { onSubmit: formValidate },
-              }}
-              previewDetailsComponent={
-                <PreviewTemplateDetailsSms
-                  template={initialState}
-                  message={html}
-                />
-              }
-            />
+            {routingEnabled ? EditOnlyPreview : EditSubmitPreview}
             <p>
               <Link
                 href='/message-templates'

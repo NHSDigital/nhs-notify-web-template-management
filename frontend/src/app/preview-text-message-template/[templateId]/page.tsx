@@ -9,6 +9,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import content from '@content/content';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const { pageTitle } = content.components.previewSMSTemplate;
 
@@ -29,7 +30,14 @@ const PreviewSMSTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewSMSTemplate initialState={validatedTemplate} />;
+  const routingEnabled = await serverIsFeatureEnabled('routing');
+
+  return (
+    <PreviewSMSTemplate
+      initialState={validatedTemplate}
+      routingEnabled={routingEnabled}
+    />
+  );
 };
 
 export default PreviewSMSTemplatePage;
