@@ -11,6 +11,8 @@ import {
   NhsAppProperties,
   SmsProperties,
   TemplateDto,
+  LetterType,
+  Language,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -31,6 +33,10 @@ export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
 
 export type ValidatedTemplateDto = TemplateDto &
   (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
+
+export const $LetterType = schemaFor<LetterType>()(z.enum(LETTER_TYPE_LIST));
+
+export const $Language = schemaFor<Language>()(z.enum(LANGUAGE_LIST));
 
 const $ProofFileDetails = schemaFor<ProofFileDetails>()(
   z.object({
@@ -81,7 +87,7 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
 export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
   z.object({
     templateType: z.literal('LETTER'),
-    letterType: z.enum(LETTER_TYPE_LIST),
+    letterType: $LetterType,
     language: z.enum(LANGUAGE_LIST),
   })
 );

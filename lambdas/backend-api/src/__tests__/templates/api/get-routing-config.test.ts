@@ -1,22 +1,25 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
-import { mock, mockDeep } from 'jest-mock-extended';
-import { TemplateDto } from 'nhs-notify-backend-client';
-import { createHandler } from '@backend-api/templates/api/submit';
-import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { mock } from 'jest-mock-extended';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
+import { createHandler } from '@backend-api/templates/api/get-routing-config';
+import { routingConfig } from '../fixtures/routing-config';
 
-const setup = () => {
-  const templateClient = mock<TemplateClient>();
-  const emailClient = mockDeep<EmailClient>();
+jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
+  logger: mock<Logger>({
+    child: jest.fn().mockReturnThis(),
+  }),
+}));
 
-  const handler = createHandler({ templateClient, emailClient });
+function setup() {
+  const routingConfigClient = mock<RoutingConfigClient>();
+  const mocks = { routingConfigClient };
+  const handler = createHandler(mocks);
 
-  return { handler, mocks: { templateClient } };
-};
+  return { handler, mocks };
+}
 
-describe('Template API - Submit', () => {
-  beforeEach(jest.resetAllMocks);
-
+describe('GetRoutingConfig handler', () => {
   test.each([
     ['undefined', undefined],
     ['missing user', { clientId: 'client-id', user: undefined }],
@@ -28,7 +31,9 @@ describe('Template API - Submit', () => {
 
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
-        pathParameters: { templateId: 'id' },
+        pathParameters: {
+          routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
+        },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -41,19 +46,18 @@ describe('Template API - Submit', () => {
         }),
       });
 
-      expect(mocks.templateClient.submitTemplate).not.toHaveBeenCalled();
+      expect(mocks.routingConfigClient.getRoutingConfig).not.toHaveBeenCalled();
     }
   );
 
-  test('should return 400 - Invalid request when, no templateId', async () => {
+  test('should return 400 - Invalid request when no routingConfigId', async () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
-      body: JSON.stringify({ name: 'test' }),
-      pathParameters: { templateId: undefined },
+      pathParameters: { routingConfigId: undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -66,13 +70,13 @@ describe('Template API - Submit', () => {
       }),
     });
 
-    expect(mocks.templateClient.submitTemplate).not.toHaveBeenCalled();
+    expect(mocks.routingConfigClient.getRoutingConfig).not.toHaveBeenCalled();
   });
 
-  test('should return error when submitting template fails', async () => {
+  test('should return error when getting routing config fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.submitTemplate.mockResolvedValueOnce({
+    mocks.routingConfigClient.getRoutingConfig.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -85,7 +89,9 @@ describe('Template API - Submit', () => {
       requestContext: {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
-      pathParameters: { templateId: '1-2-3' },
+      pathParameters: {
+        routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -98,46 +104,38 @@ describe('Template API - Submit', () => {
       }),
     });
 
-    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
+    expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
+      '3690d344-731f-4f60-9047-2c63c96623a2',
+      'nhs-notify-client-id'
+    );
   });
 
-  test('should return template', async () => {
+  test('should return routing config', async () => {
     const { handler, mocks } = setup();
 
-    const response: TemplateDto = {
-      id: '1-2-3',
-      name: 'updated-name',
-      message: 'message',
-      templateStatus: 'SUBMITTED',
-      templateType: 'SMS',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    mocks.templateClient.submitTemplate.mockResolvedValueOnce({
-      data: response,
+    mocks.routingConfigClient.getRoutingConfig.mockResolvedValueOnce({
+      data: routingConfig,
     });
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
-      pathParameters: { templateId: '1-2-3' },
+      pathParameters: {
+        routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, data: response }),
+      body: JSON.stringify({ statusCode: 200, data: routingConfig }),
     });
 
-    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
+    expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
+      '3690d344-731f-4f60-9047-2c63c96623a2',
+      'nhs-notify-client-id'
+    );
   });
 });

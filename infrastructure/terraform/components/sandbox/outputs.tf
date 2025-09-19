@@ -69,3 +69,7 @@ output "test_email_bucket_prefix" {
 output "event_cache_bucket_name" {
   value = module.eventpub.s3_bucket_event_cache.bucket
 }
+
+output "routing_config_table_name" {
+  value = module.backend_api.routing_config_table_name
+}

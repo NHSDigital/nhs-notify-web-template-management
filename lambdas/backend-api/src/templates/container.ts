@@ -1,18 +1,20 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { SESClient } from '@aws-sdk/client-ses';
-import { TemplateClient } from './app/template-client';
-import { TemplateRepository } from './infra';
-import { LetterUploadRepository } from './infra/letter-upload-repository';
-import { LetterFileRepository } from './infra/letter-file-repository';
-import { ProofingQueue } from './infra/proofing-queue';
 import { SQSClient } from '@aws-sdk/client-sqs';
-import { loadConfig } from './infra/config';
+import { SSMClient } from '@aws-sdk/client-ssm';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import NodeCache from 'node-cache';
 import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { TemplateClient } from './app/template-client';
+import { RoutingConfigClient } from './app/routing-config-client';
+import { TemplateRepository } from './infra';
+import { loadConfig } from './infra/config';
 import { ClientConfigRepository } from './infra/client-config-repository';
-import { SSMClient } from '@aws-sdk/client-ssm';
-import NodeCache from 'node-cache';
+import { LetterFileRepository } from './infra/letter-file-repository';
+import { LetterUploadRepository } from './infra/letter-upload-repository';
+import { ProofingQueue } from './infra/proofing-queue';
+import { RoutingConfigRepository } from './infra/routing-config-repository';
 
 const awsConfig = { region: 'eu-west-2' };
 const sqsClient = new SQSClient(awsConfig);
@@ -67,12 +69,20 @@ export function createContainer() {
     logger
   );
 
+  const routingConfigRepository = new RoutingConfigRepository(
+    ddbDocClient,
+    config.routingConfigTableName
+  );
+
+  const routingConfigClient = new RoutingConfigClient(routingConfigRepository);
+
   return {
-    templateClient,
-    templateRepository,
-    letterUploadRepository,
     clientConfigRepository,
     emailClient,
+    letterUploadRepository,
+    routingConfigClient,
+    templateClient,
+    templateRepository,
   };
 }
 
