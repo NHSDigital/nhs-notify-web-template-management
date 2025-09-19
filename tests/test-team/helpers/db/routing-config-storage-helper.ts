@@ -3,7 +3,7 @@ import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
-import type { RoutingConfig } from 'helpers/types';
+import type { RoutingConfig } from 'nhs-notify-backend-client';
 
 type RoutingConfigKey = Pick<RoutingConfig, 'id' | 'owner'>;
 

@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
+import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -7,7 +8,6 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
-import { RoutingConfig } from 'helpers/types';
 
 test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   const authHelper = createAuthHelper();
