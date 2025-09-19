@@ -59,9 +59,11 @@ export function ContentPreview({
 export function StandardDetailRows({
   template,
   templateTypeText,
+  campaignId,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
+  campaignId?: string;
 }>): JSX.Element {
   return (
     <>
@@ -69,6 +71,12 @@ export function StandardDetailRows({
         <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
         <SummaryList.Value>{template.id}</SummaryList.Value>
       </SummaryList.Row>
+      {campaignId && (
+        <SummaryList.Row id='campaign-id'>
+          <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
+          <SummaryList.Value>{campaignId}</SummaryList.Value>
+        </SummaryList.Row>
+      )}
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>

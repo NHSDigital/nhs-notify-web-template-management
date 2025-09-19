@@ -40,6 +40,7 @@ export default function PreviewTemplateDetailsLetter({
               template.letterType,
               template.language
             )}
+            campaignId={template.campaignId}
           />
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateFile}</SummaryList.Key>

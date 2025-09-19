@@ -102,6 +102,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -166,6 +167,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -261,6 +263,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {

@@ -11,12 +11,14 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
   public readonly pdfLinks: Locator;
+  public readonly campaignId: Locator;
 
   constructor(page: Page) {
     super(page);
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
+    this.campaignId = page.locator('[id="campaign-id"]');
   }
 
   async clickContinueButton() {

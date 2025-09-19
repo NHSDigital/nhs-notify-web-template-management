@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import {
   TemplateFormState,
-  LetterTemplate,
+  UploadLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 
@@ -26,12 +26,30 @@ jest.mock('react', () => {
 test('renders page with preloaded field values', () => {
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: 'ar',
       })}
+      campaignIds={['campaign-id']}
+    />
+  );
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('renders page with multiple campaign ids', () => {
+  const container = render(
+    <LetterTemplateForm
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
+        errorState: undefined,
+        name: 'template-name',
+        letterType: 'x1',
+        language: 'ar',
+      })}
+      campaignIds={['campaign-id', 'other-campaign-id']}
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -43,12 +61,14 @@ test('shows right-to-left language warning when language changes', () => {
 
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: initialLanguage,
       })}
+      campaignIds={['campaign-id']}
     />
   );
 
@@ -68,12 +88,14 @@ test('hides right-to-left language warning when language changes', () => {
 
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: initialLanguage,
       })}
+      campaignIds={['campaign-id']}
     />
   );
 
@@ -90,7 +112,8 @@ test('hides right-to-left language warning when language changes', () => {
 test('renders page one error', () => {
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: {
           formErrors: [],
           fieldErrors: {
@@ -101,6 +124,7 @@ test('renders page one error', () => {
         letterType: 'x0',
         language: 'en',
       })}
+      campaignIds={['campaign-id']}
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -109,7 +133,8 @@ test('renders page one error', () => {
 test('renders page with multiple errors', () => {
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: {
           formErrors: [],
           fieldErrors: {
@@ -124,6 +149,7 @@ test('renders page with multiple errors', () => {
         letterType: undefined,
         language: undefined,
       })}
+      campaignIds={['campaign-id']}
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -132,12 +158,14 @@ test('renders page with multiple errors', () => {
 test('Client-side validation triggers', () => {
   const container = render(
     <LetterTemplateForm
-      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
         errorState: undefined,
         name: undefined,
         letterType: undefined,
         language: undefined,
       })}
+      campaignIds={['campaign-id']}
     />
   );
   const submitButton = screen.getByTestId('submit-button');

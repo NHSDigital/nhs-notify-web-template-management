@@ -32,7 +32,7 @@ test.describe('Request Proof Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('when user visits page, then page is loaded, can click to go to submit page', async ({
+  test('when user visits page, then page is loaded, request proof button is visible', async ({
     page,
     baseURL,
   }) => {

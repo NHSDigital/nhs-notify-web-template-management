@@ -23,24 +23,6 @@ describe('UploadLetterTemplatePage', () => {
     jest.resetAllMocks();
   });
 
-  it('should render UploadLetterTemplatePage', async () => {
-    mockGetSessionServer.mockResolvedValueOnce({
-      accessToken: 'mocktoken',
-      clientId: 'client1',
-    });
-    mockFetchClient.mockResolvedValueOnce({
-      data: {
-        campaignId: 'campaign2',
-        features: {},
-      },
-    });
-
-    const page = await UploadLetterTemplatePage();
-
-    expect(await generateMetadata()).toEqual({ title: pageTitle });
-    expect(page).toMatchSnapshot();
-  });
-
   it('should check client ID and campaign ID', async () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
@@ -57,6 +39,63 @@ describe('UploadLetterTemplatePage', () => {
 
     expect(mockGetSessionServer).toHaveBeenCalled();
     expect(mockFetchClient).toHaveBeenCalled();
+  });
+
+  it('should render UploadLetterTemplatePage with campaignIds field when available', async () => {
+    mockGetSessionServer.mockResolvedValueOnce({
+      accessToken: 'mocktoken',
+      clientId: 'client1',
+    });
+    mockFetchClient.mockResolvedValueOnce({
+      data: {
+        campaignIds: ['campaign-id', 'other-campaign-id'],
+        campaignId: 'campaign-id',
+        features: {},
+      },
+    });
+
+    const page = await UploadLetterTemplatePage();
+
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
+    expect(page).toMatchSnapshot();
+  });
+
+  it('should render UploadLetterTemplatePage with campaignId field when campaignIds is not available', async () => {
+    mockGetSessionServer.mockResolvedValueOnce({
+      accessToken: 'mocktoken',
+      clientId: 'client1',
+    });
+    mockFetchClient.mockResolvedValueOnce({
+      data: {
+        campaignIds: undefined,
+        campaignId: 'campaign-id',
+        features: {},
+      },
+    });
+
+    const page = await UploadLetterTemplatePage();
+
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
+    expect(page).toMatchSnapshot();
+  });
+
+  it('should redirect to error page when client configuration is not present', async () => {
+    const mockRedirect = jest.mocked(redirect);
+
+    mockGetSessionServer.mockResolvedValueOnce({
+      accessToken: 'mocktoken',
+      clientId: 'client-id',
+    });
+    mockFetchClient.mockResolvedValueOnce({
+      data: null,
+    });
+
+    await UploadLetterTemplatePage();
+
+    expect(mockRedirect).toHaveBeenCalledWith(
+      '/upload-letter-template/client-id-and-campaign-id-required',
+      RedirectType.replace
+    );
   });
 
   it('should redirect to error page when client ID is not present', async () => {
@@ -81,7 +120,7 @@ describe('UploadLetterTemplatePage', () => {
     );
   });
 
-  it('should redirect to error page when campaign ID is not present', async () => {
+  it('should redirect to error page when campaignIds is present and empty', async () => {
     const mockRedirect = jest.mocked(redirect);
 
     mockGetSessionServer.mockResolvedValueOnce({
@@ -90,6 +129,30 @@ describe('UploadLetterTemplatePage', () => {
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
+        campaignIds: [],
+        campaignId: 'campaign-id',
+        features: {},
+      },
+    });
+
+    await UploadLetterTemplatePage();
+
+    expect(mockRedirect).toHaveBeenCalledWith(
+      '/upload-letter-template/client-id-and-campaign-id-required',
+      RedirectType.replace
+    );
+  });
+
+  it('should redirect to error page when neither campaignIds nor campaignId is present', async () => {
+    const mockRedirect = jest.mocked(redirect);
+
+    mockGetSessionServer.mockResolvedValueOnce({
+      accessToken: 'mocktoken',
+      clientId: 'client2',
+    });
+    mockFetchClient.mockResolvedValueOnce({
+      data: {
+        campaignIds: undefined,
         campaignId: undefined,
         features: {},
       },

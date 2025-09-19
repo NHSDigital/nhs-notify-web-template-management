@@ -5,13 +5,12 @@ import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import {
   UploadLetterTemplate,
-  LetterTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 import { $UploadLetterTemplateForm } from './form-schema';
 
 export async function processFormActions(
-  formState: TemplateFormState<UploadLetterTemplate | LetterTemplate>,
+  formState: TemplateFormState<UploadLetterTemplate>,
   formData: FormData
 ): Promise<TemplateFormState<UploadLetterTemplate>> {
   const parsedForm = $UploadLetterTemplateForm.safeParse(
@@ -29,6 +28,7 @@ export async function processFormActions(
 
   const {
     letterTemplateName,
+    letterTemplateCampaignId,
     letterTemplateLetterType,
     letterTemplateLanguage,
     letterTemplatePdf,
@@ -38,6 +38,7 @@ export async function processFormActions(
   const updatedTemplate: UploadLetterTemplate = {
     ...formState,
     name: letterTemplateName,
+    campaignId: letterTemplateCampaignId,
     letterType: letterTemplateLetterType,
     language: letterTemplateLanguage,
   };

@@ -1,9 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage 1`] = `
+exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with campaignId field when campaignIds is not available 1`] = `
 <LetterTemplateForm
+  campaignIds={
+    [
+      "campaign-id",
+    ]
+  }
   initialState={
     {
+      "campaignId": "campaign-id",
+      "language": "en",
+      "letterType": "x0",
+      "name": "",
+      "templateType": "LETTER",
+    }
+  }
+/>
+`;
+
+exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with campaignIds field when available 1`] = `
+<LetterTemplateForm
+  campaignIds={
+    [
+      "campaign-id",
+      "other-campaign-id",
+    ]
+  }
+  initialState={
+    {
+      "campaignId": "",
       "language": "en",
       "letterType": "x0",
       "name": "",
