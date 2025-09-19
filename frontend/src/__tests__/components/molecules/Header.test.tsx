@@ -162,9 +162,7 @@ describe('NhsNotifyHeader', () => {
 
     describe(`with 'routing' flag enabled`, () => {
       it('renders both the navigation links with correct hrefs', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: true },
-        });
+        const header = await NhsNotifyHeader({ routingEnabled: true });
 
         render(header);
 
@@ -186,9 +184,7 @@ describe('NhsNotifyHeader', () => {
 
     describe(`with 'routing' flag disabled`, () => {
       it('renders the templates link with correct href', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: false },
-        });
+        const header = await NhsNotifyHeader({ routingEnabled: false });
 
         render(header);
 
@@ -201,9 +197,7 @@ describe('NhsNotifyHeader', () => {
       });
 
       it('should not render the message plans link', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: false },
-        });
+        const header = await NhsNotifyHeader({ routingEnabled: false });
 
         render(header);
 
