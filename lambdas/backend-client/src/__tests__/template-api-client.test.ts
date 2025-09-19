@@ -223,7 +223,7 @@ describe('TemplateAPIClient', () => {
 
     axiosMock.onPost('/v1/template/real-id').reply(200, {
       statusCode: 200,
-      data: data,
+      data,
     });
 
     const client = new TemplateApiClient();
@@ -282,7 +282,7 @@ describe('TemplateAPIClient', () => {
 
     axiosMock.onGet('/v1/template/real-id').reply(200, {
       statusCode: 200,
-      data: data,
+      data,
     });
 
     const client = new TemplateApiClient();
@@ -379,7 +379,7 @@ describe('TemplateAPIClient', () => {
 
       axiosMock.onPatch('/v1/template/real-id/submit').reply(200, {
         statusCode: 200,
-        data: data,
+        data,
       });
 
       const client = new TemplateApiClient();
@@ -472,7 +472,7 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
       };
 
-      axiosMock.onPost('/v1/template/real-id/proof').reply(204, { data: data });
+      axiosMock.onPost('/v1/template/real-id/proof').reply(204, { data });
 
       const client = new TemplateApiClient();
 
