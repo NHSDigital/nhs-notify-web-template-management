@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "amplify" {
     ]
 
     resources = [
-      data.aws_ssm_parameter.github_packages_read_pat.arn
+      data.aws_ssm_parameter.github_pat.arn
     ]
   }
 }
