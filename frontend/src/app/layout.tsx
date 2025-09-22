@@ -9,7 +9,6 @@ import { NhsNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -54,8 +53,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const routingEnabled = await serverIsFeatureEnabled('routing');
-
   return (
     <html lang='en'>
       <head>
@@ -71,7 +68,7 @@ export default async function RootLayout({
         <CookiesProvider>
           <AuthProvider>
             <NHSNotifySkipLink />
-            <NhsNotifyHeader routingEnabled={routingEnabled} />
+            <NhsNotifyHeader />
             <NHSNotifyContainer>{children}</NHSNotifyContainer>
             <NHSNotifyFooter />
             <LogoutWarningModal
