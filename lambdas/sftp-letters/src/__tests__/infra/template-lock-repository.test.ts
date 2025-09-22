@@ -45,6 +45,7 @@ describe('TemplateLockRepository', () => {
           '#updatedAt': 'updatedAt',
           '#sftpSendLockTime': 'sftpSendLockTime',
           '#supplier': 'supplier',
+          '#supplierReferences': 'supplierReferences',
         },
         ExpressionAttributeValues: {
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
