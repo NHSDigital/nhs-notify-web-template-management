@@ -200,6 +200,36 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
+  describe('initialiseSupplierReferences', () => {
+    test('initialises supplier references', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.initialiseSupplierReferences().build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#supplierReferences': 'supplierReferences',
+          '#updatedAt': 'updatedAt',
+        },
+        ExpressionAttributeValues: {
+          ':supplierReferences': {},
+          ':updatedAt': '2025-01-01T09:00:00.000Z',
+        },
+        Key: {
+          id: 'Hello2',
+          owner: 'Hello1',
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression:
+          'SET #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
+      });
+    });
+  });
+
   describe('setLockTime', () => {
     test('sets lock time if no lock exists', () => {
       const builder = new TemplateUpdateBuilder(

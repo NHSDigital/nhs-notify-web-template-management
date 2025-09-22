@@ -45,6 +45,17 @@ export class UpdateCommandBuilder<Entity> {
     return this;
   }
 
+  setValueIfNotExists<T extends Prop<Entity>, K extends PropType<Entity, T>>(
+    attributeName: T,
+    value: K
+  ) {
+    this._expressionAttributeNames[`#${attributeName}`] = attributeName;
+    this._expressionAttributeValues[`:${attributeName}`] = value;
+    this._updateExpressionSet.SET[attributeName] =
+      `#${attributeName} = if_not_exists(#${attributeName}, :${attributeName})`;
+    return this;
+  }
+
   addToValue<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attributeName: T,
     value: K

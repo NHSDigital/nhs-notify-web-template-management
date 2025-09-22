@@ -49,6 +49,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  initialiseSupplierReferences() {
+    this.updateBuilder.setValueIfNotExists('supplierReferences', {});
+    return this;
+  }
+
   setSupplierReference(supplier: string, supplierReference: string) {
     this.updateBuilder.setValueInMap(
       'supplierReferences',

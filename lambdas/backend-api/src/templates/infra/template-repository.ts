@@ -652,6 +652,11 @@ export class TemplateRepository {
       )
         .setStatus('WAITING_FOR_PROOF')
         .expectedStatus('PENDING_PROOF_REQUEST')
+
+        // dynamodb does not support conditional initialising of maps, so we have to
+        // initialise an empty map here, then we set supplier-specific values in the
+        // per-supplier sftp send lambda
+        .initialiseSupplierReferences()
         .expectedTemplateType('LETTER')
         .expectedClientId(user.clientId)
         .expectTemplateExists()

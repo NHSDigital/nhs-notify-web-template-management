@@ -105,6 +105,29 @@ describe('UpdateExpressionBuilder', () => {
     });
   });
 
+  describe('setValueIfNotExists', () => {
+    test("sets value if it doesn't exist", () => {
+      const builder = new UpdateCommandBuilder<Record<string, string>>(
+        mockTableName,
+        mockEntityKeys
+      );
+
+      const res = builder.setValueIfNotExists('newKey', 'newValue').finalise();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeValues: {
+          ':newKey': 'newValue',
+        },
+        ExpressionAttributeNames: {
+          '#newKey': 'newKey',
+        },
+        UpdateExpression: 'SET #newKey = if_not_exists(#newKey, :newKey)',
+      });
+    });
+  });
+
   describe('conditions', () => {
     const operandTestCases: [op: ConditionOperator, negated: boolean][] = [
       ['<', false],
