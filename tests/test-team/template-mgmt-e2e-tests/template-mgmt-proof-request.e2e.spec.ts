@@ -61,6 +61,7 @@ test.describe('SFTP proof request send', () => {
       // the template's 'personalisationParameters' have no effect on the test
       // the sender lambda does not read the template
       personalisationParameters,
+      supplierReferences: {},
     };
 
     const key = {
