@@ -26,9 +26,7 @@ let routingDisabledUser: TestUser;
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingDisabledUser = await authHelper.getTestUser(
-    testUsers.RoutingDisabled.userId
-  );
+  routingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
 
   return {
     empty: {

@@ -14,7 +14,7 @@ export type ClientConfiguration = {
   name?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6 | 'RoutingDisabled'}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -74,17 +74,6 @@ export const testClients = {
    */
   Client6: {
     campaignId: 'Campaign6',
-    features: {
-      proofing: true,
-      routing: false,
-    },
-  },
-  /**
-   * ClientRoutingDisabled has routing disabled
-   */
-  ClientRoutingDisabled: {
-    campaignId: 'RoutingDisabled',
-    name: 'NHS Test Client RoutingDisabled',
     features: {
       proofing: true,
       routing: false,
