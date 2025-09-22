@@ -157,7 +157,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('matches snapshot (authenticated)', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       const container = render(header);
       expect(container.asFragment()).toMatchSnapshot();
