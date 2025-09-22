@@ -32,7 +32,7 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator(
       '[id="preview-email-template-submit-button"]'
     );
-    this.editButton = page.locator('[data-testid="edit-template-link"]');
+    this.editButton = page.locator('[data-testid="edit-template-button"]');
   }
 
   async clickContinueButton() {

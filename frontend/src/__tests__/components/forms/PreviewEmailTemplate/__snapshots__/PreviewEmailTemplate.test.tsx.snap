@@ -951,7 +951,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
-          data-testid="edit-template-link"
+          data-testid="edit-template-button"
           draggable="false"
           href="/templates/edit-email-template/template-id"
           role="button"
@@ -1357,7 +1357,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
-          data-testid="edit-template-link"
+          data-testid="edit-template-button"
           draggable="false"
           href="/templates/edit-email-template/template-id"
           role="button"

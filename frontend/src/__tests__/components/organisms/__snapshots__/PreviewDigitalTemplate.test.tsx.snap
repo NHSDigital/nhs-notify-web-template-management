@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewDigitalTemplate matches error snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
@@ -122,7 +122,7 @@ exports[`PreviewDigitalTemplate matches error snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewDigitalTemplate matches snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
@@ -219,34 +219,13 @@ exports[`PreviewDigitalTemplate matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewDigitalTemplateEditOnly matches snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
 <DocumentFragment>
   Preview
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"
-    data-testid="edit-template-link"
-    draggable="false"
-    href="/templates/edit-nhs-app-template/template-id"
-    role="button"
-  >
-    Edit template
-  </a>
-</DocumentFragment>
-`;
-
-exports[`PreviewDigitalTemplateEditOnly matches snapshot with section heading 1`] = `
-<DocumentFragment>
-  <div
-    class="notify-confirmation-panel nhsuk-heading-l"
-  >
-    Template saved
-  </div>
-  Preview
-  <a
-    aria-disabled="false"
-    class="nhsuk-button nhsuk-button--secondary"
-    data-testid="edit-template-link"
+    data-testid="edit-template-button"
     draggable="false"
     href="/templates/edit-nhs-app-template/template-id"
     role="button"

@@ -239,6 +239,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
             Continue
           </button>
         </form>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"
@@ -492,6 +493,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
             Continue
           </button>
         </form>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"
@@ -713,6 +715,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             Continue
           </button>
         </form>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"
@@ -851,13 +854,14 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
-          data-testid="edit-template-link"
+          data-testid="edit-template-button"
           draggable="false"
           href="/templates/edit-nhs-app-template/template-id"
           role="button"
         >
           Edit template
         </a>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"
@@ -991,13 +995,14 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
-          data-testid="edit-template-link"
+          data-testid="edit-template-button"
           draggable="false"
           href="/templates/edit-nhs-app-template/template-id"
           role="button"
         >
           Edit template
         </a>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"
@@ -1214,6 +1219,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             Continue
           </button>
         </form>
+         
         <p>
           <a
             data-testid="back-to-templates-link-bottom"

@@ -29,7 +29,7 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator(
       '[id="preview-sms-template-submit-button"]'
     );
-    this.editButton = page.locator('[data-testid="edit-template-link"]');
+    this.editButton = page.locator('[data-testid="edit-template-button"]');
   }
 
   async clickContinueButton() {

@@ -1005,7 +1005,7 @@ const requestProof = {
   },
 };
 
-const previewDigitalTemplateEditOnly = {
+const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
@@ -1023,7 +1023,7 @@ const content = {
     messageFormatting,
     nameYourTemplate,
     personalisation,
-    previewDigitalTemplateEditOnly,
+    previewDigitalTemplate,
     previewEmailTemplate,
     previewLetterTemplate,
     previewNHSAppTemplate,
