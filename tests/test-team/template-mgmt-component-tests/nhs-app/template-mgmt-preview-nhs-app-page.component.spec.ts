@@ -53,7 +53,7 @@ async function createTemplates() {
         randomUUID(),
         routingDisabledUser
       ),
-      name: 'test-template-nhs-app',
+      name: 'nhs-app-template-routing-disabled',
       message: 'test-template-message',
     },
   };

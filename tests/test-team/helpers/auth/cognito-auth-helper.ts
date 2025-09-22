@@ -111,7 +111,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'Client6',
   },
   /**
-   * RoutingDisabled has a routing disabled
+   * RoutingDisabled has routing disabled
    */
   RoutingDisabled: {
     userId: 'RoutingEnabledUser',

@@ -180,7 +180,7 @@ test.describe('Preview SMS message template Page', () => {
     });
 
     test.describe('Page functionality', () => {
-      test('when user submits form with "Edit" data, then the "Create SMS template" page is displayed', async ({
+      test('when user submits form with "Edit" data, then the "Edit SMS template" page is displayed', async ({
         baseURL,
         page,
       }) => {

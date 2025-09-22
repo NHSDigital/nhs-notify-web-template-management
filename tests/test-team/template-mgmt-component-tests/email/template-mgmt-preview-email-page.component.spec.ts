@@ -51,7 +51,7 @@ async function createTemplates() {
     } as Template,
     routingDisabled: {
       ...TemplateFactory.createEmailTemplate(randomUUID(), routingDisabledUser),
-      name: 'test-template-email',
+      name: 'email-template-routing-disabled',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
     } as Template,
@@ -183,7 +183,7 @@ test.describe('Preview Email message template Page', () => {
     });
 
     test.describe('Page functionality', () => {
-      test('when user submits form with "Edit" data, then the "Create Email template" page is displayed', async ({
+      test('when user submits form with "Edit" data, then the "Edit Email template" page is displayed', async ({
         baseURL,
         page,
       }) => {
