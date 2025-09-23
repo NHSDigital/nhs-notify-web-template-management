@@ -105,6 +105,29 @@ describe('UpdateExpressionBuilder', () => {
     });
   });
 
+  describe('setValueIfNotExists', () => {
+    test("sets value if it doesn't exist", () => {
+      const builder = new UpdateCommandBuilder<Record<string, string>>(
+        mockTableName,
+        mockEntityKeys
+      );
+
+      const res = builder.setValueIfNotExists('newKey', 'newValue').finalise();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeValues: {
+          ':newKey': 'newValue',
+        },
+        ExpressionAttributeNames: {
+          '#newKey': 'newKey',
+        },
+        UpdateExpression: 'SET #newKey = if_not_exists(#newKey, :newKey)',
+      });
+    });
+  });
+
   describe('conditions', () => {
     const operandTestCases: [op: ConditionOperator, negated: boolean][] = [
       ['<', false],
@@ -626,6 +649,35 @@ describe('UpdateExpressionBuilder', () => {
         Key: mockEntityKeys,
         TableName: mockTableName,
         UpdateExpression: 'SET #ATTRIBUTE1 = :ATTRIBUTE1',
+      });
+    });
+  });
+
+  describe('setValueInMap', () => {
+    test('correctly sets value in map', () => {
+      const builder = new UpdateCommandBuilder<
+        Record<string, Record<string, string>>
+      >(mockTableName, mockEntityKeys);
+
+      const res = builder
+        .setValueInMap(
+          'supplierReferences',
+          'supplier',
+          'supplier-reference-value'
+        )
+        .finalise();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeValues: {
+          ':supplier': 'supplier-reference-value',
+        },
+        ExpressionAttributeNames: {
+          '#supplier': 'supplier',
+          '#supplierReferences': 'supplierReferences',
+        },
+        UpdateExpression: `SET #supplierReferences.#supplier = :supplier`,
       });
     });
   });

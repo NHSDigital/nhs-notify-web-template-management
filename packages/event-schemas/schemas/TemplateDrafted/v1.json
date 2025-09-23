@@ -411,6 +411,15 @@
             "type": "string",
             "maxLength": 1000
           }
+        },
+        "supplierReferences": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "required": [

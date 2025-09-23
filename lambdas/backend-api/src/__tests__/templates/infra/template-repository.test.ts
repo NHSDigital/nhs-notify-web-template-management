@@ -2108,6 +2108,7 @@ describe('templateRepository', () => {
           '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
           '#proofingEnabled': 'proofingEnabled',
+          '#supplierReferences': 'supplierReferences',
         },
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
@@ -2116,13 +2117,14 @@ describe('templateRepository', () => {
           ':condition_5_proofingEnabled': true,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':supplierReferences': {},
         },
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
         UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+          'SET #templateStatus = :templateStatus, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
       });
     });
 
