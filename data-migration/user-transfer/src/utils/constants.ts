@@ -1,6 +1,10 @@
 export type Parameters = {
-  sourceOwner?: string;
-  destinationOwner?: string;
   environment: string;
   component: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  userPoolId: string;
+  region: string;
+  sessionToken: string;
+  flag?: string;
 };

@@ -9,10 +9,10 @@ import {
   ScanCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { Parameters } from '@/src/utils/constants';
+import { UserData } from './cognito-utils';
 
 const client = new DynamoDBClient({ region: 'eu-west-2' });
 
-// change 'sandbox' back to 'app' when testing on prod environment
 function getTableName(parameters: Parameters) {
   const { environment, component } = parameters;
   return `nhs-notify-${environment}-${component}-api-templates`;
@@ -64,22 +64,29 @@ export async function retrieveTemplates(
 export async function updateItem(
   item: Record<string, AttributeValue>,
   parameters: Parameters,
-  newClientId: string
+  user: UserData,
+  DRY_RUN: boolean = false
 ): Promise<void> {
   const tableName = getTableName(parameters);
-  console.log({ item, parameters, newClientId, tableName });
-  await client.send(
-    new PutItemCommand({
-      Item: {
-        ...item,
-        owner: { S: `CLIENT#${newClientId}` },
-        clientId: { S: newClientId },
-        createdBy: item.owner,
-        updatedBy: item.owner,
-      },
-      TableName: tableName,
-    })
-  );
+  if (DRY_RUN) {
+    console.log(
+      `[DRY_RUN] Would update template id from ${item.id} to CLIENT#${user.clientId}`
+    );
+  } else {
+    await client.send(
+      new PutItemCommand({
+        Item: {
+          ...item,
+          owner: { S: `CLIENT#${user.clientId}` },
+          clientId: { S: user.clientId },
+          createdBy: item.owner,
+          updatedBy: item.owner,
+        },
+        TableName: tableName,
+      })
+    );
+    console.log('Template data migrated');
+  }
 }
 
 export async function deleteItem(
