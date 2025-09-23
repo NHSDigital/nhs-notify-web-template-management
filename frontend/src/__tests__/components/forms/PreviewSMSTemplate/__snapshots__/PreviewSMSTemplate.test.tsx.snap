@@ -853,7 +853,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
           class="nhsuk-button nhsuk-button--secondary"
           data-testid="edit-template-button"
           draggable="false"
-          href="/templates/edit-text-message-template/template-id"
+          href="/edit-text-message-template/template-id"
           role="button"
         >
           Edit template
@@ -1209,7 +1209,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
           class="nhsuk-button nhsuk-button--secondary"
           data-testid="edit-template-button"
           draggable="false"
-          href="/templates/edit-text-message-template/template-id"
+          href="/edit-text-message-template/template-id"
           role="button"
         >
           Edit template

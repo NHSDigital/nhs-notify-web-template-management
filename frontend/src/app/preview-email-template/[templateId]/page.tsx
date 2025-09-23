@@ -30,12 +30,12 @@ const PreviewEmailTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  const routing = await serverIsFeatureEnabled('routing');
+  const routingEnabled = await serverIsFeatureEnabled('routing');
 
   return (
     <PreviewEmailTemplate
       initialState={validatedTemplate}
-      routingEnabled={routing}
+      routingEnabled={routingEnabled}
     />
   );
 };

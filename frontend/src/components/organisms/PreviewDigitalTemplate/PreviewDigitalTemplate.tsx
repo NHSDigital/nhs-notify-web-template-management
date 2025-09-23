@@ -4,8 +4,8 @@ import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotif
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { PreviewTemplateProps } from './preview-digitial-template.types';
 import { Button } from 'nhsuk-react-components';
-import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
+import Link from 'next/link';
 
 const { editButton } = content.components.previewDigitalTemplate;
 
@@ -20,13 +20,11 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
       {props.routingEnabled ? (
         <>
           {props.previewDetailsComponent}
-          <Button
-            secondary
-            href={`${getBasePath()}${props.editPath}`}
-            data-testid='edit-template-button'
-          >
-            {editButton}
-          </Button>
+          <Link href={props.editPath} passHref legacyBehavior>
+            <Button secondary data-testid='edit-template-button'>
+              {editButton}
+            </Button>
+          </Link>
         </>
       ) : (
         <>

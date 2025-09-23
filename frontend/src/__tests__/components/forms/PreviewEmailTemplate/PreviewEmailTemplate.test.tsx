@@ -149,7 +149,7 @@ describe('Preview email form renders', () => {
     'matches snapshot when navigating from edit screen when routing is %p',
     (routing) => {
       const mockSearchParams = new Map([['from', 'edit']]);
-      (useSearchParams as jest.Mock).mockImplementation(() => ({
+      (useSearchParams as jest.Mock).mockImplementationOnce(() => ({
         get: (key: string) => mockSearchParams.get(key),
       }));
 
