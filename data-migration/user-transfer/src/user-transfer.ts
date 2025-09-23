@@ -83,8 +83,8 @@ async function migrateTemplatesAndS3Data(
 
   for (const user of users) {
     for (const item of items) {
-      const { id, templateType } = item;
-      if (id.S === user.userId) {
+      const { id, owner, templateType } = item;
+      if (owner.S === user.userId) {
         // copy s3 data
         if (templateType.S === 'LETTER') {
           await handleS3Copy(user, id.S as string, DRY_RUN);
