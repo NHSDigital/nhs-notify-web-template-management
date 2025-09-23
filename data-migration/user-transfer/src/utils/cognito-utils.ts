@@ -2,80 +2,77 @@ import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
   AdminListGroupsForUserCommand,
-  AdminListGroupsForUserCommandInput,
-  UserType,
   GroupType,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { ListBackupsCommandOutput } from '@aws-sdk/client-dynamodb';
-import { fromIni } from '@aws-sdk/credential-providers';
+import { Parameters } from './constants';
 
-const COGNITO_PROFILE = process.env.COGNITO_ACCOUNT;
-const cognito = new CognitoIdentityProviderClient({
-  region: process.env.REGION,
-  credentials: fromIni({ profile: COGNITO_PROFILE }),
-});
-const USER_POOL_ID = process.env.USER_POOL_ID;
+export type UserData = {
+  userId: string;
+  clientId: string;
+};
 
-interface CognitoUserBasics {
-  username: string;
-  sub?: string;
-  clientIdAttr?: string;
-  poolId: string;
-  user?: UserType;
-}
-
-export async function listCognitoUsers(): Promise<
-  ListBackupsCommandOutput | undefined
-> {
+export async function listCognitoUsers(
+  parameters: Parameters
+): Promise<Array<string> | undefined> {
+  let usernames: string[] = [];
+  const { region, accessKeyId, secretAccessKey, userPoolId, sessionToken } =
+    parameters;
+  const cognito = new CognitoIdentityProviderClient({
+    region,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+      sessionToken,
+    },
+  });
   const command = new ListUsersCommand({
-    UserPoolId: 'eu-west-2_lGFnZO7vx',
+    UserPoolId: userPoolId,
   });
 
   const response = await cognito.send(command);
-  return response;
-}
 
-export async function findCognitoUser(
-  ownerId: string
-): Promise<CognitoUserBasics | undefined> {
-  console.log('owner', ownerId);
-  const listUser = new ListUsersCommand({
-    UserPoolId: USER_POOL_ID,
-    Filter: `"sub"="${ownerId}"`,
-  });
-  const res = await cognito.send(listUser);
-  const user = res.Users?.[0];
-  if (user) {
-    const sub = user.Attributes?.find((a) => a.Name === 'sub')?.Value;
-    const clientIdAttr = user.Attributes?.find(
-      (a) => a.Name === 'custom:sbx_client_id' // this would be removed when migrating for production
-    )?.Value;
-    return {
-      username: user.Username!,
-      sub,
-      clientIdAttr,
-      poolId: USER_POOL_ID as string,
-      user,
-    };
+  if (response.Users) {
+    usernames = response.Users.map((user) => user.Username as string);
+    return usernames;
   }
+
   return undefined;
 }
 
-export async function getUserGroup(
-  input: AdminListGroupsForUserCommandInput
-): Promise<string | undefined> {
-  const { Username, UserPoolId } = input;
+export async function getUserGroupAndClientId(
+  usernames: string[],
+  parameters: Parameters
+): Promise<UserData[]> {
+  const userIdAndClientId: UserData[] = [];
+  const { region, accessKeyId, secretAccessKey, userPoolId, sessionToken } =
+    parameters;
+  const cognito = new CognitoIdentityProviderClient({
+    region,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+      sessionToken,
+    },
+  });
 
-  const userGroups = await cognito.send(
-    new AdminListGroupsForUserCommand({
-      UserPoolId,
-      Username,
-    })
-  );
+  for (const username of usernames) {
+    const userGroups = await cognito.send(
+      new AdminListGroupsForUserCommand({
+        UserPoolId: userPoolId,
+        Username: username,
+      })
+    );
 
-  return userGroups.Groups && userGroups.Groups?.length === 0
-    ? undefined
-    : await getUserClientId(userGroups.Groups);
+    if (userGroups.Groups && userGroups.Groups?.length > 0) {
+      const getClientId = await getUserClientId(userGroups.Groups);
+      userIdAndClientId.push({
+        userId: username,
+        clientId: getClientId as string,
+      });
+    }
+  }
+
+  return userIdAndClientId;
 }
 
 async function getUserClientId(

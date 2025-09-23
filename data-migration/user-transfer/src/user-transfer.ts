@@ -7,19 +7,21 @@ import {
   retrieveAllTemplates,
   updateItem,
 } from '@/src/utils/ddb-utils';
-import { backupData } from '@/src/utils/backup-utils';
+import {
+  backupData,
+  backupToJSON,
+  deleteJSONFile,
+  readJSONFile,
+} from '@/src/utils/backup-utils';
 import { Parameters } from '@/src/utils/constants';
 import {
-  findCognitoUser,
-  getUserGroup,
+  getUserGroupAndClientId,
   listCognitoUsers,
+  UserData,
 } from './utils/cognito-utils';
-import {
-  backupObject,
-  copyObjects,
-  deleteObjects,
-  getItemObjects,
-} from './utils/s3-utils';
+import { backupObject, deleteObjects, handleS3Copy } from './utils/s3-utils';
+
+const DRY_RUN = true;
 
 function getParameters(): Parameters {
   return yargs(hideBin(process.argv))
@@ -32,85 +34,91 @@ function getParameters(): Parameters {
         type: 'string',
         demandOption: true,
       },
+      accessKeyId: {
+        type: 'string',
+        demandOption: true,
+      },
+      secretAccessKey: {
+        type: 'string',
+        demandOption: true,
+      },
+      userPoolId: {
+        type: 'string',
+        demandOption: true,
+      },
+      sessionToken: {
+        type: 'string',
+        demandOption: true,
+      },
+      region: {
+        type: 'string',
+        demandOption: true,
+      },
+      flag: {
+        type: 'string',
+        demandOption: false,
+      },
     })
     .parseSync();
 }
 
-async function updateItems(
+async function getUserData(parameters: Parameters) {
+  const usernames = await listCognitoUsers(parameters);
+  if (!usernames || usernames.length === 0) {
+    throw new Error('No users found');
+  }
+  const userGroupAndClientId = await getUserGroupAndClientId(
+    usernames as string[],
+    parameters
+  );
+  // download users to a json file
+  await backupToJSON(userGroupAndClientId);
+}
+
+async function migrateTemplatesAndS3Data(
   items: Record<string, AttributeValue>[],
   parameters: Parameters
 ): Promise<void> {
-  for (const item of items) {
-    console.log(item.id.S, item.owner.S);
+  const users: UserData[] = await readJSONFile('users.json');
 
-    // Get owner id of this item
-    const { owner, id, templateType, clientId } = item;
+  for (const user of users) {
+    for (const item of items) {
+      const { id } = item;
+      if (id.S === user.userId) {
+        // copy s3 data
+        const sourceKey = await handleS3Copy(user, id.S as string, DRY_RUN);
 
-    //check if owner doesn't have CLIENT#
-    if (owner.S && !owner.S?.startsWith('CLIENT#')) {
-      // check the user in cognito, if it exist then pull the client id
-      const cognitoUser = await findCognitoUser(owner.S);
+        // migrate templates
+        await updateItem(item, parameters, user, DRY_RUN);
 
-      // check and get user groups - this is used when migrating for production
-      const userClientIdFromGroup = await getUserGroup({
-        Username: cognitoUser?.username,
-        UserPoolId: cognitoUser?.poolId,
-      });
+        // delete previous template
+        await deleteItem(item, parameters);
 
-      // resolve client id
-      const newClientId = (userClientIdFromGroup ??
-        cognitoUser?.clientIdAttr) as string;
-
-      // check if this item has a client id, if yes check it matches the client id above. If it doesn't, throw error!
-      if (item.clientId && item.clientId.S !== newClientId) {
-        console.log({
-          templateClientId: item.clientId,
-          cognitoClientId: newClientId,
-        });
-
-        throw new Error('Invalid ids');
-      }
-      // if it matches make the required swaps (clientId, createdby and updatedby)
-      // if item doesn't have a client id then create one and do the above
-      // update the item and delete the previous one
-
-      // migrate and update item
-      await updateItem(item, parameters, newClientId);
-
-      // check if migration was successful
-
-      // delete migrated item
-      await deleteItem(item, parameters);
-    }
-
-    //
-    if (templateType.S === 'LETTER') {
-      //Retrieve item S3 object(s)
-      const itemObjects = await getItemObjects(id.S as string);
-
-      //migrate to a new s3 location
-      for (const itemObject of itemObjects) {
-        await Promise.all([
-          copyObjects(
-            owner.S as string,
-            itemObject['Key'],
-            clientId.S as string
-          ),
-          // delete previous objects
-          deleteObjects(itemObject['Key']),
-        ]).then(() => console.log('Object moved'));
+        // delete migrated s3 data
+        deleteObjects(sourceKey);
       }
     }
   }
+
+  await deleteJSONFile('users.json');
+  console.log('Migration completed successfully');
 }
 
 export async function performTransfer() {
   const parameters = getParameters();
+
+  // if flag = user, then, get cognito users with their clientId and save to a json file
+  if (parameters.flag && parameters.flag === 'user') {
+    await getUserData(parameters);
+  }
+
+  // retrieve and backup all templates
   const items = await retrieveAllTemplates(parameters);
-  console.log({ items });
-  console.log(await listCognitoUsers());
-  // retrieve all user (id and clientId) in cognito and save to a JSON file
-  // await backupData(items, parameters);
-  // await backupObject(parameters);
-  // await updateItems(items, parameters);
+  await backupData(items, parameters);
+
+  // retrieve and backup  all S3 data
+  await backupObject(parameters);
+
+  // Migrate
+  await migrateTemplatesAndS3Data(items, parameters);
 }

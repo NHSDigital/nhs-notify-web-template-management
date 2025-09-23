@@ -10,15 +10,16 @@ import {
 } from '@aws-sdk/client-s3';
 import { Parameters } from '@/src/utils/constants';
 import { getAccountId } from './sts-utils';
+import { UserData } from './cognito-utils';
 
 const s3Client = new S3Client({
-  region: process.env.REGION,
+  region: 'eu-west-2',
   retryMode: 'standard',
   maxAttempts: 10,
 });
 
 // this is to be changed to prod bucket
-const sourceBucket = process.env.BUCKET_NAME; // 'nhs-notify-891377170468-eu-west-2-musa3-sbx-internal'
+const sourceBucket = process.env.BUCKET_NAME;
 
 export async function writeJsonToFile(
   path: string,
@@ -98,17 +99,23 @@ export async function copyObjects(
     ...rest,
     ['client-id']: clientId,
   };
-  return await s3Client.send(
-    new CopyObjectCommand({
-      CopySource: `${sourceBucket}/${sourceKey}`,
-      Bucket: sourceBucket,
-      Key: destinationKey,
-      Metadata: updatedMetadata,
-      MetadataDirective: 'REPLACE',
-      TaggingDirective: 'COPY',
-      ContentType: head.ContentType,
-    })
-  );
+  try {
+    await s3Client.send(
+      new CopyObjectCommand({
+        CopySource: `${sourceBucket}/${sourceKey}`,
+        Bucket: sourceBucket,
+        Key: destinationKey,
+        Metadata: updatedMetadata,
+        MetadataDirective: 'REPLACE',
+        TaggingDirective: 'COPY',
+        ContentType: head.ContentType,
+      })
+    );
+    console.log('S3 object migration was successful');
+    return 'success';
+  } catch {
+    throw new Error('Unable to migrate data');
+  }
 }
 
 export async function deleteObjects(key: string) {
@@ -142,4 +149,24 @@ export async function backupObject(parameters: Parameters) {
   }
 
   console.log('Object backup successful');
+}
+
+export async function handleS3Copy(
+  user: UserData,
+  templateId: string,
+  DRY_RUN: boolean = false
+) {
+  const itemObjects = await getItemObjects(templateId);
+  for (const itemObject of itemObjects) {
+    const sourceKey = itemObject['Key'];
+    const destinationKey = sourceKey.replace(user.userId, user.clientId);
+    if (DRY_RUN) {
+      console.log(
+        `[DRY_RUN] Would migrate S3 object: ${sourceBucket}/${sourceKey}} -> ${sourceBucket}/${destinationKey}`
+      );
+    } else {
+      await copyObjects(user.userId, sourceKey, user.clientId);
+      return sourceKey;
+    }
+  }
 }
