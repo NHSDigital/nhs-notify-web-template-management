@@ -6,7 +6,7 @@ import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -23,19 +23,19 @@ function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'valid-nhs-app-template-preview-submitted',
-        user
+        '298799c4-bc2c-49b6-b9cc-74e7750261d2',
+        user,
+        'valid-nhs-app-template-preview-submitted'
       ),
-      name: 'test-template-nhs-app',
       message: 'test-template-message',
       templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createNhsAppTemplate(
-        'invalid-nhs-app-template-preview-submitted',
-        user
+        'a0a0d4c9-e18d-4aa9-8973-336a66fbadde',
+        user,
+        'invalid-nhs-app-template-preview-submitted'
       ),
-      name: 'test-template-nhs-app',
       message: 'test-template-message',
       templateStatus: 'NOT_YET_SUBMITTED',
     },
@@ -70,8 +70,8 @@ test.describe('Preview submitted NHS App message template Page', () => {
       `${baseURL}/templates/preview-submitted-nhs-app-template/${templates.valid.id}`
     );
 
-    await expect(previewSubmittedNHSAppTemplatePage.pageHeader).toContainText(
-      'test-template-nhs-app'
+    await expect(previewSubmittedNHSAppTemplatePage.pageHeading).toContainText(
+      templates.valid.name
     );
 
     await expect(previewSubmittedNHSAppTemplatePage.messageText).toHaveText(
@@ -88,7 +88,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

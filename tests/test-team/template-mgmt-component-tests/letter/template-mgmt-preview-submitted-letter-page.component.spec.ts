@@ -6,7 +6,7 @@ import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -21,9 +21,9 @@ import {
 
 function createTemplates(user: TestUser) {
   const validBase = TemplateFactory.uploadLetterTemplate(
-    'valid-letter-template-preview-submitted',
+    '0b5f3591-8a36-4b33-9873-3c4842db4351',
     user,
-    'valid-email-template-preview-submitted',
+    'valid-letter-template-preview-submitted',
     'SUBMITTED'
   );
 
@@ -45,7 +45,7 @@ function createTemplates(user: TestUser) {
     valid,
     invalid: {
       ...TemplateFactory.uploadLetterTemplate(
-        'invalid-letter-template-preview-submitted',
+        '621456cf-ace3-49c3-941e-4df5eba11373',
         user,
         'invalid-letter-template-preview-submitted',
         'NOT_A_STATUS'
@@ -81,7 +81,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
     );
 
-    await expect(previewSubmittedLetterTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
       templates.valid.name
     );
   });
@@ -95,7 +95,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

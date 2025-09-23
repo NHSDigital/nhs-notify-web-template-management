@@ -9,12 +9,12 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
-  templateStatusToColourMappings,
-  templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
+  statusToDisplayMapping,
+  statusToColourMapping,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -81,12 +81,8 @@ export function MessageTemplates({
                 </Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
-                  <Tag
-                    color={templateStatusToColourMappings(
-                      template.templateStatus
-                    )}
-                  >
-                    {templateStatusToDisplayMappings(template.templateStatus)}
+                  <Tag color={statusToColourMapping(template)}>
+                    {statusToDisplayMapping(template)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>

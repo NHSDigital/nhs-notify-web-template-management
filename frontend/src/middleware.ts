@@ -98,11 +98,11 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const { accessToken } = await getSessionServer({
+  const { accessToken, idToken } = await getSessionServer({
     forceRefresh: true,
   });
 
-  if (!accessToken) {
+  if (!accessToken || !idToken) {
     const path = `${getBasePath()}${pathname}`;
 
     const redirectResponse = NextResponse.redirect(
@@ -116,7 +116,8 @@ export async function middleware(request: NextRequest) {
     return redirectResponse;
   }
 
-  const hasClientId = getClientIdFromToken(accessToken);
+  const hasClientId =
+    getClientIdFromToken(accessToken) || getClientIdFromToken(idToken);
 
   if (!hasClientId) {
     const missingClientIdRedirect = new URL(

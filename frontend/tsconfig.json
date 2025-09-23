@@ -1,46 +1,85 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext", "es2018", "es2015"],
     "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
+    "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es2018",
+      "es2015"
+    ],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "paths": {
+      "@/amplify_outputs.json": [
+        "./amplify_outputs.json"
+      ],
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@atoms/*": [
+        "./src/components/atoms/*"
+      ],
+      "@content/*": [
+        "./src/content/*"
+      ],
+      "@domain/*": [
+        "./src/domain/*"
+      ],
+      "@forms/*": [
+        "./src/components/forms/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@layouts/*": [
+        "./src/components/layouts/*"
+      ],
+      "@molecules/*": [
+        "./src/components/molecules/*"
+      ],
+      "@organisms/*": [
+        "./src/components/organisms/*"
+      ],
+      "@providers/*": [
+        "./src/components/providers/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@testhelpers": [
+        "./src/__tests__/helpers"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "paths": {
-      "@/amplify_outputs.json": ["./amplify_outputs.json"],
-      "@atoms/*": ["./src/components/atoms/*"],
-      "@app/*": ["./src/app/*"],
-      "@content/*": ["./src/content/*"],
-      "@organisms/*": ["./src/components/organisms/*"],
-      "@molecules/*": ["./src/components/molecules/*"],
-      "@layouts/*": ["./src/components/layouts/*"],
-      "@forms/*": ["./src/components/forms/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@types/*": ["./src/types/*"],
-      "@testhelpers": ["./src/__tests__/helpers"],
-      "@utils/*": ["./src/utils/*"],
-      "@domain/*": ["./src/domain/*"],
-      "@hooks/*": ["./src/hooks/*"]
-    }
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es6"
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.ts"
-  ],
-  "exclude": ["node_modules"]
+  ]
 }

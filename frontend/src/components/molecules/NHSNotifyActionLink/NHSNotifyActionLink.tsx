@@ -18,7 +18,7 @@ export function NHSNotifyActionLink({
         data-testid='action-link'
       >
         <svg
-          className='nhsuk-icon nhsuk-icon__arrow-right-circle'
+          className='nhsuk-icon nhsuk-icon--arrow-right-circle'
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'
           aria-hidden='true'

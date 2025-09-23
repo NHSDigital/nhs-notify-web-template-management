@@ -34,6 +34,23 @@ const messageTemplatesProps: {
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: 'x0',
+      language: 'en',
+      updatedAt: '2021-02-01T00:00:00.000Z',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: '8BAC',
+          virusScanStatus: 'PASSED',
+        },
+      },
+    },
+    {
+      id: '4',
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'Template 4',
+      createdAt: '2021-02-01T00:00:00.000Z',
+      letterType: 'x0',
       language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
       files: {

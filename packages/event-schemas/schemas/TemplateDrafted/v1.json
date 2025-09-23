@@ -3,356 +3,84 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "string"
+      "description": "Unique ID for this event",
+      "type": "string",
+      "maxLength": 1000
     },
     "time": {
+      "description": "Time the event was generated",
       "type": "string",
-      "format": "date-time",
-      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
     },
     "type": {
       "type": "string",
       "const": "uk.nhs.notify.template-management.TemplateDrafted.v1"
     },
     "source": {
+      "description": "Source of the event",
       "type": "string"
     },
     "specversion": {
+      "description": "Version of the envelope event schema",
       "type": "string",
       "const": "1.0"
     },
     "datacontenttype": {
+      "description": "Always application/json",
       "type": "string",
       "const": "application/json"
     },
     "subject": {
-      "type": "string"
+      "description": "Unique identifier for the item in the event data",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
     },
     "dataschema": {
       "type": "string",
       "const": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json"
     },
+    "dataschemaversion": {
+      "type": "string",
+      "pattern": "^1\\..*"
+    },
+    "plane": {
+      "type": "string",
+      "const": "control"
+    },
     "data": {
+      "$ref": "#/$defs/TemplateDraftedEventData"
+    }
+  },
+  "required": [
+    "id",
+    "time",
+    "type",
+    "source",
+    "specversion",
+    "datacontenttype",
+    "subject",
+    "dataschema",
+    "dataschemaversion",
+    "plane",
+    "data"
+  ],
+  "$defs": {
+    "TemplateDraftedEventData": {
       "allOf": [
         {
           "anyOf": [
             {
-              "type": "object",
-              "properties": {
-                "owner": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "clientId": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "createdBy": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "templateStatus": {
-                  "type": "string",
-                  "enum": [
-                    "DELETED",
-                    "NOT_YET_SUBMITTED",
-                    "PENDING_PROOF_REQUEST",
-                    "PENDING_UPLOAD",
-                    "PENDING_VALIDATION",
-                    "PROOF_AVAILABLE",
-                    "SUBMITTED",
-                    "VALIDATION_FAILED",
-                    "VIRUS_SCAN_FAILED",
-                    "WAITING_FOR_PROOF"
-                  ]
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "updatedBy": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "subject": {
-                  "type": "string"
-                },
-                "templateType": {
-                  "type": "string",
-                  "const": "EMAIL"
-                }
-              },
-              "required": [
-                "owner",
-                "id",
-                "createdAt",
-                "name",
-                "templateStatus",
-                "updatedAt",
-                "message",
-                "subject",
-                "templateType"
-              ]
+              "$ref": "#/$defs/EmailTemplateEventData"
             },
             {
-              "type": "object",
-              "properties": {
-                "owner": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "clientId": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "createdBy": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "templateStatus": {
-                  "type": "string",
-                  "enum": [
-                    "DELETED",
-                    "NOT_YET_SUBMITTED",
-                    "PENDING_PROOF_REQUEST",
-                    "PENDING_UPLOAD",
-                    "PENDING_VALIDATION",
-                    "PROOF_AVAILABLE",
-                    "SUBMITTED",
-                    "VALIDATION_FAILED",
-                    "VIRUS_SCAN_FAILED",
-                    "WAITING_FOR_PROOF"
-                  ]
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "updatedBy": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "templateType": {
-                  "type": "string",
-                  "const": "NHS_APP"
-                }
-              },
-              "required": [
-                "owner",
-                "id",
-                "createdAt",
-                "name",
-                "templateStatus",
-                "updatedAt",
-                "message",
-                "templateType"
-              ]
+              "$ref": "#/$defs/NhsAppTemplateEventData"
             },
             {
-              "type": "object",
-              "properties": {
-                "owner": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "clientId": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "createdBy": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "templateStatus": {
-                  "type": "string",
-                  "enum": [
-                    "DELETED",
-                    "NOT_YET_SUBMITTED",
-                    "PENDING_PROOF_REQUEST",
-                    "PENDING_UPLOAD",
-                    "PENDING_VALIDATION",
-                    "PROOF_AVAILABLE",
-                    "SUBMITTED",
-                    "VALIDATION_FAILED",
-                    "VIRUS_SCAN_FAILED",
-                    "WAITING_FOR_PROOF"
-                  ]
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "updatedBy": {
-                  "type": "string"
-                },
-                "files": {
-                  "type": "object",
-                  "properties": {
-                    "proofs": {
-                      "type": "object",
-                      "propertyNames": {
-                        "type": "string"
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "properties": {
-                          "supplier": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "supplier"
-                        ]
-                      }
-                    }
-                  }
-                },
-                "templateType": {
-                  "type": "string",
-                  "const": "LETTER"
-                },
-                "language": {
-                  "type": "string",
-                  "enum": [
-                    "ar",
-                    "bg",
-                    "bn",
-                    "de",
-                    "el",
-                    "en",
-                    "es",
-                    "fa",
-                    "fr",
-                    "gu",
-                    "hi",
-                    "hu",
-                    "it",
-                    "ku",
-                    "lt",
-                    "lv",
-                    "ne",
-                    "pa",
-                    "pl",
-                    "pt",
-                    "ro",
-                    "ru",
-                    "sk",
-                    "so",
-                    "sq",
-                    "ta",
-                    "tr",
-                    "ur",
-                    "zh"
-                  ]
-                },
-                "letterType": {
-                  "type": "string",
-                  "enum": [
-                    "q4",
-                    "x0",
-                    "x1"
-                  ]
-                },
-                "personalisationParameters": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "required": [
-                "owner",
-                "id",
-                "createdAt",
-                "name",
-                "templateStatus",
-                "updatedAt",
-                "files",
-                "templateType",
-                "language",
-                "letterType",
-                "personalisationParameters"
-              ]
+              "$ref": "#/$defs/LetterTemplateEventData"
             },
             {
-              "type": "object",
-              "properties": {
-                "owner": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "clientId": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "createdBy": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "templateStatus": {
-                  "type": "string",
-                  "enum": [
-                    "DELETED",
-                    "NOT_YET_SUBMITTED",
-                    "PENDING_PROOF_REQUEST",
-                    "PENDING_UPLOAD",
-                    "PENDING_VALIDATION",
-                    "PROOF_AVAILABLE",
-                    "SUBMITTED",
-                    "VALIDATION_FAILED",
-                    "VIRUS_SCAN_FAILED",
-                    "WAITING_FOR_PROOF"
-                  ]
-                },
-                "updatedAt": {
-                  "type": "string"
-                },
-                "updatedBy": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "templateType": {
-                  "type": "string",
-                  "const": "SMS"
-                }
-              },
-              "required": [
-                "owner",
-                "id",
-                "createdAt",
-                "name",
-                "templateStatus",
-                "updatedAt",
-                "message",
-                "templateType"
-              ]
+              "$ref": "#/$defs/SmsTemplateEventData"
             }
           ]
         },
@@ -379,26 +107,406 @@
         }
       ]
     },
-    "dataschemaversion": {
-      "type": "string",
-      "pattern": "^1\\..*"
+    "EmailTemplateEventData": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "description": "The client that owns the template",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique identifier for the template",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "clientId": {
+          "description": "The client that owns the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "description": "Timestamp for when the template was initially created",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "createdBy": {
+          "description": "Unique identifier for the user that initially created the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "name": {
+          "description": "User-provided template name",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "templateStatus": {
+          "description": "Current status of the template",
+          "type": "string",
+          "enum": [
+            "DELETED",
+            "NOT_YET_SUBMITTED",
+            "PENDING_PROOF_REQUEST",
+            "PENDING_UPLOAD",
+            "PENDING_VALIDATION",
+            "PROOF_AVAILABLE",
+            "SUBMITTED",
+            "VALIDATION_FAILED",
+            "VIRUS_SCAN_FAILED",
+            "WAITING_FOR_PROOF"
+          ]
+        },
+        "updatedAt": {
+          "description": "Timestamp for when the template was most recently updated",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "updatedBy": {
+          "description": "Unique identifier for the user that most recently updated the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "message": {
+          "description": "Message body for the email template",
+          "type": "string",
+          "maxLength": 100000
+        },
+        "subject": {
+          "description": "Subject field for the email template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "templateType": {
+          "description": "Template type",
+          "type": "string",
+          "const": "EMAIL"
+        }
+      },
+      "required": [
+        "owner",
+        "id",
+        "createdAt",
+        "name",
+        "templateStatus",
+        "updatedAt",
+        "message",
+        "subject",
+        "templateType"
+      ]
     },
-    "plane": {
-      "type": "string",
-      "const": "control"
+    "NhsAppTemplateEventData": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "description": "The client that owns the template",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique identifier for the template",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "clientId": {
+          "description": "The client that owns the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "description": "Timestamp for when the template was initially created",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "createdBy": {
+          "description": "Unique identifier for the user that initially created the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "name": {
+          "description": "User-provided template name",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "templateStatus": {
+          "description": "Current status of the template",
+          "type": "string",
+          "enum": [
+            "DELETED",
+            "NOT_YET_SUBMITTED",
+            "PENDING_PROOF_REQUEST",
+            "PENDING_UPLOAD",
+            "PENDING_VALIDATION",
+            "PROOF_AVAILABLE",
+            "SUBMITTED",
+            "VALIDATION_FAILED",
+            "VIRUS_SCAN_FAILED",
+            "WAITING_FOR_PROOF"
+          ]
+        },
+        "updatedAt": {
+          "description": "Timestamp for when the template was most recently updated",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "updatedBy": {
+          "description": "Unique identifier for the user that most recently updated the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "message": {
+          "description": "Message body for the NHS App template",
+          "type": "string",
+          "maxLength": 5000
+        },
+        "templateType": {
+          "description": "Template type",
+          "type": "string",
+          "const": "NHS_APP"
+        }
+      },
+      "required": [
+        "owner",
+        "id",
+        "createdAt",
+        "name",
+        "templateStatus",
+        "updatedAt",
+        "message",
+        "templateType"
+      ]
+    },
+    "LetterTemplateEventData": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "description": "The client that owns the template",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique identifier for the template",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "clientId": {
+          "description": "The client that owns the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "description": "Timestamp for when the template was initially created",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "createdBy": {
+          "description": "Unique identifier for the user that initially created the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "name": {
+          "description": "User-provided template name",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "templateStatus": {
+          "description": "Current status of the template",
+          "type": "string",
+          "enum": [
+            "DELETED",
+            "NOT_YET_SUBMITTED",
+            "PENDING_PROOF_REQUEST",
+            "PENDING_UPLOAD",
+            "PENDING_VALIDATION",
+            "PROOF_AVAILABLE",
+            "SUBMITTED",
+            "VALIDATION_FAILED",
+            "VIRUS_SCAN_FAILED",
+            "WAITING_FOR_PROOF"
+          ]
+        },
+        "updatedAt": {
+          "description": "Timestamp for when the template was most recently updated",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "updatedBy": {
+          "description": "Unique identifier for the user that most recently updated the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "files": {
+          "description": "Object containing information about proofs attached to the template",
+          "type": "object",
+          "properties": {
+            "proofs": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "supplier": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "supplier"
+                ]
+              }
+            }
+          }
+        },
+        "templateType": {
+          "description": "Template type",
+          "type": "string",
+          "const": "LETTER"
+        },
+        "language": {
+          "description": "ISO 639 language code for the language the letter template is written in",
+          "type": "string",
+          "enum": [
+            "ar",
+            "bg",
+            "bn",
+            "de",
+            "el",
+            "en",
+            "es",
+            "fa",
+            "fr",
+            "gu",
+            "hi",
+            "hu",
+            "it",
+            "ku",
+            "lt",
+            "lv",
+            "ne",
+            "pa",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "so",
+            "sq",
+            "ta",
+            "tr",
+            "ur",
+            "zh"
+          ]
+        },
+        "letterType": {
+          "description": "Letter type - q4:British Sign Language, x1:Large Print, x0:Standard",
+          "type": "string",
+          "enum": [
+            "q4",
+            "x0",
+            "x1"
+          ]
+        },
+        "personalisationParameters": {
+          "description": "List of personalisation parameters used in the template",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        }
+      },
+      "required": [
+        "owner",
+        "id",
+        "createdAt",
+        "name",
+        "templateStatus",
+        "updatedAt",
+        "files",
+        "templateType",
+        "language",
+        "letterType",
+        "personalisationParameters"
+      ]
+    },
+    "SmsTemplateEventData": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "description": "The client that owns the template",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique identifier for the template",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "clientId": {
+          "description": "The client that owns the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "description": "Timestamp for when the template was initially created",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "createdBy": {
+          "description": "Unique identifier for the user that initially created the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "name": {
+          "description": "User-provided template name",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "templateStatus": {
+          "description": "Current status of the template",
+          "type": "string",
+          "enum": [
+            "DELETED",
+            "NOT_YET_SUBMITTED",
+            "PENDING_PROOF_REQUEST",
+            "PENDING_UPLOAD",
+            "PENDING_VALIDATION",
+            "PROOF_AVAILABLE",
+            "SUBMITTED",
+            "VALIDATION_FAILED",
+            "VIRUS_SCAN_FAILED",
+            "WAITING_FOR_PROOF"
+          ]
+        },
+        "updatedAt": {
+          "description": "Timestamp for when the template was most recently updated",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "updatedBy": {
+          "description": "Unique identifier for the user that most recently updated the template",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "message": {
+          "description": "Message body for the NHS App template",
+          "type": "string",
+          "maxLength": 918
+        },
+        "templateType": {
+          "description": "Template type",
+          "type": "string",
+          "const": "SMS"
+        }
+      },
+      "required": [
+        "owner",
+        "id",
+        "createdAt",
+        "name",
+        "templateStatus",
+        "updatedAt",
+        "message",
+        "templateType"
+      ]
     }
   },
-  "required": [
-    "id",
-    "time",
-    "type",
-    "source",
-    "specversion",
-    "datacontenttype",
-    "subject",
-    "dataschema",
-    "data",
-    "dataschemaversion",
-    "plane"
-  ]
+  "$id": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json"
 }

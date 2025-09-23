@@ -22,7 +22,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_s3bucket_ses"></a> [s3bucket\_ses](#module\_s3bucket\_ses) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.4 |
+| <a name="module_s3bucket_ses"></a> [s3bucket\_ses](#module\_s3bucket\_ses) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 ## Outputs
 
 | Name | Description |

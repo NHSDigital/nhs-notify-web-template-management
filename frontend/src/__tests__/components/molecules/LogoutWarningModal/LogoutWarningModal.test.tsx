@@ -1,14 +1,13 @@
 import { render, fireEvent, act } from '@testing-library/react';
-import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
-import { useAuthenticator, type UseAuthenticator } from '@aws-amplify/ui-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { mockDeep } from 'jest-mock-extended';
+import { useAuthStatus } from '@hooks/use-auth-status';
+import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
 
 jest.mock('next/navigation');
 jest.mock('aws-amplify/auth');
-jest.mock('@aws-amplify/ui-react');
+jest.mock('@hooks/use-auth-status');
 
-const useAuthenticatorMock = jest.mocked(useAuthenticator);
+const mockUseAuthStatus = jest.mocked(useAuthStatus);
 
 const routerPushMock: jest.Mock = jest.fn();
 
@@ -30,17 +29,7 @@ describe('LogoutWarningModal', () => {
 
     HTMLDialogElement.prototype.close = dialogCloseMock;
 
-    useAuthenticatorMock.mockImplementation((cb) => {
-      const context = mockDeep<UseAuthenticator>({
-        authStatus: 'authenticated',
-      });
-
-      if (cb) {
-        cb(context);
-      }
-
-      return context;
-    });
+    mockUseAuthStatus.mockReturnValue('authenticated');
 
     (useRouter as jest.Mock).mockReturnValue({
       push: routerPushMock,
@@ -63,11 +52,7 @@ describe('LogoutWarningModal', () => {
   });
 
   test('should stay closed if not authenticated', () => {
-    useAuthenticatorMock.mockReturnValueOnce(
-      mockDeep<UseAuthenticator>({
-        authStatus: 'unauthenticated',
-      })
-    );
+    mockUseAuthStatus.mockReturnValueOnce('unauthenticated');
 
     render(
       <LogoutWarningModal

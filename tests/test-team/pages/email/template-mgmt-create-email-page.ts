@@ -41,7 +41,7 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic 
       '[data-testid="how-to-name-your-template-details"]'
     );
     this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
+      .locator('.nhsuk-back-link')
       .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);

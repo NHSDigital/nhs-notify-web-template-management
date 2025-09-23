@@ -1,8 +1,8 @@
 import { Tag, SummaryList } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
-  templateStatusToDisplayMappings,
-  templateStatusToColourMappings,
+  statusToColourMapping,
+  statusToDisplayMapping,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
@@ -78,9 +78,9 @@ export function StandardDetailRows({
         <SummaryList.Value>
           <Tag
             data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
-            color={templateStatusToColourMappings(template.templateStatus)}
+            color={statusToColourMapping(template)}
           >
-            {templateStatusToDisplayMappings(template.templateStatus)}
+            {statusToDisplayMapping(template)}
           </Tag>
           {previewTemplateStatusFootnote[template.templateStatus] && (
             <small

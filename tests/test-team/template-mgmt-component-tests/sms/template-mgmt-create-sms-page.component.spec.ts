@@ -5,7 +5,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -31,7 +31,7 @@ test.describe('Create SMS message template Page', () => {
 
     await createSmsTemplatePage.loadPage();
 
-    await expect(createSmsTemplatePage.pageHeader).toHaveText(
+    await expect(createSmsTemplatePage.pageHeading).toHaveText(
       'Create text message template'
     );
 
@@ -49,7 +49,7 @@ test.describe('Create SMS message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLink({

@@ -9,7 +9,7 @@ import {
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
@@ -22,7 +22,7 @@ async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     empty: {
-      id: 'preview-page-invalid-sms-template',
+      id: '5ba6daa1-8da3-4477-9f59-10a50a819647',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -31,8 +31,11 @@ async function createTemplates() {
       owner: `CLIENT#${user.clientId}`,
     } as Template,
     valid: {
-      ...TemplateFactory.createSmsTemplate('valid-sms-preview-template', user),
-      name: 'test-template-sms',
+      ...TemplateFactory.createSmsTemplate(
+        '7f41fb5b-7f59-448c-8037-f37c25466455',
+        user
+      ),
+      name: 'valid-sms-preview-template',
       message: 'test-template-message',
     },
   };
@@ -67,8 +70,8 @@ test.describe('Preview SMS message template Page', () => {
 
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
 
-    await expect(previewSmsTemplatePage.pageHeader).toContainText(
-      'test-template-sms'
+    await expect(previewSmsTemplatePage.pageHeading).toContainText(
+      templates.valid.name
     );
 
     await expect(previewSmsTemplatePage.messageText).toHaveText(
@@ -85,7 +88,7 @@ test.describe('Preview SMS message template Page', () => {
       };
 
       await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
+      await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);

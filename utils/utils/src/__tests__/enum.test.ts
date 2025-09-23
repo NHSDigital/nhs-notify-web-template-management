@@ -10,8 +10,6 @@ import {
   alphabeticalLetterTypeList,
   letterTypeDisplayMappings,
   previewTemplatePages,
-  templateStatusToColourMappings,
-  templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   previewSubmittedTemplatePages,
@@ -20,6 +18,8 @@ import {
   isRightToLeft,
   languageMapping,
   templateCreationPages,
+  statusToDisplayMapping,
+  statusToColourMapping,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -106,25 +106,46 @@ describe('alphabeticalLanguageList', () => {
   });
 });
 
-describe('templateStatusToDisplayMappings', () => {
-  test('NOT_YET_SUBMITTED', () => {
-    expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(
-      'Not yet submitted'
-    );
-  });
+describe('statusToDisplayMapping', () => {
+  test.each([
+    { type: 'LETTER' as TemplateType, expected: 'Not yet submitted' },
+    { type: 'NHS_APP' as TemplateType, expected: 'Draft' },
+    { type: 'SMS' as TemplateType, expected: 'Draft' },
+    { type: 'EMAIl' as TemplateType, expected: 'Draft' },
+  ])(
+    'When templateType is %type NOT_YET_SUBMITTED should be %expected',
+    ({ type, expected }) => {
+      expect(
+        statusToDisplayMapping({
+          templateType: type,
+          templateStatus: 'NOT_YET_SUBMITTED',
+        })
+      ).toEqual(expected);
+    }
+  );
 
   test('SUBMITTED', () => {
-    expect(templateStatusToDisplayMappings('SUBMITTED')).toEqual('Submitted');
+    expect(
+      statusToDisplayMapping({
+        templateType: 'SMS',
+        templateStatus: 'SUBMITTED',
+      })
+    ).toEqual('Submitted');
   });
 
   test('DELETED', () => {
-    expect(templateStatusToDisplayMappings('DELETED')).toEqual('');
+    expect(
+      statusToDisplayMapping({
+        templateType: 'SMS',
+        templateStatus: 'DELETED',
+      })
+    ).toEqual('');
   });
 });
 
-describe('templateStatusToColourMappings', () => {
+describe('statusToColourMapping', () => {
   it.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected colour when templateStatus is %s',
+    'should give the expected colour when templateStatus is %s for LETTERS',
     (templateStatus) => {
       const expectedColours: { [key in TemplateStatus]?: string } = {
         SUBMITTED: 'grey',
@@ -137,8 +158,34 @@ describe('templateStatusToColourMappings', () => {
         PROOF_AVAILABLE: 'orange',
       };
 
-      expect(templateStatusToColourMappings(templateStatus)).toEqual(
-        expectedColours[templateStatus]
+      expect(
+        statusToColourMapping({ templateStatus, templateType: 'LETTER' })
+      ).toEqual(expectedColours[templateStatus]);
+    }
+  );
+
+  describe.each(['NHS_APP', 'SMS', 'EMAIL'] as TemplateType[])(
+    'template type: %p',
+    (templateType) => {
+      it.each(TEMPLATE_STATUS_LIST)(
+        'should give the expected colour when templateStatus is %p',
+        (templateStatus) => {
+          const expectedColours: { [key in TemplateStatus]?: string } = {
+            SUBMITTED: 'grey',
+            WAITING_FOR_PROOF: 'yellow',
+            PENDING_PROOF_REQUEST: 'blue',
+            PENDING_UPLOAD: 'blue',
+            PENDING_VALIDATION: 'blue',
+            VIRUS_SCAN_FAILED: 'red',
+            VALIDATION_FAILED: 'red',
+            PROOF_AVAILABLE: 'orange',
+            NOT_YET_SUBMITTED: 'green',
+          };
+
+          expect(
+            statusToColourMapping({ templateStatus, templateType })
+          ).toEqual(expectedColours[templateStatus]);
+        }
       );
     }
   );

@@ -1,13 +1,7 @@
 'use client';
 
 import { FC, useActionState, useState } from 'react';
-import {
-  TextInput,
-  HintText,
-  Label,
-  Textarea,
-  BackLink,
-} from 'nhsuk-react-components';
+import { TextInput, HintText, Label, Textarea } from 'nhsuk-react-components';
 import {
   $EmailTemplateFormSchema,
   processFormActions,
@@ -31,6 +25,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
@@ -77,9 +72,9 @@ export const EmailTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <BackLink data-testid='back-to-templates-link'>
+          <NotifyBackLink data-testid='back-to-templates-link'>
             {backLinkText}
-          </BackLink>
+          </NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>

@@ -6,7 +6,17 @@ import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { getSessionServer, getSessionId } from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
-jest.mock('@aws-amplify/adapter-nextjs/api');
+
+jest.mock('@aws-amplify/adapter-nextjs', () => ({
+  createServerRunner: () => ({
+    runWithAmplifyServerContext: async ({
+      operation,
+    }: {
+      operation: (ctx: { token: string }) => unknown | Promise<unknown>;
+    }) => operation({ token: 'mock-token' }),
+  }),
+}));
+
 jest.mock('next/headers', () => ({
   cookies: () => ({
     getAll: jest.fn(),
@@ -23,7 +33,7 @@ describe('amplify-utils', () => {
     jest.resetAllMocks();
   });
 
-  test('getSessionServer - should return the auth token and clientID', async () => {
+  test('getSessionServer - should return the auth tokens and clientID', async () => {
     const mockAccessToken = {
       toString: () =>
         sign(
@@ -34,9 +44,16 @@ describe('amplify-utils', () => {
         ),
       payload: {},
     };
+    const mockIdToken = {
+      toString: () =>
+        sign({ ['nhs-notify:client-name']: 'client name' }, 'mockToken'),
+      payload: {},
+    };
+
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
         accessToken: mockAccessToken,
+        idToken: mockIdToken,
       },
     });
 
@@ -44,6 +61,7 @@ describe('amplify-utils', () => {
 
     expect(result).toEqual({
       accessToken: mockAccessToken.toString(),
+      idToken: mockIdToken.toString(),
       clientId: 'client1',
     });
   });
@@ -53,9 +71,16 @@ describe('amplify-utils', () => {
       toString: () => sign({}, 'mockToken'),
       payload: {},
     };
+    const mockIdToken = {
+      toString: () =>
+        sign({ ['nhs-notify:client-name']: 'client name' }, 'mockToken'),
+      payload: {},
+    };
+
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
         accessToken: mockAccessToken,
+        idToken: mockIdToken,
       },
     });
 
@@ -71,6 +96,7 @@ describe('amplify-utils', () => {
 
     expect(result).toEqual({
       accessToken: undefined,
+      idToken: undefined,
       clientId: undefined,
     });
   });
@@ -84,6 +110,7 @@ describe('amplify-utils', () => {
 
     expect(result).toEqual({
       accessToken: undefined,
+      idToken: undefined,
       clientId: undefined,
     });
   });

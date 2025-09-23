@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
@@ -23,23 +23,32 @@ import {
 function createTemplates(user: TestUser) {
   return {
     email: {
-      ...TemplateFactory.createEmailTemplate('email-template-copy-page', user),
+      ...TemplateFactory.createEmailTemplate(
+        'dc0fd5d4-b9b0-455a-81f6-2627b59aae9b',
+        user
+      ),
       name: 'email-template-copy-page-name',
       message: 'email-template-copy-page-message',
       subject: 'template-subject',
     },
     sms: {
-      ...TemplateFactory.createSmsTemplate('sms-template-copy-page', user),
+      ...TemplateFactory.createSmsTemplate(
+        '501e2de6-0253-4d60-9770-0d088aac1aa0',
+        user
+      ),
       name: 'sms-template-copy-page-name',
       message: 'sms-template-copy-page-message',
     },
     nhsApp: {
-      ...TemplateFactory.createNhsAppTemplate('app-template-copy-page', user),
+      ...TemplateFactory.createNhsAppTemplate(
+        '458468e4-db7c-4cc2-ae25-6d86fcc68fcd',
+        user
+      ),
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
     letter: TemplateFactory.uploadLetterTemplate(
-      'letter-template-copy-page',
+      '4697bf0f-4d9c-4fa1-b5ef-a45fd0266856',
       user,
       'letter-template-copy-page-name'
     ),
@@ -73,7 +82,7 @@ test.describe('Copy Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/copy-template/${templates.email.id}`
     );
-    await expect(copyTemplatePage.pageHeader).toHaveText(
+    await expect(copyTemplatePage.pageHeading).toHaveText(
       `Copy '${templates.email.name}'`
     );
   });
@@ -87,7 +96,7 @@ test.describe('Copy Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertGoBackLink(props);
@@ -157,7 +166,7 @@ test.describe('Copy Template Page', () => {
           })
           .first();
 
-        await expect(templateRow).toContainText('Not yet submitted');
+        await expect(templateRow).toContainText('Draft');
 
         const copyUrl = await templateRow
           .getByText('Copy', { exact: true })

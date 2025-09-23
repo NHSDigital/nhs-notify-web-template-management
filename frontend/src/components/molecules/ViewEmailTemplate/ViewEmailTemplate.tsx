@@ -6,10 +6,10 @@ import {
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { renderEmailMarkdown } from '@utils/markdownit';
-import { BackLink } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function ViewEmailTemplate({
   initialState,
@@ -25,7 +25,7 @@ export function ViewEmailTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink>{backLinkText}</BackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

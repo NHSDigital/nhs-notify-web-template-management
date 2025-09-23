@@ -201,4 +201,30 @@ describe('PreviewTemplateDetailsLetter', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('if status is NOT_YET_SUBMITTED, then Not yet submitted is displayed', () => {
+    const container = render(
+      <PreviewTemplateDetailsLetter
+        template={{
+          id: 'template-id',
+          name: 'Example letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

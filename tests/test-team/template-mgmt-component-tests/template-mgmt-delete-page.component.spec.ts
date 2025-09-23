@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
@@ -19,19 +19,25 @@ import {
 function createTemplates(user: TestUser) {
   return {
     goBack: {
-      ...TemplateFactory.createEmailTemplate('delete-page-go-back', user),
+      ...TemplateFactory.createEmailTemplate(
+        '21a27db7-5cb1-4349-a45d-d3679179ee3a',
+        user
+      ),
       name: 'delete-page-go-back-name',
       message: 'delete-page-go-back-message',
       subject: 'template-subject',
     },
     confirmDigitial: {
-      ...TemplateFactory.createEmailTemplate('delete-page-confirm-email', user),
+      ...TemplateFactory.createEmailTemplate(
+        'c4886dd0-9d84-4968-9af1-5081966b7806',
+        user
+      ),
       name: 'delete-page-confirm-email-name',
       message: 'delete-page-confirm-email-message',
       subject: 'template-subject',
     },
     confirmLetter: TemplateFactory.uploadLetterTemplate(
-      'delete-page-confirm-letter',
+      '7bf812d1-7469-4623-92a9-c5db4289a4cb',
       user,
       'delete-page-confirm-letter-name'
     ),
@@ -63,7 +69,7 @@ test.describe('Delete Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/delete-template/${templates.goBack.id}`
     );
-    await expect(deleteTemplatePage.pageHeader).toHaveText(
+    await expect(deleteTemplatePage.pageHeading).toHaveText(
       `Are you sure you want to delete the template '${templates.goBack.name}'?`
     );
   });
@@ -76,7 +82,7 @@ test.describe('Delete Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertGoBackLinkNotPresent(props);

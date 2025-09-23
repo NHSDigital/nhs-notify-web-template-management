@@ -116,7 +116,6 @@ const letters = [
 const landingPage = [{ url: startUrl, name: 'landing-page' }];
 
 const errors = [
-  { url: 'http://localhost:3000/some-404', name: '404-test' },
   {
     url: `${baseUrl}/invalid-template`,
     actions: [...signInPageActions, 'wait for h1 to be visible'],

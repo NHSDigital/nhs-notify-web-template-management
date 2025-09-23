@@ -12,6 +12,9 @@ import { readFileSync } from 'node:fs';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
+const sleep = (delaySeconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
+
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
@@ -36,9 +39,6 @@ test.describe('Event publishing - Letters', () => {
   test('Expect no events when proofingEnabled is false', async ({
     request,
   }) => {
-    const sleep = (delaySeconds: number) =>
-      new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
-
     const templateId = randomUUID();
 
     const start = new Date();
@@ -68,6 +68,43 @@ test.describe('Event publishing - Letters', () => {
     // Note: not ideal - but we are expecting 0 events and there can be a delay
     // in events arriving. We should wait for a moment
     // 5 seconds seems to largest delay when testing locally
+    await sleep(5);
+
+    const events = await eventCacheHelper.findEvents(start, [templateId]);
+
+    expect(events).toHaveLength(0);
+  });
+
+  test('expect no events when deleting a letter when previous status is not publishable', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+
+    const start = new Date();
+
+    await templateStorageHelper.seedTemplateData([
+      {
+        ...TemplateFactory.uploadLetterTemplate(
+          templateId,
+          userProofingEnabled,
+          'user-proof-disabled',
+          'VALIDATION_FAILED'
+        ),
+      },
+    ]);
+
+    const deletedResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}`,
+      {
+        headers: {
+          Authorization: await userProofingEnabled.getAccessToken(),
+        },
+      }
+    );
+
+    expect(deletedResponse.status()).toBe(204);
+
+    // Note: not ideal - but we are expecting 0 events and there can be a delay
     await sleep(5);
 
     const events = await eventCacheHelper.findEvents(start, [templateId]);

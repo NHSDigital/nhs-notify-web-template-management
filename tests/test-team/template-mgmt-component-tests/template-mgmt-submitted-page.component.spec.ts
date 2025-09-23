@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
@@ -23,30 +23,36 @@ function createTemplates(user: TestUser) {
   return {
     email: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-template',
+        'a0a8c3d3-84e1-4fd8-9e9c-53ef4830f03f',
         user,
-        'test-template-email'
+        'submitted-page-email-template'
       ),
       templateStatus: 'SUBMITTED',
       subject: 'test-template-subject',
       message: 'test example content',
     },
     'text-message': {
-      ...TemplateFactory.createSmsTemplate('valid-text-message-template', user),
+      ...TemplateFactory.createSmsTemplate(
+        'a17074b5-8936-48b2-b3d6-d5aec045c538',
+        user,
+        'submitted-page-sms-template'
+      ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
-      name: 'test-template-sms',
     },
     'nhs-app': {
-      ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-template', user),
+      ...TemplateFactory.createNhsAppTemplate(
+        'bc924b01-d395-4037-906a-7aae3c660bf4',
+        user,
+        'submitted-page-nhs-app-template'
+      ),
       templateStatus: 'SUBMITTED',
       message: 'test example content',
-      name: 'test-template-nhs-app',
     },
     letter: TemplateFactory.uploadLetterTemplate(
-      'valid-submitted-letter-template',
+      'dec6b9b4-b257-4fdc-b6b4-5eda672b2eac',
       user,
-      'test-template-letter',
+      'submitted-page-letter-template',
       'SUBMITTED',
       'PASSED'
     ),
@@ -103,12 +109,12 @@ test.describe('Template Submitted Page', () => {
         `${baseURL}/templates/${channelIdentifier}-template-submitted/${templates[channelIdentifier].id}`
       );
 
-      await expect(templateSubmittedPage.pageHeader).toHaveText(
+      await expect(templateSubmittedPage.pageHeading).toHaveText(
         'Template submitted'
       );
 
       await expect(templateSubmittedPage.templateNameText).toHaveText(
-        `test-template-${channelName}`
+        templates[channelIdentifier].name
       );
 
       await expect(templateSubmittedPage.templateIdText).toHaveText(
@@ -126,7 +132,7 @@ test.describe('Template Submitted Page', () => {
         };
 
         await assertSkipToMainContent(props);
-        await assertNotifyBannerLink(props);
+        await assertHeaderLogoLink(props);
         await assertFooterLinks(props);
         await assertSignOutLink(props);
         await assertGoBackLink({

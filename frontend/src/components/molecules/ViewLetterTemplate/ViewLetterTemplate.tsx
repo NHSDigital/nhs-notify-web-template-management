@@ -5,10 +5,10 @@ import {
   LetterTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { BackLink } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function ViewLetterTemplate({
   initialState,
@@ -19,7 +19,9 @@ export function ViewLetterTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+        <NotifyBackLink data-testid='back-to-templates-link'>
+          {backLinkText}
+        </NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
