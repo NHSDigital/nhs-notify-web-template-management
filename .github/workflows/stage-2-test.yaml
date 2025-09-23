@@ -164,7 +164,7 @@ jobs:
       - name: "Run provider contract tests"
         run: make test-contract-producer
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   merge-coverage:

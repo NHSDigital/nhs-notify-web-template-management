@@ -42,4 +42,4 @@ runs:
       shell: bash
       run: make dependencies
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_PACKAGES_TOKEN: ${{ github.token }}

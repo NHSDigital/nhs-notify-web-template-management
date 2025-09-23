@@ -7,11 +7,13 @@ Zod validators, TypeScript type definitions, JSON Schemas and Sample Events for 
 To install this package from GitHub package registry, you will need to configure an `.npmrc` file with the following:
 
 ```txt
-//npm.pkg.github.com/:_authToken=<GITHUB_TOKEN>
+//npm.pkg.github.com/:_authToken=<GITHUB_PACKAGES_TOKEN>
 @nhsdigital:registry=https://npm.pkg.github.com
 ```
 
-where `GITHUB_TOKEN` is a classic PAT with the `packages:read` scope.
+where `GITHUB_PACKAGES_TOKEN` is a classic PAT with the `packages:read` scope.
+
+To do this run `./scripts/set_github_packages_token.sh`
 
 Then run `npm install @nhsdigital/nhs-notify-event-schemas-template-management`
 

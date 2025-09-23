@@ -8,8 +8,8 @@ applications:
             - cd ..
             - nvm install 20.13.1
             - nvm use 20.13.1
-            - export GITHUB_TOKEN=$(aws ssm get-parameter --name "$GITHUB_PACKAGES_READ_PAT_SSM_PARAM_NAME" --with-decryption --query Parameter.Value --output text)
-            - ./scripts/set_github_token.sh
+            - export GITHUB_PACKAGES_TOKEN=$(aws ssm get-parameter --name "$GITHUB_PACKAGES_READ_PAT_SSM_PARAM_NAME" --with-decryption --query Parameter.Value --output text)
+            - ./scripts/set_github_packages_token.sh
             - npm ci --cache .npm --prefer-offline
             - npm run create-amplify-outputs env
             - npm run build

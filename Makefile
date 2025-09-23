@@ -8,7 +8,7 @@ include scripts/init.mk
 # Example CI/CD targets are: dependencies, build, publish, deploy, clean, etc.
 
 dependencies: # Install dependencies needed to build and test the project @Pipeline
-	./scripts/set_github_token.sh
+	./scripts/set_github_packages_token.sh
 	npm ci
 
 build: # Build the project artefact @Pipeline

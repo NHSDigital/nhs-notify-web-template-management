@@ -113,7 +113,7 @@ jobs:
       - name: "Install dependencies"
         run: make dependencies
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Run provider contract tests"
         run: make test-contract-producer
 
@@ -141,7 +141,7 @@ jobs:
       - name: Install dependencies
         run: make dependencies
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: npm publish --workspace packages/event-schemas
