@@ -119,7 +119,7 @@ describe('Preview email form renders', () => {
 
       expect(screen.getByTestId('edit-template-button')).toHaveAttribute(
         'href',
-        '/templates/edit-email-template/template-id'
+        '/edit-email-template/template-id'
       );
     });
   });

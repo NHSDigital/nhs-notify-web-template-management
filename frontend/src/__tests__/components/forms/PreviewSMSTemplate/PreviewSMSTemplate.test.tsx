@@ -114,7 +114,7 @@ describe('Review sms form renders', () => {
 
       expect(screen.getByTestId('edit-template-button')).toHaveAttribute(
         'href',
-        '/templates/edit-text-message-template/template-id'
+        '/edit-text-message-template/template-id'
       );
     });
   });

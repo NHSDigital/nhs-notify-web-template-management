@@ -114,7 +114,7 @@ describe('Preview nhs app form renders', () => {
 
       expect(screen.getByTestId('edit-template-button')).toHaveAttribute(
         'href',
-        '/templates/edit-nhs-app-template/template-id'
+        '/edit-nhs-app-template/template-id'
       );
     });
   });
