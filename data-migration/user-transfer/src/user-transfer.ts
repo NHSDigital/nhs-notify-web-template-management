@@ -19,7 +19,7 @@ import {
   listCognitoUsers,
   UserData,
 } from './utils/cognito-utils';
-import { backupObject, deleteObjects, handleS3Copy } from './utils/s3-utils';
+import { backupObject, handleS3Copy, handleS3Delete } from './utils/s3-utils';
 
 const DRY_RUN = true;
 
@@ -83,10 +83,12 @@ async function migrateTemplatesAndS3Data(
 
   for (const user of users) {
     for (const item of items) {
-      const { id } = item;
+      const { id, templateType } = item;
       if (id.S === user.userId) {
         // copy s3 data
-        const sourceKey = await handleS3Copy(user, id.S as string, DRY_RUN);
+        if (templateType.S === 'LETTER') {
+          await handleS3Copy(user, id.S as string, DRY_RUN);
+        }
 
         // migrate templates
         await updateItem(item, parameters, user, DRY_RUN);
@@ -95,7 +97,9 @@ async function migrateTemplatesAndS3Data(
         await deleteItem(item, parameters);
 
         // delete migrated s3 data
-        deleteObjects(sourceKey);
+        if (templateType.S === 'LETTER') {
+          await handleS3Delete(user, id.S as string, DRY_RUN);
+        }
       }
     }
   }
