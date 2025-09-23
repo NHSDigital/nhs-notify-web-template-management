@@ -2,7 +2,7 @@
 
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { PreviewTemplateProps } from './preview-digitial-template.types';
+import { PreviewTemplateProps } from './preview-digital-template.types';
 import { Button } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
