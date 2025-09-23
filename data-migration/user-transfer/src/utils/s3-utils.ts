@@ -162,11 +162,28 @@ export async function handleS3Copy(
     const destinationKey = sourceKey.replace(user.userId, user.clientId);
     if (DRY_RUN) {
       console.log(
-        `[DRY_RUN] Would migrate S3 object: ${sourceBucket}/${sourceKey}} -> ${sourceBucket}/${destinationKey}`
+        `[DRY_RUN] Would migrate S3 object: ${sourceBucket}/${sourceKey} -> ${sourceBucket}/${destinationKey}`
       );
     } else {
       await copyObjects(user.userId, sourceKey, user.clientId);
-      return sourceKey;
+    }
+  }
+}
+
+export async function handleS3Delete(
+  user: UserData,
+  templateId: string,
+  DRY_RUN: boolean = false
+) {
+  const itemObjects = await getItemObjects(templateId);
+  for (const itemObject of itemObjects) {
+    const sourceKey = itemObject['Key'];
+    if (DRY_RUN) {
+      console.log(
+        `[DRY_RUN] Would delete S3 object: ${sourceBucket}/${sourceKey}`
+      );
+    } else {
+      await deleteObjects(sourceKey);
     }
   }
 }
