@@ -1,0 +1,30 @@
+{
+  "data": {
+    "clientId": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
+    "createdAt": "2025-07-29T10:11:13.881Z",
+    "createdBy": "fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2",
+    "files": {},
+    "id": "91be480d-c667-4741-957a-057b64753762",
+    "language": "en",
+    "letterType": "x0",
+    "name": "Example Letter Template",
+    "owner": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
+    "personalisationParameters": [
+      "test"
+    ],
+    "templateStatus": "PROOF_AVAILABLE",
+    "templateType": "LETTER",
+    "updatedAt": "2025-07-29T10:11:13.881Z",
+    "updatedBy": "fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2"
+  },
+  "datacontenttype": "application/json",
+  "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json",
+  "dataschemaversion": "1.0.0",
+  "id": "20f471d0-367d-4914-bee3-2fa5322d67f1",
+  "plane": "control",
+  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
+  "specversion": "1.0",
+  "subject": "91be480d-c667-4741-957a-057b64753762",
+  "time": "2025-07-29T10:11:13.881Z",
+  "type": "uk.nhs.notify.template-management.TemplateDrafted.v1"
+}

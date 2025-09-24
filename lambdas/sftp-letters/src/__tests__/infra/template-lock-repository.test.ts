@@ -25,13 +25,18 @@ function setup() {
 }
 
 describe('TemplateLockRepository', () => {
-  describe('acquireLock', () => {
+  describe('acquireLockAndSetSupplierReference', () => {
     test('returns true when database update succeeds', async () => {
       const { mocks, templateRepository } = setup();
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
 
-      const res = await templateRepository.acquireLock(clientId, templateId);
+      const res = await templateRepository.acquireLockAndSetSupplierReference(
+        clientId,
+        templateId,
+        'supplier',
+        'supplier-reference'
+      );
 
       expect(res).toBe(true);
 
@@ -39,11 +44,14 @@ describe('TemplateLockRepository', () => {
         ExpressionAttributeNames: {
           '#updatedAt': 'updatedAt',
           '#sftpSendLockTime': 'sftpSendLockTime',
+          '#supplier': 'supplier',
+          '#supplierReferences': 'supplierReferences',
         },
         ExpressionAttributeValues: {
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
           ':updatedAt': expect.stringMatching(isoDateRegExp),
           ':sftpSendLockTime': mockDate.getTime(),
+          ':supplier': 'supplier-reference',
         },
         ConditionExpression:
           'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
@@ -53,7 +61,7 @@ describe('TemplateLockRepository', () => {
         },
         TableName: templatesTableName,
         UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+          'SET #sftpSendLockTime = :sftpSendLockTime, #supplierReferences.#supplier = :supplier, #updatedAt = :updatedAt',
       });
     });
 
@@ -67,7 +75,12 @@ describe('TemplateLockRepository', () => {
         })
       );
 
-      const res = await templateRepository.acquireLock(clientId, templateId);
+      const res = await templateRepository.acquireLockAndSetSupplierReference(
+        clientId,
+        templateId,
+        'supplier',
+        'supplier-reference'
+      );
 
       expect(res).toBe(false);
     });
@@ -78,7 +91,12 @@ describe('TemplateLockRepository', () => {
       mocks.client.on(UpdateCommand).rejectsOnce(new Error('unknown'));
 
       await expect(
-        templateRepository.acquireLock(clientId, templateId)
+        templateRepository.acquireLockAndSetSupplierReference(
+          clientId,
+          templateId,
+          'supplier',
+          'supplier-reference'
+        )
       ).rejects.toThrow('unknown');
     });
   });

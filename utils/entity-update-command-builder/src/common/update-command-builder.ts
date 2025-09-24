@@ -45,6 +45,17 @@ export class UpdateCommandBuilder<Entity> {
     return this;
   }
 
+  setValueIfNotExists<T extends Prop<Entity>, K extends PropType<Entity, T>>(
+    attributeName: T,
+    value: K
+  ) {
+    this._expressionAttributeNames[`#${attributeName}`] = attributeName;
+    this._expressionAttributeValues[`:${attributeName}`] = value;
+    this._updateExpressionSet.SET[attributeName] =
+      `#${attributeName} = if_not_exists(#${attributeName}, :${attributeName})`;
+    return this;
+  }
+
   addToValue<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attributeName: T,
     value: K
@@ -70,6 +81,19 @@ export class UpdateCommandBuilder<Entity> {
     this._expressionAttributeValues[`:${attributeName}`] = value;
     this._updateExpressionSet.SET[attributeName] =
       `#${attributeName} = list_append(#${attributeName}, :${attributeName})`;
+    return this;
+  }
+
+  setValueInMap<
+    V,
+    T extends Prop<Entity>,
+    K extends Extract<Entity[T], Record<string, V>>[string],
+  >(attributeName: T, mapKey: string, value: K) {
+    this._expressionAttributeNames[`#${attributeName}`] = attributeName;
+    this._expressionAttributeNames[`#${mapKey}`] = mapKey;
+    this._expressionAttributeValues[`:${mapKey}`] = value;
+    this._updateExpressionSet.SET[attributeName] =
+      `#${attributeName}.#${mapKey} = :${mapKey}`;
     return this;
   }
 
