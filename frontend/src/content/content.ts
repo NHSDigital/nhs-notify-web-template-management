@@ -587,6 +587,7 @@ const previewTemplateDetails = {
     examplePersonalisationFile: 'Example personalisation file',
   },
   previewTemplateStatusFootnote,
+  headerCaption: 'Template',
 };
 
 const error404 = {
@@ -1004,6 +1005,10 @@ const requestProof = {
   },
 };
 
+const previewDigitalTemplate = {
+  editButton: 'Edit template',
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1011,21 +1016,22 @@ const content = {
     chooseTemplate,
     copyTemplate,
     deleteTemplate,
+    errorSummary,
     footer,
     header,
-    errorSummary,
     logoutWarning,
     messageFormatting,
     nameYourTemplate,
     personalisation,
+    previewDigitalTemplate,
     previewEmailTemplate,
     previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
     requestProof,
-    submitTemplate,
     submitLetterTemplate,
+    submitTemplate,
     templateFormEmail,
     templateFormLetter,
     templateFormNhsApp,

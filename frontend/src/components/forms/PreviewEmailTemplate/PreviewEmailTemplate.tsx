@@ -19,6 +19,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewEmailTemplate({
   initialState,
+  routingEnabled,
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -64,6 +65,8 @@ export function PreviewEmailTemplate({
                 radiosId: 'previewEmailTemplateAction',
                 formAttributes: { onSubmit: formValidate },
               }}
+              editPath={`/edit-email-template/${initialState.id}`}
+              routingEnabled={!!routingEnabled}
               previewDetailsComponent={
                 <PreviewTemplateDetailsEmail
                   template={initialState}
