@@ -19,11 +19,11 @@ describe('EmailClient', () => {
       const client = new EmailClient(sesClient, '', recipientEmails, logger);
 
       const templateId = 'template-id';
-      const expandedTemplateId = 'client_campaign_template-id_en_x0';
+      const supplierReference = 'client_campaign_template-id_en_x0';
 
       await client.sendProofRequestedEmailToSupplier(
         templateId,
-        expandedTemplateId,
+        supplierReference,
         'template-name',
         'supplier1'
       );
@@ -32,7 +32,7 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending proof requested email to suppliers because no email address is provided',
-        expandedTemplateId,
+        supplierReference,
         templateId,
         templateName: 'template-name',
         supplier: 'supplier1',
@@ -48,11 +48,11 @@ describe('EmailClient', () => {
       );
 
       const templateId = 'template-id';
-      const expandedTemplateId = 'client_campaign_template-id_en_x0';
+      const supplierReference = 'client_campaign_template-id_en_x0';
 
       await client.sendProofRequestedEmailToSupplier(
         templateId,
-        expandedTemplateId,
+        supplierReference,
         'template-name',
         'supplier1'
       );
@@ -66,7 +66,7 @@ describe('EmailClient', () => {
       }
 
       const emailContent = sesInput.input.RawMessage?.Data?.toString();
-      expect(emailContent).toContain(expandedTemplateId);
+      expect(emailContent).toContain(supplierReference);
       expect(emailContent).toContain('template-name');
       expect(emailContent).toContain('supplier1');
     });
@@ -90,7 +90,7 @@ describe('EmailClient', () => {
       letterType: 'q4',
     });
 
-    const expandedTemplateId = [
+    const supplierReference = [
       mockTemplate.clientId,
       mockTemplate.campaignId,
       mockTemplate.id,
@@ -153,14 +153,14 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
-        expandedTemplateId,
+        supplierReference,
         templateId: mockTemplate.id,
         supplier: 'supplier2',
       });
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
-        expandedTemplateId,
+        supplierReference,
         templateId: mockTemplate.id,
         supplier: 'supplier1',
       });
@@ -212,7 +212,7 @@ describe('EmailClient', () => {
       const supplier1EmailContent =
         sesCall1Input.input.RawMessage?.Data?.toString();
 
-      expect(supplier1EmailContent).toContain(expandedTemplateId);
+      expect(supplier1EmailContent).toContain(supplierReference);
       expect(supplier1EmailContent).toContain(recipientEmails.supplier1[0]);
       expect(supplier1EmailContent).toContain('template-name');
       expect(supplier1EmailContent).toContain('supplier1');
@@ -228,7 +228,7 @@ describe('EmailClient', () => {
 
       const supplier2Recipient1EmailContent =
         sesCall2Input.input.RawMessage?.Data?.toString();
-      expect(supplier2Recipient1EmailContent).toContain(expandedTemplateId);
+      expect(supplier2Recipient1EmailContent).toContain(supplierReference);
       expect(supplier2Recipient1EmailContent).toContain(
         recipientEmails.supplier2[0]
       );
@@ -245,7 +245,7 @@ describe('EmailClient', () => {
 
       const supplier2Recipient2EmailContent =
         sesCall3Input.input.RawMessage?.Data?.toString();
-      expect(supplier2Recipient2EmailContent).toContain(expandedTemplateId);
+      expect(supplier2Recipient2EmailContent).toContain(supplierReference);
       expect(supplier2Recipient2EmailContent).toContain(
         recipientEmails.supplier2[1]
       );
