@@ -2,12 +2,21 @@
 
 exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example Email template
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example Email template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -122,12 +131,21 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 
 exports[`PreviewTemplateDetailsLetter if status is NOT_YET_SUBMITTED, then Not yet submitted is displayed 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example letter
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example letter
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -224,12 +242,21 @@ exports[`PreviewTemplateDetailsLetter if status is NOT_YET_SUBMITTED, then Not y
 
 exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected) 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example letter
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example letter
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -326,12 +353,21 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
 
 exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, proofs failing virus scan are not displayed 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example letter
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example letter
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -549,12 +585,21 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
 
 exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is absent 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example template
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -656,12 +701,21 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
 
 exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example template
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -799,12 +853,21 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
 
 exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    Example template
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
@@ -894,12 +957,21 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
 
 exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
 <DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
+  <div
+    class="nhsuk-u-reading-width"
   >
-    SMS template
-  </h1>
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      SMS template
+    </h1>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >

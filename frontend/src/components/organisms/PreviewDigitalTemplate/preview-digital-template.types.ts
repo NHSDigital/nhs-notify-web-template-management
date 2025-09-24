@@ -4,13 +4,27 @@ import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/Prev
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
-export type PreviewTemplateProps = {
+type Props = {
   sectionHeading: string | undefined;
   template: TemplateDto;
-  form: NHSNotifyRadioButtonFormProps;
   previewDetailsComponent: React.ReactElement<
     | typeof PreviewTemplateDetailsEmail
     | typeof PreviewTemplateDetailsNhsApp
     | typeof PreviewTemplateDetailsSms
   >;
+  routingEnabled: boolean;
+  form?: NHSNotifyRadioButtonFormProps;
+  editPath?: string;
 };
+
+type RoutingEnabled = Props & {
+  routingEnabled: true;
+  editPath: string;
+};
+
+type RoutingDisabled = Props & {
+  routingEnabled: false;
+  form: NHSNotifyRadioButtonFormProps;
+};
+
+export type PreviewTemplateProps = RoutingEnabled | RoutingDisabled;
