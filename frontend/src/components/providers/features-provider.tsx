@@ -1,18 +1,17 @@
 'use client';
 
-import { ClientFeatures } from 'nhs-notify-backend-client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useAuthStatus } from '@hooks/use-auth-status';
+import { initialFeatureFlags } from '@utils/features';
+import { ClientFeatures } from 'nhs-notify-backend-client';
 
-export type FeatureFlags = ClientFeatures;
-
-export const FEATURE_KEYS: (keyof ClientFeatures)[] = ['proofing', 'routing'];
-
-export const initialFeatureFlags: FeatureFlags = Object.fromEntries(
-  FEATURE_KEYS.map((key) => [key, false])
-) as FeatureFlags;
-
-const FeatureFlagContext = createContext<FeatureFlags>(initialFeatureFlags);
+const FeatureFlagContext = createContext<{
+  featureFlags: ClientFeatures;
+  loaded: boolean;
+}>({
+  featureFlags: initialFeatureFlags,
+  loaded: false,
+});
 
 export const useFeatureFlags = () => useContext(FeatureFlagContext);
 
@@ -21,12 +20,19 @@ export function FeatureFlagProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [flags, setFlags] = useState<FeatureFlags>(initialFeatureFlags);
+  const [featureFlags, setFeatureFlags] =
+    useState<ClientFeatures>(initialFeatureFlags);
+
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   const authStatus = useAuthStatus();
 
   useEffect(() => {
+    if (authStatus === 'unauthenticated') {
+      setFeatureFlags(initialFeatureFlags);
+      return;
+    }
     if (authStatus !== 'authenticated') {
-      setFlags(initialFeatureFlags);
       return;
     }
 
@@ -37,13 +43,17 @@ export function FeatureFlagProvider({
             'x-internal-request': 'true',
           },
         });
-        if (!response.ok) setFlags(initialFeatureFlags);
 
-        const data: FeatureFlags = await response.json();
+        if (!response.ok) {
+          setFeatureFlags(initialFeatureFlags);
+        }
 
-        setFlags(data);
+        const data: ClientFeatures = await response.json();
+        setFeatureFlags(data);
       } catch {
-        setFlags(initialFeatureFlags);
+        setFeatureFlags(initialFeatureFlags);
+      } finally {
+        setLoaded(true);
       }
     };
 
@@ -51,7 +61,7 @@ export function FeatureFlagProvider({
   }, [authStatus]);
 
   return (
-    <FeatureFlagContext.Provider value={flags}>
+    <FeatureFlagContext.Provider value={{ featureFlags, loaded }}>
       {children}
     </FeatureFlagContext.Provider>
   );

@@ -1,12 +1,9 @@
 'use server';
 
-import { NextResponse, NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getSessionServer } from '@utils/amplify-utils';
-import {
-  clientConfigurationApiClient,
-  ClientFeatures,
-} from 'nhs-notify-backend-client';
-import { initialFeatureFlags } from '@providers/features-provider';
+import { fetchClient } from '@utils/server-features';
+import { FEATURES, initialFeatureFlags } from '@utils/features';
 
 export async function GET(request: NextRequest) {
   const internalHeader = request.headers.get('x-internal-request');
@@ -16,22 +13,20 @@ export async function GET(request: NextRequest) {
   }
 
   const session = await getSessionServer();
-  const token = session?.accessToken;
 
-  if (!token) {
-    return NextResponse.json(initialFeatureFlags, { status: 401 });
+  if (!session?.accessToken) {
+    return NextResponse.json(initialFeatureFlags);
   }
 
-  const result = await clientConfigurationApiClient.fetch(token);
+  const result = await fetchClient(session.accessToken);
 
-  if (result.error) {
-    return NextResponse.json(initialFeatureFlags, { status: 500 });
+  if (result.error || !result.data?.features) {
+    return NextResponse.json(initialFeatureFlags);
   }
 
-  const features: ClientFeatures = {
-    routing: result.data?.features.routing ?? false,
-    proofing: result.data?.features.proofing ?? false,
-  };
+  const features = Object.fromEntries(
+    FEATURES.map((key) => [key, result.data?.features?.[key] ?? false])
+  );
 
   return NextResponse.json(features);
 }

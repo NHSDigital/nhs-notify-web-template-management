@@ -4,7 +4,8 @@ import { useAuthStatus } from '@hooks/use-auth-status';
 import type { AuthStatus } from '@aws-amplify/ui';
 import content from '@content/content';
 import Link from 'next/link';
-import { FeatureFlags, useFeatureFlags } from '@providers/features-provider';
+import { useFeatureFlags } from '@providers/features-provider';
+import { ClientFeatures } from 'nhs-notify-backend-client';
 
 const headerContent = content.components.header;
 
@@ -14,9 +15,9 @@ export function HeaderNavigation({
   initialAuthStatus: AuthStatus;
 }) {
   const authStatus = useAuthStatus(initialAuthStatus);
-  const featureFlags = useFeatureFlags();
+  const { featureFlags, loaded: featureFlagsLoaded } = useFeatureFlags();
 
-  if (authStatus !== 'authenticated') return null;
+  if (authStatus !== 'authenticated' || !featureFlagsLoaded) return null;
 
   return (
     <nav
@@ -29,7 +30,8 @@ export function HeaderNavigation({
           {headerContent.navigationMenu.links
             .filter(
               ({ feature }) =>
-                !feature || featureFlags[feature as keyof FeatureFlags] === true
+                !feature ||
+                featureFlags[feature as keyof ClientFeatures] === true
             )
             .map(({ text, href }, index) => (
               <li
