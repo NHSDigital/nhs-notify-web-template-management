@@ -38,8 +38,8 @@ test-ui-user-timeout: # Run tests from scripts/tests/ui-user-timeout.sh @Testing
 test-event: # Run tests from scripts/tests/event.sh @Testing
 	make _test name="event"
 
-test-contract-producer: # Run tests from scripts/tests/contract-producer.sh @Testing
-	make _test name="contract-producer"
+test-contract-provider: # Run tests from scripts/tests/contract-provider.sh @Testing
+	make _test name="contract-provider"
 
 test: # Run all the test tasks @Testing
 	make \
@@ -75,4 +75,4 @@ ${VERBOSE}.SILENT: \
 	test-ui-user-timeout \
 	test-unit \
 	test-event \
-	test-contract-producer \
+	test-contract-provider \

@@ -32,7 +32,6 @@ resource "aws_amplify_app" "main" {
     AMPLIFY_MONOREPO_APP_ROOT                = "frontend"
     API_BASE_URL                             = module.backend_api.api_base_url
     CSRF_SECRET                              = aws_ssm_parameter.csrf_secret.value
-    GITHUB_PACKAGES_READ_PAT_SSM_PARAM_NAME  = data.aws_ssm_parameter.github_packages_read_pat.name
     NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT = 120
     NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS     = 900
     NOTIFY_ENVIRONMENT                       = var.environment

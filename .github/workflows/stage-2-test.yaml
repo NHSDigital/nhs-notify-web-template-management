@@ -162,7 +162,7 @@ jobs:
         with:
           node_version: "${{ inputs.nodejs_version }}"
       - name: "Run provider contract tests"
-        run: make test-contract-producer
+        run: make test-contract-provider
         env:
           GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -34,7 +34,9 @@ function findThisPackageRoot(startDir: string) {
   const pkg = readPackageJson(current);
 
   if (pkg) return current;
-  if (atFsRoot(current)) return null;
+  if (atFsRoot(current)) {
+    throw new Error('No package.json found');
+  }
 
   return findThisPackageRoot(path.dirname(current));
 }
@@ -120,9 +122,14 @@ export function getMessageProviders() {
 }
 
 export function getPactUrls(consumerPackage: string) {
-  const base = getPackageInstallDirectory(consumerPackage);
+  const base = findThisPackageRoot(__dirname);
 
-  const pactsDir = path.join(base, 'pacts/template-management');
+  const pactsDir = path.join(
+    base,
+    '.contracts',
+    consumerPackage,
+    'pacts/template-management'
+  );
 
   if (!fs.existsSync(pactsDir)) {
     throw new Error(`No pact files found at ${pactsDir}`);

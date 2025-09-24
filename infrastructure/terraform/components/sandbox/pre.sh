@@ -2,11 +2,15 @@ REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
 
-echo "Running pre.sh"
+# pre.sh runs in the same shell as terraform.sh, not in a subshell
+# any variables set or changed, and change of directory will persist once this script exits and returns control to terraform.sh
+
+echo "Running sandbox pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+# change to monorepo root
 cd $(git rev-parse --show-toplevel)
 
 if [ "${ACTION}" == "apply" ]; then
@@ -14,7 +18,7 @@ if [ "${ACTION}" == "apply" ]; then
 
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
       echo "Installing dependencies"
-      make dependencies;
+      npm ci;
     else
       echo "Skipping dependency installation"
     fi
@@ -23,9 +27,10 @@ if [ "${ACTION}" == "apply" ]; then
 
     npm run lambda-build --workspaces --if-present
 
-    $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
+    lambdas/layers/pdfjs/build.sh
 else
     echo "Skipping lambda build for action $ACTION"
 fi
 
+# revert back to original directory
 cd -

@@ -64,17 +64,4 @@ data "aws_iam_policy_document" "amplify" {
       "arn:aws:logs:${var.region}:${var.aws_account_id}:*"
     ]
   }
-
-  statement {
-    sid    = "SSMGetGitHubPackagesPAT"
-    effect = "Allow"
-
-    actions = [
-      "ssm:GetParameter",
-    ]
-
-    resources = [
-      data.aws_ssm_parameter.github_packages_read_pat.arn
-    ]
-  }
 }
