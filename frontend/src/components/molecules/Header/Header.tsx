@@ -6,7 +6,6 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
 import { HeaderAccountDetails } from './HeaderAccountDetails';
 import { HeaderNavigation } from './HeaderNavigation';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const headerContent = content.components.header;
 
@@ -16,10 +15,6 @@ export async function NhsNotifyHeader() {
   const authStatus: AuthStatus = session?.accessToken
     ? 'authenticated'
     : 'unauthenticated';
-
-  const routingEnabled = session?.accessToken
-    ? await serverIsFeatureEnabled('routing')
-    : false;
 
   return (
     <header
@@ -61,10 +56,7 @@ export async function NhsNotifyHeader() {
           initialAuthStatus={authStatus}
         />
       </div>
-      <HeaderNavigation
-        initialAuthStatus={authStatus}
-        routingEnabled={routingEnabled}
-      />
+      <HeaderNavigation initialAuthStatus={authStatus} />
     </header>
   );
 }
