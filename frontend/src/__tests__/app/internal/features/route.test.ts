@@ -83,6 +83,21 @@ describe('features route', () => {
     expect(json).toEqual(allFeaturesEnabled);
   });
 
+  it('defaults to false for missing feature flags', async () => {
+    mockFetchClient.mockResolvedValueOnce({
+      data: { features: { proofing: true } },
+    });
+
+    const req = createRequest();
+    const res = await getFeatures(req);
+    const json = await res.json();
+
+    expect(json).toEqual({
+      proofing: true,
+      routing: false,
+    });
+  });
+
   it('returns initialFeatureFlags if fetchClient returns undefined', async () => {
     mockFetchClient.mockResolvedValueOnce({} as Result<null>);
 
