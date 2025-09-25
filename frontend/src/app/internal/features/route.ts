@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
   const result = await fetchClient(session.accessToken);
 
-  if (result.error || !result.data?.features) {
+  if (!result || result.error || !result.data?.features) {
     return NextResponse.json(initialFeatureFlags);
   }
 
