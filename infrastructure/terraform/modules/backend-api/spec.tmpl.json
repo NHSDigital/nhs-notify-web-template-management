@@ -478,6 +478,12 @@
               },
               "proofingEnabled": {
                 "type": "boolean"
+              },
+              "supplierReferences": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
               }
             },
             "required": [
