@@ -2,7 +2,7 @@ import { GET as getFeatures } from '@app/internal/features/route';
 import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
 import { FEATURES, initialFeatureFlags } from '@utils/features';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ErrorCase } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
@@ -24,7 +24,17 @@ const createRequest = (internalHeader = true): NextRequest =>
 describe('features route', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+
     mockGetSessionServer.mockResolvedValueOnce({ accessToken: 'token' });
+
+    jest.spyOn(NextResponse, 'json').mockImplementation(
+      (data) =>
+        ({
+          status: 200,
+          ok: true,
+          json: () => Promise.resolve(data),
+        }) as NextResponse
+    );
   });
 
   it('returns 403 status if x-internal-request header is missing', async () => {
@@ -39,8 +49,9 @@ describe('features route', () => {
 
     const req = createRequest();
     const res = await getFeatures(req);
+    const json = await res.json();
 
-    expect(res.json()).toEqual(initialFeatureFlags);
+    expect(json).toEqual(initialFeatureFlags);
   });
 
   it('returns initialFeatureFlags on a fetchClient error', async () => {
@@ -50,8 +61,9 @@ describe('features route', () => {
 
     const req = createRequest();
     const res = await getFeatures(req);
+    const json = await res.json();
 
-    expect(res.json()).toEqual(initialFeatureFlags);
+    expect(json).toEqual(initialFeatureFlags);
   });
 
   it('returns expected feature flags', async () => {
@@ -65,7 +77,8 @@ describe('features route', () => {
 
     const req = createRequest();
     const res = await getFeatures(req);
+    const json = await res.json();
 
-    expect(res.json()).toEqual(allFeaturesEnabled);
+    expect(json).toEqual(allFeaturesEnabled);
   });
 });
