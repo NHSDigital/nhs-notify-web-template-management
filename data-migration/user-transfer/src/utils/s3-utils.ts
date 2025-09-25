@@ -4,13 +4,13 @@ import {
   PutObjectCommand,
   PutObjectCommandOutput,
   S3Client,
-  NotFound,
   paginateListObjectsV2,
   HeadObjectCommand,
 } from '@aws-sdk/client-s3';
 import { Parameters } from '@/src/utils/constants';
 import { getAccountId } from './sts-utils';
 import { UserData } from './cognito-utils';
+import { print } from './log';
 
 const s3Client = new S3Client({
   region: 'eu-west-2',
@@ -36,7 +36,7 @@ export async function writeJsonToFile(
   );
 }
 
-async function listItemObjectsWithPaginator(bucket: string) {
+export async function listItemObjectsWithPaginator(bucket: string) {
   const itemObjects = [];
   const paginatedItemObjects = paginateListObjectsV2(
     {
@@ -48,32 +48,17 @@ async function listItemObjectsWithPaginator(bucket: string) {
 
   for await (const page of paginatedItemObjects) {
     if (page.Contents) {
-      itemObjects.push(...page.Contents.map((item) => item.Key));
+      itemObjects.push(...page.Contents.map((item) => item.Key!));
     }
   }
 
   return itemObjects.length > 0 ? itemObjects : [];
 }
 
-export async function getItemObjects(
-  templateId: string
-): Promise<unknown | void> {
-  try {
-    const items = await listItemObjectsWithPaginator(sourceBucket as string);
-
-    if (items.length > 0) {
-      const itemObjects = items.filter((item) => item.includes(templateId));
-      return itemObjects;
-    } else {
-      throw Error;
-    }
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return;
-    }
-
-    throw error;
-  }
+export async function getItemObjects(templateId: string): Promise<string[]> {
+  const items = await listItemObjectsWithPaginator(sourceBucket as string);
+  const itemObjects = items.filter((item) => item.includes(templateId));
+  return itemObjects;
 }
 
 export async function copyObjects(
@@ -118,13 +103,85 @@ export async function copyObjects(
   }
 }
 
-export async function deleteObjects(key: string) {
-  return await s3Client.send(
-    new DeleteObjectCommand({
-      Bucket: sourceBucket,
-      Key: key,
+export async function copyObjectsV2(
+  bucket: string,
+  sourceKey: string,
+  destinationKey: string,
+  clientId: string,
+  dryRun = true
+) {
+  const head = await s3Client.send(
+    new HeadObjectCommand({
+      Bucket: bucket,
+      Key: sourceKey,
     })
   );
+
+  const { ['owner']: _, ...metadataWithoutOwner } = head.Metadata || {};
+
+  if (dryRun) {
+    print(`[DRY RUN] S3: transfer ${sourceKey} to ${destinationKey}`);
+    return;
+  }
+
+  try {
+    await s3Client.send(
+      new CopyObjectCommand({
+        CopySource: `${bucket}/${sourceKey}`,
+        Bucket: bucket,
+        Key: destinationKey,
+        Metadata: {
+          ...metadataWithoutOwner,
+          'client-id': clientId,
+        },
+        MetadataDirective: 'REPLACE',
+        TaggingDirective: 'COPY',
+        ContentType: head.ContentType,
+      })
+    );
+    print(`S3: transfer successful`);
+  } catch (error) {
+    throw new Error(`Failed copying ${sourceKey} to ${destinationKey}`, {
+      cause: error,
+    });
+  }
+}
+
+export async function deleteObjects(key: string, dryRun = true) {
+  if (dryRun) {
+    console.log(`[DRY RUN] S3: will delete ${key}`);
+  } else {
+    return await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: sourceBucket,
+        Key: key,
+      })
+    );
+  }
+}
+
+export async function deleteObjectsV2(
+  bucket: string,
+  key: string,
+  dryRun = true
+) {
+  if (dryRun) {
+    print(`[DRY RUN] S3: will delete ${key}`);
+    return;
+  }
+
+  try {
+    return await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      })
+    );
+  } catch (error) {
+    throw new Error(`Failed deleting ${key}`, {
+      cause: error,
+    });
+  }
 }
 
 export async function backupObject(parameters: Parameters) {
@@ -150,7 +207,6 @@ export async function backupObject(parameters: Parameters) {
 
   console.log('Object backup successful');
 }
-
 export async function handleS3Copy(
   user: UserData,
   templateId: string,
@@ -158,7 +214,7 @@ export async function handleS3Copy(
 ) {
   const itemObjects = await getItemObjects(templateId);
   for (const itemObject of itemObjects) {
-    const sourceKey = itemObject['Key'];
+    const sourceKey = itemObject;
     const destinationKey = sourceKey.replace(user.userId, user.clientId);
     if (DRY_RUN) {
       console.log(
@@ -169,7 +225,6 @@ export async function handleS3Copy(
     }
   }
 }
-
 export async function handleS3Delete(
   user: UserData,
   templateId: string,
@@ -177,7 +232,7 @@ export async function handleS3Delete(
 ) {
   const itemObjects = await getItemObjects(templateId);
   for (const itemObject of itemObjects) {
-    const sourceKey = itemObject['Key'];
+    const sourceKey = itemObject;
     if (DRY_RUN) {
       console.log(
         `[DRY_RUN] Would delete S3 object: ${sourceBucket}/${sourceKey}`
