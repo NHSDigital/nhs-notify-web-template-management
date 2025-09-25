@@ -3,8 +3,9 @@ import {
   FeatureFlagProvider,
   useFeatureFlags,
 } from '@providers/features-provider';
+import { Authenticator } from '@aws-amplify/ui-react';
 
-function TestConsumer() {
+const TestConsumer = () => {
   const { featureFlags, loaded } = useFeatureFlags();
   return (
     <div>
@@ -13,7 +14,17 @@ function TestConsumer() {
       <p data-testid='routing'>{featureFlags.routing ? 'true' : 'false'}</p>
     </div>
   );
-}
+};
+
+const renderProvider = () => {
+  return render(
+    <Authenticator.Provider>
+      <FeatureFlagProvider>
+        <TestConsumer />
+      </FeatureFlagProvider>
+    </Authenticator.Provider>
+  );
+};
 
 describe('FeatureFlagProvider', () => {
   beforeEach(() => {
@@ -28,11 +39,7 @@ describe('FeatureFlagProvider', () => {
     });
 
     it('should provide all feature flags as false when unauthenticated', async () => {
-      const container = render(
-        <FeatureFlagProvider>
-          <TestConsumer />
-        </FeatureFlagProvider>
-      );
+      const container = renderProvider();
 
       await waitFor(() => {
         expect(container.getByTestId('loaded')).toHaveTextContent('false');
@@ -55,11 +62,7 @@ describe('FeatureFlagProvider', () => {
         json: async () => ({ proofing: true, routing: true }),
       });
 
-      const container = render(
-        <FeatureFlagProvider>
-          <TestConsumer />
-        </FeatureFlagProvider>
-      );
+      const container = renderProvider();
 
       await waitFor(() => {
         expect(container.getByTestId('loaded')).toHaveTextContent('true');
@@ -72,11 +75,7 @@ describe('FeatureFlagProvider', () => {
   it('should fall back to default flags on fetch error', async () => {
     global.fetch = jest.fn().mockRejectedValue(new Error('Failed'));
 
-    const container = render(
-      <FeatureFlagProvider>
-        <TestConsumer />
-      </FeatureFlagProvider>
-    );
+    const container = renderProvider();
 
     await waitFor(() => {
       expect(container.getByTestId('loaded')).toHaveTextContent('true');

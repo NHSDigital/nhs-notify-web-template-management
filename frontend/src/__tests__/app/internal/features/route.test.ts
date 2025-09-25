@@ -11,10 +11,15 @@ jest.mock('@utils/server-features');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 const mockFetchClient = jest.mocked(fetchClient);
 
-const createRequest = (internalHeader = true) =>
-  new NextRequest(new Request('http://localhost'), {
-    headers: { 'x-internal-request': `${internalHeader}` },
-  });
+const createRequest = (internalHeader = true): NextRequest =>
+  ({
+    headers: {
+      get: (key: string) => {
+        if (key === 'x-internal-request')
+          return internalHeader ? 'true' : undefined;
+      },
+    },
+  }) as NextRequest;
 
 describe('features route', () => {
   beforeEach(() => {
