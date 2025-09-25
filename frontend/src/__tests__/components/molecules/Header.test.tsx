@@ -4,6 +4,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
+import { useFeatureFlags } from '@providers/features-provider';
 
 jest.mock('@hooks/use-auth-status');
 const mockUseAuthStatus = jest.mocked(useAuthStatus);
@@ -17,12 +18,19 @@ const mockGetSessionServer = jest.mocked(getSessionServer);
 jest.mock('@utils/server-features');
 const mockServerIsFeatureEnabled = jest.mocked(serverIsFeatureEnabled);
 
+jest.mock('@providers/features-provider');
+const mockUseFeatureFlags = jest.mocked(useFeatureFlags);
+
 jest.mock('nhs-notify-web-template-management-utils/logger');
 
 beforeEach(() => {
   jest.resetAllMocks();
   mockUseAuthStatus.mockImplementation((status) => status ?? 'configuring');
   mockServerIsFeatureEnabled.mockResolvedValue(false); // default for most tests
+  mockUseFeatureFlags.mockReturnValue({
+    featureFlags: { proofing: false, routing: false },
+    loaded: true,
+  });
 });
 
 describe('NhsNotifyHeader', () => {
@@ -30,6 +38,10 @@ describe('NhsNotifyHeader', () => {
     beforeEach(() => {
       mockGetSessionServer.mockResolvedValue({});
       mockGetIdTokenClaims.mockReturnValue({});
+      mockUseFeatureFlags.mockReturnValue({
+        featureFlags: { proofing: false, routing: false },
+        loaded: true,
+      });
     });
 
     it('initializes the authStatus as unauthenticated', async () => {
@@ -95,6 +107,11 @@ describe('NhsNotifyHeader', () => {
       mockGetIdTokenClaims.mockReturnValue({
         displayName: 'Dr Test Example',
         clientName: 'NHS England',
+      });
+
+      mockUseFeatureFlags.mockReturnValue({
+        featureFlags: { proofing: false, routing: false },
+        loaded: true,
       });
     });
 
@@ -165,7 +182,10 @@ describe('NhsNotifyHeader', () => {
 
     describe(`with 'routing' flag enabled`, () => {
       beforeEach(() => {
-        mockServerIsFeatureEnabled.mockResolvedValue(true);
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: { proofing: false, routing: true },
+          loaded: true,
+        });
       });
 
       it('renders both the navigation links with correct hrefs', async () => {
@@ -187,11 +207,32 @@ describe('NhsNotifyHeader', () => {
           '/templates-and-message-plans/message-plans'
         );
       });
+
+      it('does not render navigation links when feature flags are not yet loaded', async () => {
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: {
+            proofing: true,
+            routing: true,
+          },
+          loaded: false,
+        });
+
+        const header = await NhsNotifyHeader();
+
+        render(header);
+
+        expect(
+          screen.queryByTestId('navigation-links')
+        ).not.toBeInTheDocument();
+      });
     });
 
     describe(`with 'routing' flag disabled`, () => {
       beforeEach(() => {
-        mockServerIsFeatureEnabled.mockResolvedValue(false);
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: { proofing: false, routing: false },
+          loaded: true,
+        });
       });
 
       it('renders the templates link with correct href', async () => {
