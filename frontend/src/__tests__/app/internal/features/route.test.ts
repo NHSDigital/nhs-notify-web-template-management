@@ -3,7 +3,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
 import { FEATURES, initialFeatureFlags } from '@utils/features';
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase, Result } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/server-features');
@@ -45,6 +45,7 @@ describe('features route', () => {
   });
 
   it('returns initialFeatureFlags if no access token', async () => {
+    mockGetSessionServer.mockReset();
     mockGetSessionServer.mockResolvedValueOnce({});
 
     const req = createRequest();
@@ -80,5 +81,15 @@ describe('features route', () => {
     const json = await res.json();
 
     expect(json).toEqual(allFeaturesEnabled);
+  });
+
+  it('returns initialFeatureFlags if fetchClient returns undefined', async () => {
+    mockFetchClient.mockResolvedValueOnce({} as Result<null>);
+
+    const req = createRequest();
+    const res = await getFeatures(req);
+    const json = await res.json();
+
+    expect(json).toEqual(initialFeatureFlags);
   });
 });

@@ -46,6 +46,7 @@ export function FeatureFlagProvider({
 
         if (!response.ok) {
           setFeatureFlags(initialFeatureFlags);
+          return;
         }
 
         const data: ClientFeatures = await response.json();

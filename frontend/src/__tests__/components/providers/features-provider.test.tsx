@@ -85,5 +85,34 @@ describe('FeatureFlagProvider', () => {
         expect(screen.getByTestId('routing')).toHaveTextContent('false');
       });
     });
+
+    it('should fall back to default flags when response.ok is false', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        json: async () => ({ proofing: true, routing: true }),
+      });
+
+      renderWithProvider();
+
+      await waitFor(() => {
+        expect(screen.getByTestId('loaded')).toHaveTextContent('true');
+        expect(screen.getByTestId('proofing')).toHaveTextContent('false');
+        expect(screen.getByTestId('routing')).toHaveTextContent('false');
+      });
+    });
+  });
+
+  it('should not fetch feature flags when authStatus is neither authenticated or unauthenticated', async () => {
+    mockUseAuthStatus.mockReturnValue('configuring');
+
+    renderWithProvider();
+
+    await waitFor(() => {
+      expect(screen.getByTestId('loaded')).toHaveTextContent('false');
+      expect(screen.getByTestId('proofing')).toHaveTextContent('false');
+      expect(screen.getByTestId('routing')).toHaveTextContent('false');
+    });
+
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 });
