@@ -9,6 +9,18 @@ export type Parameters = {
   flag?: string;
 };
 
+export type UserData = {
+  username: string;
+  /*
+   * extracted from the user's group starting with 'client:'
+   */
+  clientId: string;
+  /*
+   * extracted from the user's 'sub' attribute
+   */
+  userId: string;
+};
+
 export type Template = {
   id: string;
   owner: string;
@@ -19,19 +31,19 @@ type ToFrom = {
   to: string;
 };
 
-export type MigrationStage =
+export type TransferStage =
   | 's3:copy'
   | 'ddb:transfer'
   | 's3:delete'
   | 'initial'
   | 'finished';
 
-export type MigrationStatus = 'success' | 'failed' | 'migrate';
+export type TransferStatus = 'success' | 'failed' | 'migrate';
 
-export type MigrationPlanItem = {
+export type UserTransferPlanItem = {
   templateId: string;
-  status: MigrationStatus;
-  stage: MigrationStage;
+  status: TransferStatus;
+  stage: TransferStage;
   reason?: string;
   ddb: {
     owner: ToFrom;
@@ -41,14 +53,13 @@ export type MigrationPlanItem = {
   };
 };
 
-export type MigrationPlan = {
+export type UserTransferPlan = {
   total: number;
   tableName: string;
   bucketName: string;
-  run: number;
   migrate: {
     count: number;
-    plans: MigrationPlanItem[];
+    plans: UserTransferPlanItem[];
   };
   orphaned: {
     count: number;
@@ -56,8 +67,8 @@ export type MigrationPlan = {
   };
 };
 
-export type MigrationPlanItemResult = {
+export type UserTransferPlanItemResult = {
   success: boolean;
-  stage: MigrationStage;
+  stage: TransferStage;
   reasons?: string[];
 };

@@ -1,21 +1,21 @@
-import { UserData } from './cognito-utils';
 import {
-  MigrationPlan,
-  MigrationPlanItem,
-  MigrationPlanItemResult,
+  UserTransferPlan,
+  UserTransferPlanItem,
+  UserTransferPlanItemResult,
   Template,
-} from './constants';
-import { migrateOwnership } from './ddb-utils';
-import { print } from './log';
-import { copyObjectsV2, deleteObjectsV2 } from './s3-utils';
+  UserData,
+} from './types';
+import { getTemplate, migrateOwnership } from './ddb-utils';
+import { print } from './log-utils';
+import { transferFileToClient, deleteFile, getFileHead } from './s3-utils';
 
-export class MigrationHandler {
+export class UserTransfer {
   public static async plan(
     users: UserData[],
     ddb: { tableName: string; templates: Template[] },
     s3: { bucketName: string; files: string[] }
-  ): Promise<MigrationPlan> {
-    const templatesToMigrate: MigrationPlanItem[] = [];
+  ): Promise<UserTransferPlan> {
+    const templatesToMigrate: UserTransferPlanItem[] = [];
     const templateIdsWithNoOwner = [];
 
     for (const template of ddb.templates) {
@@ -54,7 +54,6 @@ export class MigrationHandler {
       total: ddb.templates.length,
       tableName: ddb.tableName,
       bucketName: s3.bucketName,
-      run: 0,
       migrate: {
         count: templatesToMigrate.length,
         plans: templatesToMigrate,
@@ -67,20 +66,24 @@ export class MigrationHandler {
   }
 
   public static async apply(
-    item: MigrationPlanItem,
+    item: UserTransferPlanItem,
     config: { bucketName: string; tableName: string; dryRun: boolean }
-  ): Promise<MigrationPlanItemResult> {
-    const copyPromises = item.s3.files.map((file) =>
-      copyObjectsV2(
-        config.bucketName,
-        file.from,
-        file.to,
-        item.ddb.owner.to,
-        config.dryRun
-      )
-    );
+  ): Promise<UserTransferPlanItemResult> {
+    const copyPromises = item.s3.files.map(async (file) => {
+      if (config.dryRun) {
+        await getFileHead(config.bucketName, file.from);
+        print(`[DRY RUN] S3: transfer ${file.from} to ${file.to}`);
+      } else {
+        await transferFileToClient(
+          config.bucketName,
+          file.from,
+          file.to,
+          item.ddb.owner.to
+        );
+      }
+    });
 
-    const copyResult = await MigrationHandler.processPromises(copyPromises);
+    const copyResult = await UserTransfer.processPromises(copyPromises);
 
     if (!copyResult.success) {
       print(`Skipping: [s3:copy]: ${item.templateId} copy failed`);
@@ -92,13 +95,31 @@ export class MigrationHandler {
     }
 
     try {
-      await migrateOwnership(
-        config.tableName,
-        item.templateId,
-        item.ddb.owner.from,
-        item.ddb.owner.to,
-        config.dryRun
-      );
+      if (config.dryRun) {
+        const template = await getTemplate(
+          config.tableName,
+          item.ddb.owner.from,
+          item.templateId
+        );
+
+        if (!template) {
+          throw new Error(`No template found for ${item.templateId}`);
+        }
+
+        print(
+          `[DRY RUN] DynamoDB: template ${template.id.S} found and will transferred from ${item.ddb.owner.from} to CLIENT#${item.ddb.owner.to}`
+        );
+        print(
+          `[DRY RUN] DynamoDB: template ${template.id.S} with owner ${item.ddb.owner.from} will be deleted`
+        );
+      } else {
+        await migrateOwnership(
+          config.tableName,
+          item.templateId,
+          item.ddb.owner.from,
+          item.ddb.owner.to
+        );
+      }
     } catch (error) {
       print(
         `Failed: [ddb:transfer]: ${item.templateId} DynamoDB transaction failed`
@@ -114,11 +135,15 @@ export class MigrationHandler {
       };
     }
 
-    const deletePromises = item.s3.files.map((file) =>
-      deleteObjectsV2(config.bucketName, file.from, config.dryRun)
-    );
+    const deletePromises = item.s3.files.map(async (file) => {
+      if (config.dryRun) {
+        print(`[DRY RUN] S3: will delete ${file.from}`);
+      } else {
+        await deleteFile(config.bucketName, file.from);
+      }
+    });
 
-    const deleteResult = await MigrationHandler.processPromises(deletePromises);
+    const deleteResult = await UserTransfer.processPromises(deletePromises);
 
     if (!deleteResult.success) {
       print(`Partial: [s3:delete]: ${item.templateId} delete failed`);

@@ -1,4 +1,4 @@
-import { writeJsonToFile } from '@/src/utils/s3-utils';
+import { writeFile } from '@/src/utils/s3-utils';
 import { S3Client } from '@aws-sdk/client-s3';
 
 jest.mock('@aws-sdk/client-s3', () => ({
@@ -17,7 +17,7 @@ describe('s3-utils', () => {
       const testFilePath = '/test/file/path.json';
 
       // act
-      await writeJsonToFile(testFilePath, testContent, testBucketName);
+      await writeFile(testFilePath, testContent, testBucketName);
 
       // assert
       expect(sendSpy).toHaveBeenCalledTimes(1);

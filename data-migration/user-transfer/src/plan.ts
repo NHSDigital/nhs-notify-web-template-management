@@ -1,16 +1,14 @@
 /* eslint-disable unicorn/no-process-exit */
 /* eslint-disable unicorn/prefer-top-level-await */
 import { CognitoRepository } from './utils/cognito-repository';
-import { retrieveAllTemplatesV2 } from './utils/ddb-utils';
-import {
-  listItemObjectsWithPaginator,
-  writeJsonToFile as writeRemote,
-} from './utils/s3-utils';
-import { MigrationHandler } from './utils/migration-handler';
+import { listAllTemplates } from './utils/ddb-utils';
+import { listAllFiles, writeFile } from './utils/s3-utils';
+import { UserTransfer } from './utils/user-transfer';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { getAccountId } from './utils/sts-utils';
-import { print } from './utils/log';
+import { print } from './utils/log-utils';
+import { backupBucketName } from './utils/backup-utils';
 
 const params = yargs(hideBin(process.argv))
   .options({
@@ -52,7 +50,7 @@ const params = yargs(hideBin(process.argv))
   })
   .parseSync();
 
-const cognitoCrawler = new CognitoRepository(
+const cognitoRepository = new CognitoRepository(
   params.userPoolId,
   params.component === 'app'
     ? {
@@ -65,12 +63,13 @@ const cognitoCrawler = new CognitoRepository(
 
 async function getConfig() {
   const accountId = await getAccountId();
+  const backupBucket = await backupBucketName();
 
   return {
     accountId,
     templateTableName: `nhs-notify-${params.environment}-${params.component}-api-templates`,
     templatesS3InternalBucketName: `nhs-notify-${accountId}-eu-west-2-${params.environment}-${params.component}-internal`,
-    templatesS3BackupBucketName: `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`,
+    templatesS3BackupBucketName: backupBucket,
   };
 }
 
@@ -82,15 +81,13 @@ async function plan() {
     templatesS3BackupBucketName,
   } = await getConfig();
 
-  const users = await cognitoCrawler.getAllUsers();
+  const users = await cognitoRepository.getAllUsers();
 
-  const templates = await retrieveAllTemplatesV2(templateTableName);
+  const templates = await listAllTemplates(templateTableName);
 
-  const files = await listItemObjectsWithPaginator(
-    templatesS3InternalBucketName
-  );
+  const files = await listAllFiles(templatesS3InternalBucketName);
 
-  const transferPlan = await MigrationHandler.plan(
+  const transferPlan = await UserTransfer.plan(
     users,
     {
       tableName: templateTableName,
@@ -102,13 +99,13 @@ async function plan() {
     }
   );
 
-  const fileName = `transfer-plan-${accountId}-${params.environment}-${params.component}-${Date.now()}.json`;
+  const fileName = `transfer-plan-${accountId}-${params.environment}-${params.component}-${Date.now()}`;
 
   const data = JSON.stringify(transferPlan);
 
-  const filePath = `ownership-transfer/${params.environment}/${fileName}`;
+  const filePath = `ownership-transfer/${params.environment}/${fileName}/${fileName}.json`;
 
-  await writeRemote(filePath, data, templatesS3BackupBucketName);
+  await writeFile(filePath, data, templatesS3BackupBucketName);
 
   print(`Plan written to s3://${templatesS3InternalBucketName}/${filePath}`);
 }
