@@ -52,6 +52,7 @@ test: # Run all the test tasks @Testing
 		test-api \
 		test-accessibility \
 		test-ui-user-timeout \
+		test-contract-provider \
 
 _test:
 	set -e
