@@ -7,19 +7,8 @@ import {
   UserType,
   GroupType,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { print } from './log';
-
-export type UserData = {
-  username: string;
-  /*
-   * extracted from the user's group starting with 'client:'
-   */
-  clientId: string;
-  /*
-   * extracted from the user's 'sub' attribute
-   */
-  userId: string;
-};
+import { print } from './log-utils';
+import { UserData } from './types';
 
 export class CognitoRepository {
   private client: CognitoIdentityProviderClient;

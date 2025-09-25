@@ -1,6 +1,6 @@
 import { backupData } from '@/src/utils/backup-utils';
 import { getAccountId } from '@/src/utils/sts-utils';
-import { writeJsonToFile } from '@/src/utils/s3-utils';
+import { writeFile } from '@/src/utils/s3-utils';
 
 const mockItem1 = {
   templateType: {
@@ -45,7 +45,7 @@ describe('backup-utils', () => {
       jest
         .mocked(getAccountId)
         .mockImplementation(() => Promise.resolve('000000000000'));
-      const mockedWriteJsonToFile = jest.mocked(writeJsonToFile);
+      const mockedWriteJsonToFile = jest.mocked(writeFile);
 
       const testParameters = {
         destinationOwner: 'def-456',
@@ -73,7 +73,7 @@ describe('backup-utils', () => {
 
     test('should no-op the backup when no items have been found', async () => {
       // arrange
-      const mockedWriteJsonToFile = jest.mocked(writeJsonToFile);
+      const mockedWriteJsonToFile = jest.mocked(writeFile);
 
       const testParameters = {
         destinationOwner: 'def-456',
