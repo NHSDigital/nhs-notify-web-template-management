@@ -8,7 +8,6 @@ export type ClientConfiguration = {
   campaignId?: string;
   features: {
     proofing: boolean;
-    // TODO: CCM-11148 Make routing flag required
     routing?: boolean;
   };
   name?: string;

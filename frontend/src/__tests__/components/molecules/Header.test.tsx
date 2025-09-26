@@ -2,7 +2,9 @@ import { render, screen, within } from '@testing-library/react';
 import { useAuthStatus } from '@hooks/use-auth-status';
 import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
+import { useFeatureFlags } from '@providers/features-provider';
 
 jest.mock('@hooks/use-auth-status');
 const mockUseAuthStatus = jest.mocked(useAuthStatus);
@@ -13,11 +15,22 @@ const mockGetIdTokenClaims = jest.mocked(getIdTokenClaims);
 jest.mock('@utils/amplify-utils');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 
+jest.mock('@utils/server-features');
+const mockServerIsFeatureEnabled = jest.mocked(serverIsFeatureEnabled);
+
+jest.mock('@providers/features-provider');
+const mockUseFeatureFlags = jest.mocked(useFeatureFlags);
+
 jest.mock('nhs-notify-web-template-management-utils/logger');
 
 beforeEach(() => {
   jest.resetAllMocks();
   mockUseAuthStatus.mockImplementation((status) => status ?? 'configuring');
+  mockServerIsFeatureEnabled.mockResolvedValue(false); // default for most tests
+  mockUseFeatureFlags.mockReturnValue({
+    featureFlags: { proofing: false, routing: false },
+    loaded: true,
+  });
 });
 
 describe('NhsNotifyHeader', () => {
@@ -25,10 +38,14 @@ describe('NhsNotifyHeader', () => {
     beforeEach(() => {
       mockGetSessionServer.mockResolvedValue({});
       mockGetIdTokenClaims.mockReturnValue({});
+      mockUseFeatureFlags.mockReturnValue({
+        featureFlags: { proofing: false, routing: false },
+        loaded: true,
+      });
     });
 
     it('initializes the authStatus as unauthenticated', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -40,7 +57,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('renders the logo and service name with the correct url', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -54,7 +71,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it(`renders the authentication link as 'sign in'`, async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -62,7 +79,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('does not show the navigation links', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -72,7 +89,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('matches snapshot (unauthenticated)', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       const container = render(header);
 
@@ -91,14 +108,17 @@ describe('NhsNotifyHeader', () => {
         displayName: 'Dr Test Example',
         clientName: 'NHS England',
       });
+
+      mockUseFeatureFlags.mockReturnValue({
+        featureFlags: { proofing: false, routing: false },
+        loaded: true,
+      });
     });
 
     it('initializes the authStatus as authenticated', async () => {
-      const header = await NhsNotifyHeader({});
-
+      const header = await NhsNotifyHeader();
       render(header);
 
-      // hook used in AuthLink, HeaderNavigation, HeaderAccountDetails
       expect(mockUseAuthStatus).toHaveBeenCalledTimes(3);
 
       for (const call of mockUseAuthStatus.mock.calls) {
@@ -107,7 +127,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('renders the users display name', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -117,7 +137,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('renders the client name', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -127,7 +147,7 @@ describe('NhsNotifyHeader', () => {
     });
 
     it(`renders auth link as 'Sign out'`, async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
       expect(screen.getByTestId('sign-out-link')).toHaveTextContent('Sign out');
@@ -139,7 +159,7 @@ describe('NhsNotifyHeader', () => {
       });
       mockGetIdTokenClaims.mockReturnValueOnce({});
 
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       render(header);
 
@@ -154,17 +174,22 @@ describe('NhsNotifyHeader', () => {
     });
 
     it('matches snapshot (authenticated)', async () => {
-      const header = await NhsNotifyHeader({});
+      const header = await NhsNotifyHeader();
 
       const container = render(header);
       expect(container.asFragment()).toMatchSnapshot();
     });
 
     describe(`with 'routing' flag enabled`, () => {
-      it('renders both the navigation links with correct hrefs', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: true },
+      beforeEach(() => {
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: { proofing: false, routing: true },
+          loaded: true,
         });
+      });
+
+      it('renders both the navigation links with correct hrefs', async () => {
+        const header = await NhsNotifyHeader();
 
         render(header);
 
@@ -182,13 +207,36 @@ describe('NhsNotifyHeader', () => {
           '/templates-and-message-plans/message-plans'
         );
       });
+
+      it('does not render navigation links when feature flags are not yet loaded', async () => {
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: {
+            proofing: true,
+            routing: true,
+          },
+          loaded: false,
+        });
+
+        const header = await NhsNotifyHeader();
+
+        render(header);
+
+        expect(
+          screen.queryByTestId('navigation-links')
+        ).not.toBeInTheDocument();
+      });
     });
 
     describe(`with 'routing' flag disabled`, () => {
-      it('renders the templates link with correct href', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: false },
+      beforeEach(() => {
+        mockUseFeatureFlags.mockReturnValue({
+          featureFlags: { proofing: false, routing: false },
+          loaded: true,
         });
+      });
+
+      it('renders the templates link with correct href', async () => {
+        const header = await NhsNotifyHeader();
 
         render(header);
 
@@ -201,9 +249,7 @@ describe('NhsNotifyHeader', () => {
       });
 
       it('should not render the message plans link', async () => {
-        const header = await NhsNotifyHeader({
-          features: { routing: false },
-        });
+        const header = await NhsNotifyHeader();
 
         render(header);
 
