@@ -31,7 +31,9 @@ jobs:
             --targetEnvironment "pr${{ github.event.number }}" \
             --targetComponent "branch" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --terraformAction "destroy"
+            --terraformAction "destroy" \
+            --overrideProjectName "nhs" \
+            --overrideRoleName "nhs-main-acct-template-mgmt-github-deploy"
 
   sandbox-tear-down:
     name: Destroy Sandbox Environment
