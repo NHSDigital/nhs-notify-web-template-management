@@ -43,7 +43,7 @@ module "lambda_sftp_request_proof" {
 
   vpc_config = {
     subnet_ids         = data.aws_subnets.account_vpc_private_subnets.ids
-    security_group_ids = [data.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
+    security_group_ids = [aws_security_group.account_vpc_sg_allow_sftp_egress.id]
   }
 
   send_to_firehose          = var.send_to_firehose
