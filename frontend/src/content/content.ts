@@ -10,6 +10,8 @@ const goBackButtonText = 'Go back';
 const enterATemplateName = 'Enter a template name';
 const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
+const templateMessageHasInsecureLink =
+  'The message includes an insecure http:// link. All links must use https://';
 const selectAnOption = 'Select an option';
 
 const header = {
@@ -792,6 +794,9 @@ const templateFormNhsApp = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
+        invalidUrlCharacter:
+          'The message includes a link that contains an angle bracket character. They must be removed or URL encoded',
       },
     },
   },
@@ -887,6 +892,7 @@ const templateFormEmail = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
       },
     },
   },
@@ -930,6 +936,7 @@ const templateFormSms = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
       },
     },
   },

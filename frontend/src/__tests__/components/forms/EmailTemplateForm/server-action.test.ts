@@ -68,6 +68,30 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
+  it('create-email-template - should return response when when template message contains insecure url', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-email-template',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: '**a message linking to http://www.example.com**',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          emailTemplateMessage: [
+            'The message includes an insecure http:// link. All links must use https://',
+          ],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,
