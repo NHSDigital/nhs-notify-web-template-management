@@ -5,10 +5,10 @@ module "ses" {
   region         = var.region
   project        = var.project
   environment    = var.environment
-  component      = var.component
+  component      = local.component
 
   root_domain_name = local.root_domain_name
+  zone_id          = local.root_domain_id
 
   external_email_domain = var.external_email_domain
-  zone_id               = local.acct.dns_zone["id"]
 }

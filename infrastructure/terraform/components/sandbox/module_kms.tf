@@ -1,8 +1,7 @@
-module "kms_us_east_1" {
+module "kms" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip"
-
   providers = {
-    aws           = aws.us-east-1
+    aws           = aws
     aws.us-east-1 = aws.us-east-1
   }
 
@@ -10,16 +9,16 @@ module "kms_us_east_1" {
   component      = local.component
   environment    = var.environment
   project        = var.project
-  region         = "us-east-1"
+  region         = var.region
 
   name                 = "main"
   deletion_window      = var.kms_deletion_window
   alias                = "alias/${local.csi}"
-  key_policy_documents = [data.aws_iam_policy_document.kms_us_east_1.json]
+  key_policy_documents = [data.aws_iam_policy_document.kms.json]
   iam_delegation       = true
 }
 
-data "aws_iam_policy_document" "kms_us_east_1" {
+data "aws_iam_policy_document" "kms" {
   # '*' resource scope is permitted in access policies as as the resource is itself
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
 
@@ -31,7 +30,7 @@ data "aws_iam_policy_document" "kms_us_east_1" {
       type = "Service"
 
       identifiers = [
-        "logs.us-east-1.amazonaws.com",
+        "logs.${var.region}.amazonaws.com"
       ]
     }
 
@@ -46,5 +45,14 @@ data "aws_iam_policy_document" "kms_us_east_1" {
     resources = [
       "*",
     ]
+
+    condition {
+      test     = "ArnLike"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+
+      values = [
+        "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:*",
+      ]
+    }
   }
 }

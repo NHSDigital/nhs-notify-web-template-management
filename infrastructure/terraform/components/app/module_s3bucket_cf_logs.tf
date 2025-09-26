@@ -10,7 +10,7 @@ module "s3bucket_cf_logs" {
   region         = "us-east-1"
   project        = var.project
   environment    = var.environment
-  component      = var.component
+  component      = local.component
 
   acl           = "private"
   force_destroy = false

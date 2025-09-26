@@ -21,4 +21,3 @@ WORKSPACE="${WORKSPACE:-}"
 
 # run tests
 npm run test:unit --workspace="$WORKSPACE"
-

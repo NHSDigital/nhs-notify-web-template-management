@@ -31,7 +31,9 @@ jobs:
             --targetEnvironment "pr${{ inputs.pr_number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
             --targetComponent "sandbox" \
-            --terraformAction "apply"
+            --terraformAction "apply" \
+            --overrideProjectName "nhs" \
+            --overrideRoleName "nhs-main-acct-template-mgmt-github-deploy"
 
       - name: Trigger Acceptance Tests
         shell: bash

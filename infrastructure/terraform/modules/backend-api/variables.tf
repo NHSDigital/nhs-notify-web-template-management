@@ -33,28 +33,18 @@ variable "group" {
 }
 
 ##
-# tfscaffold variables specific to this component
-##
-
-variable "module" {
-  type        = string
-  description = "The variable encapsulating the name of this module"
-  default     = "api"
-}
-
-##
 # Variables specific to this component
 ##
-
-variable "csi" {
-  type        = string
-  description = "CSI from the parent component"
-}
 
 variable "log_retention_in_days" {
   type        = number
   description = "The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite"
   default     = 0
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "The VPC ID to deploy the backend API into"
 }
 
 variable "cognito_config" {
@@ -91,9 +81,10 @@ variable "letter_suppliers" {
   description = "Letter suppliers enabled in the environment"
 }
 
-variable "parent_acct_environment" {
+variable "ssm_parameter_sftp_mock_config_name" {
   type        = string
-  description = "Name of the environment responsible for the acct resources used"
+  description = "SSM Parameter name for the SFTP mock config"
+  default     = null
 }
 
 variable "cloudfront_distribution_arn" {

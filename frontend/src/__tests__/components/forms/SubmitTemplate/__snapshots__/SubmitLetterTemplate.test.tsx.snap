@@ -54,7 +54,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
               <span
                 class="nhsuk-u-visually-hidden"
               >
-                Important: 
+                Important:
               </span>
               Important
             </span>
@@ -169,7 +169,7 @@ exports[`SubmitLetterTemplate component should render with client proofing disab
               <span
                 class="nhsuk-u-visually-hidden"
               >
-                Important: 
+                Important:
               </span>
               Important
             </span>

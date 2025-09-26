@@ -1,5 +1,17 @@
 locals {
-  csi = "${var.csi}-${var.module}"
+  module = "backend"
+
+  csi = replace(
+    format(
+      "%s-%s-%s-%s",
+      var.project,
+      var.environment,
+      var.component,
+      local.module
+    ),
+    "_",
+    "",
+  )
 
   lambdas_dir = "../../../../lambdas"
 
@@ -7,7 +19,7 @@ locals {
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")
   pdfjs_layer_lockfile    = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/package-lock.json")
 
-  client_ssm_path_prefix  = "/${var.csi}/clients"
+  client_ssm_path_prefix  = "/${local.csi}/clients"
   client_ssm_path_pattern = "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*"
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {

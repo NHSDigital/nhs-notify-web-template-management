@@ -9,7 +9,7 @@ module "download_authorizer_lambda" {
   description   = "Download authorizer for s3 download bucket"
 
   aws_account_id = var.aws_account_id
-  component      = var.component
+  component      = local.component
   environment    = var.environment
   project        = var.project
   region         = "us-east-1"
@@ -22,7 +22,7 @@ module "download_authorizer_lambda" {
     body = data.aws_iam_policy_document.authorizer.json
   }
 
-  function_s3_bucket      = local.acct.s3_buckets["artefacts_us_east_1"]["id"]
+  function_s3_bucket      = local.acct.s3_buckets["lambda_function_artefacts_us"]["id"]
   function_code_base_path = local.lambdas_source_code_dir
   function_code_dir       = "download-authorizer/dist"
   handler_function_name   = "handler"
