@@ -5,9 +5,10 @@ import {
   Template,
   UserData,
 } from './types';
-import { getTemplate, migrateOwnership } from './ddb-utils';
+import { migrateOwnership } from './ddb-utils';
 import { print } from './log-utils';
 import { transferFileToClient, deleteFile, getFileHead } from './s3-utils';
+import { AttributeValue } from '@aws-sdk/client-dynamodb';
 
 export class UserTransfer {
   public static async plan(
@@ -56,7 +57,7 @@ export class UserTransfer {
       bucketName: s3.bucketName,
       migrate: {
         count: templatesToMigrate.length,
-        plans: templatesToMigrate,
+        plans: templatesToMigrate.filter((r) => r.s3.files.length > 0),
       },
       orphaned: {
         count: templateIdsWithNoOwner.length,
@@ -66,10 +67,11 @@ export class UserTransfer {
   }
 
   public static async apply(
-    item: UserTransferPlanItem,
+    migration: UserTransferPlanItem,
+    template: Record<string, AttributeValue>,
     config: { bucketName: string; tableName: string; dryRun: boolean }
   ): Promise<UserTransferPlanItemResult> {
-    const copyPromises = item.s3.files.map(async (file) => {
+    const copyPromises = migration.s3.files.map(async (file) => {
       if (config.dryRun) {
         await getFileHead(config.bucketName, file.from);
         print(`[DRY RUN] S3: transfer ${file.from} to ${file.to}`);
@@ -78,7 +80,7 @@ export class UserTransfer {
           config.bucketName,
           file.from,
           file.to,
-          item.ddb.owner.to
+          migration.ddb.owner.to
         );
       }
     });
@@ -86,7 +88,7 @@ export class UserTransfer {
     const copyResult = await UserTransfer.processPromises(copyPromises);
 
     if (!copyResult.success) {
-      print(`Skipping: [s3:copy]: ${item.templateId} copy failed`);
+      print(`Skipping: [s3:copy]: ${migration.templateId} copy failed`);
 
       return {
         ...copyResult,
@@ -96,33 +98,23 @@ export class UserTransfer {
 
     try {
       if (config.dryRun) {
-        const template = await getTemplate(
-          config.tableName,
-          item.ddb.owner.from,
-          item.templateId
-        );
-
-        if (!template) {
-          throw new Error(`No template found for ${item.templateId}`);
-        }
-
         print(
-          `[DRY RUN] DynamoDB: template ${template.id.S} found and will transferred from ${item.ddb.owner.from} to CLIENT#${item.ddb.owner.to}`
+          `[DRY RUN] DynamoDB: template ${template.id.S} found and will transferred from ${migration.ddb.owner.from} to CLIENT#${migration.ddb.owner.to}`
         );
         print(
-          `[DRY RUN] DynamoDB: template ${template.id.S} with owner ${item.ddb.owner.from} will be deleted`
+          `[DRY RUN] DynamoDB: template ${template.id.S} with owner ${migration.ddb.owner.from} will be deleted`
         );
       } else {
         await migrateOwnership(
           config.tableName,
-          item.templateId,
-          item.ddb.owner.from,
-          item.ddb.owner.to
+          template,
+          migration.ddb.owner.from,
+          migration.ddb.owner.to
         );
       }
     } catch (error) {
       print(
-        `Failed: [ddb:transfer]: ${item.templateId} DynamoDB transaction failed`
+        `Failed: [ddb:transfer]: ${migration.templateId} DynamoDB transaction failed`
       );
 
       return {
@@ -135,7 +127,7 @@ export class UserTransfer {
       };
     }
 
-    const deletePromises = item.s3.files.map(async (file) => {
+    const deletePromises = migration.s3.files.map(async (file) => {
       if (config.dryRun) {
         print(`[DRY RUN] S3: will delete ${file.from}`);
       } else {
@@ -146,7 +138,7 @@ export class UserTransfer {
     const deleteResult = await UserTransfer.processPromises(deletePromises);
 
     if (!deleteResult.success) {
-      print(`Partial: [s3:delete]: ${item.templateId} delete failed`);
+      print(`Partial: [s3:delete]: ${migration.templateId} delete failed`);
 
       return {
         ...deleteResult,

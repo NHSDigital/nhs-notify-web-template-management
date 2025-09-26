@@ -109,16 +109,10 @@ export async function getTemplates(
 
 export async function migrateOwnership(
   tableName: string,
-  templateId: string,
+  template: Record<string, AttributeValue>,
   from: string,
   to: string
 ) {
-  const template = await getTemplate(tableName, from, templateId);
-
-  if (!template) {
-    throw new Error(`No template found for ${templateId}`);
-  }
-
   const cmd = new TransactWriteItemsCommand({
     TransactItems: [
       {

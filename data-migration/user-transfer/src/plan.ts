@@ -1,14 +1,12 @@
-/* eslint-disable unicorn/no-process-exit */
-/* eslint-disable unicorn/prefer-top-level-await */
 import { CognitoRepository } from './utils/cognito-repository';
 import { listAllTemplates } from './utils/ddb-utils';
-import { listAllFiles, writeFile } from './utils/s3-utils';
+import { listAllFiles, writeFile as writeRemote } from './utils/s3-utils';
 import { UserTransfer } from './utils/user-transfer';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { getAccountId } from './utils/sts-utils';
 import { print } from './utils/log-utils';
-import { backupBucketName } from './utils/backup-utils';
+import { backupBucketName, writeLocal } from './utils/backup-utils';
 
 const params = yargs(hideBin(process.argv))
   .options({
@@ -99,18 +97,20 @@ async function plan() {
     }
   );
 
-  const fileName = `transfer-plan-${accountId}-${params.environment}-${params.component}-${Date.now()}`;
-
+  const filename = `transfer-plan-${accountId}-${params.environment}-${params.component}-${Date.now()}`;
   const data = JSON.stringify(transferPlan);
+  const path = `ownership-transfer/${params.environment}/${filename}/${filename}.json`;
 
-  const filePath = `ownership-transfer/${params.environment}/${fileName}/${fileName}.json`;
+  await writeRemote(path, data, templatesS3BackupBucketName);
 
-  await writeFile(filePath, data, templatesS3BackupBucketName);
+  writeLocal(`./migrations/${filename}.json`, data);
 
-  print(`Plan written to s3://${templatesS3InternalBucketName}/${filePath}`);
+  print(`Results written to ${filename}.json`);
 }
 
+// eslint-disable-next-line unicorn/prefer-top-level-await
 plan().catch((error) => {
   console.error(error);
+  // eslint-disable-next-line unicorn/no-process-exit
   process.exit(1);
 });

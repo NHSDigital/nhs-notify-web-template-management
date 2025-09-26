@@ -1,6 +1,7 @@
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { getAccountId } from './sts-utils';
 import { writeFile } from './s3-utils';
+import fs from 'node:fs';
 
 export const backupBucketName = async () => {
   const accountId = await getAccountId();
@@ -21,4 +22,15 @@ export async function backupData(
   const filePath = `${path}/${timestamp}.json`;
   await writeFile(filePath, JSON.stringify(items), bucketName);
   console.log(`Backed up data to s3://${bucketName}/${filePath}`);
+}
+
+export function writeLocal(filename: string, data: string) {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  fs.writeFile(filename, data, (err: unknown) => {
+    if (err) {
+      console.log(`Error writing file: ${filename}`, err);
+    } else {
+      console.log(`Successfully wrote ${filename}`);
+    }
+  });
 }
