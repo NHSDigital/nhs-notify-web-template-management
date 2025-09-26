@@ -7,7 +7,7 @@ module "kms_us_east_1" {
   }
 
   aws_account_id = var.aws_account_id
-  component      = var.component
+  component      = local.component
   environment    = var.environment
   project        = var.project
   region         = "us-east-1"

@@ -5,7 +5,7 @@ module "eventpub" {
   name = "eventpub"
 
   aws_account_id = var.aws_account_id
-  component      = var.component
+  component      = local.component
   environment    = var.environment
   project        = var.project
   region         = var.region
