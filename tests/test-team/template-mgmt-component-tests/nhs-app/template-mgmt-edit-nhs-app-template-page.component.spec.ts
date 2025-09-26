@@ -217,6 +217,52 @@ test.describe('Edit NHS App Template Page', () => {
     expect(messageContent).toHaveLength(5000);
   });
 
+  test('Validate error messages on the edit NHS App message template page with http url in message', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+
+    await createTemplatePage.loadPage(templates.valid.id);
+    await expect(createTemplatePage.pageHeading).toHaveText(
+      'Edit NHS App message template'
+    );
+    await page.locator('[id="nhsAppTemplateName"]').fill('template-name');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('http://www.example.com');
+    await createTemplatePage.clickSaveAndPreviewButton();
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText([
+      'The message includes an insecure http:// link. All links must use https://',
+    ]);
+  });
+
+  test('Validate error messages on the edit NHS App message template page with angle brackets in linked url', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+
+    await createTemplatePage.loadPage(templates.valid.id);
+    await expect(createTemplatePage.pageHeading).toHaveText(
+      'Edit NHS App message template'
+    );
+    await page.locator('[id="nhsAppTemplateName"]').fill('template-name');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('[example](https://www.example.com/<>)');
+    await createTemplatePage.clickSaveAndPreviewButton();
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText([
+      'The message includes a link that contains an angle bracket character. They must be removed or URL encoded',
+    ]);
+  });
+
   const detailsSections = [
     'pds-personalisation-fields',
     'custom-personalisation-fields',

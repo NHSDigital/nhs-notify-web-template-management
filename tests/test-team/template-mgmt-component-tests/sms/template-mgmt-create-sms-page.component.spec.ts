@@ -311,5 +311,33 @@ test.describe('Create SMS message template Page', () => {
 
       await expect(createSmsTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with an http link, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage =
+        'The message includes an insecure http:// link. All links must use https://';
+
+      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+      await createSmsTemplatePage.loadPage();
+
+      await createSmsTemplatePage.nameInput.fill('template-name');
+      await createSmsTemplatePage.messageTextArea.fill(
+        'http://www.example.com'
+      );
+
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
+
+      const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
+        '[href="#smsTemplateMessage"]'
+      );
+
+      await expect(smsMessageErrorLink).toHaveText(errorMessage);
+
+      await smsMessageErrorLink.click();
+
+      await expect(createSmsTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });

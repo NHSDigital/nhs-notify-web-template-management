@@ -419,5 +419,39 @@ test.describe('Edit Email message template Page', () => {
 
       await expect(editEmailTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with an http link, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage =
+        'The message includes an insecure http:// link. All links must use https://';
+
+      const createEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(templates.valid.id);
+
+      await createEmailTemplatePage.nameInput.fill('template-name');
+
+      await createEmailTemplatePage.subjectLineInput.fill(
+        'template-subject-line'
+      );
+
+      await createEmailTemplatePage.messageTextArea.fill(
+        'http://www.example.com'
+      );
+
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
+
+      const emailMessageErrorLink =
+        createEmailTemplatePage.errorSummary.locator(
+          '[href="#emailTemplateMessage"]'
+        );
+
+      await expect(emailMessageErrorLink).toHaveText(errorMessage);
+
+      await emailMessageErrorLink.click();
+
+      await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });
