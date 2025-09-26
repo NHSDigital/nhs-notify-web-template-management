@@ -72,6 +72,7 @@ export type TemplateSubmittedPageProps = {
 
 export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
+  routingEnabled?: boolean;
 };
 
 export type ActionPageProps = {
@@ -114,6 +115,7 @@ export type DatabaseTemplate = {
   templateType: TemplateType;
   updatedAt: string;
   updatedBy?: string;
+  supplierReferences?: Record<string, string>;
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {

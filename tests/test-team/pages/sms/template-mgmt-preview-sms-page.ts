@@ -14,6 +14,8 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
 
   public readonly continueButton: Locator;
 
+  public readonly editButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -27,6 +29,7 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator(
       '[id="preview-sms-template-submit-button"]'
     );
+    this.editButton = page.locator('[data-testid="edit-template-button"]');
   }
 
   async clickContinueButton() {

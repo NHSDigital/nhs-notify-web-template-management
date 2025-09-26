@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
+    "@pact-foundation/pact": "^15.0.1",
+    "nhs-notify-web-template-management-utils": "^0.0.1"
+  },
+  "name": "nhs-notify-web-template-management-provider-contract-tests",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test:contracts": "./scripts/test.sh",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
+  }
+}
