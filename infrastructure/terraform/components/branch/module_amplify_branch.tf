@@ -6,7 +6,7 @@ module "amplify_branch" {
   description  = "Amplify branch for ${local.normalised_branch_name}"
 
   aws_account_id = var.aws_account_id
-  component      = var.component
+  component      = local.component
   environment    = var.environment
   project        = var.project
   region         = var.region
