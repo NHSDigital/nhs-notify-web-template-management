@@ -27,6 +27,9 @@ export const $EmailTemplateFormSchema = z.object({
     .min(1, { message: form.emailTemplateMessage.error.empty })
     .max(MAX_EMAIL_CHARACTER_LENGTH, {
       message: form.emailTemplateMessage.error.max,
+    })
+    .refine((templateMessage) => !templateMessage.includes('http://'), {
+      message: form.emailTemplateMessage.error.insecureLink,
     }),
 });
 
