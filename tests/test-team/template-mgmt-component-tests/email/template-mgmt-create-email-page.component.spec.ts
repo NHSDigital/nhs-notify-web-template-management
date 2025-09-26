@@ -342,8 +342,7 @@ test.describe('Create Email message template Page', () => {
     test('when user submits form with an http link, then an error is displayed', async ({
       page,
     }) => {
-      const errorMessage =
-        'The message includes an insecure http:// link. All links must use https://';
+      const errorMessage = 'URLs cannot start with http://';
 
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 

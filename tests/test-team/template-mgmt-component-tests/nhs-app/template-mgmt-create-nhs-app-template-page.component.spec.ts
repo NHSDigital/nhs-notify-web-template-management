@@ -174,9 +174,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
-    ).toHaveText([
-      'The message includes an insecure http:// link. All links must use https://',
-    ]);
+    ).toHaveText(['URLs cannot start with http://']);
   });
 
   test('Validate error messages on the create NHS App message template page with angle brackets in linked url', async ({
@@ -197,9 +195,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
-    ).toHaveText([
-      'The message includes a link that contains an angle bracket character. They must be removed or URL encoded',
-    ]);
+    ).toHaveText(['URLs cannot include the symbols < or >']);
   });
 
   const detailsSections = [

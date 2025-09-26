@@ -81,9 +81,7 @@ describe('CreateSmsTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          smsTemplateMessage: [
-            'The message includes an insecure http:// link. All links must use https://',
-          ],
+          smsTemplateMessage: ['URLs cannot start with http://'],
         },
       },
     });

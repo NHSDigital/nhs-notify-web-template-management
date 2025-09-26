@@ -87,9 +87,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          nhsAppTemplateMessage: [
-            'The message includes an insecure http:// link. All links must use https://',
-          ],
+          nhsAppTemplateMessage: ['URLs cannot start with http://'],
         },
       },
     });
@@ -111,9 +109,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          nhsAppTemplateMessage: [
-            'The message includes a link that contains an angle bracket character. They must be removed or URL encoded',
-          ],
+          nhsAppTemplateMessage: ['URLs cannot include the symbols < or >'],
         },
       },
     });

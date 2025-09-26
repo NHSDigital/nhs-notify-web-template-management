@@ -84,9 +84,7 @@ describe('CreateEmailTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          emailTemplateMessage: [
-            'The message includes an insecure http:// link. All links must use https://',
-          ],
+          emailTemplateMessage: ['URLs cannot start with http://'],
         },
       },
     });
