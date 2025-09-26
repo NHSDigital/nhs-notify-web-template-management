@@ -201,7 +201,7 @@ exports[`Preview email form renders Client-side validation triggers 1`] = `
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error: 
+                    Error:
                   </span>
                   Select an option
                 </span>
@@ -475,7 +475,7 @@ exports[`Preview email form renders matches error snapshot 1`] = `
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error: 
+                    Error:
                   </span>
                   Select an option
                 </span>

@@ -95,7 +95,7 @@ exports[`Choose template page Client-side validation triggers 1`] = `
               <span
                 class="nhsuk-u-visually-hidden"
               >
-                Error: 
+                Error:
               </span>
               Select a template type
             </span>

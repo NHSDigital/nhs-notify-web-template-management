@@ -176,7 +176,7 @@ exports[`Review sms form renders Client-side validation triggers 1`] = `
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error: 
+                    Error:
                   </span>
                   Select an option
                 </span>
@@ -425,7 +425,7 @@ exports[`Review sms form renders matches error snapshot 1`] = `
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error: 
+                    Error:
                   </span>
                   Select an option
                 </span>

@@ -131,7 +131,7 @@ exports[`ViewEmailTemplate component matches submitted snapshot 1`] = `
                   <p>
                     Example message
                   </p>
-                  
+
 
                 </div>
               </dd>

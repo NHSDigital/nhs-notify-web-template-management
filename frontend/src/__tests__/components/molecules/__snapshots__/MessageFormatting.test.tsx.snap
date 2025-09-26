@@ -44,9 +44,9 @@ exports[`MessageFormatting component matches snapshot for EMAIL 1`] = `
         <code
           aria-describedby="linebreaks-markdown-description"
         >
-          line 1  
-line 2  
-line 3  
+          line 1
+line 2
+line 3
         </code>
       </pre>
       <p>
@@ -391,9 +391,9 @@ exports[`MessageFormatting component matches snapshot for NHS_APP 1`] = `
         <code
           aria-describedby="linebreaks-markdown-description"
         >
-          line 1  
-line 2  
-line 3  
+          line 1
+line 2
+line 3
         </code>
       </pre>
       <p>

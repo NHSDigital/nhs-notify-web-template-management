@@ -233,7 +233,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Error: 
+              Error:
             </span>
             Field error
           </span>
