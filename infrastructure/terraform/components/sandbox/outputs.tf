@@ -54,12 +54,12 @@ output "deployment" {
     project        = var.project
     environment    = var.environment
     group          = var.group
-    component      = var.component
+    component      = local.component
   }
 }
 
 output "test_email_bucket_name" {
-  value = local.acct["ses_testing_config"].bucket_name
+  value = local.acct.additional_s3_buckets["template-mgmt_ses-test-config"]["name"]
 }
 
 output "test_email_bucket_prefix" {
