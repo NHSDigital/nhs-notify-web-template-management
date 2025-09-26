@@ -132,7 +132,7 @@ describe('Template API - Get', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, template }),
+      body: JSON.stringify({ statusCode: 200, data: template }),
     });
 
     expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', {

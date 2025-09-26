@@ -6,12 +6,13 @@ const $Env = z.object({
   DEFAULT_LETTER_SUPPLIER: z.string(),
   ENVIRONMENT: z.string(),
   REQUEST_PROOF_QUEUE_URL: z.string(),
+  ROUTING_CONFIG_TABLE_NAME: z.string(),
+  SUPPLIER_RECIPIENT_EMAIL_ADDRESSES: z.string(),
   TEMPLATES_INTERNAL_BUCKET_NAME: z.string(),
   TEMPLATES_QUARANTINE_BUCKET_NAME: z.string(),
   TEMPLATES_DOWNLOAD_BUCKET_NAME: z.string(),
   TEMPLATES_TABLE_NAME: z.string(),
   TEMPLATE_SUBMITTED_SENDER_EMAIL_ADDRESS: z.string(),
-  SUPPLIER_RECIPIENT_EMAIL_ADDRESSES: z.string(),
 });
 
 export function loadConfig() {
@@ -30,9 +31,10 @@ export function loadConfig() {
     quarantineBucket: env.TEMPLATES_QUARANTINE_BUCKET_NAME,
     downloadBucket: env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
     requestProofQueueUrl: env.REQUEST_PROOF_QUEUE_URL,
+    routingConfigTableName: env.ROUTING_CONFIG_TABLE_NAME,
+    supplierRecipientEmailAddresses,
     templatesTableName: env.TEMPLATES_TABLE_NAME,
     templateSubmittedSenderEmailAddress:
       env.TEMPLATE_SUBMITTED_SENDER_EMAIL_ADDRESS,
-    supplierRecipientEmailAddresses,
   };
 }
