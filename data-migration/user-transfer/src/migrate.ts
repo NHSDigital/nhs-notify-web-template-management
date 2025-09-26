@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-/* eslint-disable unicorn/prefer-top-level-await */
 import fs from 'node:fs';
 import path from 'node:path';
 import yargs from 'yargs';
@@ -8,8 +6,12 @@ import { UserTransferPlan, UserTransferPlanItem } from './utils/types';
 import { print } from './utils/log-utils';
 import { UserTransfer } from './utils/user-transfer';
 import { getTemplates } from './utils/ddb-utils';
-import { backupBucketName, backupData } from './utils/backup-utils';
-import { transferFileToNewBucket, writeFile } from './utils/s3-utils';
+import { backupBucketName, backupData, writeLocal } from './utils/backup-utils';
+import {
+  transferFileToNewBucket,
+  writeFile as writeRemote,
+} from './utils/s3-utils';
+import { AttributeValue } from '@aws-sdk/client-dynamodb';
 
 const params = yargs(hideBin(process.argv))
   .options({
@@ -28,20 +30,8 @@ const params = yargs(hideBin(process.argv))
   })
   .parseSync();
 
-function writeLocal(filename: string, data: string) {
-  fs.writeFile(filename, data, (err) => {
-    if (err) {
-      console.log(`Error writing file: ${filename}`, err);
-    } else {
-      console.log(`Successfully wrote ${filename}`);
-    }
-  });
-}
-
-async function backup(
+async function loadTemplates(
   tableName: string,
-  sourceBucket: string,
-  backupBucket: string,
   migrations: UserTransferPlanItem[]
 ) {
   const keys = migrations.map((r) => ({
@@ -49,20 +39,21 @@ async function backup(
     owner: r.ddb.owner.from,
   }));
 
+  return await getTemplates(tableName, keys);
+}
+
+async function backup(
+  templates: Record<string, AttributeValue>[],
+  sourceBucket: string,
+  backupBucket: string,
+  migrations: UserTransferPlanItem[]
+) {
   const files = migrations.flatMap((r) => r.s3.files.flatMap((a) => a.from));
-
-  const data = await getTemplates(tableName, keys);
-
-  if (data.length !== migrations.length) {
-    throw new Error(
-      `Only retrieved ${data.length}/${migrations.length} migrations`
-    );
-  }
 
   const { name } = path.parse(params.file);
 
   await backupData(
-    data,
+    templates,
     backupBucket,
     `ownership-transfer/${params.environment}/${name}`
   );
@@ -79,10 +70,33 @@ async function backup(
   );
 }
 
+function assertMatchingTemplates(
+  fetchedTemplateIds: string[],
+  migrationTemplateIds: string[]
+) {
+  const left = new Set(fetchedTemplateIds);
+  const right = new Set(migrationTemplateIds);
+
+  if (left.size !== right.size) {
+    throw new Error(
+      `Mismatch in length of fetched templates and templates to migrate`
+    );
+  }
+
+  for (const value of left) {
+    if (!right.has(value)) {
+      throw new Error(
+        `Value "${value}" found in first array but not in second`
+      );
+    }
+  }
+}
+
 async function migrate() {
   const backupBucket = await backupBucketName();
 
   const input = JSON.parse(
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.readFileSync(params.file, 'utf8')
   ) as UserTransferPlan;
 
@@ -94,26 +108,47 @@ async function migrate() {
 
   print(`Total migrations: ${migrations.length}`);
 
+  const templates = await loadTemplates(input.tableName, migrations);
+
+  assertMatchingTemplates(
+    templates.map((r) => r.id.S!),
+    migrations.map((r) => r.templateId)
+  );
+
   if (!params.dryRun) {
-    await backup(input.tableName, input.bucketName, backupBucket, migrations);
+    await backup(templates, input.bucketName, backupBucket, migrations);
+    print('Data backed up');
   }
 
-  for (let i = 0; i < migrations.length; i++) {
-    const migration = migrations[i];
+  let count = 0;
+
+  for (const migration of migrations) {
+    count += 1;
+
+    print(`Progress: ${count}/${migrations.length}`);
+    print(`Processing: ${migration.templateId}`);
+
+    const template = templates.find((r) => r.id.S === migration.templateId);
+
+    if (!template) {
+      print(
+        `Skipping: Unable to find template ${migration.templateId} in backup data`
+      );
+      continue;
+    }
 
     const idx = output.migrate.plans.findIndex(
       (r) => r.templateId === migration.templateId
     );
 
     if (idx === -1) {
-      print(`Skipping: Unable to locate index for ${migration.templateId}`);
+      print(
+        `Skipping: Unable to locate index in output data for ${migration.templateId}`
+      );
       continue;
     }
 
-    print(`Progress: ${i + 1}/${migrations.length}`);
-    print(`Processing: ${migration.templateId}`);
-
-    const result = await UserTransfer.apply(migration, {
+    const result = await UserTransfer.apply(migration, template, {
       bucketName: input.bucketName,
       tableName: input.tableName,
       dryRun: params.dryRun,
@@ -130,20 +165,21 @@ async function migrate() {
   }
 
   const { dir, name, ext } = path.parse(params.file);
-
-  const fileName = `${name}-${params.dryRun ? 'dryrun' : ''}${ext}`;
-
+  const filename = `${name}-${params.dryRun ? 'dryrun' : 'run'}${ext}`;
   const data = JSON.stringify(output);
 
-  const filePath = `ownership-transfer/${params.environment}/${name}/${fileName}`;
+  writeLocal(path.join(dir, filename), data);
 
-  writeLocal(path.join(dir, fileName), data);
+  await writeRemote(
+    `ownership-transfer/${params.environment}/${name}/${filename}`,
+    data,
+    backupBucket
+  );
 
-  await writeFile(filePath, data, backupBucket);
-
-  print(`Plan written to s3://${backupBucket}/${filePath}`);
+  print(`Results written to ${filename}`);
 }
 
 migrate()
   .then(() => console.log('finished'))
+  // eslint-disable-next-line unicorn/prefer-top-level-await
   .catch((error) => console.error(error));
