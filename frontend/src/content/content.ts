@@ -1009,6 +1009,73 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove',
+    template: 'template',
+  },
+};
+
+const messagePlanFallbackConditions: Record<
+  TemplateType,
+  FallbackConditionBlock
+> = {
+  NHS_APP: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  SMS: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  EMAIL: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  LETTER: {
+    title: 'Conditions for accessible and language letters',
+    content: {
+      continue: [
+        {
+          type: 'text',
+          text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
+        },
+        {
+          type: 'list',
+          items: [
+            'the recipient has requested an accessible or language letter in PDS',
+            `you've included the relevant template in this message plan`,
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const createEditMessagePlan = {};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1038,6 +1105,8 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
+    messagePlanFallbackConditions,
+    messagePlanChannelTemplate,
   },
   pages: {
     homePage,
