@@ -146,7 +146,7 @@ export const LetterTemplateForm: FC<
                 />
               </div>
               {campaignIds.length === 1 ? (
-                <>
+                <div className={classNames(...formGroupClasses)}>
                   <Label htmlFor='letterTemplateName' size='s'>
                     {campaignLabelText}
                   </Label>
@@ -158,7 +158,7 @@ export const LetterTemplateForm: FC<
                     readOnly
                   />
                   {letterTemplateCampaignId}
-                </>
+                </div>
               ) : (
                 <Select
                   formGroupProps={{

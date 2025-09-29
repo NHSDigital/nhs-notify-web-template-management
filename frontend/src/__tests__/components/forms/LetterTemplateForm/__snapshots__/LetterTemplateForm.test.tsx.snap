@@ -155,24 +155,28 @@ exports[`Client-side validation triggers 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
@@ -592,24 +596,28 @@ exports[`hides right-to-left language warning when language changes 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
@@ -1083,24 +1091,28 @@ exports[`renders page one error 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
@@ -2067,24 +2079,28 @@ exports[`renders page with multiple errors 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
@@ -2514,24 +2530,28 @@ exports[`renders page with preloaded field values 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
@@ -2969,24 +2989,28 @@ exports[`shows right-to-left language warning when language changes 1`] = `
               />
             </div>
           </div>
-          <label
-            class="nhsuk-label nhsuk-label--s"
-            for="letterTemplateName"
-          >
-            Campaign
-          </label>
           <div
-            class="nhsuk-hint"
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
-            You currently only have one campaign:
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
           </div>
-          <input
-            name="letterTemplateCampaignId"
-            readonly=""
-            type="hidden"
-            value="campaign-id"
-          />
-          campaign-id
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
