@@ -94,7 +94,7 @@ exports[`Personalisation component matches snapshot 1`] = `
       data-testid="custom-personalisation-fields-text"
     >
       <p>
-        You can add
+        You can add 
         <a
           href="/using-nhs-notify/personalisation#custom-personalisation-fields"
           rel="noopener noreferrer"
@@ -105,7 +105,7 @@ exports[`Personalisation component matches snapshot 1`] = `
          that use your own personalisation data.
       </p>
       <p>
-        Include custom personalisation fields in your content. Then provide your custom personalisation data using
+        Include custom personalisation fields in your content. Then provide your custom personalisation data using 
         <a
           href="/using-nhs-notify/api"
           rel="noopener noreferrer"
@@ -113,7 +113,7 @@ exports[`Personalisation component matches snapshot 1`] = `
         >
           NHS Notify API
         </a>
-         or
+         or 
         <a
           href="/using-nhs-notify/mesh"
           rel="noopener noreferrer"

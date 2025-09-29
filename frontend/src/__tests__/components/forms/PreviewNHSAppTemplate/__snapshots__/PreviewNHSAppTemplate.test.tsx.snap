@@ -178,7 +178,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>
@@ -432,7 +432,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>

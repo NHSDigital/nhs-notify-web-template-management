@@ -141,7 +141,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Important:
+                    Important: 
                   </span>
                   Important
                 </span>

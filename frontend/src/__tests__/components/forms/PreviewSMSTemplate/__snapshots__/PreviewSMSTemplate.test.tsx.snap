@@ -178,7 +178,7 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>
@@ -431,7 +431,7 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>

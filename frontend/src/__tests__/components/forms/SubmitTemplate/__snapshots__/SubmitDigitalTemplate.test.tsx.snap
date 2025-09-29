@@ -54,7 +54,7 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
               <span
                 class="nhsuk-u-visually-hidden"
               >
-                Important:
+                Important: 
               </span>
               Important
             </span>

@@ -203,7 +203,7 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>
@@ -481,7 +481,7 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Error:
+                    Error: 
                   </span>
                   Select an option
                 </span>
