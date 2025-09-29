@@ -46,18 +46,7 @@
         ],
         "type": "object"
       },
-      "BaseTemplate": {
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name"
-        ],
-        "type": "object"
-      },
-      "UploadLetterProperties": {
+      "BaseLetterTemplateProperties": {
         "properties": {
           "files": {
             "$ref": "#/components/schemas/LetterFiles"
@@ -80,6 +69,65 @@
           "language",
           "templateType"
         ],
+        "type": "object"
+      },
+      "BaseTemplate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "ClientConfiguration": {
+        "properties": {
+          "campaignId": {
+            "deprecared": true,
+            "type": "string"
+          },
+          "campaignIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "features": {
+            "$ref": "#/components/schemas/ClientFeatures"
+          }
+        },
+        "required": [
+          "features"
+        ],
+        "type": "object"
+      },
+      "ClientConfigurationSuccess": {
+        "properties": {
+          "clientConfiguration": {
+            "$ref": "#/components/schemas/ClientConfiguration"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "clientConfiguration",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "ClientFeatures": {
+        "properties": {
+          "proofing": {
+            "type": "boolean"
+          },
+          "routing": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
         "type": "object"
       },
       "CreateUpdateTemplate": {
@@ -201,7 +249,7 @@
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/UploadLetterProperties"
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
           },
           {
             "properties": {
@@ -294,80 +342,6 @@
         ],
         "type": "object"
       },
-      "TemplateSuccess": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "template": {
-            "$ref": "#/components/schemas/TemplateDto"
-          }
-        },
-        "required": [
-          "template",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "ClientFeatures": {
-        "properties": {
-          "proofing": {
-            "type": "boolean"
-          },
-          "routing": {
-            "type": "boolean"
-          }
-        },
-        "required": [],
-        "type": "object"
-      },
-      "ClientConfiguration": {
-        "properties": {
-          "campaignId": {
-            "type": "string"
-          },
-          "features": {
-            "$ref": "#/components/schemas/ClientFeatures"
-          }
-        },
-        "required": [
-          "features"
-        ],
-        "type": "object"
-      },
-      "ClientConfigurationSuccess": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "clientConfiguration": {
-            "$ref": "#/components/schemas/ClientConfiguration"
-          }
-        },
-        "required": [
-          "clientConfiguration",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "TemplateSuccessList": {
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "templates": {
-            "items": {
-              "$ref": "#/components/schemas/TemplateDto"
-            },
-            "type": "array"
-          }
-        },
-        "required": [
-          "templates",
-          "statusCode"
-        ],
-        "type": "object"
-      },
       "TemplateDto": {
         "allOf": [
           {
@@ -407,6 +381,39 @@
         ],
         "type": "string"
       },
+      "TemplateSuccess": {
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "template": {
+            "$ref": "#/components/schemas/TemplateDto"
+          }
+        },
+        "required": [
+          "template",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "TemplateSuccessList": {
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "templates",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "TemplateType": {
         "enum": [
           "NHS_APP",
@@ -415,6 +422,23 @@
           "LETTER"
         ],
         "type": "string"
+      },
+      "UploadLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+          },
+          {
+            "properties": {
+              "campaignId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "campaignId"
+            ]
+          }
+        ]
       },
       "VersionedFileDetails": {
         "properties": {
@@ -467,6 +491,60 @@
   },
   "openapi": "3.0.1",
   "paths": {
+    "/v1/client-configuration": {
+      "get": {
+        "description": "Get client configuration values for the caller",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get caller client configuration",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/letter-template": {
       "post": {
         "description": "Create a letter template",
@@ -994,60 +1072,6 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
-        }
-      }
-    },
-    "/v1/client-configuration": {
-      "get": {
-        "description": "Get client configuration values for the caller",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
-                }
-              }
-            },
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "summary": "Get caller client configuration",
-        "x-amazon-apigateway-integration": {
-          "contentHandling": "CONVERT_TO_TEXT",
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
         }
       }
     }

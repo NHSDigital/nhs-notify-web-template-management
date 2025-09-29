@@ -11,15 +11,31 @@ export type BaseCreatedTemplate = BaseTemplate & {
   updatedBy?: string;
 };
 
-export type BaseTemplate = {
-  name: string;
-};
-
-export type UploadLetterProperties = {
+export type BaseLetterTemplateProperties = {
   files?: LetterFiles;
   language: Language;
   letterType: LetterType;
   templateType: 'LETTER';
+};
+
+export type BaseTemplate = {
+  name: string;
+};
+
+export type ClientConfiguration = {
+  campaignId?: string;
+  campaignIds?: Array<string>;
+  features: ClientFeatures;
+};
+
+export type ClientConfigurationSuccess = {
+  clientConfiguration: ClientConfiguration;
+  statusCode: number;
+};
+
+export type ClientFeatures = {
+  proofing?: boolean;
+  routing?: boolean;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -76,7 +92,7 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = UploadLetterProperties & {
+export type LetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
@@ -103,31 +119,6 @@ export type SmsProperties = {
   templateType: 'SMS';
 };
 
-export type TemplateSuccess = {
-  statusCode: number;
-  template: TemplateDto;
-};
-
-export type ClientFeatures = {
-  proofing?: boolean;
-  routing?: boolean;
-};
-
-export type ClientConfiguration = {
-  campaignId?: string;
-  features: ClientFeatures;
-};
-
-export type ClientConfigurationSuccess = {
-  statusCode: number;
-  clientConfiguration: ClientConfiguration;
-};
-
-export type TemplateSuccessList = {
-  statusCode: number;
-  templates: Array<TemplateDto>;
-};
-
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
@@ -143,7 +134,21 @@ export type TemplateStatus =
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
 
+export type TemplateSuccess = {
+  statusCode: number;
+  template: TemplateDto;
+};
+
+export type TemplateSuccessList = {
+  statusCode: number;
+  templates: Array<TemplateDto>;
+};
+
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
+
+export type UploadLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
+};
 
 export type VersionedFileDetails = {
   currentVersion: string;
@@ -152,6 +157,33 @@ export type VersionedFileDetails = {
 };
 
 export type VirusScanStatus = 'PENDING' | 'FAILED' | 'PASSED';
+
+export type GetV1ClientConfigurationData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/client-configuration';
+};
+
+export type GetV1ClientConfigurationErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1ClientConfigurationError =
+  GetV1ClientConfigurationErrors[keyof GetV1ClientConfigurationErrors];
+
+export type GetV1ClientConfigurationResponses = {
+  /**
+   * 200 response
+   */
+  200: ClientConfigurationSuccess;
+};
+
+export type GetV1ClientConfigurationResponse =
+  GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
 
 export type PostV1LetterTemplateData = {
   /**
@@ -402,33 +434,6 @@ export type GetV1TemplatesResponses = {
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
-
-export type GetV1ClientConfigurationData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/v1/client-configuration';
-};
-
-export type GetV1ClientConfigurationErrors = {
-  /**
-   * Error
-   */
-  default: Failure;
-};
-
-export type GetV1ClientConfigurationError =
-  GetV1ClientConfigurationErrors[keyof GetV1ClientConfigurationErrors];
-
-export type GetV1ClientConfigurationResponses = {
-  /**
-   * 200 response
-   */
-  200: ClientConfigurationSuccess;
-};
-
-export type GetV1ClientConfigurationResponse =
-  GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});

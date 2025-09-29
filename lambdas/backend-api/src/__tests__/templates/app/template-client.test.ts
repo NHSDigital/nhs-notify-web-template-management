@@ -70,6 +70,68 @@ describe('templateClient', () => {
     jest.mocked(randomUUID).mockReturnValue(versionId);
   });
 
+  describe('isCampaignIdValid', () => {
+    test('no client configuration', () => {
+      const { templateClient } = setup();
+      expect(templateClient.isCampaignIdValid(null, 'bean-campaign')).toEqual(
+        false
+      );
+    });
+
+    test('campaign ID in campaignIds list', () => {
+      const { templateClient } = setup();
+      expect(
+        templateClient.isCampaignIdValid(
+          {
+            features: {},
+            campaignIds: ['bean-campaign', 'pea-campaign'],
+          },
+          'bean-campaign'
+        )
+      ).toEqual(true);
+    });
+
+    test('campaign ID not in campaignIds list', () => {
+      const { templateClient } = setup();
+      expect(
+        templateClient.isCampaignIdValid(
+          {
+            features: {},
+            campaignIds: ['pea-campaign'],
+            campaignId: 'bean-campaign',
+          },
+          'bean-campaign'
+        )
+      ).toEqual(false);
+    });
+
+    test('campaignIds list not present and campaign ID matches fallback campaign ID', () => {
+      const { templateClient } = setup();
+      expect(
+        templateClient.isCampaignIdValid(
+          {
+            features: {},
+            campaignId: 'bean-campaign',
+          },
+          'bean-campaign'
+        )
+      ).toEqual(true);
+    });
+
+    test('campaign ID does not match config', () => {
+      const { templateClient } = setup();
+      expect(
+        templateClient.isCampaignIdValid(
+          {
+            features: {},
+            campaignId: 'pea-campaign',
+          },
+          'bean-campaign'
+        )
+      ).toEqual(false);
+    });
+  });
+
   describe('createTemplate', () => {
     test('should return a failure result, when template data is invalid', async () => {
       const { templateClient } = setup();
@@ -106,6 +168,7 @@ describe('templateClient', () => {
         name: 'name',
         letterType: 'x0',
         language: 'en',
+        campaignId: 'campaign-id',
       };
 
       const result = await templateClient.createTemplate(data, user);
@@ -261,7 +324,6 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        campaignId: 'campaignId',
         createdAt: new Date().toISOString(),
         id: templateId,
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -280,7 +342,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
           features: {
             proofing: true,
           },
@@ -293,7 +355,7 @@ describe('templateClient', () => {
         data,
         user,
         'NOT_YET_SUBMITTED',
-        'campaignId'
+        undefined
       );
 
       expect(result).toEqual({
@@ -314,6 +376,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -337,10 +400,7 @@ describe('templateClient', () => {
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
+        ...data,
         files: filesWithVerions,
       };
 
@@ -378,7 +438,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
           features: {
             proofing: true,
           },
@@ -400,7 +460,7 @@ describe('templateClient', () => {
         { ...dataWithFiles, proofingEnabled: true },
         user,
         'PENDING_UPLOAD',
-        'campaignId'
+        'campaign-id'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -458,6 +518,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
+          campaignId: 'campaign-id',
         };
 
         const pdf = new File(['pdf'], pdfFilename, {
@@ -481,10 +542,7 @@ describe('templateClient', () => {
         };
 
         const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-          templateType: 'LETTER',
-          name: 'name',
-          language: 'en',
-          letterType: 'x0',
+          ...data,
           files: filesWithVersions,
         };
 
@@ -525,10 +583,8 @@ describe('templateClient', () => {
 
         mocks.clientConfigRepository.get.mockResolvedValueOnce({
           data: {
-            campaignId: 'campaignId',
-            features: {
-              proofing: clientEnabledProofing,
-            },
+            campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+            features: { proofing: clientEnabledProofing },
           },
         });
 
@@ -547,7 +603,7 @@ describe('templateClient', () => {
           { ...dataWithFiles, proofingEnabled: expected },
           user,
           'PENDING_UPLOAD',
-          'campaignId'
+          'campaign-id'
         );
       }
     );
@@ -560,6 +616,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: undefined,
+        campaignId: 'campaign-id',
       } as unknown as CreateUpdateTemplate;
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -639,6 +696,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
+          campaignId: 'campaign-id',
         };
 
         const result = await templateClient.uploadLetterTemplate(
@@ -685,6 +743,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
+          campaignId: 'campaign-id',
         };
 
         const pdf = new File(['pdf'], 'template.pdf', {
@@ -719,6 +778,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -740,6 +800,41 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
 
+    test('should return a failure result if campaign ID is not valid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['fish-campaign'] },
+      });
+
+      const result = await templateClient.uploadLetterTemplate(
+        data,
+        user,
+        new File(['pdf'], 'template.pdf', {
+          type: 'application/pdf',
+        })
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            description: 'Invalid campaign ID in request',
+            code: 400,
+          },
+        },
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
     test('should return a failure result when initial template creation fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -748,6 +843,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -764,10 +860,7 @@ describe('templateClient', () => {
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
+        ...data,
         files: filesWithVerions,
       };
 
@@ -781,7 +874,12 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce(
         templateRepoFailure
@@ -795,7 +893,7 @@ describe('templateClient', () => {
         { ...dataWithFiles, proofingEnabled: false },
         user,
         'PENDING_UPLOAD',
-        undefined
+        'campaign-id'
       );
 
       expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
@@ -810,6 +908,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -817,7 +916,10 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { proofing: false } },
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
@@ -847,6 +949,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -863,10 +966,7 @@ describe('templateClient', () => {
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
+        ...data,
         files: filesWithVerions,
       };
 
@@ -886,7 +986,10 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: null,
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
@@ -920,7 +1023,7 @@ describe('templateClient', () => {
         { ...dataWithFiles, proofingEnabled: false },
         user,
         'PENDING_UPLOAD',
-        undefined
+        'campaign-id'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -942,6 +1045,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -958,10 +1062,7 @@ describe('templateClient', () => {
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
+        ...data,
         files: filesWithVerions,
       };
 
@@ -980,7 +1081,12 @@ describe('templateClient', () => {
         version: 1,
       };
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -1008,7 +1114,7 @@ describe('templateClient', () => {
         { ...dataWithFiles, proofingEnabled: false },
         user,
         'PENDING_UPLOAD',
-        undefined
+        'campaign-id'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -1037,6 +1143,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
+        campaignId: 'campaign-id',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -1058,18 +1165,11 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
-        files: filesWithVerions,
-      };
-
       const creationTime = '2025-03-12T08:41:08.805Z';
 
       const initialCreatedTemplate: DatabaseTemplate = {
-        ...dataWithFiles,
+        ...data,
+        files: filesWithVerions,
         id: templateId,
         createdAt: creationTime,
         updatedAt: creationTime,
@@ -1089,7 +1189,10 @@ describe('templateClient', () => {
       const { owner: _1, version: _2 } = finalTemplate;
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { proofing: true } },
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: true },
+        },
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
@@ -1157,6 +1260,7 @@ describe('templateClient', () => {
         templateType: 'LETTER',
         language: 'it',
         letterType: 'x1',
+        campaignId: 'campaign-id',
       };
 
       const result = await templateClient.updateTemplate(
