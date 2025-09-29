@@ -14,7 +14,7 @@ output "deployment" {
     project        = var.project
     environment    = var.environment
     group          = var.group
-    component      = var.component
+    component      = local.component
     commit_id      = var.commit_id
   }
 }

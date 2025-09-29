@@ -60,7 +60,9 @@ jobs:
             --targetEnvironment "main" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
             --targetComponent "${{ matrix.component }}" \
-            --terraformAction "apply"
+            --terraformAction "apply" \
+            --overrideProjectName "nhs" \
+            --overrideRoleName "nhs-main-acct-template-mgmt-github-deploy"
 
   check-event-schemas-version-change:
     name: Check for event schemas package version change

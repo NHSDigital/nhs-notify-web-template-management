@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "ses_receipts" {
     ]
 
     resources = [
-      var.kms_key_arn
+      module.kms.key_arn,
     ]
   }
 
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "ses_receipts" {
     ]
 
     resources = [
-      "${module.s3bucket_ses.arn}/*",
+      "${local.acct.additional_s3_buckets["template-mgmt_ses-test-config"]["arn"]}/*"
     ]
   }
 }

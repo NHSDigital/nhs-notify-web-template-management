@@ -4,7 +4,7 @@ module "amplify_branch" {
   name              = "main"
   display_name      = var.url_prefix
   aws_account_id    = var.aws_account_id
-  component         = var.component
+  component         = local.component
   environment       = var.environment
   project           = var.project
   region            = var.region

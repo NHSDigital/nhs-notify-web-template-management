@@ -5,6 +5,7 @@ repos:
       - id: trailing-whitespace
         exclude: |
           (?x)^(
+            frontend/src/__tests__/.*\.tsx\.snap |
             frontend/src/__tests__/utils/markdownit/fixtures/index\.ts
           )$
       - id: detect-aws-credentials
@@ -17,10 +18,12 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         exclude: |
-          (?x)^(
-            package-lock.json|
-            packages/event-schemas/schemas/[^/]+/[^/]+\.json
-          )$
+            (?x)^(
+              .*/spec.tmpl.json |
+              .*/package(-lock)?\.json$ |
+              package(-lock)?\.json$ |
+              packages/event-schemas/schemas/[^/]+/[^/]+\.json$ |
+            )$
         args: ['--autofix']
     # -   id: ...
   - repo: local

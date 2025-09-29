@@ -3,5 +3,5 @@
 resource "aws_sns_topic" "events" {
   name = "${local.csi}-events-sns"
 
-  kms_master_key_id = data.aws_kms_key.sandbox.arn
+  kms_master_key_id = module.kms.key_id
 }
