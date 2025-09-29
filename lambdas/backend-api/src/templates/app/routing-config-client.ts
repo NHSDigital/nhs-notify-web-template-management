@@ -5,11 +5,16 @@ import {
 } from 'nhs-notify-backend-client';
 import { failure } from '@backend-api/utils/result';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
+import { User } from 'nhs-notify-web-template-management-utils';
 
 export class RoutingConfigClient {
   constructor(
     private readonly routingConfigRepository: RoutingConfigRepository
   ) {}
+
+  async createRoutingConfig(_user: User): Promise<Result<RoutingConfig>> {
+    return (await this.routingConfigRepository.create()) as Result<RoutingConfig>;
+  }
 
   async getRoutingConfig(
     id: string,

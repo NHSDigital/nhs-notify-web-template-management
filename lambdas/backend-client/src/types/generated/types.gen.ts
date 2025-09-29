@@ -87,6 +87,15 @@ export type ConditionalTemplateLanguage = {
   templateId: string;
 };
 
+export type CreateUpdateRoutingConfig = {
+  campaignId: string;
+  cascade: Array<CascadeItem>;
+  cascadeGroupOverrides: Array<CascadeGroup>;
+  name: string;
+  updatedAt: string;
+  updatedBy: string;
+};
+
 export type CreateUpdateTemplate = BaseTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | UploadLetterProperties);
 
@@ -163,19 +172,11 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
-export type RoutingConfig = {
-  campaignId: string;
-  cascade: Array<CascadeItem>;
-  cascadeGroupOverrides: Array<CascadeGroup>;
+export type RoutingConfig = CreateUpdateRoutingConfig & {
   clientId: string;
   createdAt: string;
-  createdBy: string;
   id: string;
-  name: string;
-  owner: string;
   status: RoutingConfigStatus;
-  updatedAt: string;
-  updatedBy: string;
 };
 
 export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
@@ -288,6 +289,36 @@ export type PostV1LetterTemplateResponses = {
 
 export type PostV1LetterTemplateResponse =
   PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
+
+export type PostV1RoutingConfigurationData = {
+  /**
+   * Routing configuration to create
+   */
+  body: CreateUpdateTemplate;
+  path?: never;
+  query?: never;
+  url: '/v1/routing-configuration';
+};
+
+export type PostV1RoutingConfigurationErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1RoutingConfigurationError =
+  PostV1RoutingConfigurationErrors[keyof PostV1RoutingConfigurationErrors];
+
+export type PostV1RoutingConfigurationResponses = {
+  /**
+   * 201 response
+   */
+  201: RoutingConfigSuccess;
+};
+
+export type PostV1RoutingConfigurationResponse =
+  PostV1RoutingConfigurationResponses[keyof PostV1RoutingConfigurationResponses];
 
 export type GetV1RoutingConfigurationByRoutingConfigIdData = {
   body?: never;

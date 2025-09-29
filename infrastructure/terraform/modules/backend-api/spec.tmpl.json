@@ -344,6 +344,45 @@
         ],
         "type": "object"
       },
+      "CreateUpdateRoutingConfig": {
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "cascade": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeItem"
+            },
+            "type": "array"
+          },
+          "cascadeGroupOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroup"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "campaignId",
+          "cascadeGroupOverrides",
+          "cascade",
+          "displayCategory",
+          "name",
+          "updatedAt",
+          "updatedBy"
+        ],
+        "type": "object"
+      },
       "CreateUpdateTemplate": {
         "allOf": [
           {
@@ -539,69 +578,36 @@
         "type": "object"
       },
       "RoutingConfig": {
-        "properties": {
-          "campaignId": {
-            "type": "string"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
           },
-          "cascade": {
-            "items": {
-              "$ref": "#/components/schemas/CascadeItem"
+          {
+            "properties": {
+              "clientId": {
+                "type": "string"
+              },
+              "createdAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "status": {
+                "$ref": "#/components/schemas/RoutingConfigStatus"
+              }
             },
-            "type": "array"
-          },
-          "cascadeGroupOverrides": {
-            "items": {
-              "$ref": "#/components/schemas/CascadeGroup"
-            },
-            "type": "array"
-          },
-          "clientId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "id": {
-            "format": "uuid",
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "owner": {
-            "type": "string"
-          },
-          "status": {
-            "$ref": "#/components/schemas/RoutingConfigStatus"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
+            "required": [
+              "clientId",
+              "createdAt",
+              "id",
+              "status"
+            ],
+            "type": "object"
           }
-        },
-        "required": [
-          "campaignId",
-          "cascadeGroupOverrides",
-          "cascade",
-          "clientId",
-          "createdAt",
-          "createdBy",
-          "displayCategory",
-          "id",
-          "name",
-          "owner",
-          "status",
-          "updatedAt",
-          "updatedBy"
-        ],
-        "type": "object"
+        ]
       },
       "RoutingConfigStatus": {
         "enum": [
@@ -931,6 +937,71 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPLOAD_LETTER_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configuration": {
+      "post": {
+        "description": "Create a routing configuration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
+              }
+            }
+          },
+          "description": "Routing configuration to create",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Create a routing configuration by ID",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
         }
       }
     },

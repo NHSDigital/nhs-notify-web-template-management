@@ -12,6 +12,10 @@ export class RoutingConfigRepository {
     private readonly tableName: string
   ) {}
 
+  async create() {
+    return success({});
+  }
+
   async get(
     id: string,
     owner: string
