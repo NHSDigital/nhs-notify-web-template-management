@@ -81,7 +81,7 @@ describe('CreateSmsTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          smsTemplateMessage: ['URLs cannot start with http://'],
+          smsTemplateMessage: ['URLs must start with https://'],
         },
       },
     });

@@ -315,7 +315,7 @@ test.describe('Create SMS message template Page', () => {
     test('when user submits form with an http link, then an error is displayed', async ({
       page,
     }) => {
-      const errorMessage = 'URLs cannot start with http://';
+      const errorMessage = 'URLs must start with https://';
 
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 

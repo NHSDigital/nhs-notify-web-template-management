@@ -10,7 +10,7 @@ const goBackButtonText = 'Go back';
 const enterATemplateName = 'Enter a template name';
 const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
-const templateMessageHasInsecureLink = 'URLs cannot start with http://';
+const templateMessageHasInsecureLink = 'URLs must start with https://';
 const selectAnOption = 'Select an option';
 
 const header = {

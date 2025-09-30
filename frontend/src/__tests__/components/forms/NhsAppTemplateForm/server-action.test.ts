@@ -87,7 +87,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          nhsAppTemplateMessage: ['URLs cannot start with http://'],
+          nhsAppTemplateMessage: ['URLs must start with https://'],
         },
       },
     });

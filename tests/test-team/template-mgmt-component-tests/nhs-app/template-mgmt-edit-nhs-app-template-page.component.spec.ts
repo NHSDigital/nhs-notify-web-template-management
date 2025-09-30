@@ -235,7 +235,7 @@ test.describe('Edit NHS App Template Page', () => {
 
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
-    ).toHaveText(['URLs cannot start with http://']);
+    ).toHaveText(['URLs must start with https://']);
   });
 
   test('Validate error messages on the edit NHS App message template page with angle brackets in linked url', async ({
