@@ -24,11 +24,11 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
     routingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+      clientId: user1.clientId,
     });
 
     deletedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+      clientId: user1.clientId,
       status: 'DELETED',
     });
 

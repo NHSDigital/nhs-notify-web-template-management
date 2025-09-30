@@ -3,12 +3,12 @@ import { RoutingConfig } from 'nhs-notify-backend-client';
 
 export const RoutingConfigFactory = {
   create(
-    routingConfig: Partial<RoutingConfig> & Pick<RoutingConfig, 'owner'>
-  ): RoutingConfig {
+    routingConfig: Partial<RoutingConfig> & Pick<RoutingConfig, 'clientId'>
+  ): RoutingConfig & { owner: string } {
     return {
       id: randomUUID(),
+      owner: `CLIENT#${routingConfig.clientId}`,
       campaignId: 'campaign-1',
-      clientId: 'client-1',
       cascade: [
         {
           cascadeGroups: ['standard'],
@@ -22,7 +22,6 @@ export const RoutingConfigFactory = {
       status: 'DRAFT',
       name: 'Test config',
       createdAt: new Date().toISOString(),
-      createdBy: 'user-1',
       updatedAt: new Date().toISOString(),
       ...routingConfig,
     };

@@ -5,7 +5,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
-type RoutingConfigKey = Pick<RoutingConfig, 'id' | 'owner'>;
+type RoutingConfigKey = { id: string; clientId: string };
 
 export class RoutingConfigStorageHelper {
   private readonly dynamo: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
@@ -46,9 +46,9 @@ export class RoutingConfigStorageHelper {
    */
   public async deleteSeeded() {
     await this.delete(
-      this.seedData.map(({ id, owner }) => ({
+      this.seedData.map(({ id, clientId }) => ({
         id,
-        owner,
+        clientId,
       }))
     );
     this.seedData = [];
@@ -63,11 +63,11 @@ export class RoutingConfigStorageHelper {
           new BatchWriteCommand({
             RequestItems: {
               [process.env.ROUTING_CONFIG_TABLE_NAME]: chunk.map(
-                ({ id, owner }) => ({
+                ({ id, clientId }) => ({
                   DeleteRequest: {
                     Key: {
                       id,
-                      owner,
+                      owner: this.clientOwnerKey(clientId),
                     },
                   },
                 })
@@ -90,5 +90,9 @@ export class RoutingConfigStorageHelper {
     }
 
     return chunks;
+  }
+
+  private clientOwnerKey(clientId: string) {
+    return `CLIENT${clientId}`;
   }
 }
