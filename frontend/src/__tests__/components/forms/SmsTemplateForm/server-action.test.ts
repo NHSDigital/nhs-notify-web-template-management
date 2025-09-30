@@ -65,6 +65,28 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
+  it('create-sms-template - should return response when when template message contains insecure url', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-sms-template',
+        smsTemplateName: 'template-name',
+        smsTemplateMessage:
+          'a message linking to http://www.example.com with http',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          smsTemplateMessage: ['URLs must start with https://'],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,
