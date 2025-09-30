@@ -84,7 +84,7 @@ describe('CreateEmailTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          emailTemplateMessage: ['URLs cannot start with http://'],
+          emailTemplateMessage: ['URLs must start with https://'],
         },
       },
     });
