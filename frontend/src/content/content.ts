@@ -582,6 +582,7 @@ const previewTemplateDetails = {
   rowHeadings: {
     templateFile: 'Template file',
     templateId: 'Template ID',
+    campaignId: 'Campaign',
     templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
     templateType: 'Type',
@@ -808,6 +809,9 @@ const templateFormLetter = {
   templateNameHintText: 'This will not be visible to recipients.',
   templateTypeLabelText: 'Letter type',
   templateTypeHintText: 'Choose the type of letter template you are uploading',
+  campaignLabelText: 'Campaign',
+  singleCampaignHintText: 'You currently only have one campaign:',
+  multiCampaignHintText: 'Choose which campaign this letter is for',
   templateLanguageLabelText: 'Letter language',
   templateLanguageHintText: 'Choose the language of this letter template',
   templatePdfLabelText: 'Letter template PDF',
@@ -828,6 +832,11 @@ const templateFormLetter = {
     letterTemplateName: {
       error: {
         empty: enterATemplateName,
+      },
+    },
+    letterTemplateCampaignId: {
+      error: {
+        empty: 'Choose a campaign ID',
       },
     },
     letterTemplateLetterType: {

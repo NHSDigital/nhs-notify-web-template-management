@@ -10,7 +10,6 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/template', () => {
   const authHelper = createAuthHelper();
@@ -138,7 +137,6 @@ test.describe('POST /v1/template', () => {
       expect(created).toEqual({
         statusCode: 201,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -347,7 +345,6 @@ test.describe('POST /v1/template', () => {
       expect(created).toEqual({
         statusCode: 201,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -556,7 +553,6 @@ test.describe('POST /v1/template', () => {
       expect(created).toEqual({
         statusCode: 201,
         template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),

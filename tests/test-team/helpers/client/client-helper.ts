@@ -6,6 +6,7 @@ import {
 
 export type ClientConfiguration = {
   campaignId?: string;
+  campaignIds?: string[];
   features: {
     proofing: boolean;
     // TODO: CCM-11148 Make routing flag required
@@ -14,17 +15,18 @@ export type ClientConfiguration = {
   name?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4 | 5 | 6}`;
+export type ClientKey =
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'WithFallbackCampaignId'}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
-export const testClients = {
+export const testClients: TestClients = {
   /**
    * Client1 has proofing and routing enabled
    * This is the default client for the component tests.
    */
   Client1: {
-    campaignId: 'Campaign1',
+    campaignIds: ['Campaign1'],
     name: 'NHS Test Client 1',
     features: {
       proofing: true,
@@ -35,7 +37,7 @@ export const testClients = {
    * Client2 has proofing and routing disabled
    */
   Client2: {
-    campaignId: 'Campaign2',
+    campaignIds: ['Campaign2'],
     name: 'NHS Test Client 2',
     features: {
       proofing: false,
@@ -62,7 +64,7 @@ export const testClients = {
    * with proofing enabled
    */
   Client5: {
-    campaignId: 'Campaign5',
+    campaignIds: ['Campaign5'],
     name: 'NHS Test Client 5',
     features: {
       proofing: true,
@@ -73,13 +75,29 @@ export const testClients = {
    * Client6 has no client name set
    */
   Client6: {
-    campaignId: 'Campaign6',
+    campaignIds: ['Campaign6'],
     features: {
       proofing: true,
       routing: false,
     },
   },
-} satisfies TestClients;
+
+  ClientWithMultipleCampaigns: {
+    campaignIds: ['campaign-id', 'other-campaign-id'],
+    features: {
+      proofing: true,
+      routing: false,
+    },
+  },
+
+  ClientWithFallbackCampaignId: {
+    campaignId: 'campaign-id',
+    features: {
+      proofing: true,
+      routing: false,
+    },
+  },
+};
 
 export class ClientConfigurationHelper {
   private readonly ssmClient = new SSMClient({ region: 'eu-west-2' });
