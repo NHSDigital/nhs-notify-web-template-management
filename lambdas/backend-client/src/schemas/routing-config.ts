@@ -1,6 +1,5 @@
 import { z } from 'zod/v4';
 import type {
-  RoutingConfigStatus,
   CascadeGroup,
   CascadeGroupAccessible,
   CascadeGroupName,
@@ -15,6 +14,7 @@ import type {
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
   RoutingConfig,
+  RoutingConfigStatus,
   RoutingConfigStatusActive,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
