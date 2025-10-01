@@ -110,6 +110,16 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User8',
     clientKey: 'Client6',
   },
+
+  UserWithMultipleCampaigns: {
+    userId: 'UserWithMultipleCampaigns',
+    clientKey: 'ClientWithMultipleCampaigns',
+  },
+
+  UserWithFallbackCampaignId: {
+    userId: 'UserWithFallbackCampaignId',
+    clientKey: 'ClientWithFallbackCampaignId',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &

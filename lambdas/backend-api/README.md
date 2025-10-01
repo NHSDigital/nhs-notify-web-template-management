@@ -141,3 +141,11 @@ curl --location "${APIG_STAGE}/v1/client-configuration" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
+
+### GET - /v1/routing-configuration/:routingConfigId - Get a routing configuration by id
+
+```bash
+curl --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```

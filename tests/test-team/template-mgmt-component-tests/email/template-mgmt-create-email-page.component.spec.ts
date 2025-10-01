@@ -338,5 +338,38 @@ test.describe('Create Email message template Page', () => {
 
       await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with an http link, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage = 'URLs must start with https://';
+
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage();
+
+      await createEmailTemplatePage.nameInput.fill('template-name');
+
+      await createEmailTemplatePage.subjectLineInput.fill(
+        'template-subject-line'
+      );
+
+      await createEmailTemplatePage.messageTextArea.fill(
+        'http://www.example.com'
+      );
+
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
+
+      const emailMessageErrorLink =
+        createEmailTemplatePage.errorSummary.locator(
+          '[href="#emailTemplateMessage"]'
+        );
+
+      await expect(emailMessageErrorLink).toHaveText(errorMessage);
+
+      await emailMessageErrorLink.click();
+
+      await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });

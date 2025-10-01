@@ -92,7 +92,7 @@ export function CreateEditMessagePlan({ plan }: NHSNotifyChooseTemplatesProps) {
 
           <div className='nhsuk-form-group notify-message-button-container'>
             <Button
-              onClick={() => alert('TODO: validate & move to production')}
+              onClick={}
             >
               Move to production
             </Button>

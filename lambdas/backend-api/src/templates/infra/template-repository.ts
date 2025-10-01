@@ -3,7 +3,6 @@ import {
   EmailProperties,
   ErrorCase,
   LetterFiles,
-  LetterProperties,
   NhsAppProperties,
   SmsProperties,
   TemplateStatus,
@@ -33,7 +32,7 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-type WithAttachments<T> = T extends { templateType: 'LETTER' }
+export type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
 
@@ -53,14 +52,12 @@ const smsAttributes: Record<keyof SmsProperties, null> = {
   message: null,
 };
 
-const letterAttributes: Record<keyof LetterProperties, null> = {
+const letterAttributes: Record<keyof UploadLetterProperties, null> = {
   files: null,
   language: null,
   letterType: null,
-  personalisationParameters: null,
   templateType: null,
-  proofingEnabled: null,
-  supplierReferences: null,
+  campaignId: null,
 };
 
 export class TemplateRepository {
@@ -138,7 +135,9 @@ export class TemplateRepository {
       updatedAt: date,
       updatedBy: user.userId,
       createdBy: user.userId,
-      campaignId,
+      ...(template.templateType === 'LETTER' && {
+        campaignId,
+      }),
     };
 
     try {
@@ -822,7 +821,9 @@ export class TemplateRepository {
     }
     if (template.templateType === 'LETTER') {
       expressions.push(
-        ...this.attributeExpressionsFromMap<LetterProperties>(letterAttributes)
+        ...this.attributeExpressionsFromMap<UploadLetterProperties>(
+          letterAttributes
+        )
       );
     }
     return expressions;
@@ -853,7 +854,8 @@ export class TemplateRepository {
       names = this.attributeNamesFromMap<SmsProperties>(smsAttributes);
     }
     if (template.templateType === 'LETTER') {
-      names = this.attributeNamesFromMap<LetterProperties>(letterAttributes);
+      names =
+        this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
     }
 
     return names;
