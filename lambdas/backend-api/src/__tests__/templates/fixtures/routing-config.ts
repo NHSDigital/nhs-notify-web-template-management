@@ -17,5 +17,4 @@ export const routingConfig: RoutingConfig = {
   name: 'Test config',
   createdAt: '2025-09-18T15:26:04.338Z',
   updatedAt: '2025-09-18T15:26:04.338Z',
-  updatedBy: 'user-1',
 };

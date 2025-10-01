@@ -592,9 +592,6 @@
               "updatedAt": {
                 "format": "date-time",
                 "type": "string"
-              },
-              "updatedBy": {
-                "type": "string"
               }
             },
             "required": [
@@ -602,8 +599,7 @@
               "createdAt",
               "id",
               "status",
-              "updatedAt",
-              "updatedBy"
+              "updatedAt"
             ],
             "type": "object"
           }

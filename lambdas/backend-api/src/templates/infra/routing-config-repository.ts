@@ -33,14 +33,18 @@ export class RoutingConfigRepository {
       id: randomUUID(),
       status: 'DRAFT',
       updatedAt: date,
-      updatedBy: user.userId,
     };
 
     try {
       await this.client.send(
         new PutCommand({
           TableName: this.tableName,
-          Item: { ...routingConfig, owner: this.clientOwnerKey(user.clientId) },
+          Item: {
+            ...routingConfig,
+            owner: this.clientOwnerKey(user.clientId),
+            updatedBy: user.userId,
+            createdBy: user.userId,
+          },
         })
       );
 

@@ -18,7 +18,6 @@ export const RoutingConfigFactory = {
         },
       ],
       cascadeGroupOverrides: [{ name: 'standard' }],
-      updatedBy: 'user-1',
       status: 'DRAFT',
       name: 'Test config',
       createdAt: new Date().toISOString(),

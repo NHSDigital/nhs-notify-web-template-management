@@ -176,7 +176,6 @@ export type RoutingConfig = CreateUpdateRoutingConfig & {
   id: string;
   status: RoutingConfigStatus;
   updatedAt: string;
-  updatedBy: string;
 };
 
 export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
