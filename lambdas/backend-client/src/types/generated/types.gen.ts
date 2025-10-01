@@ -70,7 +70,11 @@ export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
 export type ChannelType = 'primary' | 'secondary';
 
 export type ClientConfiguration = {
+  /**
+   * @deprecated
+   */
   campaignId?: string;
+  campaignIds?: Array<string>;
   features: ClientFeatures;
 };
 
@@ -224,11 +228,8 @@ export type TemplateSuccessList = {
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
-export type UploadLetterProperties = {
-  files?: LetterFiles;
-  language: Language;
-  letterType: LetterType;
-  templateType: 'LETTER';
+export type UploadLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
 };
 
 export type VersionedFileDetails = {

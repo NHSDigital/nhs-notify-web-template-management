@@ -119,8 +119,6 @@ export const $RoutingConfig = schemaFor<RoutingConfig>()(
     id: z.uuidv4(),
     status: z.enum(ROUTING_CONFIG_STATUS_LIST),
     createdAt: z.string(),
-    createdBy: z.string(),
     updatedAt: z.string(),
-    updatedBy: z.string(),
   })
 );

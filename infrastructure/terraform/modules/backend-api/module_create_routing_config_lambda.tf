@@ -22,13 +22,13 @@ module "create_routing_config_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   iam_policy_document = {
-    body = data.aws_iam_policy_document.get_routing_config_lambda_policy.json
+    body = data.aws_iam_policy_document.create_routing_config_lambda_policy.json
   }
 
   lambda_env_vars         = local.backend_lambda_environment_variables
   function_s3_bucket      = var.function_s3_bucket
   function_code_base_path = local.lambdas_dir
-  function_code_dir       = "backend-api/dist/created-routing-config"
+  function_code_dir       = "backend-api/dist/create-routing-config"
 
   send_to_firehose          = var.send_to_firehose
   log_destination_arn       = var.log_destination_arn

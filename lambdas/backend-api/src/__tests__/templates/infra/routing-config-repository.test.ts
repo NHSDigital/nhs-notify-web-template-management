@@ -40,7 +40,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: 'CLIENT#nhs-notify-client-id',
         },
       });
     });
@@ -96,4 +96,10 @@ describe('RoutingConfigRepository', () => {
       });
     });
   });
+
+  // describe('create', () => {
+  //   test('should ', async () => {
+
+  //   });
+  // });
 });

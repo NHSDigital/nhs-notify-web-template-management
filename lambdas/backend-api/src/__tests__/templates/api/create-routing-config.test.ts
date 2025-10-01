@@ -1,20 +1,11 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import {
-  TemplateDto,
-  CreateUpdateTemplate,
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
-import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { createHandler } from '@backend-api/templates/api/create-routing-config';
 import type { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
-
-jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
-  logger: mock<Logger>({
-    child: jest.fn().mockReturnThis(),
-  }),
-}));
 
 function setup() {
   const routingConfigClient = mock<RoutingConfigClient>();
