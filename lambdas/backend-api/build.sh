@@ -21,6 +21,7 @@ npx esbuild \
     src/templates/delete.ts \
     src/templates/get-client.ts \
     src/templates/get.ts \
+    src/templates/get-routing-config.ts \
     src/templates/list.ts \
     src/templates/process-proof.ts \
     src/templates/proof.ts \

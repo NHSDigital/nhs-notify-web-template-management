@@ -4,7 +4,7 @@ set -euo pipefail
 
 root_dir=$(git rev-parse --show-toplevel)
 
-# expect 2 argument to the script
+# expect 3 argument to the script
 if [ $# -ne 2 ]; then
   echo 1>&2 "$0: expected 2 arguments, received $#"
   exit 2
@@ -16,7 +16,7 @@ password=$2
 cognito_user_pool_id=$(jq -r .cognito_user_pool_id.value $root_dir/sandbox_tf_outputs.json)
 cognito_user_pool_client_id=$(jq -r .cognito_user_pool_client_id.value $root_dir/sandbox_tf_outputs.json)
 
-set +e # if the user doesn't exist, we expect this command to fail
+set +e # if the user or client doesn't exist, we expect these commands to fail
 get_user_command_output=$(aws cognito-idp admin-get-user --user-pool-id "$cognito_user_pool_id" --username "$email" 2>&1)
 get_user_command_exit_code=$?
 set -e #re-enable
@@ -36,10 +36,12 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   temp_password=$(gen_temp_password)
 
+  read -p "Enter a Notify Client ID for this user: " notify_client_id
+
   aws cognito-idp admin-create-user \
     --user-pool-id "${cognito_user_pool_id}" \
     --username "${email}" \
-    --user-attributes Name=email,Value=${email} Name=email_verified,Value=True \
+    --user-attributes Name=email,Value=${email} Name=email_verified,Value=True Name=custom:sbx_client_id,Value=${notify_client_id} \
     --temporary-password "${temp_password}" \
     --desired-delivery-mediums EMAIL \
     --message-action SUPPRESS

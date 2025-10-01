@@ -110,7 +110,7 @@ describe('upload-letter', () => {
 
     expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
       statusCode: 201,
-      template: created,
+      data: created,
     });
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
@@ -179,7 +179,7 @@ describe('upload-letter', () => {
 
     expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
       statusCode: 201,
-      template: created,
+      data: created,
     });
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(

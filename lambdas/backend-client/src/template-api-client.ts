@@ -39,7 +39,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 
@@ -70,7 +70,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 
@@ -96,7 +96,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 
@@ -120,7 +120,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 
@@ -138,7 +138,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.templates,
+      data: response.data.data,
     };
   }
 
@@ -166,7 +166,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 
@@ -221,7 +221,7 @@ export class TemplateApiClient {
     }
 
     return {
-      data: response.data.template,
+      data: response.data.data,
     };
   }
 }

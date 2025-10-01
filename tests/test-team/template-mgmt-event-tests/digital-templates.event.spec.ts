@@ -49,7 +49,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          template: { id: templateId, name },
+          data: { id: templateId, name },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
@@ -145,7 +145,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          template: { id: templateId },
+          data: { id: templateId },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({

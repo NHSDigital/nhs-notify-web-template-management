@@ -22,6 +22,53 @@ export type BaseTemplate = {
   name: string;
 };
 
+export type CascadeGroup =
+  | CascadeGroupAccessible
+  | CascadeGroupTranslations
+  | CascadeGroupStandard;
+
+export type CascadeGroupAccessible = CascadeGroupBase & {
+  accessibleFormat: Array<LetterType>;
+  name?: 'accessible';
+};
+
+export type CascadeGroupBase = {
+  name: CascadeGroupName;
+};
+
+export type CascadeGroupName = 'accessible' | 'standard' | 'translations';
+
+export type CascadeGroupStandard = CascadeGroupBase & {
+  name?: 'standard';
+};
+
+export type CascadeGroupTranslations = CascadeGroupBase & {
+  language: Array<Language>;
+  name?: 'translations';
+};
+
+export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+
+export type CascadeItemBase = {
+  cascadeGroups: Array<CascadeGroupName>;
+  channel: Channel;
+  channelType: ChannelType;
+};
+
+export type CascadeItemWithConditional = CascadeItemBase & {
+  conditionalTemplates: Array<
+    ConditionalTemplateLanguage | ConditionalTemplateAccessible
+  >;
+};
+
+export type CascadeItemWithDefault = CascadeItemBase & {
+  defaultTemplateId: string;
+};
+
+export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
+
+export type ChannelType = 'primary' | 'secondary';
+
 export type ClientConfiguration = {
   campaignId?: string;
   campaignIds?: Array<string>;
@@ -36,6 +83,16 @@ export type ClientConfigurationSuccess = {
 export type ClientFeatures = {
   proofing?: boolean;
   routing?: boolean;
+};
+
+export type ConditionalTemplateAccessible = {
+  accessibleFormat: LetterType;
+  templateId: string;
+};
+
+export type ConditionalTemplateLanguage = {
+  language: Language;
+  templateId: string;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -114,6 +171,28 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
+export type RoutingConfig = {
+  campaignId: string;
+  cascade: Array<CascadeItem>;
+  cascadeGroupOverrides: Array<CascadeGroup>;
+  clientId: string;
+  createdAt: string;
+  createdBy: string;
+  id: string;
+  name: string;
+  owner: string;
+  status: RoutingConfigStatus;
+  updatedAt: string;
+  updatedBy: string;
+};
+
+export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
+
+export type RoutingConfigSuccess = {
+  data: RoutingConfig;
+  statusCode: number;
+};
+
 export type SmsProperties = {
   message: string;
   templateType: 'SMS';
@@ -135,13 +214,13 @@ export type TemplateStatus =
   | 'PROOF_AVAILABLE';
 
 export type TemplateSuccess = {
+  data: TemplateDto;
   statusCode: number;
-  template: TemplateDto;
 };
 
 export type TemplateSuccessList = {
+  data: Array<TemplateDto>;
   statusCode: number;
-  templates: Array<TemplateDto>;
 };
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
@@ -214,6 +293,38 @@ export type PostV1LetterTemplateResponses = {
 
 export type PostV1LetterTemplateResponse =
   PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
+
+export type GetV1RoutingConfigurationByRoutingConfigIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of routing configuration to return
+     */
+    routingConfigId: string;
+  };
+  query?: never;
+  url: '/v1/routing-configuration/{routingConfigId}';
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdError =
+  GetV1RoutingConfigurationByRoutingConfigIdErrors[keyof GetV1RoutingConfigurationByRoutingConfigIdErrors];
+
+export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccess;
+};
+
+export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
+  GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type PostV1TemplateData = {
   /**

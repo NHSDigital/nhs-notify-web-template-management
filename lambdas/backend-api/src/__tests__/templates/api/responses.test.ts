@@ -15,7 +15,7 @@ describe('responses', () => {
     };
     expect(apiSuccess(200, dto)).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, template: dto }),
+      body: JSON.stringify({ statusCode: 200, data: dto }),
     });
   });
 
