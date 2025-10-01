@@ -7,7 +7,6 @@ import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
-import { ZodError } from 'zod/v4';
 
 const user = { userId: 'userid', clientId: 'nhs-notify-client-id' };
 
