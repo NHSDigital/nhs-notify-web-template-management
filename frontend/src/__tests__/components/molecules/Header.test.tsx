@@ -28,8 +28,8 @@ beforeEach(() => {
   mockUseAuthStatus.mockImplementation((status) => status ?? 'configuring');
   mockServerIsFeatureEnabled.mockResolvedValue(false); // default for most tests
   mockUseFeatureFlags.mockReturnValue({
-    featureFlags: { proofing: false, routing: false },
-    loaded: true,
+    proofing: false,
+    routing: false,
   });
 });
 
@@ -39,8 +39,8 @@ describe('NhsNotifyHeader', () => {
       mockGetSessionServer.mockResolvedValue({});
       mockGetIdTokenClaims.mockReturnValue({});
       mockUseFeatureFlags.mockReturnValue({
-        featureFlags: { proofing: false, routing: false },
-        loaded: true,
+        proofing: false,
+        routing: false,
       });
     });
 
@@ -110,8 +110,8 @@ describe('NhsNotifyHeader', () => {
       });
 
       mockUseFeatureFlags.mockReturnValue({
-        featureFlags: { proofing: false, routing: false },
-        loaded: true,
+        proofing: false,
+        routing: false,
       });
     });
 
@@ -183,8 +183,8 @@ describe('NhsNotifyHeader', () => {
     describe(`with 'routing' flag enabled`, () => {
       beforeEach(() => {
         mockUseFeatureFlags.mockReturnValue({
-          featureFlags: { proofing: false, routing: true },
-          loaded: true,
+          proofing: false,
+          routing: true,
         });
       });
 
@@ -207,31 +207,13 @@ describe('NhsNotifyHeader', () => {
           '/templates-and-message-plans/message-plans'
         );
       });
-
-      it('does not render navigation links when feature flags are not yet loaded', async () => {
-        mockUseFeatureFlags.mockReturnValue({
-          featureFlags: {
-            proofing: true,
-            routing: true,
-          },
-          loaded: false,
-        });
-
-        const header = await NhsNotifyHeader();
-
-        render(header);
-
-        expect(
-          screen.queryByTestId('navigation-links')
-        ).not.toBeInTheDocument();
-      });
     });
 
     describe(`with 'routing' flag disabled`, () => {
       beforeEach(() => {
         mockUseFeatureFlags.mockReturnValue({
-          featureFlags: { proofing: false, routing: false },
-          loaded: true,
+          proofing: false,
+          routing: false,
         });
       });
 

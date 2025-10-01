@@ -44,7 +44,6 @@ const publicPaths = [
   /^\/auth\/signout$/,
   /^\/auth\/idle$/,
   /^\/auth\/request-to-be-added-to-a-service$/,
-  /^\/internal\/features$/,
 ];
 
 function getContentSecurityPolicy(nonce: string) {
