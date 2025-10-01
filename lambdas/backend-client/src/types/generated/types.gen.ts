@@ -186,9 +186,9 @@ export type RoutingConfig = {
   updatedBy: string;
 };
 
-export type RoutingConfigStatusActive = 'COMPLETED' | 'DRAFT';
-
 export type RoutingConfigStatus = RoutingConfigStatusActive | 'DELETED';
+
+export type RoutingConfigStatusActive = 'COMPLETED' | 'DRAFT';
 
 export type RoutingConfigSuccess = {
   data: RoutingConfig;
