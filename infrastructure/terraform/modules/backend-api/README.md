@@ -29,6 +29,7 @@ No requirements.
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_proof_requested_sender_email_address"></a> [proof\_requested\_sender\_email\_address](#input\_proof\_requested\_sender\_email\_address) | Proof requested sender email address | `string` | n/a | yes |
+| <a name="input_quarantine_s3_bucket"></a> [quarantine\_s3\_bucket](#input\_quarantine\_s3\_bucket) | Guardduty Quarantine bucket id/name | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
 | <a name="input_sns_topic_arn"></a> [sns\_topic\_arn](#input\_sns\_topic\_arn) | SNS topic ARN | `string` | `null` | no |
@@ -55,7 +56,6 @@ No requirements.
 | <a name="module_request_proof_lambda"></a> [request\_proof\_lambda](#module\_request\_proof\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_s3bucket_download"></a> [s3bucket\_download](#module\_s3bucket\_download) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
-| <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_sqs_sftp_upload"></a> [sqs\_sftp\_upload](#module\_sqs\_sftp\_upload) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_mgmt_events"></a> [sqs\_template\_mgmt\_events](#module\_sqs\_template\_mgmt\_events) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_table_events_pipe_dlq"></a> [sqs\_template\_table\_events\_pipe\_dlq](#module\_sqs\_template\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
