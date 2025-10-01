@@ -1,21 +1,21 @@
 import { z } from 'zod/v4';
-import {
+import type {
   RoutingConfigStatus,
-  type CascadeGroup,
-  type CascadeGroupAccessible,
-  type CascadeGroupName,
-  type CascadeGroupStandard,
-  type CascadeGroupTranslations,
-  type CascadeItem,
-  type CascadeItemBase,
-  type CascadeItemWithConditional,
-  type CascadeItemWithDefault,
-  type Channel,
-  type ChannelType,
-  type ConditionalTemplateAccessible,
-  type ConditionalTemplateLanguage,
-  type RoutingConfig,
-  type RoutingConfigStatusActive,
+  CascadeGroup,
+  CascadeGroupAccessible,
+  CascadeGroupName,
+  CascadeGroupStandard,
+  CascadeGroupTranslations,
+  CascadeItem,
+  CascadeItemBase,
+  CascadeItemWithConditional,
+  CascadeItemWithDefault,
+  Channel,
+  ChannelType,
+  ConditionalTemplateAccessible,
+  ConditionalTemplateLanguage,
+  RoutingConfig,
+  RoutingConfigStatusActive,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
 import { $Language, $LetterType } from './template-schema';

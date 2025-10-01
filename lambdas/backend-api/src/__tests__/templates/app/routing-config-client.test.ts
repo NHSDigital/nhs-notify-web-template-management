@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended';
-import type { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config/repository';
+import type { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
+import { RoutingConfigQuery } from '@backend-api/templates/infra/routing-config-repository/query';
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
-import { RoutingConfigQuery } from '@backend-api/templates/infra/routing-config/query';
 
 function setup() {
   const repo = mock<RoutingConfigRepository>();

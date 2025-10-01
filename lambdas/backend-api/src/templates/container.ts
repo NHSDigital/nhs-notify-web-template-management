@@ -14,7 +14,7 @@ import { ClientConfigRepository } from './infra/client-config-repository';
 import { LetterFileRepository } from './infra/letter-file-repository';
 import { LetterUploadRepository } from './infra/letter-upload-repository';
 import { ProofingQueue } from './infra/proofing-queue';
-import { RoutingConfigRepository } from './infra/routing-config/repository';
+import { RoutingConfigRepository } from './infra/routing-config-repository';
 
 const awsConfig = { region: 'eu-west-2' };
 const sqsClient = new SQSClient(awsConfig);

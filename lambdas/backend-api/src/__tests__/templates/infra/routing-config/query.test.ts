@@ -2,7 +2,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config/repository';
+import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 import { makeRoutingConfig } from '../../fixtures/routing-config';
 

@@ -6,8 +6,8 @@ import {
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
-import type { RoutingConfigRepository } from '../infra/routing-config/repository';
 import { validate } from '@backend-api/utils/validate';
+import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 
 export class RoutingConfigClient {
   constructor(
