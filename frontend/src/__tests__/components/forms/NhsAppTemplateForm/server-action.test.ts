@@ -71,6 +71,50 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
   });
 
+  it('create-nhs-app-template - should return response when when template message contains insecure url', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-nhs-app-template',
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage:
+          '**a message linking to http://www.example.com**',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          nhsAppTemplateMessage: ['URLs must start with https://'],
+        },
+      },
+    });
+  });
+
+  it('create-nhs-app-template - should return response when when template message contains link with angle brackets', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-nhs-app-template',
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage:
+          '**a message linking to [example.com](https://www.example.com/withparams?param1=<>)**',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          nhsAppTemplateMessage: ['URLs cannot include the symbols < or >'],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...savedState,
@@ -90,6 +134,36 @@ describe('CreateNHSAppTemplate server actions', () => {
       ...savedState,
       name: 'template-name',
       message: 'template-message',
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      `/preview-nhs-app-template/template-id?from=edit`,
+      'push'
+    );
+  });
+
+  test('should save a template that contains a url with angle brackets, if they are url encoded', async () => {
+    saveTemplateMock.mockResolvedValue({
+      ...savedState,
+      name: 'template-name',
+      message:
+        '**a message linking to [example.com](https://www.example.com/withparams?param1=%3C%3E)**',
+    });
+
+    await processFormActions(
+      savedState,
+      getMockFormData({
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage:
+          '**a message linking to [example.com](https://www.example.com/withparams?param1=%3C%3E)**',
+      })
+    );
+
+    expect(saveTemplateMock).toHaveBeenCalledWith({
+      ...savedState,
+      name: 'template-name',
+      message:
+        '**a message linking to [example.com](https://www.example.com/withparams?param1=%3C%3E)**',
     });
 
     expect(redirectMock).toHaveBeenCalledWith(

@@ -24,6 +24,9 @@ export const $CreateSmsTemplateSchema = z.object({
     .min(1, { message: form.smsTemplateMessage.error.empty })
     .max(MAX_SMS_CHARACTER_LENGTH, {
       message: form.smsTemplateMessage.error.max,
+    })
+    .refine((templateMessage) => !templateMessage.includes('http://'), {
+      message: form.smsTemplateMessage.error.insecureLink,
     }),
 });
 

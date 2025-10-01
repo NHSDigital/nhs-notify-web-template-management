@@ -84,6 +84,14 @@ test.describe('Preview submitted Letter message template Page', () => {
     await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
       templates.valid.name
     );
+
+    if (!templates.valid.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
+    await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
+      templates.valid.campaignId
+    );
   });
 
   test.describe('Page functionality', () => {

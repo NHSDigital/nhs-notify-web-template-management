@@ -94,6 +94,83 @@ export type CreateUpdateRoutingConfig = {
   name: string;
 };
 
+export type BaseTemplate = {
+  name: string;
+};
+
+export type CascadeGroup =
+  | CascadeGroupAccessible
+  | CascadeGroupTranslations
+  | CascadeGroupStandard;
+
+export type CascadeGroupAccessible = CascadeGroupBase & {
+  accessibleFormat: Array<LetterType>;
+  name?: 'accessible';
+};
+
+export type CascadeGroupBase = {
+  name: CascadeGroupName;
+};
+
+export type CascadeGroupName = 'accessible' | 'standard' | 'translations';
+
+export type CascadeGroupStandard = CascadeGroupBase & {
+  name?: 'standard';
+};
+
+export type CascadeGroupTranslations = CascadeGroupBase & {
+  language: Array<Language>;
+  name?: 'translations';
+};
+
+export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+
+export type CascadeItemBase = {
+  cascadeGroups: Array<CascadeGroupName>;
+  channel: Channel;
+  channelType: ChannelType;
+};
+
+export type CascadeItemWithConditional = CascadeItemBase & {
+  conditionalTemplates: Array<
+    ConditionalTemplateLanguage | ConditionalTemplateAccessible
+  >;
+};
+
+export type CascadeItemWithDefault = CascadeItemBase & {
+  defaultTemplateId: string;
+};
+
+export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
+
+export type ChannelType = 'primary' | 'secondary';
+
+export type ClientConfiguration = {
+  campaignId?: string;
+  campaignIds?: Array<string>;
+  features: ClientFeatures;
+};
+
+export type ClientConfigurationSuccess = {
+  clientConfiguration: ClientConfiguration;
+  statusCode: number;
+};
+
+export type ClientFeatures = {
+  proofing?: boolean;
+  routing?: boolean;
+};
+
+export type ConditionalTemplateAccessible = {
+  accessibleFormat: LetterType;
+  templateId: string;
+};
+
+export type ConditionalTemplateLanguage = {
+  language: Language;
+  templateId: string;
+};
+
 export type CreateUpdateTemplate = BaseTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | UploadLetterProperties);
 
@@ -148,7 +225,7 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = UploadLetterProperties & {
+export type LetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;

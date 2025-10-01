@@ -6,6 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
+import { testClients } from '../helpers/client/client-helper';
 import { randomUUID } from 'node:crypto';
 
 test.describe('POST /v1/template/:templateId/proof', () => {
@@ -114,6 +115,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         },
       },
       personalisationParameters: ['nhsNumber'],
+      campaignId: testClients[userProofingEnabled.clientKey]?.campaignIds?.[0],
     };
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -244,6 +246,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         },
       },
       personalisationParameters: ['nhsNumber'],
+      campaignId: testClients[userProofingEnabled.clientKey]?.campaignIds?.[0],
     };
 
     await templateStorageHelper.seedTemplateData([template]);

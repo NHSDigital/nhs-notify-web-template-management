@@ -33,13 +33,18 @@ import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export const LetterTemplateForm: FC<
-  PageComponentProps<UploadLetterTemplate>
-> = ({ initialState }) => {
+  PageComponentProps<UploadLetterTemplate> & {
+    campaignIds: string[];
+  }
+> = ({ initialState, campaignIds }) => {
   const {
     backLinkText,
     pageHeading,
     templateNameLabelText,
     templateNameHintText,
+    campaignLabelText,
+    singleCampaignHintText,
+    multiCampaignHintText,
     templateTypeLabelText,
     templateTypeHintText,
     templateLanguageLabelText,
@@ -64,6 +69,9 @@ export const LetterTemplateForm: FC<
   const [letterTemplateName, letterTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
 
+  const [letterTemplateCampaignId, campaignIdHandler] =
+    useTextInput<HTMLSelectElement>(state.campaignId);
+
   const [letterTemplateLetterType, letterTypeHandler] =
     useTextInput<HTMLSelectElement>(state.letterType);
 
@@ -74,6 +82,9 @@ export const LetterTemplateForm: FC<
 
   const templateNameError =
     errorState?.fieldErrors?.letterTemplateName?.join(', ');
+
+  const templateCampaignIdError =
+    errorState?.fieldErrors?.letterTemplateCampaignId?.join(', ');
 
   const templateLetterTypeError =
     errorState?.fieldErrors?.letterTemplateLetterType?.join(', ');
@@ -134,6 +145,44 @@ export const LetterTemplateForm: FC<
                   errorProps={{ id: 'letterTemplateName--error-message' }}
                 />
               </div>
+              {campaignIds.length === 1 ? (
+                <div className={classNames(...formGroupClasses)}>
+                  <Label htmlFor='letterTemplateName' size='s'>
+                    {campaignLabelText}
+                  </Label>
+                  <HintText>{singleCampaignHintText}</HintText>
+                  <input
+                    type='hidden'
+                    name='letterTemplateCampaignId'
+                    value={letterTemplateCampaignId}
+                    readOnly
+                  />
+                  {letterTemplateCampaignId}
+                </div>
+              ) : (
+                <Select
+                  formGroupProps={{
+                    className: classNames(...formGroupClasses),
+                  }}
+                  label={campaignLabelText}
+                  labelProps={{ size: 's' }}
+                  hint={multiCampaignHintText}
+                  id='letterTemplateCampaignId'
+                  defaultValue={letterTemplateCampaignId}
+                  onChange={campaignIdHandler}
+                  error={templateCampaignIdError}
+                  errorProps={{ id: 'letterTemplateCampaignId--error-message' }}
+                >
+                  {['', ...campaignIds].map((campaignId) => (
+                    <Select.Option
+                      key={`option-${campaignId}`}
+                      value={campaignId}
+                    >
+                      {campaignId}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
               <Select
                 formGroupProps={{
                   className: classNames(...formGroupClasses),

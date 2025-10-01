@@ -17,9 +17,13 @@ test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
+  let userWithFallbackCampaignId: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    userWithFallbackCampaignId = await authHelper.getTestUser(
+      testUsers.UserWithFallbackCampaignId.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -31,6 +35,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -80,7 +85,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignId,
+        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -115,6 +120,99 @@ test.describe('POST /v1/letter-template', () => {
     expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
+  test('returns 201 if input is valid, using fallback campaign id', async ({
+    request,
+  }) => {
+    const { templateData, multipart, contentType } =
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
+        {
+          templateType: 'LETTER',
+          campaignId: 'campaign-id',
+        },
+        [
+          {
+            _type: 'json',
+            partName: 'template',
+          },
+          {
+            _type: 'file',
+            partName: 'letterPdf',
+            fileName: 'template.pdf',
+            fileType: 'application/pdf',
+            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
+          },
+          {
+            _type: 'file',
+            partName: 'testCsv',
+            fileName: 'test-data.csv',
+            fileType: 'text/csv',
+            file: pdfUploadFixtures.withPersonalisation.csv.open(),
+          },
+        ]
+      );
+
+    const start = new Date();
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/letter-template`,
+      {
+        data: multipart,
+        headers: {
+          Authorization: await userWithFallbackCampaignId.getAccessToken(),
+          'Content-Type': contentType,
+        },
+      }
+    );
+
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(response.status(), debug).toBe(201);
+
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: result.data.id,
+      clientId: userWithFallbackCampaignId.clientId,
+    });
+
+    expect(result).toEqual({
+      statusCode: 201,
+      data: {
+        campaignId:
+          testClients[userWithFallbackCampaignId.clientKey]?.campaignId,
+        createdAt: expect.stringMatching(isoDateRegExp),
+        files: {
+          pdfTemplate: {
+            currentVersion: expect.stringMatching(uuidRegExp),
+            fileName: 'template.pdf',
+            virusScanStatus: 'PENDING',
+          },
+          testDataCsv: {
+            currentVersion: expect.stringMatching(uuidRegExp),
+            fileName: 'test-data.csv',
+            virusScanStatus: 'PENDING',
+          },
+          proofs: {},
+        },
+        id: expect.stringMatching(uuidRegExp),
+        language: 'en',
+        letterType: 'x0',
+        name: templateData.name,
+        proofingEnabled: true,
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: templateData.templateType,
+        updatedAt: expect.stringMatching(isoDateRegExp),
+        clientId: userWithFallbackCampaignId.clientId,
+      },
+    });
+
+    expect(result.data.files.pdfTemplate.currentVersion).toBe(
+      result.data.files.testDataCsv.currentVersion
+    );
+
+    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
+  });
+
   test('returns 201 if input is valid, test data is optional', async ({
     request,
   }) => {
@@ -122,6 +220,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -164,7 +263,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignId,
+        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -257,6 +356,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           templateStatus: 'SUBMITTED',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -305,6 +405,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           name: undefined,
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -353,6 +454,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -405,6 +507,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -448,6 +551,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -492,6 +596,7 @@ test.describe('POST /v1/letter-template', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {

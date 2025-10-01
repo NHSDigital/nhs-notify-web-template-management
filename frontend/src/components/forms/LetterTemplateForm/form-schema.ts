@@ -12,6 +12,11 @@ export const $UploadLetterTemplateForm = z.object({
   letterTemplateName: z
     .string({ message: form.letterTemplateName.error.empty })
     .min(1, { message: form.letterTemplateName.error.empty }),
+  letterTemplateCampaignId: z
+    .string({
+      message: form.letterTemplateCampaignId.error.empty,
+    })
+    .min(1, { message: form.letterTemplateCampaignId.error.empty }),
   letterTemplateLetterType: z.enum(LETTER_TYPE_LIST, {
     message: form.letterTemplateLetterType.error.empty,
   }),

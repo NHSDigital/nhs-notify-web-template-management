@@ -493,7 +493,7 @@
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/UploadLetterProperties"
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
           },
           {
             "properties": {

@@ -111,6 +111,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -224,6 +225,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -319,6 +321,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -403,6 +406,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
+            campaignId: 'Campaign1',
           },
           [
             {
@@ -518,7 +522,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -681,7 +684,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -844,7 +846,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1010,7 +1011,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1052,7 +1052,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1100,7 +1099,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[userProofingDisabled.clientKey]?.campaignId,
+          campaignId: 'campaign-id',
           clientId: userProofingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1150,6 +1149,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         owner: user1.userId,
         proofingEnabled: true,
         files: { ...baseTemplateData.files, proofs },
+        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
       };
 
       await templateStorageHelper.seedTemplateData([template]);
@@ -1170,7 +1170,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+          campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
