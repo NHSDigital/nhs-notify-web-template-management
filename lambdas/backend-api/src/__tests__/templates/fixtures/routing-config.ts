@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
 export const routingConfig: RoutingConfig = {
@@ -21,3 +22,11 @@ export const routingConfig: RoutingConfig = {
   updatedAt: '2025-09-18T15:26:04.338Z',
   updatedBy: 'user-1',
 };
+
+export const makeRoutingConfig = (overrides: Partial<RoutingConfig> = {}) => ({
+  ...routingConfig,
+  id: randomUUID(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  ...overrides,
+});

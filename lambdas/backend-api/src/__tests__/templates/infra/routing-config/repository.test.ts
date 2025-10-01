@@ -1,8 +1,8 @@
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
-import { routingConfig } from '../fixtures/routing-config';
+import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config/repository';
+import { routingConfig } from '../../fixtures/routing-config';
 
 const TABLE_NAME = 'routing-config-table-name';
 

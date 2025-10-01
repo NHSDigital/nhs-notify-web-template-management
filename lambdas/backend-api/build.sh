@@ -23,6 +23,7 @@ npx esbuild \
     src/templates/get.ts \
     src/templates/get-routing-config.ts \
     src/templates/list.ts \
+    src/templates/list-routing-configs.ts \
     src/templates/process-proof.ts \
     src/templates/proof.ts \
     src/templates/set-letter-upload-virus-scan-status.ts \

@@ -5,6 +5,7 @@ import {
   ErrorCase,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
+import { RoutingConfigQuery } from './query';
 
 export class RoutingConfigRepository {
   constructor(
@@ -41,5 +42,9 @@ export class RoutingConfigRepository {
     }
 
     return success(parsed.data);
+  }
+
+  query(owner: string): RoutingConfigQuery {
+    return new RoutingConfigQuery(this.client, this.tableName, owner);
   }
 }
