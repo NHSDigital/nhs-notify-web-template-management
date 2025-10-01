@@ -54,13 +54,13 @@ exports[`RoutingConfig schema snapshot full error 1`] = `
     "code": "invalid_value",
     "values": [
       "COMPLETED",
-      "DELETED",
-      "DRAFT"
+      "DRAFT",
+      "DELETED"
     ],
     "path": [
       "status"
     ],
-    "message": "Invalid option: expected one of \\"COMPLETED\\"|\\"DELETED\\"|\\"DRAFT\\""
+    "message": "Invalid option: expected one of \\"COMPLETED\\"|\\"DRAFT\\"|\\"DELETED\\""
   },
   {
     "expected": "string",
