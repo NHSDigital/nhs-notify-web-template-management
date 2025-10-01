@@ -38,6 +38,7 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_authorizer_lambda"></a> [authorizer\_lambda](#module\_authorizer\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
+| <a name="module_create_routing_config_lambda"></a> [create\_routing\_config\_lambda](#module\_create\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_delete_template_lambda"></a> [delete\_template\_lambda](#module\_delete\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_get_client_lambda"></a> [get\_client\_lambda](#module\_get\_client\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
