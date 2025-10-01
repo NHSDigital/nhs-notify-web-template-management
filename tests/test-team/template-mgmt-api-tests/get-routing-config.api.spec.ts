@@ -23,12 +23,9 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    routingConfig = RoutingConfigFactory.create({
-      clientId: user1.clientId,
-    });
+    routingConfig = RoutingConfigFactory.createDatabaseEntry(user1);
 
-    deletedRoutingConfig = RoutingConfigFactory.create({
-      clientId: user1.clientId,
+    deletedRoutingConfig = RoutingConfigFactory.createDatabaseEntry(user1, {
       status: 'DELETED',
     });
 

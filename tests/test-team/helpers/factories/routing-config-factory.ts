@@ -1,13 +1,31 @@
 import { randomUUID } from 'node:crypto';
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import {
+  CreateUpdateRoutingConfig,
+  RoutingConfig,
+} from 'nhs-notify-backend-client';
 
 export const RoutingConfigFactory = {
-  create(
-    routingConfig: Partial<RoutingConfig> & Pick<RoutingConfig, 'clientId'>
-  ): RoutingConfig & { owner: string } {
+  createDatabaseEntry(
+    user: { userId: string; clientId: string },
+    routingConfig: Partial<RoutingConfig> = {}
+  ): RoutingConfig & { owner: string; updatedBy: string; createdBy: string } {
     return {
       id: randomUUID(),
-      owner: `CLIENT#${routingConfig.clientId}`,
+      clientId: user.clientId,
+      owner: `CLIENT#${user.clientId}`,
+      status: 'DRAFT',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      createdBy: user.userId,
+      updatedBy: user.userId,
+      ...this.createApiPayload(routingConfig),
+    };
+  },
+
+  createApiPayload(
+    routingConfig: Partial<RoutingConfig> = {}
+  ): CreateUpdateRoutingConfig {
+    return {
       campaignId: 'campaign-1',
       cascade: [
         {
@@ -18,10 +36,7 @@ export const RoutingConfigFactory = {
         },
       ],
       cascadeGroupOverrides: [{ name: 'standard' }],
-      status: 'DRAFT',
       name: 'Test config',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
       ...routingConfig,
     };
   },
