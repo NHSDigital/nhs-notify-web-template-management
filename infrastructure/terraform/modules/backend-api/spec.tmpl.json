@@ -297,7 +297,14 @@
       "ClientConfiguration": {
         "properties": {
           "campaignId": {
+            "deprecated": true,
             "type": "string"
+          },
+          "campaignIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           },
           "features": {
             "$ref": "#/components/schemas/ClientFeatures"
@@ -752,30 +759,22 @@
         ],
         "type": "string"
       },
-      "UploadLetterProperties": {
-        "properties": {
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
+  "UploadLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
           },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "letterType": {
-            "$ref": "#/components/schemas/LetterType"
-          },
-          "templateType": {
-            "enum": [
-              "LETTER"
-            ],
-            "type": "string"
+          {
+            "properties": {
+              "campaignId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "campaignId"
+            ]
           }
-        },
-        "required": [
-          "letterType",
-          "language",
-          "templateType"
-        ],
-        "type": "object"
+        ]
       },
       "VersionedFileDetails": {
         "properties": {
