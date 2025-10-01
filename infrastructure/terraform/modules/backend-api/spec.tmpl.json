@@ -46,6 +46,31 @@
         ],
         "type": "object"
       },
+      "BaseLetterTemplateProperties": {
+        "properties": {
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateType": {
+            "enum": [
+              "LETTER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "letterType",
+          "language",
+          "templateType"
+        ],
+        "type": "object"
+      },
       "BaseTemplate": {
         "properties": {
           "name": {
