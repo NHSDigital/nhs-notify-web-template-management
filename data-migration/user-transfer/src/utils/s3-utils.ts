@@ -30,7 +30,7 @@ export async function listAllFiles(bucket: string) {
     }
   }
 
-  return itemObjects.length > 0 ? itemObjects : [];
+  return itemObjects;
 }
 
 export async function writeFile(

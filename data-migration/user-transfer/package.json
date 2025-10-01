@@ -22,8 +22,9 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
+    "migrate": "tsx src/migrate-cli.ts",
+    "plan": "tsx src/plan-cli.ts",
     "test:unit": "jest",
-    "transfer": "tsx src/handler.ts",
     "typecheck": "tsc --noEmit"
   }
 }

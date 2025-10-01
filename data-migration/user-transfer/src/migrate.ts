@@ -1,36 +1,25 @@
-import fs from 'node:fs';
+import { writeFileSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
 import { UserTransferPlan, UserTransferPlanItem } from './utils/types';
 import { print } from './utils/log-utils';
 import { UserTransfer } from './utils/user-transfer';
 import { getTemplates } from './utils/ddb-utils';
-import { backupBucketName, backupData, writeLocal } from './utils/backup-utils';
+import { getAccountId } from './utils/sts-utils';
 import {
   transferFileToNewBucket,
+  writeFile,
   writeFile as writeRemote,
 } from './utils/s3-utils';
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 
-const params = yargs(hideBin(process.argv))
-  .options({
-    file: {
-      type: 'string',
-      demandOption: true,
-    },
-    environment: {
-      type: 'string',
-      demandOption: true,
-    },
-    dryRun: {
-      type: 'boolean',
-      default: true,
-    },
-  })
-  .parseSync();
+type MigrateParameters = {
+  file: string;
+  environment: string;
+  dryRun: boolean;
+};
 
 async function loadTemplates(
+  params: MigrateParameters,
   tableName: string,
   migrations: UserTransferPlanItem[]
 ) {
@@ -43,19 +32,22 @@ async function loadTemplates(
 }
 
 async function backup(
+  params: MigrateParameters,
   templates: Record<string, AttributeValue>[],
   sourceBucket: string,
   backupBucket: string,
   migrations: UserTransferPlanItem[]
 ) {
+  const timestamp = new Date().toISOString().replaceAll(/[.:T-]/g, '_');
+
   const files = migrations.flatMap((r) => r.s3.files.flatMap((a) => a.from));
 
   const { name } = path.parse(params.file);
 
-  await backupData(
-    templates,
+  await writeFile(
+    JSON.stringify(templates),
     backupBucket,
-    `ownership-transfer/${params.environment}/${name}`
+    `ownership-transfer/${params.environment}/${name}/${timestamp}.json`
   );
 
   await Promise.all(
@@ -92,12 +84,13 @@ function assertMatchingTemplates(
   }
 }
 
-async function migrate() {
-  const backupBucket = await backupBucketName();
+export async function migrate(params: MigrateParameters) {
+  const accountId = await getAccountId();
+  const backupBucket = `nhs-notify-${accountId}-eu-west-2-main-acct-migration-backup`;
 
   const input = JSON.parse(
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    fs.readFileSync(params.file, 'utf8')
+    readFileSync(params.file, 'utf8')
   ) as UserTransferPlan;
 
   const output: UserTransferPlan = {
@@ -108,7 +101,7 @@ async function migrate() {
 
   print(`Total migrations: ${migrations.length}`);
 
-  const templates = await loadTemplates(input.tableName, migrations);
+  const templates = await loadTemplates(params, input.tableName, migrations);
 
   assertMatchingTemplates(
     templates.map((r) => r.id.S!),
@@ -116,7 +109,7 @@ async function migrate() {
   );
 
   if (!params.dryRun) {
-    await backup(templates, input.bucketName, backupBucket, migrations);
+    await backup(params, templates, input.bucketName, backupBucket, migrations);
     print('Data backed up');
   }
 
@@ -168,7 +161,7 @@ async function migrate() {
   const filename = `${name}-${params.dryRun ? 'dryrun' : 'run'}${ext}`;
   const data = JSON.stringify(output);
 
-  writeLocal(path.join(dir, filename), data);
+  writeFileSync(path.join(dir, filename), data);
 
   await writeRemote(
     `ownership-transfer/${params.environment}/${name}/${filename}`,
@@ -178,8 +171,3 @@ async function migrate() {
 
   print(`Results written to ${filename}`);
 }
-
-migrate()
-  .then(() => console.log('finished'))
-  // eslint-disable-next-line unicorn/prefer-top-level-await
-  .catch((error) => console.error(error));

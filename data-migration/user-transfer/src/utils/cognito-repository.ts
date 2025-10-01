@@ -11,24 +11,10 @@ import { print } from './log-utils';
 import { UserData } from './types';
 
 export class CognitoRepository {
-  private client: CognitoIdentityProviderClient;
-  private userPoolId: string;
-
   constructor(
-    userPoolId: string,
-    credentials?: {
-      accessKeyId: string;
-      secretAccessKey: string;
-      sessionToken: string;
-    }
-  ) {
-    this.userPoolId = userPoolId;
-
-    this.client = new CognitoIdentityProviderClient({
-      region: 'eu-west-2',
-      credentials,
-    });
-  }
+    private readonly userPoolId: string,
+    private readonly client: CognitoIdentityProviderClient
+  ) {}
 
   async getAllUsers(): Promise<UserData[]> {
     const users: UserData[] = [];
@@ -95,11 +81,7 @@ export class CognitoRepository {
 
       const response = await this.client.send(command);
 
-      if (!response.Groups) {
-        return;
-      }
-
-      const clientGroup = response.Groups.find((group: GroupType) =>
+      const clientGroup = response.Groups?.find((group: GroupType) =>
         group.GroupName?.startsWith('client:')
       );
 

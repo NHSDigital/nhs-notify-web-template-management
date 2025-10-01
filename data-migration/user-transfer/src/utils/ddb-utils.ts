@@ -91,13 +91,13 @@ export async function getTemplates(
 
     if (result.UnprocessedKeys?.[tableName]) {
       throw new Error(
-        'unable to create backup due to UnprocessedKeys keys from DynamoDB'
+        'unable to get templates due to UnprocessedKeys keys from DynamoDB'
       );
     }
 
     if (!result.Responses) {
       throw new Error(
-        'unable to create backup due to no Responses from DynamoDb'
+        'unable to get templates due to no Responses from DynamoDb'
       );
     }
 
@@ -140,5 +140,5 @@ export async function migrateOwnership(
     ReturnConsumedCapacity: 'TOTAL',
   });
 
-  return client.send(cmd);
+  return await client.send(cmd);
 }
