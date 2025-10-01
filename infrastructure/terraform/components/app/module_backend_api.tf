@@ -14,6 +14,7 @@ module "backend_api" {
   kms_key_arn             = module.kms.key_arn
   parent_acct_environment = var.parent_acct_environment
   function_s3_bucket      = local.acct.s3_buckets["artefacts"]["id"]
+  quarantine_s3_bucket    = local.acct.s3_buckets["quarantine"]["id"]
 
   cloudfront_distribution_arn = aws_cloudfront_distribution.main.arn
 

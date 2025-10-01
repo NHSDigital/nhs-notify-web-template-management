@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "delete_failed_scanned_object" {
       "s3:DeleteObjectVersion",
     ]
 
-    resources = ["${module.s3bucket_quarantine.arn}/*"]
+    resources = ["${data.aws_s3_bucket.quarantine.arn}/*"]
   }
 
   statement {

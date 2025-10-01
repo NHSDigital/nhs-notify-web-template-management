@@ -32,6 +32,11 @@ output "s3_buckets" {
       bucket = module.s3bucket_backup_reports.bucket
       id     = module.s3bucket_backup_reports.id
     }
+    quarantine = {
+      arn    = module.s3bucket_quarantine.arn
+      bucket = module.s3bucket_quarantine.bucket
+      id     = module.s3bucket_quarantine.id
+    }
   }
 }
 
