@@ -80,7 +80,7 @@ function run-vale-in-docker() {
   # empty list. As long as there's a filename, even if it's one that
   # will be ignored, `vale` is happy.
   # shellcheck disable=SC2046,SC2086
-  docker run --rm \
+  docker run --rm --platform linux/amd64 \
     --volume "$PWD:/workdir" \
     --workdir /workdir \
     "$image" \

@@ -1,9 +1,9 @@
 import { failure } from '@backend-api/utils/result';
 import {
   $CreateUpdateRoutingConfig,
-  CreateUpdateRoutingConfig,
   $ListRoutingConfigFilters,
   ErrorCase,
+  type CreateUpdateRoutingConfig,
   type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,

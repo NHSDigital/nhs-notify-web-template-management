@@ -308,7 +308,7 @@ export type PostV1RoutingConfigurationData = {
   /**
    * Routing configuration to create
    */
-  body: CreateUpdateTemplate;
+  body: CreateUpdateRoutingConfig;
   path?: never;
   query?: never;
   url: '/v1/routing-configuration';

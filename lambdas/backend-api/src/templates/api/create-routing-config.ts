@@ -17,17 +17,16 @@ export function createHandler({
 
     const payload = JSON.parse(event.body || '{}');
 
-    const log = logger.child({
+    const user = {
       clientId,
       userId,
-    });
+    };
+
+    const log = logger.child(user);
 
     const { data, error } = await routingConfigClient.createRoutingConfig(
       payload,
-      {
-        clientId,
-        userId,
-      }
+      user
     );
 
     if (error) {

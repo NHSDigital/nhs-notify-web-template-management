@@ -128,7 +128,7 @@ test.describe('POST /v1/routing-configuration', () => {
     });
   });
 
-  test('ignores status if given - template cannot be completed at create time', async ({
+  test('ignores status if given - routing config cannot be completed at create time', async ({
     request,
   }) => {
     const response = await request.post(

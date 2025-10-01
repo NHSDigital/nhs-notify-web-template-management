@@ -997,7 +997,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUpdateTemplate"
+                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
               }
             }
           },

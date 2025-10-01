@@ -92,12 +92,7 @@ export class RoutingConfigStorageHelper {
    * Delete routing configs referenced by calls to addAdHocRoutingConfigKey from database
    */
   async deleteAdHocRoutingConfigs() {
-    await this.delete(
-      this.adHocRoutingConfigKeys.map(({ id, clientId }) => ({
-        id,
-        clientId,
-      }))
-    );
+    await this.delete(this.adHocRoutingConfigKeys);
     this.adHocRoutingConfigKeys = [];
   }
 
