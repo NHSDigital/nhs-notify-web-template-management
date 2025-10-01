@@ -15,20 +15,25 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
+    const payload = JSON.parse(event.body || '{}');
+
     const log = logger.child({
       clientId,
       userId,
     });
 
-    const { data, error } = await routingConfigClient.createRoutingConfig({
-      clientId,
-      userId,
-    });
+    const { data, error } = await routingConfigClient.createRoutingConfig(
+      payload,
+      {
+        clientId,
+        userId,
+      }
+    );
 
     if (error) {
       log
         .child(error.errorMeta)
-        .error('Failed to get template', error.actualError);
+        .error('Failed to create routing configuration', error.actualError);
 
       return apiFailure(
         error.errorMeta.code,

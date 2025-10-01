@@ -363,13 +363,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedBy": {
-            "type": "string"
           }
         },
         "required": [
@@ -377,9 +370,7 @@
           "cascadeGroupOverrides",
           "cascade",
           "displayCategory",
-          "name",
-          "updatedAt",
-          "updatedBy"
+          "name"
         ],
         "type": "object"
       },
@@ -597,13 +588,22 @@
               },
               "status": {
                 "$ref": "#/components/schemas/RoutingConfigStatus"
+              },
+              "updatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "updatedBy": {
+                "type": "string"
               }
             },
             "required": [
               "clientId",
               "createdAt",
               "id",
-              "status"
+              "status",
+              "updatedAt",
+              "updatedBy"
             ],
             "type": "object"
           }

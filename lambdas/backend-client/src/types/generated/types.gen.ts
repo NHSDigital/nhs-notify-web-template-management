@@ -92,8 +92,6 @@ export type CreateUpdateRoutingConfig = {
   cascade: Array<CascadeItem>;
   cascadeGroupOverrides: Array<CascadeGroup>;
   name: string;
-  updatedAt: string;
-  updatedBy: string;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -177,6 +175,8 @@ export type RoutingConfig = CreateUpdateRoutingConfig & {
   createdAt: string;
   id: string;
   status: RoutingConfigStatus;
+  updatedAt: string;
+  updatedBy: string;
 };
 
 export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';

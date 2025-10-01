@@ -5,6 +5,7 @@ import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-co
 import { routingConfig } from '../fixtures/routing-config';
 
 const TABLE_NAME = 'routing-config-table-name';
+const user = { userId: 'user', clientId: 'nhs-notify-client-id' };
 
 function setup() {
   const dynamo = mockClient(DynamoDBDocumentClient);
@@ -30,7 +31,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result).toEqual({ data: routingConfig });
@@ -53,7 +54,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result).toEqual({
@@ -66,7 +67,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: `CLIENT#${user.clientId}`,
         },
       });
     });
@@ -80,7 +81,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result.error).not.toBeUndefined();
@@ -90,7 +91,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: `CLIENT#${user.clientId}`,
         },
       });
     });

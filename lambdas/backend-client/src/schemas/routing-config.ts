@@ -13,6 +13,7 @@ import type {
   ChannelType,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
+  CreateUpdateRoutingConfig,
   RoutingConfig,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
@@ -102,16 +103,21 @@ const $CascadeItem = schemaFor<CascadeItem>()(
   z.union([$CascadeItemWithConditional, $CascadeItemWithDefault])
 );
 
+export const $CreateUpdateRoutingConfig =
+  schemaFor<CreateUpdateRoutingConfig>()(
+    z.object({
+      campaignId: z.string(),
+      cascade: z.array($CascadeItem).nonempty(),
+      cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+      name: z.string(),
+    })
+  );
+
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
-  z.object({
-    campaignId: z.string(),
+  $CreateUpdateRoutingConfig.extend({
     clientId: z.string(),
-    cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
     id: z.uuidv4(),
-    owner: z.string(),
     status: z.enum(ROUTING_CONFIG_STATUS_LIST),
-    name: z.string(),
     createdAt: z.string(),
     createdBy: z.string(),
     updatedAt: z.string(),

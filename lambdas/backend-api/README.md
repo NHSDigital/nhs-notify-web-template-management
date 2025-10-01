@@ -16,16 +16,10 @@ Setup an authenticated AWS terminal and run
 ./scripts/sandbox_auth.sh <email> <password>
 ```
 
-Grab the `AccessToken` from `sandbox_cognito_auth_token.json`
+Grab the `AccessToken` and `api_base_url` from `sandbox_cognito_auth_token.json`
 
 ```bash
-SANDBOX_TOKEN=$(jq -r .AccessToken sandbox_cognito_auth_token.json)
-```
-
-Set APIG stage. The following extracts the value from `sandbox_tf_outputs.tf`. Values resemble `https://cc5p8d4l3b.execute-api.eu-west-2.amazonaws.com/main`
-
-```bash
-APIG_STAGE=$(jq -r .api_base_url.value ./sandbox_tf_outputs.json)
+SANDBOX_TOKEN=$(jq -r .AccessToken sandbox_cognito_auth_token.json) && APIG_STAGE=$(jq -r .api_base_url.value ./sandbox_tf_outputs.json)
 ```
 
 ### GET - /v1/template/:templateId - Get a single template by id
@@ -148,4 +142,26 @@ curl --location "${APIG_STAGE}/v1/client-configuration" \
 curl --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
+```
+
+### POST - /v1/routing-configuration - Create a routing configuration
+
+Will create a routing configuration.
+
+```bash
+curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN" \
+--data '{
+  "campaignId": "campaign",
+  "cascade": [{
+      "cascadeGroups": ["standard"],
+      "channel": "EMAIL",
+      "channelType": "primary",
+      "defaultTemplateId": "email_id"
+   }],
+  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "name": "RC name"
+}'
 ```

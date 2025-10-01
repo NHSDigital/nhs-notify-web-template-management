@@ -2,15 +2,24 @@ import { mock } from 'jest-mock-extended';
 import type { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+
+const user = { userId: 'userid', clientId: 'nhs-notify-client-id' };
 
 function setup() {
   const repo = mock<RoutingConfigRepository>();
-  const mocks = { routingConfigRepository: repo };
+  const { logger } = createMockLogger();
 
-  const client = new RoutingConfigClient(repo);
+  const mocks = {
+    routingConfigRepository: repo,
+    logger,
+  };
+
+  const client = new RoutingConfigClient(repo, logger);
 
   return { client, mocks };
 }
+
 describe('RoutingConfigClient', () => {
   describe('getRoutingConfig', () => {
     test('returns the routing config from the repository', async () => {
@@ -22,7 +31,7 @@ describe('RoutingConfigClient', () => {
 
       const result = await client.getRoutingConfig(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result).toEqual({
@@ -31,7 +40,7 @@ describe('RoutingConfigClient', () => {
 
       expect(mocks.routingConfigRepository.get).toHaveBeenCalledWith(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
     });
 
@@ -46,7 +55,7 @@ describe('RoutingConfigClient', () => {
 
       const result = await client.getRoutingConfig(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result).toEqual({
@@ -57,7 +66,7 @@ describe('RoutingConfigClient', () => {
 
       expect(mocks.routingConfigRepository.get).toHaveBeenCalledWith(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
     });
 
@@ -70,7 +79,7 @@ describe('RoutingConfigClient', () => {
 
       const result = await client.getRoutingConfig(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
 
       expect(result).toEqual({
@@ -81,7 +90,7 @@ describe('RoutingConfigClient', () => {
 
       expect(mocks.routingConfigRepository.get).toHaveBeenCalledWith(
         '3690d344-731f-4f60-9047-2c63c96623a2',
-        'nhs-notify-client-id'
+        user
       );
     });
   });
