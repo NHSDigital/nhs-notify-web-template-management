@@ -5,7 +5,7 @@ import type {
 } from 'nhs-notify-backend-client';
 
 export const apiSuccess = <
-  T extends TemplateDto | TemplateDto[] | RoutingConfig,
+  T extends TemplateDto | TemplateDto[] | RoutingConfig | RoutingConfig[],
 >(
   statusCode: number,
   result: T

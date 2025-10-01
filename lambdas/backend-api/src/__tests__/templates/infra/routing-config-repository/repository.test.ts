@@ -6,7 +6,7 @@ import {
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
-import { routingConfig } from '../fixtures/routing-config';
+import { routingConfig } from '../../fixtures/routing-config';
 import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
@@ -48,7 +48,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        user
+        user.clientId
       );
 
       expect(result).toEqual({ data: routingConfig });
@@ -71,7 +71,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        user
+        user.clientId
       );
 
       expect(result).toEqual({
@@ -98,7 +98,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        user
+        user.clientId
       );
 
       expect(result.error).not.toBeUndefined();

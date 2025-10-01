@@ -144,9 +144,15 @@ curl --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
 
-### POST - /v1/routing-configuration - Create a routing configuration
+### GET - /v1/routing-configurations - List routing configurations
 
-Will create a routing configuration.
+```bash
+curl --location "${APIG_STAGE}/v1/routing-configurations \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```
+
+### POST - /v1/routing-configuration - Create a routing configuration
 
 ```bash
 curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
@@ -164,4 +170,3 @@ curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
   "cascadeGroupOverrides": [{ "name": "standard" }],
   "name": "RC name"
 }'
-```

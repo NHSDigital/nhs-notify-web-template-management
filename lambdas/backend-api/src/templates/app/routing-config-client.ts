@@ -1,15 +1,17 @@
+import { failure } from '@backend-api/utils/result';
 import {
   $CreateUpdateRoutingConfig,
   CreateUpdateRoutingConfig,
+  $ListRoutingConfigFilters,
   ErrorCase,
+  type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
-import { failure } from '@backend-api/utils/result';
+import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { validate } from '@backend-api/utils/validate';
 
 export class RoutingConfigClient {
   constructor(
@@ -59,12 +61,39 @@ export class RoutingConfigClient {
     id: string,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const result = await this.routingConfigRepository.get(id, user);
+    const result = await this.routingConfigRepository.get(id, user.clientId);
 
     if (result.data?.status === 'DELETED') {
       return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
     }
 
     return result;
+  }
+
+  async listRoutingConfigs(
+    user: User,
+    filters?: unknown
+  ): Promise<Result<RoutingConfig[]>> {
+    let parsedFilters: ListRoutingConfigFilters = {};
+
+    if (filters) {
+      const validation = await validate($ListRoutingConfigFilters, filters);
+
+      if (validation.error) {
+        return validation;
+      }
+
+      parsedFilters = validation.data;
+    }
+
+    const query = this.routingConfigRepository
+      .query(user.clientId)
+      .excludeStatus('DELETED');
+
+    if (parsedFilters.status) {
+      query.status(parsedFilters.status);
+    }
+
+    return query.list();
   }
 }

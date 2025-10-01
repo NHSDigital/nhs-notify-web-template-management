@@ -1,6 +1,7 @@
 import {
   $CreateUpdateRoutingConfig,
   $RoutingConfig,
+  $ListRoutingConfigFilters,
 } from '../../schemas/routing-config';
 
 const baseInput = {
@@ -271,6 +272,25 @@ describe('RoutingConfig schema', () => {
       ...baseCreated,
       id: 'not-a-uuid',
     });
+    expect(res.success).toBe(false);
+  });
+});
+
+describe('ListRoutingConfigFilters', () => {
+  test('accepts empty object', () => {
+    const res = $ListRoutingConfigFilters.safeParse({});
+    expect(res.success).toBe(true);
+  });
+  test('accepts DRAFT status', () => {
+    const res = $ListRoutingConfigFilters.safeParse({ status: 'DRAFT' });
+    expect(res.success).toBe(true);
+  });
+  test('accepts COMPLETED status', () => {
+    const res = $ListRoutingConfigFilters.safeParse({ status: 'COMPLETED' });
+    expect(res.success).toBe(true);
+  });
+  test('rejects other statuses', () => {
+    const res = $ListRoutingConfigFilters.safeParse({ status: 'DELETED' });
     expect(res.success).toBe(false);
   });
 });

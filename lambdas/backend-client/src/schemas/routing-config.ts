@@ -15,6 +15,8 @@ import type {
   ConditionalTemplateLanguage,
   CreateUpdateRoutingConfig,
   RoutingConfig,
+  RoutingConfigStatus,
+  RoutingConfigStatusActive,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
 import { $Language, $LetterType } from './template-schema';
@@ -22,6 +24,7 @@ import {
   CASCADE_GROUP_NAME_LIST,
   CHANNEL_LIST,
   CHANNEL_TYPE_LIST,
+  ROUTING_CONFIG_STATUS_ACTIVE_LIST,
   ROUTING_CONFIG_STATUS_LIST,
 } from './union-lists';
 
@@ -113,12 +116,31 @@ export const $CreateUpdateRoutingConfig =
     })
   );
 
+const $RoutingConfigStatus = schemaFor<RoutingConfigStatus>()(
+  z.enum(ROUTING_CONFIG_STATUS_LIST)
+);
+
+const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
+  z.enum(ROUTING_CONFIG_STATUS_ACTIVE_LIST)
+);
+
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
   $CreateUpdateRoutingConfig.extend({
     clientId: z.string(),
     id: z.uuidv4(),
-    status: z.enum(ROUTING_CONFIG_STATUS_LIST),
+    status: $RoutingConfigStatus,
+    name: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
+  })
+);
+
+export type ListRoutingConfigFilters = {
+  status?: RoutingConfigStatusActive;
+};
+
+export const $ListRoutingConfigFilters = schemaFor<ListRoutingConfigFilters>()(
+  z.object({
+    status: $RoutingConfigStatusActive.optional(),
   })
 );

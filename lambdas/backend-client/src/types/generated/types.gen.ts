@@ -189,10 +189,17 @@ export type RoutingConfig = CreateUpdateRoutingConfig & {
   updatedAt: string;
 };
 
-export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
+export type RoutingConfigStatus = RoutingConfigStatusActive | 'DELETED';
+
+export type RoutingConfigStatusActive = 'COMPLETED' | 'DRAFT';
 
 export type RoutingConfigSuccess = {
   data: RoutingConfig;
+  statusCode: number;
+};
+
+export type RoutingConfigSuccessList = {
+  data: Array<RoutingConfig>;
   statusCode: number;
 };
 
@@ -358,6 +365,38 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
+
+export type GetV1RoutingConfigurationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    status?: RoutingConfigStatusActive;
+  };
+  url: '/v1/routing-configurations';
+};
+
+export type GetV1RoutingConfigurationsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationsError =
+  GetV1RoutingConfigurationsErrors[keyof GetV1RoutingConfigurationsErrors];
+
+export type GetV1RoutingConfigurationsResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccessList;
+};
+
+export type GetV1RoutingConfigurationsResponse =
+  GetV1RoutingConfigurationsResponses[keyof GetV1RoutingConfigurationsResponses];
 
 export type PostV1TemplateData = {
   /**

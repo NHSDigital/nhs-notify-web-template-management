@@ -15,7 +15,8 @@ import {
   ErrorCase,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
-import { User } from 'nhs-notify-web-template-management-utils';
+import type { User } from 'nhs-notify-web-template-management-utils';
+import { RoutingConfigQuery } from './query';
 
 export class RoutingConfigRepository {
   constructor(
@@ -58,13 +59,16 @@ export class RoutingConfigRepository {
     }
   }
 
-  async get(id: string, user: User): Promise<ApplicationResult<RoutingConfig>> {
+  async get(
+    id: string,
+    clientId: string
+  ): Promise<ApplicationResult<RoutingConfig>> {
     const result = await this.client.send(
       new GetCommand({
         TableName: this.tableName,
         Key: {
           id,
-          owner: this.clientOwnerKey(user.clientId),
+          owner: this.clientOwnerKey(clientId),
         },
       })
     );
@@ -84,6 +88,10 @@ export class RoutingConfigRepository {
     }
 
     return success(parsed.data);
+  }
+
+  query(clientId: string): RoutingConfigQuery {
+    return new RoutingConfigQuery(this.client, this.tableName, clientId);
   }
 
   private clientOwnerKey(clientId: string) {
