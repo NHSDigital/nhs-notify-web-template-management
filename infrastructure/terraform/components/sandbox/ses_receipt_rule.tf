@@ -1,6 +1,6 @@
 resource "aws_ses_receipt_rule" "proof_requested" {
   name          = "${local.csi}-store-email-proof-requested"
-  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
+  rule_set_name = local.acct.ses_active_receipt_rule_set_name
 
   recipients   = [local.sandbox_letter_supplier_mock_recipient]
   enabled      = true
