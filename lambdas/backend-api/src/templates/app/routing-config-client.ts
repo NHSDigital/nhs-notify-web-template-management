@@ -36,10 +36,10 @@ export class RoutingConfigClient {
       return validationResult;
     }
 
-    const createResult = (await this.routingConfigRepository.create(
+    const createResult = await this.routingConfigRepository.create(
       validationResult.data,
       user
-    )) as Result<RoutingConfig>;
+    );
 
     if (createResult.error) {
       log

@@ -25,7 +25,7 @@ export function createHandler({
 
     const { data, error } = await routingConfigClient.getRoutingConfig(
       routingConfigId,
-      clientId
+      { clientId, userId }
     );
 
     if (error) {
