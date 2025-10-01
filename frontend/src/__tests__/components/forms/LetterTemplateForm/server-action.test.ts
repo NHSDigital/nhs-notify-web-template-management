@@ -16,6 +16,7 @@ const initialState: UploadLetterTemplate = {
   name: 'name',
   letterType: 'x0',
   language: 'en',
+  campaignId: 'campaign-id',
 };
 
 describe('UploadLetterTemplate server actions', () => {
@@ -33,6 +34,7 @@ describe('UploadLetterTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           letterTemplateName: ['Enter a template name'],
+          letterTemplateCampaignId: ['Choose a campaign ID'],
           letterTemplateLetterType: ['Choose a letter type'],
           letterTemplateLanguage: ['Choose a language'],
           letterTemplatePdf: ['Select a letter template PDF'],
@@ -77,6 +79,7 @@ describe('UploadLetterTemplate server actions', () => {
       initialState,
       getMockFormData({
         letterTemplateName: 'template-name',
+        letterTemplateCampaignId: 'campaign-id',
         letterTemplateLetterType: 'x1',
         letterTemplateLanguage: 'ar',
         letterTemplatePdf,
@@ -88,6 +91,7 @@ describe('UploadLetterTemplate server actions', () => {
       {
         ...initialState,
         name: 'template-name',
+        campaignId: 'campaign-id',
         letterType: 'x1',
         language: 'ar',
       },
@@ -132,11 +136,17 @@ describe('UploadLetterTemplate server actions', () => {
       type: 'text/csv',
     });
 
+    const invalidTemplate = {
+      ...initialState,
+      id: 'existing-id',
+    } as UploadLetterTemplate;
+
     await expect(
       processFormActions(
-        { ...initialState, id: 'existing-id' },
+        invalidTemplate,
         getMockFormData({
           letterTemplateName: 'template-name',
+          letterTemplateCampaignId: 'campaign-id',
           letterTemplateLetterType: 'x1',
           letterTemplateLanguage: 'ar',
           letterTemplatePdf,

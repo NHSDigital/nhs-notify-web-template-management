@@ -46,6 +46,31 @@
         ],
         "type": "object"
       },
+      "BaseLetterTemplateProperties": {
+        "properties": {
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateType": {
+            "enum": [
+              "LETTER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "letterType",
+          "language",
+          "templateType"
+        ],
+        "type": "object"
+      },
       "BaseTemplate": {
         "properties": {
           "name": {
@@ -272,7 +297,14 @@
       "ClientConfiguration": {
         "properties": {
           "campaignId": {
+            "deprecared": true,
             "type": "string"
+          },
+          "campaignIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           },
           "features": {
             "$ref": "#/components/schemas/ClientFeatures"
@@ -463,7 +495,7 @@
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/UploadLetterProperties"
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
           },
           {
             "properties": {
@@ -726,29 +758,21 @@
         "type": "string"
       },
       "UploadLetterProperties": {
-        "properties": {
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
           },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "letterType": {
-            "$ref": "#/components/schemas/LetterType"
-          },
-          "templateType": {
-            "enum": [
-              "LETTER"
-            ],
-            "type": "string"
+          {
+            "properties": {
+              "campaignId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "campaignId"
+            ]
           }
-        },
-        "required": [
-          "letterType",
-          "language",
-          "templateType"
-        ],
-        "type": "object"
+        ]
       },
       "VersionedFileDetails": {
         "properties": {

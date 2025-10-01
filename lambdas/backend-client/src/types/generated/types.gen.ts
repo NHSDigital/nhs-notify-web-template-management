@@ -11,6 +11,13 @@ export type BaseCreatedTemplate = BaseTemplate & {
   updatedBy?: string;
 };
 
+export type BaseLetterTemplateProperties = {
+  files?: LetterFiles;
+  language: Language;
+  letterType: LetterType;
+  templateType: 'LETTER';
+};
+
 export type BaseTemplate = {
   name: string;
 };
@@ -64,6 +71,7 @@ export type ChannelType = 'primary' | 'secondary';
 
 export type ClientConfiguration = {
   campaignId?: string;
+  campaignIds?: Array<string>;
   features: ClientFeatures;
 };
 
@@ -141,7 +149,7 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = UploadLetterProperties & {
+export type LetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
@@ -217,11 +225,8 @@ export type TemplateSuccessList = {
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
-export type UploadLetterProperties = {
-  files?: LetterFiles;
-  language: Language;
-  letterType: LetterType;
-  templateType: 'LETTER';
+export type UploadLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
 };
 
 export type VersionedFileDetails = {
