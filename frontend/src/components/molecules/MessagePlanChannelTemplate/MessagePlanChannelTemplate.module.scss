@@ -11,20 +11,6 @@
     border: 2px solid var(--nhsuk-border-colour);
   }
 
-  &:last-child::after {
-    content: none;
-  }
-
-  &::after {
-    content: '';
-    height: calc(100% + 30px);
-    display: block;
-    border: dashed 2px var(--nhsuk-brand-colour);
-    position: absolute;
-    top: 40px;
-    left: 18px;
-  }
-
   &-link {
     &--remove {
       color: var(--nhsuk-error-colour);
