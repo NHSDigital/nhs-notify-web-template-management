@@ -33,8 +33,6 @@ export class RoutingConfigClient {
       user
     );
 
-    if (createResult.error) return createResult;
-
     return createResult;
   }
 
