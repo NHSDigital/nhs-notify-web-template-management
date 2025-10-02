@@ -170,3 +170,20 @@ curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
   "cascadeGroupOverrides": [{ "name": "standard" }],
   "name": "RC name"
 }'
+
+### PUT - /v1/routing-configuration/:routingConfigId - Update a routing configuration
+
+```bash
+curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN" \
+--data '{ "name": "New name" }'
+
+### PATCH - /v1/template/:templateId/submit - Submit a routing config
+
+```bash
+curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}/submit" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```
