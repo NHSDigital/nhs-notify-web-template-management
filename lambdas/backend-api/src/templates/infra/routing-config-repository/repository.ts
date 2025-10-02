@@ -27,16 +27,16 @@ export class RoutingConfigRepository {
   async create(routingConfigInput: CreateUpdateRoutingConfig, user: User) {
     const date = new Date().toISOString();
 
-    const routingConfig: RoutingConfig = {
-      ...routingConfigInput,
-      clientId: user.clientId,
-      createdAt: date,
-      id: randomUUID(),
-      status: 'DRAFT',
-      updatedAt: date,
-    };
-
     try {
+      const routingConfig = $RoutingConfig.parse({
+        ...routingConfigInput,
+        clientId: user.clientId,
+        createdAt: date,
+        id: randomUUID(),
+        status: 'DRAFT',
+        updatedAt: date,
+      });
+
       await this.client.send(
         new PutCommand({
           TableName: this.tableName,

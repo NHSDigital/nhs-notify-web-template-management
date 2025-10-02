@@ -11,8 +11,12 @@ import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
+import { randomUUID, type UUID } from 'node:crypto';
 
-jest.mock('node:crypto', () => ({ randomUUID: () => 'id' }));
+jest.mock('node:crypto');
+const uuidMock = jest.mocked(randomUUID);
+const generatedId = 'c4846505-5380-4601-a361-f82f650adfee';
+uuidMock.mockReturnValue(generatedId);
 
 const date = new Date(2024, 11, 27);
 
@@ -133,7 +137,7 @@ describe('RoutingConfigRepository', () => {
       ...input,
       clientId: user.clientId,
       createdAt: date.toISOString(),
-      id: 'id',
+      id: generatedId,
       status: 'DRAFT',
       updatedAt: date.toISOString(),
     };
@@ -172,6 +176,32 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if constructed routing config is invalid', async () => {
+      const { repo } = setup();
+
+      uuidMock.mockReturnValueOnce('not_a_uuid' as UUID);
+
+      const result = await repo.create(input, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.objectContaining({
+            issues: expect.arrayContaining([
+              expect.objectContaining({
+                path: ['id'],
+                code: 'invalid_format',
+                format: 'uuid',
+              }),
+            ]),
+          }),
           errorMeta: {
             code: 500,
             description: 'Failed to create routing config',
