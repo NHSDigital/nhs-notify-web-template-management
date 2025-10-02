@@ -181,10 +181,14 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
-export type RoutingConfig = CreateUpdateRoutingConfig & {
+export type RoutingConfig = {
+  campaignId: string;
+  cascade: Array<CascadeItem>;
+  cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
   id: string;
+  name: string;
   status: RoutingConfigStatus;
   updatedAt: string;
 };
