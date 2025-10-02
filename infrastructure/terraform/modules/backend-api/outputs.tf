@@ -41,3 +41,7 @@ output "templates_table_name" {
 output "quarantine_bucket_name" {
   value = module.s3bucket_quarantine.id
 }
+
+output "routing_config_table_name" {
+  value = aws_dynamodb_table.routing_configuration.name
+}

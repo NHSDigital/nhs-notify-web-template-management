@@ -26,7 +26,7 @@ test.describe('Letter Proof Polling', () => {
   });
 
   test('proofs are downloaded and linked to the DB entry', async () => {
-    const templateId = 'test-template-id-proofing-e2e-success';
+    const templateId = '599b9a9d-17e1-4e54-bce7-645339818a1b';
     const user = await authHelper.getTestUser(testUsers.User1.userId);
 
     // add entries to database
@@ -34,7 +34,7 @@ test.describe('Letter Proof Polling', () => {
       TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
-        templateId,
+        'test-template-id-proofing-e2e-success',
         'WAITING_FOR_PROOF'
       ),
     ]);
@@ -44,7 +44,7 @@ test.describe('Letter Proof Polling', () => {
       './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
     );
 
-    const expandedTemplateId = [
+    const supplierReference = [
       user.clientId,
       'campaign',
       templateId,
@@ -54,15 +54,15 @@ test.describe('Letter Proof Polling', () => {
 
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-1.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-1.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-2.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-2.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-3.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-3.pdf`
     );
 
     // check for expected results
@@ -143,7 +143,7 @@ test.describe('Letter Proof Polling', () => {
   });
 
   test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
-    const templateId = 'test-template-id-proofing-e2e-failure';
+    const templateId = 'a3a9c1e2-3870-407a-a8ce-af2fdcd19573';
     const user = await authHelper.getTestUser(testUsers.User1.userId);
 
     // add entries to database
@@ -151,7 +151,7 @@ test.describe('Letter Proof Polling', () => {
       TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
-        templateId,
+        'test-template-id-proofing-e2e-failure',
         'WAITING_FOR_PROOF'
       ),
     ]);
@@ -161,7 +161,7 @@ test.describe('Letter Proof Polling', () => {
       './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
     );
 
-    const expandedTemplateId = [
+    const supplierReference = [
       user.clientId,
       'campaign2',
       templateId,
@@ -171,7 +171,7 @@ test.describe('Letter Proof Polling', () => {
 
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof.pdf`
     );
 
     // invoke SFTP poll lambda

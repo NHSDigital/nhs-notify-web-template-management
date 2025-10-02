@@ -69,21 +69,21 @@ async function createTemplates() {
       'PENDING_UPLOAD'
     ),
     pending: TemplateFactory.uploadLetterTemplate(
-      'pending-letter-preview-template',
+      '7110530b-3565-4d4d-b2d7-56a319d55fde',
       user,
       'test-pending-template-letter',
       'PENDING_UPLOAD',
       'PENDING'
     ),
     virus: TemplateFactory.uploadLetterTemplate(
-      'virus-letter-preview-template',
+      'd2d32123-0a60-4333-bbde-d22e5d5ef6d9',
       user,
       'test-virus-template-letter',
       'VIRUS_SCAN_FAILED',
       'FAILED'
     ),
     invalid: TemplateFactory.uploadLetterTemplate(
-      'invalid-letter-preview-template',
+      'b6cace12-556a-4e84-ab79-768d82539b6f',
       user,
       'test-invalid-template-letter',
       'VALIDATION_FAILED',
@@ -130,6 +130,14 @@ test.describe('Preview Letter template Page', () => {
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
       templates.notYetSubmitted.name
+    );
+
+    if (!templates.notYetSubmitted.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
+    await expect(previewLetterTemplatePage.campaignId).toContainText(
+      templates.notYetSubmitted.campaignId
     );
 
     await previewLetterTemplatePage.clickContinueButton();

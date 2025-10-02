@@ -8,6 +8,7 @@ declare global {
       EVENT_CACHE_BUCKET_NAME: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
+      ROUTING_CONFIG_TABLE_NAME: string;
       SFTP_ENVIRONMENT: string;
       SFTP_MOCK_CREDENTIAL_PATH: string;
       TEMPLATES_TABLE_NAME: string;

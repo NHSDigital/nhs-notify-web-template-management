@@ -8,6 +8,7 @@ describe('getLetterUploadParts', () => {
     name: 'template-name',
     letterType: 'x0',
     language: 'en',
+    campaignId: 'camapign-id',
   };
 
   const pdf = Buffer.from('letterPdf');

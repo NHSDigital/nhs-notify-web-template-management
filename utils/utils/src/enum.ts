@@ -90,35 +90,81 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
-export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
+const statusToDisplayMappings: Record<TemplateStatus, string> = {
+  NOT_YET_SUBMITTED: 'Not yet submitted',
+  SUBMITTED: 'Submitted',
+  DELETED: '', // will not be shown in the UI
+  PENDING_PROOF_REQUEST: 'Files uploaded',
+  PENDING_UPLOAD: 'Checking files',
+  PENDING_VALIDATION: 'Checking files',
+  VALIDATION_FAILED: 'Checks failed',
+  VIRUS_SCAN_FAILED: 'Checks failed',
+  WAITING_FOR_PROOF: 'Waiting for proof',
+  PROOF_AVAILABLE: 'Proof available',
+} as const;
+
+const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
+  statusToDisplayMappings[status];
+
+const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
   ({
-    NOT_YET_SUBMITTED: 'Not yet submitted',
-    SUBMITTED: 'Submitted',
-    DELETED: '', // will not be shown in the UI
-    PENDING_PROOF_REQUEST: 'Files uploaded',
-    PENDING_UPLOAD: 'Checking files',
-    PENDING_VALIDATION: 'Checking files',
-    VALIDATION_FAILED: 'Checks failed',
-    VIRUS_SCAN_FAILED: 'Checks failed',
-    WAITING_FOR_PROOF: 'Waiting for proof',
-    PROOF_AVAILABLE: 'Proof available',
+    ...statusToDisplayMappings,
+    NOT_YET_SUBMITTED: 'Draft',
   })[status];
 
-export const templateStatusToColourMappings = (status: TemplateStatus) =>
+export const statusToDisplayMapping = (
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
+): string =>
+  template.templateType === 'LETTER'
+    ? templateStatusToDisplayMappingsLetter(template.templateStatus)
+    : templateStatusToDisplayMappingsDigital(template.templateStatus);
+
+type Colour =
+  | 'white'
+  | 'grey'
+  | 'green'
+  | 'aqua-green'
+  | 'blue'
+  | 'purple'
+  | 'pink'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | undefined;
+
+const colourMappings: Record<TemplateStatus, Colour> = {
+  NOT_YET_SUBMITTED: undefined,
+  SUBMITTED: 'grey',
+  DELETED: undefined,
+  PENDING_PROOF_REQUEST: 'blue',
+  PENDING_UPLOAD: 'blue',
+  PENDING_VALIDATION: 'blue',
+  VIRUS_SCAN_FAILED: 'red',
+  VALIDATION_FAILED: 'red',
+  WAITING_FOR_PROOF: 'yellow',
+  PROOF_AVAILABLE: 'orange',
+} as const;
+
+const templateStatusToColourMappingsLetter = (
+  status: TemplateStatus
+): Colour | undefined => colourMappings[status];
+
+const templateStatusToColourMappingsDigital = (
+  status: TemplateStatus
+): Colour | undefined =>
   (
     ({
-      NOT_YET_SUBMITTED: undefined,
-      SUBMITTED: 'grey',
-      DELETED: undefined,
-      PENDING_PROOF_REQUEST: 'blue',
-      PENDING_UPLOAD: 'blue',
-      PENDING_VALIDATION: 'blue',
-      VIRUS_SCAN_FAILED: 'red',
-      VALIDATION_FAILED: 'red',
-      WAITING_FOR_PROOF: 'yellow',
-      PROOF_AVAILABLE: 'orange',
-    }) as const
+      ...colourMappings,
+      NOT_YET_SUBMITTED: 'green',
+    }) satisfies typeof colourMappings
   )[status];
+
+export const statusToColourMapping = (
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
+) =>
+  template.templateType === 'LETTER'
+    ? templateStatusToColourMappingsLetter(template.templateStatus)
+    : templateStatusToColourMappingsDigital(template.templateStatus);
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({

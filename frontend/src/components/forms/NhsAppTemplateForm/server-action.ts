@@ -1,3 +1,4 @@
+import markdownit from 'markdown-it';
 import {
   TemplateFormState,
   NHSAppTemplate,
@@ -14,6 +15,26 @@ const {
   },
 } = content;
 
+const hasInvalidCharactersInLinks = (message: string): boolean => {
+  const md = markdownit();
+
+  const parsedMessage = md.parseInline(message, {});
+  // [] branch should be unreachable
+  /* istanbul ignore next */
+  const tokens = parsedMessage[0]?.children || [];
+
+  for (const token of tokens) {
+    if (token.type === 'link_open') {
+      const href = token.attrGet('href');
+      if (href && !message.includes(href)) {
+        // markdown-it url-encodes angle brackets during parsing, so the original url must have included them
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 export const $CreateNhsAppTemplateSchema = z.object({
   nhsAppTemplateName: z
     .string({ message: form.nhsAppTemplateName.error.empty })
@@ -21,7 +42,14 @@ export const $CreateNhsAppTemplateSchema = z.object({
   nhsAppTemplateMessage: z
     .string({ message: form.nhsAppTemplateMessage.error.empty })
     .min(1, { message: form.nhsAppTemplateMessage.error.empty })
-    .max(5000, { message: form.nhsAppTemplateMessage.error.max }),
+    .max(5000, { message: form.nhsAppTemplateMessage.error.max })
+    .refine((templateMessage) => !templateMessage.includes('http://'), {
+      message: form.nhsAppTemplateMessage.error.insecureLink,
+    })
+    .refine(
+      (templateMessage) => !hasInvalidCharactersInLinks(templateMessage),
+      { message: form.nhsAppTemplateMessage.error.invalidUrlCharacter }
+    ),
 });
 
 export async function processFormActions(

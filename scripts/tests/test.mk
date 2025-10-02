@@ -38,6 +38,9 @@ test-ui-user-timeout: # Run tests from scripts/tests/ui-user-timeout.sh @Testing
 test-event: # Run tests from scripts/tests/event.sh @Testing
 	make _test name="event"
 
+test-contract-provider: # Run tests from scripts/tests/contract-provider.sh @Testing
+	make _test name="contract-provider"
+
 test: # Run all the test tasks @Testing
 	make \
 		test-unit \
@@ -49,6 +52,7 @@ test: # Run all the test tasks @Testing
 		test-api \
 		test-accessibility \
 		test-ui-user-timeout \
+		test-contract-provider \
 
 _test:
 	set -e
@@ -72,3 +76,4 @@ ${VERBOSE}.SILENT: \
 	test-ui-user-timeout \
 	test-unit \
 	test-event \
+	test-contract-provider \

@@ -34,87 +34,135 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Preview nhs app form renders', () => {
-  it('matches snapshot when navigating from manage templates screen', () => {
-    const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          errorState: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches snapshot when navigating from edit screen', () => {
-    const mockSearchParams = new Map([['from', 'edit']]);
-    (useSearchParams as jest.Mock).mockImplementation(() => ({
-      get: (key: string) => mockSearchParams.get(key),
-    }));
-
-    const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          errorState: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-        })}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('matches error snapshot', () => {
-    const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          errorState: {
-            formErrors: [],
-            fieldErrors: {
-              previewNHSAppTemplateAction: ['Select an option'],
+  describe('Routing feature flag - Disabled', () => {
+    it('matches error snapshot', () => {
+      const container = render(
+        <PreviewNHSAppTemplate
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            errorState: {
+              formErrors: [],
+              fieldErrors: {
+                previewNHSAppTemplateAction: ['Select an option'],
+              },
             },
-          },
-          id: 'template-id',
-          name: 'test-template-nhs app',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-        })}
-      />
-    );
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+          })}
+        />
+      );
 
-    expect(container.asFragment()).toMatchSnapshot();
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('renders component correctly', () => {
+      render(
+        <PreviewNHSAppTemplate
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            errorState: undefined,
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+          })}
+        />
+      );
+
+      expect(screen.getByTestId('nhsapp-edit-radio')).toHaveAttribute(
+        'value',
+        'nhsapp-edit'
+      );
+
+      expect(screen.getByTestId('nhsapp-submit-radio')).toHaveAttribute(
+        'value',
+        'nhsapp-submit'
+      );
+    });
+
+    test('Client-side validation triggers', () => {
+      const container = render(
+        <PreviewNHSAppTemplate
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'example',
+          })}
+        />
+      );
+      const submitButton = screen.getByTestId('submit-button');
+      fireEvent.click(submitButton);
+      expect(container.asFragment()).toMatchSnapshot();
+    });
   });
 
-  it('renders component correctly', () => {
-    render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          errorState: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'message',
-        })}
-      />
-    );
+  describe('Routing feature flag - Enabled', () => {
+    it('renders component correctly', () => {
+      render(
+        <PreviewNHSAppTemplate
+          routingEnabled={true}
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            errorState: undefined,
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+          })}
+        />
+      );
 
-    expect(screen.getByTestId('nhsapp-edit-radio')).toHaveAttribute(
-      'value',
-      'nhsapp-edit'
-    );
-
-    expect(screen.getByTestId('nhsapp-submit-radio')).toHaveAttribute(
-      'value',
-      'nhsapp-submit'
-    );
+      expect(screen.getByTestId('edit-template-button')).toHaveAttribute(
+        'href',
+        '/edit-nhs-app-template/template-id'
+      );
+    });
   });
+
+  it.each([true, false])(
+    'matches snapshot when navigating from manage templates screen when routing is %p',
+    (routing) => {
+      const container = render(
+        <PreviewNHSAppTemplate
+          routingEnabled={routing}
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            errorState: undefined,
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
+
+  it.each([true, false])(
+    'matches snapshot when navigating from edit screen when routing is %p',
+    (routing) => {
+      const mockSearchParams = new Map([['from', 'edit']]);
+      (useSearchParams as jest.Mock).mockImplementationOnce(() => ({
+        get: (key: string) => mockSearchParams.get(key),
+      }));
+
+      const container = render(
+        <PreviewNHSAppTemplate
+          routingEnabled={routing}
+          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+            errorState: undefined,
+            id: 'template-id',
+            name: 'test-template-nhs app',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            message: 'message',
+          })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 
   it('should render message with markdown', () => {
     const renderMock = jest.mocked(renderNHSAppMarkdown);
@@ -140,21 +188,5 @@ describe('Preview nhs app form renders', () => {
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'
     );
-  });
-
-  test('Client-side validation triggers', () => {
-    const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-          id: 'template-id',
-          name: 'test-template-nhs app',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          message: 'example',
-        })}
-      />
-    );
-    const submitButton = screen.getByTestId('submit-button');
-    fireEvent.click(submitButton);
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

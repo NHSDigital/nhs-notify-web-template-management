@@ -11,7 +11,6 @@ import {
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import { testClients } from '../helpers/client/client-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('POST /v1/template/:templateId', () => {
@@ -79,12 +78,12 @@ test.describe('POST /v1/template/:templateId', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user2.getAccessToken(),
@@ -118,12 +117,12 @@ test.describe('POST /v1/template/:templateId', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -157,12 +156,12 @@ test.describe('POST /v1/template/:templateId', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -190,6 +189,7 @@ test.describe('POST /v1/template/:templateId', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
         },
         [
           {
@@ -220,18 +220,19 @@ test.describe('POST /v1/template/:templateId', () => {
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'LETTER',
+          campaignId: 'Campaign1',
           language: 'en',
           letterType: 'x0',
           templateStatus: 'SUBMITTED',
@@ -266,7 +267,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -277,7 +278,7 @@ test.describe('POST /v1/template/:templateId', () => {
       const start = new Date();
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -292,8 +293,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(updated).toEqual({
         statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+        data: {
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -305,11 +305,11 @@ test.describe('POST /v1/template/:templateId', () => {
         },
       });
 
-      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+      expect(updated.data.createdAt).toEqual(created.data.createdAt);
     });
 
     test('returns 400 if changing the template type', async ({ request }) => {
@@ -328,12 +328,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateSMSResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -357,7 +357,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const updateEmailResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -399,12 +399,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -415,7 +415,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -455,7 +455,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -465,7 +465,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -476,7 +476,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -515,12 +515,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -531,7 +531,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -569,7 +569,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -579,7 +579,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -614,12 +614,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -658,7 +658,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -668,7 +668,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -703,12 +703,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -749,12 +749,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -795,7 +795,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -806,7 +806,7 @@ test.describe('POST /v1/template/:templateId', () => {
       const start = new Date();
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -821,8 +821,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(updated).toEqual({
         statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+        data: {
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -834,11 +833,11 @@ test.describe('POST /v1/template/:templateId', () => {
         },
       });
 
-      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+      expect(updated.data.createdAt).toEqual(created.data.createdAt);
     });
 
     test('returns 400 if changing the template type', async ({ request }) => {
@@ -857,12 +856,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateNHSAppResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -886,7 +885,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const updateEmailResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -928,12 +927,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -944,7 +943,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -984,7 +983,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -994,7 +993,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1005,7 +1004,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1044,12 +1043,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1060,7 +1059,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1098,7 +1097,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1108,7 +1107,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1143,12 +1142,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1187,7 +1186,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1197,7 +1196,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1232,12 +1231,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1278,12 +1277,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1324,7 +1323,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1335,7 +1334,7 @@ test.describe('POST /v1/template/:templateId', () => {
       const start = new Date();
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1350,8 +1349,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(updated).toEqual({
         statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+        data: {
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1364,11 +1362,11 @@ test.describe('POST /v1/template/:templateId', () => {
         },
       });
 
-      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+      expect(updated.data.createdAt).toEqual(created.data.createdAt);
     });
 
     test('returns 400 if changing the template type', async ({ request }) => {
@@ -1387,12 +1385,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateNHSAppResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1416,7 +1414,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const updateSMSResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1458,12 +1456,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1474,7 +1472,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1514,7 +1512,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1524,7 +1522,7 @@ test.describe('POST /v1/template/:templateId', () => {
       });
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1535,7 +1533,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(submitResponse.status()).toBe(200);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1575,12 +1573,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1591,7 +1589,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1629,7 +1627,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1639,7 +1637,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1674,12 +1672,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1718,7 +1716,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1728,7 +1726,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1763,12 +1761,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1806,7 +1804,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1816,7 +1814,7 @@ test.describe('POST /v1/template/:templateId', () => {
         });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1851,12 +1849,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1897,12 +1895,12 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -1945,7 +1943,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.template.id,
+        templateId: created.data.id,
         clientId: user1.clientId,
       });
 
@@ -1956,7 +1954,7 @@ test.describe('POST /v1/template/:templateId', () => {
       const start = new Date();
 
       const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),
@@ -1973,8 +1971,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(updated).toEqual({
         statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+        data: {
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
@@ -1987,11 +1984,11 @@ test.describe('POST /v1/template/:templateId', () => {
         },
       });
 
-      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
         start,
         new Date(),
       ]);
-      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+      expect(updated.data.createdAt).toEqual(created.data.createdAt);
     });
   });
 
@@ -2029,8 +2026,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(updated).toEqual({
         statusCode: 200,
-        template: {
-          campaignId: testClients[user1.clientKey]?.campaignId,
+        data: {
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),

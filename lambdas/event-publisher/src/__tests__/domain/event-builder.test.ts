@@ -1,5 +1,6 @@
-import { EventBuilder } from '../../domain/event-builder';
+import { VERSION } from '@nhsdigital/nhs-notify-event-schemas-template-management';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { EventBuilder } from '../../domain/event-builder';
 import { PublishableEventRecord } from '../../domain/input-schemas';
 import { shouldPublish } from '../../domain/should-publish';
 
@@ -29,13 +30,13 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'owner',
       },
       id: {
-        S: 'id',
+        S: '92b676e9-470f-4d04-ab14-965ef145e15d',
       },
       clientId: {
         S: 'client-id',
       },
       createdAt: {
-        S: 'created-at',
+        S: '2022-01-01T09:00:00.000Z',
       },
       createdBy: {
         S: 'created-by',
@@ -47,7 +48,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: newStatus,
       },
       updatedAt: {
-        S: 'updated-at',
+        S: '2022-01-01T09:00:01.000Z',
       },
       updatedBy: {
         S: 'updated-by',
@@ -117,7 +118,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'client-id',
       },
       createdAt: {
-        S: 'created-at',
+        S: '2022-01-01T09:00:00.000Z',
       },
       createdBy: {
         S: 'created-by',
@@ -129,7 +130,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
         S: 'PENDING_PROOF_REQUEST',
       },
       updatedAt: {
-        S: 'updated-at',
+        S: '2022-01-01T09:00:01.000Z',
       },
       updatedBy: {
         S: 'updated-by',
@@ -189,28 +190,28 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
       },
     },
   },
-  eventID: 'event-id',
+  eventID: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   tableName: 'table-name',
 });
 
 const expectedEvent = (status: string, type: string, dataschema: string) => ({
-  id: 'event-id',
+  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   datacontenttype: 'application/json',
   time: '2022-01-01T09:00:00.000Z',
   source: 'event-source',
   type,
   specversion: '1.0',
   dataschema,
-  dataschemaversion: '1.0.0',
+  dataschemaversion: VERSION,
   plane: 'control',
-  subject: 'id',
+  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
   data: {
     owner: 'owner',
-    id: 'id',
+    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
     clientId: 'client-id',
-    createdAt: 'created-at',
+    createdAt: '2022-01-01T09:00:00.000Z',
     createdBy: 'created-by',
-    updatedAt: 'updated-at',
+    updatedAt: '2022-01-01T09:00:01.000Z',
     updatedBy: 'updated-by',
     personalisationParameters: ['test'],
     templateType: 'LETTER',

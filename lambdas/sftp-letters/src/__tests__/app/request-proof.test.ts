@@ -26,7 +26,7 @@ const templateId = 'template-id';
 const templateName = 'template-name';
 const testDataVersionId = 'test-data-version-id';
 
-const expandedTemplateId = `${clientId}_${campaignId}_${templateId}_${language}_${letterType}`;
+const supplierReference = `${clientId}_${campaignId}_${templateId}_${language}_${letterType}`;
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
@@ -97,7 +97,7 @@ describe('App', () => {
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
 
-    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
+    const batchId = `${supplierReference}-0000000000000_pdfversionid`;
 
     const testData = [
       { custom1: 'short1', custom2: 'short2' },
@@ -108,21 +108,21 @@ describe('App', () => {
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal1',
         custom1: 'short1',
         custom2: 'short2',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal2',
         custom1: 'medium1',
         custom2: 'medium2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal3',
         custom1: 'long1',
         custom2: 'long2',
@@ -147,7 +147,7 @@ describe('App', () => {
     const batchHash = 'hash-of-batch-csv';
 
     const manifestData: Manifest = {
-      template: expandedTemplateId,
+      template: supplierReference,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: batchHash,
@@ -155,7 +155,7 @@ describe('App', () => {
 
     const manifestCsv = [
       'template,batch,records,md5sum',
-      `"${expandedTemplateId}","${batchId}.csv","3","${batchHash}"`,
+      `"${supplierReference}","${batchId}.csv","3","${batchHash}"`,
     ].join('\n');
 
     const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
@@ -181,7 +181,9 @@ describe('App', () => {
 
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
-    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+    mocks.templateRepository.acquireLockAndSetSupplierReference.mockResolvedValueOnce(
+      true
+    );
 
     sftpClient.connect.mockResolvedValueOnce();
 
@@ -211,7 +213,7 @@ describe('App', () => {
 
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
-      expandedTemplateId,
+      supplierReference,
       personalisationParameters,
       testData
     );
@@ -223,31 +225,32 @@ describe('App', () => {
 
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
-      expandedTemplateId,
+      supplierReference,
       batchId,
       batchCsv
     );
 
     expect(sftpClient.connect).toHaveBeenCalledTimes(1);
 
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      clientId,
-      templateId
-    );
+    expect(
+      mocks.templateRepository.acquireLockAndSetSupplierReference
+    ).toHaveBeenCalledTimes(1);
+    expect(
+      mocks.templateRepository.acquireLockAndSetSupplierReference
+    ).toHaveBeenCalledWith(clientId, templateId, supplier, supplierReference);
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
     expect(sftpClient.exists).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${supplierReference}/${batchId}_MANIFEST.csv`
     );
 
     expect(sftpClient.mkdir).toHaveBeenCalledTimes(2);
     expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}`,
+      `${baseUploadDir}/${sftpEnvironment}/templates/${supplierReference}`,
       true
     );
     expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}`,
+      `${baseUploadDir}/${sftpEnvironment}/batches/${supplierReference}`,
       true
     );
 
@@ -260,28 +263,28 @@ describe('App', () => {
 
     expect(await streamToString(pdfArg)).toEqual(pdfContent);
     expect(pdfDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}/${expandedTemplateId}.pdf`
+      `${baseUploadDir}/${sftpEnvironment}/templates/${supplierReference}/${supplierReference}.pdf`
     );
 
     const [batchArg, batchDestinationArg] = batchPutCall;
 
     expect(await streamToString(batchArg)).toEqual(batchCsv);
     expect(batchDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${supplierReference}/${batchId}.csv`
     );
 
     const [manifestArg, manifestDestinationArg] = manifestPutCall;
 
     expect(await streamToString(manifestArg)).toEqual(manifestCsv);
     expect(manifestDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${supplierReference}/${batchId}_MANIFEST.csv`
     );
 
     expect(
       mocks.emailClient.sendProofRequestedEmailToSupplier
     ).toHaveBeenCalledWith(
       templateId,
-      expandedTemplateId,
+      supplierReference,
       templateName,
       supplier
     );
@@ -330,28 +333,28 @@ describe('App', () => {
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
 
-    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
+    const batchId = `${supplierReference}-0000000000000_pdfversionid`;
 
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal1',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal3',
       },
     ];
 
     const manifestData: Manifest = {
-      template: expandedTemplateId,
+      template: supplierReference,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
@@ -376,7 +379,9 @@ describe('App', () => {
     sftpClient.connect.mockResolvedValueOnce();
 
     // already locked
-    mocks.templateRepository.acquireLock.mockResolvedValueOnce(false);
+    mocks.templateRepository.acquireLockAndSetSupplierReference.mockResolvedValueOnce(
+      false
+    );
     sftpClient.end.mockResolvedValueOnce();
 
     const res = await app.send(JSON.stringify(event), messageId);
@@ -395,11 +400,12 @@ describe('App', () => {
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
 
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      clientId,
-      templateId
-    );
+    expect(
+      mocks.templateRepository.acquireLockAndSetSupplierReference
+    ).toHaveBeenCalledTimes(1);
+    expect(
+      mocks.templateRepository.acquireLockAndSetSupplierReference
+    ).toHaveBeenCalledWith(clientId, templateId, supplier, supplierReference);
 
     expect(sftpClient.connect).toHaveBeenCalled();
     expect(sftpClient.exists).not.toHaveBeenCalled();
@@ -429,23 +435,23 @@ describe('App', () => {
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal1',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: expandedTemplateId,
+        template: supplierReference,
         pdsField: 'pdsVal3',
       },
     ];
 
     const manifestData: Manifest = {
-      template: expandedTemplateId,
+      template: supplierReference,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
@@ -469,7 +475,9 @@ describe('App', () => {
     });
 
     // not already locked
-    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+    mocks.templateRepository.acquireLockAndSetSupplierReference.mockResolvedValueOnce(
+      true
+    );
 
     sftpClient.connect.mockResolvedValueOnce();
 
@@ -493,11 +501,13 @@ describe('App', () => {
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
     expect(sftpClient.connect).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
+    expect(
+      mocks.templateRepository.acquireLockAndSetSupplierReference
+    ).toHaveBeenCalledTimes(1);
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
     expect(sftpClient.exists).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${supplierReference}/${batchId}_MANIFEST.csv`
     );
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
@@ -518,7 +528,7 @@ describe('App', () => {
 
     const event = mockEvent(true, personalisationParameters);
 
-    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
+    const batchId = `${supplierReference}-0000000000000_pdfversionid`;
 
     const sftpClient = mock<SftpClient>();
 
@@ -552,7 +562,7 @@ describe('App', () => {
       expect.objectContaining({
         batchId,
         description: 'Failed to handle proofing request',
-        expandedTemplateId,
+        supplierReference,
         level: 'error',
         message: error.message,
         messageId,
@@ -569,7 +579,7 @@ describe('App', () => {
 
     const event = mockEvent(true, personalisationParameters);
 
-    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
+    const batchId = `${supplierReference}-0000000000000_pdfversionid`;
 
     const sftpClient = mock<SftpClient>();
 
@@ -588,12 +598,14 @@ describe('App', () => {
     mocks.syntheticBatch.buildBatch.mockReturnValueOnce([]);
     mocks.syntheticBatch.getHeader.mockReturnValueOnce('header');
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce({
-      template: expandedTemplateId,
+      template: supplierReference,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
     });
-    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+    mocks.templateRepository.acquireLockAndSetSupplierReference.mockResolvedValueOnce(
+      true
+    );
     sftpClient.exists.mockResolvedValueOnce(false);
 
     const err = new Error('sftp close err');
@@ -608,7 +620,7 @@ describe('App', () => {
       expect.objectContaining({
         batchId,
         description: 'Failed to close SFTP connection',
-        expandedTemplateId,
+        supplierReference,
         level: 'error',
         message: err.message,
         messageId,

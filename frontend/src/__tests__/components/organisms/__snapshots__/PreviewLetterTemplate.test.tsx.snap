@@ -19,12 +19,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -192,12 +201,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -328,12 +346,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -464,12 +491,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -594,12 +630,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -724,12 +769,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -1001,12 +1055,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -1194,12 +1257,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             </li>
           </ul>
         </div>
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          test-template-letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -1319,12 +1391,21 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
       <div
         class="nhsuk-grid-column-full"
       >
-        <h1
-          class="preview__heading"
-          data-testid="preview-message__heading"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          letter
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >

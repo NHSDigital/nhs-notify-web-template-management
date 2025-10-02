@@ -25,7 +25,8 @@ function create(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
   user: TestUser,
-  expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST'
+  expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST',
+  campaignId?: string
 ) {
   return test.step('upload PDF and test data, files are validated', async () => {
     const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
@@ -33,6 +34,12 @@ function create(
     await createTemplatePage.loadPage();
 
     await createTemplatePage.nameInput.fill('Valid Letter Template');
+
+    if (campaignId) {
+      await page.selectOption('#letterTemplateCampaignId', {
+        value: campaignId,
+      });
+    }
 
     await createTemplatePage.setPdfFile(
       pdfUploadFixtures.withPersonalisation.pdf.filepath
@@ -145,7 +152,7 @@ function requestProof(
 
     const template = await templateStorageHelper.getTemplate(templateKey);
 
-    const expandedTemplateId = [
+    const supplierReference = [
       template.clientId,
       template.campaignId,
       template.id,
@@ -153,7 +160,7 @@ function requestProof(
       template.letterType,
     ].join('_');
 
-    const batchId = `${expandedTemplateId}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+    const batchId = `${supplierReference}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
 
     const proofFilenames = Array.from(
       { length: 3 },
@@ -233,7 +240,7 @@ function requestProof(
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
 
-    return expandedTemplateId;
+    return supplierReference;
   });
 }
 
@@ -258,7 +265,7 @@ function submit(
 }
 
 function checkEmail(
-  expandedTemplateId: string,
+  supplierReference: string,
   testStart: Date,
   emailTitle: string,
   extraTextToSearch: string
@@ -267,12 +274,12 @@ function checkEmail(
     await expect(async () => {
       const emailContents = await emailHelper.getEmailForTemplateId(
         process.env.TEST_EMAIL_BUCKET_PREFIX,
-        expandedTemplateId,
+        supplierReference,
         testStart,
         extraTextToSearch
       );
 
-      expect(emailContents).toContain(expandedTemplateId);
+      expect(emailContents).toContain(supplierReference);
       expect(emailContents).toContain('Valid Letter Template'); // template name
       expect(emailContents).toContain(emailTitle);
       expect(emailContents).toContain(extraTextToSearch);
@@ -288,7 +295,7 @@ test.describe('letter complete e2e journey', () => {
 
   test.beforeAll(async () => {
     userWithProofing = await createAuthHelper().getTestUser(
-      testUsers.User1.userId
+      testUsers.UserWithMultipleCampaigns.userId
     );
     userWithoutProofing = await createAuthHelper().getTestUser(
       testUsers.User3.userId
@@ -310,19 +317,20 @@ test.describe('letter complete e2e journey', () => {
       page,
       templateStorageHelper,
       userWithProofing,
-      'PENDING_PROOF_REQUEST'
+      'PENDING_PROOF_REQUEST',
+      'campaign-id'
     );
 
     await continueAfterCreation(page);
 
-    const expandedTemplateId = await requestProof(
+    const supplierReference = await requestProof(
       page,
       templateStorageHelper,
       templateKey
     );
 
     await checkEmail(
-      expandedTemplateId,
+      supplierReference,
       testStart,
       'Proof Requested',
       'proof-requested-sender'
@@ -331,7 +339,7 @@ test.describe('letter complete e2e journey', () => {
     await submit(page, templateStorageHelper, templateKey);
 
     await checkEmail(
-      expandedTemplateId,
+      supplierReference,
       testStart,
       'Template Submitted',
       'template-submitted-sender'
