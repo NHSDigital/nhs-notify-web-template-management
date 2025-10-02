@@ -3,7 +3,6 @@ import type { RoutingConfigRepository } from '@backend-api/templates/infra/routi
 import { RoutingConfigQuery } from '@backend-api/templates/infra/routing-config-repository/query';
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
-import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
@@ -13,14 +12,12 @@ const user = { userId: 'userid', clientId: 'nhs-notify-client-id' };
 
 function setup() {
   const repo = mock<RoutingConfigRepository>();
-  const { logger } = createMockLogger();
 
   const mocks = {
     routingConfigRepository: repo,
-    logger,
   };
 
-  const client = new RoutingConfigClient(repo, logger);
+  const client = new RoutingConfigClient(repo);
 
   return { client, mocks };
 }

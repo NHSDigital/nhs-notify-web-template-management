@@ -11,48 +11,29 @@ import {
 import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';
-import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export class RoutingConfigClient {
   constructor(
-    private readonly routingConfigRepository: RoutingConfigRepository,
-    private readonly logger: Logger
+    private readonly routingConfigRepository: RoutingConfigRepository
   ) {}
 
   async createRoutingConfig(
     routingConfig: CreateUpdateRoutingConfig,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const log = this.logger.child({ routingConfig, user });
-
     const validationResult = await validate(
       $CreateUpdateRoutingConfig,
       routingConfig
     );
 
-    if (validationResult.error) {
-      log
-        .child(validationResult.error.errorMeta)
-        .error('Request failed validation', validationResult.error.actualError);
-
-      return validationResult;
-    }
+    if (validationResult.error) return validationResult;
 
     const createResult = await this.routingConfigRepository.create(
       validationResult.data,
       user
     );
 
-    if (createResult.error) {
-      log
-        .child(createResult.error.errorMeta)
-        .error(
-          'Failed to save routing config to the database',
-          createResult.error.actualError
-        );
-
-      return createResult;
-    }
+    if (createResult.error) return createResult;
 
     return createResult;
   }

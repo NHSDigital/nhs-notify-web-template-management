@@ -74,10 +74,7 @@ export function createContainer() {
     config.routingConfigTableName
   );
 
-  const routingConfigClient = new RoutingConfigClient(
-    routingConfigRepository,
-    logger
-  );
+  const routingConfigClient = new RoutingConfigClient(routingConfigRepository);
 
   return {
     clientConfigRepository,
