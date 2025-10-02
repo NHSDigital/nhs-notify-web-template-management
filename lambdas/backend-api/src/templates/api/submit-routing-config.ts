@@ -7,23 +7,21 @@ export function createHandler({
 }: {
   routingConfigClient: RoutingConfigClient;
 }): APIGatewayProxyHandler {
-  return async function handler(event) {
+  return async function (event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    if (!clientId || !userId) {
+    const routingConfigId = event.pathParameters?.routingConfigId;
+
+    if (!userId || !routingConfigId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const payload = JSON.parse(event.body || '{}');
-
-    const user = {
-      clientId,
-      userId,
-    };
-
-    const { data, error } = await routingConfigClient.createRoutingConfig(
-      payload,
-      user
+    const { data, error } = await routingConfigClient.submitRoutingConfig(
+      routingConfigId,
+      {
+        userId,
+        clientId,
+      }
     );
 
     if (error) {
@@ -34,6 +32,6 @@ export function createHandler({
       );
     }
 
-    return apiSuccess(201, data);
+    return apiSuccess(200, data);
   };
 }

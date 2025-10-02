@@ -59,6 +59,20 @@ export class RoutingConfigRepository {
     }
   }
 
+  async update(
+    updateData: Partial<CreateUpdateRoutingConfig>,
+    user: User
+  ): Promise<ApplicationResult<RoutingConfig>> {
+    return {} as Promise<ApplicationResult<RoutingConfig>>;
+  }
+
+  async submit(
+    id: string,
+    user: User
+  ): Promise<ApplicationResult<RoutingConfig>> {
+    return {} as Promise<ApplicationResult<RoutingConfig>>;
+  }
+
   async get(
     id: string,
     clientId: string

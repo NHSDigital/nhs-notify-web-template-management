@@ -1134,6 +1134,71 @@
         }
       }
     },
+    "/v1/routing-configuration/{routingConfigId}/submit": {
+      "patch": {
+        "description": "Submit a routing configuration by Id",
+        "parameters": [
+          {
+            "description": "ID of routing configuration to submit",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a routing config's status to SUBMITTED",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/routing-configurations": {
       "get": {
         "description": "List all routing configs",
@@ -1532,10 +1597,10 @@
     },
     "/v1/template/{templateId}/submit": {
       "patch": {
-        "description": "Update a template status by Id",
+        "description": "Submit a template by Id",
         "parameters": [
           {
-            "description": "ID of template to update",
+            "description": "ID of template to submit",
             "in": "path",
             "name": "templateId",
             "required": true,
