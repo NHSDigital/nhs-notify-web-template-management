@@ -4,9 +4,10 @@ import {
   type NativeAttributeValue,
   type QueryCommandInput,
 } from '@aws-sdk/lib-dynamodb';
-import { ApplicationResult, success } from '@backend-api/utils/result';
+import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 import {
   $RoutingConfig,
+  ErrorCase,
   type RoutingConfig,
   type RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
@@ -37,49 +38,65 @@ export class RoutingConfigQuery {
 
   /** Execute the query and return a list of all matching RoutingConfigs */
   async list(): Promise<ApplicationResult<RoutingConfig[]>> {
-    this.returnCount = false;
+    try {
+      this.returnCount = false;
 
-    const query = this.build();
+      const query = this.build();
 
-    const collected: RoutingConfig[] = [];
+      const collected: RoutingConfig[] = [];
 
-    const paginator = paginateQuery({ client: this.docClient }, query);
+      const paginator = paginateQuery({ client: this.docClient }, query);
 
-    for await (const page of paginator) {
-      for (const item of page.Items ?? []) {
-        const parsed = $RoutingConfig.safeParse(item);
-        if (parsed.success) {
-          collected.push(parsed.data);
-        } else {
-          logger.warn('Filtered out invalid RoutingConfig item', {
-            owner: this.owner,
-            id: item.id,
-            issues: parsed.error.issues,
-          });
+      for await (const page of paginator) {
+        for (const item of page.Items ?? []) {
+          const parsed = $RoutingConfig.safeParse(item);
+          if (parsed.success) {
+            collected.push(parsed.data);
+          } else {
+            logger.warn('Filtered out invalid RoutingConfig item', {
+              owner: this.owner,
+              id: item.id,
+              issues: parsed.error.issues,
+            });
+          }
         }
       }
-    }
 
-    return success(collected);
+      return success(collected);
+    } catch (error) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Error listing Routing Configs',
+        error
+      );
+    }
   }
 
   /** Execute the query and return a count of all matching RoutingConfigs */
   async count(): Promise<ApplicationResult<{ count: number }>> {
-    this.returnCount = true;
+    try {
+      this.returnCount = true;
 
-    const query = this.build();
+      const query = this.build();
 
-    let count = 0;
+      let count = 0;
 
-    const paginator = paginateQuery({ client: this.docClient }, query);
+      const paginator = paginateQuery({ client: this.docClient }, query);
 
-    for await (const page of paginator) {
-      if (page.Count) {
-        count += page.Count;
+      for await (const page of paginator) {
+        if (page.Count) {
+          count += page.Count;
+        }
       }
-    }
 
-    return success({ count });
+      return success({ count });
+    } catch (error) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Error counting Routing Configs',
+        error
+      );
+    }
   }
 
   private build() {

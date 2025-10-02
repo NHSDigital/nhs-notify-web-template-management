@@ -225,6 +225,22 @@ describe('RoutingConfigRepo#query', () => {
 
       expect(result.data).toEqual([]);
     });
+
+    test('handles exceptions from dynamodb', async () => {
+      const { repo, mocks } = setup();
+
+      const e = new Error('oh no');
+
+      mocks.dynamo.on(QueryCommand).rejectsOnce(e);
+
+      const result = await repo.query(owner).list();
+
+      expect(result.error).toMatchObject({
+        actualError: e,
+        errorMeta: expect.objectContaining({ code: 500 }),
+      });
+      expect(result.data).toBeUndefined();
+    });
   });
 
   describe('count', () => {
@@ -279,6 +295,22 @@ describe('RoutingConfigRepo#query', () => {
       const result = await repo.query(owner).count();
 
       expect(result.data).toEqual({ count: 0 });
+    });
+
+    test('handles exceptions from dynamodb', async () => {
+      const { repo, mocks } = setup();
+
+      const e = new Error('oh no');
+
+      mocks.dynamo.on(QueryCommand).rejectsOnce(e);
+
+      const result = await repo.query(owner).count();
+
+      expect(result.error).toMatchObject({
+        actualError: e,
+        errorMeta: expect.objectContaining({ code: 500 }),
+      });
+      expect(result.data).toBeUndefined();
     });
   });
 });
