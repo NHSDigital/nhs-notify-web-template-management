@@ -3,12 +3,13 @@ import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
+import { RoutingConfigDbEntry } from 'helpers/types';
 
 export const RoutingConfigFactory = {
   createDatabaseEntry(
     user: { userId: string; clientId: string },
     routingConfig: Partial<RoutingConfig> = {}
-  ): RoutingConfig & { owner: string; updatedBy: string; createdBy: string } {
+  ): RoutingConfigDbEntry {
     return {
       id: randomUUID(),
       clientId: user.clientId,
@@ -39,5 +40,18 @@ export const RoutingConfigFactory = {
       name: 'Test config',
       ...routingConfig,
     };
+  },
+
+  toApiResponseRoutingConfig(
+    routingConfigDbEntry: RoutingConfigDbEntry
+  ): RoutingConfig {
+    const {
+      owner: _1,
+      updatedBy: _2,
+      createdBy: _3,
+      ...rest
+    } = routingConfigDbEntry;
+
+    return rest;
   },
 };

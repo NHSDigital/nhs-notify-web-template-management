@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -8,6 +7,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import type { RoutingConfigDbEntry } from 'helpers/types';
 
 test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   const authHelper = createAuthHelper();
@@ -15,8 +15,8 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let routingConfig: RoutingConfig;
-  let deletedRoutingConfig: RoutingConfig;
+  let routingConfig: RoutingConfigDbEntry;
+  let deletedRoutingConfig: RoutingConfigDbEntry;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
@@ -63,7 +63,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      data: routingConfig,
+      data: RoutingConfigFactory.toApiResponseRoutingConfig(routingConfig),
     });
   });
 
@@ -141,7 +141,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      data: routingConfig,
+      data: RoutingConfigFactory.toApiResponseRoutingConfig(routingConfig),
     });
   });
 });

@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -7,6 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import type { RoutingConfigDbEntry } from 'helpers/types';
 
 test.describe('GET /v1/routing-configurations', () => {
   const authHelper = createAuthHelper();
@@ -14,9 +14,9 @@ test.describe('GET /v1/routing-configurations', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let draftRoutingConfig: RoutingConfig;
-  let completedRoutingConfig: RoutingConfig;
-  let deletedRoutingConfig: RoutingConfig;
+  let draftRoutingConfig: RoutingConfigDbEntry;
+  let completedRoutingConfig: RoutingConfigDbEntry;
+  let deletedRoutingConfig: RoutingConfigDbEntry;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
@@ -80,8 +80,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        draftRoutingConfig,
-        completedRoutingConfig,
+        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
+        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
       ]),
     });
 
@@ -133,8 +133,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        draftRoutingConfig,
-        completedRoutingConfig,
+        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
+        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
       ]),
     });
 
@@ -160,7 +160,9 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [draftRoutingConfig],
+      data: [
+        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
+      ],
     });
   });
 
@@ -183,7 +185,9 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [completedRoutingConfig],
+      data: [
+        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
+      ],
     });
   });
 
