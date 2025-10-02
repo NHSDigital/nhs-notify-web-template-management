@@ -125,11 +125,14 @@ const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
 );
 
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
-  $CreateUpdateRoutingConfig.extend({
+  z.object({
+    campaignId: z.string(),
+    cascade: z.array($CascadeItem).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    name: z.string(),
     clientId: z.string(),
     id: z.uuidv4(),
     status: $RoutingConfigStatus,
-    name: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
   })
