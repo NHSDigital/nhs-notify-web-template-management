@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import {
   GetCommand,
   PutCommand,
+  UpdateCommand,
   type DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
 import {
@@ -17,6 +18,7 @@ import {
 } from 'nhs-notify-backend-client';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
+import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
 export class RoutingConfigRepository {
   constructor(
@@ -60,8 +62,8 @@ export class RoutingConfigRepository {
   }
 
   async update(
-    updateData: Partial<CreateUpdateRoutingConfig>,
-    user: User
+    _updateData: Partial<CreateUpdateRoutingConfig>,
+    _user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
     return {} as Promise<ApplicationResult<RoutingConfig>>;
   }
@@ -70,7 +72,29 @@ export class RoutingConfigRepository {
     id: string,
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
-    return {} as Promise<ApplicationResult<RoutingConfig>>;
+    const cmdInput = new RoutingConfigUpdateBuilder(
+      this.tableName,
+      user.clientId,
+      id,
+      { ReturnValues: 'ALL_NEW' }
+    )
+      .setStatus('COMPLETED')
+      .expectedStatus('DRAFT')
+      .build();
+
+    try {
+      const result = await this.client.send(new UpdateCommand(cmdInput));
+
+      const routingConfig = $RoutingConfig.parse(result.Attributes);
+
+      return success(routingConfig);
+    } catch (error) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Failed to submit routing config',
+        error
+      );
+    }
   }
 
   async get(

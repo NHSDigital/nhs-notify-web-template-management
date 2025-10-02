@@ -40,25 +40,7 @@ export class RoutingConfigClient {
     routingConfigId: string,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const log = this.logger.child({ routingConfigId, user });
-
-    const submitResult = await this.routingConfigRepository.submit(
-      routingConfigId,
-      user
-    );
-
-    if (submitResult.error) {
-      log
-        .child(submitResult.error.errorMeta)
-        .error(
-          'Failed to save routing config to the database',
-          submitResult.error.actualError
-        );
-
-      return submitResult;
-    }
-
-    return submitResult;
+    return await this.routingConfigRepository.submit(routingConfigId, user);
   }
 
   async getRoutingConfig(

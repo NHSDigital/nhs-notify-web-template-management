@@ -47,21 +47,24 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
   name?: 'translations';
 };
 
-export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+export type CascadeItem =
+  | CascadeItemWithDefault
+  | CascadeItemWithConditional
+  | CascadeItemUnpopulated;
 
-export type CascadeItemBase = {
+export type CascadeItemUnpopulated = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
 };
 
-export type CascadeItemWithConditional = CascadeItemBase & {
+export type CascadeItemWithConditional = CascadeItemUnpopulated & {
   conditionalTemplates: Array<
     ConditionalTemplateLanguage | ConditionalTemplateAccessible
   >;
 };
 
-export type CascadeItemWithDefault = CascadeItemBase & {
+export type CascadeItemWithDefault = CascadeItemUnpopulated & {
   defaultTemplateId: string;
 };
 
@@ -370,6 +373,38 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
+export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitData = {
+  body?: never;
+  path: {
+    /**
+     * ID of routing configuration to submit
+     */
+    routingConfigId: string;
+  };
+  query?: never;
+  url: '/v1/routing-configuration/{routingConfigId}/submit';
+};
+
+export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitError =
+  PatchV1RoutingConfigurationByRoutingConfigIdSubmitErrors[keyof PatchV1RoutingConfigurationByRoutingConfigIdSubmitErrors];
+
+export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccess;
+};
+
+export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitResponse =
+  PatchV1RoutingConfigurationByRoutingConfigIdSubmitResponses[keyof PatchV1RoutingConfigurationByRoutingConfigIdSubmitResponses];
+
 export type GetV1RoutingConfigurationsData = {
   body?: never;
   path?: never;
@@ -567,7 +602,7 @@ export type PatchV1TemplateByTemplateIdSubmitData = {
   body?: never;
   path: {
     /**
-     * ID of template to update
+     * ID of template to submit
      */
     templateId: string;
   };

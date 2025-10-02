@@ -29,6 +29,7 @@ npx esbuild \
     src/templates/proof.ts \
     src/templates/set-letter-upload-virus-scan-status.ts \
     src/templates/submit.ts \
+    src/templates/submit-routing-config.ts \
     src/templates/update.ts \
     src/templates/validate-letter-template-files.ts
 

@@ -196,10 +196,13 @@
           },
           {
             "$ref": "#/components/schemas/CascadeItemWithConditional"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeItemUnpopulated"
           }
         ]
       },
-      "CascadeItemBase": {
+      "CascadeItemUnpopulated": {
         "properties": {
           "cascadeGroups": {
             "items": {
@@ -224,7 +227,7 @@
       "CascadeItemWithConditional": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CascadeItemBase"
+            "$ref": "#/components/schemas/CascadeItemUnpopulated"
           },
           {
             "not": {
@@ -257,7 +260,7 @@
       "CascadeItemWithDefault": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CascadeItemBase"
+            "$ref": "#/components/schemas/CascadeItemUnpopulated"
           },
           {
             "not": {
