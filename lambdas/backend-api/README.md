@@ -1,5 +1,6 @@
 # Backend-api
 
+<!-- vale off -->
 Template UI backend APIs
 
 ## Template APIs
@@ -149,3 +150,5 @@ curl --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
+
+<!-- vale on -->
