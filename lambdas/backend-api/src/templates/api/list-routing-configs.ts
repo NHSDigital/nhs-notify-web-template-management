@@ -11,27 +11,24 @@ export function createHandler({
   return async function handler(event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    const routingConfigId = event.pathParameters?.routingConfigId;
-
-    if (!routingConfigId || !clientId || !userId) {
+    if (!clientId || !userId) {
       return apiFailure(400, 'Invalid request');
     }
 
     const log = logger.child({
       clientId,
-      routingConfigId,
       userId,
     });
 
-    const { data, error } = await routingConfigClient.getRoutingConfig(
-      routingConfigId,
-      clientId
+    const { data, error } = await routingConfigClient.listRoutingConfigs(
+      clientId,
+      event.queryStringParameters
     );
 
     if (error) {
       log
         .child(error.errorMeta)
-        .error('Failed to get routing config', error.actualError);
+        .error('Failed to list routing configs', error.actualError);
 
       return apiFailure(
         error.errorMeta.code,

@@ -14,6 +14,8 @@ import type {
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
   RoutingConfig,
+  RoutingConfigStatus,
+  RoutingConfigStatusActive,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
 import { $Language, $LetterType } from './template-schema';
@@ -21,6 +23,7 @@ import {
   CASCADE_GROUP_NAME_LIST,
   CHANNEL_LIST,
   CHANNEL_TYPE_LIST,
+  ROUTING_CONFIG_STATUS_ACTIVE_LIST,
   ROUTING_CONFIG_STATUS_LIST,
 } from './union-lists';
 
@@ -102,6 +105,14 @@ const $CascadeItem = schemaFor<CascadeItem>()(
   z.union([$CascadeItemWithConditional, $CascadeItemWithDefault])
 );
 
+const $RoutingConfigStatus = schemaFor<RoutingConfigStatus>()(
+  z.enum(ROUTING_CONFIG_STATUS_LIST)
+);
+
+const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
+  z.enum(ROUTING_CONFIG_STATUS_ACTIVE_LIST)
+);
+
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
   z.object({
     campaignId: z.string(),
@@ -110,11 +121,21 @@ export const $RoutingConfig = schemaFor<RoutingConfig>()(
     cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
     id: z.uuidv4(),
     owner: z.string(),
-    status: z.enum(ROUTING_CONFIG_STATUS_LIST),
+    status: $RoutingConfigStatus,
     name: z.string(),
     createdAt: z.string(),
     createdBy: z.string(),
     updatedAt: z.string(),
     updatedBy: z.string(),
+  })
+);
+
+export type ListRoutingConfigFilters = {
+  status?: RoutingConfigStatusActive;
+};
+
+export const $ListRoutingConfigFilters = schemaFor<ListRoutingConfigFilters>()(
+  z.object({
+    status: $RoutingConfigStatusActive.optional(),
   })
 );

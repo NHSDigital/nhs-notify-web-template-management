@@ -1,9 +1,12 @@
+import { failure } from '@backend-api/utils/result';
 import {
+  $ListRoutingConfigFilters,
   ErrorCase,
+  type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
-import { failure } from '@backend-api/utils/result';
+import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 
 export class RoutingConfigClient {
@@ -22,5 +25,32 @@ export class RoutingConfigClient {
     }
 
     return result;
+  }
+
+  async listRoutingConfigs(
+    owner: string,
+    filters?: unknown
+  ): Promise<Result<RoutingConfig[]>> {
+    let parsedFilters: ListRoutingConfigFilters = {};
+
+    if (filters) {
+      const validation = await validate($ListRoutingConfigFilters, filters);
+
+      if (validation.error) {
+        return validation;
+      }
+
+      parsedFilters = validation.data;
+    }
+
+    const query = this.routingConfigRepository
+      .query(owner)
+      .excludeStatus('DELETED');
+
+    if (parsedFilters.status) {
+      query.status(parsedFilters.status);
+    }
+
+    return query.list();
   }
 }

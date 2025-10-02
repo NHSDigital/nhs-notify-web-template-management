@@ -636,9 +636,21 @@
         "type": "object"
       },
       "RoutingConfigStatus": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RoutingConfigStatusActive"
+          },
+          {
+            "enum": [
+              "DELETED"
+            ],
+            "type": "string"
+          }
+        ]
+      },
+      "RoutingConfigStatusActive": {
         "enum": [
           "COMPLETED",
-          "DELETED",
           "DRAFT"
         ],
         "type": "string"
@@ -647,6 +659,24 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/RoutingConfig"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "RoutingConfigSuccessList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RoutingConfig"
+            },
+            "type": "array"
           },
           "statusCode": {
             "type": "integer"
@@ -1020,6 +1050,70 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configurations": {
+      "get": {
+        "description": "List all routing configs",
+        "parameters": [
+          {
+            "description": "Filter by a single active status",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "$ref": "#/components/schemas/RoutingConfigStatusActive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccessList"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "List all routing configs",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_ROUTING_CONFIGS_LAMBDA_ARN}/invocations"
         }
       }
     },
