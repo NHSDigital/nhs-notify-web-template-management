@@ -15,6 +15,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 export class RoutingConfigQuery {
   private includeStatuses: RoutingConfigStatus[] = [];
   private excludeStatuses: RoutingConfigStatus[] = [];
+  private returnCount = false;
 
   constructor(
     private readonly docClient: DynamoDBDocumentClient,
@@ -36,6 +37,8 @@ export class RoutingConfigQuery {
 
   /** Execute the query and return a list of all matching RoutingConfigs */
   async list(): Promise<ApplicationResult<RoutingConfig[]>> {
+    this.returnCount = false;
+
     const query = this.build();
 
     const collected: RoutingConfig[] = [];
@@ -58,6 +61,25 @@ export class RoutingConfigQuery {
     }
 
     return success(collected);
+  }
+
+  /** Execute the query and return a count of all matching RoutingConfigs */
+  async count(): Promise<ApplicationResult<{ count: number }>> {
+    this.returnCount = true;
+
+    const query = this.build();
+
+    let count = 0;
+
+    const paginator = paginateQuery({ client: this.docClient }, query);
+
+    for await (const page of paginator) {
+      if (page.Count) {
+        count += page.Count;
+      }
+    }
+
+    return success({ count });
   }
 
   private build() {
@@ -108,6 +130,10 @@ export class RoutingConfigQuery {
 
     if (filters.length > 0) {
       query.FilterExpression = filters.join(' AND ');
+    }
+
+    if (this.returnCount) {
+      query.Select = 'COUNT';
     }
 
     return query;
