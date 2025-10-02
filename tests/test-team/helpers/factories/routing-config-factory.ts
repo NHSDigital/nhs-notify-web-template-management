@@ -6,27 +6,15 @@ import {
 import { RoutingConfigDbEntry } from 'helpers/types';
 
 export const RoutingConfigFactory = {
-  createDatabaseEntry(
+  create(
     user: { userId: string; clientId: string },
     routingConfig: Partial<RoutingConfig> = {}
-  ): RoutingConfigDbEntry {
-    return {
-      id: randomUUID(),
-      clientId: user.clientId,
-      owner: `CLIENT#${user.clientId}`,
-      status: 'DRAFT',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      createdBy: user.userId,
-      updatedBy: user.userId,
-      ...this.createApiPayload(routingConfig),
-    };
-  },
-
-  createApiPayload(
-    routingConfig: Partial<RoutingConfig> = {}
-  ): CreateUpdateRoutingConfig {
-    return {
+  ): {
+    apiPayload: CreateUpdateRoutingConfig;
+    apiResponse: RoutingConfig;
+    dbEntry: RoutingConfigDbEntry;
+  } {
+    const apiPayload: CreateUpdateRoutingConfig = {
       campaignId: 'campaign-1',
       cascade: [
         {
@@ -40,18 +28,27 @@ export const RoutingConfigFactory = {
       name: 'Test config',
       ...routingConfig,
     };
-  },
 
-  toApiResponseRoutingConfig(
-    routingConfigDbEntry: RoutingConfigDbEntry
-  ): RoutingConfig {
-    const {
-      owner: _1,
-      updatedBy: _2,
-      createdBy: _3,
-      ...rest
-    } = routingConfigDbEntry;
+    const apiResponse: RoutingConfig = {
+      id: randomUUID(),
+      clientId: user.clientId,
+      status: 'DRAFT',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      ...apiPayload,
+    };
 
-    return rest;
+    const dbEntry: RoutingConfigDbEntry = {
+      owner: `CLIENT#${user.clientId}`,
+      createdBy: user.userId,
+      updatedBy: user.userId,
+      ...apiResponse,
+    };
+
+    return {
+      apiPayload,
+      apiResponse,
+      dbEntry,
+    };
   },
 };

@@ -401,7 +401,6 @@
           "campaignId",
           "cascadeGroupOverrides",
           "cascade",
-          "displayCategory",
           "name"
         ],
         "type": "object"

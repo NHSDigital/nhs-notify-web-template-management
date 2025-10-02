@@ -1,4 +1,7 @@
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import type {
+  CreateUpdateRoutingConfig,
+  RoutingConfig,
+} from 'nhs-notify-backend-client';
 
 export const templateTypeDisplayMappings: Record<string, string> = {
   NHS_APP: 'NHS App message',
@@ -70,4 +73,10 @@ export type RoutingConfigDbEntry = RoutingConfig & {
   owner: string;
   updatedBy: string;
   createdBy: string;
+};
+
+export type FactoryRoutingConfig = {
+  apiPayload: CreateUpdateRoutingConfig;
+  apiResponse: RoutingConfig;
+  dbEntry: RoutingConfigDbEntry;
 };

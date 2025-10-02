@@ -19,7 +19,7 @@ export class RoutingConfigQuery {
   constructor(
     private readonly docClient: DynamoDBDocumentClient,
     private readonly tableName: string,
-    private readonly clientId: string
+    private readonly owner: string
   ) {}
 
   /** Include items with any of the given statuses. */
@@ -49,7 +49,7 @@ export class RoutingConfigQuery {
           collected.push(parsed.data);
         } else {
           logger.warn('Filtered out invalid RoutingConfig item', {
-            owner: this.clientOwnerKey(this.clientId),
+            owner: this.owner,
             id: item.id,
             issues: parsed.error.issues,
           });
@@ -71,7 +71,7 @@ export class RoutingConfigQuery {
     };
 
     const ExpressionAttributeValues: Record<string, NativeAttributeValue> = {
-      ':owner': this.clientOwnerKey(this.clientId),
+      ':owner': this.owner,
     };
 
     query.ExpressionAttributeNames = ExpressionAttributeNames;
@@ -111,9 +111,5 @@ export class RoutingConfigQuery {
     }
 
     return query;
-  }
-
-  private clientOwnerKey(clientId: string) {
-    return `CLIENT#${clientId}`;
   }
 }

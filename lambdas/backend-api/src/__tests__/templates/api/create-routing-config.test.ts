@@ -48,7 +48,7 @@ describe('Create Routing Config Handler', () => {
     }
   );
 
-  test('should return 400 - Invalid request when, no body', async () => {
+  test('should return 400 - Invalid request when no body', async () => {
     const { handler, mocks } = setup();
 
     mocks.routingConfigClient.createRoutingConfig.mockResolvedValueOnce({

@@ -25,7 +25,7 @@ test.describe('POST /v1/routing-configuration', () => {
   });
 
   test('returns 201 if routing config input is valid', async ({ request }) => {
-    const payload = RoutingConfigFactory.createApiPayload();
+    const payload = RoutingConfigFactory.create(user1).apiPayload;
 
     const start = new Date();
 
@@ -111,9 +111,9 @@ test.describe('POST /v1/routing-configuration', () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: RoutingConfigFactory.createApiPayload({
+        data: RoutingConfigFactory.create(user1, {
           name: 700 as unknown as string,
-        }),
+        }).apiPayload,
       }
     );
 
@@ -137,9 +137,9 @@ test.describe('POST /v1/routing-configuration', () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: RoutingConfigFactory.createApiPayload({
+        data: RoutingConfigFactory.create(user1, {
           status: 'COMPLETED',
-        }),
+        }).apiPayload,
       }
     );
 

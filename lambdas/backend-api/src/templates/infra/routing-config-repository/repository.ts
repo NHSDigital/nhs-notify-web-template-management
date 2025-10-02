@@ -91,7 +91,11 @@ export class RoutingConfigRepository {
   }
 
   query(clientId: string): RoutingConfigQuery {
-    return new RoutingConfigQuery(this.client, this.tableName, clientId);
+    return new RoutingConfigQuery(
+      this.client,
+      this.tableName,
+      this.clientOwnerKey(clientId)
+    );
   }
 
   private clientOwnerKey(clientId: string) {

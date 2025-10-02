@@ -6,7 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
-import type { RoutingConfigDbEntry } from 'helpers/types';
+import type { FactoryRoutingConfig } from 'helpers/types';
 
 test.describe('GET /v1/routing-configurations', () => {
   const authHelper = createAuthHelper();
@@ -14,34 +14,34 @@ test.describe('GET /v1/routing-configurations', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let draftRoutingConfig: RoutingConfigDbEntry;
-  let completedRoutingConfig: RoutingConfigDbEntry;
-  let deletedRoutingConfig: RoutingConfigDbEntry;
+  let draftRoutingConfig: FactoryRoutingConfig;
+  let completedRoutingConfig: FactoryRoutingConfig;
+  let deletedRoutingConfig: FactoryRoutingConfig;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    draftRoutingConfig = RoutingConfigFactory.createDatabaseEntry(user1, {
+    draftRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'DRAFT',
     });
 
-    completedRoutingConfig = RoutingConfigFactory.createDatabaseEntry(user1, {
+    completedRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'COMPLETED',
     });
 
-    deletedRoutingConfig = RoutingConfigFactory.createDatabaseEntry(user1, {
+    deletedRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'DELETED',
     });
 
     await storageHelper.seed([
-      draftRoutingConfig,
-      completedRoutingConfig,
-      deletedRoutingConfig,
+      draftRoutingConfig.dbEntry,
+      completedRoutingConfig.dbEntry,
+      deletedRoutingConfig.dbEntry,
     ]);
   });
 
@@ -80,8 +80,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
-        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
+        draftRoutingConfig.apiResponse,
+        completedRoutingConfig.apiResponse,
       ]),
     });
 
@@ -133,8 +133,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
-        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
+        draftRoutingConfig.apiResponse,
+        completedRoutingConfig.apiResponse,
       ]),
     });
 
@@ -160,9 +160,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [
-        RoutingConfigFactory.toApiResponseRoutingConfig(draftRoutingConfig),
-      ],
+      data: [draftRoutingConfig.apiResponse],
     });
   });
 
@@ -185,9 +183,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [
-        RoutingConfigFactory.toApiResponseRoutingConfig(completedRoutingConfig),
-      ],
+      data: [completedRoutingConfig.apiResponse],
     });
   });
 
