@@ -2,7 +2,7 @@
 
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import {
-  PageProps,
+  TemplatePageProps,
   validateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const CreateSmsTemplatePage = async (props: PageProps) => {
+const CreateSmsTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);

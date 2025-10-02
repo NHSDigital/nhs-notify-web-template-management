@@ -58,7 +58,7 @@ export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 
-export type PageProps = {
+export type TemplatePageProps = {
   params: Promise<{
     templateId: string;
   }>;

@@ -2,19 +2,23 @@
 
 import { Metadata } from 'next';
 import { CreateEditMessagePlan } from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan';
+import { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
+
+import content from '@content/content'
+import { getMessagePlan } from '@utils/message-plans';
+
+const { pageTitle } = content.pages.chooseTemplatesForMessagePlan;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Choose templates for your message plan - NHS Notify',
+    title: pageTitle,
   };
 }
 
-export default async function ChooseTemplatesPage() {
-  const plan = {
-    id: 'b838b13c-f98c-4def-93f0-515d4e4f4ee1',
-    name: 'test',
-    status: 'Draft',
-  };
+export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
+  const { routingConfigId } = await props.params;
 
-  return <CreateEditMessagePlan plan={plan} />;
+  const routingConfig = await getMessagePlan(routingConfigId);
+
+  return <CreateEditMessagePlan messagePlan={routingConfig} />;
 }
