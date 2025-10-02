@@ -1023,6 +1023,52 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const messagePlansPage = {
+  pageTitle: generatePageTitle('Message plans'),
+  pageHeading: 'Message plans',
+  draftAndProductionInfo: {
+    heading: 'What draft and production mean',
+    draft: {
+      heading: 'Draft',
+      text: "Message plans that you're working on and are not ready to be sent. You can test these, using our:",
+      links: [
+        {
+          href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing',
+          text: 'API integration environment',
+        },
+        {
+          href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request',
+          text: 'Integration MESH mailbox',
+        },
+      ],
+    },
+    production: {
+      heading: 'Production',
+      text1: 'Message plans that are ready to be sent using ',
+      notifyApiLink: {
+        href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify',
+        text: 'NHS Notify API',
+      },
+      text2: 'or ',
+      meshAiLink: {
+        href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/',
+        text: 'NHS Notify MESH.',
+      },
+    },
+  },
+  button: {
+    text: 'New message plan',
+    link: '/create-new-message-plan',
+  },
+};
+
+const messagePlanComponent = {
+  tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
+  noMessagePagesMessage: (type: string) =>
+    `You do not have any message plans in ${type} yet.`,
+  previewLink: (id: string) => `/message-plan/${id}`,
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1035,6 +1081,7 @@ const content = {
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanComponent,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
@@ -1058,6 +1105,7 @@ const content = {
     error404,
     invalidConfiguration,
     messageTemplates,
+    messagePlansPage,
   },
 };
 
