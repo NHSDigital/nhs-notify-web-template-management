@@ -600,41 +600,56 @@
         "type": "object"
       },
       "RoutingConfig": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+        "properties": {
+          "campaignId": {
+            "type": "string"
           },
-          {
-            "properties": {
-              "clientId": {
-                "type": "string"
-              },
-              "createdAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "id": {
-                "format": "uuid",
-                "type": "string"
-              },
-              "status": {
-                "$ref": "#/components/schemas/RoutingConfigStatus"
-              },
-              "updatedAt": {
-                "format": "date-time",
-                "type": "string"
-              }
+          "cascade": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeItem"
             },
-            "required": [
-              "clientId",
-              "createdAt",
-              "id",
-              "status",
-              "updatedAt"
-            ],
-            "type": "object"
+            "type": "array"
+          },
+          "cascadeGroupOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroup"
+            },
+            "type": "array"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoutingConfigStatus"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
           }
-        ]
+        },
+        "required": [
+          "campaignId",
+          "cascadeGroupOverrides",
+          "cascade",
+          "clientId",
+          "createdAt",
+          "id",
+          "name",
+          "status",
+          "updatedAt"
+        ],
+        "type": "object"
       },
       "RoutingConfigStatus": {
         "anyOf": [
