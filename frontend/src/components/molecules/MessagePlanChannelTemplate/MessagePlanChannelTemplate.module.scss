@@ -1,35 +1,14 @@
-.message-plan-block {
-  border: solid 1px blue;
-  margin-bottom: 70px;
-  position: relative;
-  list-style: none;
-
-  &-number {
-    width: 40px;
-    height: 40px;
-    padding-top: 5px;
-    margin-right: 20px;
-    background-color: #005eb8;
-    border-radius: 20px;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    float: left;
-  }
-
+.channel-template {
   &-outer {
-    padding: 20px;
+    padding: 20px; // TODO: Check should these be standard spacings?
     margin-left: 60px;
-    background-color: #ffffff;
-    border: 1px solid #d8dde0;
+    background-color: var(--nhsuk-card-background-colour);
+    border: 1px solid var(--nhsuk-border-colour);
   }
 
   &-inner {
     padding: 20px;
-    background-color: #ffffff;
-    border: 2px solid #d8dde0;
+    border: 2px solid var(--nhsuk-border-colour);
   }
 
   &:last-child::after {
@@ -40,9 +19,19 @@
     content: '';
     height: calc(100% + 30px);
     display: block;
-    border: dashed 2px #005eb8;
+    border: dashed 2px var(--nhsuk-brand-colour);
     position: absolute;
     top: 40px;
     left: 18px;
+  }
+
+  &-link {
+    &--remove {
+      color: var(--nhsuk-error-colour);
+
+      &:visited {
+        color: var(--nhsuk-error-colour);
+      }
+    }
   }
 }

@@ -1033,11 +1033,12 @@ export type FallbackConditionBlock = {
 
 const messagePlanChannelTemplate = {
   templateLinks: {
-    choose: 'Choose',
-    change: 'Change',
-    remove: 'Remove',
+    choose: { text: 'Choose', href: '' }, // TODO: Update hrefs
+    change: { text: 'Change', href: '' },
+    remove: { text: 'Remove', href: '' },
     template: 'template',
   },
+  optional: '(optional)',
 };
 
 const messagePlanFallbackConditions: Record<
@@ -1102,6 +1103,7 @@ const content = {
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanChannelTemplate,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,

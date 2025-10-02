@@ -1,58 +1,72 @@
 import Link from 'next/link';
-import { TemplateDto } from 'nhs-notify-backend-client';
-import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
-import content from '@content/content';
+import { Channel, TemplateDto } from 'nhs-notify-backend-client';
+import {
+  channelDisplayMappings,
+} from 'nhs-notify-web-template-management-utils';
+import classNames from 'classnames';
 
 import styles from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate.module.scss';
 
-const { messagePlanChannelTemplate } = content.components;
+import copy from '@content/content';
+const { messagePlanChannelTemplate: content } = copy.components;
 
 export function MessagePlanChannelTemplate({
-  template: { templateType, name: templateName, id: templateId },
+  channel,
+  template,
+  required = true,
 }: {
-  template: TemplateDto;
+  channel: Channel;
+  template?: TemplateDto;
+  required?: boolean;
 }) {
+  const channelDisplayText = channelDisplayMappings(channel);
+
   return (
-    <div className={styles['message-plan-block-outer']}>
-      <div className={styles['message-plan-block-inner']}>
+    <div className={styles['channel-template-outer']}>
+      <div className={styles['channel-template-inner']}>
         <h3 className='nhsuk-heading-s'>
-          {templateTypeDisplayMappings(templateType)}
+          {`${channelDisplayText}${required ? '' : ` ${content.optional}`}`}
         </h3>
 
-        {!templateId && (
-          <Link href='#'>
-            {messagePlanChannelTemplate.templateLinks.choose}
+        {!template && (
+          <Link className='nhsuk-link nhsuk-link--no-visited-state' href={content.templateLinks.choose.href}>
+            {content.templateLinks.choose.text}
             <span className='nhsuk-u-visually-hidden'>
-              {templateTypeDisplayMappings(templateType)}
-            </span>
-            {messagePlanChannelTemplate.templateLinks.template}
+              {channelDisplayText}
+            </span>{' '}
+            {content.templateLinks.template}
           </Link>
         )}
 
-        {templateId && (
+        {template && template.id && (
           <>
             <p>
-              {templateName}
+              {template.name}
               <br />
-              <Link href='#'>
-                {messagePlanChannelTemplate.templateLinks.change}
+              <Link
+                className='nhsuk-link nhsuk-link--no-visited-state'
+                href={content.templateLinks.change.href}
+              >
+                {content.templateLinks.change.text}
                 <span className='nhsuk-u-visually-hidden'>
-                  {templateTypeDisplayMappings(templateType)}
-                </span>
-                {messagePlanChannelTemplate.templateLinks.template}
+                  {channelDisplayText}
+                </span>{' '}
+                {content.templateLinks.template}
               </Link>
             </p>
             <p>
               <Link
-                href='#'
-                style={{ color: '#d5281b' }}
-                className='nhsuk-link nhsuk-link--no-visited-state'
+                href={content.templateLinks.remove.href}
+                className={classNames(
+                  styles['channel-template-link--remove'],
+                  'nhsuk-link'
+                )}
               >
-                {messagePlanChannelTemplate.templateLinks.remove}
+                {content.templateLinks.remove.text}
                 <span className='nhsuk-u-visually-hidden'>
-                  {templateTypeDisplayMappings(templateType)}
-                </span>
-                {messagePlanChannelTemplate.templateLinks.template}
+                  {channelDisplayText}
+                </span>{' '}
+                {content.templateLinks.template}
               </Link>
             </p>
           </>
