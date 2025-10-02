@@ -3,17 +3,16 @@ import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
-import { RoutingConfigDbEntry } from 'helpers/types';
+import type {
+  FactoryRoutingConfig,
+  RoutingConfigDbEntry,
+} from '../../helpers/types';
 
 export const RoutingConfigFactory = {
   create(
     user: { userId: string; clientId: string },
     routingConfig: Partial<RoutingConfig> = {}
-  ): {
-    apiPayload: CreateUpdateRoutingConfig;
-    apiResponse: RoutingConfig;
-    dbEntry: RoutingConfigDbEntry;
-  } {
+  ): FactoryRoutingConfig {
     const apiPayload: CreateUpdateRoutingConfig = {
       campaignId: 'campaign-1',
       cascade: [
