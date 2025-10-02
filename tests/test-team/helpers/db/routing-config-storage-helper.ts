@@ -110,6 +110,6 @@ export class RoutingConfigStorageHelper {
   }
 
   private clientOwnerKey(clientId: string) {
-    return `CLIENT${clientId}`;
+    return `CLIENT#${clientId}`;
   }
 }
