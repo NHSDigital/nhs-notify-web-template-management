@@ -20,9 +20,6 @@ identifier=$1
 
 echo "Destroying backend sandbox \"$identifier\""
 
-# build lambda layer as terraform will complain if file doesn't exist
-./lambdas/layers/pdfjs/build.sh
-
 cd $terraform_dir
 
 ./bin/terraform.sh \

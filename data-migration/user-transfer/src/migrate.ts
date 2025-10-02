@@ -19,7 +19,6 @@ type MigrateParameters = {
 };
 
 async function loadTemplates(
-  params: MigrateParameters,
   tableName: string,
   migrations: UserTransferPlanItem[]
 ) {
@@ -45,9 +44,9 @@ async function backup(
   const { name } = path.parse(params.file);
 
   await writeFile(
+    `ownership-transfer/${params.environment}/${name}/${timestamp}.json`,
     JSON.stringify(templates),
-    backupBucket,
-    `ownership-transfer/${params.environment}/${name}/${timestamp}.json`
+    backupBucket
   );
 
   await Promise.all(
@@ -60,28 +59,6 @@ async function backup(
       )
     )
   );
-}
-
-function assertMatchingTemplates(
-  fetchedTemplateIds: string[],
-  migrationTemplateIds: string[]
-) {
-  const left = new Set(fetchedTemplateIds);
-  const right = new Set(migrationTemplateIds);
-
-  if (left.size !== right.size) {
-    throw new Error(
-      `Mismatch in length of fetched templates and templates to migrate`
-    );
-  }
-
-  for (const value of left) {
-    if (!right.has(value)) {
-      throw new Error(
-        `Value "${value}" found in first array but not in second`
-      );
-    }
-  }
 }
 
 export async function migrate(params: MigrateParameters) {
@@ -101,12 +78,7 @@ export async function migrate(params: MigrateParameters) {
 
   print(`Total migrations: ${migrations.length}`);
 
-  const templates = await loadTemplates(params, input.tableName, migrations);
-
-  assertMatchingTemplates(
-    templates.map((r) => r.id.S!),
-    migrations.map((r) => r.templateId)
-  );
+  const templates = await loadTemplates(input.tableName, migrations);
 
   if (!params.dryRun) {
     await backup(params, templates, input.bucketName, backupBucket, migrations);
@@ -133,13 +105,6 @@ export async function migrate(params: MigrateParameters) {
     const idx = output.migrate.plans.findIndex(
       (r) => r.templateId === migration.templateId
     );
-
-    if (idx === -1) {
-      print(
-        `Skipping: Unable to locate index in output data for ${migration.templateId}`
-      );
-      continue;
-    }
 
     const result = await UserTransfer.apply(migration, template, {
       bucketName: input.bucketName,

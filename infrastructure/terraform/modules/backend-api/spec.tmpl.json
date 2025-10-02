@@ -82,6 +82,218 @@
         ],
         "type": "object"
       },
+      "CascadeGroup": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupAccessible"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeGroupTranslations"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeGroupStandard"
+          }
+        ]
+      },
+      "CascadeGroupAccessible": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "accessibleFormat": {
+                "items": {
+                  "$ref": "#/components/schemas/LetterType"
+                },
+                "type": "array"
+              },
+              "name": {
+                "enum": [
+                  "accessible"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "accessibleFormat"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeGroupBase": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/CascadeGroupName"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "CascadeGroupName": {
+        "enum": [
+          "accessible",
+          "standard",
+          "translations"
+        ],
+        "type": "string"
+      },
+      "CascadeGroupStandard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "enum": [
+                  "standard"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeGroupTranslations": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeGroupBase"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "language": {
+                "items": {
+                  "$ref": "#/components/schemas/Language"
+                },
+                "type": "array"
+              },
+              "name": {
+                "enum": [
+                  "translations"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "language"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeItem": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemWithDefault"
+          },
+          {
+            "$ref": "#/components/schemas/CascadeItemWithConditional"
+          }
+        ]
+      },
+      "CascadeItemBase": {
+        "properties": {
+          "cascadeGroups": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroupName"
+            },
+            "type": "array"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "channelType": {
+            "$ref": "#/components/schemas/ChannelType"
+          }
+        },
+        "required": [
+          "cascadeGroups",
+          "channel",
+          "channelType"
+        ],
+        "type": "object"
+      },
+      "CascadeItemWithConditional": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemBase"
+          },
+          {
+            "not": {
+              "required": [
+                "defaultTemplateId"
+              ]
+            },
+            "properties": {
+              "conditionalTemplates": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                    }
+                  ]
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "conditionalTemplates"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "CascadeItemWithDefault": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CascadeItemBase"
+          },
+          {
+            "not": {
+              "required": [
+                "conditionalTemplates"
+              ]
+            },
+            "properties": {
+              "defaultTemplateId": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "defaultTemplateId"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "Channel": {
+        "enum": [
+          "EMAIL",
+          "LETTER",
+          "NHSAPP",
+          "SMS"
+        ],
+        "type": "string"
+      },
+      "ChannelType": {
+        "enum": [
+          "primary",
+          "secondary"
+        ],
+        "type": "string"
+      },
       "ClientConfiguration": {
         "properties": {
           "campaignId": {
@@ -128,6 +340,40 @@
           }
         },
         "required": [],
+        "type": "object"
+      },
+      "ConditionalTemplateAccessible": {
+        "additionalProperties": false,
+        "properties": {
+          "accessibleFormat": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessibleFormat",
+          "templateId"
+        ],
+        "type": "object"
+      },
+      "ConditionalTemplateLanguage": {
+        "additionalProperties": false,
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "templateId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "language",
+          "templateId"
+        ],
         "type": "object"
       },
       "CreateUpdateTemplate": {
@@ -324,6 +570,124 @@
         ],
         "type": "object"
       },
+      "RoutingConfig": {
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "cascade": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeItem"
+            },
+            "type": "array"
+          },
+          "cascadeGroupOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroup"
+            },
+            "type": "array"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoutingConfigStatus"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "campaignId",
+          "cascadeGroupOverrides",
+          "cascade",
+          "clientId",
+          "createdAt",
+          "createdBy",
+          "displayCategory",
+          "id",
+          "name",
+          "owner",
+          "status",
+          "updatedAt",
+          "updatedBy"
+        ],
+        "type": "object"
+      },
+      "RoutingConfigStatus": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RoutingConfigStatusActive"
+          },
+          {
+            "enum": [
+              "DELETED"
+            ],
+            "type": "string"
+          }
+        ]
+      },
+      "RoutingConfigStatusActive": {
+        "enum": [
+          "COMPLETED",
+          "DRAFT"
+        ],
+        "type": "string"
+      },
+      "RoutingConfigSuccess": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RoutingConfig"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "RoutingConfigSuccessList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RoutingConfig"
+            },
+            "type": "array"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "SmsProperties": {
         "properties": {
           "message": {
@@ -383,33 +747,33 @@
       },
       "TemplateSuccess": {
         "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateDto"
+          },
           "statusCode": {
             "type": "integer"
-          },
-          "template": {
-            "$ref": "#/components/schemas/TemplateDto"
           }
         },
         "required": [
-          "template",
+          "data",
           "statusCode"
         ],
         "type": "object"
       },
       "TemplateSuccessList": {
         "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "templates": {
+          "data": {
             "items": {
               "$ref": "#/components/schemas/TemplateDto"
             },
             "type": "array"
+          },
+          "statusCode": {
+            "type": "integer"
           }
         },
         "required": [
-          "templates",
+          "data",
           "statusCode"
         ],
         "type": "object"
@@ -621,6 +985,135 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPLOAD_LETTER_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configuration/{routingConfigId}": {
+      "get": {
+        "description": "Get a routing configuration by ID",
+        "parameters": [
+          {
+            "description": "ID of routing configuration to return",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get a routing configuration by ID",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configurations": {
+      "get": {
+        "description": "List all routing configs",
+        "parameters": [
+          {
+            "description": "Filter by a single active status",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "$ref": "#/components/schemas/RoutingConfigStatusActive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccessList"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "List all routing configs",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_ROUTING_CONFIGS_LAMBDA_ARN}/invocations"
         }
       }
     },

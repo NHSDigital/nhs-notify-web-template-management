@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.879.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.864.0",
     "@aws-sdk/client-dynamodb": "^3.864.0",
     "@aws-sdk/client-s3": "^3.864.0",
     "@aws-sdk/client-sts": "^3.864.0",
-    "@aws-sdk/credential-providers": "^3.888.0",
+    "@aws-sdk/credential-providers": "^3.864.0",
     "yargs": "^17.7.2"
   },
   "description": "Transfers template ownership from one user to another",
@@ -22,7 +22,7 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "migrate": "tsx src/migrate-cli.ts",
+    "apply": "tsx src/migrate-cli.ts",
     "plan": "tsx src/plan-cli.ts",
     "test:unit": "jest",
     "typecheck": "tsc --noEmit"

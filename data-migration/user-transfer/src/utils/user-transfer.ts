@@ -57,7 +57,7 @@ export class UserTransfer {
       bucketName: s3.bucketName,
       migrate: {
         count: templatesToMigrate.length,
-        plans: templatesToMigrate.filter((r) => r.s3.files.length > 0),
+        plans: templatesToMigrate,
       },
       orphaned: {
         count: templateIdsWithNoOwner.length,
@@ -99,7 +99,7 @@ export class UserTransfer {
     try {
       if (config.dryRun) {
         print(
-          `[DRY RUN] DynamoDB: template ${template.id.S} found and will transferred from ${migration.ddb.owner.from} to CLIENT#${migration.ddb.owner.to}`
+          `[DRY RUN] DynamoDB: template ${template.id.S} found and will be transferred from ${migration.ddb.owner.from} to CLIENT#${migration.ddb.owner.to}`
         );
         print(
           `[DRY RUN] DynamoDB: template ${template.id.S} with owner ${migration.ddb.owner.from} will be deleted`
@@ -135,7 +135,7 @@ export class UserTransfer {
       }
     });
 
-    const deleteResult = await UserTransfer.processPromises(deletePromises);
+    const deleteResult = await this.processPromises(deletePromises);
 
     if (!deleteResult.success) {
       print(`Partial: [s3:delete]: ${migration.templateId} delete failed`);

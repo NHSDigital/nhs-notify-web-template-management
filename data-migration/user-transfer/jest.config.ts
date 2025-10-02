@@ -33,7 +33,7 @@ const config: Config = {
 
   collectCoverageFrom: ['src/**/*.ts*'],
 
-  coveragePathIgnorePatterns: ['migrate-cli.ts', 'plan-cli.ts'],
+  coveragePathIgnorePatterns: ['migrate-cli.ts', 'plan-cli.ts', 'types.ts'],
 
   // Set the absolute path for imports
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {

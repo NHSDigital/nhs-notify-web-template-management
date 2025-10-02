@@ -78,13 +78,13 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.template.id,
+      templateId: result.data.id,
       clientId: user1.clientId,
     });
 
     expect(result).toEqual({
       statusCode: 201,
-      template: {
+      data: {
         campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
@@ -112,15 +112,12 @@ test.describe('POST /v1/letter-template', () => {
       },
     });
 
-    expect(result.template.files.pdfTemplate.currentVersion).toBe(
-      result.template.files.testDataCsv.currentVersion
+    expect(result.data.files.pdfTemplate.currentVersion).toBe(
+      result.data.files.testDataCsv.currentVersion
     );
 
-    expect(result.template.createdAt).toBeDateRoughlyBetween([
-      start,
-      new Date(),
-    ]);
-    expect(result.template.createdAt).not.toEqual(result.template.updatedAt);
+    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
   test('returns 201 if input is valid, using fallback campaign id', async ({
@@ -173,13 +170,13 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.template.id,
+      templateId: result.data.id,
       clientId: userWithFallbackCampaignId.clientId,
     });
 
     expect(result).toEqual({
       statusCode: 201,
-      template: {
+      data: {
         campaignId:
           testClients[userWithFallbackCampaignId.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
@@ -208,15 +205,12 @@ test.describe('POST /v1/letter-template', () => {
       },
     });
 
-    expect(result.template.files.pdfTemplate.currentVersion).toBe(
-      result.template.files.testDataCsv.currentVersion
+    expect(result.data.files.pdfTemplate.currentVersion).toBe(
+      result.data.files.testDataCsv.currentVersion
     );
 
-    expect(result.template.createdAt).toBeDateRoughlyBetween([
-      start,
-      new Date(),
-    ]);
-    expect(result.template.createdAt).not.toEqual(result.template.updatedAt);
+    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
   test('returns 201 if input is valid, test data is optional', async ({
@@ -262,13 +256,13 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.template.id,
+      templateId: result.data.id,
       clientId: user1.clientId,
     });
 
     expect(result).toEqual({
       statusCode: 201,
-      template: {
+      data: {
         campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
@@ -291,11 +285,8 @@ test.describe('POST /v1/letter-template', () => {
       },
     });
 
-    expect(result.template.createdAt).toBeDateRoughlyBetween([
-      start,
-      new Date(),
-    ]);
-    expect(result.template.createdAt).not.toEqual(result.template.updatedAt);
+    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -399,11 +390,11 @@ test.describe('POST /v1/letter-template', () => {
     expect(response.status(), debug).toBe(201);
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.template.id,
+      templateId: result.data.id,
       clientId: user1.clientId,
     });
 
-    expect(result.template.templateStatus).toEqual('PENDING_VALIDATION');
+    expect(result.data.templateStatus).toEqual('PENDING_VALIDATION');
   });
 
   test('returns 400 if template is missing required property (name)', async ({

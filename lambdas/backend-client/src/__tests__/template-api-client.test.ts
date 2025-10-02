@@ -49,7 +49,7 @@ describe('TemplateAPIClient', () => {
   test('createTemplate - should return template', async () => {
     axiosMock.onPost('/v1/template').reply(201, {
       statusCode: 201,
-      template: {
+      data: {
         id: 'id',
         name: 'name',
         message: 'message',
@@ -119,7 +119,7 @@ describe('TemplateAPIClient', () => {
   test('uploadLetterTemplate - should return template', async () => {
     axiosMock.onPost('/v1/letter-template').reply(201, {
       statusCode: 201,
-      template: {
+      data: {
         id: 'id',
         name: 'test',
         templateType: 'LETTER',
@@ -225,7 +225,7 @@ describe('TemplateAPIClient', () => {
 
     axiosMock.onPost('/v1/template/real-id').reply(200, {
       statusCode: 200,
-      template: data,
+      data,
     });
 
     const client = new TemplateApiClient();
@@ -284,7 +284,7 @@ describe('TemplateAPIClient', () => {
 
     axiosMock.onGet('/v1/template/real-id').reply(200, {
       statusCode: 200,
-      template: data,
+      data,
     });
 
     const client = new TemplateApiClient();
@@ -329,7 +329,7 @@ describe('TemplateAPIClient', () => {
 
     axiosMock.onGet('/v1/templates').reply(200, {
       statusCode: 200,
-      templates: [data],
+      data: [data],
     });
 
     const client = new TemplateApiClient();
@@ -381,7 +381,7 @@ describe('TemplateAPIClient', () => {
 
       axiosMock.onPatch('/v1/template/real-id/submit').reply(200, {
         statusCode: 200,
-        template: data,
+        data,
       });
 
       const client = new TemplateApiClient();
@@ -474,9 +474,7 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
       };
 
-      axiosMock
-        .onPost('/v1/template/real-id/proof')
-        .reply(204, { template: data });
+      axiosMock.onPost('/v1/template/real-id/proof').reply(204, { data });
 
       const client = new TemplateApiClient();
 

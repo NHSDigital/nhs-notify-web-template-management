@@ -10,6 +10,7 @@ const goBackButtonText = 'Go back';
 const enterATemplateName = 'Enter a template name';
 const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
+const templateMessageHasInsecureLink = 'URLs must start with https://';
 const selectAnOption = 'Select an option';
 
 const header = {
@@ -793,6 +794,8 @@ const templateFormNhsApp = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
+        invalidUrlCharacter: 'URLs cannot include the symbols < or >',
       },
     },
   },
@@ -896,6 +899,7 @@ const templateFormEmail = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
       },
     },
   },
@@ -939,6 +943,7 @@ const templateFormSms = {
       error: {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
+        insecureLink: templateMessageHasInsecureLink,
       },
     },
   },
