@@ -23,6 +23,9 @@ test-coverage: # Evaluate code coverage from scripts/test/coverage @Testing
 test-accessibility: # Run tests from scripts/tests/accessibility.sh @Testing
 	make _test name="accessibility"
 
+test-ui-routing-component: # Run tests from scripts/tests/ui-routing-component.sh @Testing
+	make _test name="ui-routing-component"
+
 test-ui-component: # Run tests from scripts/tests/ui-component.sh @Testing
 	make _test name="ui-component"
 
