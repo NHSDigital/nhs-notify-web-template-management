@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import {
   ContentRenderer,
   ContentBlock,
+  ContentItem,
 } from '@molecules/ContentRenderer/ContentRenderer';
 
 describe('ContentRenderer', () => {
@@ -19,7 +20,7 @@ describe('ContentRenderer', () => {
 
     const consoleErrorSpy = jest
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     expect(() => render(<ContentRenderer content={invalidContent} />)).toThrow(
       new Error('Unsupported content block type')
@@ -40,9 +41,47 @@ describe('ContentRenderer', () => {
     ];
 
     render(<ContentRenderer content={content} />);
+
+    const listItems = screen.getAllByRole('paragraph');
+    expect(listItems).toHaveLength(2);
     expect(screen.getByText('This is a paragraph.')).toBeInTheDocument();
     expect(screen.getByText('Another paragraph.')).toBeInTheDocument();
   });
+
+  it('renders an inline-text block without a paragraph wrapper', () => {
+    const content: ContentBlock[] = [
+      { type: 'inline-text', text: 'Inline content' },
+    ]
+
+    render(
+      <ul>
+        <li data-testid="list-item">
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline content');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
+
+  it('treats a string item as inline text (no paragraph wrapper)', () => {
+    const content: ContentItem[] = ['Inline via string'];
+
+    render(
+      <ul>
+        <li data-testid="list-item">
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline via string');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
+
 
   it('renders code blocks with accessible description', () => {
     const content: ContentBlock[] = [

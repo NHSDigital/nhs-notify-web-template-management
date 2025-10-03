@@ -3,6 +3,7 @@ import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 type StandardBlock = { testId?: string };
 export type MarkdownTextBlock = StandardBlock & { type: 'text'; text: string };
+export type MarkdownInlineBlock = StandardBlock & { type: 'inline-text'; text: string };
 export type CodeBlock = StandardBlock & {
   type: 'code';
   code: string;
@@ -10,27 +11,44 @@ export type CodeBlock = StandardBlock & {
 };
 export type ListBlock = StandardBlock & { type: 'list'; items: string[] };
 
-export type ContentBlock = MarkdownTextBlock | CodeBlock | ListBlock;
+export type ContentBlock = MarkdownTextBlock | MarkdownInlineBlock | CodeBlock | ListBlock;
+export type ContentItem = ContentBlock | string;
 
 interface ContentRendererProps {
-  content: ContentBlock[];
+  content: ContentItem[];
   variables?: Record<string, string | number>;
 }
 
 export function ContentRenderer({ content, variables }: ContentRendererProps) {
+  const normalised: ContentBlock[] = content.map((item) =>
+    typeof item === 'string' ? { type: 'inline-text', text: item } : item
+  );
+
   return (
     <>
-      {content.map((block, index) => {
+      {normalised.map((block, index) => {
         const key = block.testId ?? index;
 
         switch (block.type) {
           case 'text': {
             return (
               <MarkdownContent
-                testId={block.testId}
                 key={key}
+                testId={block.testId}
                 content={block.text}
                 variables={variables}
+                mode="block"
+              />
+            );
+          }
+          case 'inline-text': {
+            return (
+              <MarkdownContent
+                key={key}
+                testId={block.testId}
+                content={block.text}
+                variables={variables}
+                mode="inline"
               />
             );
           }
@@ -50,7 +68,9 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
             return (
               <ul data-testid={block.testId} key={key}>
                 {block.items.map((item, itemId) => (
-                  <li key={itemId}>{item}</li>
+                  <li key={itemId}>
+                    <MarkdownContent content={item} variables={variables} mode="inline" />
+                  </li>
                 ))}
               </ul>
             );
