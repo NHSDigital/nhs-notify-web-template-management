@@ -14,6 +14,7 @@ locals {
     APIG_EXECUTION_ROLE_ARN          = aws_iam_role.api_gateway_execution_role.arn
     AUTHORIZER_LAMBDA_ARN            = module.authorizer_lambda.function_arn
     AWS_REGION                       = var.region
+    COUNT_ROUTING_CONFIGS_LAMBDA_ARN = module.count_routing_configs_lambda.function_arn
     CREATE_LAMBDA_ARN                = module.create_template_lambda.function_arn
     CREATE_ROUTING_CONFIG_LAMBDA_ARN = module.create_routing_config_lambda.function_arn
     DELETE_LAMBDA_ARN                = module.delete_template_lambda.function_arn

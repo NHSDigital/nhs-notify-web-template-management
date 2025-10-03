@@ -101,6 +101,13 @@ export type ConditionalTemplateLanguage = {
   templateId: string;
 };
 
+export type CountSuccess = {
+  data: {
+    count: number;
+  };
+  statusCode: number;
+};
+
 export type CreateUpdateRoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
@@ -468,6 +475,38 @@ export type GetV1RoutingConfigurationsResponses = {
 
 export type GetV1RoutingConfigurationsResponse =
   GetV1RoutingConfigurationsResponses[keyof GetV1RoutingConfigurationsResponses];
+
+export type GetV1RoutingConfigurationsCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    status?: RoutingConfigStatusActive;
+  };
+  url: '/v1/routing-configurations/count';
+};
+
+export type GetV1RoutingConfigurationsCountErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationsCountError =
+  GetV1RoutingConfigurationsCountErrors[keyof GetV1RoutingConfigurationsCountErrors];
+
+export type GetV1RoutingConfigurationsCountResponses = {
+  /**
+   * 200 response
+   */
+  200: CountSuccess;
+};
+
+export type GetV1RoutingConfigurationsCountResponse =
+  GetV1RoutingConfigurationsCountResponses[keyof GetV1RoutingConfigurationsCountResponses];
 
 export type PostV1TemplateData = {
   /**
