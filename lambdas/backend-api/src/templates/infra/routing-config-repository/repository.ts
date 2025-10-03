@@ -146,15 +146,16 @@ export class RoutingConfigRepository {
     id: string,
     clientId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const result = await this.client.send(
-      new GetCommand({
-        TableName: this.tableName,
-        Key: {
-          id,
-          owner: this.clientOwnerKey(clientId),
-        },
-      })
-    );
+    try {
+      const result = await this.client.send(
+        new GetCommand({
+          TableName: this.tableName,
+          Key: {
+            id,
+            owner: this.clientOwnerKey(clientId),
+          },
+        })
+      );
 
       if (!result.Item) {
         return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');

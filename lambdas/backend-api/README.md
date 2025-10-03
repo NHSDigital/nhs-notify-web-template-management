@@ -192,7 +192,7 @@ curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_
 }'
 ```
 
-### PATCH - /v1/template/:templateId/submit - Submit a routing config
+### PATCH - /v1/template/:templateId/submit - Submit a routing configuration
 
 ```bash
 curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}/submit" \
