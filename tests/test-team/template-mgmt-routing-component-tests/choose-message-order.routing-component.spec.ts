@@ -17,7 +17,9 @@ test.describe('Choose Message Order Page', () => {
 
     await chooseMessageOrderPage.loadPage();
 
-    await expect(page).toHaveURL(`${baseURL}/templates/choose-message-order`);
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-message-order`
+    );
     await expect(chooseMessageOrderPage.pageHeading).toHaveText(
       'Choose a message order'
     );
@@ -28,7 +30,7 @@ test.describe('Choose Message Order Page', () => {
       page: new RoutingChooseMessageOrderPage(page),
       id: '',
       baseURL,
-      expectedUrl: 'message-plans',
+      expectedUrl: 'templates/message-plans',
     };
 
     await assertSkipToMainContent(props);
@@ -57,7 +59,9 @@ test.describe('Choose Message Order Page', () => {
     await chooseMessageOrderPage.loadPage();
     await chooseMessageOrderPage.clickContinueButton();
 
-    await expect(page).toHaveURL(`${baseURL}/templates/choose-message-order`);
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-message-order`
+    );
 
     await expect(chooseMessageOrderPage.errorSummary).toBeVisible();
     await expect(chooseMessageOrderPage.errorSummaryList).toHaveText([
@@ -65,47 +69,37 @@ test.describe('Choose Message Order Page', () => {
     ]);
   });
 
-  for (const { label, path } of [
+  for (const { label, option } of [
     {
-      path: encodeURIComponent('/create-message-plan?messageOrder=NHS_APP'),
+      option: 'NHS_APP',
       label: 'NHS App only',
     },
     {
-      path: encodeURIComponent(
-        '/create-message-plan?messageOrder=NHS_APP,EMAIL'
-      ),
+      option: 'NHS_APP,EMAIL',
       label: 'NHS App, Email',
     },
     {
-      path: encodeURIComponent('/create-message-plan?messageOrder=NHS_APP,SMS'),
+      option: 'NHS_APP,SMS',
       label: 'NHS App, Text message',
     },
     {
-      path: encodeURIComponent(
-        '/create-message-plan?messageOrder=NHS_APP,EMAIL,SMS'
-      ),
+      option: 'NHS_APP,EMAIL,SMS',
       label: 'NHS App, Email, Text message',
     },
     {
-      path: encodeURIComponent(
-        '/create-message-plan?messageOrder=NHS_APP,SMS,EMAIL'
-      ),
+      option: 'NHS_APP,SMS,EMAIL',
       label: 'NHS App, Text message, Email',
     },
     {
-      path: encodeURIComponent(
-        '/create-message-plan?messageOrder=NHS_APP,SMS,LETTER'
-      ),
+      option: 'NHS_APP,SMS,LETTER',
       label: 'NHS App, Text message, Letter',
     },
     {
-      path: encodeURIComponent(
-        '/create-message-plan?messageOrder=NHS_APP,EMAIL,SMS,LETTER'
-      ),
+      option: 'NHS_APP,EMAIL,SMS,LETTER',
       label: 'NHS App, Email, Text message, Letter',
     },
     {
-      path: encodeURIComponent('/create-message-plan?messageOrder=LETTER'),
+      option: 'LETTER',
       label: 'Letter only',
     },
   ])
@@ -119,6 +113,8 @@ test.describe('Choose Message Order Page', () => {
       await chooseMessageOrderPage.checkRadioButton(label);
       await chooseMessageOrderPage.clickContinueButton();
 
-      await expect(page).toHaveURL(`${baseURL}/templates/${path}`);
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(option)}`
+      );
     });
 });
