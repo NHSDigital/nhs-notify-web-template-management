@@ -1025,7 +1025,7 @@ const previewDigitalTemplate = {
 
 const chooseMessageOrder = {
   pageTitle: generatePageTitle('Choose a message order'),
-  pageHeading: 'Select a message order',
+  pageHeading: 'Choose a message order',
   buttonText: 'Save and continue',
   hint: 'Select one option',
   backLinkText: 'Go back',
