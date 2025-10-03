@@ -60,7 +60,7 @@ exports[`Choose message order page Client-side validation triggers 1`] = `
             <h1
               class="nhsuk-fieldset__heading"
             >
-              Select a message order
+              Choose a message order
             </h1>
           </legend>
           <div
@@ -324,7 +324,7 @@ exports[`Choose message order page renders error component 1`] = `
             <h1
               class="nhsuk-fieldset__heading"
             >
-              Select a message order
+              Choose a message order
             </h1>
           </legend>
           <div
@@ -552,7 +552,7 @@ exports[`Choose message order page renders form 1`] = `
             <h1
               class="nhsuk-fieldset__heading"
             >
-              Select a message order
+              Choose a message order
             </h1>
           </legend>
           <div

@@ -35,7 +35,7 @@ exports[`ChooseATemplateTypePage 1`] = `
             <h1
               class="nhsuk-fieldset__heading"
             >
-              Select a message order
+              Choose a message order
             </h1>
           </legend>
           <div
