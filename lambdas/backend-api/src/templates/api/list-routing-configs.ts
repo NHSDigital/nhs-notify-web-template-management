@@ -15,13 +15,15 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const log = logger.child({
+    const user = {
       clientId,
       userId,
-    });
+    };
+
+    const log = logger.child(user);
 
     const { data, error } = await routingConfigClient.listRoutingConfigs(
-      clientId,
+      user,
       event.queryStringParameters
     );
 

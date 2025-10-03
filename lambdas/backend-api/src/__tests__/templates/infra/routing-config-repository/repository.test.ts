@@ -1,11 +1,33 @@
-import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ZodError } from 'zod';
 import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { routingConfig } from '../../fixtures/routing-config';
+import {
+  CreateUpdateRoutingConfig,
+  RoutingConfig,
+} from 'nhs-notify-backend-client';
+import { randomUUID, type UUID } from 'node:crypto';
+
+jest.mock('node:crypto');
+const uuidMock = jest.mocked(randomUUID);
+const generatedId = 'c4846505-5380-4601-a361-f82f650adfee';
+uuidMock.mockReturnValue(generatedId);
+
+const date = new Date(2024, 11, 27);
+
+beforeAll(() => {
+  jest.useFakeTimers();
+  jest.setSystemTime(date);
+});
 
 const TABLE_NAME = 'routing-config-table-name';
+const user = { userId: 'user', clientId: 'nhs-notify-client-id' };
 
 function setup() {
   const dynamo = mockClient(DynamoDBDocumentClient);
@@ -31,7 +53,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user.clientId
       );
 
       expect(result).toEqual({ data: routingConfig });
@@ -40,7 +62,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: `CLIENT#${user.clientId}`,
         },
       });
     });
@@ -54,7 +76,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user.clientId
       );
 
       expect(result).toEqual({
@@ -67,7 +89,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: `CLIENT#${user.clientId}`,
         },
       });
     });
@@ -81,7 +103,7 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.get(
         'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
+        user.clientId
       );
 
       expect(result.error).toMatchObject({
@@ -96,7 +118,100 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: 'nhs-notify-client-id',
+          owner: `CLIENT#${user.clientId}`,
+        },
+      });
+    });
+  });
+
+  describe('create', () => {
+    const input: CreateUpdateRoutingConfig = {
+      name: 'rc',
+      campaignId: 'campaign',
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'SMS',
+          channelType: 'primary',
+          defaultTemplateId: 'sms',
+        },
+      ],
+      cascadeGroupOverrides: [{ name: 'standard' }],
+    };
+
+    const rc: RoutingConfig = {
+      ...input,
+      clientId: user.clientId,
+      createdAt: date.toISOString(),
+      id: generatedId,
+      status: 'DRAFT',
+      updatedAt: date.toISOString(),
+    };
+
+    const putPayload = {
+      ...rc,
+      owner: `CLIENT#${user.clientId}`,
+      createdBY: user.userId,
+      updatedBy: user.userId,
+    };
+
+    test('should create routing config', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo
+        .on(PutCommand, {
+          TableName: TABLE_NAME,
+          Item: putPayload,
+        })
+        .resolves({});
+
+      const result = await repo.create(input, user);
+
+      expect(result).toEqual({ data: rc });
+    });
+
+    test('returns failure if put fails', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('ddb_err');
+
+      mocks.dynamo.on(PutCommand).rejects(err);
+
+      const result = await repo.create(input, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if constructed routing config is invalid', async () => {
+      const { repo } = setup();
+
+      uuidMock.mockReturnValueOnce('not_a_uuid' as UUID);
+
+      const result = await repo.create(input, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.objectContaining({
+            issues: expect.arrayContaining([
+              expect.objectContaining({
+                path: ['id'],
+                code: 'invalid_format',
+                format: 'uuid',
+              }),
+            ]),
+          }),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create routing config',
+          },
         },
       });
     });

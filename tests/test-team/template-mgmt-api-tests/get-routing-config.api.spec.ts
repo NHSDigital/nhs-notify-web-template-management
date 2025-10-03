@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -8,6 +7,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import type { FactoryRoutingConfig } from 'helpers/types';
 
 test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   const authHelper = createAuthHelper();
@@ -15,24 +15,24 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let routingConfig: RoutingConfig;
-  let deletedRoutingConfig: RoutingConfig;
+  let routingConfig: FactoryRoutingConfig;
+  let deletedRoutingConfig: FactoryRoutingConfig;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    routingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
-    });
+    routingConfig = RoutingConfigFactory.create(user1);
 
-    deletedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+    deletedRoutingConfig = RoutingConfigFactory.create(user1, {
       status: 'DELETED',
     });
 
-    await storageHelper.seed([routingConfig, deletedRoutingConfig]);
+    await storageHelper.seed([
+      routingConfig.dbEntry,
+      deletedRoutingConfig.dbEntry,
+    ]);
   });
 
   test.afterAll(async () => {
@@ -54,7 +54,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   }) => {
     // exercise: make the GET request to retrieve the routing config
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -66,7 +66,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      data: routingConfig,
+      data: routingConfig.apiResponse,
     });
   });
 
@@ -92,7 +92,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   }) => {
     // exercise: make the GET request to retrieve the routing config as user2
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
       {
         headers: {
           Authorization: await user2.getAccessToken(),
@@ -113,7 +113,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
   }) => {
     // exercise: make the GET request to retrieve the deleted routing config
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${deletedRoutingConfig.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${deletedRoutingConfig.dbEntry.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -133,7 +133,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     request,
   }) => {
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
       {
         headers: {
           Authorization: await userSharedClient.getAccessToken(),
@@ -144,7 +144,7 @@ test.describe('GET /v1/routing-configuration/:routingConfigId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      data: routingConfig,
+      data: routingConfig.apiResponse,
     });
   });
 });

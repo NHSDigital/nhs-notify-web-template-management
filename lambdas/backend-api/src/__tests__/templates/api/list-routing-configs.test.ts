@@ -82,7 +82,7 @@ describe('ListRoutingConfig handler', () => {
     });
 
     expect(mocks.routingConfigClient.listRoutingConfigs).toHaveBeenCalledWith(
-      'nhs-notify-client-id',
+      { clientId: 'nhs-notify-client-id', userId: 'sub' },
       { status: 'DRAFT' }
     );
   });
@@ -92,12 +92,10 @@ describe('ListRoutingConfig handler', () => {
 
     const list = [
       makeRoutingConfig({
-        owner: 'nhs-notify-client-id',
         clientId: 'nhs-notify-client-id',
         status: 'COMPLETED',
       }),
       makeRoutingConfig({
-        owner: 'nhs-notify-client-id',
         clientId: 'nhs-notify-client-id',
         status: 'COMPLETED',
       }),
@@ -124,7 +122,7 @@ describe('ListRoutingConfig handler', () => {
     });
 
     expect(mocks.routingConfigClient.listRoutingConfigs).toHaveBeenCalledWith(
-      'nhs-notify-client-id',
+      { clientId: 'nhs-notify-client-id', userId: 'sub' },
       { status: 'COMPLETED' }
     );
   });

@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -7,6 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import type { FactoryRoutingConfig } from 'helpers/types';
 
 test.describe('GET /v1/routing-configurations', () => {
   const authHelper = createAuthHelper();
@@ -14,43 +14,34 @@ test.describe('GET /v1/routing-configurations', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let draftRoutingConfig: RoutingConfig;
-  let completedRoutingConfig: RoutingConfig;
-  let deletedRoutingConfig: RoutingConfig;
+  let draftRoutingConfig: FactoryRoutingConfig;
+  let completedRoutingConfig: FactoryRoutingConfig;
+  let deletedRoutingConfig: FactoryRoutingConfig;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    draftRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+    draftRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'DRAFT',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
     });
 
-    completedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+    completedRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'COMPLETED',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
     });
 
-    deletedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
+    deletedRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,
       status: 'DELETED',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
     });
 
     await storageHelper.seed([
-      draftRoutingConfig,
-      completedRoutingConfig,
-      deletedRoutingConfig,
+      draftRoutingConfig.dbEntry,
+      completedRoutingConfig.dbEntry,
+      deletedRoutingConfig.dbEntry,
     ]);
   });
 
@@ -89,8 +80,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        draftRoutingConfig,
-        completedRoutingConfig,
+        draftRoutingConfig.apiResponse,
+        completedRoutingConfig.apiResponse,
       ]),
     });
 
@@ -142,8 +133,8 @@ test.describe('GET /v1/routing-configurations', () => {
     expect(body).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([
-        draftRoutingConfig,
-        completedRoutingConfig,
+        draftRoutingConfig.apiResponse,
+        completedRoutingConfig.apiResponse,
       ]),
     });
 
@@ -169,7 +160,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [draftRoutingConfig],
+      data: [draftRoutingConfig.apiResponse],
     });
   });
 
@@ -192,7 +183,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [completedRoutingConfig],
+      data: [completedRoutingConfig.apiResponse],
     });
   });
 

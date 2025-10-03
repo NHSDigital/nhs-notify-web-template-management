@@ -81,7 +81,7 @@ describe('CountRoutingConfigs handler', () => {
     });
 
     expect(mocks.routingConfigClient.countRoutingConfigs).toHaveBeenCalledWith(
-      'nhs-notify-client-id',
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
       { status: 'DRAFT' }
     );
   });
@@ -110,7 +110,7 @@ describe('CountRoutingConfigs handler', () => {
     });
 
     expect(mocks.routingConfigClient.countRoutingConfigs).toHaveBeenCalledWith(
-      'nhs-notify-client-id',
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
       { status: 'COMPLETED' }
     );
   });

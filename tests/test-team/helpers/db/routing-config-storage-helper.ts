@@ -5,7 +5,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
-type RoutingConfigKey = Pick<RoutingConfig, 'id' | 'owner'>;
+type RoutingConfigKey = { id: string; clientId: string };
 
 export class RoutingConfigStorageHelper {
   private readonly dynamo: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
@@ -13,6 +13,8 @@ export class RoutingConfigStorageHelper {
   );
 
   private seedData: RoutingConfig[] = [];
+
+  private adHocRoutingConfigKeys: RoutingConfigKey[] = [];
 
   /**
    * Seed a load of routing configs into the database
@@ -46,9 +48,9 @@ export class RoutingConfigStorageHelper {
    */
   public async deleteSeeded() {
     await this.delete(
-      this.seedData.map(({ id, owner }) => ({
+      this.seedData.map(({ id, clientId }) => ({
         id,
-        owner,
+        clientId,
       }))
     );
     this.seedData = [];
@@ -63,11 +65,11 @@ export class RoutingConfigStorageHelper {
           new BatchWriteCommand({
             RequestItems: {
               [process.env.ROUTING_CONFIG_TABLE_NAME]: chunk.map(
-                ({ id, owner }) => ({
+                ({ id, clientId }) => ({
                   DeleteRequest: {
                     Key: {
                       id,
-                      owner,
+                      owner: this.clientOwnerKey(clientId),
                     },
                   },
                 })
@@ -77,6 +79,21 @@ export class RoutingConfigStorageHelper {
         )
       )
     );
+  }
+
+  /**
+   * Stores references to routing configs created in tests (not via seeding)
+   */
+  public addAdHocRoutingConfigKey(key: RoutingConfigKey) {
+    this.adHocRoutingConfigKeys.push(key);
+  }
+
+  /**
+   * Delete routing configs referenced by calls to addAdHocRoutingConfigKey from database
+   */
+  async deleteAdHocRoutingConfigs() {
+    await this.delete(this.adHocRoutingConfigKeys);
+    this.adHocRoutingConfigKeys = [];
   }
 
   /**
@@ -90,5 +107,9 @@ export class RoutingConfigStorageHelper {
     }
 
     return chunks;
+  }
+
+  private clientOwnerKey(clientId: string) {
+    return `CLIENT#${clientId}`;
   }
 }

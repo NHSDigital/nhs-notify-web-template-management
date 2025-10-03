@@ -10,11 +10,12 @@ jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const TABLE_NAME = 'routing-config-table-name';
 
-const owner = '89077697-ca6d-47fc-b233-3281fbd15579';
+const clientId = '89077697-ca6d-47fc-b233-3281fbd15579';
+const clientOwnerKey = `CLIENT#${clientId}`;
 
-const config1 = makeRoutingConfig({ owner, status: 'DRAFT' });
-const config2 = makeRoutingConfig({ owner, status: 'COMPLETED' });
-const config3 = makeRoutingConfig({ owner, status: 'DELETED' });
+const config1 = makeRoutingConfig({ clientId, status: 'DRAFT' });
+const config2 = makeRoutingConfig({ clientId, status: 'COMPLETED' });
+const config3 = makeRoutingConfig({ clientId, status: 'DELETED' });
 
 function setup() {
   const dynamo = mockClient(DynamoDBDocumentClient);
@@ -43,13 +44,13 @@ describe('RoutingConfigRepo#query', () => {
         .on(QueryCommand)
         .resolvesOnce({
           Items: page1,
-          LastEvaluatedKey: { owner, id: config2.id },
+          LastEvaluatedKey: { owner: clientOwnerKey, id: config2.id },
         })
         .resolvesOnce({
           Items: page2,
         });
 
-      const result = await repo.query(owner).list();
+      const result = await repo.query(clientId).list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 2);
       expect(mocks.dynamo).toHaveReceivedNthCommandWith(1, QueryCommand, {
@@ -59,9 +60,9 @@ describe('RoutingConfigRepo#query', () => {
           '#owner': 'owner',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
         },
-        ExclusiveStartKey: { owner, id: config2.id },
+        ExclusiveStartKey: { owner: clientOwnerKey, id: config2.id },
       });
       expect(mocks.dynamo).toHaveReceivedNthCommandWith(2, QueryCommand, {
         TableName: TABLE_NAME,
@@ -70,7 +71,7 @@ describe('RoutingConfigRepo#query', () => {
           '#owner': 'owner',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
         },
       });
 
@@ -85,7 +86,7 @@ describe('RoutingConfigRepo#query', () => {
       });
 
       await repo
-        .query(owner)
+        .query(clientId)
         .status('COMPLETED', 'DELETED')
         .status('DRAFT')
         .list();
@@ -100,7 +101,7 @@ describe('RoutingConfigRepo#query', () => {
           '#status': 'status',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
           ':status0': 'COMPLETED',
           ':status1': 'DELETED',
           ':status2': 'DRAFT',
@@ -116,7 +117,7 @@ describe('RoutingConfigRepo#query', () => {
       });
 
       await repo
-        .query(owner)
+        .query(clientId)
         .excludeStatus('COMPLETED', 'DELETED')
         .excludeStatus('DRAFT')
         .list();
@@ -132,7 +133,7 @@ describe('RoutingConfigRepo#query', () => {
           '#status': 'status',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
           ':notStatus0': 'COMPLETED',
           ':notStatus1': 'DELETED',
           ':notStatus2': 'DRAFT',
@@ -147,7 +148,11 @@ describe('RoutingConfigRepo#query', () => {
         Items: [],
       });
 
-      await repo.query(owner).status('DRAFT').excludeStatus('DELETED').list();
+      await repo
+        .query(clientId)
+        .status('DRAFT')
+        .excludeStatus('DELETED')
+        .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
       expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
@@ -160,7 +165,7 @@ describe('RoutingConfigRepo#query', () => {
           '#status': 'status',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
           ':notStatus0': 'DELETED',
           ':status0': 'DRAFT',
         },
@@ -175,7 +180,7 @@ describe('RoutingConfigRepo#query', () => {
       });
 
       await repo
-        .query(owner)
+        .query(clientId)
         .status('DRAFT')
         .status('DRAFT')
         .excludeStatus('DELETED')
@@ -193,7 +198,7 @@ describe('RoutingConfigRepo#query', () => {
           '#status': 'status',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
           ':notStatus0': 'DELETED',
           ':status0': 'DRAFT',
         },
@@ -206,12 +211,12 @@ describe('RoutingConfigRepo#query', () => {
       mocks.dynamo.on(QueryCommand).resolvesOnce({
         Items: [
           config1,
-          { owner, id: '2eb0b8f5-63f0-4512-8a95-5b82e7c4b07b' },
+          { owner: clientOwnerKey, id: '2eb0b8f5-63f0-4512-8a95-5b82e7c4b07b' },
           config2,
         ],
       });
 
-      const result = await repo.query(owner).list();
+      const result = await repo.query(clientId).list();
 
       expect(result.data).toEqual([config1, config2]);
     });
@@ -221,7 +226,7 @@ describe('RoutingConfigRepo#query', () => {
 
       mocks.dynamo.on(QueryCommand).resolvesOnce({});
 
-      const result = await repo.query(owner).list();
+      const result = await repo.query(clientId).list();
 
       expect(result.data).toEqual([]);
     });
@@ -233,7 +238,7 @@ describe('RoutingConfigRepo#query', () => {
 
       mocks.dynamo.on(QueryCommand).rejectsOnce(e);
 
-      const result = await repo.query(owner).list();
+      const result = await repo.query(clientId).list();
 
       expect(result.error).toMatchObject({
         actualError: e,
@@ -251,13 +256,13 @@ describe('RoutingConfigRepo#query', () => {
         .on(QueryCommand)
         .resolvesOnce({
           Count: 2,
-          LastEvaluatedKey: { owner, id: config2.id },
+          LastEvaluatedKey: { owner: clientOwnerKey, id: config2.id },
         })
         .resolvesOnce({
           Count: 1,
         });
 
-      const result = await repo.query(owner).count();
+      const result = await repo.query(clientId).count();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 2);
       expect(mocks.dynamo).toHaveReceivedNthCommandWith(1, QueryCommand, {
@@ -267,10 +272,10 @@ describe('RoutingConfigRepo#query', () => {
           '#owner': 'owner',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
         },
         Select: 'COUNT',
-        ExclusiveStartKey: { owner, id: config2.id },
+        ExclusiveStartKey: { owner: clientOwnerKey, id: config2.id },
       });
       expect(mocks.dynamo).toHaveReceivedNthCommandWith(2, QueryCommand, {
         TableName: TABLE_NAME,
@@ -279,7 +284,7 @@ describe('RoutingConfigRepo#query', () => {
           '#owner': 'owner',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': clientOwnerKey,
         },
         Select: 'COUNT',
       });
@@ -292,7 +297,7 @@ describe('RoutingConfigRepo#query', () => {
 
       mocks.dynamo.on(QueryCommand).resolvesOnce({});
 
-      const result = await repo.query(owner).count();
+      const result = await repo.query(clientId).count();
 
       expect(result.data).toEqual({ count: 0 });
     });
@@ -304,7 +309,7 @@ describe('RoutingConfigRepo#query', () => {
 
       mocks.dynamo.on(QueryCommand).rejectsOnce(e);
 
-      const result = await repo.query(owner).count();
+      const result = await repo.query(clientId).count();
 
       expect(result.error).toMatchObject({
         actualError: e,

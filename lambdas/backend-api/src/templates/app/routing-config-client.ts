@@ -1,24 +1,46 @@
 import { failure } from '@backend-api/utils/result';
 import {
+  $CreateUpdateRoutingConfig,
   $ListRoutingConfigFilters,
   ErrorCase,
+  type CreateUpdateRoutingConfig,
   type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
 import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
+import type { User } from 'nhs-notify-web-template-management-utils';
 
 export class RoutingConfigClient {
   constructor(
     private readonly routingConfigRepository: RoutingConfigRepository
   ) {}
 
+  async createRoutingConfig(
+    routingConfig: CreateUpdateRoutingConfig,
+    user: User
+  ): Promise<Result<RoutingConfig>> {
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      routingConfig
+    );
+
+    if (validationResult.error) return validationResult;
+
+    const createResult = await this.routingConfigRepository.create(
+      validationResult.data,
+      user
+    );
+
+    return createResult;
+  }
+
   async getRoutingConfig(
     id: string,
-    owner: string
+    user: User
   ): Promise<Result<RoutingConfig>> {
-    const result = await this.routingConfigRepository.get(id, owner);
+    const result = await this.routingConfigRepository.get(id, user.clientId);
 
     if (result.data?.status === 'DELETED') {
       return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
@@ -28,7 +50,7 @@ export class RoutingConfigClient {
   }
 
   async listRoutingConfigs(
-    owner: string,
+    user: User,
     filters?: unknown
   ): Promise<Result<RoutingConfig[]>> {
     let parsedFilters: ListRoutingConfigFilters = {};
@@ -44,7 +66,7 @@ export class RoutingConfigClient {
     }
 
     const query = this.routingConfigRepository
-      .query(owner)
+      .query(user.clientId)
       .excludeStatus('DELETED');
 
     if (parsedFilters.status) {
@@ -55,7 +77,7 @@ export class RoutingConfigClient {
   }
 
   async countRoutingConfigs(
-    owner: string,
+    user: User,
     filters?: unknown
   ): Promise<Result<{ count: number }>> {
     let parsedFilters: ListRoutingConfigFilters = {};
@@ -71,7 +93,7 @@ export class RoutingConfigClient {
     }
 
     const query = this.routingConfigRepository
-      .query(owner)
+      .query(user.clientId)
       .excludeStatus('DELETED');
 
     if (parsedFilters.status) {

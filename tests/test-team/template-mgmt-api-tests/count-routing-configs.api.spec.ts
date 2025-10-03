@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   createAuthHelper,
   type TestUser,
@@ -7,6 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import type { FactoryRoutingConfig } from 'helpers/types';
 
 test.describe('GET /v1/routing-configurations/count', () => {
   const authHelper = createAuthHelper();
@@ -14,43 +14,29 @@ test.describe('GET /v1/routing-configurations/count', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let draftRoutingConfig: RoutingConfig;
-  let completedRoutingConfig: RoutingConfig;
-  let deletedRoutingConfig: RoutingConfig;
+  let draftRoutingConfig: FactoryRoutingConfig;
+  let completedRoutingConfig: FactoryRoutingConfig;
+  let deletedRoutingConfig: FactoryRoutingConfig;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    draftRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
-      clientId: user1.clientId,
-      status: 'DRAFT',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
-    });
+    draftRoutingConfig = RoutingConfigFactory.create(user1);
 
-    completedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
-      clientId: user1.clientId,
+    completedRoutingConfig = RoutingConfigFactory.create(user1, {
       status: 'COMPLETED',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
     });
 
-    deletedRoutingConfig = RoutingConfigFactory.create({
-      owner: user1.clientId,
-      clientId: user1.clientId,
+    deletedRoutingConfig = RoutingConfigFactory.create(user1, {
       status: 'DELETED',
-      createdBy: user1.userId,
-      updatedBy: user1.userId,
     });
 
     await storageHelper.seed([
-      draftRoutingConfig,
-      completedRoutingConfig,
-      deletedRoutingConfig,
+      draftRoutingConfig.dbEntry,
+      completedRoutingConfig.dbEntry,
+      deletedRoutingConfig.dbEntry,
     ]);
   });
 
