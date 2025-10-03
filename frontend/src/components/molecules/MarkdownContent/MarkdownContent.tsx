@@ -1,5 +1,5 @@
 import { interpolate } from '@utils/interpolate';
-import Markdown from 'markdown-to-jsx';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
 
 type MarkdownContentProps = {
@@ -23,8 +23,24 @@ export function MarkdownContent({
 
   if (rendered.length === 0) return null;
 
-  const modeOption =
-    mode === 'block' ? ({ forceBlock: true } as const) : ({ forceInline: true } as const);
+  const inlineOptions: MarkdownToJSX.Options = {
+    wrapper: React.Fragment,
+    forceInline: true,
+    disableParsingRawHTML: true,
+    overrides: {
+      a: { component: 'a', props: { target: '_blank', rel: 'noopener noreferrer' } },
+      span: { component: React.Fragment },
+    },
+  };
+
+  const blockOptions: MarkdownToJSX.Options = {
+    wrapper: React.Fragment,
+    forceBlock: true,
+    disableParsingRawHTML: true,
+    overrides: {
+      a: { component: 'a', props: { target: '_blank', rel: 'noopener noreferrer' } },
+    },
+  };
 
   return (
     <>
@@ -32,17 +48,7 @@ export function MarkdownContent({
         <Markdown
           key={index}
           data-testid={testId ? `${testId}-${index}` : undefined}
-          options={{
-            wrapper: React.Fragment,
-            disableParsingRawHTML: true,
-            overrides: {
-              a: {
-                component: 'a',
-                props: { rel: 'noopener noreferrer', target: '_blank' },
-              },
-            },
-            ...modeOption
-          }}
+          options={mode === 'block' ? blockOptions : inlineOptions}
         >
           {item}
         </Markdown >
