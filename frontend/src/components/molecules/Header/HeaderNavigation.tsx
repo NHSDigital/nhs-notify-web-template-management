@@ -2,19 +2,21 @@
 
 import type { AuthStatus } from '@aws-amplify/ui';
 import Link from 'next/link';
-import content from '@content/content';
 import { useAuthStatus } from '@hooks/use-auth-status';
+import content from '@content/content';
+import { ClientFeatures } from 'nhs-notify-backend-client';
+import { useFeatureFlags } from '@providers/features-provider';
 
 const headerContent = content.components.header;
 
 export function HeaderNavigation({
   initialAuthStatus,
-  routingEnabled,
 }: {
   initialAuthStatus: AuthStatus;
-  routingEnabled?: boolean;
 }) {
   const authStatus = useAuthStatus(initialAuthStatus);
+
+  const featureFlags = useFeatureFlags();
 
   return (
     <>
@@ -28,23 +30,20 @@ export function HeaderNavigation({
             <ul className='nhsuk-header__navigation-list'>
               {headerContent.navigationMenu.links
                 .filter(
-                  ({ feature }) => feature !== 'routing' || routingEnabled
+                  ({ feature }) =>
+                    !feature ||
+                    featureFlags[feature as keyof ClientFeatures] === true
                 )
-                .map(({ text, href }, index) => {
-                  return (
-                    <li
-                      className='nhsuk-header__navigation-item'
-                      key={`item-${index}`}
-                    >
-                      <Link
-                        className='nhsuk-header__navigation-link'
-                        href={href}
-                      >
-                        {text}
-                      </Link>
-                    </li>
-                  );
-                })}
+                .map(({ text, href }, index) => (
+                  <li
+                    className='nhsuk-header__navigation-item'
+                    key={`item-${index}`}
+                  >
+                    <Link className='nhsuk-header__navigation-link' href={href}>
+                      {text}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </nav>
