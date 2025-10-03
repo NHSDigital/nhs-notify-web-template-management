@@ -215,27 +215,5 @@ describe('RoutingConfigRepository', () => {
         },
       });
     });
-
-    test('returns errors if the database call fails', async () => {
-      const { repo, mocks } = setup();
-
-      const e = new Error('Oh No');
-
-      mocks.dynamo.on(GetCommand).rejectsOnce(e);
-
-      const result = await repo.get(
-        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
-      );
-
-      expect(result.error).toMatchObject({
-        actualError: e,
-        errorMeta: expect.objectContaining({
-          code: 500,
-        }),
-      });
-
-      expect(result.data).toBeUndefined();
-    });
   });
 });

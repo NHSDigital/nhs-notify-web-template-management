@@ -642,7 +642,7 @@ export class TemplateRepository {
     try {
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
-        this.clientOwnerKey(user.clientId),
+        user.clientId,
         templateId,
         {
           ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
@@ -651,6 +651,7 @@ export class TemplateRepository {
       )
         .setStatus('WAITING_FOR_PROOF')
         .expectedStatus('PENDING_PROOF_REQUEST')
+        .setUpdatedByUserAt(user.userId)
 
         // dynamodb does not support conditional initialising of maps, so we have to
         // initialise an empty map here, then we set supplier-specific values in the

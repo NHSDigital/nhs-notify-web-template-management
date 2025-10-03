@@ -63,7 +63,9 @@ No requirements.
 | <a name="module_sqs_template_mgmt_events"></a> [sqs\_template\_mgmt\_events](#module\_sqs\_template\_mgmt\_events) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_table_events_pipe_dlq"></a> [sqs\_template\_table\_events\_pipe\_dlq](#module\_sqs\_template\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_validate_letter_template_files"></a> [sqs\_validate\_letter\_template\_files](#module\_sqs\_validate\_letter\_template\_files) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
+| <a name="module_submit_routing_config_lambda"></a> [submit\_routing\_config\_lambda](#module\_submit\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_submit_template_lambda"></a> [submit\_template\_lambda](#module\_submit\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
+| <a name="module_update_routing_config_lambda"></a> [update\_routing\_config\_lambda](#module\_update\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 | <a name="module_upload_letter_template_lambda"></a> [upload\_letter\_template\_lambda](#module\_upload\_letter\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip | n/a |
 ## Outputs

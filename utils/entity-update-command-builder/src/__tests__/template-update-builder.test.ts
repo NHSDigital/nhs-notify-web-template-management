@@ -3,6 +3,7 @@ import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';
 const mockOwner = 'Hello1';
+const mockOwnerKey = `CLIENT#${mockOwner}`;
 const mockId = 'Hello2';
 const mockDate = new Date('2025-01-01 09:00:00');
 
@@ -25,7 +26,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeNames: { '#updatedAt': 'updatedAt' },
@@ -51,7 +52,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeNames: { '#updatedAt': 'updatedAt' },
@@ -79,7 +80,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -110,7 +111,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -146,7 +147,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -191,7 +192,7 @@ describe('TemplateUpdateBuilder', () => {
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
@@ -221,7 +222,7 @@ describe('TemplateUpdateBuilder', () => {
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
@@ -252,7 +253,7 @@ describe('TemplateUpdateBuilder', () => {
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
@@ -283,7 +284,7 @@ describe('TemplateUpdateBuilder', () => {
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
@@ -315,7 +316,7 @@ describe('TemplateUpdateBuilder', () => {
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
@@ -340,7 +341,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -375,7 +376,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -411,7 +412,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
@@ -447,7 +448,7 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {

@@ -24,7 +24,7 @@ export class TemplateLockRepository {
 
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      this.addClientOwnerPrefix(clientId),
+      clientId,
       id
     )
       .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
@@ -48,16 +48,12 @@ export class TemplateLockRepository {
 
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      this.addClientOwnerPrefix(clientId),
+      clientId,
       id
     )
       .setLockTimeUnconditional('sftpSendLockTime', time + THIRTY_DAYS_MS)
       .build();
 
     return await this.client.send(new UpdateCommand(update));
-  }
-
-  private addClientOwnerPrefix(clientId: string) {
-    return `CLIENT#${clientId}`;
   }
 }
