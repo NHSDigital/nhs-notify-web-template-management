@@ -15,18 +15,28 @@ export type ContentBlock = MarkdownTextBlock | MarkdownInlineBlock | CodeBlock |
 export type ContentItem = ContentBlock | string;
 
 interface ContentRendererProps {
-  content: ContentItem[];
+  content: ContentItem[] | string;
   variables?: Record<string, string | number>;
 }
 
 export function ContentRenderer({ content, variables }: ContentRendererProps) {
-  const normalised: ContentBlock[] = content.map((item) =>
-    typeof item === 'string' ? { type: 'inline-text', text: item } : item
-  );
+  const items: ContentItem[] = typeof content === 'string' ? [content] : content ?? [];
+  if (items.length === 0) return null;
 
   return (
     <>
-      {normalised.map((block, index) => {
+      {items.map((block, index) => {
+        if (typeof block === 'string') {
+          return (
+            <MarkdownContent
+              key={index}
+              content={block}
+              variables={variables}
+              mode="inline"
+            />
+          );
+        }
+
         const key = block.testId ?? index;
 
         switch (block.type) {

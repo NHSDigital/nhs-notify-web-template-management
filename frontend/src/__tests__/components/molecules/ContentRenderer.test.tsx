@@ -66,8 +66,8 @@ describe('ContentRenderer', () => {
     expect(listItem.querySelector('p')).toBeNull();
   });
 
-  it('treats a string item as inline text (no paragraph wrapper)', () => {
-    const content: ContentItem[] = ['Inline via string'];
+  it('treats a string as inline text (no paragraph wrapper)', () => {
+    const content: string = 'Inline via string';
 
     render(
       <ul>
@@ -82,6 +82,21 @@ describe('ContentRenderer', () => {
     expect(listItem.querySelector('p')).toBeNull();
   });
 
+  it('treats a string array as inline text (no paragraph wrapper)', () => {
+    const content: ContentItem[] = ['Inline via string'];
+
+    render(
+      <ul>
+        <li data-testid="list-item">
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline via string');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
 
   it('renders code blocks with accessible description', () => {
     const content: ContentBlock[] = [
