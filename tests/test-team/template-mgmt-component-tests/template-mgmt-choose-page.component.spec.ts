@@ -6,7 +6,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-} from './template-mgmt-common.steps';
+} from '../helpers/template-mgmt-common.steps';
 
 test.describe('Choose Template Type Page', () => {
   test('should land on "Choose Template Type" page when navigating to "/choose-a-template-type" url with empty template', async ({

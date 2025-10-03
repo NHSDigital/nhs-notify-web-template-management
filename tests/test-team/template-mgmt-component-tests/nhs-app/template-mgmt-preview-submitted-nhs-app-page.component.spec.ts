@@ -8,7 +8,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-} from '../template-mgmt-common.steps';
+} from '../../helpers/template-mgmt-common.steps';
 import {
   assertBackToAllTemplatesBottomLink,
   assertBackToAllTemplatesTopLink,

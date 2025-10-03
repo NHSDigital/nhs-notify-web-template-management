@@ -3,6 +3,7 @@
   "api",
   "event",
   "ui-component",
+  "ui-routing-component",
   "ui-e2e",
   "ui-user-timeout"
 ]

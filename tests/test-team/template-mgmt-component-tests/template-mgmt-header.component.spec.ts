@@ -8,7 +8,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertClickHeaderLogoRedirectsToStartPage,
-} from './template-mgmt-common.steps';
+} from '../helpers/template-mgmt-common.steps';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import {
   createAuthHelper,
