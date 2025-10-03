@@ -75,4 +75,31 @@ export class RoutingConfigClient {
 
     return query.list();
   }
+
+  async countRoutingConfigs(
+    user: User,
+    filters?: unknown
+  ): Promise<Result<{ count: number }>> {
+    let parsedFilters: ListRoutingConfigFilters = {};
+
+    if (filters) {
+      const validation = await validate($ListRoutingConfigFilters, filters);
+
+      if (validation.error) {
+        return validation;
+      }
+
+      parsedFilters = validation.data;
+    }
+
+    const query = this.routingConfigRepository
+      .query(user.clientId)
+      .excludeStatus('DELETED');
+
+    if (parsedFilters.status) {
+      query.status(parsedFilters.status);
+    }
+
+    return query.count();
+  }
 }

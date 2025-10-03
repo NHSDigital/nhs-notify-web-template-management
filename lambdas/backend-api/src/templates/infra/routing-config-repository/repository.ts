@@ -63,31 +63,31 @@ export class RoutingConfigRepository {
     id: string,
     clientId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const result = await this.client.send(
-      new GetCommand({
-        TableName: this.tableName,
-        Key: {
-          id,
-          owner: this.clientOwnerKey(clientId),
-        },
-      })
-    );
+    try {
+      const result = await this.client.send(
+        new GetCommand({
+          TableName: this.tableName,
+          Key: {
+            id,
+            owner: this.clientOwnerKey(clientId),
+          },
+        })
+      );
 
-    if (!result.Item) {
-      return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
-    }
+      if (!result.Item) {
+        return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
+      }
 
-    const parsed = $RoutingConfig.safeParse(result.Item);
+      const parsed = $RoutingConfig.parse(result.Item);
 
-    if (!parsed.success) {
+      return success(parsed);
+    } catch (error) {
       return failure(
         ErrorCase.INTERNAL,
         'Error retrieving Routing Config',
-        parsed.error
+        error
       );
     }
-
-    return success(parsed.data);
   }
 
   query(clientId: string): RoutingConfigQuery {

@@ -5,6 +5,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
+import { ZodError } from 'zod';
 import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { routingConfig } from '../../fixtures/routing-config';
 import {
@@ -105,7 +106,12 @@ describe('RoutingConfigRepository', () => {
         user.clientId
       );
 
-      expect(result.error).not.toBeUndefined();
+      expect(result.error).toMatchObject({
+        actualError: expect.any(ZodError),
+        errorMeta: expect.objectContaining({
+          code: 500,
+        }),
+      });
       expect(result.data).toBeUndefined();
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
@@ -208,6 +214,28 @@ describe('RoutingConfigRepository', () => {
           },
         },
       });
+    });
+
+    test('returns errors if the database call fails', async () => {
+      const { repo, mocks } = setup();
+
+      const e = new Error('Oh No');
+
+      mocks.dynamo.on(GetCommand).rejectsOnce(e);
+
+      const result = await repo.get(
+        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
+        'nhs-notify-client-id'
+      );
+
+      expect(result.error).toMatchObject({
+        actualError: e,
+        errorMeta: expect.objectContaining({
+          code: 500,
+        }),
+      });
+
+      expect(result.data).toBeUndefined();
     });
   });
 });
