@@ -32,7 +32,7 @@ curl --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
 
-### POST - /v1/template/:templateId - Update a template
+### PUT - /v1/template/:templateId - Update a template
 
 Will update template properties excluding templateStatus
 
@@ -170,6 +170,7 @@ curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
   "cascadeGroupOverrides": [{ "name": "standard" }],
   "name": "RC name"
 }'
+```
 
 ### PUT - /v1/routing-configuration/:routingConfigId - Update a routing configuration
 
@@ -178,7 +179,18 @@ curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN" \
---data '{ "name": "New name" }'
+--data '{
+  "campaignId": "campaign",
+  "cascade": [{
+      "cascadeGroups": ["standard"],
+      "channel": "EMAIL",
+      "channelType": "primary",
+      "defaultTemplateId": "email_id"
+   }],
+  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "name": "New name"
+}'
+```
 
 ### PATCH - /v1/template/:templateId/submit - Submit a routing config
 

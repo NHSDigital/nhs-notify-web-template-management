@@ -11,7 +11,7 @@ export function createHandler({
   return async function (event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    const routingConfigId = event.pathParameters?.id;
+    const routingConfigId = event.pathParameters?.routingConfigId;
 
     if (!routingConfigId || !userId || !clientId) {
       return apiFailure(400, 'Invalid request');

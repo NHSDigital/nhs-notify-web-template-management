@@ -373,6 +373,38 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
+export type PutV1RoutingConfigurationByRoutingConfigIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of routing configuration to update
+     */
+    routingConfigId: string;
+  };
+  query?: never;
+  url: '/v1/routing-configuration/{routingConfigId}';
+};
+
+export type PutV1RoutingConfigurationByRoutingConfigIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PutV1RoutingConfigurationByRoutingConfigIdError =
+  PutV1RoutingConfigurationByRoutingConfigIdErrors[keyof PutV1RoutingConfigurationByRoutingConfigIdErrors];
+
+export type PutV1RoutingConfigurationByRoutingConfigIdResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccess;
+};
+
+export type PutV1RoutingConfigurationByRoutingConfigIdResponse =
+  PutV1RoutingConfigurationByRoutingConfigIdResponses[keyof PutV1RoutingConfigurationByRoutingConfigIdResponses];
+
 export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitData = {
   body?: never;
   path: {
@@ -531,7 +563,7 @@ export type GetV1TemplateByTemplateIdResponses = {
 export type GetV1TemplateByTemplateIdResponse =
   GetV1TemplateByTemplateIdResponses[keyof GetV1TemplateByTemplateIdResponses];
 
-export type PostV1TemplateByTemplateIdData = {
+export type PutV1TemplateByTemplateIdData = {
   /**
    * Template to update
    */
@@ -546,25 +578,25 @@ export type PostV1TemplateByTemplateIdData = {
   url: '/v1/template/{templateId}';
 };
 
-export type PostV1TemplateByTemplateIdErrors = {
+export type PutV1TemplateByTemplateIdErrors = {
   /**
    * Error
    */
   default: Failure;
 };
 
-export type PostV1TemplateByTemplateIdError =
-  PostV1TemplateByTemplateIdErrors[keyof PostV1TemplateByTemplateIdErrors];
+export type PutV1TemplateByTemplateIdError =
+  PutV1TemplateByTemplateIdErrors[keyof PutV1TemplateByTemplateIdErrors];
 
-export type PostV1TemplateByTemplateIdResponses = {
+export type PutV1TemplateByTemplateIdResponses = {
   /**
    * 200 response
    */
   200: TemplateSuccess;
 };
 
-export type PostV1TemplateByTemplateIdResponse =
-  PostV1TemplateByTemplateIdResponses[keyof PostV1TemplateByTemplateIdResponses];
+export type PutV1TemplateByTemplateIdResponse =
+  PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;

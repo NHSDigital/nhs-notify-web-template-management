@@ -63,26 +63,23 @@ export class RoutingConfigRepository {
 
   async update(
     id: string,
-    updateData: Partial<CreateUpdateRoutingConfig>,
+    updateData: CreateUpdateRoutingConfig,
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const builder = new RoutingConfigUpdateBuilder(
+    const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
+
+    const cmdInput = new RoutingConfigUpdateBuilder(
       this.tableName,
       user.clientId,
       id,
       { ReturnValues: 'ALL_NEW' }
-    ).setUpdatedByUserAt(user.userId);
-
-    const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
-
-    if (campaignId) builder.setCampaignId(campaignId);
-    if (cascade) builder.setCascade(cascade);
-    if (name) builder.setName(name);
-    if (cascadeGroupOverrides) {
-      builder.setCascadeGroupOverrides(cascadeGroupOverrides);
-    }
-
-    const cmdInput = builder.build();
+    )
+      .setUpdatedByUserAt(user.userId)
+      .setCampaignId(campaignId)
+      .setCascade(cascade)
+      .setName(name)
+      .setCascadeGroupOverrides(cascadeGroupOverrides)
+      .build();
 
     try {
       const result = await this.client.send(new UpdateCommand(cmdInput));
