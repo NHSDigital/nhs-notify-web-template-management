@@ -159,4 +159,70 @@ describe('RoutingConfigClient', () => {
       expect(query.status).toHaveBeenCalledWith('DRAFT');
     });
   });
+
+  describe('countRoutingConfigs', () => {
+    it('queries for non-deleted configs with the given owner and returns the count', async () => {
+      const { mocks, client } = setup();
+
+      const query = mockQuery();
+
+      mocks.routingConfigRepository.query.mockReturnValueOnce(query);
+
+      query.count.mockResolvedValueOnce({ data: { count: 3 } });
+
+      const result = await client.countRoutingConfigs('nhs-notify-client-id');
+
+      expect(result).toEqual({ data: { count: 3 } });
+
+      expect(mocks.routingConfigRepository.query).toHaveBeenCalledWith(
+        'nhs-notify-client-id'
+      );
+      expect(query.excludeStatus).toHaveBeenCalledWith('DELETED');
+      expect(query.status).not.toHaveBeenCalled();
+    });
+
+    it('validates status filter parameter', async () => {
+      const { client, mocks } = setup();
+
+      const result = await client.countRoutingConfigs('nhs-notify-client-id', {
+        status: 'INVALID',
+      });
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              status: 'Invalid option: expected one of "COMPLETED"|"DRAFT"',
+            },
+          },
+        }),
+      });
+
+      expect(mocks.routingConfigRepository.query).not.toHaveBeenCalled();
+    });
+
+    it('uses the given status filter', async () => {
+      const { client, mocks } = setup();
+
+      const query = mockQuery();
+
+      mocks.routingConfigRepository.query.mockReturnValueOnce(query);
+
+      query.count.mockResolvedValueOnce({ data: { count: 18 } });
+
+      const result = await client.countRoutingConfigs('nhs-notify-client-id', {
+        status: 'DRAFT',
+      });
+
+      expect(result).toEqual({ data: { count: 18 } });
+
+      expect(mocks.routingConfigRepository.query).toHaveBeenCalledWith(
+        'nhs-notify-client-id'
+      );
+      expect(query.excludeStatus).toHaveBeenCalledWith('DELETED');
+      expect(query.status).toHaveBeenCalledWith('DRAFT');
+    });
+  });
 });
