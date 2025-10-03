@@ -12,7 +12,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-} from '../template-mgmt-common.steps';
+} from '../../helpers/template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
