@@ -31,6 +31,7 @@ npx esbuild \
     src/templates/submit.ts \
     src/templates/submit-routing-config.ts \
     src/templates/update.ts \
+    src/templates/update-routing-config.ts \
     src/templates/validate-letter-template-files.ts
 
 cp -r ../../utils/utils/src/email-templates ./dist/submit

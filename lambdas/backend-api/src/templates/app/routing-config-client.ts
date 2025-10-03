@@ -3,7 +3,6 @@ import {
   $CreateUpdateRoutingConfig,
   $ListRoutingConfigFilters,
   ErrorCase,
-  type CreateUpdateRoutingConfig,
   type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,
@@ -18,12 +17,12 @@ export class RoutingConfigClient {
   ) {}
 
   async createRoutingConfig(
-    routingConfig: CreateUpdateRoutingConfig,
+    payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
     const validationResult = await validate(
       $CreateUpdateRoutingConfig,
-      routingConfig
+      payload
     );
 
     if (validationResult.error) return validationResult;
@@ -34,6 +33,25 @@ export class RoutingConfigClient {
     );
 
     return createResult;
+  }
+
+  async updateRoutingConfig(
+    routingConfigId: string,
+    payload: unknown,
+    user: User
+  ): Promise<Result<RoutingConfig>> {
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      payload
+    );
+
+    if (validationResult.error) return validationResult;
+
+    return await this.routingConfigRepository.update(
+      routingConfigId,
+      validationResult.data,
+      user
+    );
   }
 
   async submitRoutingConfig(

@@ -1,4 +1,6 @@
 import type {
+  CascadeGroup,
+  CascadeItem,
   RoutingConfig,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
@@ -31,6 +33,26 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
 
   setStatus(status: RoutingConfigStatus) {
     this.updateBuilder.setValue('status', status);
+    return this;
+  }
+
+  setCampaignId(campaignId: string) {
+    this.updateBuilder.setValue('campaignId', campaignId);
+    return this;
+  }
+
+  setCascade(cascade: CascadeItem[]) {
+    this.updateBuilder.setValue('cascade', cascade);
+    return this;
+  }
+
+  setCascadeGroupOverrides(cascadeGroupOverrides: CascadeGroup[]) {
+    this.updateBuilder.setValue('cascadeGroupOverrides', cascadeGroupOverrides);
+    return this;
+  }
+
+  setName(name: string) {
+    this.updateBuilder.setValue('name', name);
     return this;
   }
 

@@ -62,10 +62,49 @@ export class RoutingConfigRepository {
   }
 
   async update(
-    _updateData: Partial<CreateUpdateRoutingConfig>,
-    _user: User
+    id: string,
+    updateData: Partial<CreateUpdateRoutingConfig>,
+    user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
-    return {} as Promise<ApplicationResult<RoutingConfig>>;
+    const builder = new RoutingConfigUpdateBuilder(
+      this.tableName,
+      user.clientId,
+      id,
+      { ReturnValues: 'ALL_NEW' }
+    ).setUpdatedByUserAt(user.userId);
+
+    const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
+
+    if (campaignId) builder.setCampaignId(campaignId);
+    if (cascade) builder.setCascade(cascade);
+    if (name) builder.setName(name);
+    if (cascadeGroupOverrides) {
+      builder.setCascadeGroupOverrides(cascadeGroupOverrides);
+    }
+
+    const cmdInput = builder.build();
+
+    try {
+      const result = await this.client.send(new UpdateCommand(cmdInput));
+
+      const parsed = $RoutingConfig.safeParse(result.Attributes);
+
+      if (!parsed.success) {
+        return failure(
+          ErrorCase.INTERNAL,
+          'Error retrieving Routing Config',
+          parsed.error
+        );
+      }
+
+      return success(parsed.data);
+    } catch (error) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Failed to update routing config',
+        error
+      );
+    }
   }
 
   async submit(
@@ -80,14 +119,23 @@ export class RoutingConfigRepository {
     )
       .setStatus('COMPLETED')
       .expectedStatus('DRAFT')
+      .setUpdatedByUserAt(user.userId)
       .build();
 
     try {
       const result = await this.client.send(new UpdateCommand(cmdInput));
 
-      const routingConfig = $RoutingConfig.parse(result.Attributes);
+      const parsed = $RoutingConfig.safeParse(result.Attributes);
 
-      return success(routingConfig);
+      if (!parsed.success) {
+        return failure(
+          ErrorCase.INTERNAL,
+          'Error retrieving Routing Config',
+          parsed.error
+        );
+      }
+
+      return success(parsed.data);
     } catch (error) {
       return failure(
         ErrorCase.INTERNAL,
