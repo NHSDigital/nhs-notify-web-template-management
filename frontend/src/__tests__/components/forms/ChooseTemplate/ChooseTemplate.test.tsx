@@ -33,10 +33,10 @@ describe('Choose template page', () => {
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-      screen.getByTestId('EMAIL-radio'),
-      screen.getByTestId('NHS_APP-radio'),
-      screen.getByTestId('SMS-radio'),
-      screen.getByTestId('LETTER-radio'),
+      screen.getByTestId('email-radio'),
+      screen.getByTestId('nhsapp-radio'),
+      screen.getByTestId('sms-radio'),
+      screen.getByTestId('letter-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 

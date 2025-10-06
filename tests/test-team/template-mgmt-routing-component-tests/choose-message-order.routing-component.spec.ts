@@ -103,7 +103,7 @@ test.describe('Choose Message Order Page', () => {
       label: 'Letter only',
     },
   ])
-    test(`should navigate to the ${label} message order creation page when radio button selected and continue button clicked`, async ({
+    test(`when the ${label} option is selected, nagivates to the create-message-plan page with the correct query parameter`, async ({
       page,
       baseURL,
     }) => {

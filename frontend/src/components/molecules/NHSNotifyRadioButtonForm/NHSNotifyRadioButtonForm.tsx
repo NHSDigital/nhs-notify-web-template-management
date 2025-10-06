@@ -34,6 +34,8 @@ export type NHSNotifyRadioButtonFormProps = {
   };
 };
 
+const normaliseId = (id: string) => id.toLowerCase().replaceAll('_','').replaceAll(',','-');
+
 export const NHSNotifyRadioButtonForm = ({
   formId,
   radiosId,
@@ -78,9 +80,9 @@ export const NHSNotifyRadioButtonForm = ({
         {options.map(({ id, text, checked }) => (
           <Radios.Radio
             value={id}
-            id={`${radiosId}-${id}`}
-            data-testid={`${id}-radio`}
-            key={`${id}-radio`}
+            id={`${radiosId}-${normaliseId(id)}`}
+            data-testid={`${normaliseId(id)}-radio`}
+            key={`${normaliseId(id)}-radio`}
             defaultChecked={checked}
           >
             {text}
