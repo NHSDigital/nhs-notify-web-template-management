@@ -497,10 +497,15 @@ describe('templateRepository', () => {
       async (channelProperties) => {
         const { templateRepository, mocks } = setup();
 
+        const template = {
+          ...channelProperties,
+          ...databaseTemplateProperties,
+        };
+
         mocks.ddbDocClient
           .on(PutCommand, {
             TableName: templatesTableName,
-            Item: { ...channelProperties, ...databaseTemplateProperties },
+            Item: template,
           })
           .resolves({});
 
@@ -512,7 +517,13 @@ describe('templateRepository', () => {
         );
 
         expect(response).toEqual({
-          data: { ...channelProperties, ...databaseTemplateProperties },
+          data: template,
+        });
+
+        expect(mocks.ddbDocClient).toHaveReceivedCommandWith(PutCommand, {
+          ConditionExpression: 'attribute_not_exists(id)',
+          Item: template,
+          TableName: templatesTableName,
         });
       }
     );
