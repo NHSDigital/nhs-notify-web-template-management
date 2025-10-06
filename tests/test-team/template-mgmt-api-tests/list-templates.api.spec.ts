@@ -28,7 +28,7 @@ test.describe('GET /v1/templates', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/some-template`
+      `${process.env.API_BASE_URL}/v1/templates`
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({

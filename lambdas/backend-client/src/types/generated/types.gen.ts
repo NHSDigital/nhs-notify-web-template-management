@@ -70,6 +70,9 @@ export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
 export type ChannelType = 'primary' | 'secondary';
 
 export type ClientConfiguration = {
+  /**
+   * @deprecated
+   */
   campaignId?: string;
   campaignIds?: Array<string>;
   features: ClientFeatures;
@@ -93,6 +96,20 @@ export type ConditionalTemplateAccessible = {
 export type ConditionalTemplateLanguage = {
   language: Language;
   templateId: string;
+};
+
+export type CountSuccess = {
+  data: {
+    count: number;
+  };
+  statusCode: number;
+};
+
+export type CreateUpdateRoutingConfig = {
+  campaignId: string;
+  cascade: Array<CascadeItem>;
+  cascadeGroupOverrides: Array<CascadeGroup>;
+  name: string;
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
@@ -177,19 +194,23 @@ export type RoutingConfig = {
   cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
-  createdBy: string;
   id: string;
   name: string;
-  owner: string;
   status: RoutingConfigStatus;
   updatedAt: string;
-  updatedBy: string;
 };
 
-export type RoutingConfigStatus = 'COMPLETED' | 'DELETED' | 'DRAFT';
+export type RoutingConfigStatus = RoutingConfigStatusActive | 'DELETED';
+
+export type RoutingConfigStatusActive = 'COMPLETED' | 'DRAFT';
 
 export type RoutingConfigSuccess = {
   data: RoutingConfig;
+  statusCode: number;
+};
+
+export type RoutingConfigSuccessList = {
+  data: Array<RoutingConfig>;
   statusCode: number;
 };
 
@@ -294,6 +315,36 @@ export type PostV1LetterTemplateResponses = {
 export type PostV1LetterTemplateResponse =
   PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
 
+export type PostV1RoutingConfigurationData = {
+  /**
+   * Routing configuration to create
+   */
+  body: CreateUpdateRoutingConfig;
+  path?: never;
+  query?: never;
+  url: '/v1/routing-configuration';
+};
+
+export type PostV1RoutingConfigurationErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1RoutingConfigurationError =
+  PostV1RoutingConfigurationErrors[keyof PostV1RoutingConfigurationErrors];
+
+export type PostV1RoutingConfigurationResponses = {
+  /**
+   * 201 response
+   */
+  201: RoutingConfigSuccess;
+};
+
+export type PostV1RoutingConfigurationResponse =
+  PostV1RoutingConfigurationResponses[keyof PostV1RoutingConfigurationResponses];
+
 export type GetV1RoutingConfigurationByRoutingConfigIdData = {
   body?: never;
   path: {
@@ -325,6 +376,70 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
+
+export type GetV1RoutingConfigurationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    status?: RoutingConfigStatusActive;
+  };
+  url: '/v1/routing-configurations';
+};
+
+export type GetV1RoutingConfigurationsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationsError =
+  GetV1RoutingConfigurationsErrors[keyof GetV1RoutingConfigurationsErrors];
+
+export type GetV1RoutingConfigurationsResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigSuccessList;
+};
+
+export type GetV1RoutingConfigurationsResponse =
+  GetV1RoutingConfigurationsResponses[keyof GetV1RoutingConfigurationsResponses];
+
+export type GetV1RoutingConfigurationsCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    status?: RoutingConfigStatusActive;
+  };
+  url: '/v1/routing-configurations/count';
+};
+
+export type GetV1RoutingConfigurationsCountErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1RoutingConfigurationsCountError =
+  GetV1RoutingConfigurationsCountErrors[keyof GetV1RoutingConfigurationsCountErrors];
+
+export type GetV1RoutingConfigurationsCountResponses = {
+  /**
+   * 200 response
+   */
+  200: CountSuccess;
+};
+
+export type GetV1RoutingConfigurationsCountResponse =
+  GetV1RoutingConfigurationsCountResponses[keyof GetV1RoutingConfigurationsCountResponses];
 
 export type PostV1TemplateData = {
   /**
