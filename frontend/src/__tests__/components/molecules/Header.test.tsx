@@ -202,10 +202,7 @@ describe('NhsNotifyHeader', () => {
         const plansLink = within(nav).getByRole('link', {
           name: 'Message plans',
         });
-        expect(plansLink).toHaveAttribute(
-          'href',
-          '/templates-and-message-plans/message-plans'
-        );
+        expect(plansLink).toHaveAttribute('href', '/message-plans');
       });
     });
 
