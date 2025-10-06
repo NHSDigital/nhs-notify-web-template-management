@@ -64,6 +64,12 @@ export type TemplatePageProps = {
   }>;
 };
 
+export type MessagePlanPageProps = {
+  params: Promise<{
+    routingConfigId: string;
+  }>;
+};
+
 export type TemplateSubmittedPageProps = {
   params: Promise<{
     templateId: string;
