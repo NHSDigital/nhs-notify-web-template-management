@@ -1030,7 +1030,7 @@ const chooseMessageOrder = {
   hint: 'Select one option',
   backLinkText: 'Go back',
   form: {
-    templateType: { error: 'Select a message order' },
+    messageOrder: { error: 'Select a message order' },
   },
 };
 

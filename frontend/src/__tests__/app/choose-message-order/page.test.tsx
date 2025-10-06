@@ -33,7 +33,7 @@ jest.mock('react', () => {
   };
 });
 
-test('ChooseATemplateTypePage', async () => {
+test('ChooseMessageOrderPage', async () => {
   const page = await ChooseMessageOrderPage();
 
   const container = render(page);

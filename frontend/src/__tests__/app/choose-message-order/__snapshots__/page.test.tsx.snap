@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChooseATemplateTypePage 1`] = `
+exports[`ChooseMessageOrderPage 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"

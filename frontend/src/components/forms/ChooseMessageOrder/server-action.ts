@@ -18,7 +18,7 @@ export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
 
 export const $ChooseMessageOrder = z.object({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {
-    message: content.components.chooseMessageOrder.form.templateType.error,
+    message: content.components.chooseMessageOrder.form.messageOrder.error,
   }),
 });
 
