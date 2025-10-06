@@ -33,7 +33,7 @@ export default defineConfig({
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
-        storageState: path.resolve(__dirname, '../.auth/e2e/user.json'),
+        storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['e2e:setup'],
       teardown: 'e2e:teardown',
