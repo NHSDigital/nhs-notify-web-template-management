@@ -2,7 +2,6 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 
 const templatesTableName = 'nhs-notify-main-app-api-templates';
