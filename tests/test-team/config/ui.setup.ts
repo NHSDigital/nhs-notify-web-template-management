@@ -13,7 +13,7 @@ import {
 
 setup('UI test setup', async ({ page }) => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
-    path.join(__dirname, '..', '..', '..', '..', 'sandbox_tf_outputs.json')
+    path.join(__dirname, '..', '..', '..', 'sandbox_tf_outputs.json')
   );
 
   BackendConfigHelper.toEnv(backendConfig);
@@ -33,6 +33,6 @@ setup('UI test setup', async ({ page }) => {
   await page.waitForURL('/templates/create-and-submit-templates');
 
   await page.context().storageState({
-    path: path.resolve(__dirname, '..', '.auth', 'user.json'),
+    path: path.resolve(__dirname, '.auth', 'user.json'),
   });
 });
