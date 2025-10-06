@@ -1,23 +1,15 @@
 import React from 'react';
 import type { AuthStatus } from '@aws-amplify/ui';
 import Link from 'next/link';
-import { ClientFeatures } from 'nhs-notify-backend-client';
 import content from '@content/content';
 import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
 import { HeaderAccountDetails } from './HeaderAccountDetails';
 import { HeaderNavigation } from './HeaderNavigation';
 
-interface NhsNotifyHeaderProps {
-  features?: ClientFeatures;
-}
-
 const headerContent = content.components.header;
 
-export async function NhsNotifyHeader({
-  // TODO: CCM-11148 Use real routing feature flag
-  features,
-}: NhsNotifyHeaderProps) {
+export async function NhsNotifyHeader() {
   const session = await getSessionServer();
 
   const authStatus: AuthStatus = session?.accessToken
@@ -64,10 +56,7 @@ export async function NhsNotifyHeader({
           initialAuthStatus={authStatus}
         />
       </div>
-      <HeaderNavigation
-        initialAuthStatus={authStatus}
-        routingEnabled={features?.routing}
-      />
+      <HeaderNavigation initialAuthStatus={authStatus} />
     </header>
   );
 }

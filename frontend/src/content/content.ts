@@ -44,7 +44,7 @@ const header = {
       },
       {
         text: 'Message plans',
-        href: '/templates-and-message-plans/message-plans',
+        href: '/message-plans',
         feature: 'routing',
       },
     ],
