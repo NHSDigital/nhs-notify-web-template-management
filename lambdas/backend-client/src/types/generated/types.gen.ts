@@ -378,7 +378,10 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type PutV1RoutingConfigurationByRoutingConfigIdData = {
-  body?: never;
+  /**
+   * Routing configuration update to apply
+   */
+  body: CreateUpdateRoutingConfig;
   path: {
     /**
      * ID of routing configuration to update
@@ -413,7 +416,7 @@ export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitData = {
   body?: never;
   path: {
     /**
-     * ID of routing configuration to submit
+     * ID of routing configuration to finalise
      */
     routingConfigId: string;
   };

@@ -1158,6 +1158,17 @@
       },
       "put": {
         "description": "Update a routing configuration by Id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+              }
+            }
+          },
+          "description": "Routing configuration update to apply",
+          "required": true
+        },
         "parameters": [
           {
             "description": "ID of routing configuration to update",
@@ -1222,10 +1233,10 @@
     },
     "/v1/routing-configuration/{routingConfigId}/submit": {
       "patch": {
-        "description": "Submit a routing configuration by Id",
+        "description": "Finalise a routing configuration by Id",
         "parameters": [
           {
-            "description": "ID of routing configuration to submit",
+            "description": "ID of routing configuration to finalise",
             "in": "path",
             "name": "routingConfigId",
             "required": true,
@@ -1268,7 +1279,7 @@
             "authorizer": []
           }
         ],
-        "summary": "Update a routing config's status to SUBMITTED",
+        "summary": "Finalise a routing configuration",
         "x-amazon-apigateway-integration": {
           "contentHandling": "CONVERT_TO_TEXT",
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
