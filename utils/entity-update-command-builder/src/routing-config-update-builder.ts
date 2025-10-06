@@ -68,6 +68,11 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
+  expectRoutingConfigExists() {
+    this.updateBuilder.fnCondition('attribute_exists', 'id');
+    return this;
+  }
+
   build() {
     return this.updateBuilder.finalise();
   }

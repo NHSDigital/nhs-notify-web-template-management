@@ -47,24 +47,21 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
   name?: 'translations';
 };
 
-export type CascadeItem =
-  | CascadeItemWithDefault
-  | CascadeItemWithConditional
-  | CascadeItemUnpopulated;
+export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
 
-export type CascadeItemUnpopulated = {
+export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
 };
 
-export type CascadeItemWithConditional = CascadeItemUnpopulated & {
+export type CascadeItemWithConditional = CascadeItemBase & {
   conditionalTemplates: Array<
     ConditionalTemplateLanguage | ConditionalTemplateAccessible
   >;
 };
 
-export type CascadeItemWithDefault = CascadeItemUnpopulated & {
+export type CascadeItemWithDefault = CascadeItemBase & {
   defaultTemplateId: string;
 };
 

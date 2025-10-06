@@ -6,7 +6,7 @@ import type {
   CascadeGroupStandard,
   CascadeGroupTranslations,
   CascadeItem,
-  CascadeItemUnpopulated,
+  CascadeItemBase,
   CascadeItemWithConditional,
   CascadeItemWithDefault,
   Channel,
@@ -79,7 +79,7 @@ const $ConditionalTemplateAccessible =
     })
   );
 
-const $CascadeItemUnpopulated = schemaFor<CascadeItemUnpopulated>()(
+const $CascadeItemBase = schemaFor<CascadeItemBase>()(
   z.object({
     cascadeGroups: z.array($CascadeGroupName),
     channel: $Channel,
@@ -88,13 +88,13 @@ const $CascadeItemUnpopulated = schemaFor<CascadeItemUnpopulated>()(
 );
 
 const $CascadeItemWithDefault = schemaFor<CascadeItemWithDefault>()(
-  $CascadeItemUnpopulated.extend({
+  $CascadeItemBase.extend({
     defaultTemplateId: z.string(),
   })
 ).strict();
 
 const $CascadeItemWithConditional = schemaFor<CascadeItemWithConditional>()(
-  $CascadeItemUnpopulated.extend({
+  $CascadeItemBase.extend({
     conditionalTemplates: z
       .array(
         z.union([$ConditionalTemplateAccessible, $ConditionalTemplateLanguage])
@@ -104,11 +104,7 @@ const $CascadeItemWithConditional = schemaFor<CascadeItemWithConditional>()(
 ).strict();
 
 const $CascadeItem = schemaFor<CascadeItem>()(
-  z.union([
-    $CascadeItemWithConditional,
-    $CascadeItemWithDefault,
-    $CascadeItemUnpopulated,
-  ])
+  z.union([$CascadeItemWithConditional, $CascadeItemWithDefault])
 );
 
 export const $CreateUpdateRoutingConfig =

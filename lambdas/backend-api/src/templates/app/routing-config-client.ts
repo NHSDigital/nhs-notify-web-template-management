@@ -27,12 +27,7 @@ export class RoutingConfigClient {
 
     if (validationResult.error) return validationResult;
 
-    const createResult = await this.routingConfigRepository.create(
-      validationResult.data,
-      user
-    );
-
-    return createResult;
+    return this.routingConfigRepository.create(validationResult.data, user);
   }
 
   async updateRoutingConfig(
@@ -47,7 +42,7 @@ export class RoutingConfigClient {
 
     if (validationResult.error) return validationResult;
 
-    return await this.routingConfigRepository.update(
+    return this.routingConfigRepository.update(
       routingConfigId,
       validationResult.data,
       user
@@ -58,7 +53,7 @@ export class RoutingConfigClient {
     routingConfigId: string,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    return await this.routingConfigRepository.submit(routingConfigId, user);
+    return this.routingConfigRepository.submit(routingConfigId, user);
   }
 
   async getRoutingConfig(

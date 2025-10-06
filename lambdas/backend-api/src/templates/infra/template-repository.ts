@@ -142,7 +142,11 @@ export class TemplateRepository {
 
     try {
       await this.client.send(
-        new PutCommand({ TableName: this.templatesTableName, Item: entity })
+        new PutCommand({
+          TableName: this.templatesTableName,
+          Item: entity,
+          ConditionExpression: 'attribute_not_exists(id)',
+        })
       );
 
       return success(entity);
@@ -736,7 +740,7 @@ export class TemplateRepository {
 
         if (error.Item.templateStatus.S === 'SUBMITTED') {
           return failure(
-            ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
+            ErrorCase.ALREADY_SUBMITTED,
             `Template with status ${error.Item.templateStatus.S} cannot be updated`,
             error
           );

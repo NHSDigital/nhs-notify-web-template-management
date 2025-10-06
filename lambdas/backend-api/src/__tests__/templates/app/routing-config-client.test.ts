@@ -4,6 +4,7 @@ import { RoutingConfigQuery } from '@backend-api/templates/infra/routing-config-
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
 import {
+  CascadeItem,
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
@@ -354,6 +355,109 @@ describe('RoutingConfigClient', () => {
           errorMeta: {
             code: 500,
             description: 'ddb err',
+          },
+        },
+      });
+    });
+  });
+
+  describe('submitRoutingConfig', () => {
+    test('returns completed routing config', async () => {
+      const { client, mocks } = setup();
+
+      const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
+
+      const completed: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+      };
+
+      mocks.routingConfigRepository.submit.mockResolvedValueOnce({
+        data: completed,
+      });
+
+      const result = await client.submitRoutingConfig(id, user);
+
+      expect(mocks.routingConfigRepository.submit).toHaveBeenCalledWith(
+        id,
+        user
+      );
+
+      expect(result).toEqual({
+        data: completed,
+      });
+    });
+  });
+
+  describe('updateRoutingConfig', () => {
+    test('returns updated routing config', async () => {
+      const { client, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        campaignId: routingConfig.campaignId,
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: 'new name',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.routingConfigRepository.update.mockResolvedValueOnce({
+        data: updated,
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(result).toEqual({
+        data: updated,
+      });
+    });
+
+    test('returns validation error when update is invalid', async () => {
+      const { client, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        campaignId: routingConfig.campaignId,
+        cascade: {} as CascadeItem[],
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+      };
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          actualError: {
+            fieldErrors: {
+              cascade: ['Invalid input: expected array, received object'],
+            },
+            formErrors: [],
+          },
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              cascade: 'Invalid input: expected array, received object',
+            },
           },
         },
       });

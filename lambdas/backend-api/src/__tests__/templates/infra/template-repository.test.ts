@@ -2080,6 +2080,7 @@ describe('templateRepository', () => {
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
           '#proofingEnabled': 'proofingEnabled',
           '#supplierReferences': 'supplierReferences',
         },
@@ -2090,6 +2091,7 @@ describe('templateRepository', () => {
           ':condition_5_proofingEnabled': true,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': userId,
           ':supplierReferences': {},
         },
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
@@ -2097,7 +2099,7 @@ describe('templateRepository', () => {
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
         UpdateExpression:
-          'SET #templateStatus = :templateStatus, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences)',
       });
     });
 
