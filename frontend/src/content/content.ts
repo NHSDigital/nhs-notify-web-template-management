@@ -1034,11 +1034,11 @@ const messagePlansPage = {
       links: [
         {
           href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing',
-          text: 'API integration environment',
+          text: 'API integration environment (opens in a new tab)',
         },
         {
           href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request',
-          text: 'Integration MESH mailbox',
+          text: 'Integration MESH mailbox (opens in a new tab)',
         },
       ],
     },
@@ -1047,12 +1047,12 @@ const messagePlansPage = {
       text1: 'Message plans that are ready to be sent using ',
       notifyApiLink: {
         href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify',
-        text: 'NHS Notify API',
+        text: 'NHS Notify API (opens in a new tab)',
       },
       text2: 'or ',
       meshAiLink: {
         href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/',
-        text: 'NHS Notify MESH.',
+        text: 'NHS Notify MESH (opens in a new tab).',
       },
     },
   },
