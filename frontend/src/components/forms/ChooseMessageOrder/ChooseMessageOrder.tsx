@@ -15,13 +15,13 @@ import {
 import { validate } from '@utils/client-validate-form';
 
 export const messageOrderDisplayMappings: Record<MessageOrder, string> = {
-  NHS_APP: 'NHS App only',
-  'NHS_APP,EMAIL': 'NHS App, Email',
-  'NHS_APP,SMS': 'NHS App, Text message',
-  'NHS_APP,EMAIL,SMS': 'NHS App, Email, Text message',
-  'NHS_APP,SMS,EMAIL': 'NHS App, Text message, Email',
-  'NHS_APP,SMS,LETTER': 'NHS App, Text message, Letter',
-  'NHS_APP,EMAIL,SMS,LETTER': 'NHS App, Email, Text message, Letter',
+  NHSAPP: 'NHS App only',
+  'NHSAPP,EMAIL': 'NHS App, Email',
+  'NHSAPP,SMS': 'NHS App, Text message',
+  'NHSAPP,EMAIL,SMS': 'NHS App, Email, Text message',
+  'NHSAPP,SMS,EMAIL': 'NHS App, Text message, Email',
+  'NHSAPP,SMS,LETTER': 'NHS App, Text message, Letter',
+  'NHSAPP,EMAIL,SMS,LETTER': 'NHS App, Email, Text message, Letter',
   LETTER: 'Letter only',
 };
 

@@ -57,16 +57,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP-radio"
-                  id="messageOrder-NHS_APP"
+                  data-testid="NHSAPP-radio"
+                  id="messageOrder-NHSAPP"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP"
+                  value="NHSAPP"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP"
-                  id="messageOrder-NHS_APP--label"
+                  for="messageOrder-NHSAPP"
+                  id="messageOrder-NHSAPP--label"
                 >
                   NHS App only
                 </label>
@@ -76,16 +76,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,EMAIL-radio"
-                  id="messageOrder-NHS_APP,EMAIL"
+                  data-testid="NHSAPP,EMAIL-radio"
+                  id="messageOrder-NHSAPP,EMAIL"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,EMAIL"
+                  value="NHSAPP,EMAIL"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,EMAIL"
-                  id="messageOrder-NHS_APP,EMAIL--label"
+                  for="messageOrder-NHSAPP,EMAIL"
+                  id="messageOrder-NHSAPP,EMAIL--label"
                 >
                   NHS App, Email
                 </label>
@@ -95,16 +95,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,SMS-radio"
-                  id="messageOrder-NHS_APP,SMS"
+                  data-testid="NHSAPP,SMS-radio"
+                  id="messageOrder-NHSAPP,SMS"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,SMS"
+                  value="NHSAPP,SMS"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,SMS"
-                  id="messageOrder-NHS_APP,SMS--label"
+                  for="messageOrder-NHSAPP,SMS"
+                  id="messageOrder-NHSAPP,SMS--label"
                 >
                   NHS App, Text message
                 </label>
@@ -114,16 +114,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,EMAIL,SMS-radio"
-                  id="messageOrder-NHS_APP,EMAIL,SMS"
+                  data-testid="NHSAPP,EMAIL,SMS-radio"
+                  id="messageOrder-NHSAPP,EMAIL,SMS"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,EMAIL,SMS"
+                  value="NHSAPP,EMAIL,SMS"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,EMAIL,SMS"
-                  id="messageOrder-NHS_APP,EMAIL,SMS--label"
+                  for="messageOrder-NHSAPP,EMAIL,SMS"
+                  id="messageOrder-NHSAPP,EMAIL,SMS--label"
                 >
                   NHS App, Email, Text message
                 </label>
@@ -133,16 +133,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,SMS,EMAIL-radio"
-                  id="messageOrder-NHS_APP,SMS,EMAIL"
+                  data-testid="NHSAPP,SMS,EMAIL-radio"
+                  id="messageOrder-NHSAPP,SMS,EMAIL"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,SMS,EMAIL"
+                  value="NHSAPP,SMS,EMAIL"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,SMS,EMAIL"
-                  id="messageOrder-NHS_APP,SMS,EMAIL--label"
+                  for="messageOrder-NHSAPP,SMS,EMAIL"
+                  id="messageOrder-NHSAPP,SMS,EMAIL--label"
                 >
                   NHS App, Text message, Email
                 </label>
@@ -152,16 +152,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,SMS,LETTER-radio"
-                  id="messageOrder-NHS_APP,SMS,LETTER"
+                  data-testid="NHSAPP,SMS,LETTER-radio"
+                  id="messageOrder-NHSAPP,SMS,LETTER"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,SMS,LETTER"
+                  value="NHSAPP,SMS,LETTER"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,SMS,LETTER"
-                  id="messageOrder-NHS_APP,SMS,LETTER--label"
+                  for="messageOrder-NHSAPP,SMS,LETTER"
+                  id="messageOrder-NHSAPP,SMS,LETTER--label"
                 >
                   NHS App, Text message, Letter
                 </label>
@@ -171,16 +171,16 @@ exports[`ChooseMessageOrderPage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP,EMAIL,SMS,LETTER-radio"
-                  id="messageOrder-NHS_APP,EMAIL,SMS,LETTER"
+                  data-testid="NHSAPP,EMAIL,SMS,LETTER-radio"
+                  id="messageOrder-NHSAPP,EMAIL,SMS,LETTER"
                   name="messageOrder"
                   type="radio"
-                  value="NHS_APP,EMAIL,SMS,LETTER"
+                  value="NHSAPP,EMAIL,SMS,LETTER"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-NHS_APP,EMAIL,SMS,LETTER"
-                  id="messageOrder-NHS_APP,EMAIL,SMS,LETTER--label"
+                  for="messageOrder-NHSAPP,EMAIL,SMS,LETTER"
+                  id="messageOrder-NHSAPP,EMAIL,SMS,LETTER--label"
                 >
                   NHS App, Email, Text message, Letter
                 </label>
