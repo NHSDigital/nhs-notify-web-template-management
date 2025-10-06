@@ -1,5 +1,3 @@
-'use client';
-
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';

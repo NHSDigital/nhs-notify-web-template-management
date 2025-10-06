@@ -1,5 +1,3 @@
-'use client';
-
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseMessageOrder } from '@forms/ChooseMessageOrder/ChooseMessageOrder';

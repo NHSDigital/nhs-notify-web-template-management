@@ -30,7 +30,7 @@ setup('component test setup', async ({ page }) => {
 
   await loginPage.cognitoSignIn(user);
 
-  // update this when we have a routing landing page
+  // TODO: CCM-11453: update this when we have a routing landing page
   await page.waitForURL('/templates/create-and-submit-templates');
 
   await page.context().storageState({
