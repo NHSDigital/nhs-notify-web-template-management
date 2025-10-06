@@ -8,7 +8,7 @@ import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import type { FactoryRoutingConfig } from 'helpers/types';
 
-test.describe('GET /v1/routing-configurations', () => {
+test.describe('GET /v1/routing-configurations/count', () => {
   const authHelper = createAuthHelper();
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
@@ -23,18 +23,13 @@ test.describe('GET /v1/routing-configurations', () => {
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
 
-    draftRoutingConfig = RoutingConfigFactory.create(user1, {
-      clientId: user1.clientId,
-      status: 'DRAFT',
-    });
+    draftRoutingConfig = RoutingConfigFactory.create(user1);
 
     completedRoutingConfig = RoutingConfigFactory.create(user1, {
-      clientId: user1.clientId,
       status: 'COMPLETED',
     });
 
     deletedRoutingConfig = RoutingConfigFactory.create(user1, {
-      clientId: user1.clientId,
       status: 'DELETED',
     });
 
@@ -51,7 +46,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -59,12 +54,12 @@ test.describe('GET /v1/routing-configurations', () => {
     });
   });
 
-  test('lists active routing configs belonging to the authenticated owner', async ({
+  test('counts active routing configs belonging to the authenticated owner', async ({
     request,
   }) => {
     // exercise - request user 1 routing configs
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -79,13 +74,8 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: expect.arrayContaining([
-        draftRoutingConfig.apiResponse,
-        completedRoutingConfig.apiResponse,
-      ]),
+      data: { count: 2 },
     });
-
-    expect(body.data.length).toBe(2);
   });
 
   test('does not return routing configs belonging to other clients besides the authenticated one', async ({
@@ -93,7 +83,7 @@ test.describe('GET /v1/routing-configurations', () => {
   }) => {
     // exercise - request user 2 routing configs (they have no routing configs)
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await user2.getAccessToken(),
@@ -108,7 +98,7 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [],
+      data: { count: 0 },
     });
   });
 
@@ -117,7 +107,7 @@ test.describe('GET /v1/routing-configurations', () => {
   }) => {
     // exercise - request shared user routing configs (same client as user 1)
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await userSharedClient.getAccessToken(),
@@ -132,19 +122,14 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: expect.arrayContaining([
-        draftRoutingConfig.apiResponse,
-        completedRoutingConfig.apiResponse,
-      ]),
+      data: { count: 2 },
     });
-
-    expect(body.data.length).toBe(2);
   });
 
   test('can filter by DRAFT status', async ({ request }) => {
     // exercise - request routing configs with DRAFT status
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -160,14 +145,14 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [draftRoutingConfig.apiResponse],
+      data: { count: 1 },
     });
   });
 
   test('can filter by COMPLETED status', async ({ request }) => {
     // exercise - request routing configs with COMPLETED status
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -183,14 +168,14 @@ test.describe('GET /v1/routing-configurations', () => {
 
     expect(body).toEqual({
       statusCode: 200,
-      data: [completedRoutingConfig.apiResponse],
+      data: { count: 1 },
     });
   });
 
   test('cannot filter by DELETED status', async ({ request }) => {
     // exercise - request routing configs with DELETED status
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configurations`,
+      `${process.env.API_BASE_URL}/v1/routing-configurations/count`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),

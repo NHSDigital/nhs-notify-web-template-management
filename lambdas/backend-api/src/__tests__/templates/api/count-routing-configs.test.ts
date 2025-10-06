@@ -1,9 +1,8 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { createHandler } from '@backend-api/templates/api/list-routing-configs';
+import { createHandler } from '@backend-api/templates/api/count-routing-configs';
 import { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
-import { makeRoutingConfig } from '../fixtures/routing-config';
 
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: mock<Logger>({
@@ -19,7 +18,7 @@ const setup = () => {
   return { handler, mocks: { routingConfigClient } };
 };
 
-describe('ListRoutingConfig handler', () => {
+describe('CountRoutingConfigs handler', () => {
   test.each([
     ['undefined', undefined],
     ['missing user', { clientId: 'client-id', user: undefined }],
@@ -44,15 +43,15 @@ describe('ListRoutingConfig handler', () => {
       });
 
       expect(
-        mocks.routingConfigClient.listRoutingConfigs
+        mocks.routingConfigClient.countRoutingConfigs
       ).not.toHaveBeenCalled();
     }
   );
 
-  test('should return error when listing routing configs fails', async () => {
+  test('should return error when counting routing configs fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.routingConfigClient.listRoutingConfigs.mockResolvedValueOnce({
+    mocks.routingConfigClient.countRoutingConfigs.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -81,28 +80,17 @@ describe('ListRoutingConfig handler', () => {
       }),
     });
 
-    expect(mocks.routingConfigClient.listRoutingConfigs).toHaveBeenCalledWith(
-      { clientId: 'nhs-notify-client-id', userId: 'sub' },
+    expect(mocks.routingConfigClient.countRoutingConfigs).toHaveBeenCalledWith(
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
       { status: 'DRAFT' }
     );
   });
 
-  test('should return list of routing configs', async () => {
+  test('should return count of routing configs', async () => {
     const { handler, mocks } = setup();
 
-    const list = [
-      makeRoutingConfig({
-        clientId: 'nhs-notify-client-id',
-        status: 'COMPLETED',
-      }),
-      makeRoutingConfig({
-        clientId: 'nhs-notify-client-id',
-        status: 'COMPLETED',
-      }),
-    ];
-
-    mocks.routingConfigClient.listRoutingConfigs.mockResolvedValueOnce({
-      data: list,
+    mocks.routingConfigClient.countRoutingConfigs.mockResolvedValueOnce({
+      data: { count: 99 },
     });
 
     const event = mock<APIGatewayProxyEvent>();
@@ -118,11 +106,11 @@ describe('ListRoutingConfig handler', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, data: list }),
+      body: JSON.stringify({ statusCode: 200, data: { count: 99 } }),
     });
 
-    expect(mocks.routingConfigClient.listRoutingConfigs).toHaveBeenCalledWith(
-      { clientId: 'nhs-notify-client-id', userId: 'sub' },
+    expect(mocks.routingConfigClient.countRoutingConfigs).toHaveBeenCalledWith(
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
       { status: 'COMPLETED' }
     );
   });
