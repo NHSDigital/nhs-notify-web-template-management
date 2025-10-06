@@ -11,27 +11,28 @@ export function createHandler({
   return async function handler(event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    const routingConfigId = event.pathParameters?.routingConfigId;
-
-    if (!routingConfigId || !clientId || !userId) {
+    if (!clientId || !userId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const log = logger.child({
-      clientId,
-      routingConfigId,
-      userId,
-    });
+    const payload = JSON.parse(event.body || '{}');
 
-    const { data, error } = await routingConfigClient.getRoutingConfig(
-      routingConfigId,
-      { clientId, userId }
+    const user = {
+      clientId,
+      userId,
+    };
+
+    const log = logger.child(user);
+
+    const { data, error } = await routingConfigClient.createRoutingConfig(
+      payload,
+      user
     );
 
     if (error) {
       log
         .child(error.errorMeta)
-        .error('Failed to get routing config', error.actualError);
+        .error('Failed to create routing configuration', error.actualError);
 
       return apiFailure(
         error.errorMeta.code,
@@ -40,6 +41,6 @@ export function createHandler({
       );
     }
 
-    return apiSuccess(200, data);
+    return apiSuccess(201, data);
   };
 }

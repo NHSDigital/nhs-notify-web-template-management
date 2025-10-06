@@ -106,7 +106,7 @@ describe('GetRoutingConfig handler', () => {
 
     expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
       '3690d344-731f-4f60-9047-2c63c96623a2',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -135,7 +135,7 @@ describe('GetRoutingConfig handler', () => {
 
     expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
       '3690d344-731f-4f60-9047-2c63c96623a2',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 });

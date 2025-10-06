@@ -13,6 +13,7 @@ import type {
   ChannelType,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
+  CreateUpdateRoutingConfig,
   RoutingConfig,
   RoutingConfigStatus,
   RoutingConfigStatusActive,
@@ -105,6 +106,16 @@ const $CascadeItem = schemaFor<CascadeItem>()(
   z.union([$CascadeItemWithConditional, $CascadeItemWithDefault])
 );
 
+export const $CreateUpdateRoutingConfig =
+  schemaFor<CreateUpdateRoutingConfig>()(
+    z.object({
+      campaignId: z.string(),
+      cascade: z.array($CascadeItem).nonempty(),
+      cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+      name: z.string(),
+    })
+  );
+
 const $RoutingConfigStatus = schemaFor<RoutingConfigStatus>()(
   z.enum(ROUTING_CONFIG_STATUS_LIST)
 );
@@ -116,17 +127,14 @@ const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
   z.object({
     campaignId: z.string(),
-    clientId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
     cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
-    id: z.uuidv4(),
-    owner: z.string(),
-    status: $RoutingConfigStatus,
     name: z.string(),
+    clientId: z.string(),
+    id: z.uuidv4(),
+    status: $RoutingConfigStatus,
     createdAt: z.string(),
-    createdBy: z.string(),
     updatedAt: z.string(),
-    updatedBy: z.string(),
   })
 );
 

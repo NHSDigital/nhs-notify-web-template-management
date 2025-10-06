@@ -15,6 +15,7 @@ password=$2
 
 cognito_user_pool_id=$(jq -r .cognito_user_pool_id.value $root_dir/sandbox_tf_outputs.json)
 cognito_user_pool_client_id=$(jq -r .cognito_user_pool_client_id.value $root_dir/sandbox_tf_outputs.json)
+client_ssm_path_prefix=$(jq -r .client_ssm_path_prefix.value $root_dir/sandbox_tf_outputs.json)
 
 set +e # if the user or client doesn't exist, we expect these commands to fail
 get_user_command_output=$(aws cognito-idp admin-get-user --user-pool-id "$cognito_user_pool_id" --username "$email" 2>&1)
@@ -36,7 +37,28 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   temp_password=$(gen_temp_password)
 
-  read -p "Enter a Notify Client ID for this user: " notify_client_id
+  read -p "Enter a Notify Client ID for this user, or press enter to generate one: " notify_client_id
+
+  if [ -z "$notify_client_id" ]; then
+    notify_client_id=$(uuidgen | tr '[:upper:]' '[:lower:]')
+  fi
+
+  echo "Generated Client ID: $notify_client_id"
+
+  client_config_param_name="$client_ssm_path_prefix/$notify_client_id"
+
+  client_config_param_value="{ "campaignId": "campaign", "features": { "proofing": true } }"
+
+  if aws ssm get-parameter --name "$client_config_param_name" --with-decryption >/dev/null 2>&1; then
+    echo "Client config parameter already exists: $client_config_param_name"
+  else
+    aws ssm put-parameter \
+      --name "$client_config_param_name" \
+      --value "$client_config_param_value" \
+      --type String
+
+    echo "Created client config parameter: $client_config_param_name"
+  fi
 
   aws cognito-idp admin-create-user \
     --user-pool-id "${cognito_user_pool_id}" \
