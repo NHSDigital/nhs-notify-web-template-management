@@ -1,4 +1,10 @@
+# pre.sh runs in the same shell as terraform.sh, not in a subshell
+# any variables set or changed, any change of directory will persist once this script exits and returns control to terraform.sh
+
 echo "Running app pre.sh"
+
+# change to monorepo root
+cd $(git rev-parse --show-toplevel)
 
 npm ci
 
@@ -6,4 +12,7 @@ npm run generate-dependencies --workspaces --if-present
 
 npm run lambda-build --workspaces --if-present
 
-$(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
+lambdas/layers/pdfjs/build.sh
+
+# revert back to original directory
+cd -

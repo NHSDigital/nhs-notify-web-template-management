@@ -3,7 +3,6 @@ import {
   EmailProperties,
   ErrorCase,
   LetterFiles,
-  LetterProperties,
   NhsAppProperties,
   SmsProperties,
   TemplateStatus,
@@ -33,7 +32,7 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-type WithAttachments<T> = T extends { templateType: 'LETTER' }
+export type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
 
@@ -53,13 +52,12 @@ const smsAttributes: Record<keyof SmsProperties, null> = {
   message: null,
 };
 
-const letterAttributes: Record<keyof LetterProperties, null> = {
+const letterAttributes: Record<keyof UploadLetterProperties, null> = {
   files: null,
   language: null,
   letterType: null,
-  personalisationParameters: null,
   templateType: null,
-  proofingEnabled: null,
+  campaignId: null,
 };
 
 export class TemplateRepository {
@@ -116,7 +114,9 @@ export class TemplateRepository {
       updatedAt: date,
       updatedBy: user.userId,
       createdBy: user.userId,
-      campaignId,
+      ...(template.templateType === 'LETTER' && {
+        campaignId,
+      }),
     };
 
     try {
@@ -607,6 +607,11 @@ export class TemplateRepository {
       )
         .setStatus('WAITING_FOR_PROOF')
         .expectedStatus('PENDING_PROOF_REQUEST')
+
+        // dynamodb does not support conditional initialising of maps, so we have to
+        // initialise an empty map here, then we set supplier-specific values in the
+        // per-supplier sftp send lambda
+        .initialiseSupplierReferences()
         .expectedTemplateType('LETTER')
         .expectedClientId(user.clientId)
         .expectTemplateExists()
@@ -734,7 +739,9 @@ export class TemplateRepository {
     }
     if (template.templateType === 'LETTER') {
       expressions.push(
-        ...this.attributeExpressionsFromMap<LetterProperties>(letterAttributes)
+        ...this.attributeExpressionsFromMap<UploadLetterProperties>(
+          letterAttributes
+        )
       );
     }
     return expressions;
@@ -765,7 +772,8 @@ export class TemplateRepository {
       names = this.attributeNamesFromMap<SmsProperties>(smsAttributes);
     }
     if (template.templateType === 'LETTER') {
-      names = this.attributeNamesFromMap<LetterProperties>(letterAttributes);
+      names =
+        this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
     }
 
     return names;

@@ -58,13 +58,13 @@ test.describe('GET /v1/template/:templateId', () => {
     const created = await createResponse.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     // exercise: make the GET request to retrieve the template
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -76,7 +76,7 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      template: created.template,
+      data: created.data,
     });
   });
 
@@ -120,13 +120,13 @@ test.describe('GET /v1/template/:templateId', () => {
     const created = await createResponse.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     // exercise: make the GET request to retrieve the template as user2
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user2.getAccessToken(),
@@ -163,12 +163,12 @@ test.describe('GET /v1/template/:templateId', () => {
     const created = await createResponse.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const deleteResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -180,7 +180,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     // exercise: make the GET request to retrieve the deleted template
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -218,12 +218,12 @@ test.describe('GET /v1/template/:templateId', () => {
     const created = await createResponse.json();
 
     templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.template.id,
+      templateId: created.data.id,
       clientId: user1.clientId,
     });
 
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
           Authorization: await userSharedClient.getAccessToken(),
@@ -234,7 +234,7 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
-      template: created.template,
+      data: created.data,
     });
   });
 });

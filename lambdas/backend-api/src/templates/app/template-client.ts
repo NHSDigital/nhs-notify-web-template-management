@@ -104,7 +104,7 @@ export class TemplateClient {
   }
 
   async uploadLetterTemplate(
-    template: CreateUpdateTemplate,
+    template: unknown,
     user: User,
     pdf: File,
     csv?: File
@@ -130,6 +130,8 @@ export class TemplateClient {
       return templateValidationResult;
     }
 
+    const validatedTemplate = templateValidationResult.data;
+
     if (pdf.type !== LETTER_MULTIPART.PDF.fileType || !pdf.name) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
@@ -148,15 +150,32 @@ export class TemplateClient {
       user.clientId
     );
 
-    if (clientConfigurationResult.error) {
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) {
       log
-        .child(clientConfigurationResult.error.errorMeta)
+        .child(clientConfigurationError.errorMeta)
         .error(
           'Failed to fetch client configuration',
-          clientConfigurationResult.error.actualError
+          clientConfigurationError.actualError
         );
 
       return clientConfigurationResult;
+    }
+
+    const isCampaignIdValid = this.isCampaignIdValid(
+      clientConfiguration,
+      validatedTemplate.campaignId
+    );
+
+    if (!isCampaignIdValid) {
+      log.error('Invalid campaign ID in request');
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
     }
 
     const versionId = randomUUID();
@@ -178,12 +197,12 @@ export class TemplateClient {
     };
 
     const proofingEnabled =
-      (!isRightToLeft(templateValidationResult.data.language) &&
-        clientConfigurationResult.data?.features.proofing) ||
+      (!isRightToLeft(validatedTemplate.language) &&
+        clientConfiguration?.features.proofing) ||
       false;
 
     const letterTemplateFields = {
-      ...templateValidationResult.data,
+      ...validatedTemplate,
       proofingEnabled,
       files,
     };
@@ -192,7 +211,7 @@ export class TemplateClient {
       letterTemplateFields,
       user,
       'PENDING_UPLOAD',
-      clientConfigurationResult.data?.campaignId
+      validatedTemplate.campaignId
     );
 
     if (createResult.error) {
@@ -510,6 +529,23 @@ export class TemplateClient {
     }
 
     return success(templateDTO);
+  }
+
+  isCampaignIdValid(
+    clientConfiguration: ClientConfiguration | null,
+    campaignIdFromRequest: string
+  ): boolean {
+    if (!clientConfiguration) {
+      return false;
+    }
+
+    const { campaignIds, campaignId } = clientConfiguration;
+
+    const validCampaignId = campaignIds?.includes(campaignIdFromRequest);
+    const validFallbackCampaignId =
+      !campaignIds && campaignIdFromRequest === campaignId;
+
+    return validCampaignId || validFallbackCampaignId;
   }
 
   async getClientConfiguration(

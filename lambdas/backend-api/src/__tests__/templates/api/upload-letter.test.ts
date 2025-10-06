@@ -32,6 +32,7 @@ describe('upload-letter', () => {
     name: 'template-name',
     letterType: 'x0',
     language: 'en',
+    campaignId: 'campaign-id',
   };
 
   const pdf = Buffer.from('letterPdf');
@@ -109,7 +110,7 @@ describe('upload-letter', () => {
 
     expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
       statusCode: 201,
-      template: created,
+      data: created,
     });
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
@@ -178,7 +179,7 @@ describe('upload-letter', () => {
 
     expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
       statusCode: 201,
-      template: created,
+      data: created,
     });
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(

@@ -57,6 +57,7 @@
     "lambdas/sftp-letters",
     "packages/event-schemas",
     "tests/accessibility",
+    "tests/contracts/provider",
     "tests/test-team",
     "utils/backend-config",
     "utils/entity-update-command-builder",

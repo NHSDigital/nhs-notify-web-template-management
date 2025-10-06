@@ -65,12 +65,19 @@ export class EventBuilder {
 
       return undefined;
     }
+    const dynamoRecordNew = unmarshall(
+      publishableEventRecord.dynamodb.NewImage
+    );
+    const dynamoRecordOld = publishableEventRecord.dynamodb.OldImage
+      ? unmarshall(publishableEventRecord.dynamodb.OldImage)
+      : undefined;
 
-    const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
+    const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
+    const databaseTemplateOld = $DynamoDBTemplate
+      .optional()
+      .parse(dynamoRecordOld);
 
-    const databaseTemplate = $DynamoDBTemplate.parse(dynamoRecord);
-
-    if (!shouldPublish(databaseTemplate)) {
+    if (!shouldPublish(databaseTemplateOld, databaseTemplateNew)) {
       this.logger.debug({
         description: 'Not publishing event',
         publishableEventRecord,
@@ -79,14 +86,25 @@ export class EventBuilder {
       return undefined;
     }
 
-    return $Event.parse({
-      ...this.buildTemplateSavedEventMetadata(
-        publishableEventRecord.eventID,
-        databaseTemplate.templateStatus,
-        databaseTemplate.id
-      ),
-      data: dynamoRecord,
-    });
+    try {
+      return $Event.parse({
+        ...this.buildTemplateSavedEventMetadata(
+          publishableEventRecord.eventID,
+          databaseTemplateNew.templateStatus,
+          databaseTemplateNew.id
+        ),
+        data: dynamoRecordNew,
+      });
+    } catch (error) {
+      this.logger
+        .child({
+          description: 'Failed to parse outgoing event',
+          publishableEventRecord,
+        })
+        .error(error);
+
+      throw error;
+    }
   }
 
   buildEvent(

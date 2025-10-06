@@ -5,8 +5,13 @@
  * Note that there is a unit test against these to guard against duplicates
  */
 import {
+  CascadeGroupName,
+  Channel,
+  ChannelType,
   Language,
   LetterType,
+  RoutingConfigStatus,
+  RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
   VirusScanStatus,
@@ -86,4 +91,30 @@ export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([
   'PENDING',
   'FAILED',
   'PASSED',
+]);
+
+export const ROUTING_CONFIG_STATUS_ACTIVE_LIST =
+  arrayOfAll<RoutingConfigStatusActive>()(['COMPLETED', 'DRAFT']);
+
+export const ROUTING_CONFIG_STATUS_LIST = arrayOfAll<RoutingConfigStatus>()([
+  ...ROUTING_CONFIG_STATUS_ACTIVE_LIST,
+  'DELETED',
+]);
+
+export const CHANNEL_TYPE_LIST = arrayOfAll<ChannelType>()([
+  'primary',
+  'secondary',
+]);
+
+export const CHANNEL_LIST = arrayOfAll<Channel>()([
+  'EMAIL',
+  'LETTER',
+  'NHSAPP',
+  'SMS',
+]);
+
+export const CASCADE_GROUP_NAME_LIST = arrayOfAll<CascadeGroupName>()([
+  'accessible',
+  'translations',
+  'standard',
 ]);
