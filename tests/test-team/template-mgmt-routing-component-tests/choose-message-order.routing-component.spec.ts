@@ -71,31 +71,31 @@ test.describe('Choose Message Order Page', () => {
 
   for (const { label, option } of [
     {
-      option: 'NHS_APP',
+      option: 'NHSAPP',
       label: 'NHS App only',
     },
     {
-      option: 'NHS_APP,EMAIL',
+      option: 'NHSAPP,EMAIL',
       label: 'NHS App, Email',
     },
     {
-      option: 'NHS_APP,SMS',
+      option: 'NHSAPP,SMS',
       label: 'NHS App, Text message',
     },
     {
-      option: 'NHS_APP,EMAIL,SMS',
+      option: 'NHSAPP,EMAIL,SMS',
       label: 'NHS App, Email, Text message',
     },
     {
-      option: 'NHS_APP,SMS,EMAIL',
+      option: 'NHSAPP,SMS,EMAIL',
       label: 'NHS App, Text message, Email',
     },
     {
-      option: 'NHS_APP,SMS,LETTER',
+      option: 'NHSAPP,SMS,LETTER',
       label: 'NHS App, Text message, Letter',
     },
     {
-      option: 'NHS_APP,EMAIL,SMS,LETTER',
+      option: 'NHSAPP,EMAIL,SMS,LETTER',
       label: 'NHS App, Email, Text message, Letter',
     },
     {

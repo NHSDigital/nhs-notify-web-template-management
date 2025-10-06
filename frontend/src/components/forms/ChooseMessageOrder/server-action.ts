@@ -4,13 +4,13 @@ import { z } from 'zod';
 import content from '@content/content';
 
 export const MESSAGE_ORDER_OPTIONS_LIST = [
-  'NHS_APP',
-  'NHS_APP,EMAIL',
-  'NHS_APP,SMS',
-  'NHS_APP,EMAIL,SMS',
-  'NHS_APP,SMS,EMAIL',
-  'NHS_APP,SMS,LETTER',
-  'NHS_APP,EMAIL,SMS,LETTER',
+  'NHSAPP',
+  'NHSAPP,EMAIL',
+  'NHSAPP,SMS',
+  'NHSAPP,EMAIL,SMS',
+  'NHSAPP,SMS,EMAIL',
+  'NHSAPP,SMS,LETTER',
+  'NHSAPP,EMAIL,SMS,LETTER',
   'LETTER',
 ] as const;
 
