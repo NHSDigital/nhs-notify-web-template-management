@@ -237,10 +237,8 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({ data: completed });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND attribute_exists (#id)',
+        ConditionExpression: '#status = :condition_1_status',
         ExpressionAttributeNames: {
-          '#id': 'id',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
@@ -411,13 +409,11 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND attribute_exists (#id)',
+        ConditionExpression: '#status = :condition_1_status',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
-          '#id': 'id',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -461,13 +457,11 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({ data: routingConfig });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND attribute_exists (#id)',
+        ConditionExpression: '#status = :condition_1_status',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
-          '#id': 'id',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',

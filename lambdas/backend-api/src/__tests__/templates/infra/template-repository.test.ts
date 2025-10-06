@@ -2084,9 +2084,8 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND attribute_exists (#id) AND #proofingEnabled = :condition_5_proofingEnabled',
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND #proofingEnabled = :condition_4_proofingEnabled',
         ExpressionAttributeNames: {
-          '#id': 'id',
           '#clientId': 'clientId',
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
@@ -2099,7 +2098,7 @@ describe('templateRepository', () => {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
           ':condition_2_templateType': 'LETTER',
           ':condition_3_clientId': clientId,
-          ':condition_5_proofingEnabled': true,
+          ':condition_4_proofingEnabled': true,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':updatedBy': userId,

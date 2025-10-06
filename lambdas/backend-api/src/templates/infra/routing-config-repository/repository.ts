@@ -88,7 +88,6 @@ export class RoutingConfigRepository {
       .setName(name)
       .setCascadeGroupOverrides(cascadeGroupOverrides)
       .expectedStatus('DRAFT')
-      .expectRoutingConfigExists()
       .build();
 
     try {
@@ -122,7 +121,6 @@ export class RoutingConfigRepository {
     )
       .setStatus('COMPLETED')
       .expectedStatus('DRAFT')
-      .expectRoutingConfigExists()
       .setUpdatedByUserAt(user.userId)
       .build();
 

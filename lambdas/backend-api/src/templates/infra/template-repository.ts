@@ -663,7 +663,6 @@ export class TemplateRepository {
         .initialiseSupplierReferences()
         .expectedTemplateType('LETTER')
         .expectedClientId(user.clientId)
-        .expectTemplateExists()
         .expectProofingEnabled()
         .build();
 
