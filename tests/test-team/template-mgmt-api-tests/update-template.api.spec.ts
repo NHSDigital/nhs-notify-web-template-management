@@ -13,7 +13,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 
-test.describe('POST /v1/template/:templateId', () => {
+test.describe('PUT /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -32,7 +32,7 @@ test.describe('POST /v1/template/:templateId', () => {
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
-    const response = await request.post(
+    const response = await request.put(
       `${process.env.API_BASE_URL}/v1/template/some-template`
     );
     expect(response.status()).toBe(401);
@@ -1392,7 +1392,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateNHSAppResponse = await request.post(
+      const updateNHSAppResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {

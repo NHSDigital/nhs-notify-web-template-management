@@ -110,9 +110,10 @@ test.describe('SFTP proof request send', () => {
       const updatedTemplate = await templateStorageHelper.getTemplate(key);
       const debugUpdated = JSON.stringify(updatedTemplate);
 
-      expect(updatedTemplate.updatedAt, debugUpdated).not.toBe(
-        template.updatedAt
-      );
+      expect(
+        Object.keys(updatedTemplate.supplierReferences ?? {}),
+        debugUpdated
+      ).toEqual([MOCK_LETTER_SUPPLIER]);
     }).toPass({ timeout: 5000 });
 
     const sftpCredentials = await sftpHelper.connect();
