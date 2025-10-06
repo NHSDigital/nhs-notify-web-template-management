@@ -1,4 +1,4 @@
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '../../../helpers/helpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';

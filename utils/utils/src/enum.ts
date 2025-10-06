@@ -258,3 +258,16 @@ export const templateDisplayDeleteAction = ({
 export function isRightToLeft(language: Language): boolean {
   return languageMap[language].rtl;
 }
+
+export const MESSAGE_ORDER_OPTIONS_LIST = [
+  'NHSAPP',
+  'NHSAPP,EMAIL',
+  'NHSAPP,SMS',
+  'NHSAPP,EMAIL,SMS',
+  'NHSAPP,SMS,EMAIL',
+  'NHSAPP,SMS,LETTER',
+  'NHSAPP,EMAIL,SMS,LETTER',
+  'LETTER',
+] as const;
+
+export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];

@@ -13,7 +13,7 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers';
+} from '../../helpers/helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 

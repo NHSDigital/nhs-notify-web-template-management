@@ -1,0 +1,397 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a new routing config and redirects to the choose-templates page 1`] = `
+<DocumentFragment>
+  <div>
+    <h1>
+      Next.js has redirected
+    </h1>
+    <table>
+      <tbody>
+        <tr>
+          <th>
+            URL
+          </th>
+          <td>
+            /message-plans/choose-templates/mock-routing-config-id
+          </td>
+        </tr>
+        <tr>
+          <th>
+            RedirectType
+          </th>
+          <td>
+            push
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders error if form is submitted with empty name 1`] = `
+<DocumentFragment>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="message-plan"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <input
+        name="messageOrder"
+        readonly=""
+        type="hidden"
+        value="NHSAPP"
+      />
+      <label
+        class="nhsuk-label nhsuk-label--s"
+        for="name"
+      >
+        Message plan name
+      </label>
+      <div
+        class="nhsuk-hint"
+      >
+        This will not be visible to recipients.
+      </div>
+      <details
+        class="nhsuk-details nhsuk-u-margin-top-3"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Naming your message plans
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <p>
+            You should name your message plans in a way that works best for your service or organisation.
+          </p>
+          <p>
+            Common message plan names include the:
+          </p>
+          <ul
+            class="nhsuk-list nhsuk-list--bullet"
+          >
+            <li>
+              channels it uses
+            </li>
+            <li>
+              subject or reason for the message
+            </li>
+            <li>
+              intended audience for the message
+            </li>
+            <li>
+              version number
+            </li>
+          </ul>
+          <p>
+            For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+          </p>
+        </div>
+      </details>
+      <div
+        class="nhsuk-form-group nhsuk-form-group--error"
+      >
+        <span
+          class="nhsuk-error-message"
+          id="name--error-message"
+        >
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Error:
+          </span>
+          Enter a message plan name
+        </span>
+        <input
+          aria-describedby="name--error-message"
+          class="nhsuk-input nhsuk-input--error"
+          data-testid="name-field"
+          id="name"
+          name="name"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <button
+        aria-disabled="false"
+        class="nhsuk-button"
+        data-testid="submit-button"
+        type="submit"
+      >
+        Save and continue
+      </button>
+      <a
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        href="/templates/message-plans/choose-message-order"
+      >
+        Go back
+      </a>
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`renders error if form is submitted with name too long 1`] = `
+<DocumentFragment>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="message-plan"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <input
+        name="messageOrder"
+        readonly=""
+        type="hidden"
+        value="NHSAPP"
+      />
+      <label
+        class="nhsuk-label nhsuk-label--s"
+        for="name"
+      >
+        Message plan name
+      </label>
+      <div
+        class="nhsuk-hint"
+      >
+        This will not be visible to recipients.
+      </div>
+      <details
+        class="nhsuk-details nhsuk-u-margin-top-3"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Naming your message plans
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <p>
+            You should name your message plans in a way that works best for your service or organisation.
+          </p>
+          <p>
+            Common message plan names include the:
+          </p>
+          <ul
+            class="nhsuk-list nhsuk-list--bullet"
+          >
+            <li>
+              channels it uses
+            </li>
+            <li>
+              subject or reason for the message
+            </li>
+            <li>
+              intended audience for the message
+            </li>
+            <li>
+              version number
+            </li>
+          </ul>
+          <p>
+            For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+          </p>
+        </div>
+      </details>
+      <div
+        class="nhsuk-form-group nhsuk-form-group--error"
+      >
+        <span
+          class="nhsuk-error-message"
+          id="name--error-message"
+        >
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Error:
+          </span>
+          Message plan name too long
+        </span>
+        <input
+          aria-describedby="name--error-message"
+          class="nhsuk-input nhsuk-input--error"
+          data-testid="name-field"
+          id="name"
+          name="name"
+          type="text"
+          value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        />
+      </div>
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <button
+        aria-disabled="false"
+        class="nhsuk-button"
+        data-testid="submit-button"
+        type="submit"
+      >
+        Save and continue
+      </button>
+      <a
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        href="/templates/message-plans/choose-message-order"
+      >
+        Go back
+      </a>
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`renders form 1`] = `
+<DocumentFragment>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="message-plan"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <input
+        name="messageOrder"
+        readonly=""
+        type="hidden"
+        value="NHSAPP"
+      />
+      <label
+        class="nhsuk-label nhsuk-label--s"
+        for="name"
+      >
+        Message plan name
+      </label>
+      <div
+        class="nhsuk-hint"
+      >
+        This will not be visible to recipients.
+      </div>
+      <details
+        class="nhsuk-details nhsuk-u-margin-top-3"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Naming your message plans
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <p>
+            You should name your message plans in a way that works best for your service or organisation.
+          </p>
+          <p>
+            Common message plan names include the:
+          </p>
+          <ul
+            class="nhsuk-list nhsuk-list--bullet"
+          >
+            <li>
+              channels it uses
+            </li>
+            <li>
+              subject or reason for the message
+            </li>
+            <li>
+              intended audience for the message
+            </li>
+            <li>
+              version number
+            </li>
+          </ul>
+          <p>
+            For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+          </p>
+        </div>
+      </details>
+      <div
+        class="nhsuk-form-group"
+      >
+        <input
+          class="nhsuk-input"
+          data-testid="name-field"
+          id="name"
+          name="name"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <button
+        aria-disabled="false"
+        class="nhsuk-button"
+        data-testid="submit-button"
+        type="submit"
+      >
+        Save and continue
+      </button>
+      <a
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        href="/templates/message-plans/choose-message-order"
+      >
+        Go back
+      </a>
+    </div>
+  </form>
+</DocumentFragment>
+`;

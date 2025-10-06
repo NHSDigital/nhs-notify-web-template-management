@@ -4,7 +4,7 @@ import {
 } from '@forms/PreviewEmailTemplate';
 import { redirect } from 'next/navigation';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '../../../helpers/helpers';
 
 jest.mock('next/navigation');
 

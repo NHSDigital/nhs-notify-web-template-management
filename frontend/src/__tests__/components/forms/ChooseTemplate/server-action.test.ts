@@ -1,5 +1,5 @@
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '../../../helpers/helpers';
 import { redirect, RedirectType } from 'next/navigation';
 
 jest.mock('next/navigation');

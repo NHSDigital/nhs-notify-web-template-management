@@ -1,7 +1,7 @@
 import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
 import { initialFeatureFlags } from '@utils/features';
-import FeatureFlagProviderServer from '@providers/features-provider-server';
+import { ClientConfigProviderServer } from '@providers/client-config-provider-server';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/server-features');
@@ -9,20 +9,20 @@ jest.mock('@utils/server-features');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 const mockFetchClient = jest.mocked(fetchClient);
 
-describe('FeatureFlagProviderServer', () => {
+describe('ClientConfigProviderServer', () => {
   describe('when unauthenticated', () => {
     beforeEach(() => {
       mockGetSessionServer.mockResolvedValueOnce({});
     });
 
     it('returns initial flags when unauthenticated', async () => {
-      const child = await FeatureFlagProviderServer({ children: <div /> });
+      const child = await ClientConfigProviderServer({ children: <div /> });
 
-      expect(child.props.featureFlags).toEqual(initialFeatureFlags);
+      expect(child.props.config).toEqual({ features: initialFeatureFlags });
     });
 
     it('should not fetch client', async () => {
-      await FeatureFlagProviderServer({ children: <div /> });
+      await ClientConfigProviderServer({ children: <div /> });
 
       expect(mockFetchClient).not.toHaveBeenCalled();
     });
@@ -33,25 +33,30 @@ describe('FeatureFlagProviderServer', () => {
       mockGetSessionServer.mockResolvedValueOnce({ accessToken: 'mocktoken' });
     });
 
-    it('returns flags when authenticated', async () => {
+    it('returns config when authenticated', async () => {
       mockFetchClient.mockResolvedValueOnce({
-        data: { features: { proofing: true, routing: true } },
+        data: {
+          campaignId: 'legacy-campaign-id',
+          campaignIds: ['new-campaign-id'],
+          features: { proofing: true, routing: true },
+        },
       });
 
-      const child = await FeatureFlagProviderServer({ children: <div /> });
+      const child = await ClientConfigProviderServer({ children: <div /> });
 
-      expect(child.props.featureFlags).toEqual({
-        proofing: true,
-        routing: true,
+      expect(child.props.config).toEqual({
+        campaignId: 'legacy-campaign-id',
+        campaignIds: ['new-campaign-id'],
+        features: { proofing: true, routing: true },
       });
     });
 
     it('should fall back to default flags on fetch error', async () => {
       mockFetchClient.mockRejectedValueOnce({});
 
-      const child = await FeatureFlagProviderServer({ children: <div /> });
+      const child = await ClientConfigProviderServer({ children: <div /> });
 
-      expect(child.props.featureFlags).toEqual(initialFeatureFlags);
+      expect(child.props.config).toEqual({ features: initialFeatureFlags });
     });
 
     it('should fall back to default flag when feature flag is missing', async () => {
@@ -62,11 +67,13 @@ describe('FeatureFlagProviderServer', () => {
           },
         },
       });
-      const child = await FeatureFlagProviderServer({ children: <div /> });
+      const child = await ClientConfigProviderServer({ children: <div /> });
 
-      expect(child.props.featureFlags).toEqual({
-        proofing: true,
-        routing: false,
+      expect(child.props.config).toEqual({
+        features: {
+          proofing: true,
+          routing: false,
+        },
       });
     });
   });

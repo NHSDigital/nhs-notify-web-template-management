@@ -6,7 +6,7 @@ import LetterTemplateSubmittedPage, {
 } from '@app/letter-template-submitted/[templateId]/page';
 import content from '@content/content';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import { LETTER_TEMPLATE } from '@testhelpers';
+import { LETTER_TEMPLATE } from '../../helpers/helpers';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 

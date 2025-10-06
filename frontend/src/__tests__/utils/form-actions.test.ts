@@ -15,10 +15,12 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
+  createRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { randomUUID } from 'node:crypto';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
@@ -691,6 +693,129 @@ describe('form-actions', () => {
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
       );
+    });
+  });
+
+  describe('createRoutingConfig', () => {
+    test('creates a routing config', async () => {
+      const now = new Date();
+      const id = randomUUID();
+
+      mockedTemplateClient.createRoutingConfig.mockImplementationOnce(
+        async (input) => ({
+          data: {
+            ...input,
+            id,
+            clientId: 'client1',
+            createdAt: now.toISOString(),
+            status: 'DRAFT',
+            updatedAt: now.toISOString(),
+          },
+        })
+      );
+
+      const result = await createRoutingConfig({
+        name: 'My Routing Config',
+        campaignId: 'my-campaign-id',
+        cascade: [
+          {
+            channelType: 'primary',
+            channel: 'NHSAPP',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: '',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      });
+
+      expect(mockedTemplateClient.createRoutingConfig).toHaveBeenCalledWith(
+        {
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: '',
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        },
+        'token'
+      );
+
+      expect(result).toEqual({
+        id,
+        clientId: 'client1',
+        createdAt: now.toISOString(),
+        status: 'DRAFT',
+        updatedAt: now.toISOString(),
+        name: 'My Routing Config',
+        campaignId: 'my-campaign-id',
+        cascade: [
+          {
+            channelType: 'primary',
+            channel: 'NHSAPP',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: '',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      });
+    });
+
+    test('errors when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(
+        createRoutingConfig({
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: '',
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        })
+      ).rejects.toThrow('Failed to get access token');
+
+      expect(mockedTemplateClient.createRoutingConfig).not.toHaveBeenCalled();
+    });
+
+    test('errors when request fails', async () => {
+      mockedTemplateClient.createRoutingConfig.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(
+        createRoutingConfig({
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: '',
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        })
+      ).rejects.toThrow('Failed to create message plan');
     });
   });
 });

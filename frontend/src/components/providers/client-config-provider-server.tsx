@@ -1,32 +1,36 @@
 'use server';
 
 import { PropsWithChildren } from 'react';
+import { ClientConfiguration } from 'nhs-notify-backend-client';
 import { getSessionServer } from '@utils/amplify-utils';
 import { initialFeatureFlags } from '@utils/features';
 import { fetchClient } from '@utils/server-features';
-import { FeatureFlagProvider } from '@providers/features-provider';
+import { ClientConfigProvider } from '@providers/client-config-provider';
 
-export default async function FeatureFlagProviderServer({
+export async function ClientConfigProviderServer({
   children,
 }: PropsWithChildren) {
   const session = await getSessionServer();
 
-  let featureFlags = initialFeatureFlags;
+  let config: ClientConfiguration = {
+    features: initialFeatureFlags,
+  };
 
   if (session.accessToken) {
     try {
       const client = await fetchClient(session.accessToken);
 
       if (client.data) {
-        featureFlags = { ...initialFeatureFlags, ...client.data.features };
+        config = {
+          ...client.data,
+          features: { ...initialFeatureFlags, ...client.data.features },
+        };
       }
     } catch {
       // no-op
     }
   }
   return (
-    <FeatureFlagProvider featureFlags={featureFlags}>
-      {children}
-    </FeatureFlagProvider>
+    <ClientConfigProvider config={config}>{children}</ClientConfigProvider>
   );
 }

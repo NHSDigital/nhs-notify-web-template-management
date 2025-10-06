@@ -9,7 +9,11 @@ import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers/helpers';
 import content from '@content/content';
 
 const { pageTitle } = content.components.previewEmailTemplate;

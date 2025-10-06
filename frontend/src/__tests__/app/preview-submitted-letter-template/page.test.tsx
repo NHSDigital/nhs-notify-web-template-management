@@ -14,7 +14,7 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
   LETTER_TEMPLATE,
-} from '../../helpers';
+} from '../../helpers/helpers';
 import content from '@content/content';
 
 const { pageTitle } = content.components.previewLetterTemplate;

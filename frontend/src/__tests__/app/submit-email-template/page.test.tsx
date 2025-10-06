@@ -8,7 +8,11 @@ import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTempla
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers/helpers';
 import content from '@content/content';
 
 const { pageTitle } = content.components.submitTemplate;

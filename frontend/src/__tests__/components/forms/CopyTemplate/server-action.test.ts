@@ -1,5 +1,5 @@
 import { copyTemplateAction } from '@forms/CopyTemplate/server-action';
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '../../../helpers/helpers';
 import {
   EmailTemplate,
   NHSAppTemplate,

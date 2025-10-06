@@ -4,6 +4,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import {
   CreateUpdateTemplate,
   isTemplateDtoValid,
+  RoutingConfig,
   TemplateDto,
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
@@ -194,4 +195,29 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     });
 
   return sortedData;
+}
+
+export async function createRoutingConfig(
+  routingConfig: Pick<
+    RoutingConfig,
+    'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
+  >
+): Promise<RoutingConfig> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.createRoutingConfig(
+    routingConfig,
+    accessToken
+  );
+
+  if (error) {
+    logger.error('Failed to create message plan', { error });
+    throw new Error('Failed to create message plan');
+  }
+
+  return data;
 }
