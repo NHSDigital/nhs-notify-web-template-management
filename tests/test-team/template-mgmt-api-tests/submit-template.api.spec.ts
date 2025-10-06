@@ -17,7 +17,6 @@ import {
   SimulatePassedValidation,
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
