@@ -34,7 +34,8 @@ export type NHSNotifyRadioButtonFormProps = {
   };
 };
 
-const normaliseId = (id: string) => id.toLowerCase().replaceAll('_','').replaceAll(',','-');
+const normaliseId = (id: string) =>
+  id.toLowerCase().replaceAll('_', '').replaceAll(',', '-');
 
 export const NHSNotifyRadioButtonForm = ({
   formId,
