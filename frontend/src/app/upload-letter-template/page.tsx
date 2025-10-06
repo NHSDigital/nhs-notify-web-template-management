@@ -5,6 +5,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { fetchClient } from '@utils/server-features';
 import content from '@content/content';
+import { ClientConfiguration } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.templateFormLetter;
 
@@ -14,14 +15,25 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const UploadLetterTemplatePage = async () => {
-  const initialState: UploadLetterTemplate = {
-    templateType: 'LETTER',
-    name: '',
-    letterType: 'x0',
-    language: 'en',
-  };
+const getSortedCampaignIds = (
+  clientConfiguration: ClientConfiguration | null | undefined
+) => {
+  if (!clientConfiguration) {
+    return;
+  }
 
+  const { campaignIds, campaignId } = clientConfiguration;
+
+  if (campaignIds) {
+    return campaignIds.sort();
+  }
+
+  if (campaignId) {
+    return [campaignId];
+  }
+};
+
+const UploadLetterTemplatePage = async () => {
   const sessionServer = await getSessionServer();
   const { accessToken, clientId } = sessionServer;
 
@@ -32,18 +44,30 @@ const UploadLetterTemplatePage = async () => {
     );
   }
 
-  const clientConfiguration = await fetchClient(accessToken);
+  const clientConfigurationResult = await fetchClient(accessToken);
 
-  const campaignId = clientConfiguration?.data?.campaignId;
+  const clientConfiguration = clientConfigurationResult?.data;
 
-  if (!campaignId) {
+  const campaignIds = getSortedCampaignIds(clientConfiguration);
+
+  if (!campaignIds || campaignIds.length === 0) {
     return redirect(
       '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   }
 
-  return <LetterTemplateForm initialState={initialState} />;
+  const initialState: UploadLetterTemplate = {
+    templateType: 'LETTER',
+    name: '',
+    letterType: 'x0',
+    language: 'en',
+    campaignId: campaignIds.length === 1 ? campaignIds[0] : '',
+  };
+
+  return (
+    <LetterTemplateForm initialState={initialState} campaignIds={campaignIds} />
+  );
 };
 
 export default UploadLetterTemplatePage;

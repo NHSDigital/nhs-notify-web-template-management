@@ -19,6 +19,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewNHSAppTemplate({
   initialState,
+  routingEnabled,
 }: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -69,7 +70,9 @@ export function PreviewNHSAppTemplate({
                   message={html}
                 />
               }
-            />
+              editPath={`/edit-nhs-app-template/${initialState.id}`}
+              routingEnabled={!!routingEnabled}
+            />{' '}
             <p>
               <Link
                 href='/message-templates'

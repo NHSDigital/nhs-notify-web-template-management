@@ -11,13 +11,13 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
   EmailProperties,
-  LetterProperties,
   NhsAppProperties,
   SmsProperties,
+  UploadLetterProperties,
   ValidatedCreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { TemplateRepository } from '../../../templates/infra';
+import { TemplateRepository, WithAttachments } from '../../../templates/infra';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
@@ -59,7 +59,7 @@ const nhsAppProperties: NhsAppProperties = {
   templateType: 'NHS_APP',
 };
 
-const letterProperties: LetterProperties = {
+const letterProperties: WithAttachments<UploadLetterProperties> = {
   templateType: 'LETTER',
   letterType: 'x0',
   language: 'en',
@@ -75,6 +75,7 @@ const letterProperties: LetterProperties = {
       virusScanStatus: 'PENDING',
     },
   },
+  campaignId: 'campaign-id',
 };
 
 const createTemplateProperties = { name: 'name' };
@@ -505,7 +506,9 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          user
+          user,
+          'NOT_YET_SUBMITTED',
+          'campaign-id'
         );
 
         expect(response).toEqual({
@@ -513,36 +516,6 @@ describe('templateRepository', () => {
         });
       }
     );
-
-    test('should create template of type $templateType with campaignId', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(PutCommand, {
-          TableName: templatesTableName,
-          Item: {
-            ...emailProperties,
-            ...databaseTemplateProperties,
-            campaignId: 'campaignId',
-          },
-        })
-        .resolves({});
-
-      const response = await templateRepository.create(
-        { ...emailProperties, ...createTemplateProperties },
-        user,
-        'NOT_YET_SUBMITTED',
-        'campaignId'
-      );
-
-      expect(response).toEqual({
-        data: {
-          ...emailProperties,
-          ...databaseTemplateProperties,
-          campaignId: 'campaignId',
-        },
-      });
-    });
   });
 
   describe('update', () => {
@@ -2108,6 +2081,7 @@ describe('templateRepository', () => {
           '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
           '#proofingEnabled': 'proofingEnabled',
+          '#supplierReferences': 'supplierReferences',
         },
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
@@ -2116,13 +2090,14 @@ describe('templateRepository', () => {
           ':condition_5_proofingEnabled': true,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':supplierReferences': {},
         },
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
         UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+          'SET #templateStatus = :templateStatus, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
       });
     });
 

@@ -1,30 +1,28 @@
-import {
+import type {
   Failure,
-  TemplateSuccess,
-  TemplateSuccessList,
   TemplateDto,
+  RoutingConfig,
 } from 'nhs-notify-backend-client';
 
-export const apiSuccess = (
-  statusCode: number,
-  result: TemplateDto | TemplateDto[]
-) => {
-  if (Array.isArray(result)) {
-    return {
-      statusCode,
-      body: JSON.stringify({
-        statusCode,
-        templates: result,
-      } satisfies TemplateSuccessList),
-    };
-  }
+type Count = { count: number };
 
+export const apiSuccess = <
+  T extends
+    | Count
+    | RoutingConfig
+    | RoutingConfig[]
+    | TemplateDto
+    | TemplateDto[],
+>(
+  statusCode: number,
+  result: T
+) => {
   return {
     statusCode,
     body: JSON.stringify({
       statusCode,
-      template: result,
-    } satisfies TemplateSuccess),
+      data: result,
+    }),
   };
 };
 

@@ -1,3 +1,8 @@
+import type {
+  CreateUpdateRoutingConfig,
+  RoutingConfig,
+} from 'nhs-notify-backend-client';
+
 export const templateTypeDisplayMappings: Record<string, string> = {
   NHS_APP: 'NHS App message',
   SMS: 'Text message (SMS)',
@@ -36,6 +41,7 @@ type TypeSpecificProperties = {
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];
+  campaignId?: string;
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {
@@ -61,4 +67,16 @@ export type Template = TypeSpecificProperties & {
   updatedAt: string;
   version: number;
   proofingEnabled?: boolean;
+};
+
+export type RoutingConfigDbEntry = RoutingConfig & {
+  owner: string;
+  updatedBy: string;
+  createdBy: string;
+};
+
+export type FactoryRoutingConfig = {
+  apiPayload: CreateUpdateRoutingConfig;
+  apiResponse: RoutingConfig;
+  dbEntry: RoutingConfigDbEntry;
 };
