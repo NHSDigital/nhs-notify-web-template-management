@@ -9,6 +9,7 @@ import { NhsNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
+import FeatureFlagProviderServer from '@providers/features-provider-server';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -67,14 +68,16 @@ export default function RootLayout({
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
           <AuthProvider>
-            <NHSNotifySkipLink />
-            <NhsNotifyHeader />
-            <NHSNotifyContainer>{children}</NHSNotifyContainer>
-            <NHSNotifyFooter />
-            <LogoutWarningModal
-              logoutInSeconds={config.logoutInSeconds}
-              promptBeforeLogoutSeconds={config.promptTimeSeconds}
-            />
+            <FeatureFlagProviderServer>
+              <NHSNotifySkipLink />
+              <NhsNotifyHeader />
+              <NHSNotifyContainer>{children}</NHSNotifyContainer>
+              <NHSNotifyFooter />
+              <LogoutWarningModal
+                logoutInSeconds={config.logoutInSeconds}
+                promptBeforeLogoutSeconds={config.promptTimeSeconds}
+              />
+            </FeatureFlagProviderServer>
           </AuthProvider>
         </CookiesProvider>
       </body>
