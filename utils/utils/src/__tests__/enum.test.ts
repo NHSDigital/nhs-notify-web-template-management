@@ -20,6 +20,12 @@ import {
   templateCreationPages,
   statusToDisplayMapping,
   statusToColourMapping,
+  channelToTemplateType,
+  templateTypeToChannel,
+  channelDisplayMappings,
+  messagePlanStatusToDisplayText,
+  messagePlanStatusToTagColour,
+  ORDINALS,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -333,5 +339,90 @@ describe('Right-to-left language indicator', () => {
 
     // assert
     expect(result).toEqual(expectedRtlLanguages);
+  });
+});
+
+describe('channelToTemplateType', () => {
+  test.each([
+    ['NHSAPP', 'NHS_APP'],
+    ['SMS', 'SMS'],
+    ['EMAIL', 'EMAIL'],
+    ['LETTER', 'LETTER'],
+  ] as const)('should map %s → %s', (channel, expected) => {
+    expect(channelToTemplateType(channel)).toBe(expected);
+  });
+});
+
+describe('templateTypeToChannel', () => {
+  test.each([
+    ['NHS_APP', 'NHSAPP'],
+    ['SMS', 'SMS'],
+    ['EMAIL', 'EMAIL'],
+    ['LETTER', 'LETTER'],
+  ] as const)('should map %s → %s', (type, expected) => {
+    expect(templateTypeToChannel(type)).toBe(expected);
+  });
+});
+
+describe('channel mappings are reversable', () => {
+  test.each(['NHSAPP', 'SMS', 'EMAIL', 'LETTER'] as const)(
+    'templateTypeToChannel(channelToTemplateType(%s)) → same channel',
+    (channel) => {
+      expect(templateTypeToChannel(channelToTemplateType(channel))).toBe(
+        channel
+      );
+    }
+  );
+});
+
+describe('channelDisplayMappings', () => {
+  test.each([
+    ['NHSAPP', 'NHS App'],
+    ['SMS', 'Text message (SMS)'],
+    ['EMAIL', 'Email'],
+    ['LETTER', 'Letter'],
+  ] as const)('should map %s to "%s"', (channel, expected) => {
+    expect(channelDisplayMappings(channel)).toBe(expected);
+  });
+});
+
+describe('messagePlanStatusToDisplayText', () => {
+  test.each([
+    ['DRAFT', 'Draft'],
+    ['COMPLETED', 'Production'],
+    ['DELETED', ''],
+  ] as const)('should map %s to "%s"', (status, expected) => {
+    expect(messagePlanStatusToDisplayText(status)).toBe(expected);
+  });
+});
+
+describe('messagePlanStatusToTagColour', () => {
+  test.each([
+    ['DRAFT', 'green'],
+    ['COMPLETED', 'red'],
+  ] as const)('should map %s to colour "%s"', (status, colour) => {
+    expect(messagePlanStatusToTagColour(status)).toBe(colour);
+  });
+
+  test('should map DELETED to undefined colour (not displayed)', () => {
+    expect(messagePlanStatusToTagColour('DELETED')).toBeUndefined();
+  });
+});
+
+describe('ORDINALS', () => {
+  test('should contain first six ordinals in order', () => {
+    expect(ORDINALS).toEqual([
+      'First',
+      'Second',
+      'Third',
+      'Fourth',
+      'Fifth',
+      'Sixth',
+    ]);
+  });
+
+  test('should be indexable', () => {
+    expect(ORDINALS[0]).toBe('First');
+    expect(ORDINALS.at(-1)).toBe('Sixth');
   });
 });

@@ -4,6 +4,8 @@ import {
   LetterType,
   Language,
   TemplateDto,
+  Channel,
+  RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -258,3 +260,63 @@ export const templateDisplayDeleteAction = ({
 export function isRightToLeft(language: Language): boolean {
   return languageMap[language].rtl;
 }
+
+export const ORDINALS = [
+  'First',
+  'Second',
+  'Third',
+  'Fourth',
+  'Fifth',
+  'Sixth',
+];
+
+export const channelToTemplateType = (channel: Channel): TemplateType => {
+  const map: Record<Channel, TemplateType> = {
+    EMAIL: 'EMAIL',
+    LETTER: 'LETTER',
+    NHSAPP: 'NHS_APP',
+    SMS: 'SMS',
+  };
+  return map[channel];
+};
+
+export const templateTypeToChannel = (templateType: TemplateType): Channel => {
+  const map: Record<TemplateType, Channel> = {
+    EMAIL: 'EMAIL',
+    LETTER: 'LETTER',
+    NHS_APP: 'NHSAPP',
+    SMS: 'SMS',
+  };
+  return map[templateType];
+};
+
+export const channelDisplayMappings = (channel: Channel) => {
+  const map: Record<Channel, string> = {
+    NHSAPP: 'NHS App',
+    SMS: 'Text message (SMS)',
+    EMAIL: 'Email',
+    LETTER: 'Letter',
+  };
+  return map[channel];
+};
+
+const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
+  {
+    DRAFT: 'Draft',
+    COMPLETED: 'Production',
+    DELETED: '',
+  } as const;
+
+const messagePlanStatusColourMappings: Record<RoutingConfigStatus, Colour> = {
+  DRAFT: 'green',
+  COMPLETED: 'red',
+  DELETED: undefined,
+} as const;
+
+export const messagePlanStatusToDisplayText = (
+  status: RoutingConfigStatus
+): string => messagePlanStatusToDisplayMappings[status];
+
+export const messagePlanStatusToTagColour = (
+  status: RoutingConfigStatus
+): Colour => messagePlanStatusColourMappings[status];
