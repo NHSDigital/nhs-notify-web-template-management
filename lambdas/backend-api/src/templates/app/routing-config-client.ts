@@ -10,10 +10,12 @@ import {
 import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class RoutingConfigClient {
   constructor(
-    private readonly routingConfigRepository: RoutingConfigRepository
+    private readonly routingConfigRepository: RoutingConfigRepository,
+    private readonly clientConfigRepository: ClientConfigRepository
   ) {}
 
   async createRoutingConfig(
@@ -26,6 +28,24 @@ export class RoutingConfigClient {
     );
 
     if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
 
     return this.routingConfigRepository.create(validationResult.data, user);
   }
@@ -41,6 +61,24 @@ export class RoutingConfigClient {
     );
 
     if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
 
     return this.routingConfigRepository.update(
       routingConfigId,

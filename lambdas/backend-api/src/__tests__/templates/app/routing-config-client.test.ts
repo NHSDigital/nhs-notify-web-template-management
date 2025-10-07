@@ -8,17 +8,24 @@ import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
+import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
 
 const user = { userId: 'userid', clientId: 'nhs-notify-client-id' };
 
 function setup() {
-  const repo = mock<RoutingConfigRepository>();
+  const routingConfigRepository = mock<RoutingConfigRepository>();
+
+  const clientConfigRepository = mock<ClientConfigRepository>();
 
   const mocks = {
-    routingConfigRepository: repo,
+    routingConfigRepository,
+    clientConfigRepository,
   };
 
-  const client = new RoutingConfigClient(repo);
+  const client = new RoutingConfigClient(
+    routingConfigRepository,
+    clientConfigRepository
+  );
 
   return { client, mocks };
 }
@@ -242,10 +249,11 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       const date = new Date();
+      const campaignId = 'campaign';
 
       const input: CreateUpdateRoutingConfig = {
         name: 'rc',
-        campaignId: 'campaign',
+        campaignId,
         cascade: [
           {
             cascadeGroups: ['standard'],
@@ -266,11 +274,19 @@ describe('RoutingConfigClient', () => {
         updatedAt: date.toISOString(),
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: [campaignId] },
+      });
+
       mocks.routingConfigRepository.create.mockResolvedValueOnce({
         data: rc,
       });
 
       const result = await client.createRoutingConfig(input, user);
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+        user.clientId
+      );
 
       expect(mocks.routingConfigRepository.create).toHaveBeenCalledWith(
         input,
@@ -339,6 +355,10 @@ describe('RoutingConfigClient', () => {
         cascadeGroupOverrides: [{ name: 'standard' }],
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['campaign'] },
+      });
+
       mocks.routingConfigRepository.create.mockResolvedValueOnce({
         error: { errorMeta: { code: 500, description: 'ddb err' } },
       });
@@ -355,6 +375,81 @@ describe('RoutingConfigClient', () => {
           errorMeta: {
             code: 500,
             description: 'ddb err',
+          },
+        },
+      });
+    });
+
+    test('returns failures from client config repository', async () => {
+      const { client, mocks } = setup();
+
+      const input: CreateUpdateRoutingConfig = {
+        name: 'rc',
+        campaignId: 'campaign',
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'sms',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+
+      const result = await client.createRoutingConfig(input, user);
+
+      expect(mocks.routingConfigRepository.create).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if campaignId is not allowed for the client', async () => {
+      const { client, mocks } = setup();
+
+      const input: CreateUpdateRoutingConfig = {
+        name: 'rc',
+        campaignId: 'campaign',
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'sms',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['another campaign'] },
+      });
+
+      const result = await client.createRoutingConfig(input, user);
+
+      expect(mocks.routingConfigRepository.create).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid campaign ID in request',
           },
         },
       });
@@ -404,6 +499,10 @@ describe('RoutingConfigClient', () => {
         ...routingConfig,
         ...update,
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: [routingConfig.campaignId] },
+      });
 
       mocks.routingConfigRepository.update.mockResolvedValueOnce({
         data: updated,
@@ -458,6 +557,75 @@ describe('RoutingConfigClient', () => {
             details: {
               cascade: 'Invalid input: expected array, received object',
             },
+          },
+        },
+      });
+    });
+
+    test('returns failures from client config repository', async () => {
+      const { client, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        campaignId: routingConfig.campaignId,
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: 'new name',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if campaignId is not allowed for the client', async () => {
+      const { client, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+        campaignId: 'this campaign',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['another campaign'] },
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid campaign ID in request',
           },
         },
       });
