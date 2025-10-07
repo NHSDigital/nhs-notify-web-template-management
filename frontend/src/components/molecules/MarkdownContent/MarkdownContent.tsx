@@ -23,13 +23,18 @@ export function MarkdownContent({
 
   if (rendered.length === 0) return null;
 
+  const NoWrap = ({ children }: React.PropsWithChildren) => <>{children}</>;
+
   const inlineOptions: MarkdownToJSX.Options = {
     wrapper: React.Fragment,
     forceInline: true,
     disableParsingRawHTML: true,
     overrides: {
-      a: { component: 'a', props: { target: '_blank', rel: 'noopener noreferrer' } },
-      span: { component: React.Fragment },
+      a: {
+        component: 'a',
+        props: { target: '_blank', rel: 'noopener noreferrer' },
+      },
+      span: { component: NoWrap },
     },
   };
 
@@ -38,7 +43,10 @@ export function MarkdownContent({
     forceBlock: true,
     disableParsingRawHTML: true,
     overrides: {
-      a: { component: 'a', props: { target: '_blank', rel: 'noopener noreferrer' } },
+      a: {
+        component: 'a',
+        props: { target: '_blank', rel: 'noopener noreferrer' },
+      },
     },
   };
 
@@ -51,9 +59,8 @@ export function MarkdownContent({
           options={mode === 'block' ? blockOptions : inlineOptions}
         >
           {item}
-        </Markdown >
-      ))
-      }
+        </Markdown>
+      ))}
     </>
   );
 }
