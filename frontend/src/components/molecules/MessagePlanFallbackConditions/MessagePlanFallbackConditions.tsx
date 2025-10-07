@@ -19,7 +19,10 @@ export function MessagePlanFallbackConditions({
     messagePlanFallbackConditions[channelToTemplateType(channel)];
 
   return (
-    <li className={styles['fallback-conditions']}>
+    <li
+      className={styles['fallback-conditions']}
+      data-testid={`message-plan-fallback-conditions-${channel}`}
+    >
       <div
         className={styles['fallback-conditions-branch-icon']}
         aria-hidden='true'
