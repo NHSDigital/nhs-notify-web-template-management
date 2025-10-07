@@ -128,34 +128,9 @@ exports[`MessagePlansList matches snapshot when no data is available 1`] = `
     <div
       class="nhsuk-details__text"
     >
-      <table
-        class="nhsuk-table-responsive"
-      >
-        <thead
-          class="nhsuk-table__head"
-          role="rowgroup"
-        />
-        <tbody
-          class="nhsuk-table__body"
-        >
-          <tr
-            class="nhsuk-table__row"
-          >
-            <td
-              class="nhsuk-table__cell"
-              role="cell"
-            >
-              <span
-                aria-hidden="true"
-                class="nhsuk-table-responsive__heading"
-              >
-                 
-              </span>
-              You do not have any message plans in draft yet.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p>
+        You do not have any message plans in draft yet.
+      </p>
     </div>
   </details>
 </DocumentFragment>

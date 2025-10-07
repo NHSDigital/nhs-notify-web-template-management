@@ -4,12 +4,15 @@ import { getSessionServer } from '@utils/amplify-utils';
 import {
   CreateUpdateTemplate,
   isTemplateDtoValid,
+  RoutingConfig,
+  RoutingConfigStatusActive,
+  routingConfigurationApiClient,
   TemplateDto,
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { randomUUID } from 'node:crypto';
+import { sortAscByCreatedAt } from './sort';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -183,52 +186,50 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     .map((template) => isTemplateDtoValid(template))
     .filter(
       (template): template is ValidatedTemplateDto => template !== undefined
-    )
-    .sort((a, b) => {
-      const aCreatedAt = a.createdAt;
-      const bCreatedAt = b.createdAt;
+    );
 
-      if (aCreatedAt === bCreatedAt) {
-        return a.id.localeCompare(b.id);
-      }
-      return aCreatedAt < bCreatedAt ? 1 : -1;
-    });
-
-  return sortedData;
+  return sortAscByCreatedAt(sortedData);
 }
 
-export async function getRoutingConfigs(): Promise<
-  {
-    name: string;
-    id: string;
-    lastUpdated: string;
-    status: 'DRAFT' | 'PRODUCTION';
-  }[]
-> {
+export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  return [
-    {
-      name: 'Static routing plan 1',
-      id: randomUUID(),
-      lastUpdated: new Date().toString(),
-      status: 'DRAFT',
-    },
-    {
-      name: 'Static routing plan 2',
-      id: randomUUID(),
-      lastUpdated: new Date().toString(),
-      status: 'DRAFT',
-    },
-    {
-      name: 'Static routing plan 3',
-      id: randomUUID(),
-      lastUpdated: new Date('2025-09-14').toString(),
-      status: 'DRAFT',
-    },
-  ];
+  const { data, error } = await routingConfigurationApiClient.list(accessToken);
+
+  if (error) {
+    logger.error('Failed to get routing configuration', {
+      error: error,
+    });
+    return [];
+  }
+
+  return sortAscByCreatedAt(data);
+}
+
+export async function countRoutingConfigs(
+  status: RoutingConfigStatusActive
+): Promise<number> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await routingConfigurationApiClient.count(
+    accessToken,
+    status
+  );
+
+  if (error) {
+    logger.error(`Failed to count routing configuration for ${status}`, {
+      error,
+    });
+    return 0;
+  }
+
+  return data.count;
 }

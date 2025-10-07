@@ -16,16 +16,25 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
   getRoutingConfigs,
+  countRoutingConfigs,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import {
+  RoutingConfig,
+  TemplateDto,
+  routingConfigurationApiClient,
+} from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
+const routingConfigurationApiClientMock = jest.mocked(
+  routingConfigurationApiClient
+);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
+jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -708,29 +717,114 @@ describe('form-actions', () => {
       );
     });
 
-    test('should return a list of routing configs', async () => {
-      const configs = await getRoutingConfigs();
+    test('should return empty array when calling the API fails', async () => {
+      routingConfigurationApiClientMock.list.mockResolvedValueOnce({
+        error: {
+          errorMeta: { code: 400, description: 'Bad request' },
+        },
+      });
 
-      expect(configs).toEqual([
-        {
-          name: 'Static routing plan 1',
-          id: expect.anything(),
-          lastUpdated: new Date().toString(),
-          status: 'DRAFT',
+      const response = await getRoutingConfigs();
+
+      expect(response.length).toBe(0);
+    });
+
+    test('should return a list of routing configs - order by createdAt and then id', async () => {
+      const fields = {
+        status: 'DRAFT',
+        name: 'Routing config',
+        updatedAt: '2021-01-01T00:00:00.000Z',
+        campaignId: 'campaignId',
+        clientId: 'clientId',
+        cascade: [],
+        cascadeGroupOverrides: [],
+      } satisfies Partial<RoutingConfig>;
+
+      const routingConfigs = [
+        { ...fields, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
+        { ...fields, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
+        { ...fields, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
+        { ...fields, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
+        { ...fields, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
+        { ...fields, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
+        { ...fields, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+      ];
+
+      // 06 is the newest, 08 is the oldest.
+      // 01 - 05 all have the same createdAt.
+      const expectedOrder = ['06', '01', '02', '03', '04', '05', '08'];
+
+      routingConfigurationApiClientMock.list.mockResolvedValueOnce({
+        data: routingConfigs,
+      });
+
+      const response = await getRoutingConfigs();
+
+      const actualOrder = [];
+      for (const routingConfig of response) {
+        actualOrder.push(routingConfig.id);
+      }
+
+      expect(actualOrder).toEqual(expectedOrder);
+    });
+  });
+
+  describe('countRoutingConfigs', () => {
+    test('should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(countRoutingConfigs('DRAFT')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+
+    test('should return 0 when calling the API fails', async () => {
+      routingConfigurationApiClientMock.count.mockResolvedValueOnce({
+        error: {
+          errorMeta: { code: 400, description: 'Bad request' },
         },
-        {
-          name: 'Static routing plan 2',
-          id: expect.anything(),
-          lastUpdated: new Date().toString(),
-          status: 'DRAFT',
-        },
-        {
-          name: 'Static routing plan 3',
-          id: expect.anything(),
-          lastUpdated: new Date('2025-09-14').toString(),
-          status: 'DRAFT',
-        },
-      ]);
+      });
+
+      const response = await countRoutingConfigs('DRAFT');
+
+      expect(response).toBe(0);
+    });
+
+    test('should return count of routing configurations for status', async () => {
+      // Note: we're doing this here because we call `getSessionServer` twice
+      // and it's only mocked-out once by default.
+      authIdTokenServerMock.mockResolvedValue({
+        accessToken: 'token',
+        clientId: 'client1',
+      });
+
+      routingConfigurationApiClientMock.count
+        .mockResolvedValueOnce({
+          data: { count: 1 },
+        })
+        .mockResolvedValueOnce({
+          data: { count: 5 },
+        });
+
+      const draftCount = await countRoutingConfigs('DRAFT');
+      const completedCount = await countRoutingConfigs('COMPLETED');
+
+      expect(draftCount).toEqual(1);
+      expect(routingConfigurationApiClientMock.count).toHaveBeenNthCalledWith(
+        1,
+        'token',
+        'DRAFT'
+      );
+      expect(completedCount).toEqual(5);
+      expect(routingConfigurationApiClientMock.count).toHaveBeenNthCalledWith(
+        2,
+        'token',
+        'COMPLETED'
+      );
     });
   });
 });

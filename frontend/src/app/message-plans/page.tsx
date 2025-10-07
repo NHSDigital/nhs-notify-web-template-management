@@ -3,7 +3,7 @@
 import content from '@content/content';
 import { MessagePlans } from '@molecules/MessagePlans/MessagePlans';
 import { Metadata } from 'next';
-import { getRoutingConfigs } from '@utils/form-actions';
+import { countRoutingConfigs, getRoutingConfigs } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 
@@ -20,21 +20,34 @@ const MessagePlansPage = async () => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const plans = await getRoutingConfigs();
+  const [routingConfigurations, draftCount, completedCount] = await Promise.all(
+    [
+      getRoutingConfigs(),
+      countRoutingConfigs('DRAFT'),
+      countRoutingConfigs('COMPLETED'),
+    ]
+  );
 
-  const draft = plans.filter((r) => r.status === 'DRAFT');
+  const messagePlans = routingConfigurations.map((plan) => ({
+    name: plan.name,
+    id: plan.id,
+    lastUpdated: plan.updatedAt,
+    status: plan.status,
+  }));
 
-  const production = plans.filter((r) => r.status === 'PRODUCTION');
+  const draft = messagePlans.filter((r) => r.status === 'DRAFT');
+
+  const completed = messagePlans.filter((r) => r.status === 'COMPLETED');
 
   return (
     <MessagePlans
       draft={{
         plans: draft,
-        count: draft.length,
+        count: draftCount,
       }}
       production={{
-        plans: production,
-        count: production.length,
+        plans: completed,
+        count: completedCount,
       }}
     />
   );

@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { getRoutingConfigs } from '@utils/form-actions';
+import { getRoutingConfigs, countRoutingConfigs } from '@utils/form-actions';
 import {
   type MessagePlansProps,
   MessagePlans,
@@ -10,14 +10,29 @@ import { serverIsFeatureEnabled } from '@utils/server-features';
 import MessagePlansPage, { generateMetadata } from '@app/message-plans/page';
 import { redirect } from 'next/navigation';
 import { ReactElement } from 'react';
+import { RoutingConfig } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
 jest.mock('@utils/server-features');
 
+const countRoutingConfigsMock = jest.mocked(countRoutingConfigs);
 const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 const getRoutingConfigsMock = jest.mocked(getRoutingConfigs);
 const redirectMock = jest.mocked(redirect);
+
+const buildRoutingConfig = (rc: Partial<RoutingConfig>): RoutingConfig => ({
+  campaignId: 'abc',
+  cascade: [],
+  cascadeGroupOverrides: [],
+  clientId: 'client-a',
+  createdAt: '2025-09-09T10:00:00Z',
+  status: 'DRAFT',
+  id: '',
+  name: '',
+  updatedAt: '',
+  ...rc,
+});
 
 describe('MessagePlansPage', () => {
   beforeEach(() => {
@@ -44,25 +59,27 @@ describe('MessagePlansPage', () => {
 
   test('renders the page with drafts and production routing plans', async () => {
     getRoutingConfigsMock.mockResolvedValueOnce([
-      {
+      buildRoutingConfig({
         id: '1',
         name: 'Draft A',
-        lastUpdated: '2025-09-10T10:00:00Z',
+        updatedAt: '2025-09-10T10:00:00Z',
         status: 'DRAFT',
-      },
-      {
+      }),
+      buildRoutingConfig({
         id: '2',
         name: 'Prod X',
-        lastUpdated: '2025-09-09T11:00:00Z',
-        status: 'PRODUCTION',
-      },
-      {
+        updatedAt: '2025-09-09T11:00:00Z',
+        status: 'COMPLETED',
+      }),
+      buildRoutingConfig({
         id: '3',
         name: 'Prod Y',
-        lastUpdated: '2025-09-08T12:00:00Z',
-        status: 'PRODUCTION',
-      },
+        updatedAt: '2025-09-08T12:00:00Z',
+        status: 'COMPLETED',
+      }),
     ]);
+
+    countRoutingConfigsMock.mockResolvedValueOnce(1).mockResolvedValueOnce(2);
 
     const page = (await MessagePlansPage()) as ReactElement<
       MessagePlansProps,
@@ -74,6 +91,10 @@ describe('MessagePlansPage', () => {
     expect(redirectMock).not.toHaveBeenCalled();
 
     expect(getRoutingConfigsMock).toHaveBeenCalledTimes(1);
+
+    expect(countRoutingConfigsMock).toHaveBeenNthCalledWith(1, 'DRAFT');
+
+    expect(countRoutingConfigsMock).toHaveBeenNthCalledWith(2, 'COMPLETED');
 
     expect(page.props.draft).toEqual({
       plans: [
@@ -93,37 +114,16 @@ describe('MessagePlansPage', () => {
           id: '2',
           name: 'Prod X',
           lastUpdated: '2025-09-09T11:00:00Z',
-          status: 'PRODUCTION',
+          status: 'COMPLETED',
         },
         {
           id: '3',
           name: 'Prod Y',
           lastUpdated: '2025-09-08T12:00:00Z',
-          status: 'PRODUCTION',
+          status: 'COMPLETED',
         },
       ],
       count: 2,
-    });
-  });
-
-  test('renders the page with no items', async () => {
-    getRoutingConfigsMock.mockResolvedValueOnce([]);
-
-    const page = (await MessagePlansPage()) as ReactElement<
-      MessagePlansProps,
-      typeof MessagePlans
-    >;
-
-    expect(page.props).toBeDefined();
-
-    expect(page.props.draft).toEqual({
-      plans: [],
-      count: 0,
-    });
-
-    expect(page.props.production).toEqual({
-      plans: [],
-      count: 0,
     });
   });
 });

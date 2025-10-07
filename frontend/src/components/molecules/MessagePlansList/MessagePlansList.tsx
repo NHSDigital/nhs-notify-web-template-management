@@ -61,24 +61,16 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
         {status} ({count})
       </Details.Summary>
       <Details.Text>
-        <Table responsive>
-          <Table.Head role='rowgroup'>
-            {count > 0 ? header : undefined}
-          </Table.Head>
-          <Table.Body>
-            {count > 0 ? (
-              rows
-            ) : (
-              <Table.Row>
-                <Table.Cell>
-                  {messagePlanComponent.noMessagePagesMessage(
-                    status.toLowerCase()
-                  )}
-                </Table.Cell>
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
+        {rows.length > 0 ? (
+          <Table responsive>
+            <Table.Head role='rowgroup'>{header}</Table.Head>
+            <Table.Body>{rows}</Table.Body>
+          </Table>
+        ) : (
+          <p>
+            {messagePlanComponent.noMessagePagesMessage(status.toLowerCase())}
+          </p>
+        )}
       </Details.Text>
     </Details>
   );
