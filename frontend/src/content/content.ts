@@ -1023,6 +1023,10 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
+};
+
 export type FallbackConditionBlock = {
   title: string;
   content: {
@@ -1074,7 +1078,7 @@ const messagePlanFallbackConditions: Record<
     content: {
       continue: [
         {
-          type: 'text',
+          type: 'inline-text',
           text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
         },
         {
@@ -1089,7 +1093,32 @@ const messagePlanFallbackConditions: Record<
   },
 };
 
-const createEditMessagePlan = {};
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
+};
+
+const createEditMessagePlan = {
+  headerCaption: 'Message plan',
+  changeNameLink: {
+    href: '/templates/message-plans/change-name', // TODO: Check this
+    text: 'Change name',
+  },
+  rowHeadings: {
+    routingPlanId: 'Routing Plan ID',
+    status: 'Status',
+  },
+  ctas: {
+    primary: {
+      href: '',
+      text: 'Move to production',
+    },
+    secondary: {
+      href: '',
+      text: 'Save and close',
+    },
+  },
+  messagePlanFallbackConditions,
+};
 
 const content = {
   global: { mainLayout },
@@ -1097,13 +1126,16 @@ const content = {
     channelGuidance,
     chooseTemplate,
     copyTemplate,
+    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanBlock,
     messagePlanChannelTemplate,
+    messagePlanFallbackConditions,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
@@ -1121,14 +1153,13 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
-    messagePlanFallbackConditions,
-    messagePlanChannelTemplate,
   },
   pages: {
     homePage,
     error404,
     invalidConfiguration,
     messageTemplates,
+    chooseTemplatesForMessagePlan,
   },
 };
 
