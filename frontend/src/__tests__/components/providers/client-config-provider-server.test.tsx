@@ -5,6 +5,7 @@ import { ClientConfigProviderServer } from '@providers/client-config-provider-se
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/server-features');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const mockGetSessionServer = jest.mocked(getSessionServer);
 const mockFetchClient = jest.mocked(fetchClient);

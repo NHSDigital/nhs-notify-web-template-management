@@ -9,6 +9,7 @@ import {
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
+import { useClientConfig } from '@providers/client-config-provider';
 
 jest.mock('@utils/markdownit');
 
@@ -33,8 +34,20 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
+jest.mock('@providers/client-config-provider');
+
+beforeEach(() => {
+  jest.mocked(useClientConfig).mockReset().mockReturnValue({ features: {} });
+});
+
 describe('Review sms form renders', () => {
   describe('Routing feature flag - Disabled', () => {
+    beforeEach(() => {
+      jest
+        .mocked(useClientConfig)
+        .mockReturnValue({ features: { routing: false } });
+    });
+
     it('matches error snapshot', () => {
       const container = render(
         <PreviewSMSTemplate
@@ -98,10 +111,15 @@ describe('Review sms form renders', () => {
   });
 
   describe('Routing feature flag - Enabled', () => {
+    beforeEach(() => {
+      jest
+        .mocked(useClientConfig)
+        .mockReturnValue({ features: { routing: true } });
+    });
+
     it('renders component correctly', () => {
       render(
         <PreviewSMSTemplate
-          routingEnabled={true}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',
@@ -122,9 +140,10 @@ describe('Review sms form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from manage templates screen when routing is %p',
     (routing) => {
+      jest.mocked(useClientConfig).mockReturnValue({ features: { routing } });
+
       const container = render(
         <PreviewSMSTemplate
-          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',
@@ -142,6 +161,8 @@ describe('Review sms form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from edit screen when routing is %p',
     (routing) => {
+      jest.mocked(useClientConfig).mockReturnValue({ features: { routing } });
+
       const mockSearchParams = new Map([['from', 'edit']]);
       (useSearchParams as jest.Mock).mockImplementationOnce(() => ({
         get: (key: string) => mockSearchParams.get(key),
@@ -149,7 +170,6 @@ describe('Review sms form renders', () => {
 
       const container = render(
         <PreviewSMSTemplate
-          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<SMSTemplate>>({
             errorState: undefined,
             name: 'test-template-sms',

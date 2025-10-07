@@ -6,6 +6,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { initialFeatureFlags } from '@utils/features';
 import { fetchClient } from '@utils/server-features';
 import { ClientConfigProvider } from '@providers/client-config-provider';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function ClientConfigProviderServer({
   children,
@@ -26,8 +27,8 @@ export async function ClientConfigProviderServer({
           features: { ...initialFeatureFlags, ...client.data.features },
         };
       }
-    } catch {
-      // no-op
+    } catch (error) {
+      logger.error('Error fetching client configuration', { error });
     }
   }
   return (

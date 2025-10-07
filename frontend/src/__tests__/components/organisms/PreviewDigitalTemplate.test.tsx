@@ -6,10 +6,21 @@ import {
   FormState,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { useClientConfig } from '@providers/client-config-provider';
+
+jest.mock('@providers/client-config-provider');
+
+beforeEach(() => {
+  jest.mocked(useClientConfig).mockReset();
+});
 
 describe('PreviewDigitalTemplate', () => {
   describe('Routing disabled', () => {
-    beforeEach(jest.resetAllMocks);
+    beforeEach(() => {
+      jest
+        .mocked(useClientConfig)
+        .mockReturnValue({ features: { routing: false } });
+    });
 
     it('matches snapshot', () => {
       const container = render(
@@ -32,7 +43,7 @@ describe('PreviewDigitalTemplate', () => {
             buttonText: 'Continue',
           }}
           previewDetailsComponent={<>Preview</>}
-          routingEnabled={false}
+          editPath='/edit-nhs-app-template/template-id'
         />
       );
 
@@ -68,7 +79,7 @@ describe('PreviewDigitalTemplate', () => {
             buttonText: 'Continue',
           }}
           previewDetailsComponent={<>Preview</>}
-          routingEnabled={false}
+          editPath='/edit-nhs-app-template/template-id'
         />
       );
 
@@ -96,7 +107,7 @@ describe('PreviewDigitalTemplate', () => {
             buttonText: 'Continue',
           }}
           previewDetailsComponent={<>Preview</>}
-          routingEnabled={false}
+          editPath='/edit-nhs-app-template/template-id'
         />
       );
 
@@ -109,6 +120,12 @@ describe('PreviewDigitalTemplate', () => {
   });
 
   describe('Routing enabled', () => {
+    beforeEach(() => {
+      jest
+        .mocked(useClientConfig)
+        .mockReturnValue({ features: { routing: true } });
+    });
+
     it('matches snapshot', () => {
       const container = render(
         <PreviewDigitalTemplate
@@ -119,7 +136,18 @@ describe('PreviewDigitalTemplate', () => {
           })}
           editPath='/edit-nhs-app-template/template-id'
           previewDetailsComponent={<>Preview</>}
-          routingEnabled={true}
+          form={{
+            formId: 'preview-form',
+            radiosId: 'preview-example',
+            action: '',
+            state: {},
+            pageHeading: 'Example heading',
+            options: [
+              { id: 'option-1', text: 'option 1' },
+              { id: 'option-2', text: 'option 2' },
+            ],
+            buttonText: 'Continue',
+          }}
         />
       );
 
@@ -136,7 +164,18 @@ describe('PreviewDigitalTemplate', () => {
           })}
           editPath='/edit-nhs-app-template/template-id'
           previewDetailsComponent={<>Preview</>}
-          routingEnabled={true}
+          form={{
+            formId: 'preview-form',
+            radiosId: 'preview-example',
+            action: '',
+            state: {},
+            pageHeading: 'Example heading',
+            options: [
+              { id: 'option-1', text: 'option 1' },
+              { id: 'option-2', text: 'option 2' },
+            ],
+            buttonText: 'Continue',
+          }}
         />
       );
 

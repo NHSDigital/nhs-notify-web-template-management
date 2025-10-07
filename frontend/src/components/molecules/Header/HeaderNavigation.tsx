@@ -16,7 +16,7 @@ export function HeaderNavigation({
 }) {
   const authStatus = useAuthStatus(initialAuthStatus);
 
-  const clientConfig = useClientConfig();
+  const { features } = useClientConfig();
 
   return (
     <>
@@ -32,8 +32,7 @@ export function HeaderNavigation({
                 .filter(
                   ({ feature }) =>
                     !feature ||
-                    clientConfig.features[feature as keyof ClientFeatures] ===
-                      true
+                    features[feature as keyof ClientFeatures] === true
                 )
                 .map(({ text, href }, index) => (
                   <li

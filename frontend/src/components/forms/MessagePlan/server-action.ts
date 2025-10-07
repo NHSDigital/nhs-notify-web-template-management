@@ -13,11 +13,12 @@ import {
 import { createRoutingConfig } from '@utils/form-actions';
 
 const $MessagePlanFormData = z.object({
+  campaignId: z.string().min(1, { error: 'Select a campaign' }),
+  messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST),
   name: z
-    .string({ error: 'Enter a message plan name' })
+    .string()
     .min(1, { error: 'Enter a message plan name' })
     .max(200, { error: 'Message plan name too long' }),
-  messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST),
 });
 
 const INITIAL_CASCADE_ITEMS: Record<Channel, CascadeItem> = {
@@ -110,7 +111,7 @@ export async function messagePlanServerAction(
 
   const created = await createRoutingConfig({
     name: parsed.data.name,
-    campaignId: '',
+    campaignId: parsed.data.campaignId,
     cascade: messageOrderToInitialCascade(parsed.data.messageOrder),
     cascadeGroupOverrides: messageOrderToInitialCascadeGroups(
       parsed.data.messageOrder

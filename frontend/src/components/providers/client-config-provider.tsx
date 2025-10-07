@@ -10,6 +10,19 @@ const ClientConfigContext = createContext<ClientConfiguration>({
 
 export const useClientConfig = () => useContext(ClientConfigContext);
 
+/** returns a list of campaign ids for the current client */
+export function useCampaignIds(): string[] {
+  const { campaignIds = [], campaignId = '' } = useClientConfig();
+
+  const ids = new Set(campaignIds);
+
+  if (campaignId) {
+    ids.add(campaignId);
+  }
+
+  return [...ids].sort();
+}
+
 export function ClientConfigProvider({
   children,
   config,

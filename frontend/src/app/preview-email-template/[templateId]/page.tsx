@@ -9,7 +9,6 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import content from '@content/content';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -30,14 +29,7 @@ const PreviewEmailTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  const routingEnabled = await serverIsFeatureEnabled('routing');
-
-  return (
-    <PreviewEmailTemplate
-      initialState={validatedTemplate}
-      routingEnabled={routingEnabled}
-    />
-  );
+  return <PreviewEmailTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewEmailTemplatePage;
