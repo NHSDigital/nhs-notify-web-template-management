@@ -1,5 +1,13 @@
-.channel-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 48px 0;
+.create-edit-message-plan {
+  &-routing-config-id {
+    font-family:
+      ui-monospace,
+      menlo,
+      Cascadia Mono,
+      Segoe UI Mono,
+      consolas,
+      Liberation Mono,
+      monospace;
+    word-break: 'break-word'
+  }
 }

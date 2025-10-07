@@ -2,103 +2,69 @@
 
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { Button } from 'nhsuk-react-components';
-import { SummaryList, Tag, Details } from 'nhsuk-react-components';
-import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
-import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
+import { SummaryList, Tag } from 'nhsuk-react-components';
+import { RoutingConfig } from 'nhs-notify-backend-client';
+import { MessagePlanChannelList } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import {
+  messagePlanStatusToDisplayText,
+  messagePlanStatusToTagColour,
+} from 'nhs-notify-web-template-management-utils';
 
 import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
 
-import content from '@content/content';
-const { messagePlanFallbackConditions } = content.components;
+import copy from '@content/content';
+const { createEditMessagePlan: content } = copy.components;
 
-type Plan = {
-  id: string;
-  name: string;
-  status: string;
-};
-
-type NHSNotifyChooseTemplatesProps = {
-  plan: Plan;
-};
-
-export function CreateEditMessagePlan({ plan }: NHSNotifyChooseTemplatesProps) {
+export function CreateEditMessagePlan({
+  messagePlan,
+}: {
+  messagePlan: RoutingConfig;
+}) {
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-three-quarters'>
-          <span className='nhsuk-caption-l'>Message plan</span>
-          <h1 className='nhsuk-heading-l'>{plan.name}</h1>
+          <span className='nhsuk-caption-l'>{content.headerCaption}</span>
+          <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
           <p className='nhsuk-body-s'>
-            <Link href='/templates/message-plans/create-name?rename-message=1'>
-              Change name
+            <Link
+              data-testid='change-message-plan-name-link'
+              href={content.changeNameLink.href}
+            >
+              {content.changeNameLink.text}
             </Link>
           </p>
 
           <SummaryList className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-top-6'>
             <SummaryList.Row>
-              <SummaryList.Key>Routing Plan ID</SummaryList.Key>
-              <SummaryList.Value>
-                <span
-                  style={{ fontFamily: 'monospace', wordBreak: 'break-word' }}
-                >
-                  {plan.id}
-                </span>
+              <SummaryList.Key>
+                {content.rowHeadings.routingPlanId}
+              </SummaryList.Key>
+              <SummaryList.Value
+                className={styles['create-edit-message-plan-routing-config-id']}
+              >
+                {messagePlan.id}
               </SummaryList.Value>
             </SummaryList.Row>
             <SummaryList.Row>
-              <SummaryList.Key>Status</SummaryList.Key>
+              <SummaryList.Key>{content.rowHeadings.status}</SummaryList.Key>
               <SummaryList.Value>
-                <Tag color='green'>{plan.status}</Tag>
+                <Tag color={messagePlanStatusToTagColour(messagePlan.status)}>
+                  {messagePlanStatusToDisplayText(messagePlan.status)}
+                </Tag>
               </SummaryList.Value>
             </SummaryList.Row>
           </SummaryList>
 
-          <ul className={styles['channel-list']}>
-            <MessagePlanBlock
-              number={1}
-              title='First message'
-              channel='NHS App'
-            />
-            <MessagePlanFallbackConditions
-              title={messagePlanFallbackConditions.NHS_APP.title}
-              content={messagePlanFallbackConditions.NHS_APP.content}
-            />
-            <MessagePlanBlock
-              number={2}
-              title='Second message'
-              channel='Email'
-            />
-            <MessagePlanFallbackConditions
-              title={messagePlanFallbackConditions.EMAIL.title}
-              content={messagePlanFallbackConditions.EMAIL.content}
-            />
-            <MessagePlanBlock
-              number={3}
-              title='Third message'
-              channel='Text message (SMS)'
-            />
-            <MessagePlanFallbackConditions
-              title={messagePlanFallbackConditions.SMS.title}
-              content={messagePlanFallbackConditions.SMS.content}
-            />
-            <MessagePlanBlock
-              number={4}
-              title='Fourth message'
-              channel='Standard English letter'
-            />
-            {/* <AccessibleLetterBlocks /> */}
-          </ul>
+          <MessagePlanChannelList messagePlan={messagePlan} />
 
-          <div className='nhsuk-form-group notify-message-button-container'>
-            <Button
-              onClick={}
-            >
-              Move to production
-            </Button>
-            <Button secondary className='nhsuk-u-margin-left-3'>
-              Save and close
-            </Button>
+          <div className='nhsuk-form-group' data-testid='message-plan-actions'>
+            {/* TODO: Buttons need to navigate */}
+            <NHSNotifyButton>{content.ctas.primary.text}</NHSNotifyButton>
+            <NHSNotifyButton secondary className='nhsuk-u-margin-left-3'>
+              {content.ctas.secondary.text}
+            </NHSNotifyButton>
           </div>
         </div>
       </div>
