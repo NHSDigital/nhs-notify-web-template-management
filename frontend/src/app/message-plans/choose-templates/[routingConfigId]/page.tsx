@@ -3,9 +3,9 @@
 import { Metadata } from 'next';
 import { CreateEditMessagePlan } from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan';
 import { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
-
-import content from '@content/content'
 import { getMessagePlan } from '@utils/message-plans';
+
+import content from '@content/content';
 
 const { pageTitle } = content.pages.chooseTemplatesForMessagePlan;
 
