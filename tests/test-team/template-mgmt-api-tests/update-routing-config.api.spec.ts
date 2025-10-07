@@ -84,13 +84,16 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
   test('returns 404 if routing config exists but is owned by a different client', async ({
     request,
   }) => {
+    const { apiPayload, dbEntry } =
+      RoutingConfigFactory.create(userDifferentClient);
+
     const updateResponse = await request.put(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigNoUpdates.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await userDifferentClient.getAccessToken(),
         },
-        data: routingConfigNoUpdates.apiPayload,
+        data: apiPayload,
       }
     );
 
@@ -167,6 +170,36 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     });
   });
 
+  test('returns 400 if campaignId is not available for the client', async ({
+    request,
+  }) => {
+    const campaignId = 'not_a_client_campaign';
+
+    const response = await request.put(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigNoUpdates.dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: RoutingConfigFactory.create(user1, {
+          campaignId,
+        }).apiPayload,
+      }
+    );
+
+    const dbgClientCampaigns = JSON.stringify(user1.campaignIds);
+    expect(user1.campaignIds?.includes(campaignId), dbgClientCampaigns).toBe(
+      false
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Invalid campaign ID in request',
+    });
+  });
+
   test('returns 404 - cannot update a DELETED routing config', async ({
     request,
   }) => {
@@ -198,7 +231,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
   }) => {
     const update = {
       ...routingConfigSuccessfullyUpdate.apiPayload,
-      campaignId: 'new campaignId',
+      name: 'new name',
     };
 
     const updateResponse = await request.put(

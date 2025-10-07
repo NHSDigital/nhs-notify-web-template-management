@@ -7,14 +7,15 @@ import type {
   FactoryRoutingConfig,
   RoutingConfigDbEntry,
 } from '../../helpers/types';
+import { TestUser } from 'helpers/auth/cognito-auth-helper';
 
 export const RoutingConfigFactory = {
   create(
-    user: { userId: string; clientId: string },
+    user: TestUser,
     routingConfig: Partial<RoutingConfig> = {}
   ): FactoryRoutingConfig {
     const apiPayload: CreateUpdateRoutingConfig = {
-      campaignId: 'campaign-1',
+      campaignId: user.campaignIds?.[0] ?? 'campaign',
       cascade: [
         {
           cascadeGroups: ['standard'],

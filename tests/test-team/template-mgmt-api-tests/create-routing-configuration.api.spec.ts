@@ -130,6 +130,36 @@ test.describe('POST /v1/routing-configuration', () => {
     });
   });
 
+  test('returns 400 if campaignId is not available for the client', async ({
+    request,
+  }) => {
+    const campaignId = 'not_a_client_campaign';
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: RoutingConfigFactory.create(user1, {
+          campaignId,
+        }).apiPayload,
+      }
+    );
+
+    const dbgClientCampaigns = JSON.stringify(user1.campaignIds);
+    expect(user1.campaignIds?.includes(campaignId), dbgClientCampaigns).toBe(
+      false
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Invalid campaign ID in request',
+    });
+  });
+
   test('ignores status if given - routing config cannot be completed at create time', async ({
     request,
   }) => {

@@ -34,6 +34,7 @@ type TestUserStaticDetails = {
 
 type TestUserDynamicDetails = {
   email: string;
+  campaignIds?: string[];
   clientId: string;
   password: string;
   clientName?: string;
@@ -261,6 +262,7 @@ export class CognitoAuthHelper {
     const clientConfig: ClientConfiguration | undefined =
       testClients[userDetails.clientKey];
     const clientName = clientConfig?.name;
+    const campaignIds = clientConfig?.campaignIds;
 
     const clientAttributes = [
       { Name: 'custom:sbx_client_id', Value: clientId },
@@ -319,6 +321,7 @@ export class CognitoAuthHelper {
         userId:
           user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
           '',
+        campaignIds,
         clientId: clientId,
         clientKey: userDetails.clientKey,
         clientName: clientName,
