@@ -307,7 +307,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Error retrieving Routing Config',
+            description: 'Error parsing submitted Routing Config',
           },
         },
       });
@@ -552,7 +552,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Error retrieving Routing Config',
+            description: 'Error parsing updated Routing Config',
           },
         },
       });

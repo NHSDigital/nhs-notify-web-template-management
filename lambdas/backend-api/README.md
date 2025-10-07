@@ -152,6 +152,14 @@ curl --location "${APIG_STAGE}/v1/routing-configurations" \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
 
+### GET - /v1/routing-configurations/count - Count routing configurations
+
+```bash
+curl --location "${APIG_STAGE}/v1/routing-configurations/count" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```
+
 ### POST - /v1/routing-configuration - Create a routing configuration
 
 ```bash

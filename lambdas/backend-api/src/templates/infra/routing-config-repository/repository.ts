@@ -98,7 +98,7 @@ export class RoutingConfigRepository {
       if (!parsed.success) {
         return failure(
           ErrorCase.INTERNAL,
-          'Error retrieving Routing Config',
+          'Error parsing updated Routing Config',
           parsed.error
         );
       }
@@ -132,7 +132,7 @@ export class RoutingConfigRepository {
       if (!parsed.success) {
         return failure(
           ErrorCase.INTERNAL,
-          'Error retrieving Routing Config',
+          'Error parsing submitted Routing Config',
           parsed.error
         );
       }
