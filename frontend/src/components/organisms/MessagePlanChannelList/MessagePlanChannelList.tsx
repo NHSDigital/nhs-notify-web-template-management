@@ -12,9 +12,9 @@ export function MessagePlanChannelList({
 }) {
   return (
     <ul className={styles['channel-list']}>
-      {messagePlan.cascade.map((messagePlanChannel, i) => (
-        <Fragment key={`channel-${i + 1}`}>
-          <MessagePlanBlock index={i} channelItem={messagePlanChannel} />
+      {messagePlan.cascade.map((messagePlanChannel, index) => (
+        <Fragment key={`channel-${index + 1}`}>
+          <MessagePlanBlock index={index} channelItem={messagePlanChannel} />
           <MessagePlanFallbackConditions channel={messagePlanChannel.channel} />
         </Fragment>
       ))}
