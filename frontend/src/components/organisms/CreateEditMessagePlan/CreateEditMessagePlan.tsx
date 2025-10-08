@@ -10,6 +10,7 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
+import { MessagePlanTemplates } from '@app/message-plans/choose-templates/[routingConfigId]/page';
 
 import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
 
@@ -18,8 +19,10 @@ const { createEditMessagePlan: content } = copy.components;
 
 export function CreateEditMessagePlan({
   messagePlan,
+  templates,
 }: {
   messagePlan: RoutingConfig;
+  templates: MessagePlanTemplates;
 }) {
   return (
     <NHSNotifyMain>
@@ -57,7 +60,10 @@ export function CreateEditMessagePlan({
             </SummaryList.Row>
           </SummaryList>
 
-          <MessagePlanChannelList messagePlan={messagePlan} />
+          <MessagePlanChannelList
+            messagePlan={messagePlan}
+            templates={templates}
+          />
 
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
             {/* TODO: Buttons need to navigate */}
