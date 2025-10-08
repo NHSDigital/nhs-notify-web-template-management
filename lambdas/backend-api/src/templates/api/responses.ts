@@ -38,3 +38,10 @@ export const apiFailure = (
     details,
   } satisfies Failure),
 });
+
+export const noContent = {
+  statusCode: 204,
+  body: JSON.stringify({
+    statusCode: 204,
+  }),
+};

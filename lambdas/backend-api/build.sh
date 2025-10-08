@@ -20,6 +20,7 @@ npx esbuild \
     src/templates/create.ts \
     src/templates/delete-failed-scanned-object.ts \
     src/templates/delete.ts \
+    src/templates/delete-routing-config.ts \
     src/templates/get-client.ts \
     src/templates/get-routing-config.ts \
     src/templates/get.ts \

@@ -143,6 +143,40 @@ export class RoutingConfigRepository {
     }
   }
 
+  async delete(
+    id: string,
+    user: User
+  ): Promise<ApplicationResult<RoutingConfig>> {
+    const cmdInput = new RoutingConfigUpdateBuilder(
+      this.tableName,
+      user.clientId,
+      id,
+      this.updateCmdOpts
+    )
+      .setStatus('DELETED')
+      .expectedStatus('DRAFT')
+      .setUpdatedByUserAt(user.userId)
+      .build();
+
+    try {
+      const result = await this.client.send(new UpdateCommand(cmdInput));
+
+      const parsed = $RoutingConfig.safeParse(result.Attributes);
+
+      if (!parsed.success) {
+        return failure(
+          ErrorCase.INTERNAL,
+          'Error parsing deleted Routing Config',
+          parsed.error
+        );
+      }
+
+      return success(parsed.data);
+    } catch (error) {
+      return this.handleUpdateError(error);
+    }
+  }
+
   async get(
     id: string,
     clientId: string

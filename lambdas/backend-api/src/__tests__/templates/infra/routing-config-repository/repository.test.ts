@@ -386,6 +386,171 @@ describe('RoutingConfigRepository', () => {
     });
   });
 
+  describe('delete', () => {
+    test('updates routing config to DELETED', async () => {
+      const { repo, mocks } = setup();
+
+      const deleted: RoutingConfig = {
+        ...routingConfig,
+        status: 'DELETED',
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: deleted });
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({ data: deleted });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':status': 'DELETED',
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('returns failure on client error', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('ddb err');
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if deleted template is invalid', async () => {
+      const { repo, mocks } = setup();
+
+      const completedInvalid: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+        name: 0 as unknown as string,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.objectContaining({
+            issues: expect.arrayContaining([
+              {
+                expected: 'string',
+                code: 'invalid_type',
+                path: ['name'],
+                message: 'Invalid input: expected string, received number',
+              },
+            ]),
+          }),
+          errorMeta: {
+            code: 500,
+            description: 'Error parsing deleted Routing Config',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config does not exist', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config is already DELETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if routing config is COMPLETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.delete(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description:
+              'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+  });
+
   describe('update', () => {
     test('updates routing config mutable fields', async () => {
       const { repo, mocks } = setup();

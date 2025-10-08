@@ -1,5 +1,5 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure } from './responses';
+import { apiFailure, noContent } from './responses';
 import { TemplateClient } from '../app/template-client';
 
 export function createHandler({
@@ -29,11 +29,6 @@ export function createHandler({
       );
     }
 
-    return {
-      statusCode: 204,
-      body: JSON.stringify({
-        statusCode: 204,
-      }),
-    };
+    return noContent;
   };
 }
