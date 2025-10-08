@@ -47,22 +47,17 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
   name?: 'translations';
 };
 
-export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
-
 export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
 };
 
-export type CascadeItemWithConditional = CascadeItemBase & {
-  conditionalTemplates: Array<
+export type CascadeItem = CascadeItemBase & {
+  defaultTemplateId?: string;
+  conditionalTemplates?: Array<
     ConditionalTemplateLanguage | ConditionalTemplateAccessible
   >;
-};
-
-export type CascadeItemWithDefault = CascadeItemBase & {
-  defaultTemplateId: string;
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';

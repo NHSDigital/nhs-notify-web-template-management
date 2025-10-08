@@ -86,25 +86,15 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
     channelType: $ChannelType,
   })
 );
-const $CascadeItemWithDefault = schemaFor<CascadeItemWithDefault>()(
-  $CascadeItemBase.extend({
-    defaultTemplateId: z.string(),
-  })
-).strict();
-
-const $CascadeItemWithConditional = schemaFor<CascadeItemWithConditional>()(
-  $CascadeItemBase.extend({
-    conditionalTemplates: z
-      .array(
-        z.union([$ConditionalTemplateAccessible, $ConditionalTemplateLanguage])
-      )
-      .nonempty(),
-  })
-).strict();
 
 const $CascadeItem = schemaFor<CascadeItem>()(
-  z.union([$CascadeItemWithConditional, $CascadeItemWithDefault])
-);
+  $CascadeItemBase.extend({
+    defaultTemplateId: z.string(),
+    conditionalTemplates: z.array(
+      z.union([$ConditionalTemplateAccessible, $ConditionalTemplateLanguage])
+    ),
+  })
+).strict();
 
 export const $CreateUpdateRoutingConfig =
   schemaFor<CreateUpdateRoutingConfig>()(
