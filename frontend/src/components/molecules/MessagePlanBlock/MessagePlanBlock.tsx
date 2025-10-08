@@ -1,39 +1,46 @@
-import classNames from 'classnames';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { CascadeItem, TemplateDto } from 'nhs-notify-backend-client';
+import { interpolate } from '@utils/interpolate';
+import { ORDINALS } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanChannelTemplate } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
 
 import styles from '@molecules/MessagePlanBlock/MessagePlanBlock.module.scss';
 
+import copy from '@content/content';
+const { messagePlanBlock: content } = copy.components;
+
 export function MessagePlanBlock({
-  number,
-  title,
+  index,
+  channelItem,
   template,
   children,
 }: {
-  number: number;
-  title: string;
-  template: TemplateDto;
+  index: number;
+  channelItem: CascadeItem;
+  template?: TemplateDto;
   children?: React.ReactNode;
 }) {
   return (
     <li
-      className={classNames(
-        styles['message-plan-block'],
-        'notify-channel-block'
-      )}
+      className={styles['message-plan-block']}
+      data-testid={`message-plan-block-${channelItem.channel}`}
     >
-      <div className='notify-channel-block-channel'>
-        <div className={styles['message-plan-block-number']} aria-hidden='true'>
-          {number}
-        </div>
-        <h2 className='nhsuk-heading-m nhsuk-u-padding-top-1'>{title}</h2>
+      <div className={styles['message-plan-block-number']} aria-hidden='true'>
+        {index + 1}
       </div>
+      <h2 className='nhsuk-heading-m nhsuk-u-padding-top-1'>
+        {interpolate(content.title, { ordinal: ORDINALS[index] })}
+      </h2>
 
-      <MessagePlanChannelTemplate template={template} />
+      <MessagePlanChannelTemplate
+        channel={channelItem.channel}
+        template={template}
+        required={true}
+      />
 
-      {children && (
-        <ul className={styles['channel-list-nested']}>{children}</ul>
-      )}
+      {/* TODO: Check hard-coded true for required? */}
+
+      {children && <ul>{children}</ul>}
+      {/* TODO: Implement letter formats */}
     </li>
   );
 }
