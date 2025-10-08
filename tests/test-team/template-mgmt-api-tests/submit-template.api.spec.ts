@@ -17,7 +17,6 @@ import {
   SimulatePassedValidation,
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
-import { testClients } from '../helpers/client/client-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
@@ -1149,7 +1148,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         owner: user1.userId,
         proofingEnabled: true,
         files: { ...baseTemplateData.files, proofs },
-        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+        campaignId: user1?.campaignIds?.[0],
       };
 
       await templateStorageHelper.seedTemplateData([template]);
@@ -1170,7 +1169,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+          campaignId: user1.campaignIds?.[0],
           clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),

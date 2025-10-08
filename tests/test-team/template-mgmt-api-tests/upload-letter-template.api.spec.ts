@@ -11,7 +11,6 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
@@ -85,7 +84,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+        campaignId: user1.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -177,8 +176,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId:
-          testClients[userWithFallbackCampaignId.clientKey]?.campaignId,
+        campaignId: userWithFallbackCampaignId.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -263,7 +261,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+        campaignId: user1?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {

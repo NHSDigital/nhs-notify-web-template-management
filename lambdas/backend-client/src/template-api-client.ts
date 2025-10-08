@@ -82,7 +82,7 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<TemplateSuccess>(
+      this._client.put<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         template,
         {

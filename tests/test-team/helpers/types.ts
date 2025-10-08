@@ -42,6 +42,7 @@ type TypeSpecificProperties = {
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];
   campaignId?: string;
+  supplierReferences?: Record<string, string>;
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {
