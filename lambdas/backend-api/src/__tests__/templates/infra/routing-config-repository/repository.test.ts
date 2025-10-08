@@ -24,6 +24,12 @@ uuidMock.mockReturnValue(generatedId);
 
 const date = new Date(2024, 11, 27);
 
+const mockTtl = 1000;
+
+jest.mock('@backend-api/utils/calculate-ttl', () => ({
+  calculateTTL: () => mockTtl,
+}));
+
 beforeAll(() => {
   jest.useFakeTimers();
   jest.setSystemTime(date);
@@ -407,12 +413,14 @@ describe('RoutingConfigRepository', () => {
           '#status': 'status',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
+          '#ttl': 'ttl',
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
           ':status': 'DELETED',
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
+          ':ttl': mockTtl,
         },
         Key: {
           id: routingConfig.id,
@@ -421,7 +429,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #status = :status, #ttl = :ttl, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
     });
 

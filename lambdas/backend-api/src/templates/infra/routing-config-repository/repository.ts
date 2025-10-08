@@ -21,6 +21,7 @@ import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
 import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 
 export class RoutingConfigRepository {
   private updateCmdOpts = {
@@ -154,6 +155,7 @@ export class RoutingConfigRepository {
       this.updateCmdOpts
     )
       .setStatus('DELETED')
+      .setTtl(calculateTTL())
       .expectedStatus('DRAFT')
       .setUpdatedByUserAt(user.userId)
       .build();
