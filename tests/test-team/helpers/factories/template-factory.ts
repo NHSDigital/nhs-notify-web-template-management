@@ -1,5 +1,4 @@
 import { TestUser } from '../auth/cognito-auth-helper';
-import { testClients } from '../client/client-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 

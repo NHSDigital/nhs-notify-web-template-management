@@ -11,7 +11,6 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
