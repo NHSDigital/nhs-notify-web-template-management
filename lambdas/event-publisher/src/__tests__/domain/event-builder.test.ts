@@ -216,7 +216,6 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
     personalisationParameters: ['test'],
     templateType: 'LETTER',
     templateStatus: status,
-    name: 'name',
     letterType: 'x0',
     language: 'fr',
     files: {

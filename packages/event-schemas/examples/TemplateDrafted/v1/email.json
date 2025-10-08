@@ -5,7 +5,6 @@
     "createdBy": "f5f76264-9764-4881-a54b-9bed6698150f",
     "id": "871b0f4e-0b32-474e-a49a-23fc554bc5a6",
     "message": "# Your GP Appointment\n\nDear ((firstName))\n\nYour appointment to visit the doctor is at ((appointmentTime)) on ((appointmentDate)).\n\nIf you are unable to make your appointment, please click [this link](https://example.com) to cancel.\n\nThank you\n\n((surgeryName))\n",
-    "name": "Example Email Template",
     "owner": "00f3b388-bbe9-41c9-9e76-052d37ee8988",
     "subject": "Example Email Subject",
     "templateStatus": "NOT_YET_SUBMITTED",

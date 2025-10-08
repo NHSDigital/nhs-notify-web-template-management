@@ -5,7 +5,6 @@
     "createdBy": "f2590ba5-6856-4207-b2dd-cd43821adf8b",
     "id": "3a58a370-75ab-4788-a75e-cd2572a68523",
     "message": "# Your GP Appointment\n\nDear ((firstName))\n\nYour appointment to visit the doctor is at **((appointmentTime))** on **((appointmentDate))**.\n\nIf you are unable to make your appointment, please click [this link](https://example.com) to cancel.\n\nThank you\n\n((surgeryName))\n",
-    "name": "Example NHS App Template",
     "owner": "d9159bb1-ac8c-467b-a990-b4e559ecdad3",
     "templateStatus": "SUBMITTED",
     "templateType": "NHS_APP",

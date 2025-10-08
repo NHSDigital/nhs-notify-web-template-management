@@ -75,9 +75,6 @@ const $TemplateEventV1BaseData = z.object({
     description:
       'Unique identifier for the user that initially created the template',
   }),
-  name: z.string().max(1000).meta({
-    description: 'User-provided template name',
-  }),
   templateStatus: $TemplateStatus.meta({
     description: 'Current status of the template',
   }),
