@@ -47,7 +47,7 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   client_config_param_name="$client_ssm_path_prefix/$notify_client_id"
 
-  client_config_param_value="{ "campaignId": "campaign", "features": { "proofing": true } }"
+  client_config_param_value='{ "campaignIds": ["campaign"], "features": { "proofing": true } }'
 
   if aws ssm get-parameter --name "$client_config_param_name" --with-decryption >/dev/null 2>&1; then
     echo "Client config parameter already exists: $client_config_param_name"

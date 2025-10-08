@@ -15,13 +15,15 @@ test.describe('POST /v1/routing-configuration', () => {
   const authHelper = createAuthHelper();
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
+  let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
-    await storageHelper.deleteAdHocRoutingConfigs();
+    await storageHelper.deleteAdHoc();
   });
 
   test('returns 201 if routing config input is valid', async ({ request }) => {
@@ -43,7 +45,7 @@ test.describe('POST /v1/routing-configuration', () => {
 
     const created = await response.json();
 
-    storageHelper.addAdHocRoutingConfigKey({
+    storageHelper.addAdHocKey({
       id: created.data.id,
       clientId: user1.clientId,
     });
@@ -128,6 +130,36 @@ test.describe('POST /v1/routing-configuration', () => {
     });
   });
 
+  test('returns 400 if campaignId is not available for the client', async ({
+    request,
+  }) => {
+    const campaignId = 'not_a_client_campaign';
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: RoutingConfigFactory.create(user1, {
+          campaignId,
+        }).apiPayload,
+      }
+    );
+
+    const dbgClientCampaigns = JSON.stringify(user1.campaignIds);
+    expect(user1.campaignIds?.includes(campaignId), dbgClientCampaigns).toBe(
+      false
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Invalid campaign ID in request',
+    });
+  });
+
   test('ignores status if given - routing config cannot be completed at create time', async ({
     request,
   }) => {
@@ -147,11 +179,54 @@ test.describe('POST /v1/routing-configuration', () => {
 
     const created = await response.json();
 
-    storageHelper.addAdHocRoutingConfigKey({
+    storageHelper.addAdHocKey({
       id: created.data.id,
       clientId: user1.clientId,
     });
 
     expect(created.data.status).toEqual('DRAFT');
+  });
+
+  test('created routing config is accessible by a user belonging to the same client', async ({
+    request,
+  }) => {
+    const payload = RoutingConfigFactory.create(user1).apiPayload;
+
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: payload,
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+
+    const created = await createResponse.json();
+
+    storageHelper.addAdHocKey({
+      id: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    expect(user1.clientId).toBe(userSharedClient.clientId);
+
+    const getResponse = await request.get(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await userSharedClient.getAccessToken(),
+        },
+      }
+    );
+
+    expect(getResponse.status()).toBe(200);
+
+    expect(await getResponse.json()).toEqual({
+      statusCode: 200,
+      data: created.data,
+    });
   });
 });
