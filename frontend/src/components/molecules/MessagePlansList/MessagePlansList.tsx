@@ -54,7 +54,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   ));
 
   return (
-    <Details expander>
+    <Details expander id={`message-plans-list-${status.toLowerCase()}`}>
       <Details.Summary
         className={classNames('nhsuk-heading-s', 'nhsuk-u-margin-bottom-0')}
       >

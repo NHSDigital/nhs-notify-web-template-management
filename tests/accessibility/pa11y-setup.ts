@@ -64,6 +64,34 @@ const generateLetterTemplateData = (
   };
 };
 
+const generateRoutingConfig = ({
+  clientId,
+  now,
+}: {
+  clientId: string;
+  now: string;
+}) => ({
+  owner: `CLIENT#${clientId}`,
+  id: randomUUID(),
+  campaignId: 'campaignId',
+  cascade: [
+    {
+      cascadeGroups: ['standard'],
+      channel: 'EMAIL',
+      channelType: 'primary',
+      defaultTemplateId: 'email_id',
+    },
+  ],
+  cascadeGroupOverrides: [{ name: 'standard' }],
+  clientId,
+  createdAt: now,
+  createdBy: 'Accessibility tests',
+  name: 'Accessibility Test',
+  status: 'DRAFT',
+  updatedAt: now,
+  updatedBy: 'Accessibility tests',
+});
+
 const setup = async () => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
     path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
@@ -148,25 +176,40 @@ const setup = async () => {
     ),
   ];
 
-  await Promise.all(
-    templates.map((template) =>
+  const routingConfigs = [
+    generateRoutingConfig({ clientId, now: new Date().toISOString() }),
+  ];
+
+  await Promise.all([
+    ...templates.map((template) => {
       ddbDocClient.send(
         new PutCommand({
           TableName: backendConfig.templatesTableName,
           Item: template,
         })
+      );
+    }),
+    ...routingConfigs.map((rc) =>
+      ddbDocClient.send(
+        new PutCommand({
+          TableName: backendConfig.routingConfigTableName,
+          Item: rc,
+        })
       )
-    )
-  );
+    ),
+  ]);
 
   const templateIds = Object.fromEntries(
     templates.map((t) => [t.templateStatus, t.id])
   );
 
+  const routingConfigIds = routingConfigs.map((r) => r.id);
+
   const fixtureData = {
     email: testEmail,
     password: testPassword,
     templateIds,
+    routingConfigIds,
     userId,
     clientId,
     clientName,

@@ -88,7 +88,8 @@ exports[`MessagePlans matches snapshot 1`] = `
           aria-disabled="false"
           class="nhsuk-button"
           draggable="false"
-          href="/create-new-message-plan"
+          href="/message-plans/choose-message-order"
+          id="create-message-plan-button"
           role="button"
         >
           New message plan

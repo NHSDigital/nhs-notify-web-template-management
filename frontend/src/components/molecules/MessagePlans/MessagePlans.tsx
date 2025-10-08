@@ -8,6 +8,7 @@ import {
 } from '@molecules/MessagePlansList/MessagePlansList';
 import content from '@content/content';
 import classNames from 'classnames';
+import Link from 'next/link';
 
 const {
   pages: { messagePlansPage },
@@ -91,7 +92,9 @@ export const MessagePlans = (props: MessagePlansProps) => {
               </p>
             </Details.Text>
           </Details>
-          <Button href={button.link}>{button.text}</Button>
+          <Link passHref legacyBehavior href={button.link}>
+            <Button id='create-message-plan-button'>{button.text}</Button>
+          </Link>
           <MessagePlansList
             planType='Draft'
             plans={props.draft.plans}

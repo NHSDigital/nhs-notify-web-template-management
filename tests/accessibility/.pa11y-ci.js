@@ -14,6 +14,7 @@ const {
   emailTemplateSubmittedPage,
   letterTemplateSubmittedPage,
   messageTemplatesPage,
+  messagePlansPage,
   nhsAppTemplateSubmittedPage,
   previewEmailTemplateErrorPage,
   previewEmailTemplatePage,
@@ -113,6 +114,10 @@ const letters = [
   previewSubmittedLetterTemplatePage(messageTemplatesUrl),
 ];
 
+const messagePlans = [
+  messagePlansPage(`${baseUrl}/message-plans`)
+]
+
 const landingPage = [{ url: startUrl, name: 'landing-page' }];
 
 const errors = [
@@ -149,6 +154,7 @@ const allJourneys = {
   letters,
   userEmails,
   errors,
+  messagePlans,
 };
 
 const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]

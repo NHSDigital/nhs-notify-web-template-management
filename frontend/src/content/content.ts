@@ -1058,7 +1058,7 @@ const messagePlansPage = {
   },
   button: {
     text: 'New message plan',
-    link: '/create-new-message-plan',
+    link: '/message-plans/choose-message-order',
   },
 };
 
