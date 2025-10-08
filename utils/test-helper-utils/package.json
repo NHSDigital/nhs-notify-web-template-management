@@ -1,23 +1,23 @@
 {
-  "name": "nhs-notify-web-template-management-test-helper-utils",
-  "version": "0.0.1",
-  "main": "src/index.ts",
+  "dependencies": {
+    "form-data": "^4.0.2",
+    "nhs-notify-web-template-management-utils": "*",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./mock-logger": "./src/mock-logger.ts"
   },
+  "main": "src/index.ts",
+  "name": "nhs-notify-web-template-management-test-helper-utils",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "echo \"Unit tests not required\"",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "form-data": "^4.0.2",
-    "winston": "^3.17.0",
-    "nhs-notify-web-template-management-utils": "*"
-  },
-  "devDependencies": {
-    "@tsconfig/node20": "^20.1.5"
-  }
+  "version": "0.0.1"
 }
