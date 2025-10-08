@@ -19,7 +19,7 @@ export default defineConfig({
   projects: [
     {
       name: 'component:setup',
-      testMatch: 'component.setup.ts',
+      testMatch: 'ui.setup.ts',
       use: {
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
@@ -44,7 +44,7 @@ export default defineConfig({
     },
     {
       name: 'component:teardown',
-      testMatch: 'component.teardown.ts',
+      testMatch: 'ui.teardown.ts',
     },
   ],
   /* Run your local dev server before starting the tests */

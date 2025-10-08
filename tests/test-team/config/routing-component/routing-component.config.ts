@@ -16,7 +16,7 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'component:setup',
+      name: 'routing-component:setup',
       testMatch: 'ui.setup.ts',
       use: {
         baseURL: 'http://localhost:3000',
@@ -26,8 +26,8 @@ export default defineConfig({
       },
     },
     {
-      name: 'component',
-      testMatch: '*.component.spec.ts',
+      name: 'routing-component',
+      testMatch: '*.routing-component.spec.ts',
       use: {
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
@@ -35,11 +35,11 @@ export default defineConfig({
         headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
-      dependencies: ['component:setup'],
-      teardown: 'component:teardown',
+      dependencies: ['routing-component:setup'],
+      teardown: 'routing-component:teardown',
     },
     {
-      name: 'component:teardown',
+      name: 'routing-component:teardown',
       testMatch: 'ui.teardown.ts',
     },
   ],

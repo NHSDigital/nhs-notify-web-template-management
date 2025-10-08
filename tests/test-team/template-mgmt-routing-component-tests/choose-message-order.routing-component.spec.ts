@@ -1,0 +1,120 @@
+import { test, expect } from '@playwright/test';
+import { RoutingChooseMessageOrderPage } from '../pages/routing-choose-message-order-page';
+import {
+  assertFooterLinks,
+  assertGoBackLink,
+  assertSignOutLink,
+  assertHeaderLogoLink,
+  assertSkipToMainContent,
+} from '../helpers/template-mgmt-common.steps';
+
+test.describe('Choose Message Order Page', () => {
+  test('should land on "Choose Message Order" page when navigating to "/choose-message-order" url', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
+
+    await chooseMessageOrderPage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-message-order`
+    );
+    await expect(chooseMessageOrderPage.pageHeading).toHaveText(
+      'Choose a message order'
+    );
+  });
+
+  test('common page tests', async ({ page, baseURL }) => {
+    const props = {
+      page: new RoutingChooseMessageOrderPage(page),
+      id: '',
+      baseURL,
+      expectedUrl: 'templates/message-plans',
+    };
+
+    await assertSkipToMainContent(props);
+    await assertHeaderLogoLink(props);
+    await assertFooterLinks(props);
+    await assertSignOutLink(props);
+    await assertGoBackLink(props);
+  });
+
+  test('should display correct number of radio button options', async ({
+    page,
+  }) => {
+    const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
+
+    await chooseMessageOrderPage.loadPage();
+
+    await expect(chooseMessageOrderPage.radioButtons).toHaveCount(8);
+  });
+
+  test('should display error if no message order option selected and continue button clicked', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
+
+    await chooseMessageOrderPage.loadPage();
+    await chooseMessageOrderPage.clickContinueButton();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-message-order`
+    );
+
+    await expect(chooseMessageOrderPage.errorSummary).toBeVisible();
+    await expect(chooseMessageOrderPage.errorSummaryList).toHaveText([
+      'Select a message order',
+    ]);
+  });
+
+  for (const { label, option } of [
+    {
+      option: 'NHSAPP',
+      label: 'NHS App only',
+    },
+    {
+      option: 'NHSAPP,EMAIL',
+      label: 'NHS App, Email',
+    },
+    {
+      option: 'NHSAPP,SMS',
+      label: 'NHS App, Text message',
+    },
+    {
+      option: 'NHSAPP,EMAIL,SMS',
+      label: 'NHS App, Email, Text message',
+    },
+    {
+      option: 'NHSAPP,SMS,EMAIL',
+      label: 'NHS App, Text message, Email',
+    },
+    {
+      option: 'NHSAPP,SMS,LETTER',
+      label: 'NHS App, Text message, Letter',
+    },
+    {
+      option: 'NHSAPP,EMAIL,SMS,LETTER',
+      label: 'NHS App, Email, Text message, Letter',
+    },
+    {
+      option: 'LETTER',
+      label: 'Letter only',
+    },
+  ])
+    test(`when the ${label} option is selected, nagivates to the create-message-plan page with the correct query parameter`, async ({
+      page,
+      baseURL,
+    }) => {
+      const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
+
+      await chooseMessageOrderPage.loadPage();
+      await chooseMessageOrderPage.checkRadioButton(label);
+      await chooseMessageOrderPage.clickContinueButton();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(option)}`
+      );
+    });
+});
