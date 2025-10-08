@@ -6,7 +6,7 @@ import {
   assertClickHeaderLogoRedirectsToStartPage,
   assertSignOutLink,
   assertSkipToMainContent,
-} from './template-mgmt-common.steps';
+} from '../helpers/template-mgmt-common.steps';
 
 test.describe('Start Page', () => {
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({

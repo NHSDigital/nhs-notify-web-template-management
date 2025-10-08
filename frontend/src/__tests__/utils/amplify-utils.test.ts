@@ -29,6 +29,11 @@ jest.mock('@/amplify_outputs.json', () => ({
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
 describe('amplify-utils', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2022-01-01 09:00'));
+  });
+
   beforeEach(() => {
     jest.resetAllMocks();
   });

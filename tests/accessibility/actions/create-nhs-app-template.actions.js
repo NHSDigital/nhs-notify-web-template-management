@@ -2,8 +2,8 @@ const { signInPageActions } = require('./sign-in-page.actions');
 
 const pageActions = [
   ...signInPageActions,
-  'wait for element #templateType-NHS_APP to be visible',
-  'click element #templateType-NHS_APP',
+  'wait for element #templateType-nhsapp to be visible',
+  'click element #templateType-nhsapp',
   'click element #choose-a-template-type-submit-button',
   'wait for element #create-nhs-app-template-submit-button to be visible',
 ];

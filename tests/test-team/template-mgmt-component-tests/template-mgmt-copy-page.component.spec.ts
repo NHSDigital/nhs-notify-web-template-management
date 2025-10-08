@@ -6,7 +6,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-} from './template-mgmt-common.steps';
+} from '../helpers/template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import {
