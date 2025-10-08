@@ -86,6 +86,7 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
     channelType: $ChannelType,
   })
 );
+
 const $CascadeItemWithDefault = schemaFor<CascadeItemWithDefault>()(
   $CascadeItemBase.extend({
     defaultTemplateId: z.string(),

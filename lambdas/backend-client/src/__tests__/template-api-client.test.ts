@@ -179,7 +179,7 @@ describe('TemplateAPIClient', () => {
   });
 
   test('updateTemplate - should return error', async () => {
-    axiosMock.onPost('/v1/template/real-id').reply(400, {
+    axiosMock.onPut('/v1/template/real-id').reply(400, {
       statusCode: 400,
       technicalMessage: 'Bad request',
       details: {
@@ -211,7 +211,7 @@ describe('TemplateAPIClient', () => {
 
     expect(result.data).toBeUndefined();
 
-    expect(axiosMock.history.post.length).toBe(1);
+    expect(axiosMock.history.put.length).toBe(1);
   });
 
   test('updateTemplate - should return template', async () => {
@@ -223,7 +223,7 @@ describe('TemplateAPIClient', () => {
       templateType: 'NHS_APP',
     };
 
-    axiosMock.onPost('/v1/template/real-id').reply(200, {
+    axiosMock.onPut('/v1/template/real-id').reply(200, {
       statusCode: 200,
       data,
     });

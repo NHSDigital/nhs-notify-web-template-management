@@ -1,5 +1,4 @@
 import { TestUser } from '../auth/cognito-auth-helper';
-import { testClients } from '../client/client-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
@@ -10,7 +9,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -27,7 +26,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -43,7 +42,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',

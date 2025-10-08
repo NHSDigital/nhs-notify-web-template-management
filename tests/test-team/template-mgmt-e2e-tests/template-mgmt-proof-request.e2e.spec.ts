@@ -11,7 +11,6 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { SqsHelper } from '../helpers/sqs/sqs-helper';
-import { testClients } from '../helpers/client/client-helper';
 
 const MOCK_LETTER_SUPPLIER = 'WTMMOCK';
 
@@ -72,7 +71,7 @@ test.describe('SFTP proof request send', () => {
     const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
     const csvVersionId = template.files?.testDataCsv?.currentVersion;
 
-    const campaignId = testClients[user.clientKey]?.campaignIds?.[0];
+    const campaignId = user.campaignIds?.[0];
 
     expect(pdfVersionId).toBeDefined();
     expect(csvVersionId).toBeDefined();
@@ -110,9 +109,10 @@ test.describe('SFTP proof request send', () => {
       const updatedTemplate = await templateStorageHelper.getTemplate(key);
       const debugUpdated = JSON.stringify(updatedTemplate);
 
-      expect(updatedTemplate.updatedAt, debugUpdated).not.toBe(
-        template.updatedAt
-      );
+      expect(
+        Object.keys(updatedTemplate.supplierReferences ?? {}),
+        debugUpdated
+      ).toEqual([MOCK_LETTER_SUPPLIER]);
     }).toPass({ timeout: 5000 });
 
     const sftpCredentials = await sftpHelper.connect();
