@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
@@ -11,8 +12,10 @@ import { routingConfig } from '../../fixtures/routing-config';
 import {
   CreateUpdateRoutingConfig,
   RoutingConfig,
+  RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 import { randomUUID, type UUID } from 'node:crypto';
+import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 
 jest.mock('node:crypto');
 const uuidMock = jest.mocked(randomUUID);
@@ -28,6 +31,7 @@ beforeAll(() => {
 
 const TABLE_NAME = 'routing-config-table-name';
 const user = { userId: 'user', clientId: 'nhs-notify-client-id' };
+const clientOwnerKey = `CLIENT#${user.clientId}`;
 
 function setup() {
   const dynamo = mockClient(DynamoDBDocumentClient);
@@ -62,7 +66,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: `CLIENT#${user.clientId}`,
+          owner: clientOwnerKey,
         },
       });
     });
@@ -89,7 +93,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: `CLIENT#${user.clientId}`,
+          owner: clientOwnerKey,
         },
       });
     });
@@ -118,7 +122,7 @@ describe('RoutingConfigRepository', () => {
         TableName: TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-          owner: `CLIENT#${user.clientId}`,
+          owner: clientOwnerKey,
         },
       });
     });
@@ -150,7 +154,7 @@ describe('RoutingConfigRepository', () => {
 
     const putPayload = {
       ...rc,
-      owner: `CLIENT#${user.clientId}`,
+      owner: clientOwnerKey,
       createdBY: user.userId,
       updatedBy: user.userId,
     };
@@ -215,27 +219,415 @@ describe('RoutingConfigRepository', () => {
         },
       });
     });
+  });
 
-    test('returns errors if the database call fails', async () => {
+  describe('submit', () => {
+    test('updates routing config to COMPLETED', async () => {
       const { repo, mocks } = setup();
 
-      const e = new Error('Oh No');
+      const completed: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+      };
 
-      mocks.dynamo.on(GetCommand).rejectsOnce(e);
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completed });
 
-      const result = await repo.get(
-        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
-        'nhs-notify-client-id'
-      );
+      const result = await repo.submit(routingConfig.id, user);
 
-      expect(result.error).toMatchObject({
-        actualError: e,
-        errorMeta: expect.objectContaining({
-          code: 500,
-        }),
+      expect(result).toEqual({ data: completed });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':status': 'COMPLETED',
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('returns failure on client error', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('ddb err');
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if updated template is invalid', async () => {
+      const { repo, mocks } = setup();
+
+      const completedInvalid: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+        name: 0 as unknown as string,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.objectContaining({
+            issues: expect.arrayContaining([
+              {
+                expected: 'string',
+                code: 'invalid_type',
+                path: ['name'],
+                message: 'Invalid input: expected string, received number',
+              },
+            ]),
+          }),
+          errorMeta: {
+            code: 500,
+            description: 'Error parsing submitted Routing Config',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config does not exist', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        $metadata: {},
+        message: 'msg',
       });
 
-      expect(result.data).toBeUndefined();
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config is DELETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if routing config is COMPLETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description:
+              'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+  });
+
+  describe('update', () => {
+    test('updates routing config mutable fields', async () => {
+      const { repo, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+        campaignId: 'new_campaign',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
+          '#cascade': 'cascade',
+          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#name': 'name',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':campaignId': update.campaignId,
+          ':cascade': update.cascade,
+          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+          ':condition_1_status': 'DRAFT',
+          ':name': update.name,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
+      });
+    });
+
+    test('does not update status', async () => {
+      const { repo, mocks } = setup();
+
+      const update = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+        campaignId: routingConfig.campaignId,
+        status: 'DELETED',
+      } as CreateUpdateRoutingConfig;
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: routingConfig });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: routingConfig });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
+          '#cascade': 'cascade',
+          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#name': 'name',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':campaignId': update.campaignId,
+          ':cascade': update.cascade,
+          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+          ':condition_1_status': 'DRAFT',
+          ':name': update.name,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
+      });
+    });
+
+    test('returns failure on client error', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('ddb err');
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        {
+          cascade: routingConfig.cascade,
+          cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+          name: routingConfig.name,
+          campaignId: routingConfig.campaignId,
+        },
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure if updated template is invalid', async () => {
+      const { repo, mocks } = setup();
+
+      const updatedInvalid: RoutingConfig = {
+        ...routingConfig,
+        status: 'NOT_A_STATUS' as RoutingConfigStatus,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updatedInvalid });
+
+      const result = await repo.update(
+        routingConfig.id,
+        {
+          cascade: routingConfig.cascade,
+          cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+          name: routingConfig.name,
+          campaignId: routingConfig.campaignId,
+        },
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.objectContaining({
+            issues: expect.arrayContaining([
+              {
+                code: 'invalid_value',
+                values: ['COMPLETED', 'DRAFT', 'DELETED'],
+                path: ['status'],
+                message:
+                  'Invalid option: expected one of "COMPLETED"|"DRAFT"|"DELETED"',
+              },
+            ]),
+          }),
+          errorMeta: {
+            code: 500,
+            description: 'Error parsing updated Routing Config',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config does not exist', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config is DELETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if routing config is COMPLETED', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description:
+              'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
     });
   });
 });

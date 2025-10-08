@@ -25,7 +25,9 @@ locals {
     LIST_ROUTING_CONFIGS_LAMBDA_ARN  = module.list_routing_configs_lambda.function_arn
     REQUEST_PROOF_LAMBDA_ARN         = module.request_proof_lambda.function_arn
     SUBMIT_LAMBDA_ARN                = module.submit_template_lambda.function_arn
+    SUBMIT_ROUTING_CONFIG_LAMBDA_ARN = module.submit_routing_config_lambda.function_arn
     UPDATE_LAMBDA_ARN                = module.update_template_lambda.function_arn
+    UPDATE_ROUTING_CONFIG_LAMBDA_ARN = module.update_routing_config_lambda.function_arn
     UPLOAD_LETTER_LAMBDA_ARN         = module.upload_letter_template_lambda.function_arn
   })
 

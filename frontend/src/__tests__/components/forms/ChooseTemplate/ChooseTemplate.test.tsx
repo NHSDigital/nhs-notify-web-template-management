@@ -1,5 +1,3 @@
-'use client';
-
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
@@ -35,10 +33,10 @@ describe('Choose template page', () => {
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-      screen.getByTestId('EMAIL-radio'),
-      screen.getByTestId('NHS_APP-radio'),
-      screen.getByTestId('SMS-radio'),
-      screen.getByTestId('LETTER-radio'),
+      screen.getByTestId('email-radio'),
+      screen.getByTestId('nhsapp-radio'),
+      screen.getByTestId('sms-radio'),
+      screen.getByTestId('letter-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 

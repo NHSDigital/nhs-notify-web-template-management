@@ -1155,6 +1155,145 @@
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
         }
+      },
+      "put": {
+        "description": "Update a routing configuration by Id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+              }
+            }
+          },
+          "description": "Routing configuration update to apply",
+          "required": true
+        },
+        "parameters": [
+          {
+            "description": "ID of routing configuration to update",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a routing config",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/routing-configuration/{routingConfigId}/submit": {
+      "patch": {
+        "description": "Finalise a routing configuration by Id",
+        "parameters": [
+          {
+            "description": "ID of routing configuration to finalise",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Finalise a routing configuration",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
       }
     },
     "/v1/routing-configurations": {
@@ -1477,7 +1616,7 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
         }
       },
-      "post": {
+      "put": {
         "description": "Update a template template by Id",
         "parameters": [
           {
@@ -1619,10 +1758,10 @@
     },
     "/v1/template/{templateId}/submit": {
       "patch": {
-        "description": "Update a template status by Id",
+        "description": "Submit a template by Id",
         "parameters": [
           {
-            "description": "ID of template to update",
+            "description": "ID of template to submit",
             "in": "path",
             "name": "templateId",
             "required": true,

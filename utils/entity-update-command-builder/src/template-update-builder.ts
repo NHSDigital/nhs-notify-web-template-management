@@ -6,14 +6,14 @@ import { EntityUpdateBuilder } from './common/entity-update-builder';
 export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate> {
   constructor(
     tableName: string,
-    owner: string,
+    clientId: string,
     id: string,
     optionalArgs?: BuilderOptionalArgs
   ) {
     super(
       tableName,
       {
-        owner,
+        owner: `CLIENT#${clientId}`,
         id,
       },
       optionalArgs
@@ -68,6 +68,13 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  setUpdatedByUserAt(userId: string) {
+    this.updateBuilder
+      .setValue('updatedAt', new Date().toISOString())
+      .setValue('updatedBy', userId);
+    return this;
+  }
+
   expectedTemplateType(type: TemplateType) {
     this.updateBuilder.andCondition('templateType', '=', type);
     return this;
@@ -89,8 +96,6 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
   }
 
   build() {
-    return this.updateBuilder
-      .setValue('updatedAt', new Date().toISOString())
-      .finalise();
+    return this.updateBuilder.finalise();
   }
 }

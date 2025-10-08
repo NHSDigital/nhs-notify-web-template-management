@@ -99,7 +99,11 @@ export const testClients: TestClients = {
 };
 
 export class ClientConfigurationHelper {
-  private readonly ssmClient = new SSMClient({ region: 'eu-west-2' });
+  private readonly ssmClient = new SSMClient({
+    region: 'eu-west-2',
+    retryMode: 'standard',
+    maxAttempts: 10,
+  });
 
   constructor(
     private readonly clientSSMKeyPrefix: string,
