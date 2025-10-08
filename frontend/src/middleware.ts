@@ -17,6 +17,7 @@ const protectedPaths = [
   /^\/email-template-submitted\/[^/]+$/,
   /^\/invalid-template$/,
   /^\/letter-template-submitted\/[^/]+$/,
+  /^\/message-plans\/choose-message-order$/,
   /^\/message-templates$/,
   /^\/message-plans$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,

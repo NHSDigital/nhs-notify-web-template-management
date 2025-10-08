@@ -1069,6 +1069,17 @@ const messagePlanComponent = {
   previewLink: (id: string) => `/message-plan/${id}`,
 };
 
+const chooseMessageOrder = {
+  pageTitle: generatePageTitle('Choose a message order'),
+  pageHeading: 'Choose a message order',
+  buttonText: 'Save and continue',
+  hint: 'Select one option',
+  backLinkText: 'Go back',
+  form: {
+    messageOrder: { error: 'Select a message order' },
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1099,6 +1110,7 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
+    chooseMessageOrder,
   },
   pages: {
     homePage,
