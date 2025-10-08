@@ -497,10 +497,15 @@ describe('templateRepository', () => {
       async (channelProperties) => {
         const { templateRepository, mocks } = setup();
 
+        const template = {
+          ...channelProperties,
+          ...databaseTemplateProperties,
+        };
+
         mocks.ddbDocClient
           .on(PutCommand, {
             TableName: templatesTableName,
-            Item: { ...channelProperties, ...databaseTemplateProperties },
+            Item: template,
           })
           .resolves({});
 
@@ -512,7 +517,13 @@ describe('templateRepository', () => {
         );
 
         expect(response).toEqual({
-          data: { ...channelProperties, ...databaseTemplateProperties },
+          data: template,
+        });
+
+        expect(mocks.ddbDocClient).toHaveReceivedCommandWith(PutCommand, {
+          ConditionExpression: 'attribute_not_exists(id)',
+          Item: template,
+          TableName: templatesTableName,
         });
       }
     );
@@ -2073,13 +2084,13 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND attribute_exists (#id) AND #proofingEnabled = :condition_5_proofingEnabled',
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND #proofingEnabled = :condition_4_proofingEnabled',
         ExpressionAttributeNames: {
-          '#id': 'id',
           '#clientId': 'clientId',
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
           '#proofingEnabled': 'proofingEnabled',
           '#supplierReferences': 'supplierReferences',
         },
@@ -2087,9 +2098,10 @@ describe('templateRepository', () => {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
           ':condition_2_templateType': 'LETTER',
           ':condition_3_clientId': clientId,
-          ':condition_5_proofingEnabled': true,
+          ':condition_4_proofingEnabled': true,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': userId,
           ':supplierReferences': {},
         },
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
@@ -2097,7 +2109,7 @@ describe('templateRepository', () => {
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
         UpdateExpression:
-          'SET #templateStatus = :templateStatus, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences)',
       });
     });
 

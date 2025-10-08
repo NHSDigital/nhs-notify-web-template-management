@@ -57,7 +57,7 @@ test.describe('Event publishing - Digital', () => {
           clientId: user1.clientId,
         });
 
-        const updateResponse = await request.post(
+        const updateResponse = await request.put(
           `${process.env.API_BASE_URL}/v1/template/${templateId}`,
           {
             headers: {

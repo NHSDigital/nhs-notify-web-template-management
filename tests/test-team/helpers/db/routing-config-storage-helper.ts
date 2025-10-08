@@ -14,7 +14,7 @@ export class RoutingConfigStorageHelper {
 
   private seedData: RoutingConfig[] = [];
 
-  private adHocRoutingConfigKeys: RoutingConfigKey[] = [];
+  private adHocKeys: RoutingConfigKey[] = [];
 
   /**
    * Seed a load of routing configs into the database
@@ -84,16 +84,16 @@ export class RoutingConfigStorageHelper {
   /**
    * Stores references to routing configs created in tests (not via seeding)
    */
-  public addAdHocRoutingConfigKey(key: RoutingConfigKey) {
-    this.adHocRoutingConfigKeys.push(key);
+  public addAdHocKey(key: RoutingConfigKey) {
+    this.adHocKeys.push(key);
   }
 
   /**
-   * Delete routing configs referenced by calls to addAdHocRoutingConfigKey from database
+   * Delete routing configs referenced by calls to addAdHocKey from database
    */
-  async deleteAdHocRoutingConfigs() {
-    await this.delete(this.adHocRoutingConfigKeys);
-    this.adHocRoutingConfigKeys = [];
+  async deleteAdHoc() {
+    await this.delete(this.adHocKeys);
+    this.adHocKeys = [];
   }
 
   /**

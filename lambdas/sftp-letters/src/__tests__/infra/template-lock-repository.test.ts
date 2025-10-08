@@ -2,7 +2,6 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 
 const templatesTableName = 'nhs-notify-main-app-api-templates';
@@ -42,14 +41,12 @@ describe('TemplateLockRepository', () => {
 
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
-          '#updatedAt': 'updatedAt',
           '#sftpSendLockTime': 'sftpSendLockTime',
           '#supplier': 'supplier',
           '#supplierReferences': 'supplierReferences',
         },
         ExpressionAttributeValues: {
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
-          ':updatedAt': expect.stringMatching(isoDateRegExp),
           ':sftpSendLockTime': mockDate.getTime(),
           ':supplier': 'supplier-reference',
         },
@@ -61,7 +58,7 @@ describe('TemplateLockRepository', () => {
         },
         TableName: templatesTableName,
         UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #supplierReferences.#supplier = :supplier, #updatedAt = :updatedAt',
+          'SET #sftpSendLockTime = :sftpSendLockTime, #supplierReferences.#supplier = :supplier',
       });
     });
 
@@ -111,11 +108,9 @@ describe('TemplateLockRepository', () => {
 
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
-          '#updatedAt': 'updatedAt',
           '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
-          ':updatedAt': expect.any(String),
           ':sftpSendLockTime': mockDate.getTime() + 2_592_000_000,
         },
         Key: {
@@ -123,8 +118,7 @@ describe('TemplateLockRepository', () => {
           owner: `CLIENT#${clientId}`,
         },
         TableName: templatesTableName,
-        UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #sftpSendLockTime = :sftpSendLockTime',
       });
     });
   });
