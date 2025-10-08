@@ -115,7 +115,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         },
       },
       personalisationParameters: ['nhsNumber'],
-      campaignId: testClients[userProofingEnabled.clientKey]?.campaignIds?.[0],
+      campaignId: userProofingEnabled.campaignIds?.[0],
     };
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -246,7 +246,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         },
       },
       personalisationParameters: ['nhsNumber'],
-      campaignId: testClients[userProofingEnabled.clientKey]?.campaignIds?.[0],
+      campaignId: userProofingEnabled.campaignIds?.[0],
     };
 
     await templateStorageHelper.seedTemplateData([template]);

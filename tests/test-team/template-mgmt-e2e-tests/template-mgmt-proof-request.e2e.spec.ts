@@ -72,7 +72,7 @@ test.describe('SFTP proof request send', () => {
     const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
     const csvVersionId = template.files?.testDataCsv?.currentVersion;
 
-    const campaignId = testClients[user.clientKey]?.campaignIds?.[0];
+    const campaignId = user.campaignIds?.[0];
 
     expect(pdfVersionId).toBeDefined();
     expect(csvVersionId).toBeDefined();

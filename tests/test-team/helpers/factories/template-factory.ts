@@ -10,7 +10,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -27,7 +27,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -43,7 +43,7 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: testClients[user.clientKey]?.campaignId,
+      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',

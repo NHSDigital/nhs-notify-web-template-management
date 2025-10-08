@@ -85,7 +85,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+        campaignId: user1.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -177,8 +177,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId:
-          testClients[userWithFallbackCampaignId.clientKey]?.campaignId,
+        campaignId: userWithFallbackCampaignId.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
@@ -263,7 +262,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       data: {
-        campaignId: testClients[user1.clientKey]?.campaignIds?.[0],
+        campaignId: user1?.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
