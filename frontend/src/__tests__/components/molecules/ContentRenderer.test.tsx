@@ -20,7 +20,7 @@ describe('ContentRenderer', () => {
 
     const consoleErrorSpy = jest
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     expect(() => render(<ContentRenderer content={invalidContent} />)).toThrow(
       new Error('Unsupported content block type')
@@ -51,11 +51,11 @@ describe('ContentRenderer', () => {
   it('renders an inline-text block without a paragraph wrapper', () => {
     const content: ContentBlock[] = [
       { type: 'inline-text', text: 'Inline content' },
-    ]
+    ];
 
     render(
       <ul>
-        <li data-testid="list-item">
+        <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>
@@ -71,7 +71,7 @@ describe('ContentRenderer', () => {
 
     render(
       <ul>
-        <li data-testid="list-item">
+        <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>
@@ -87,7 +87,7 @@ describe('ContentRenderer', () => {
 
     render(
       <ul>
-        <li data-testid="list-item">
+        <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>

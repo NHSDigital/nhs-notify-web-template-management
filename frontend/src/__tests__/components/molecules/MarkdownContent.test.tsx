@@ -83,8 +83,8 @@ describe('MarkdownContent', () => {
   it('renders inline mode without a paragraph wrapper', () => {
     render(
       <ul>
-        <li data-testid="list-item">
-          <MarkdownContent content="Inline text here" mode="inline" />
+        <li data-testid='list-item'>
+          <MarkdownContent content='Inline text here' mode='inline' />
         </li>
       </ul>
     );
@@ -95,11 +95,10 @@ describe('MarkdownContent', () => {
   });
 
   it('renders block mode with a paragraph wrapper by default', () => {
-    const { container } = render(<MarkdownContent content="Block content" />);
+    const { container } = render(<MarkdownContent content='Block content' />);
     expect(container.querySelector('p')).not.toBeNull();
     expect(container.querySelector('p')).toHaveTextContent('Block content');
   });
-
 
   it('renders interpolated variables correctly', () => {
     render(
