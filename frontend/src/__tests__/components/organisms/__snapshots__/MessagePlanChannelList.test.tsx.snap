@@ -32,7 +32,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
             NHS App
           </h3>
           <p>
-            name
+            Template 0
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
@@ -180,7 +180,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
             Email
           </h3>
           <p>
-            name
+            Template 1
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
@@ -327,18 +327,36 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
           >
             Text message (SMS)
           </h3>
-          <a
-            class="nhsuk-link nhsuk-link--no-visited-state"
-            href=""
-          >
-            Choose
-            <span
-              class="nhsuk-u-visually-hidden"
+          <p>
+            Template 2
+            <br />
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              href=""
             >
-              Text message (SMS)
-            </span>
-             template
-          </a>
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </p>
+          <p>
+            <a
+              class="channel-template-link--remove nhsuk-link"
+              href=""
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </p>
         </div>
       </div>
     </li>
@@ -467,7 +485,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             NHS App
           </h3>
           <p>
-            name
+            Template 0
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
@@ -615,7 +633,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             Email
           </h3>
           <p>
-            name
+            Template 1
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
@@ -763,7 +781,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             Letter
           </h3>
           <p>
-            name
+            Template 2
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"

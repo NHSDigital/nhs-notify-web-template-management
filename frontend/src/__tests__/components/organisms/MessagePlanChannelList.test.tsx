@@ -1,7 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MessagePlanChannelList } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
-import type { RoutingConfig, Channel } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfig,
+  Channel,
+  TemplateDto,
+} from 'nhs-notify-backend-client';
+import { MessagePlanTemplates } from '@app/message-plans/choose-templates/[routingConfigId]/page';
 
 function buildRoutingConfig(channels: Channel[]): RoutingConfig {
   const now = new Date().toISOString();
@@ -16,27 +21,52 @@ function buildRoutingConfig(channels: Channel[]): RoutingConfig {
     cascadeGroupOverrides: [],
     cascade: channels.map((channel, i) => ({
       cascadeGroups: ['standard'],
-      channel: channel,
+      channel,
       channelType: 'primary',
       defaultTemplateId: `test-template-${i}`,
     })),
   };
 }
 
+const testTemplates: MessagePlanTemplates = {
+  'test-template-0': {
+    id: 'test-template-0',
+    name: 'Template 0',
+  } as TemplateDto,
+  'test-template-1': {
+    id: 'test-template-1',
+    name: 'Template 1',
+  } as TemplateDto,
+  'test-template-2': {
+    id: 'test-template-2',
+    name: 'Template 2',
+  } as TemplateDto,
+};
+
 describe('MessagePlanChannelList', () => {
   it('should render a list', () => {
     const messagePlan = buildRoutingConfig(['NHSAPP']);
+
     const { container } = render(
-      <MessagePlanChannelList messagePlan={messagePlan} />
+      <MessagePlanChannelList
+        messagePlan={messagePlan}
+        templates={testTemplates}
+      />
     );
+
     expect(container.querySelector('ul.channel-list')).toBeInTheDocument();
   });
 
-  it('should render a block and fallback for each cascade item', () => {
+  it('should render a block and a fallback section for each cascade item', () => {
     const channels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS'];
     const messagePlan = buildRoutingConfig(channels);
 
-    render(<MessagePlanChannelList messagePlan={messagePlan} />);
+    render(
+      <MessagePlanChannelList
+        messagePlan={messagePlan}
+        templates={testTemplates}
+      />
+    );
 
     for (const channel of channels) {
       expect(
@@ -50,24 +80,37 @@ describe('MessagePlanChannelList', () => {
 
   it('should render nothing inside the list when cascade is empty', () => {
     const messagePlan = buildRoutingConfig([]);
+
     const { container } = render(
-      <MessagePlanChannelList messagePlan={messagePlan} />
+      <MessagePlanChannelList
+        messagePlan={messagePlan}
+        templates={testTemplates}
+      />
     );
+
     expect(container.querySelector('ul.channel-list')!.children.length).toBe(0);
   });
 
   it('should match snapshot for a digital routing plan', () => {
     const messagePlan = buildRoutingConfig(['NHSAPP', 'EMAIL', 'SMS']);
+
     const { asFragment } = render(
-      <MessagePlanChannelList messagePlan={messagePlan} />
+      <MessagePlanChannelList
+        messagePlan={messagePlan}
+        templates={testTemplates}
+      />
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it('should match snapshot for a routing plan with a letter', () => {
     const messagePlan = buildRoutingConfig(['NHSAPP', 'EMAIL', 'LETTER']);
+
     const { asFragment } = render(
-      <MessagePlanChannelList messagePlan={messagePlan} />
+      <MessagePlanChannelList
+        messagePlan={messagePlan}
+        templates={testTemplates}
+      />
     );
     expect(asFragment()).toMatchSnapshot();
   });
