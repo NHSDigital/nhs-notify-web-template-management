@@ -9,6 +9,7 @@ import { NhsNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
+import FeatureFlagProviderServer from '@providers/features-provider-server';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -17,22 +18,22 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: `${getBasePath()}/assets/images/favicon.ico`,
+        url: '/assets/favicons/favicon.ico',
         sizes: '48x48',
       },
       {
-        url: `${getBasePath()}/assets/images/favicon.svg`,
+        url: '/assets/favicons/favicon.svg',
         type: 'image/svg+xml',
         sizes: 'any',
       },
     ],
     apple: {
-      url: `${getBasePath()}/assets/images/nhsuk-icon-180.png`,
+      url: '/assets/images/apple-touch-icon-180x180.png',
     },
     other: [
       {
         rel: 'mask-icon',
-        url: `${getBasePath()}/assets/images/nhsuk-icon-mask.svg`,
+        url: '/assets/images/favicon.svg',
         color: '#005eb8',
       },
     ],
@@ -56,7 +57,6 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <link rel='manifest' href={`${getBasePath()}/assets/manifest.json`} />
         <script
           src={`${getBasePath()}/lib/nhsuk-frontend-10.0.0.min.js`}
           defer
@@ -67,14 +67,16 @@ export default function RootLayout({
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
           <AuthProvider>
-            <NHSNotifySkipLink />
-            <NhsNotifyHeader />
-            <NHSNotifyContainer>{children}</NHSNotifyContainer>
-            <NHSNotifyFooter />
-            <LogoutWarningModal
-              logoutInSeconds={config.logoutInSeconds}
-              promptBeforeLogoutSeconds={config.promptTimeSeconds}
-            />
+            <FeatureFlagProviderServer>
+              <NHSNotifySkipLink />
+              <NhsNotifyHeader />
+              <NHSNotifyContainer>{children}</NHSNotifyContainer>
+              <NHSNotifyFooter />
+              <LogoutWarningModal
+                logoutInSeconds={config.logoutInSeconds}
+                promptBeforeLogoutSeconds={config.promptTimeSeconds}
+              />
+            </FeatureFlagProviderServer>
           </AuthProvider>
         </CookiesProvider>
       </body>

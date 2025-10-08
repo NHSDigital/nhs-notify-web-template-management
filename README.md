@@ -16,11 +16,11 @@
 - Then you need to install the following plugins:
 
 ```shell
-  asdf plugin-add nodejs
-  asdf plugin-add direnv
-  asdf plugin-add terraform
-  asdf plugin-add gitleaks
-  asdf plugin-add pre-commit
+  asdf plugin add nodejs
+  asdf plugin add direnv
+  asdf plugin add terraform
+  asdf plugin add gitleaks
+  asdf plugin add pre-commit
 ```
 
 - Now you can install the tools, and they will be runnable from within the `nhs-notify-web-template-management` directory:

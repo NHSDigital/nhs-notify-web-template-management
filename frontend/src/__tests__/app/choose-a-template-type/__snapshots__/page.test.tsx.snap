@@ -73,16 +73,16 @@ exports[`ChooseATemplateTypePage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="NHS_APP-radio"
-                  id="templateType-NHS_APP"
+                  data-testid="nhsapp-radio"
+                  id="templateType-nhsapp"
                   name="templateType"
                   type="radio"
                   value="NHS_APP"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-NHS_APP"
-                  id="templateType-NHS_APP--label"
+                  for="templateType-nhsapp"
+                  id="templateType-nhsapp--label"
                 >
                   NHS App message
                 </label>
@@ -92,16 +92,16 @@ exports[`ChooseATemplateTypePage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="EMAIL-radio"
-                  id="templateType-EMAIL"
+                  data-testid="email-radio"
+                  id="templateType-email"
                   name="templateType"
                   type="radio"
                   value="EMAIL"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-EMAIL"
-                  id="templateType-EMAIL--label"
+                  for="templateType-email"
+                  id="templateType-email--label"
                 >
                   Email
                 </label>
@@ -111,16 +111,16 @@ exports[`ChooseATemplateTypePage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="SMS-radio"
-                  id="templateType-SMS"
+                  data-testid="sms-radio"
+                  id="templateType-sms"
                   name="templateType"
                   type="radio"
                   value="SMS"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-SMS"
-                  id="templateType-SMS--label"
+                  for="templateType-sms"
+                  id="templateType-sms--label"
                 >
                   Text message (SMS)
                 </label>
@@ -130,16 +130,16 @@ exports[`ChooseATemplateTypePage 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
-                  data-testid="LETTER-radio"
-                  id="templateType-LETTER"
+                  data-testid="letter-radio"
+                  id="templateType-letter"
                   name="templateType"
                   type="radio"
                   value="LETTER"
                 />
                 <label
                   class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-LETTER"
-                  id="templateType-LETTER--label"
+                  for="templateType-letter"
+                  id="templateType-letter--label"
                 >
                   Letter
                 </label>

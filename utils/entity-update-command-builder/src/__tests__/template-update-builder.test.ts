@@ -3,6 +3,7 @@ import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';
 const mockOwner = 'Hello1';
+const mockOwnerKey = `CLIENT#${mockOwner}`;
 const mockId = 'Hello2';
 const mockDate = new Date('2025-01-01 09:00:00');
 
@@ -13,7 +14,7 @@ beforeAll(() => {
 
 describe('TemplateUpdateBuilder', () => {
   describe('build', () => {
-    test('after initialisation returns default update (updatedAt)', () => {
+    test('after initialisation returns empty update', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
         mockOwner,
@@ -25,14 +26,11 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
-        ExpressionAttributeNames: { '#updatedAt': 'updatedAt' },
-        ExpressionAttributeValues: {
-          ':updatedAt': mockDate.toISOString(),
-        },
-        UpdateExpression: 'SET #updatedAt = :updatedAt',
+        ExpressionAttributeNames: {},
+        UpdateExpression: '',
       });
     });
 
@@ -51,14 +49,11 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
-        ExpressionAttributeNames: { '#updatedAt': 'updatedAt' },
-        ExpressionAttributeValues: {
-          ':updatedAt': mockDate.toISOString(),
-        },
-        UpdateExpression: 'SET #updatedAt = :updatedAt',
+        ExpressionAttributeNames: {},
+        UpdateExpression: '',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
       });
     });
@@ -79,19 +74,16 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':templateStatus': status,
-          ':updatedAt': mockDate.toISOString(),
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
         },
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
 
@@ -110,21 +102,18 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
           ':templateStatus': value,
-          ':updatedAt': mockDate.toISOString(),
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
         },
         ConditionExpression: '#templateStatus = :condition_1_templateStatus',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
 
@@ -146,23 +135,20 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
           ':condition_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': value,
-          ':updatedAt': mockDate.toISOString(),
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
         },
         ConditionExpression:
           '#templateStatus IN (:condition_1_templateStatus, :condition_2_templateStatus)',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });
@@ -183,19 +169,16 @@ describe('TemplateUpdateBuilder', () => {
         ExpressionAttributeNames: {
           '#supplierReferences': 'supplierReferences',
           '#supplier': 'supplier',
-          '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
           ':supplier': 'supplier-reference-value',
-          ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression:
-          'SET #supplierReferences.#supplier = :supplier, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #supplierReferences.#supplier = :supplier',
       });
     });
   });
@@ -213,19 +196,17 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         ExpressionAttributeNames: {
           '#supplierReferences': 'supplierReferences',
-          '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
           ':supplierReferences': {},
-          ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
-          'SET #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences), #updatedAt = :updatedAt',
+          'SET #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences)',
       });
     });
   });
@@ -244,19 +225,16 @@ describe('TemplateUpdateBuilder', () => {
         ConditionExpression: 'attribute_not_exists (#sftpSendLockTime)',
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
-          '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
           ':sftpSendLockTime': 500,
-          ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #sftpSendLockTime = :sftpSendLockTime',
       });
     });
 
@@ -274,20 +252,17 @@ describe('TemplateUpdateBuilder', () => {
           'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
-          '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
           ':condition_2_sftpSendLockTime': 1500,
           ':sftpSendLockTime': 1000,
-          ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #sftpSendLockTime = :sftpSendLockTime',
       });
     });
   });
@@ -307,19 +282,46 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
-          '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
           ':sftpSendLockTime': 1,
-          ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
           id: 'Hello2',
-          owner: 'Hello1',
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'SET #sftpSendLockTime = :sftpSendLockTime',
+      });
+    });
+  });
+
+  describe('setUpdatedByUserAt', () => {
+    test('sets updatedBy and updatedAt', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.setUpdatedByUserAt('userId').build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':updatedAt': mockDate.toISOString(),
+          ':updatedBy': 'userId',
+        },
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
     });
   });
@@ -340,21 +342,18 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':templateStatus': 'NOT_YET_SUBMITTED',
-          ':updatedAt': mockDate.toISOString(),
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
           '#id': 'id',
         },
         ConditionExpression: 'attribute_exists (#id)',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });
@@ -375,22 +374,19 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':templateStatus': 'NOT_YET_SUBMITTED',
-          ':updatedAt': mockDate.toISOString(),
           ':condition_1_templateType': 'SMS',
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
           '#templateType': 'templateType',
         },
         ConditionExpression: '#templateType = :condition_1_templateType',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });
@@ -411,22 +407,19 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':templateStatus': 'NOT_YET_SUBMITTED',
-          ':updatedAt': mockDate.toISOString(),
           ':condition_1_clientId': '9703B712-53ED-4E4E-8767-0E7AAC9ECC09',
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
           '#clientId': 'clientId',
         },
         ConditionExpression: '#clientId = :condition_1_clientId',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });
@@ -447,22 +440,19 @@ describe('TemplateUpdateBuilder', () => {
       expect(res).toEqual({
         TableName: mockTableName,
         Key: {
-          owner: mockOwner,
+          owner: mockOwnerKey,
           id: mockId,
         },
         ExpressionAttributeValues: {
           ':templateStatus': 'NOT_YET_SUBMITTED',
-          ':updatedAt': mockDate.toISOString(),
           ':condition_1_proofingEnabled': true,
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
           '#proofingEnabled': 'proofingEnabled',
         },
         ConditionExpression: '#proofingEnabled = :condition_1_proofingEnabled',
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });

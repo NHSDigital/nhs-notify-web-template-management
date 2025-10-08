@@ -5,7 +5,6 @@ import { ClientConfiguration, ClientFeatures } from '../types/generated';
 const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
     proofing: z.boolean(),
-    // TODO: CCM-11148 Make routing required
     routing: z.boolean().optional(),
   })
 );

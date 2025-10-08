@@ -7,7 +7,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-} from './template-mgmt-common.steps';
+} from '../helpers/template-mgmt-common.steps';
 import { assertGoBackButton } from './template-mgmt-submit-common.steps';
 import {
   createAuthHelper,

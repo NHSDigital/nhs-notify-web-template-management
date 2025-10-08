@@ -3,7 +3,6 @@ import {
   $CreateUpdateRoutingConfig,
   $ListRoutingConfigFilters,
   ErrorCase,
-  type CreateUpdateRoutingConfig,
   type ListRoutingConfigFilters,
   type Result,
   type RoutingConfig,
@@ -11,29 +10,88 @@ import {
 import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class RoutingConfigClient {
   constructor(
-    private readonly routingConfigRepository: RoutingConfigRepository
+    private readonly routingConfigRepository: RoutingConfigRepository,
+    private readonly clientConfigRepository: ClientConfigRepository
   ) {}
 
   async createRoutingConfig(
-    routingConfig: CreateUpdateRoutingConfig,
+    payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
     const validationResult = await validate(
       $CreateUpdateRoutingConfig,
-      routingConfig
+      payload
     );
 
     if (validationResult.error) return validationResult;
 
-    const createResult = await this.routingConfigRepository.create(
+    const validated = validationResult.data;
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
+
+    return this.routingConfigRepository.create(validationResult.data, user);
+  }
+
+  async updateRoutingConfig(
+    routingConfigId: string,
+    payload: unknown,
+    user: User
+  ): Promise<Result<RoutingConfig>> {
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      payload
+    );
+
+    if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
+
+    return this.routingConfigRepository.update(
+      routingConfigId,
       validationResult.data,
       user
     );
+  }
 
-    return createResult;
+  async submitRoutingConfig(
+    routingConfigId: string,
+    user: User
+  ): Promise<Result<RoutingConfig>> {
+    return this.routingConfigRepository.submit(routingConfigId, user);
   }
 
   async getRoutingConfig(

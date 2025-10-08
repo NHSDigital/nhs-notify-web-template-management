@@ -12,7 +12,7 @@ import {
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 
-test.describe('POST /v1/template/:templateId', () => {
+test.describe('PUT /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -31,7 +31,7 @@ test.describe('POST /v1/template/:templateId', () => {
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
-    const response = await request.post(
+    const response = await request.put(
       `${process.env.API_BASE_URL}/v1/template/some-template`
     );
     expect(response.status()).toBe(401);
@@ -41,7 +41,7 @@ test.describe('POST /v1/template/:templateId', () => {
   });
 
   test('returns 404 if template does not exist', async ({ request }) => {
-    const response = await request.post(
+    const response = await request.put(
       `${process.env.API_BASE_URL}/v1/template/noexist`,
       {
         headers: {
@@ -81,7 +81,7 @@ test.describe('POST /v1/template/:templateId', () => {
       clientId: user1.clientId,
     });
 
-    const updateResponse = await request.post(
+    const updateResponse = await request.put(
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
@@ -120,7 +120,7 @@ test.describe('POST /v1/template/:templateId', () => {
       clientId: user1.clientId,
     });
 
-    const updateResponse = await request.post(
+    const updateResponse = await request.put(
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
@@ -159,7 +159,7 @@ test.describe('POST /v1/template/:templateId', () => {
       clientId: user1.clientId,
     });
 
-    const updateResponse = await request.post(
+    const updateResponse = await request.put(
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
@@ -223,7 +223,7 @@ test.describe('POST /v1/template/:templateId', () => {
       clientId: user1.clientId,
     });
 
-    const updateResponse = await request.post(
+    const updateResponse = await request.put(
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
@@ -276,7 +276,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       const start = new Date();
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -331,7 +331,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateSMSResponse = await request.post(
+      const updateSMSResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -355,7 +355,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Can not change template templateType',
       });
 
-      const updateEmailResponse = await request.post(
+      const updateEmailResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -413,7 +413,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -474,7 +474,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -529,7 +529,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(deleteResponse.status()).toBe(204);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -577,7 +577,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'NHS_APP',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -597,6 +597,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template name is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -617,7 +618,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -666,7 +667,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'NHS_APP',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -686,6 +687,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template message is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -706,7 +708,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -752,7 +754,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -804,7 +806,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       const start = new Date();
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -859,7 +861,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateNHSAppResponse = await request.post(
+      const updateNHSAppResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -883,7 +885,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Can not change template templateType',
       });
 
-      const updateEmailResponse = await request.post(
+      const updateEmailResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -941,7 +943,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1002,7 +1004,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1057,7 +1059,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(deleteResponse.status()).toBe(204);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1105,7 +1107,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'SMS',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1145,7 +1147,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1194,7 +1196,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'SMS',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1214,6 +1216,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template message is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -1234,7 +1237,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1280,7 +1283,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1332,7 +1335,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       const start = new Date();
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1388,7 +1391,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateNHSAppResponse = await request.post(
+      const updateNHSAppResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1412,7 +1415,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Can not change template templateType',
       });
 
-      const updateSMSResponse = await request.post(
+      const updateSMSResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1470,7 +1473,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1531,7 +1534,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(submitResponse.status()).toBe(200);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1587,7 +1590,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(deleteResponse.status()).toBe(204);
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1635,7 +1638,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'EMAIL',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1655,6 +1658,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template name is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -1675,7 +1679,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1724,7 +1728,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'EMAIL',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1744,6 +1748,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template subject is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -1764,7 +1769,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1812,7 +1817,7 @@ test.describe('POST /v1/template/:templateId', () => {
           templateType: 'EMAIL',
         });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1832,6 +1837,7 @@ test.describe('POST /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template message is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -1852,7 +1858,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1898,7 +1904,7 @@ test.describe('POST /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
@@ -1952,7 +1958,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       const start = new Date();
 
-      const updateResponse = await request.post(
+      const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {

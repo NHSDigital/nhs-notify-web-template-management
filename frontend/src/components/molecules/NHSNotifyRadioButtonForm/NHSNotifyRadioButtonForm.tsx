@@ -3,6 +3,7 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { DetailedHTMLProps, FormHTMLAttributes } from 'react';
+import Link from 'next/link';
 
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;
@@ -27,7 +28,14 @@ export type NHSNotifyRadioButtonFormProps = {
     FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   >;
+  backLink?: {
+    text: string;
+    url: string;
+  };
 };
+
+const normaliseId = (id: string) =>
+  id.toLowerCase().replaceAll('_', '').replaceAll(',', '-');
 
 export const NHSNotifyRadioButtonForm = ({
   formId,
@@ -42,6 +50,7 @@ export const NHSNotifyRadioButtonForm = ({
   hint = '',
   learnMoreLink = '',
   learnMoreText = '',
+  backLink,
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper
     action={action}
@@ -72,9 +81,9 @@ export const NHSNotifyRadioButtonForm = ({
         {options.map(({ id, text, checked }) => (
           <Radios.Radio
             value={id}
-            id={`${radiosId}-${id}`}
-            data-testid={`${id}-radio`}
-            key={`${id}-radio`}
+            id={`${radiosId}-${normaliseId(id)}`}
+            data-testid={`${normaliseId(id)}-radio`}
+            key={`${normaliseId(id)}-radio`}
             defaultChecked={checked}
           >
             {text}
@@ -89,5 +98,13 @@ export const NHSNotifyRadioButtonForm = ({
     >
       {buttonText}
     </NHSNotifyButton>
+    {backLink && (
+      <Link
+        href={backLink.url}
+        className='inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'
+      >
+        {backLink.text}
+      </Link>
+    )}
   </NHSNotifyFormWrapper>
 );
