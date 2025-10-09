@@ -21,6 +21,7 @@ import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
 import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 
 export class RoutingConfigRepository {
   private updateCmdOpts = {
@@ -133,6 +134,41 @@ export class RoutingConfigRepository {
         return failure(
           ErrorCase.INTERNAL,
           'Error parsing submitted Routing Config',
+          parsed.error
+        );
+      }
+
+      return success(parsed.data);
+    } catch (error) {
+      return this.handleUpdateError(error);
+    }
+  }
+
+  async delete(
+    id: string,
+    user: User
+  ): Promise<ApplicationResult<RoutingConfig>> {
+    const cmdInput = new RoutingConfigUpdateBuilder(
+      this.tableName,
+      user.clientId,
+      id,
+      this.updateCmdOpts
+    )
+      .setStatus('DELETED')
+      .setTtl(calculateTTL())
+      .expectedStatus('DRAFT')
+      .setUpdatedByUserAt(user.userId)
+      .build();
+
+    try {
+      const result = await this.client.send(new UpdateCommand(cmdInput));
+
+      const parsed = $RoutingConfig.safeParse(result.Attributes);
+
+      if (!parsed.success) {
+        return failure(
+          ErrorCase.INTERNAL,
+          'Error parsing deleted Routing Config',
           parsed.error
         );
       }
