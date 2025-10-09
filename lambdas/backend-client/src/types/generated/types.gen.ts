@@ -340,6 +340,38 @@ export type PostV1RoutingConfigurationResponses = {
 export type PostV1RoutingConfigurationResponse =
   PostV1RoutingConfigurationResponses[keyof PostV1RoutingConfigurationResponses];
 
+export type DeleteV1RoutingConfigurationByRoutingConfigIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of routing configuration to delete
+     */
+    routingConfigId: string;
+  };
+  query?: never;
+  url: '/v1/routing-configuration/{routingConfigId}';
+};
+
+export type DeleteV1RoutingConfigurationByRoutingConfigIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type DeleteV1RoutingConfigurationByRoutingConfigIdError =
+  DeleteV1RoutingConfigurationByRoutingConfigIdErrors[keyof DeleteV1RoutingConfigurationByRoutingConfigIdErrors];
+
+export type DeleteV1RoutingConfigurationByRoutingConfigIdResponses = {
+  /**
+   * No content
+   */
+  204: void;
+};
+
+export type DeleteV1RoutingConfigurationByRoutingConfigIdResponse =
+  DeleteV1RoutingConfigurationByRoutingConfigIdResponses[keyof DeleteV1RoutingConfigurationByRoutingConfigIdResponses];
+
 export type GetV1RoutingConfigurationByRoutingConfigIdData = {
   body?: never;
   path: {
@@ -557,9 +589,9 @@ export type DeleteV1TemplateByTemplateIdError =
 
 export type DeleteV1TemplateByTemplateIdResponses = {
   /**
-   * 200 response
+   * No content
    */
-  200: TemplateSuccess;
+  204: void;
 };
 
 export type DeleteV1TemplateByTemplateIdResponse =
