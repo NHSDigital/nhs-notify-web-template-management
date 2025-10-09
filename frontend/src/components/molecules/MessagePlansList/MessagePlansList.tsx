@@ -5,6 +5,7 @@ import content from '@content/content';
 import { Details, Table } from 'nhsuk-react-components';
 import { format } from 'date-fns/format';
 import Link from 'next/link';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 export type MessagePlanListItem = {
   name: string;
@@ -67,9 +68,10 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
             <Table.Body>{rows}</Table.Body>
           </Table>
         ) : (
-          <p>
-            {messagePlanComponent.noMessagePagesMessage(status.toLowerCase())}
-          </p>
+          <MarkdownContent
+            content={messagePlanComponent.noMessagePlansMessage}
+            variables={{ status: status.toLowerCase() }}
+          />
         )}
       </Details.Text>
     </Details>

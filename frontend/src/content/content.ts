@@ -1044,16 +1044,8 @@ const messagePlansPage = {
     },
     production: {
       heading: 'Production',
-      text1: 'Message plans that are ready to be sent using ',
-      notifyApiLink: {
-        href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify',
-        text: 'NHS Notify API (opens in a new tab)',
-      },
-      text2: 'or ',
-      meshAiLink: {
-        href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/',
-        text: 'NHS Notify MESH (opens in a new tab).',
-      },
+      textMd:
+        'Message plans that are ready to be sent using [NHS Notify API (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/).',
     },
   },
   button: {
@@ -1064,8 +1056,7 @@ const messagePlansPage = {
 
 const messagePlanComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
-  noMessagePagesMessage: (type: string) =>
-    `You do not have any message plans in ${type} yet.`,
+  noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
   previewLink: (id: string) => `/message-plan/${id}`,
 };
 

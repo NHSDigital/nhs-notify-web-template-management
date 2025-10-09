@@ -9,6 +9,7 @@ import {
 import content from '@content/content';
 import classNames from 'classnames';
 import Link from 'next/link';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 const {
   pages: { messagePlansPage },
@@ -72,24 +73,7 @@ export const MessagePlans = (props: MessagePlansProps) => {
               >
                 {production.heading}
               </h2>
-              <p>
-                {production.text1}
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={production.notifyApiLink.href}
-                >
-                  {production.notifyApiLink.text}
-                </a>{' '}
-                {production.text2}
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={production.meshAiLink.href}
-                >
-                  {production.meshAiLink.text}
-                </a>
-              </p>
+              <MarkdownContent content={production.textMd} />
             </Details.Text>
           </Details>
           <Link passHref legacyBehavior href={button.link}>

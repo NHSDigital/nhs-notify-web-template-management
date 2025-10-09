@@ -80,8 +80,9 @@ exports[`MessagePlans matches snapshot 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                NHS Notify MESH (opens in a new tab).
+                NHS Notify MESH (opens in a new tab)
               </a>
+              .
             </p>
           </div>
         </details>
