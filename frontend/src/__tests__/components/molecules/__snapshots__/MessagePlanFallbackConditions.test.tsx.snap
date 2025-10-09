@@ -4,6 +4,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for EMAIL 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
+    data-testid="message-plan-fallback-conditions-EMAIL"
   >
     <div
       aria-hidden="true"
@@ -97,6 +98,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for LETTER 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
+    data-testid="message-plan-fallback-conditions-LETTER"
   >
     <div
       aria-hidden="true"
@@ -183,6 +185,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
+    data-testid="message-plan-fallback-conditions-NHSAPP"
   >
     <div
       aria-hidden="true"
@@ -276,6 +279,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for SMS 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
+    data-testid="message-plan-fallback-conditions-SMS"
   >
     <div
       aria-hidden="true"

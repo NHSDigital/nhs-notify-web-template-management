@@ -1,0 +1,441 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanBlock for channel EMAIL with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-EMAIL"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Email
+        </h3>
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Choose
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Email
+          </span>
+           template
+        </a>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-EMAIL"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Email
+        </h3>
+        <p>
+          Test email template
+          <br />
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            href=""
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Email
+            </span>
+             template
+          </a>
+        </p>
+        <p>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            href=""
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Email
+            </span>
+             template
+          </a>
+        </p>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel LETTER with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-LETTER"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Letter
+        </h3>
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Choose
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Letter
+          </span>
+           template
+        </a>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel LETTER with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-LETTER"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Letter
+        </h3>
+        <p>
+          Test email template
+          <br />
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            href=""
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Letter
+            </span>
+             template
+          </a>
+        </p>
+        <p>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            href=""
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Letter
+            </span>
+             template
+          </a>
+        </p>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel NHSAPP with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-NHSAPP"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          NHS App
+        </h3>
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Choose
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            NHS App
+          </span>
+           template
+        </a>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-NHSAPP"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          NHS App
+        </h3>
+        <p>
+          Test email template
+          <br />
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            href=""
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              NHS App
+            </span>
+             template
+          </a>
+        </p>
+        <p>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            href=""
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              NHS App
+            </span>
+             template
+          </a>
+        </p>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel SMS with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-SMS"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Text message (SMS)
+        </h3>
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Choose
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Text message (SMS)
+          </span>
+           template
+        </a>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-SMS"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Text message (SMS)
+        </h3>
+        <p>
+          Test email template
+          <br />
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            href=""
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Text message (SMS)
+            </span>
+             template
+          </a>
+        </p>
+        <p>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            href=""
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Text message (SMS)
+            </span>
+             template
+          </a>
+        </p>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;

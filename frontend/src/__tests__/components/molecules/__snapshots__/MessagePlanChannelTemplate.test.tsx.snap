@@ -1,0 +1,325 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Email
+      </h3>
+      <a
+        class="nhsuk-link nhsuk-link--no-visited-state"
+        href=""
+      >
+        Choose
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          Email
+        </span>
+         
+        template
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTER) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Letter
+      </h3>
+      <a
+        class="nhsuk-link nhsuk-link--no-visited-state"
+        href=""
+      >
+        Choose
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          Letter
+        </span>
+         
+        template
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAPP) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        NHS App
+      </h3>
+      <a
+        class="nhsuk-link nhsuk-link--no-visited-state"
+        href=""
+      >
+        Choose
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          NHS App
+        </span>
+         
+        template
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Text message (SMS)
+      </h3>
+      <a
+        class="nhsuk-link nhsuk-link--no-visited-state"
+        href=""
+      >
+        Choose
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          Text message (SMS)
+        </span>
+         
+        template
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for selected template state (EMAIL) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Email
+      </h3>
+      <p>
+        Covid 65+ reminder v1
+        <br />
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Change
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Email
+          </span>
+           
+          template
+        </a>
+      </p>
+      <p>
+        <a
+          class="channel-template-link--remove nhsuk-link"
+          href=""
+        >
+          Remove
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Email
+          </span>
+           
+          template
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for selected template state (LETTER) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Letter
+      </h3>
+      <p>
+        Covid 65+ reminder v1
+        <br />
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Change
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Letter
+          </span>
+           
+          template
+        </a>
+      </p>
+      <p>
+        <a
+          class="channel-template-link--remove nhsuk-link"
+          href=""
+        >
+          Remove
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Letter
+          </span>
+           
+          template
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for selected template state (NHSAPP) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        NHS App
+      </h3>
+      <p>
+        Covid 65+ reminder v1
+        <br />
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Change
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            NHS App
+          </span>
+           
+          template
+        </a>
+      </p>
+      <p>
+        <a
+          class="channel-template-link--remove nhsuk-link"
+          href=""
+        >
+          Remove
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            NHS App
+          </span>
+           
+          template
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanChannelTemplate should match snapshot for selected template state (SMS) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Text message (SMS)
+      </h3>
+      <p>
+        Covid 65+ reminder v1
+        <br />
+        <a
+          class="nhsuk-link nhsuk-link--no-visited-state"
+          href=""
+        >
+          Change
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Text message (SMS)
+          </span>
+           
+          template
+        </a>
+      </p>
+      <p>
+        <a
+          class="channel-template-link--remove nhsuk-link"
+          href=""
+        >
+          Remove
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Text message (SMS)
+          </span>
+           
+          template
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+`;
