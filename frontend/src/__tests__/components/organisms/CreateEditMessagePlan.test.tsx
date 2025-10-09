@@ -6,6 +6,14 @@ import type {
   Channel,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
+import type { MessagePlanTemplates } from '@utils/message-plans';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+} from '@testhelpers';
+
+const mockTemplates: MessagePlanTemplates = {} as MessagePlanTemplates;
 
 function buildRoutingConfig({
   id = 'routing-config-123',
@@ -36,7 +44,9 @@ describe('CreateEditMessagePlan', () => {
   it('should render the page heading with the message plan name', () => {
     const plan = buildRoutingConfig({ name: 'Covid vaccine' });
 
-    render(<CreateEditMessagePlan messagePlan={plan} />);
+    render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
 
     expect(
       screen.getByRole('heading', { level: 1, name: 'Covid vaccine' })
@@ -46,7 +56,9 @@ describe('CreateEditMessagePlan', () => {
   it('should display the routing config ID', () => {
     const plan = buildRoutingConfig({ id: 'routing-config-test' });
 
-    const { container } = render(<CreateEditMessagePlan messagePlan={plan} />);
+    const { container } = render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
 
     const messagePlanId = container.querySelector(
       '.create-edit-message-plan-routing-config-id'
@@ -60,7 +72,9 @@ describe('CreateEditMessagePlan', () => {
     { status: 'COMPLETED' as const, display: 'Production' },
   ])('should render the status tag for %s', ({ status, display }) => {
     const plan = buildRoutingConfig({ status });
-    render(<CreateEditMessagePlan messagePlan={plan} />);
+    render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
 
     expect(screen.getByText(display)).toBeInTheDocument();
   });
@@ -68,7 +82,9 @@ describe('CreateEditMessagePlan', () => {
   it('should render the channel list with a block and fallback for each cascade item (order check)', () => {
     const channels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS'];
     const plan = buildRoutingConfig({ channels });
-    const { container } = render(<CreateEditMessagePlan messagePlan={plan} />);
+    const { container } = render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
 
     const messagePlanChannelList = container.querySelector(
       'ul.channel-list'
@@ -91,7 +107,12 @@ describe('CreateEditMessagePlan', () => {
   it('should render CTAs for both saving and moving to production', () => {
     const messagePlan = buildRoutingConfig();
 
-    render(<CreateEditMessagePlan messagePlan={messagePlan} />);
+    render(
+      <CreateEditMessagePlan
+        messagePlan={messagePlan}
+        templates={mockTemplates}
+      />
+    );
 
     const formGroup = screen.getByTestId('message-plan-actions');
     const buttons = within(formGroup).getAllByRole('button');
@@ -103,7 +124,9 @@ describe('CreateEditMessagePlan', () => {
   it('should render a "change name" link', () => {
     const plan = buildRoutingConfig();
 
-    render(<CreateEditMessagePlan messagePlan={plan} />);
+    render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
 
     const link = screen.getByTestId('change-message-plan-name-link');
     expect(link.textContent).toBe('Change name');
@@ -115,13 +138,33 @@ describe('CreateEditMessagePlan', () => {
   it('should match snapshot for a typical message plan', () => {
     const messagePlan = buildRoutingConfig({
       name: 'COVID Booster Plan',
-      channels: ['NHSAPP', 'EMAIL', 'LETTER'],
+      channels: ['NHSAPP', 'SMS', 'EMAIL', 'LETTER'],
     });
 
     const { asFragment } = render(
-      <CreateEditMessagePlan messagePlan={messagePlan} />
+      <CreateEditMessagePlan
+        messagePlan={messagePlan}
+        templates={mockTemplates}
+      />
     );
 
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot for a typical message plan with templates', () => {
+    const messagePlan = buildRoutingConfig({
+      name: 'COVID Booster Plan',
+      channels: ['NHSAPP', 'EMAIL', 'LETTER'],
+    });
+
+    const templates: MessagePlanTemplates = {
+      'template-0': NHS_APP_TEMPLATE,
+      'template-1': EMAIL_TEMPLATE,
+      'template-2': LETTER_TEMPLATE,
+    };
+    const { asFragment } = render(
+      <CreateEditMessagePlan messagePlan={messagePlan} templates={templates} />
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });
