@@ -6,7 +6,6 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('GET /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
@@ -236,35 +235,6 @@ test.describe('GET /v1/template/:templateId', () => {
     expect(await response.json()).toEqual({
       statusCode: 200,
       data: created.data,
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('can get a user-owned template', async ({ request }) => {
-      const templateId = crypto.randomUUID();
-      const template = {
-        ...TemplateFactory.createNhsAppTemplate(templateId, user1),
-        owner: user1.userId,
-      };
-
-      await templateStorageHelper.seedTemplateData([template]);
-
-      const response = await request.get(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-        }
-      );
-
-      const { owner: _1, version: _2, ...created } = template;
-
-      expect(response.status()).toBe(200);
-      expect(await response.json()).toEqual({
-        statusCode: 200,
-        data: created,
-      });
     });
   });
 });

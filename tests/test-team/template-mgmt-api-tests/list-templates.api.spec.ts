@@ -6,7 +6,6 @@ import {
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('GET /v1/templates', () => {
   const authHelper = createAuthHelper();
@@ -247,62 +246,6 @@ test.describe('GET /v1/templates', () => {
     expect(userSharedClientResponseBody).toEqual({
       statusCode: 200,
       data: expect.arrayContaining([created1.data]),
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('can list user-owned templates', async ({ request }) => {
-      const userOwnedTemplateId = crypto.randomUUID();
-      const clientOwnedTemplateId = crypto.randomUUID();
-
-      const userOwnedTemplate = {
-        ...TemplateFactory.createEmailTemplate(userOwnedTemplateId, user1),
-        owner: user1.userId,
-      };
-
-      const clientOwnedTemplate = TemplateFactory.createNhsAppTemplate(
-        clientOwnedTemplateId,
-        user1
-      );
-
-      await templateStorageHelper.seedTemplateData([
-        clientOwnedTemplate,
-        userOwnedTemplate,
-      ]);
-
-      const user1ListResponse = await request.get(
-        `${process.env.API_BASE_URL}/v1/templates`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-        }
-      );
-
-      expect(user1ListResponse.status()).toBe(200);
-
-      const user1ResponseBody = await user1ListResponse.json();
-
-      const {
-        owner: _1,
-        version: _2,
-        ...userOwnedCreatedTemplate
-      } = userOwnedTemplate;
-      const {
-        owner: _3,
-        version: _4,
-        ...clientOwnedCreatedTemplate
-      } = clientOwnedTemplate;
-
-      expect(user1ResponseBody).toEqual({
-        statusCode: 200,
-        data: expect.arrayContaining([
-          userOwnedCreatedTemplate,
-          clientOwnedCreatedTemplate,
-        ]),
-      });
-
-      expect(user1ResponseBody.data.length).toBe(2);
     });
   });
 });

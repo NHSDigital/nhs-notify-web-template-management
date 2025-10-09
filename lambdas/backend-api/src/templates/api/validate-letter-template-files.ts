@@ -61,9 +61,7 @@ export class ValidateLetterTemplateFilesLambda {
     } = metadata;
 
     const { error: getTemplateError, data: template } =
-      await this.templateRepository.get(templateId, {
-        clientId: clientId,
-      });
+      await this.templateRepository.get(templateId, clientId);
 
     if (getTemplateError) {
       log.error('Unable to load template data', getTemplateError);

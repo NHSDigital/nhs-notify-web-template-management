@@ -103,9 +103,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      clientId: clientId,
-    });
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+      templateId,
+      clientId
+    );
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
       templateId,
@@ -354,9 +355,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
-      clientId,
-    });
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+      templateId,
+      clientId
+    );
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledTimes(1);
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(

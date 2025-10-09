@@ -11,7 +11,6 @@ import {
   UseCaseOrchestrator,
   SimulatePassedValidation,
 } from '../helpers/use-cases';
-import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('DELETE /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
@@ -782,30 +781,6 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),
-          },
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(204);
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('can delete a user-owned template', async ({ request }) => {
-      const templateId = crypto.randomUUID();
-
-      await templateStorageHelper.seedTemplateData([
-        {
-          ...TemplateFactory.createEmailTemplate(templateId, user1),
-          owner: user1.userId,
-        },
-      ]);
-
-      const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
           },
         }
       );

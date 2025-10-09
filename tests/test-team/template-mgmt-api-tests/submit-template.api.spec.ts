@@ -17,7 +17,6 @@ import {
   SimulatePassedValidation,
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
-import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
@@ -26,13 +25,11 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
-  let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
-    userProofingDisabled = await authHelper.getTestUser(testUsers.User4.userId);
   });
 
   test.afterAll(async () => {
@@ -1019,177 +1016,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
-        },
-      });
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('user-owner can submit digital template', async ({ request }) => {
-      const templateId = crypto.randomUUID();
-
-      const template = {
-        ...TemplateFactory.createEmailTemplate(templateId, user1),
-        owner: user1.userId,
-      };
-
-      await templateStorageHelper.seedTemplateData([template]);
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          clientId: user1.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: template.message,
-          subject: template.subject,
-          name: template.name,
-          templateStatus: 'SUBMITTED',
-          templateType: template.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-        },
-      });
-    });
-
-    test('user-owner can submit letter template with proofing disabled', async ({
-      request,
-    }) => {
-      const templateId = crypto.randomUUID();
-
-      const template = {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingDisabled,
-          templateId,
-          'NOT_YET_SUBMITTED'
-        ),
-        owner: userProofingDisabled.userId,
-        proofingEnabled: false,
-      };
-
-      await templateStorageHelper.seedTemplateData([template]);
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-        {
-          headers: {
-            Authorization: await userProofingDisabled.getAccessToken(),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          campaignId: 'campaign-id',
-          clientId: userProofingDisabled.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          name: template.name,
-          templateStatus: 'SUBMITTED',
-          templateType: 'LETTER',
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          language: template.language,
-          proofingEnabled: false,
-          letterType: template.letterType,
-          personalisationParameters: [],
-          files: {
-            pdfTemplate: expect.objectContaining({
-              virusScanStatus: 'PASSED',
-            }),
-            proofs: {},
-            testDataCsv: expect.objectContaining({
-              virusScanStatus: 'PASSED',
-            }),
-          },
-        },
-      });
-    });
-
-    test('user-owner can submit letter template with proofing enabled', async ({
-      request,
-    }) => {
-      const templateId = crypto.randomUUID();
-
-      const baseTemplateData = TemplateFactory.uploadLetterTemplate(
-        templateId,
-        user1,
-        templateId,
-        'PROOF_AVAILABLE'
-      );
-
-      const proofs = {
-        'first.pdf': {
-          virusScanStatus: 'PASSED',
-          supplier: 'WTMMOCK',
-          fileName: 'first.pdf',
-        },
-      };
-
-      const template = {
-        ...baseTemplateData,
-        owner: user1.userId,
-        proofingEnabled: true,
-        files: { ...baseTemplateData.files, proofs },
-        campaignId: user1?.campaignIds?.[0],
-      };
-
-      await templateStorageHelper.seedTemplateData([template]);
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          campaignId: user1.campaignIds?.[0],
-          clientId: user1.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          name: template.name,
-          templateStatus: 'SUBMITTED',
-          templateType: 'LETTER',
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          language: template.language,
-          proofingEnabled: true,
-          personalisationParameters: [],
-          letterType: template.letterType,
-          files: {
-            pdfTemplate: expect.objectContaining({
-              virusScanStatus: 'PASSED',
-            }),
-            proofs,
-            testDataCsv: expect.objectContaining({
-              virusScanStatus: 'PASSED',
-            }),
-          },
         },
       });
     });

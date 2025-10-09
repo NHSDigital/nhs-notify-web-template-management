@@ -11,7 +11,6 @@ import {
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import { TemplateFactory } from '../helpers/factories/template-factory';
 
 test.describe('PUT /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
@@ -1995,55 +1994,6 @@ test.describe('PUT /v1/template/:templateId', () => {
         new Date(),
       ]);
       expect(updated.data.createdAt).toEqual(created.data.createdAt);
-    });
-  });
-
-  test.describe('user-owned templates', () => {
-    test('user-owner can update', async ({ request }) => {
-      const templateId = crypto.randomUUID();
-
-      await templateStorageHelper.seedTemplateData([
-        {
-          ...TemplateFactory.createEmailTemplate(templateId, user1),
-          owner: user1.userId,
-        },
-      ]);
-
-      const newMessage = 'this is new';
-
-      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-        templateType: 'EMAIL',
-        message: newMessage,
-      });
-
-      const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: updateData,
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          clientId: user1.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: newMessage,
-          name: updateData.name,
-          subject: updateData.subject,
-          templateStatus: updateData.templateStatus,
-          templateType: updateData.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-        },
-      });
     });
   });
 });

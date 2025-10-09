@@ -20,8 +20,8 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
-  BatchGetCommand,
   DynamoDBDocumentClient,
+  GetCommand,
   PutCommand,
   QueryCommand,
   QueryCommandInput,
@@ -70,42 +70,21 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    user: { clientId: string; userId?: string }
+    clientId: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
-      const cmd = new BatchGetCommand({
-        RequestItems: {
-          [this.templatesTableName]: {
-            Keys: [
-              ...(user.userId ? [{ id: templateId, owner: user.userId }] : []),
-              { id: templateId, owner: `CLIENT#${user.clientId}` },
-            ],
-          },
-        },
-      });
+      const response = await this.client.send(
+        new GetCommand({
+          TableName: this.templatesTableName,
+          Key: { id: templateId, owner: this.clientOwnerKey(clientId) },
+        })
+      );
 
-      const response = await this.client.send(cmd);
-
-      const failures =
-        response.UnprocessedKeys?.[this.templatesTableName]?.Keys;
-
-      if (failures?.length) {
-        throw new Error('Partial failure of batch get templates');
-      }
-
-      const items = response.Responses?.[this.templatesTableName] ?? [];
-
-      if (items.length === 0) {
+      if (!response?.Item) {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
       }
 
-      if (items.length > 1) {
-        throw new Error(
-          'Unexpectedly found both a client owned and a user owned template'
-        );
-      }
-
-      const item = items[0] as DatabaseTemplate;
+      const item = response.Item as DatabaseTemplate;
 
       if (item.templateStatus === 'DELETED') {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
@@ -185,13 +164,9 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.assertTemplateOwnership(user, templateId);
-
-      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
-
       const result = await this._update(
         templateId,
-        owner,
+        user.clientId,
         user.userId,
         updateExpression,
         expressionAttributeNames,
@@ -233,13 +208,9 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.assertTemplateOwnership(user, templateId);
-
-      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
-
       const result = await this._update(
         templateId,
-        owner,
+        user.clientId,
         user.userId,
         updateExpression,
         expressionAttributeNames,
@@ -270,13 +241,9 @@ export class TemplateRepository {
     ];
 
     try {
-      const owner = await this.assertTemplateOwnership(user, templateId);
-
-      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
-
       const result = await this._update(
         templateId,
-        owner,
+        user.clientId,
         user.userId,
         updateExpression,
         {},
@@ -310,13 +277,9 @@ export class TemplateRepository {
     };
 
     try {
-      const owner = await this.assertTemplateOwnership(user, templateId);
-
-      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
-
       const result = await this._update(
         templateId,
-        owner,
+        user.clientId,
         user.userId,
         updateExpression,
         {},
@@ -329,45 +292,34 @@ export class TemplateRepository {
     }
   }
 
-  private async listQuery(ownerKey: string) {
-    const input: QueryCommandInput = {
-      TableName: this.templatesTableName,
-      KeyConditionExpression: '#owner = :owner',
-      ExpressionAttributeNames: {
-        '#owner': 'owner',
-        '#status': 'templateStatus',
-      },
-      ExpressionAttributeValues: {
-        ':owner': ownerKey,
-        ':deletedStatus': 'DELETED',
-      },
-      FilterExpression: '#status <> :deletedStatus',
-    };
-
-    const items: DatabaseTemplate[] = [];
-
-    do {
-      // eslint-disable-next-line no-await-in-loop
-      const { Items = [], LastEvaluatedKey } = await this.client.send(
-        new QueryCommand(input)
-      );
-
-      input.ExclusiveStartKey = LastEvaluatedKey;
-
-      items.push(...(Items as DatabaseTemplate[]));
-    } while (input.ExclusiveStartKey);
-
-    return items;
-  }
-
-  async list(user: User): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  async list(clientId: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
     try {
-      const queryResults = await Promise.all([
-        this.listQuery(`CLIENT#${user.clientId}`),
-        this.listQuery(user.userId),
-      ]);
+      const input: QueryCommandInput = {
+        TableName: this.templatesTableName,
+        KeyConditionExpression: '#owner = :owner',
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#status': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':owner': this.clientOwnerKey(clientId),
+          ':deletedStatus': 'DELETED',
+        },
+        FilterExpression: '#status <> :deletedStatus',
+      };
 
-      return success(queryResults.flat());
+      const items: DatabaseTemplate[] = [];
+
+      do {
+        // eslint-disable-next-line no-await-in-loop
+        const { Items = [], LastEvaluatedKey } = await this.client.send(
+          new QueryCommand(input)
+        );
+
+        input.ExclusiveStartKey = LastEvaluatedKey;
+        items.push(...(Items as DatabaseTemplate[]));
+      } while (input.ExclusiveStartKey);
+      return success(items);
     } catch (error) {
       return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
     }
@@ -571,9 +523,13 @@ export class TemplateRepository {
       throw new Error(`Could not identify item by id ${id}`);
     }
 
-    const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
+    const owner = dbResponse.Items[0].owner;
 
-    return this.stripClientPrefix(ownerWithPossiblePrefix);
+    if (!owner.startsWith(this.clientOwnerPrefix)) {
+      throw new Error(`Unexpected owner format ${owner}`);
+    }
+
+    return owner.slice(this.clientOwnerPrefix.length);
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -687,7 +643,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    owner: string,
+    clientId: string,
     userId: string,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
@@ -706,7 +662,7 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner,
+        owner: this.clientOwnerKey(clientId),
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -749,49 +705,11 @@ export class TemplateRepository {
     }
   }
 
-  async assertTemplateOwnership(
-    user: User,
-    templateId: string
-  ): Promise<string | undefined> {
-    const dbResponse = await this.client.send(
-      new QueryCommand({
-        TableName: this.templatesTableName,
-        IndexName: 'QueryById',
-        KeyConditionExpression: 'id = :id',
-        ExpressionAttributeNames: { '#owner': 'owner' },
-        ExpressionAttributeValues: {
-          ':id': templateId,
-          ':clientOwner': this.clientOwnerKey(user.clientId),
-          ':userId': user.userId,
-        },
-        FilterExpression: '#owner = :userId OR #owner = :clientOwner',
-      })
-    );
-
-    const items = dbResponse.Items?.filter(
-      (item) =>
-        item.owner === user.userId ||
-        (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
-    );
-
-    if (items && items?.length > 1) {
-      throw new Error('Unexpectedly found more than one template owner');
-    }
-
-    return items?.[0]?.owner;
-  }
-
   private toDatabaseKey(templateKey: TemplateKey) {
     return {
       id: templateKey.templateId,
       owner: this.clientOwnerKey(templateKey.clientId),
     };
-  }
-
-  private stripClientPrefix(owner: string) {
-    return owner.startsWith(this.clientOwnerPrefix)
-      ? owner.slice(this.clientOwnerPrefix.length)
-      : owner;
   }
 
   private clientOwnerKey(clientId: string) {
