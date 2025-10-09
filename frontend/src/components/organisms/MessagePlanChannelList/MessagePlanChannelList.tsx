@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import { MessagePlanTemplates } from '@utils/message-plans';
 
 import styles from '@organisms/MessagePlanChannelList/MessagePlanChannelList.module.scss';
-import { MessagePlanTemplates } from '@app/message-plans/choose-templates/[routingConfigId]/page';
 
 export function MessagePlanChannelList({
   messagePlan,
@@ -16,7 +16,7 @@ export function MessagePlanChannelList({
   function getMessagePlanTemplateById(
     templateId?: string
   ): TemplateDto | undefined {
-    if (!templateId) return undefined;
+    if (!templateId) return;
     return templates[templateId];
   }
 
