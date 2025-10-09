@@ -10,6 +10,7 @@ import { EntityUpdateBuilder } from './common/entity-update-builder';
 type DbOnlyFields = {
   updatedBy: string;
   createdBy: string;
+  ttl?: number;
 };
 
 export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
@@ -60,6 +61,11 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     this.updateBuilder
       .setValue('updatedAt', new Date().toISOString())
       .setValue('updatedBy', userId);
+    return this;
+  }
+
+  setTtl(ttl: number) {
+    this.updateBuilder.setValue('ttl', ttl);
     return this;
   }
 

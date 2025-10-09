@@ -1093,6 +1093,55 @@
       }
     },
     "/v1/routing-configuration/{routingConfigId}": {
+      "delete": {
+        "description": "Delete a routing configuration by Id",
+        "parameters": [
+          {
+            "description": "ID of routing configuration to delete",
+            "in": "path",
+            "name": "routingConfigId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Delete a routing configuration",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
+        }
+      },
       "get": {
         "description": "Get a routing configuration by ID",
         "parameters": [
@@ -1158,17 +1207,6 @@
       },
       "put": {
         "description": "Update a routing configuration by Id",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
-              }
-            }
-          },
-          "description": "Routing configuration update to apply",
-          "required": true
-        },
         "parameters": [
           {
             "description": "ID of routing configuration to update",
@@ -1180,6 +1218,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+              }
+            }
+          },
+          "description": "Routing configuration update to apply",
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
@@ -1504,22 +1553,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TemplateSuccess"
-                }
-              }
-            },
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+          "204": {
+            "description": "No content"
           },
           "default": {
             "content": {

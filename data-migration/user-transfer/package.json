@@ -20,9 +20,9 @@
   "main": "src/handler.ts",
   "name": "user-transfer",
   "scripts": {
+    "apply": "tsx src/migrate-cli.ts",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "apply": "tsx src/migrate-cli.ts",
     "plan": "tsx src/plan-cli.ts",
     "test:unit": "jest",
     "typecheck": "tsc --noEmit"

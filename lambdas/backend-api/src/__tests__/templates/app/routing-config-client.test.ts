@@ -484,6 +484,55 @@ describe('RoutingConfigClient', () => {
     });
   });
 
+  describe('deleteRoutingConfig', () => {
+    test('returns undefined after deleting routing config', async () => {
+      const { client, mocks } = setup();
+
+      const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
+
+      const deleted: RoutingConfig = {
+        ...routingConfig,
+        status: 'DELETED',
+      };
+
+      mocks.routingConfigRepository.delete.mockResolvedValueOnce({
+        data: deleted,
+      });
+
+      const result = await client.deleteRoutingConfig(id, user);
+
+      expect(mocks.routingConfigRepository.delete).toHaveBeenCalledWith(
+        id,
+        user
+      );
+
+      expect(result).toEqual({
+        data: undefined,
+      });
+    });
+
+    test('returns error response from repository', async () => {
+      const { client, mocks } = setup();
+
+      const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
+
+      const errorResponse = {
+        error: { errorMeta: { code: 500, description: 'db err' } },
+      };
+
+      mocks.routingConfigRepository.delete.mockResolvedValueOnce(errorResponse);
+
+      const result = await client.deleteRoutingConfig(id, user);
+
+      expect(mocks.routingConfigRepository.delete).toHaveBeenCalledWith(
+        id,
+        user
+      );
+
+      expect(result).toEqual(errorResponse);
+    });
+  });
+
   describe('updateRoutingConfig', () => {
     test('returns updated routing config', async () => {
       const { client, mocks } = setup();
