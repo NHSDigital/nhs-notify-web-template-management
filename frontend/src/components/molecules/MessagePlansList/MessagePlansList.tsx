@@ -41,7 +41,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
           {plan.name}
         </Link>
       </Table.Cell>
-      <Table.Cell>{plan.id}</Table.Cell>
+      <Table.Cell data-testid='message-plan-id-cell'>{plan.id}</Table.Cell>
       <Table.Cell>
         <span data-testid='message-plans-list-lastEdited-date'>
           {format(`${plan.lastUpdated}`, 'do MMM yyyy')}

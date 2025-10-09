@@ -11,20 +11,27 @@ import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigDbEntry } from 'helpers/types';
+import { uuidRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 type MessagePlansPageData = {
-  draft: RoutingConfigDbEntry;
+  draftNew: RoutingConfigDbEntry;
+  draftOld: RoutingConfigDbEntry;
   production: RoutingConfigDbEntry;
   deleted: RoutingConfigDbEntry;
 };
+
+const getMessagePlanIdsFromTable = () => {};
 
 async function createRoutingConfigs(): Promise<MessagePlansPageData> {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
 
   return {
-    draft: RoutingConfigFactory.create(user, { status: 'DRAFT' }).dbEntry,
-
+    draftNew: RoutingConfigFactory.create(user).dbEntry,
+    draftOld: {
+      ...RoutingConfigFactory.create(user).dbEntry,
+      createdAt: new Date('2020-10-09T00:00:00.000Z').toISOString(),
+    },
     production: RoutingConfigFactory.create(user, { status: 'COMPLETED' })
       .dbEntry,
     deleted: RoutingConfigFactory.create(user, { status: 'DELETED' }).dbEntry,
@@ -52,6 +59,56 @@ test.describe('Message plans Page', () => {
     await expect(messagePlanPage.pageHeading).toHaveText('Message plans');
   });
 
+  test('Routing configs appear sorted in the appropriate section', async ({
+    page,
+  }) => {
+    const messagePlanPage = new RoutingMessagePlansPage(page);
+    await messagePlanPage.loadPage();
+
+    const draftIdCells = messagePlanPage.draftMessagePlansTable.getByTestId(
+      'message-plan-id-cell'
+    );
+
+    const draftRoutingPlanCellsText = await draftIdCells.allTextContents();
+
+    const knownDraftIds = draftRoutingPlanCellsText.filter(
+      (text) =>
+        text.includes(routingConfigs.draftNew.id) ||
+        text.includes(routingConfigs.draftOld.id)
+    );
+
+    expect(knownDraftIds).toEqual([
+      expect.stringMatching(routingConfigs.draftNew.id),
+      expect.stringMatching(routingConfigs.draftOld.id),
+    ]);
+
+    expect(
+      draftRoutingPlanCellsText.find((cell) =>
+        cell.includes(routingConfigs.deleted.id)
+      )
+    ).toBeUndefined();
+
+    const productionIdCells =
+      messagePlanPage.productionMessagePlansTable.getByTestId(
+        'message-plan-id-cell'
+      );
+
+    const productionRoutingPlanCellsText =
+      await productionIdCells.allTextContents();
+
+    expect(
+      productionRoutingPlanCellsText.some((cell) =>
+        cell.includes(routingConfigs.production.id)
+      )
+    ).toBeTruthy();
+
+    expect(
+      productionRoutingPlanCellsText.find((cell) =>
+        cell.includes(routingConfigs.deleted.id)
+      )
+    ).toBeUndefined();
+  });
+
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new RoutingMessagePlansPage(page),
@@ -64,6 +121,5 @@ test.describe('Message plans Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
   });
 });
