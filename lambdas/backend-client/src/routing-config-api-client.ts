@@ -1,13 +1,4 @@
-import type {
-  CountSuccess,
-  GetV1RoutingConfigurationByRoutingConfigIdData,
-  GetV1RoutingConfigurationsCountData,
-  GetV1RoutingConfigurationsData,
-  RoutingConfig,
-  RoutingConfigStatusActive,
-  RoutingConfigSuccess,
-  RoutingConfigSuccessList,
-} from './types/generated';
+import type { RoutingConfig, RoutingConfigSuccess } from './types/generated';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 
