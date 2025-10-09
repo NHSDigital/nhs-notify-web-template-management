@@ -18,22 +18,22 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: `${getBasePath()}/assets/images/favicon.ico`,
+        url: '/assets/favicons/favicon.ico',
         sizes: '48x48',
       },
       {
-        url: `${getBasePath()}/assets/images/favicon.svg`,
+        url: '/assets/favicons/favicon.svg',
         type: 'image/svg+xml',
         sizes: 'any',
       },
     ],
     apple: {
-      url: `${getBasePath()}/assets/images/nhsuk-icon-180.png`,
+      url: '/assets/images/apple-touch-icon-180x180.png',
     },
     other: [
       {
         rel: 'mask-icon',
-        url: `${getBasePath()}/assets/images/nhsuk-icon-mask.svg`,
+        url: '/assets/images/favicon.svg',
         color: '#005eb8',
       },
     ],
@@ -57,7 +57,6 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <link rel='manifest' href={`${getBasePath()}/assets/manifest.json`} />
         <script
           src={`${getBasePath()}/lib/nhsuk-frontend-10.0.0.min.js`}
           defer
