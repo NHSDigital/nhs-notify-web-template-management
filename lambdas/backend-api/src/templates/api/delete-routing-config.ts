@@ -1,5 +1,5 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, apiSuccess } from './responses';
+import { apiFailure, noContent } from './responses';
 import type { RoutingConfigClient } from '../app/routing-config-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
@@ -20,7 +20,7 @@ export function createHandler({
     const user = { userId, clientId };
     const log = logger.child(user);
 
-    const { data, error } = await routingConfigClient.submitRoutingConfig(
+    const { error } = await routingConfigClient.deleteRoutingConfig(
       routingConfigId,
       user
     );
@@ -28,7 +28,7 @@ export function createHandler({
     if (error) {
       log
         .child(error.errorMeta)
-        .error('Failed to submit routing config', error.actualError);
+        .error('Failed to delete routing config', error.actualError);
 
       return apiFailure(
         error.errorMeta.code,
@@ -37,6 +37,6 @@ export function createHandler({
       );
     }
 
-    return apiSuccess(200, data);
+    return noContent;
   };
 }

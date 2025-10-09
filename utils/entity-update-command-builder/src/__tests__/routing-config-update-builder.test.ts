@@ -274,6 +274,33 @@ describe('RoutingConfigUpdateBuilder', () => {
     });
   });
 
+  describe('setTtl', () => {
+    test('sets ttl', () => {
+      const builder = new RoutingConfigUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.setTtl(90_000).build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#ttl': 'ttl',
+        },
+        ExpressionAttributeValues: {
+          ':ttl': 90_000,
+        },
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'SET #ttl = :ttl',
+      });
+    });
+  });
+
   describe('expectRoutingConfigExists', () => {
     test('adds condition', () => {
       const builder = new RoutingConfigUpdateBuilder(
