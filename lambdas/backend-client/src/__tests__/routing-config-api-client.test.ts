@@ -1,12 +1,19 @@
 import axios from 'axios';
-import { RoutingConfigurationApiClient } from '../routing-config-api-client';
+import {
+  RoutingConfigurationApiClient,
+  routingConfigurationApiClient,
+} from '../routing-config-api-client';
 import MockAdapter from 'axios-mock-adapter';
 
-describe('ClientConfiguration', () => {
+describe('RoutingConfigurationApiClient', () => {
   const axiosMock = new MockAdapter(axios);
 
   beforeEach(() => {
     axiosMock.reset();
+  });
+
+  it('should export client', () => {
+    expect(routingConfigurationApiClient).not.toBeUndefined();
   });
 
   describe('count', () => {

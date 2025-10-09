@@ -8,18 +8,15 @@ import {
 } from '@molecules/MessagePlans/MessagePlans';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import MessagePlansPage, { generateMetadata } from '@app/message-plans/page';
-import { redirect } from 'next/navigation';
 import { ReactElement } from 'react';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 
-jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
 jest.mock('@utils/server-features');
 
 const countRoutingConfigsMock = jest.mocked(countRoutingConfigs);
 const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 const getRoutingConfigsMock = jest.mocked(getRoutingConfigs);
-const redirectMock = jest.mocked(redirect);
 
 const buildRoutingConfig = (rc: Partial<RoutingConfig>): RoutingConfig => ({
   campaignId: 'abc',
@@ -46,15 +43,6 @@ describe('MessagePlansPage', () => {
     expect(metadata).toEqual({
       title: 'Message plans - NHS Notify',
     });
-  });
-
-  test('redirects to invalid page when routing feature is disabled', async () => {
-    serverIsFeatureEnabledMock.mockReset();
-    serverIsFeatureEnabledMock.mockResolvedValueOnce(false);
-
-    await MessagePlansPage();
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test('renders the page with drafts and production routing plans', async () => {
@@ -87,8 +75,6 @@ describe('MessagePlansPage', () => {
     >;
 
     expect(page.props).toBeDefined();
-
-    expect(redirectMock).not.toHaveBeenCalled();
 
     expect(getRoutingConfigsMock).toHaveBeenCalledTimes(1);
 

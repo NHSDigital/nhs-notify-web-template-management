@@ -37,7 +37,7 @@ export const MessagePlans = (props: MessagePlansProps) => {
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
           <h1>{pageHeading}</h1>
-          <Details>
+          <Details id='message-plans-status-info'>
             <Details.Summary>
               {messagePlansPage.draftAndProductionInfo.heading}
             </Details.Summary>

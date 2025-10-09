@@ -18,6 +18,7 @@ exports[`MessagePlans matches snapshot 1`] = `
         </h1>
         <details
           class="nhsuk-details"
+          id="message-plans-status-info"
         >
           <summary
             class="nhsuk-details__summary"

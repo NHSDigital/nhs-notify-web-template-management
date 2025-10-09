@@ -4,8 +4,6 @@ import content from '@content/content';
 import { MessagePlans } from '@molecules/MessagePlans/MessagePlans';
 import { Metadata } from 'next';
 import { countRoutingConfigs, getRoutingConfigs } from '@utils/form-actions';
-import { redirect, RedirectType } from 'next/navigation';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -14,12 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const MessagePlansPage = async () => {
-  const routing = await serverIsFeatureEnabled('routing');
-
-  if (!routing) {
-    return redirect('/invalid-template', RedirectType.replace);
-  }
-
   const [routingConfigurations, draftCount, completedCount] = await Promise.all(
     [
       getRoutingConfigs(),
