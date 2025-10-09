@@ -1158,17 +1158,6 @@
       },
       "put": {
         "description": "Update a routing configuration by Id",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
-              }
-            }
-          },
-          "description": "Routing configuration update to apply",
-          "required": true
-        },
         "parameters": [
           {
             "description": "ID of routing configuration to update",
@@ -1180,6 +1169,17 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+              }
+            }
+          },
+          "description": "Routing configuration update to apply",
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
