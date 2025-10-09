@@ -23,15 +23,11 @@ async function createRoutingConfigs(): Promise<MessagePlansPageData> {
   const user = await authHelper.getTestUser(testUsers.User1.userId);
 
   return {
-    draft: {
-      ...RoutingConfigFactory.create(user, { status: 'DRAFT' }).dbEntry,
-    },
-    production: {
-      ...RoutingConfigFactory.create(user, { status: 'COMPLETED' }).dbEntry,
-    },
-    deleted: {
-      ...RoutingConfigFactory.create(user, { status: 'DELETED' }).dbEntry,
-    },
+    draft: RoutingConfigFactory.create(user, { status: 'DRAFT' }).dbEntry,
+
+    production: RoutingConfigFactory.create(user, { status: 'COMPLETED' })
+      .dbEntry,
+    deleted: RoutingConfigFactory.create(user, { status: 'DELETED' }).dbEntry,
   };
 }
 
