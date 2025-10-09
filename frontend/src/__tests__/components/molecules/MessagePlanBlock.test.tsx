@@ -1,0 +1,165 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
+import type { CascadeItem, Channel } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE } from '@testhelpers';
+
+function buildCascadeItem(channel: Channel): CascadeItem {
+  return {
+    cascadeGroups: [],
+    channel,
+    channelType: 'primary',
+    defaultTemplateId: '',
+  };
+}
+
+const mockTemplate: TemplateDto = {
+  ...EMAIL_TEMPLATE,
+  name: 'Test email template',
+};
+
+describe('MessagePlanBlock', () => {
+  it('should render the step number and the heading for the first cascade item', () => {
+    const channelItem = buildCascadeItem('EMAIL');
+
+    const { container } = render(
+      <MessagePlanBlock index={0} channelItem={channelItem} />
+    );
+
+    const stepNumber = container.querySelector('.message-plan-block-number');
+    expect(stepNumber).toHaveTextContent('1');
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'First message' })
+    ).toBeInTheDocument();
+  });
+
+  it('should render the step number and the interpolated heading for a third item', () => {
+    const channelItem = buildCascadeItem('NHSAPP');
+
+    const { container } = render(
+      <MessagePlanBlock index={2} channelItem={channelItem} />
+    );
+
+    const stepNumber = container.querySelector('.message-plan-block-number');
+    expect(stepNumber).toHaveTextContent('3');
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Third message' })
+    ).toBeInTheDocument();
+  });
+
+  it('should render the channel template section with the correct channel subheading', () => {
+    const channelItem = buildCascadeItem('EMAIL');
+
+    render(<MessagePlanBlock index={0} channelItem={channelItem} />);
+
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Email' })
+    ).toBeInTheDocument();
+  });
+
+  describe('when the channel has a template', () => {
+    it('should display the template name', () => {
+      const channelItem = buildCascadeItem('EMAIL');
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          template={mockTemplate}
+        />
+      );
+      expect(screen.getByText('Test email template')).toBeInTheDocument();
+    });
+
+    it('should show Change/Remove links (and no Choose link)', () => {
+      const channelItem = buildCascadeItem('EMAIL');
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          template={mockTemplate}
+        />
+      );
+
+      expect(
+        screen.getByRole('link', { name: 'Change template' })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('link', { name: 'Remove template' })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: 'Choose template' })
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('when the channel does not have a template', () => {
+    it('should show Choose link (and no Change/Remove links)', () => {
+      const channelItem = buildCascadeItem('SMS');
+
+      render(<MessagePlanBlock index={0} channelItem={channelItem} />);
+
+      expect(
+        screen.getByRole('link', { name: 'Choose template' })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: 'Change template' })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: 'Remove template' })
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('should render children inside a nested list when provided', () => {
+    const channelItem = buildCascadeItem('LETTER');
+
+    const { container } = render(
+      <MessagePlanBlock index={1} channelItem={channelItem}>
+        <li>Child one</li>
+        <li>Child two</li>
+      </MessagePlanBlock>
+    );
+
+    const nestedList = container.querySelector('li ul');
+    expect(nestedList).toBeInTheDocument();
+
+    const nestedListItems = nestedList!.querySelectorAll('li');
+    expect(nestedListItems.length).toBe(2);
+    expect(nestedListItems[0]).toHaveTextContent('Child one');
+    expect(nestedListItems[1]).toHaveTextContent('Child two');
+  });
+
+  describe.each(['NHSAPP', 'EMAIL', 'SMS', 'LETTER'] as const)(
+    'for channel %s with template',
+    (channel) => {
+      it('should match snapshot', async () => {
+        const channelItem = buildCascadeItem(channel);
+        const { asFragment } = render(
+          <MessagePlanBlock
+            index={0}
+            channelItem={channelItem}
+            template={mockTemplate}
+          />
+        );
+        expect(asFragment()).toMatchSnapshot();
+      });
+    }
+  );
+
+  describe.each(['NHSAPP', 'EMAIL', 'SMS', 'LETTER'] as const)(
+    'for channel %s with no template',
+    (channel) => {
+      it('should match snapshot', async () => {
+        const channelItem = buildCascadeItem(channel);
+        const { asFragment } = render(
+          <MessagePlanBlock index={0} channelItem={channelItem} />
+        );
+        expect(asFragment()).toMatchSnapshot();
+      });
+    }
+  );
+});
