@@ -7,8 +7,6 @@ import type {
   CascadeGroupTranslations,
   CascadeItem,
   CascadeItemBase,
-  CascadeItemWithConditional,
-  CascadeItemWithDefault,
   Channel,
   ChannelType,
   ConditionalTemplateAccessible,
