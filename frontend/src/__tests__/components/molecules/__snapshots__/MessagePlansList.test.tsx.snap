@@ -72,6 +72,7 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
             </td>
             <td
               class="nhsuk-table__cell"
+              data-testid="message-plan-id-cell"
               role="cell"
             >
               <span

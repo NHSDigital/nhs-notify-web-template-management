@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { RoutingMessagePlansPage } from '../pages/routing-message-plans-page';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
@@ -11,7 +10,6 @@ import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigDbEntry } from 'helpers/types';
-import { uuidRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 type MessagePlansPageData = {
   draftNew: RoutingConfigDbEntry;
@@ -19,8 +17,6 @@ type MessagePlansPageData = {
   production: RoutingConfigDbEntry;
   deleted: RoutingConfigDbEntry;
 };
-
-const getMessagePlanIdsFromTable = () => {};
 
 async function createRoutingConfigs(): Promise<MessagePlansPageData> {
   const authHelper = createAuthHelper();
