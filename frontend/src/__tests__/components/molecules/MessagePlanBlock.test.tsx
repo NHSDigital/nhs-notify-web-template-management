@@ -85,13 +85,13 @@ describe('MessagePlanBlock', () => {
       );
 
       expect(
-        screen.getByRole('link', { name: 'Change template' })
+        screen.getByRole('link', { name: 'Change Email template' })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole('link', { name: 'Remove template' })
+        screen.getByRole('link', { name: 'Remove Email template' })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole('link', { name: 'Choose template' })
+        screen.queryByRole('link', { name: 'Choose Email template' })
       ).not.toBeInTheDocument();
     });
   });
@@ -103,34 +103,19 @@ describe('MessagePlanBlock', () => {
       render(<MessagePlanBlock index={0} channelItem={channelItem} />);
 
       expect(
-        screen.getByRole('link', { name: 'Choose template' })
+        screen.getByRole('link', { name: 'Choose Text message (SMS) template' })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole('link', { name: 'Change template' })
+        screen.queryByRole('link', {
+          name: 'Change Text message (SMS) template',
+        })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole('link', { name: 'Remove template' })
+        screen.queryByRole('link', {
+          name: 'Remove Text message (SMS) template',
+        })
       ).not.toBeInTheDocument();
     });
-  });
-
-  it('should render children inside a nested list when provided', () => {
-    const channelItem = buildCascadeItem('LETTER');
-
-    const { container } = render(
-      <MessagePlanBlock index={1} channelItem={channelItem}>
-        <li>Child one</li>
-        <li>Child two</li>
-      </MessagePlanBlock>
-    );
-
-    const nestedList = container.querySelector('li ul');
-    expect(nestedList).toBeInTheDocument();
-
-    const nestedListItems = nestedList!.querySelectorAll('li');
-    expect(nestedListItems.length).toBe(2);
-    expect(nestedListItems[0]).toHaveTextContent('Child one');
-    expect(nestedListItems[1]).toHaveTextContent('Child two');
   });
 
   describe.each(['NHSAPP', 'EMAIL', 'SMS', 'LETTER'] as const)(

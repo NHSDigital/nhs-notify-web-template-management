@@ -17,7 +17,7 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
 
 const { pageTitle } = content.pages.chooseTemplatesForMessagePlan;
 
@@ -170,7 +170,7 @@ describe('ChooseTemplatesPage', () => {
     await ChooseTemplatesPage({
       params: Promise.resolve({ routingConfigId: 'missing-id' }),
     });
-    // TODO: Update with real URL
+
     expect(redirectMock).toHaveBeenCalledWith(
       '/message-plans/invalid',
       'replace'

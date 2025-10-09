@@ -12,12 +12,10 @@ export function MessagePlanBlock({
   index,
   channelItem,
   template,
-  children,
 }: {
   index: number;
   channelItem: CascadeItem;
   template?: TemplateDto;
-  children?: React.ReactNode;
 }) {
   return (
     <li
@@ -36,11 +34,6 @@ export function MessagePlanBlock({
         template={template}
         required={true}
       />
-
-      {/* TODO: Check hard-coded true for required? */}
-
-      {children && <ul>{children}</ul>}
-      {/* TODO: Implement letter formats */}
     </li>
   );
 }

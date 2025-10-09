@@ -131,7 +131,7 @@ describe('CreateEditMessagePlan', () => {
     const link = screen.getByTestId('change-message-plan-name-link');
     expect(link.textContent).toBe('Change name');
     expect(link.getAttribute('href')).toBe(
-      '/templates/message-plans/change-name'
+      '/message-plans/create-message-plan'
     );
   });
 
@@ -167,4 +167,6 @@ describe('CreateEditMessagePlan', () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
+
+  // TODO: CCM-11495 Add tests for validation (ErrorSummary)
 });

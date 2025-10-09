@@ -186,10 +186,16 @@ const creationAction = (type: TemplateType) =>
 
 export const templateCreationPages = (type: TemplateType) =>
   `/${creationAction(type)}-${templateTypeToUrlTextMappings(type)}-template`;
+
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+
+export const messagePlanChooseTemplateUrl = (type: TemplateType) =>
+  type === 'LETTER'
+    ? 'choose-standard-english-letter-template'
+    : `choose-${templateTypeToUrlTextMappings(type)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (

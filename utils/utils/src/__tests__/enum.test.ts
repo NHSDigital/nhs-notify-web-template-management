@@ -25,6 +25,7 @@ import {
   channelDisplayMappings,
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
+  messagePlanChooseTemplateUrl,
   ORDINALS,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
@@ -219,6 +220,17 @@ describe('templateCreationPages', () => {
     ['LETTER' as const, '/upload-letter-template'],
   ])('$templateType', (templateType: TemplateType, slug) => {
     expect(templateCreationPages(templateType)).toEqual(slug);
+  });
+});
+
+describe('messagePlanChooseTemplateUrl', () => {
+  test.each([
+    ['NHS_APP', 'choose-nhs-app-template'],
+    ['EMAIL', 'choose-email-template'],
+    ['SMS', 'choose-text-message-template'],
+    ['LETTER', 'choose-standard-english-letter-template'],
+  ] as const)('should map %s to "%s"', (type, expected) => {
+    expect(messagePlanChooseTemplateUrl(type)).toBe(expected);
   });
 });
 

@@ -28,7 +28,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
         >
           <a
             data-testid="change-message-plan-name-link"
-            href="/templates/message-plans/change-name"
+            href="/message-plans/create-message-plan"
           >
             Change name
           </a>
@@ -100,7 +100,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  href=""
+                  href="/message-plans/choose-nhs-app-template"
                 >
                   Choose
                   <span
@@ -230,7 +230,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  href=""
+                  href="/message-plans/choose-text-message-template"
                 >
                   Choose
                   <span
@@ -360,7 +360,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  href=""
+                  href="/message-plans/choose-email-template"
                 >
                   Choose
                   <span
@@ -490,7 +490,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  href=""
+                  href="/message-plans/choose-standard-english-letter-template"
                 >
                   Choose
                   <span
@@ -590,20 +590,24 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           class="nhsuk-form-group"
           data-testid="message-plan-actions"
         >
-          <button
+          <a
             aria-disabled="false"
             class="nhsuk-button"
-            type="submit"
+            draggable="false"
+            href="/message-plans/move-to-production"
+            role="button"
           >
             Move to production
-          </button>
-          <button
+          </a>
+          <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
-            type="submit"
+            draggable="false"
+            href="/message-plans"
+            role="button"
           >
             Save and close
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -639,7 +643,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
         >
           <a
             data-testid="change-message-plan-name-link"
-            href="/templates/message-plans/change-name"
+            href="/message-plans/create-message-plan"
           >
             Change name
           </a>
@@ -714,7 +718,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
-                    href=""
+                    href="/message-plans/choose-nhs-app-template"
                   >
                     Change
                     <span
@@ -728,7 +732,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
-                    href=""
+                    href="todo"
                   >
                     Remove
                     <span
@@ -862,7 +866,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
-                    href=""
+                    href="/message-plans/choose-email-template"
                   >
                     Change
                     <span
@@ -876,7 +880,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
-                    href=""
+                    href="todo"
                   >
                     Remove
                     <span
@@ -1010,7 +1014,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
-                    href=""
+                    href="/message-plans/choose-standard-english-letter-template"
                   >
                     Change
                     <span
@@ -1024,7 +1028,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
-                    href=""
+                    href="todo"
                   >
                     Remove
                     <span
@@ -1125,20 +1129,24 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           class="nhsuk-form-group"
           data-testid="message-plan-actions"
         >
-          <button
+          <a
             aria-disabled="false"
             class="nhsuk-button"
-            type="submit"
+            draggable="false"
+            href="/message-plans/move-to-production"
+            role="button"
           >
             Move to production
-          </button>
-          <button
+          </a>
+          <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
-            type="submit"
+            draggable="false"
+            href="/message-plans"
+            role="button"
           >
             Save and close
-          </button>
+          </a>
         </div>
       </div>
     </div>

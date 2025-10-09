@@ -30,19 +30,20 @@ describe('MessagePlanChannelTemplate', () => {
 
     it('should show the "Choose template" link with accessible name and href', () => {
       const link = screen.getByRole('link', {
-        name: /choose\s*nhs app\s*template/i,
+        name: 'Choose NHS App template',
       });
-
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', ''); // TODO: CHANGE
+      expect(link).toHaveAttribute(
+        'href',
+        '/message-plans/choose-nhs-app-template'
+      );
     });
 
     it('should not display the "Change template" or "Remove template" links', () => {
       expect(
-        screen.queryByRole('link', { name: /change\s*nhs app\s*template/i })
+        screen.queryByRole('link', { name: 'Change NHS App template' })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole('link', { name: /remove\s*nhs app\s*template/i })
+        screen.queryByRole('link', { name: 'Remove NHS App template' })
       ).not.toBeInTheDocument();
     });
   });
@@ -65,26 +66,26 @@ describe('MessagePlanChannelTemplate', () => {
 
     it('should display the "Change template" link with accessible name and href', () => {
       const link = screen.getByRole('link', {
-        name: /change\s*text message \(sms\)\s*template/i,
+        name: 'Change Text message (SMS) template',
       });
-
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', ''); // TODO: CHANGE
+      expect(link).toHaveAttribute(
+        'href',
+        '/message-plans/choose-text-message-template'
+      );
     });
 
     it('should display the "Remove template" link with accessible name and href', () => {
       const link = screen.getByRole('link', {
-        name: /remove\s*text message \(sms\)\s*template/i,
+        name: 'Remove Text message (SMS) template',
       });
 
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', ''); // TODO: CHANGE
+      expect(link).toHaveAttribute('href', 'todo'); // TODO: CHANGE
     });
 
     it('should not display the "Choose template" link', () => {
       expect(
         screen.queryByRole('link', {
-          name: /choose\s*text message \(sms\)\s*template/i,
+          name: 'Choose Text message (SMS) template',
         })
       ).not.toBeInTheDocument();
     });

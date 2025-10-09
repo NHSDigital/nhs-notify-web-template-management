@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import { Channel, TemplateDto } from 'nhs-notify-backend-client';
-import { channelDisplayMappings } from 'nhs-notify-web-template-management-utils';
+import {
+  channelDisplayMappings,
+  channelToTemplateType,
+  messagePlanChooseTemplateUrl,
+} from 'nhs-notify-web-template-management-utils';
+
 import classNames from 'classnames';
 
 import styles from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate.module.scss';
@@ -28,7 +33,7 @@ export function MessagePlanChannelTemplate({
         {!template && (
           <Link
             className='nhsuk-link nhsuk-link--no-visited-state'
-            href={content.templateLinks.choose.href}
+            href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
           >
             {content.templateLinks.choose.text}
             <span className='nhsuk-u-visually-hidden'>
@@ -45,7 +50,7 @@ export function MessagePlanChannelTemplate({
               <br />
               <Link
                 className='nhsuk-link nhsuk-link--no-visited-state'
-                href={content.templateLinks.change.href}
+                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
               >
                 {content.templateLinks.change.text}
                 <span className='nhsuk-u-visually-hidden'>

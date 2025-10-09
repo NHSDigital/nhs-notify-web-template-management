@@ -10,7 +10,7 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanTemplates } from '@app/message-plans/choose-templates/[routingConfigId]/page';
+import { MessagePlanTemplates } from '@utils/message-plans';
 
 import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
 
@@ -28,6 +28,7 @@ export function CreateEditMessagePlan({
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-three-quarters'>
+          {/* TODO: CCM-11495 Add ErrorSummary component */}
           <span className='nhsuk-caption-l'>{content.headerCaption}</span>
           <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
           <p className='nhsuk-body-s'>
@@ -66,11 +67,15 @@ export function CreateEditMessagePlan({
           />
 
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
-            {/* TODO: Buttons need to navigate */}
-            <NHSNotifyButton>{content.ctas.primary.text}</NHSNotifyButton>
-            <NHSNotifyButton secondary className='nhsuk-u-margin-left-3'>
-              {content.ctas.secondary.text}
-            </NHSNotifyButton>
+            {/* TODO: CCM-11495 Add validation */}
+            <Link href={content.ctas.primary.href} passHref legacyBehavior>
+              <NHSNotifyButton>{content.ctas.primary.text}</NHSNotifyButton>
+            </Link>
+            <Link href={content.ctas.secondary.href} passHref legacyBehavior>
+              <NHSNotifyButton secondary className='nhsuk-u-margin-left-3'>
+                {content.ctas.secondary.text}
+              </NHSNotifyButton>
+            </Link>
           </div>
         </div>
       </div>

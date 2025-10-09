@@ -21,7 +21,6 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
   const messagePlan = await getMessagePlan(routingConfigId);
 
   if (!messagePlan) {
-    // TODO: Error handling here
     return redirect('/message-plans/invalid', RedirectType.replace);
   }
 

@@ -1037,9 +1037,9 @@ export type FallbackConditionBlock = {
 
 const messagePlanChannelTemplate = {
   templateLinks: {
-    choose: { text: 'Choose', href: '' }, // TODO: Update hrefs
-    change: { text: 'Change', href: '' },
-    remove: { text: 'Remove', href: '' },
+    choose: { text: 'Choose' },
+    change: { text: 'Change' },
+    remove: { text: 'Remove', href: 'todo' }, // TODO: Update href
     template: 'template',
   },
   optional: '(optional)',
@@ -1100,7 +1100,7 @@ const messagePlanBlock = {
 const createEditMessagePlan = {
   headerCaption: 'Message plan',
   changeNameLink: {
-    href: '/templates/message-plans/change-name', // TODO: Check this
+    href: '/message-plans/create-message-plan', // TODO: Check if this is correct
     text: 'Change name',
   },
   rowHeadings: {
@@ -1109,11 +1109,11 @@ const createEditMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '',
+      href: '/message-plans/move-to-production',
       text: 'Move to production',
     },
     secondary: {
-      href: '',
+      href: '/message-plans',
       text: 'Save and close',
     },
   },
