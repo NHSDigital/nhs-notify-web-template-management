@@ -13,6 +13,11 @@ describe('ContentRenderer', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it('renders a plain string as MarkdownContent in inline mode', () => {
+    render(<ContentRenderer content='Just a string block' />);
+    expect(screen.getByText('Just a string block')).toBeInTheDocument();
+  });
+
   it('throws an error for an unsupported block type', () => {
     const invalidContent = [
       { type: 'test', value: 'invalid' },

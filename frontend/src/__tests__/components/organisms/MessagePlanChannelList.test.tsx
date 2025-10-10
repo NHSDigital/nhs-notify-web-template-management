@@ -6,7 +6,7 @@ import type {
   Channel,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { MessagePlanTemplates } from '@app/message-plans/choose-templates/[routingConfigId]/page';
+import { MessagePlanTemplates } from '@utils/message-plans';
 
 function buildRoutingConfig(channels: Channel[]): RoutingConfig {
   const now = new Date().toISOString();
@@ -89,6 +89,21 @@ describe('MessagePlanChannelList', () => {
     );
 
     expect(container.querySelector('ul.channel-list')!.children.length).toBe(0);
+  });
+
+  it('should handle cascade item without a template', () => {
+    const messagePlan = buildRoutingConfig(['NHSAPP']);
+    messagePlan.cascade[0].defaultTemplateId = undefined;
+
+    expect(() => {
+      render(
+        <MessagePlanChannelList
+          messagePlan={messagePlan}
+          templates={testTemplates}
+        />
+      );
+    }).not.toThrow();
+    expect(screen.getByTestId('message-plan-block-NHSAPP')).toBeInTheDocument();
   });
 
   it('should match snapshot for a digital routing plan', () => {

@@ -28,7 +28,7 @@ interface ContentRendererProps {
 
 export function ContentRenderer({ content, variables }: ContentRendererProps) {
   const items: ContentItem[] =
-    typeof content === 'string' ? [content] : (content ?? []);
+    typeof content === 'string' ? [content] : content;
   if (items.length === 0) return null;
 
   return (
