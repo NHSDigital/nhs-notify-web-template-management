@@ -736,23 +736,66 @@ describe('form-actions', () => {
         updatedAt: '2021-01-01T00:00:00.000Z',
         campaignId: 'campaignId',
         clientId: 'clientId',
-        cascade: [],
-        cascadeGroupOverrides: [],
-      } satisfies Partial<RoutingConfig>;
+        cascade: [
+          {
+            channel: 'EMAIL',
+            channelType: 'primary',
+            defaultTemplateId: 'id',
+            cascadeGroups: ['standard'],
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      } satisfies Omit<RoutingConfig, 'id' | 'createdAt'>;
 
       const routingConfigs = [
-        { ...fields, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
-        { ...fields, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
-        { ...fields, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
-        { ...fields, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-        { ...fields, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-        { ...fields, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
-        { ...fields, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+        {
+          ...fields,
+          id: 'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',
+          createdAt: '2022-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '8f5157fe-72d7-4a9c-818f-77c128ec8197',
+          createdAt: '2020-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '9be9d25f-81d8-422a-a85c-2fa9019cde1e',
+          createdAt: '2021-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '1cfdd62d-9eca-4f15-9772-1937d4524c37',
+          createdAt: '2021-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '18da6158-07ef-455c-9c31-1a4d78a133cf',
+          createdAt: '2021-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '87fb5cbf-708d-49c3-9360-3e37efdc5278',
+          createdAt: '2021-01-01T00:00:00.000Z',
+        },
+        {
+          ...fields,
+          id: '0d6408fd-57ea-42f2-aae1-ed9614b67068',
+          createdAt: '2021-01-01T00:00:00.000Z',
+        },
       ];
 
-      // 06 is the newest, 08 is the oldest.
-      // 01 - 05 all have the same createdAt.
-      const expectedOrder = ['06', '01', '02', '03', '04', '05', '08'];
+      // a487ed49-e2f7-4871-ac8d-0c6c682c71f5 is the newest, 8f5157fe-72d7-4a9c-818f-77c128ec8197 is the oldest.
+      // the others all have the same createdAt.
+      const expectedOrder = [
+        'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',
+        '0d6408fd-57ea-42f2-aae1-ed9614b67068',
+        '18da6158-07ef-455c-9c31-1a4d78a133cf',
+        '1cfdd62d-9eca-4f15-9772-1937d4524c37',
+        '87fb5cbf-708d-49c3-9360-3e37efdc5278',
+        '9be9d25f-81d8-422a-a85c-2fa9019cde1e',
+        '8f5157fe-72d7-4a9c-818f-77c128ec8197',
+      ];
 
       routingConfigurationApiClientMock.list.mockResolvedValueOnce({
         data: routingConfigs,
@@ -766,6 +809,28 @@ describe('form-actions', () => {
       }
 
       expect(actualOrder).toEqual(expectedOrder);
+    });
+
+    test('invalid routing configs are not listed', async () => {
+      routingConfigurationApiClientMock.list.mockResolvedValueOnce({
+        data: [
+          {
+            status: 'DRAFT',
+            name: 'Routing config',
+            updatedAt: '2021-01-01T00:00:00.000Z',
+            campaignId: 'campaignId',
+            clientId: 'clientId',
+            cascade: [],
+            cascadeGroupOverrides: [{ name: 'standard' }],
+            id: 'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',
+            createdAt: '2022-01-01T00:00:00.000Z',
+          },
+        ],
+      });
+
+      const response = await getRoutingConfigs();
+
+      expect(response).toEqual([]);
     });
   });
 

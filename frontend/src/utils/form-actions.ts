@@ -2,6 +2,7 @@
 
 import { getSessionServer } from '@utils/amplify-utils';
 import {
+  $RoutingConfig,
   CreateUpdateTemplate,
   isTemplateDtoValid,
   RoutingConfig,
@@ -29,7 +30,7 @@ export async function createTemplate(
   );
 
   if (error) {
-    logger.error('Failed to create template', { error });
+    logger.error('Failed to create template', error);
     throw new Error('Failed to create new template');
   }
 
@@ -55,7 +56,7 @@ export async function uploadLetterTemplate(
   );
 
   if (error) {
-    logger.error('Failed to create letter template', { error });
+    logger.error('Failed to create letter template', error);
     throw new Error('Failed to create new letter template');
   }
 
@@ -79,7 +80,7 @@ export async function saveTemplate(
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 
@@ -101,7 +102,7 @@ export async function setTemplateToSubmitted(
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 
@@ -121,7 +122,7 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 }
@@ -141,7 +142,7 @@ export async function requestTemplateProof(
   );
 
   if (error) {
-    logger.error('Failed to request proof', { error });
+    logger.error('Failed to request proof', error);
     throw new Error('Failed to request proof');
   }
 
@@ -163,7 +164,7 @@ export async function getTemplate(
   );
 
   if (error) {
-    logger.error('Failed to get template', { error });
+    logger.error('Failed to get template', error);
   }
 
   return data;
@@ -202,13 +203,21 @@ export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { data, error } = await routingConfigurationApiClient.list(accessToken);
 
   if (error) {
-    logger.error('Failed to get routing configuration', {
-      error: error,
-    });
+    logger.error('Failed to get routing configuration', error);
     return [];
   }
 
-  return sortAscByCreatedAt(data);
+  const valid = data.filter((d) => {
+    const { error: validationError, success } = $RoutingConfig.safeParse(d);
+
+    if (!success) {
+      logger.error('Listed invalid routing configuration', validationError);
+    }
+
+    return success;
+  });
+
+  return sortAscByCreatedAt(valid);
 }
 
 export async function countRoutingConfigs(
