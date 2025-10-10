@@ -8,7 +8,6 @@ module.exports = {
   ...require('./email-template-submitted.actions'),
   ...require('./letter-template-submitted.actions'),
   ...require('./message-templates.actions'),
-  ...require('./message-plans.actions'),
   ...require('./nhs-app-template-submitted.actions'),
   ...require('./preview-email-template.actions'),
   ...require('./preview-letter-template.actions'),

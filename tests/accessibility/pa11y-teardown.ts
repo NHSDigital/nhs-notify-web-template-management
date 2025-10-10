@@ -5,7 +5,7 @@ import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
 
-const { email, templateIds, clientId, routingConfigIds } = JSON.parse(
+const { email, templateIds, clientId } = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
@@ -18,8 +18,8 @@ const teardown = async () => {
     path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
   );
 
-  await Promise.all([
-    ...Object.values(templateIds).map((id) =>
+  await Promise.all(
+    Object.values(templateIds).map((id) =>
       ddbDocClient.send(
         new DeleteCommand({
           TableName: backendConfig.templatesTableName,
@@ -29,19 +29,8 @@ const teardown = async () => {
           },
         })
       )
-    ),
-    ...(routingConfigIds as string[]).map((id) =>
-      ddbDocClient.send(
-        new DeleteCommand({
-          TableName: backendConfig.routingConfigTableName,
-          Key: {
-            owner: `CLIENT#${clientId}`,
-            id,
-          },
-        })
-      )
-    ),
-  ]);
+    )
+  );
 
   await new TestUserClient(
     backendConfig.userPoolId,
