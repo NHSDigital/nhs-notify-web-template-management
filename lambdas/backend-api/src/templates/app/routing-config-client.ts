@@ -77,6 +77,20 @@ export class RoutingConfigClient {
     return this.routingConfigRepository.submit(routingConfigId, user);
   }
 
+  async deleteRoutingConfig(
+    routingConfigId: string,
+    user: User
+  ): Promise<Result<undefined>> {
+    const result = await this.routingConfigRepository.delete(
+      routingConfigId,
+      user
+    );
+
+    if (result.error) return result;
+
+    return { data: undefined };
+  }
+
   async getRoutingConfig(
     id: string,
     user: User
