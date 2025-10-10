@@ -16,6 +16,12 @@ export abstract class TemplateMgmtBasePageNonDynamic extends TemplateMgmtBasePag
       throw new Error('pageUrlSegment is not defined');
     }
 
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
+    let url = `/${appUrlSegment}/${pageUrlSegment}`;
+
+    if (this.queryParameters) {
+      url += `?${this.queryParameters.toString()}`;
+    }
+
+    await this.navigateTo(url);
   }
 }

@@ -9,7 +9,11 @@ import EditNhsAppTemplatePage, {
   generateMetadata,
 } from '@app/edit-nhs-app-template/[templateId]/page';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  SMS_TEMPLATE,
+} from '@testhelpers/helpers';
 import content from '@content/content';
 
 const { editPageTitle } = content.components.templateFormNhsApp;

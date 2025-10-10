@@ -2,9 +2,8 @@ import { render, screen, within } from '@testing-library/react';
 import { useAuthStatus } from '@hooks/use-auth-status';
 import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
-import { useFeatureFlags } from '@providers/features-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@hooks/use-auth-status');
 const mockUseAuthStatus = jest.mocked(useAuthStatus);
@@ -15,10 +14,7 @@ const mockGetIdTokenClaims = jest.mocked(getIdTokenClaims);
 jest.mock('@utils/amplify-utils');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 
-jest.mock('@utils/server-features');
-const mockServerIsFeatureEnabled = jest.mocked(serverIsFeatureEnabled);
-
-jest.mock('@providers/features-provider');
+jest.mock('@providers/client-config-provider');
 const mockUseFeatureFlags = jest.mocked(useFeatureFlags);
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
@@ -26,7 +22,6 @@ jest.mock('nhs-notify-web-template-management-utils/logger');
 beforeEach(() => {
   jest.resetAllMocks();
   mockUseAuthStatus.mockImplementation((status) => status ?? 'configuring');
-  mockServerIsFeatureEnabled.mockResolvedValue(false); // default for most tests
   mockUseFeatureFlags.mockReturnValue({
     proofing: false,
     routing: false,

@@ -14,25 +14,21 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers';
+} from '@testhelpers/helpers';
 import content from '@content/content';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const { pageTitle } = content.components.previewSMSTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/PreviewSMSTemplate');
-jest.mock('@utils/server-features');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
-const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('PreviewSMSTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    serverIsFeatureEnabledMock.mockResolvedValueOnce(true);
   });
 
   it('should load page', async () => {
@@ -63,9 +59,7 @@ describe('PreviewSMSTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <PreviewSMSTemplate initialState={smsTemplate} routingEnabled={true} />
-    );
+    expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

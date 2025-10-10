@@ -1,5 +1,5 @@
 import { chooseMessageOrderAction } from '@forms/ChooseMessageOrder/server-action';
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '@testhelpers/helpers';
 import { redirect, RedirectType } from 'next/navigation';
 
 jest.mock('next/navigation');

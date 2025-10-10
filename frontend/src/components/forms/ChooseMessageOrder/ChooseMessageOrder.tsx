@@ -4,14 +4,13 @@ import { useActionState, useState } from 'react';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
-import { ErrorState } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import {
-  $ChooseMessageOrder,
-  chooseMessageOrderAction,
-  MessageOrder,
+  ErrorState,
   MESSAGE_ORDER_OPTIONS_LIST,
-} from './server-action';
+  MessageOrder,
+} from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { $ChooseMessageOrder, chooseMessageOrderAction } from './server-action';
 import { validate } from '@utils/client-validate-form';
 
 export const messageOrderDisplayMappings: Record<MessageOrder, string> = {

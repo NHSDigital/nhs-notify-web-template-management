@@ -19,7 +19,6 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
 export function PreviewSMSTemplate({
   initialState,
-  routingEnabled,
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
@@ -71,7 +70,6 @@ export function PreviewSMSTemplate({
                 />
               }
               editPath={`/edit-text-message-template/${initialState.id}`}
-              routingEnabled={!!routingEnabled}
             />
             <p>
               <Link

@@ -4,12 +4,12 @@ import '@styles/app.scss';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
 import { AuthProvider } from '@providers/auth-provider';
+import { ClientConfigProviderServer } from '@providers/client-config-provider-server';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
-import FeatureFlagProviderServer from '@providers/features-provider-server';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ export default function RootLayout({
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
           <AuthProvider>
-            <FeatureFlagProviderServer>
+            <ClientConfigProviderServer>
               <NHSNotifySkipLink />
               <NhsNotifyHeader />
               <NHSNotifyContainer>{children}</NHSNotifyContainer>
@@ -76,7 +76,7 @@ export default function RootLayout({
                 logoutInSeconds={config.logoutInSeconds}
                 promptBeforeLogoutSeconds={config.promptTimeSeconds}
               />
-            </FeatureFlagProviderServer>
+            </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
       </body>

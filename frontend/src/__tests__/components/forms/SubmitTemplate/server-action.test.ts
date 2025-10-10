@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
-import { getMockFormData } from '@testhelpers';
+import { getMockFormData } from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
