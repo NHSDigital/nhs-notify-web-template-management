@@ -39,11 +39,15 @@ const routingConfigApiMock = jest.mocked(routingConfigurationApiClient);
 const loggerMock = jest.mocked(logger);
 const getTemplateMock = jest.mocked(getTemplate);
 
+const validRoutingConfigId = 'a3f1c2e4-5b6d-4e8f-9a2b-1c3d4e5f6a7b';
+const notFoundRoutingConfigId = 'b1a2c3d4-e5f6-4890-ab12-cd34ef56ab78';
+const invalidRoutingConfigId = 'not-a-uuid';
+
 const baseConfig: RoutingConfig = {
-  id: 'routing-config-12',
+  id: validRoutingConfigId,
   name: 'Test message plan',
   status: 'DRAFT' as RoutingConfigStatus,
-  clientId: 'clientemplate-1',
+  clientId: 'client-1',
   campaignId: 'campaign-1',
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
@@ -56,7 +60,7 @@ describe('@utils/message-plans', () => {
     jest.resetAllMocks();
     getSessionServerMock.mockResolvedValue({
       accessToken: 'mock-token',
-      clientId: 'clientemplate-1',
+      clientId: 'client-1',
     });
   });
 
@@ -67,7 +71,7 @@ describe('@utils/message-plans', () => {
         clientId: undefined,
       });
 
-      await expect(getMessagePlan('routing-config-12')).rejects.toThrow(
+      await expect(getMessagePlan(validRoutingConfigId)).rejects.toThrow(
         'Failed to get access token'
       );
 
@@ -77,11 +81,11 @@ describe('@utils/message-plans', () => {
     it('should return the routing config on success', async () => {
       routingConfigApiMock.get.mockResolvedValueOnce({ data: baseConfig });
 
-      const response = await getMessagePlan('routing-config-12');
+      const response = await getMessagePlan(validRoutingConfigId);
 
       expect(routingConfigApiMock.get).toHaveBeenCalledWith(
         'mock-token',
-        'routing-config-12'
+        validRoutingConfigId
       );
       expect(response).toEqual(baseConfig);
     });
@@ -93,11 +97,11 @@ describe('@utils/message-plans', () => {
         },
       });
 
-      const response = await getMessagePlan('routing-config-6');
+      const response = await getMessagePlan(notFoundRoutingConfigId);
 
       expect(routingConfigApiMock.get).toHaveBeenCalledWith(
         'mock-token',
-        'routing-config-6'
+        notFoundRoutingConfigId
       );
       expect(response).toBeUndefined();
       expect(loggerMock.error).toHaveBeenCalledWith(
@@ -107,6 +111,12 @@ describe('@utils/message-plans', () => {
             errorMeta: expect.objectContaining({ code: 404 }),
           }),
         })
+      );
+    });
+
+    it('should throw error for invalid routing config ID', async () => {
+      await expect(getMessagePlan(invalidRoutingConfigId)).rejects.toThrow(
+        'Invalid routing configuration ID'
       );
     });
   });
@@ -119,7 +129,7 @@ describe('@utils/message-plans', () => {
       });
 
       await expect(
-        updateMessagePlan('routing-config-12', baseConfig)
+        updateMessagePlan(validRoutingConfigId, baseConfig)
       ).rejects.toThrow('Failed to get access token');
 
       expect(routingConfigApiMock.update).not.toHaveBeenCalled();
@@ -134,11 +144,11 @@ describe('@utils/message-plans', () => {
 
       routingConfigApiMock.update.mockResolvedValueOnce({ data: updated });
 
-      const response = await updateMessagePlan('routing-config-12', updated);
+      const response = await updateMessagePlan(validRoutingConfigId, updated);
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
-        'routing-config-12',
+        validRoutingConfigId,
         updated
       );
       expect(response).toEqual(updated);
@@ -152,11 +162,14 @@ describe('@utils/message-plans', () => {
         },
       });
 
-      const response = await updateMessagePlan('routing-config-12', baseConfig);
+      const response = await updateMessagePlan(
+        validRoutingConfigId,
+        baseConfig
+      );
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
-        'routing-config-12',
+        validRoutingConfigId,
         baseConfig
       );
       expect(response).toBeUndefined();
@@ -168,6 +181,12 @@ describe('@utils/message-plans', () => {
           }),
         })
       );
+    });
+
+    it('should throw error for invalid routing config ID', async () => {
+      await expect(
+        updateMessagePlan(invalidRoutingConfigId, baseConfig)
+      ).rejects.toThrow('Invalid routing configuration ID');
     });
   });
 
