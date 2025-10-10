@@ -58,7 +58,7 @@ export async function processFormActions(
   let savedId: string;
 
   if ('id' in template) {
-    const { success, data: templateId } = z.uuid().safeParse(template.id);
+    const { success, data: templateId } = z.uuidv4().safeParse(template.id);
 
     if (!success) {
       return redirect('/invalid-template', RedirectType.replace);

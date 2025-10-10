@@ -15,7 +15,7 @@ export async function submitTemplate(
   formData: FormData
 ) {
   const { success, data: templateId } = z
-    .uuid()
+    .uuidv4()
     .safeParse(formData.get('templateId'));
 
   if (!success) {
