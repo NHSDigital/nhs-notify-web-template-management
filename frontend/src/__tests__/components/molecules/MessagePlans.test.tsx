@@ -74,7 +74,7 @@ describe('MessagePlans', () => {
       {
         count: draft.count,
         plans: draft.plans,
-        statusGroup: 'Draft',
+        status: 'DRAFT',
       },
       undefined
     );
@@ -84,7 +84,7 @@ describe('MessagePlans', () => {
       {
         count: production.count,
         plans: production.plans,
-        statusGroup: 'Production',
+        status: 'COMPLETED',
       },
       undefined
     );

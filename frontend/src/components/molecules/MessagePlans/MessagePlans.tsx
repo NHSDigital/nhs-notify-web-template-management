@@ -59,12 +59,12 @@ export const MessagePlans = (props: MessagePlansProps) => {
             <Button id='create-message-plan-button'>{button.text}</Button>
           </Link>
           <MessagePlansList
-            statusGroup='Draft'
+            status='DRAFT'
             plans={props.draft.plans}
             count={props.draft.count}
           />
           <MessagePlansList
-            statusGroup='Production'
+            status='COMPLETED'
             plans={props.production.plans}
             count={props.production.count}
           />

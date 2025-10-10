@@ -16,7 +16,7 @@ describe('MessagePlansList', () => {
 
     const container = render(
       <MessagePlansList
-        statusGroup='Draft'
+        status='DRAFT'
         count={draft.count}
         plans={draft.plans}
       />
@@ -27,7 +27,7 @@ describe('MessagePlansList', () => {
 
   it('matches snapshot when no data is available', async () => {
     const container = render(
-      <MessagePlansList statusGroup='Draft' count={0} plans={[]} />
+      <MessagePlansList status='DRAFT' count={0} plans={[]} />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -47,7 +47,7 @@ describe('MessagePlansList', () => {
 
     render(
       <MessagePlansList
-        statusGroup='Draft'
+        status='DRAFT'
         count={draft.count}
         plans={draft.plans}
       />

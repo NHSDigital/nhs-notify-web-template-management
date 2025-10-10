@@ -6,6 +6,8 @@ import { Details, Table } from 'nhsuk-react-components';
 import { format } from 'date-fns/format';
 import Link from 'next/link';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
+import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import { messagePlanStatusToDisplayText } from 'nhs-notify-web-template-management-utils';
 
 export type MessagePlanListItem = {
   name: string;
@@ -14,7 +16,7 @@ export type MessagePlanListItem = {
 };
 
 type MessagePlansListProps = {
-  statusGroup: 'Draft' | 'Production';
+  status: Exclude<RoutingConfigStatus, 'DELETED'>;
   count: number;
   plans: MessagePlanListItem[];
 };
@@ -24,7 +26,9 @@ const {
 } = content;
 
 export const MessagePlansList = (props: MessagePlansListProps) => {
-  const { statusGroup, count } = props;
+  const { status, count } = props;
+  const statusDisplayMapping = messagePlanStatusToDisplayText(status);
+  const statusDisplayLower = statusDisplayMapping.toLowerCase();
 
   const header = (
     <Table.Row>
@@ -55,11 +59,11 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   ));
 
   return (
-    <Details expander id={`message-plans-list-${statusGroup.toLowerCase()}`}>
+    <Details expander id={`message-plans-list-${statusDisplayLower}`}>
       <Details.Summary
         className={classNames('nhsuk-heading-s', 'nhsuk-u-margin-bottom-0')}
       >
-        {statusGroup} ({count})
+        {statusDisplayMapping} ({count})
       </Details.Summary>
       <Details.Text>
         {rows.length > 0 ? (
@@ -70,7 +74,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
         ) : (
           <MarkdownContent
             content={messagePlanComponent.noMessagePlansMessage}
-            variables={{ status: statusGroup.toLowerCase() }}
+            variables={{ status: statusDisplayLower }}
           />
         )}
       </Details.Text>
