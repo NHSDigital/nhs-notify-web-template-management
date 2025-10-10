@@ -5,26 +5,18 @@ import {
   TemplateDto,
 } from './types/generated';
 import { Result } from './types/result';
-import {
-  AxiosRetryClient,
-  catchAxiosError,
-  createAxiosClient,
-} from './axios-client';
+import { catchAxiosError, createAxiosClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
 
-export class TemplateApiClient {
-  private readonly _client: AxiosRetryClient;
+const httpClient = createAxiosClient();
 
-  constructor() {
-    this._client = createAxiosClient();
-  }
-
+export const templateApiClient = {
   async createTemplate(
     template: CreateUpdateTemplate,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<TemplateSuccess>('/v1/template', template, {
+      httpClient.post<TemplateSuccess>('/v1/template', template, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
@@ -41,7 +33,7 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async uploadLetterTemplate(
     template: CreateUpdateTemplate,
@@ -56,7 +48,7 @@ export class TemplateApiClient {
     if (csv) formData.append(LETTER_MULTIPART.CSV.name, csv);
 
     const response = await catchAxiosError(
-      this._client.post<TemplateSuccess>('/v1/letter-template', formData, {
+      httpClient.post<TemplateSuccess>('/v1/letter-template', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: token,
@@ -72,7 +64,7 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async updateTemplate(
     templateId: string,
@@ -80,7 +72,7 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.put<TemplateSuccess>(
+      httpClient.put<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         template,
         {
@@ -98,14 +90,14 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async getTemplate(
     templateId: string,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.get<TemplateSuccess>(
+      httpClient.get<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         {
           headers: { Authorization: token },
@@ -122,11 +114,11 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async listTemplates(token: string): Promise<Result<TemplateDto[]>> {
     const response = await catchAxiosError(
-      this._client.get<TemplateSuccessList>('/v1/templates', {
+      httpClient.get<TemplateSuccessList>('/v1/templates', {
         headers: { Authorization: token },
       })
     );
@@ -140,14 +132,14 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async submitTemplate(
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.patch<TemplateSuccess>(
+      httpClient.patch<TemplateSuccess>(
         `/v1/template/${templateId}/submit`,
         undefined,
         {
@@ -168,14 +160,14 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
+  },
 
   async deleteTemplate(
     templateId: string,
     owner: string
   ): Promise<Result<void>> {
     const response = await catchAxiosError(
-      this._client.delete<TemplateSuccess>(
+      httpClient.delete<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         {
           headers: {
@@ -195,14 +187,14 @@ export class TemplateApiClient {
     return {
       data: undefined,
     };
-  }
+  },
 
   async requestProof(
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<TemplateSuccess>(
+      httpClient.post<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}/proof`,
         undefined,
         {
@@ -223,7 +215,5 @@ export class TemplateApiClient {
     return {
       data: response.data.data,
     };
-  }
-}
-
-export const templateApiClient = new TemplateApiClient();
+  },
+};

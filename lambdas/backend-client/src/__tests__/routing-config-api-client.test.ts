@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-  RoutingConfigurationApiClient,
-  routingConfigurationApiClient,
-} from '../routing-config-api-client';
+import { routingConfigurationApiClient as client } from '../routing-config-api-client';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('RoutingConfigurationApiClient', () => {
@@ -10,10 +7,6 @@ describe('RoutingConfigurationApiClient', () => {
 
   beforeEach(() => {
     axiosMock.reset();
-  });
-
-  it('should export client', () => {
-    expect(routingConfigurationApiClient).not.toBeUndefined();
   });
 
   describe('count', () => {
@@ -29,8 +22,6 @@ describe('RoutingConfigurationApiClient', () => {
             message: 'Broken',
           },
         });
-
-      const client = new RoutingConfigurationApiClient();
 
       const response = await client.count('token', 'DRAFT');
 
@@ -56,8 +47,6 @@ describe('RoutingConfigurationApiClient', () => {
         })
         .reply(200, { data: { count: 10 } });
 
-      const client = new RoutingConfigurationApiClient();
-
       const response = await client.count('token', 'COMPLETED');
 
       expect(response.data).toEqual({ count: 10 });
@@ -77,8 +66,6 @@ describe('RoutingConfigurationApiClient', () => {
           message: 'Broken',
         },
       });
-
-      const client = new RoutingConfigurationApiClient();
 
       const response = await client.list('token');
 
@@ -113,8 +100,6 @@ describe('RoutingConfigurationApiClient', () => {
       axiosMock.onGet('/v1/routing-configurations').reply(200, {
         data: [data],
       });
-
-      const client = new RoutingConfigurationApiClient();
 
       const response = await client.list('token');
 

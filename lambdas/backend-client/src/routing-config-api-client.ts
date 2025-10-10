@@ -9,9 +9,9 @@ import type {
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 
-export class RoutingConfigurationApiClient {
-  private readonly httpClient = createAxiosClient();
+const httpClient = createAxiosClient();
 
+export const routingConfigurationApiClient = {
   async count(
     token: string,
     status: RoutingConfigStatusActive
@@ -20,7 +20,7 @@ export class RoutingConfigurationApiClient {
       '/v1/routing-configurations/count' satisfies GetV1RoutingConfigurationsCountData['url'];
 
     const { data, error } = await catchAxiosError(
-      this.httpClient.get<CountSuccess>(url, {
+      httpClient.get<CountSuccess>(url, {
         headers: { Authorization: token },
         params: { status },
       })
@@ -31,14 +31,14 @@ export class RoutingConfigurationApiClient {
     }
 
     return { ...data };
-  }
+  },
 
   async list(token: string): Promise<Result<RoutingConfig[]>> {
     const url =
       '/v1/routing-configurations' satisfies GetV1RoutingConfigurationsData['url'];
 
     const { data, error } = await catchAxiosError(
-      this.httpClient.get<RoutingConfigSuccessList>(url, {
+      httpClient.get<RoutingConfigSuccessList>(url, {
         headers: { Authorization: token },
       })
     );
@@ -48,8 +48,5 @@ export class RoutingConfigurationApiClient {
     }
 
     return { ...data };
-  }
-}
-
-export const routingConfigurationApiClient =
-  new RoutingConfigurationApiClient();
+  },
+};
