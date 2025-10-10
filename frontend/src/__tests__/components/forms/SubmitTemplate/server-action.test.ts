@@ -15,15 +15,16 @@ const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 const setTemplateToSubmittedMock = jest.mocked(setTemplateToSubmitted);
 
-const mockNhsAppTemplate = {
-  templateType: 'NHS_APP',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'name',
-  message: 'body',
-  id: '1',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-} satisfies TemplateDto;
+const mockNhsAppTemplate = (id: string) =>
+  ({
+    templateType: 'NHS_APP',
+    templateStatus: 'NOT_YET_SUBMITTED',
+    name: 'name',
+    message: 'body',
+    id,
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
+  }) satisfies TemplateDto;
 
 describe('submitTemplate', () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe('submitTemplate', () => {
   });
 
   it('should redirect when templateId from form is invalid', async () => {
-    const formData = getMockFormData({});
+    const formData = getMockFormData({ templateId: 'non-uuid' });
 
     await submitTemplate('NHS_APP', formData);
 
@@ -43,7 +44,9 @@ describe('submitTemplate', () => {
   it('should redirect when template is not found in the DB', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    const formData = getMockFormData({ templateId: '1' });
+    const formData = getMockFormData({
+      templateId: '7bc9fac0-ad5e-4559-b614-ad10a59295aa',
+    });
 
     await submitTemplate('EMAIL', formData);
 
@@ -55,7 +58,9 @@ describe('submitTemplate', () => {
       id: 'template-id',
     } as unknown as TemplateDto);
 
-    const formData = getMockFormData({ templateId: '1' });
+    const formData = getMockFormData({
+      templateId: 'ff32550d-6832-4837-ada0-b6dd5c09e7b8',
+    });
 
     await submitTemplate('EMAIL', formData);
 
@@ -63,14 +68,16 @@ describe('submitTemplate', () => {
   });
 
   it('should handle error when failing to save template', async () => {
-    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
+    const templateId = '32b5005c-bfbb-4435-ae59-b4d54b225eb4';
+
+    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate(templateId));
 
     setTemplateToSubmittedMock.mockImplementationOnce(() => {
       throw new Error('failed to save template');
     });
 
     const formData = getMockFormData({
-      templateId: '1',
+      templateId,
     });
 
     await expect(submitTemplate('SMS', formData)).rejects.toThrow(
@@ -79,18 +86,20 @@ describe('submitTemplate', () => {
   });
 
   it('should redirect when successfully submitted', async () => {
-    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
+    const templateId = '7bc9fac0-ad5e-4559-b614-ad10a59295aa';
+
+    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate(templateId));
 
     const formData = getMockFormData({
-      templateId: '1',
+      templateId,
     });
 
     await submitTemplate('SMS', formData);
 
-    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith('1');
+    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/text-message-template-submitted/1',
+      `/text-message-template-submitted/${templateId}`,
       'push'
     );
   });

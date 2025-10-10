@@ -1,24 +1,54 @@
 import { interpolate } from '@utils/interpolate';
-import Markdown from 'markdown-to-jsx';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
 
 type MarkdownContentProps = {
   content: string | string[];
   variables?: Record<string, string | number>;
   testId?: string;
+  mode?: 'block' | 'inline';
 };
 
 export function MarkdownContent({
   content,
   variables,
   testId,
+  mode = 'block',
 }: MarkdownContentProps) {
   const items = Array.isArray(content) ? content : [content];
+
   const rendered = items
     .map((item) => interpolate(item, variables))
     .filter((s) => s.trim().length > 0);
 
   if (rendered.length === 0) return null;
+
+  const NoWrap = ({ children }: React.PropsWithChildren) => <>{children}</>;
+
+  const inlineOptions: MarkdownToJSX.Options = {
+    wrapper: React.Fragment,
+    forceInline: true,
+    disableParsingRawHTML: true,
+    overrides: {
+      a: {
+        component: 'a',
+        props: { target: '_blank', rel: 'noopener noreferrer' },
+      },
+      span: { component: NoWrap },
+    },
+  };
+
+  const blockOptions: MarkdownToJSX.Options = {
+    wrapper: React.Fragment,
+    forceBlock: true,
+    disableParsingRawHTML: true,
+    overrides: {
+      a: {
+        component: 'a',
+        props: { target: '_blank', rel: 'noopener noreferrer' },
+      },
+    },
+  };
 
   return (
     <>
@@ -26,19 +56,9 @@ export function MarkdownContent({
         <Markdown
           key={index}
           data-testid={testId ? `${testId}-${index}` : undefined}
-          options={{
-            forceBlock: true,
-            wrapper: React.Fragment,
-            disableParsingRawHTML: true,
-            overrides: {
-              a: {
-                component: 'a',
-                props: { rel: 'noopener noreferrer', target: '_blank' },
-              },
-            },
-          }}
+          options={mode === 'block' ? blockOptions : inlineOptions}
         >
-          {interpolate(item, variables)}
+          {item}
         </Markdown>
       ))}
     </>

@@ -74,6 +74,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [discover-workspaces]
+    env:
+      TZ: Europe/London
     strategy:
       fail-fast: false
       matrix:

@@ -1,9 +1,9 @@
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import { getSessionServer } from '@utils/amplify-utils';
-import { clientConfigurationApiClient } from 'nhs-notify-backend-client';
+import { clientConfigurationApiClient } from 'nhs-notify-backend-client/src/client-configuration-api-client';
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client');
+jest.mock('nhs-notify-backend-client/src/client-configuration-api-client');
 jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const getSessionServerMock = jest.mocked(getSessionServer);

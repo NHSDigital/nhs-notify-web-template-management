@@ -1,10 +1,8 @@
 'use server';
 
 import { cache } from 'react';
-import {
-  clientConfigurationApiClient,
-  ClientFeatures,
-} from 'nhs-notify-backend-client';
+import { ClientFeatures } from 'nhs-notify-backend-client';
+import { clientConfigurationApiClient } from 'nhs-notify-backend-client/src/client-configuration-api-client';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 

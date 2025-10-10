@@ -34,6 +34,7 @@ import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/templa
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
 import { RoutingChooseMessageOrderPage } from '../pages/routing-choose-message-order-page';
+import { RoutingMessagePlansPage } from 'pages/routing-message-plans-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -41,11 +42,10 @@ test.use({ storageState: { cookies: [], origins: [] } });
 const protectedPages = [
   MessageTemplatesPage,
   RoutingChooseMessageOrderPage,
+  RoutingMessagePlansPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
-  TemplateMgmtUploadLetterPage,
-  TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtCreateNhsAppPage,
   TemplateMgmtCreateSmsPage,
   TemplateMgmtDeletePage,
@@ -70,6 +70,8 @@ const protectedPages = [
   TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtTemplateSubmittedNhsAppPage,
   TemplateMgmtTemplateSubmittedSmsPage,
+  TemplateMgmtUploadLetterMissingCampaignClientIdPage,
+  TemplateMgmtUploadLetterPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

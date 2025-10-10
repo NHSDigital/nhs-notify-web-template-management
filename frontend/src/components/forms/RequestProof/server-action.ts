@@ -12,7 +12,7 @@ import { TemplateType } from 'nhs-notify-backend-client';
 
 export async function requestProof(channel: TemplateType, formData: FormData) {
   const { success, data: templateId } = z
-    .string()
+    .uuidv4()
     .safeParse(formData.get('templateId'));
 
   if (!success) {

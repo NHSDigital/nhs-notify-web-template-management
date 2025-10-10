@@ -1,4 +1,3 @@
-export * from './client-configuration-api-client';
 export * from './schemas/client';
 export * from './schemas/routing-config';
 export * from './schemas/schema-for';

@@ -3,6 +3,8 @@ import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 import { TestDataCsv } from '@backend-api/templates/domain/test-data-csv';
 import { validateLetterTemplateFiles } from '@backend-api/templates/domain/validate-letter-template-files';
 
+jest.mock('nhs-notify-web-template-management-utils/logger');
+
 describe('pdf has no custom personalisation', () => {
   test('returns true if pdf contains expected address lines', () => {
     const pdf = mock<TemplatePdf>({

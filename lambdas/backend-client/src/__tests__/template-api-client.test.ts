@@ -1,8 +1,10 @@
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient } from '../template-api-client';
+import {
+  templateApiClient as client,
+  httpClient,
+} from '../template-api-client';
 
-const axiosMock = new MockAdapter(axios);
+const axiosMock = new MockAdapter(httpClient);
 
 const testToken = 'abc';
 
@@ -19,8 +21,6 @@ describe('TemplateAPIClient', () => {
         message: 'Contains invalid characters',
       },
     });
-
-    const client = new TemplateApiClient();
 
     const result = await client.createTemplate(
       {
@@ -57,8 +57,6 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.createTemplate(
       {
         name: 'name',
@@ -86,8 +84,6 @@ describe('TemplateAPIClient', () => {
         message: 'Invalid request',
       },
     });
-
-    const client = new TemplateApiClient();
 
     const result = await client.uploadLetterTemplate(
       {
@@ -140,8 +136,6 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.uploadLetterTemplate(
       {
         name: 'test',
@@ -187,8 +181,6 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.updateTemplate(
       'real-id',
       {
@@ -228,8 +220,6 @@ describe('TemplateAPIClient', () => {
       data,
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.updateTemplate(
       'real-id',
       {
@@ -253,8 +243,6 @@ describe('TemplateAPIClient', () => {
         message: 'Template not found',
       },
     });
-
-    const client = new TemplateApiClient();
 
     const result = await client.getTemplate('real-id', testToken);
 
@@ -287,8 +275,6 @@ describe('TemplateAPIClient', () => {
       data,
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.getTemplate('real-id', testToken);
 
     expect(result.data).toEqual(data);
@@ -301,8 +287,6 @@ describe('TemplateAPIClient', () => {
       statusCode: 500,
       technicalMessage: 'Internal server error',
     });
-
-    const client = new TemplateApiClient();
 
     const result = await client.listTemplates(testToken);
 
@@ -332,8 +316,6 @@ describe('TemplateAPIClient', () => {
       data: [data],
     });
 
-    const client = new TemplateApiClient();
-
     const result = await client.listTemplates(testToken);
 
     expect(result.data).toEqual([data]);
@@ -350,8 +332,6 @@ describe('TemplateAPIClient', () => {
           message: 'Contains invalid characters',
         },
       });
-
-      const client = new TemplateApiClient();
 
       const result = await client.submitTemplate('real-id', testToken);
 
@@ -384,8 +364,6 @@ describe('TemplateAPIClient', () => {
         data,
       });
 
-      const client = new TemplateApiClient();
-
       const result = await client.submitTemplate('real-id', testToken);
 
       expect(result.data).toEqual(data);
@@ -403,8 +381,6 @@ describe('TemplateAPIClient', () => {
           message: 'Cannot delete a submitted template',
         },
       });
-
-      const client = new TemplateApiClient();
 
       const result = await client.deleteTemplate('real-id', testToken);
 
@@ -426,8 +402,6 @@ describe('TemplateAPIClient', () => {
     test('should return no content', async () => {
       axiosMock.onDelete('/v1/template/real-id').reply(204);
 
-      const client = new TemplateApiClient();
-
       const result = await client.deleteTemplate('real-id', testToken);
 
       expect(result.data).toBeUndefined();
@@ -445,8 +419,6 @@ describe('TemplateAPIClient', () => {
           message: 'Template cannot be proofed',
         },
       });
-
-      const client = new TemplateApiClient();
 
       const result = await client.requestProof('real-id', testToken);
 
@@ -475,8 +447,6 @@ describe('TemplateAPIClient', () => {
       };
 
       axiosMock.onPost('/v1/template/real-id/proof').reply(204, { data });
-
-      const client = new TemplateApiClient();
 
       const result = await client.requestProof('real-id', testToken);
 
