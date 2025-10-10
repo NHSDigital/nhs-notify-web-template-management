@@ -124,6 +124,11 @@ variable "function_s3_bucket" {
   description = "Name of S3 bucket to upload lambda artefacts to"
 }
 
+variable "quarantine_s3_bucket" {
+  type        = string
+  description = "Guardduty Quarantine bucket id/name"
+}
+
 variable "email_domain" {
   type        = string
   description = "Email domain"

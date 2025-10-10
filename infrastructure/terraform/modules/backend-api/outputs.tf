@@ -39,7 +39,7 @@ output "templates_table_name" {
 }
 
 output "quarantine_bucket_name" {
-  value = module.s3bucket_quarantine.id
+  value = data.aws_s3_bucket.quarantine.id
 }
 
 output "routing_config_table_name" {

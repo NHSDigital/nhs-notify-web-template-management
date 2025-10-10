@@ -44,7 +44,7 @@ locals {
     TEMPLATE_SUBMITTED_SENDER_EMAIL_ADDRESS = var.template_submitted_sender_email_address
     TEMPLATES_DOWNLOAD_BUCKET_NAME          = module.s3bucket_download.id
     TEMPLATES_INTERNAL_BUCKET_NAME          = module.s3bucket_internal.id
-    TEMPLATES_QUARANTINE_BUCKET_NAME        = module.s3bucket_quarantine.id
+    TEMPLATES_QUARANTINE_BUCKET_NAME        = data.aws_s3_bucket.quarantine.id
     TEMPLATES_TABLE_NAME                    = aws_dynamodb_table.templates.name
   }
 

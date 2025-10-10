@@ -88,8 +88,8 @@ data "aws_iam_policy_document" "upload_letter_template_lambda_policy" {
     ]
 
     resources = [
-      "${module.s3bucket_quarantine.arn}/test-data/*",
-      "${module.s3bucket_quarantine.arn}/pdf-template/*",
+      "${data.aws_s3_bucket.quarantine.arn}/test-data/*",
+      "${data.aws_s3_bucket.quarantine.arn}/pdf-template/*",
     ]
   }
 
