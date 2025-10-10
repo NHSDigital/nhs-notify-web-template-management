@@ -1023,6 +1023,103 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
+};
+
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: { text: 'Choose' },
+    change: { text: 'Change' },
+    remove: { text: 'Remove', href: 'todo' }, // TODO: Update href
+    template: 'template',
+  },
+  optional: '(optional)',
+};
+
+const messagePlanFallbackConditions: Record<
+  TemplateType,
+  FallbackConditionBlock
+> = {
+  NHS_APP: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  SMS: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  EMAIL: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If first message read within 24 hours, no further messages sent.',
+      continue:
+        'If first message not read within 24 hours, second message sent.',
+    },
+  },
+  LETTER: {
+    title: 'Conditions for accessible and language letters',
+    content: {
+      continue: [
+        {
+          type: 'inline-text',
+          text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
+        },
+        {
+          type: 'list',
+          items: [
+            'the recipient has requested an accessible or language letter in PDS',
+            `you've included the relevant template in this message plan`,
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
+};
+
+const createEditMessagePlan = {
+  headerCaption: 'Message plan',
+  changeNameLink: {
+    href: '/message-plans/create-message-plan', // TODO: Check if this is correct
+    text: 'Change name',
+  },
+  rowHeadings: {
+    routingPlanId: 'Routing Plan ID',
+    status: 'Status',
+  },
+  ctas: {
+    primary: {
+      href: '/message-plans/move-to-production',
+      text: 'Move to production',
+    },
+    secondary: {
+      href: '/message-plans',
+      text: 'Save and close',
+    },
+  },
+  messagePlanFallbackConditions,
+};
+
 const chooseMessageOrder = {
   pageTitle: generatePageTitle('Choose a message order'),
   pageHeading: 'Choose a message order',
@@ -1040,12 +1137,16 @@ const content = {
     channelGuidance,
     chooseTemplate,
     copyTemplate,
+    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanBlock,
+    messagePlanChannelTemplate,
+    messagePlanFallbackConditions,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
@@ -1070,6 +1171,7 @@ const content = {
     error404,
     invalidConfiguration,
     messageTemplates,
+    chooseTemplatesForMessagePlan,
   },
 };
 

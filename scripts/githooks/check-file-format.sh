@@ -67,8 +67,10 @@ function main() {
   esac
 
   if command -v editorconfig-checker > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
+    echo "Running editorconfig-checker natively"
     filter="$filter" dry_run_opt="${dry_run_opt:-}" run-editorconfig-natively
   else
+    echo "Running editorconfig-checker in Docker"
     filter="$filter" dry_run_opt="${dry_run_opt:-}" run-editorconfig-in-docker
   fi
 }
@@ -101,7 +103,7 @@ function run-editorconfig-in-docker() {
   docker run --rm --platform linux/amd64 \
     --volume "$PWD":/check \
     "$image" \
-      sh -c "ec --exclude '.git/' $dry_run_opt \$($filter) /dev/null"
+      sh -c "set -x; ec --exclude '.git/' $dry_run_opt \$($filter) /dev/null"
 }
 
 # ==============================================================================

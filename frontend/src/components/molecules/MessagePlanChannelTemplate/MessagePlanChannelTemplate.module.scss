@@ -1,0 +1,23 @@
+.channel-template {
+  &-outer {
+    padding: 20px;
+    margin-left: 60px;
+    background-color: var(--nhsuk-card-background-colour);
+    border: 1px solid var(--nhsuk-border-colour);
+  }
+
+  &-inner {
+    padding: 20px;
+    border: 2px solid var(--nhsuk-border-colour);
+  }
+
+  &-link {
+    &--remove {
+      color: var(--nhsuk-error-colour);
+
+      &:visited {
+        color: var(--nhsuk-error-colour);
+      }
+    }
+  }
+}

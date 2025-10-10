@@ -1,6 +1,6 @@
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import {
-  PageProps,
+  TemplatePageProps,
   validateEmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const CreateEmailTemplatePage = async (props: PageProps) => {
+const CreateEmailTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
