@@ -9,20 +9,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "LETTER" 1`
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="LETTER"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -39,20 +36,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP" 1`
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -69,20 +63,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMA
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,EMAIL"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -99,20 +90,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMA
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,EMAIL,SMS"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -129,20 +117,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMA
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,EMAIL,SMS,LETTER"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -159,20 +144,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,SMS"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -189,20 +171,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,SMS,EMAIL"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>
@@ -219,20 +198,17 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS
   >
     <div
       class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
         <h1
           class="nhsuk-heading-xl"
-          data-testid="page-heading"
         >
           Create a message plan
         </h1>
         <div
-          data-message-order="NHSAPP,SMS,LETTER"
-          data-testid="message-plan-form"
+          data-testid="mocked-message-plan-form"
         />
       </div>
     </div>

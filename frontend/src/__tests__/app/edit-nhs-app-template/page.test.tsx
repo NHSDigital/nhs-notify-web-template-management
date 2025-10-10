@@ -13,7 +13,7 @@ import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers/helpers';
+} from '@testhelpers/helpers';
 import content from '@content/content';
 
 const { editPageTitle } = content.components.templateFormNhsApp;

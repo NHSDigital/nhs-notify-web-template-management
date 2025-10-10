@@ -9,7 +9,7 @@ import {
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@utils/markdownit');
 
@@ -37,15 +37,13 @@ jest.mock('next/navigation', () => ({
 jest.mock('@providers/client-config-provider');
 
 beforeEach(() => {
-  jest.mocked(useClientConfig).mockReset().mockReturnValue({ features: {} });
+  jest.mocked(useFeatureFlags).mockReset().mockReturnValue({});
 });
 
 describe('Review sms form renders', () => {
   describe('Routing feature flag - Disabled', () => {
     beforeEach(() => {
-      jest
-        .mocked(useClientConfig)
-        .mockReturnValue({ features: { routing: false } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
     });
 
     it('matches error snapshot', () => {
@@ -112,9 +110,7 @@ describe('Review sms form renders', () => {
 
   describe('Routing feature flag - Enabled', () => {
     beforeEach(() => {
-      jest
-        .mocked(useClientConfig)
-        .mockReturnValue({ features: { routing: true } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
     });
 
     it('renders component correctly', () => {
@@ -140,7 +136,7 @@ describe('Review sms form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from manage templates screen when routing is %p',
     (routing) => {
-      jest.mocked(useClientConfig).mockReturnValue({ features: { routing } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
 
       const container = render(
         <PreviewSMSTemplate
@@ -161,7 +157,7 @@ describe('Review sms form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from edit screen when routing is %p',
     (routing) => {
-      jest.mocked(useClientConfig).mockReturnValue({ features: { routing } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
 
       const mockSearchParams = new Map([['from', 'edit']]);
       (useSearchParams as jest.Mock).mockImplementationOnce(() => ({

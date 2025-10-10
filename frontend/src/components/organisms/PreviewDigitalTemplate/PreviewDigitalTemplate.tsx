@@ -6,12 +6,12 @@ import { PreviewTemplateProps } from './preview-digital-template.types';
 import { Button } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 const { editButton } = content.components.previewDigitalTemplate;
 
 export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
-  const { features } = useClientConfig();
+  const features = useFeatureFlags();
 
   return (
     <>

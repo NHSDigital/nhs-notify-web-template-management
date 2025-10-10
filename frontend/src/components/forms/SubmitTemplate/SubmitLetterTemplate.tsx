@@ -8,7 +8,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 export const SubmitLetterTemplateProofingDisabled: FC<{
   templateName: string;
@@ -103,7 +103,7 @@ export const SubmitLetterTemplate: FC<{
 
   const [_, action] = useActionState(submitTemplate, 'LETTER');
 
-  const { features } = useClientConfig();
+  const features = useFeatureFlags();
 
   if (!features.proofing) {
     return (

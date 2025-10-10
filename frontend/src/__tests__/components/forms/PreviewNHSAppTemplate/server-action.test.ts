@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { previewNhsAppTemplateAction } from '@forms/PreviewNHSAppTemplate';
-import { getMockFormData } from '../../../helpers/helpers';
+import { getMockFormData } from '@testhelpers/helpers';
 import {
   NHSAppTemplate,
   TemplateFormState,

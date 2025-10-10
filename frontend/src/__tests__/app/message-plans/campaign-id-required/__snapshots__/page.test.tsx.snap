@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ClientIdAndCampaignIdRequiredPage 1`] = `
+exports[`matches snapshot 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -18,7 +18,7 @@ exports[`ClientIdAndCampaignIdRequiredPage 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          You cannot create letter templates yet
+          You cannot create message plans yet
         </h1>
         <p>
           To get access, contact your onboarding manager and give them this error message:
@@ -27,13 +27,13 @@ exports[`ClientIdAndCampaignIdRequiredPage 1`] = `
           class="nhsuk-inset-text"
         >
           <p>
-            Account needs a client ID and campaign ID
+            Account needs a campaign ID
           </p>
         </div>
         <p>
           <a
             data-testid="back-link"
-            href="/choose-a-template-type"
+            href="/message-plans"
           >
             Go back
           </a>

@@ -1,4 +1,4 @@
-import { getMockFormData } from '../../../helpers/helpers';
+import { getMockFormData } from '@testhelpers/helpers';
 import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';

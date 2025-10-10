@@ -1,15 +1,18 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
 import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import content from '@content/content';
+import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { getCampaignIds } from '@utils/client-config';
+import { fetchClient } from '@utils/server-features';
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Create message plan - NHS Notify',
-  };
-}
+const pageContent = content.pages.createMessagePlan;
+
+export const metadata: Metadata = {
+  title: pageContent.pageTitle,
+};
 
 const $CreateMessagePlanPageSearchParams = z.object({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST),
@@ -24,6 +27,14 @@ export default async function CreateMessagePlanPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const clientConfig = await fetchClient();
+
+  const campaignIds = getCampaignIds(clientConfig);
+
+  if (campaignIds.length === 0) {
+    redirect('/message-plans/campaign-id-required', RedirectType.replace);
+  }
+
   let params: CreateMessagePlanPageSearchParams;
 
   try {
@@ -34,12 +45,13 @@ export default async function CreateMessagePlanPage({
 
   return (
     <NHSNotifyMain>
-      <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
+      <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-two-thirds'>
-          <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-            Create a message plan
-          </h1>
-          <MessagePlanForm messageOrder={params.messageOrder} />
+          <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
+          <MessagePlanForm
+            messageOrder={params.messageOrder}
+            campaignIds={campaignIds}
+          />
         </div>
       </div>
     </NHSNotifyMain>

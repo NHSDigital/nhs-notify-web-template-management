@@ -12,7 +12,7 @@ import {
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers/helpers';
+} from '@testhelpers/helpers';
 import content from '@content/content';
 
 const { pageTitle } = content.components.submitTemplate;

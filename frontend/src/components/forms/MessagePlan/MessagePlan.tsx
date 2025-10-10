@@ -13,19 +13,20 @@ import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { useCampaignIds } from '@providers/client-config-provider';
 import { getBasePath } from '@utils/get-base-path';
 import { messagePlanServerAction } from './server-action';
-import styles from './MessagePlan.module.scss';
+import content from '@content/content';
+
+const formContent = content.components.messagePlanForm;
 
 export function MessagePlanForm({
   messageOrder,
+  campaignIds,
 }: {
   messageOrder: MessageOrder;
+  campaignIds: string[];
 }) {
   const [state, action] = useActionState(messagePlanServerAction, {});
-
-  const campaignIds = useCampaignIds();
 
   const [name, handleNameChange] = useTextInput<HTMLInputElement>('');
   const [campaignId, handleCampaignIdChange] =
@@ -41,27 +42,24 @@ export function MessagePlanForm({
           readOnly
         />
         <Label htmlFor='name' size='s'>
-          Message plan name
+          {formContent.fields.name.label}
         </Label>
-        <HintText>This will not be visible to recipients.</HintText>
+        <HintText>{formContent.fields.name.hint}</HintText>
         <Details className='nhsuk-u-margin-top-3'>
-          <Details.Summary>Naming your message plans</Details.Summary>
+          <Details.Summary>
+            {formContent.fields.name.details.summary}
+          </Details.Summary>
           <Details.Text>
-            <p>
-              You should name your message plans in a way that works best for
-              your service or organisation.
-            </p>
-            <p>Common message plan names include the:</p>
+            <p>{formContent.fields.name.details.text.main}</p>
+            <p>{formContent.fields.name.details.text.commonNames.main}</p>
             <ul className='nhsuk-list nhsuk-list--bullet'>
-              <li>channels it uses</li>
-              <li>subject or reason for the message</li>
-              <li>intended audience for the message</li>
-              <li>version number</li>
+              {formContent.fields.name.details.text.commonNames.list.map(
+                (item) => (
+                  <li key={item}>{item}</li>
+                )
+              )}
             </ul>
-            <p>
-              For example, &apos;Email, SMS, letter - covid19 2023 - over 65s -
-              version 3&apos;
-            </p>
+            <p>{formContent.fields.name.details.text.commonNames.example}</p>
           </Details.Text>
         </Details>
         <TextInput
@@ -71,11 +69,25 @@ export function MessagePlanForm({
           error={state.errorState?.fieldErrors?.name?.join(',')}
           data-testid='name-field'
         />
-        {campaignIds.length > 1 ? (
+        {campaignIds.length === 1 ? (
+          <>
+            <Label htmlFor='campaignId' size='s'>
+              {formContent.fields.campaignId.label}
+            </Label>
+            <HintText>{formContent.fields.campaignId.hintSingle}</HintText>
+            <input
+              type='hidden'
+              name='campaignId'
+              value={campaignIds[0]}
+              readOnly
+            />
+            <p>{campaignIds[0]}</p>
+          </>
+        ) : (
           <Select
-            label='Campaign'
+            label={formContent.fields.campaignId.label}
             labelProps={{ size: 's' }}
-            hint='Choose which campaign this message plan is for'
+            hint={formContent.fields.campaignId.hintMulti}
             id='campaignId'
             defaultValue={campaignId}
             onChange={handleCampaignIdChange}
@@ -89,28 +101,11 @@ export function MessagePlanForm({
               </Select.Option>
             ))}
           </Select>
-        ) : null}
-
-        {campaignIds.length === 1 ? (
-          <>
-            <Label htmlFor='campaignId' size='s'>
-              Campaign
-            </Label>
-            <HintText>You currently only have one campaign:</HintText>
-
-            <input
-              type='hidden'
-              name='campaignId'
-              value={campaignIds[0]}
-              readOnly
-            />
-            <p>{campaignIds[0]}</p>
-          </>
-        ) : null}
+        )}
       </div>
       <div className='nhsuk-form-group'>
         <NHSNotifyButton data-testid='submit-button'>
-          Save and continue
+          {formContent.submitButton}
         </NHSNotifyButton>
         <a
           href={`${getBasePath()}/message-plans/choose-message-order`}
@@ -118,10 +113,10 @@ export function MessagePlanForm({
             'nhsuk-u-font-size-19',
             'nhsuk-u-margin-left-3',
             'nhsuk-u-padding-top-3',
-            styles.go_back
+            'inline-block'
           )}
         >
-          Go back
+          {formContent.backLink}
         </a>
       </div>
     </NHSNotifyFormWrapper>

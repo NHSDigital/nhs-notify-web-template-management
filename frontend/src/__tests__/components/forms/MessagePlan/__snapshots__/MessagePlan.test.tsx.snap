@@ -149,7 +149,7 @@ exports[`renders error if form is submitted with empty name 1`] = `
           <span
             class="nhsuk-u-visually-hidden"
           >
-            Error:
+            Error: 
           </span>
           Enter a message plan name
         </span>
@@ -172,7 +172,7 @@ exports[`renders error if form is submitted with empty name 1`] = `
       <div
         class="nhsuk-hint"
       >
-        You currently only have one campaign:
+        This message plan will link to your only campaign:
       </div>
       <input
         name="campaignId"
@@ -196,7 +196,7 @@ exports[`renders error if form is submitted with empty name 1`] = `
         Save and continue
       </button>
       <a
-        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
         href="/templates/message-plans/choose-message-order"
       >
         Go back
@@ -295,7 +295,7 @@ exports[`renders error if form is submitted with name too long 1`] = `
           <span
             class="nhsuk-u-visually-hidden"
           >
-            Error:
+            Error: 
           </span>
           Message plan name too long
         </span>
@@ -318,7 +318,7 @@ exports[`renders error if form is submitted with name too long 1`] = `
       <div
         class="nhsuk-hint"
       >
-        You currently only have one campaign:
+        This message plan will link to your only campaign:
       </div>
       <input
         name="campaignId"
@@ -342,7 +342,7 @@ exports[`renders error if form is submitted with name too long 1`] = `
         Save and continue
       </button>
       <a
-        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
         href="/templates/message-plans/choose-message-order"
       >
         Go back
@@ -457,7 +457,7 @@ exports[`renders error if form is submitted with no campaign id selected 1`] = `
           class="nhsuk-hint"
           id="campaignId--hint"
         >
-          Choose which campaign this message plan is for
+          Choose which campaign this message plan will link to
         </div>
         <span
           class="nhsuk-error-message"
@@ -466,7 +466,7 @@ exports[`renders error if form is submitted with no campaign id selected 1`] = `
           <span
             class="nhsuk-u-visually-hidden"
           >
-            Error:
+            Error: 
           </span>
           Select a campaign
         </span>
@@ -505,7 +505,7 @@ exports[`renders error if form is submitted with no campaign id selected 1`] = `
         Save and continue
       </button>
       <a
-        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
         href="/templates/message-plans/choose-message-order"
       >
         Go back
@@ -620,7 +620,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
           class="nhsuk-hint"
           id="campaignId--hint"
         >
-          Choose which campaign this message plan is for
+          Choose which campaign this message plan will link to
         </div>
         <select
           aria-describedby="campaignId--hint"
@@ -657,7 +657,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
         Save and continue
       </button>
       <a
-        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
         href="/templates/message-plans/choose-message-order"
       >
         Go back
@@ -767,7 +767,7 @@ exports[`renders form with single campaign id displayed 1`] = `
       <div
         class="nhsuk-hint"
       >
-        You currently only have one campaign:
+        This message plan will link to your only campaign:
       </div>
       <input
         name="campaignId"
@@ -791,7 +791,7 @@ exports[`renders form with single campaign id displayed 1`] = `
         Save and continue
       </button>
       <a
-        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 go_back"
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
         href="/templates/message-plans/choose-message-order"
       >
         Go back

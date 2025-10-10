@@ -1,8 +1,8 @@
 import React from 'react';
-import { redirect, RedirectType } from 'next/navigation';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock } from 'jest-mock-extended';
+import { redirect, RedirectType } from 'next/navigation';
 import {
   CascadeGroup,
   CascadeItem,
@@ -10,7 +10,6 @@ import {
 } from 'nhs-notify-backend-client';
 import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
-import { useCampaignIds } from '@providers/client-config-provider';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { createRoutingConfig } from '@utils/form-actions';
 import {
@@ -21,7 +20,6 @@ import {
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
 jest.mock('@utils/form-actions');
-jest.mock('@providers/client-config-provider');
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -36,26 +34,31 @@ beforeEach(() => {
     // Mock this behaviour using custom error and error boundary
     throw new NextRedirectError(url, type);
   });
-  jest.mocked(useCampaignIds).mockReturnValue(['campaign-id']);
 });
 
-// TODO: CCM-0000: handle no campaign id
-
 test('renders form with single campaign id displayed', () => {
-  const container = render(<MessagePlanForm messageOrder='NHSAPP' />);
+  const container = render(
+    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
+  );
   expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('renders form with select for multiple campaign ids', () => {
-  jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
-  const container = render(<MessagePlanForm messageOrder='NHSAPP' />);
+  const container = render(
+    <MessagePlanForm
+      messageOrder='NHSAPP'
+      campaignIds={['campaign-1', 'campaign-2']}
+    />
+  );
   expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('renders error if form is submitted with empty name', async () => {
   const user = userEvent.setup();
 
-  const container = render(<MessagePlanForm messageOrder='NHSAPP' />);
+  const container = render(
+    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
+  );
 
   await user.click(screen.getByTestId('submit-button'));
 
@@ -65,7 +68,9 @@ test('renders error if form is submitted with empty name', async () => {
 test('renders error if form is submitted with name too long', async () => {
   const user = userEvent.setup();
 
-  const container = render(<MessagePlanForm messageOrder='NHSAPP' />);
+  const container = render(
+    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
+  );
 
   await user.click(screen.getByTestId('name-field'));
 
@@ -79,9 +84,12 @@ test('renders error if form is submitted with name too long', async () => {
 test('renders error if form is submitted with no campaign id selected', async () => {
   const user = userEvent.setup();
 
-  jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
-
-  const container = render(<MessagePlanForm messageOrder='NHSAPP' />);
+  const container = render(
+    <MessagePlanForm
+      messageOrder='NHSAPP'
+      campaignIds={['campaign-1', 'campaign-2']}
+    />
+  );
 
   await user.click(screen.getByTestId('name-field'));
 
@@ -97,7 +105,7 @@ test('creates a new routing config with single campaign id and redirects to the 
 
   const container = render(
     <NextRedirectBoundary>
-      <MessagePlanForm messageOrder='NHSAPP' />
+      <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-1']} />
     </NextRedirectBoundary>,
     // @ts-expect-error silence noisy error logging from react error boundary
     { onCaughtError: () => {} }
@@ -112,7 +120,7 @@ test('creates a new routing config with single campaign id and redirects to the 
   expect(createRoutingConfig).toHaveBeenCalledWith(
     expect.objectContaining({
       name: 'My Message Plan',
-      campaignId: 'campaign-id',
+      campaignId: 'campaign-1',
     })
   );
 
@@ -127,11 +135,12 @@ test('creates a new routing config with single campaign id and redirects to the 
 test('creates a new routing config with selected campaign id and redirects to the choose-templates page', async () => {
   const user = userEvent.setup();
 
-  jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
-
   const container = render(
     <NextRedirectBoundary>
-      <MessagePlanForm messageOrder='NHSAPP' />
+      <MessagePlanForm
+        messageOrder='NHSAPP'
+        campaignIds={['campaign-1', 'campaign-2']}
+      />
     </NextRedirectBoundary>,
     // @ts-expect-error silence noisy error logging from react error boundary
     { onCaughtError: () => {} }
@@ -336,7 +345,10 @@ test.each(MESSAGE_ORDER_SCENARIOS)(
 
     render(
       <NextRedirectBoundary>
-        <MessagePlanForm messageOrder={messageOrder} />
+        <MessagePlanForm
+          messageOrder={messageOrder}
+          campaignIds={['campaign-1']}
+        />
       </NextRedirectBoundary>,
       // @ts-expect-error silence noisy error logging from react error boundary
       { onCaughtError: () => {} }

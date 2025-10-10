@@ -6,20 +6,18 @@ import {
   FormState,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@providers/client-config-provider');
 
 beforeEach(() => {
-  jest.mocked(useClientConfig).mockReset();
+  jest.mocked(useFeatureFlags).mockReset();
 });
 
 describe('PreviewDigitalTemplate', () => {
   describe('Routing disabled', () => {
     beforeEach(() => {
-      jest
-        .mocked(useClientConfig)
-        .mockReturnValue({ features: { routing: false } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
     });
 
     it('matches snapshot', () => {
@@ -121,9 +119,7 @@ describe('PreviewDigitalTemplate', () => {
 
   describe('Routing enabled', () => {
     beforeEach(() => {
-      jest
-        .mocked(useClientConfig)
-        .mockReturnValue({ features: { routing: true } });
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
     });
 
     it('matches snapshot', () => {

@@ -1,5 +1,5 @@
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 import { render } from '@testing-library/react';
 
 jest.mock('@utils/amplify-utils');
@@ -23,9 +23,7 @@ jest.mock('@providers/client-config-provider');
 
 describe('SubmitLetterTemplate component', () => {
   it('should render', () => {
-    jest
-      .mocked(useClientConfig)
-      .mockReturnValueOnce({ features: { proofing: true } });
+    jest.mocked(useFeatureFlags).mockReturnValueOnce({ proofing: true });
 
     const container = render(
       <SubmitLetterTemplate
@@ -38,9 +36,7 @@ describe('SubmitLetterTemplate component', () => {
   });
 
   it('should render with client proofing disabled', () => {
-    jest
-      .mocked(useClientConfig)
-      .mockReturnValueOnce({ features: { proofing: false } });
+    jest.mocked(useFeatureFlags).mockReturnValueOnce({ proofing: false });
 
     const container = render(
       <SubmitLetterTemplate

@@ -13,7 +13,7 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers/helpers';
+} from '@testhelpers/helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');

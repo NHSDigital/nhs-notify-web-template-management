@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuthStatus } from '@hooks/use-auth-status';
 import content from '@content/content';
 import { ClientFeatures } from 'nhs-notify-backend-client';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 const headerContent = content.components.header;
 
@@ -16,7 +16,7 @@ export function HeaderNavigation({
 }) {
   const authStatus = useAuthStatus(initialAuthStatus);
 
-  const { features } = useClientConfig();
+  const features = useFeatureFlags();
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { getMockFormData } from '../../../helpers/helpers';
+import { getMockFormData } from '@testhelpers/helpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import {
   NHSAppTemplate,

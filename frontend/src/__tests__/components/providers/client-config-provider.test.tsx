@@ -4,14 +4,16 @@ import {
   ClientConfigProvider,
   useCampaignIds,
   useClientConfig,
+  useFeatureFlags,
 } from '@providers/client-config-provider';
 import { ClientConfiguration } from 'nhs-notify-backend-client';
+import { initialFeatureFlags } from '@utils/client-config';
 
 const renderProvider =
-  (config: ClientConfiguration) =>
+  (config: ClientConfiguration | null) =>
   ({ children }: PropsWithChildren) => {
     return (
-      <ClientConfigProvider config={config}>{children}</ClientConfigProvider>
+      <ClientConfigProvider value={config}>{children}</ClientConfigProvider>
     );
   };
 
@@ -30,10 +32,10 @@ it('returns client config from context', () => {
 });
 
 describe('useCampaignIds', () => {
-  it('returns a list of all campaign ids (including legacy)', () => {
+  it('returns a sorted list of all campaign ids (ignores deprecated)', () => {
     const config: ClientConfiguration = {
       campaignId: 'b',
-      campaignIds: ['a', 'c'],
+      campaignIds: ['c', 'a'],
       features: {},
     };
 
@@ -41,12 +43,13 @@ describe('useCampaignIds', () => {
       wrapper: renderProvider(config),
     });
 
-    expect(result.current).toEqual(['a', 'b', 'c']);
+    expect(result.current).toEqual(['a', 'c']);
   });
 
-  it('returns a list of all campaign ids (no legacy)', () => {
+  it('returns a empty list of all campaign ids if present (ignores deprecated)', () => {
     const config: ClientConfiguration = {
-      campaignIds: ['z', 'm', 'a', 'f'],
+      campaignId: 'b',
+      campaignIds: [],
       features: {},
     };
 
@@ -54,10 +57,10 @@ describe('useCampaignIds', () => {
       wrapper: renderProvider(config),
     });
 
-    expect(result.current).toEqual(['a', 'f', 'm', 'z']);
+    expect(result.current).toEqual([]);
   });
 
-  it('returns a list of campaign ids (only legacy)', () => {
+  it('returns a list of campaign ids (only legacy present)', () => {
     const config: ClientConfiguration = {
       campaignId: 'campaign-0',
       features: {},
@@ -72,7 +75,6 @@ describe('useCampaignIds', () => {
 
   it('removes duplicates', () => {
     const config: ClientConfiguration = {
-      campaignId: 'campaign-q',
       campaignIds: ['campaign-z', 'campaign-q', 'campaign-z'],
       features: {},
     };
@@ -82,5 +84,30 @@ describe('useCampaignIds', () => {
     });
 
     expect(result.current).toEqual(['campaign-q', 'campaign-z']);
+  });
+});
+
+describe('useFeatureFlags', () => {
+  it('returns default feature flags when there is no config', () => {
+    const { result } = renderHook(useFeatureFlags, {
+      wrapper: renderProvider(null),
+    });
+
+    expect(result.current).toEqual(initialFeatureFlags);
+  });
+
+  it('returns feature flags from context', () => {
+    const config: ClientConfiguration = {
+      features: {
+        routing: true,
+        proofing: true,
+      },
+    };
+
+    const { result } = renderHook(useFeatureFlags, {
+      wrapper: renderProvider(config),
+    });
+
+    expect(result.current).toEqual(config.features);
   });
 });

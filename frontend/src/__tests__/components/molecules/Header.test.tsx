@@ -3,7 +3,7 @@ import { useAuthStatus } from '@hooks/use-auth-status';
 import { getSessionServer } from '@utils/amplify-utils';
 import { getIdTokenClaims } from '@utils/token-utils';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
-import { useClientConfig } from '@providers/client-config-provider';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@hooks/use-auth-status');
 const mockUseAuthStatus = jest.mocked(useAuthStatus);
@@ -15,18 +15,16 @@ jest.mock('@utils/amplify-utils');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 
 jest.mock('@providers/client-config-provider');
-const mockUseClientConfig = jest.mocked(useClientConfig);
+const mockUseFeatureFlags = jest.mocked(useFeatureFlags);
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 
 beforeEach(() => {
   jest.resetAllMocks();
   mockUseAuthStatus.mockImplementation((status) => status ?? 'configuring');
-  mockUseClientConfig.mockReturnValue({
-    features: {
-      proofing: false,
-      routing: false,
-    },
+  mockUseFeatureFlags.mockReturnValue({
+    proofing: false,
+    routing: false,
   });
 });
 
@@ -35,11 +33,9 @@ describe('NhsNotifyHeader', () => {
     beforeEach(() => {
       mockGetSessionServer.mockResolvedValue({});
       mockGetIdTokenClaims.mockReturnValue({});
-      mockUseClientConfig.mockReturnValue({
-        features: {
-          proofing: false,
-          routing: false,
-        },
+      mockUseFeatureFlags.mockReturnValue({
+        proofing: false,
+        routing: false,
       });
     });
 
@@ -108,11 +104,9 @@ describe('NhsNotifyHeader', () => {
         clientName: 'NHS England',
       });
 
-      mockUseClientConfig.mockReturnValue({
-        features: {
-          proofing: false,
-          routing: false,
-        },
+      mockUseFeatureFlags.mockReturnValue({
+        proofing: false,
+        routing: false,
       });
     });
 
@@ -183,11 +177,9 @@ describe('NhsNotifyHeader', () => {
 
     describe(`with 'routing' flag enabled`, () => {
       beforeEach(() => {
-        mockUseClientConfig.mockReturnValue({
-          features: {
-            proofing: false,
-            routing: true,
-          },
+        mockUseFeatureFlags.mockReturnValue({
+          proofing: false,
+          routing: true,
         });
       });
 
@@ -211,11 +203,9 @@ describe('NhsNotifyHeader', () => {
 
     describe(`with 'routing' flag disabled`, () => {
       beforeEach(() => {
-        mockUseClientConfig.mockReturnValue({
-          features: {
-            proofing: false,
-            routing: false,
-          },
+        mockUseFeatureFlags.mockReturnValue({
+          proofing: false,
+          routing: false,
         });
       });
 
