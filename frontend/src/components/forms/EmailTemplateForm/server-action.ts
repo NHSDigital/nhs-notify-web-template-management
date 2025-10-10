@@ -53,19 +53,31 @@ export async function processFormActions(
   const { emailTemplateName, emailTemplateSubjectLine, emailTemplateMessage } =
     parsedForm.data;
 
-  const updatedTemplate = {
+  const template = {
     ...formState,
     name: emailTemplateName,
     subject: emailTemplateSubjectLine,
     message: emailTemplateMessage,
   };
 
-  const savedTemplate = await ('id' in updatedTemplate
-    ? saveTemplate(updatedTemplate)
-    : createTemplate(updatedTemplate));
+  let savedId: string;
+
+  if ('id' in template) {
+    const { success, data: templateId } = z.uuid().safeParse(template.id);
+
+    if (!success) {
+      return redirect('/invalid-template', RedirectType.replace);
+    }
+
+    const saved = await saveTemplate(templateId, template);
+    savedId = saved.id;
+  } else {
+    const saved = await createTemplate(template);
+    savedId = saved.id;
+  }
 
   return redirect(
-    `/preview-email-template/${savedTemplate.id}?from=edit`,
+    `/preview-email-template/${savedId}?from=edit`,
     RedirectType.push
   );
 }

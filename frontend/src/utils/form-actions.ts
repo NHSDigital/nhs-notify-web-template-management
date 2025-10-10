@@ -63,6 +63,7 @@ export async function uploadLetterTemplate(
 }
 
 export async function saveTemplate(
+  templateId: string,
   template: Extract<TemplateDto, { templateType: 'EMAIL' | 'SMS' | 'NHS_APP' }>
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();
@@ -72,7 +73,7 @@ export async function saveTemplate(
   }
 
   const { data, error } = await templateApiClient.updateTemplate(
-    template.id,
+    templateId,
     template,
     accessToken
   );
