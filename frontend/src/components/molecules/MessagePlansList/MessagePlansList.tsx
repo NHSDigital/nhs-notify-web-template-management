@@ -14,7 +14,7 @@ export type MessagePlanListItem = {
 };
 
 type MessagePlansListProps = {
-  planType: string;
+  statusGroup: 'Draft' | 'Production';
   count: number;
   plans: MessagePlanListItem[];
 };
@@ -24,7 +24,7 @@ const {
 } = content;
 
 export const MessagePlansList = (props: MessagePlansListProps) => {
-  const { planType: status, count } = props;
+  const { statusGroup, count } = props;
 
   const header = (
     <Table.Row>
@@ -55,11 +55,11 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   ));
 
   return (
-    <Details expander id={`message-plans-list-${status.toLowerCase()}`}>
+    <Details expander id={`message-plans-list-${statusGroup.toLowerCase()}`}>
       <Details.Summary
         className={classNames('nhsuk-heading-s', 'nhsuk-u-margin-bottom-0')}
       >
-        {status} ({count})
+        {statusGroup} ({count})
       </Details.Summary>
       <Details.Text>
         {rows.length > 0 ? (
@@ -70,7 +70,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
         ) : (
           <MarkdownContent
             content={messagePlanComponent.noMessagePlansMessage}
-            variables={{ status: status.toLowerCase() }}
+            variables={{ status: statusGroup.toLowerCase() }}
           />
         )}
       </Details.Text>

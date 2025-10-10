@@ -9,17 +9,14 @@ import {
 import content from '@content/content';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const {
   pages: { messagePlansPage },
 } = content;
 
-const {
-  pageHeading,
-  button,
-  draftAndProductionInfo: { draft, production },
-} = messagePlansPage;
+const { pageHeading, button, draftAndProdHeading, draftAndProductionInfo } =
+  messagePlansPage;
 
 export type MessagePlansProps = {
   draft: {
@@ -39,53 +36,35 @@ export const MessagePlans = (props: MessagePlansProps) => {
         <div className='nhsuk-grid-column-full'>
           <h1>{pageHeading}</h1>
           <Details id='message-plans-status-info'>
-            <Details.Summary>
-              {messagePlansPage.draftAndProductionInfo.heading}
-            </Details.Summary>
+            <Details.Summary>{draftAndProdHeading}</Details.Summary>
             <Details.Text>
-              <h2
-                className={classNames(
-                  'nhsuk-heading-s',
-                  'nhsuk-u-margin-bottom-1'
-                )}
-              >
-                {draft.heading}
-              </h2>
-              <p>{draft.text}</p>
-              <ul>
-                {draft.links.map((link) => (
-                  <li key={link.text}>
-                    <a
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      href={link.href}
+              {draftAndProductionInfo.map(
+                ({ title, content: draftProdContent }) => (
+                  <>
+                    <h2
+                      className={classNames(
+                        'nhsuk-heading-s',
+                        'nhsuk-u-margin-bottom-1'
+                      )}
                     >
-                      {link.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <h2
-                className={classNames(
-                  'nhsuk-heading-s',
-                  'nhsuk-u-margin-bottom-1'
-                )}
-              >
-                {production.heading}
-              </h2>
-              <MarkdownContent content={production.textMd} />
+                      {title}
+                    </h2>
+                    <ContentRenderer content={draftProdContent} />
+                  </>
+                )
+              )}
             </Details.Text>
           </Details>
           <Link passHref legacyBehavior href={button.link}>
             <Button id='create-message-plan-button'>{button.text}</Button>
           </Link>
           <MessagePlansList
-            planType='Draft'
+            statusGroup='Draft'
             plans={props.draft.plans}
             count={props.draft.count}
           />
           <MessagePlansList
-            planType='Production'
+            statusGroup='Production'
             plans={props.production.plans}
             count={props.production.count}
           />

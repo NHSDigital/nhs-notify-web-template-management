@@ -1,4 +1,4 @@
-import { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
+import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
@@ -102,7 +102,7 @@ const personalisation: {
         id: 'personalisation-markdown-description',
       },
     },
-  ],
+  ] satisfies ContentBlock[],
   details: [
     {
       title: 'PDS personalisation fields',
@@ -129,7 +129,7 @@ const personalisation: {
           type: 'text',
           text: 'Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.',
         },
-      ],
+      ] satisfies ContentBlock[],
     },
     {
       title: 'Custom personalisation fields',
@@ -158,7 +158,7 @@ const personalisation: {
           type: 'text',
           text: 'Remember not to include spaces in your personalisation fields.',
         },
-      ],
+      ] satisfies ContentBlock[],
     },
   ],
 };
@@ -1023,31 +1023,42 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const messagePlanDraftAndProdInfo: {
+  title: string;
+  content: ContentBlock[];
+}[] = [
+  {
+    title: 'Draft',
+    content: [
+      {
+        type: 'text',
+        text: "Message plans that you're working on and are not ready to be sent. You can test these, using our:",
+      },
+      {
+        type: 'list',
+        items: [
+          '[API integration environment (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing)',
+          '[Integration MESH mailbox (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request)',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Production',
+    content: [
+      {
+        type: 'text',
+        text: 'Message plans that are ready to be sent using [NHS Notify API (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/).',
+      },
+    ],
+  },
+];
+
 const messagePlansPage = {
   pageTitle: generatePageTitle('Message plans'),
   pageHeading: 'Message plans',
-  draftAndProductionInfo: {
-    heading: 'What draft and production mean',
-    draft: {
-      heading: 'Draft',
-      text: "Message plans that you're working on and are not ready to be sent. You can test these, using our:",
-      links: [
-        {
-          href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing',
-          text: 'API integration environment (opens in a new tab)',
-        },
-        {
-          href: 'https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request',
-          text: 'Integration MESH mailbox (opens in a new tab)',
-        },
-      ],
-    },
-    production: {
-      heading: 'Production',
-      textMd:
-        'Message plans that are ready to be sent using [NHS Notify API (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/).',
-    },
-  },
+  draftAndProdHeading: 'What draft and production mean',
+  draftAndProductionInfo: messagePlanDraftAndProdInfo,
   button: {
     text: 'New message plan',
     link: '/message-plans/choose-message-order',
