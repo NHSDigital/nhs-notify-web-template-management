@@ -64,6 +64,7 @@ export function MessagePlanForm({
         </Details>
         <TextInput
           id='name'
+          name='name'
           value={name}
           onChange={handleNameChange}
           error={state.errorState?.fieldErrors?.name?.join(',')}
@@ -81,14 +82,15 @@ export function MessagePlanForm({
               value={campaignIds[0]}
               readOnly
             />
-            <p>{campaignIds[0]}</p>
+            <p data-testid='single-campaign-id'>{campaignIds[0]}</p>
           </>
         ) : (
           <Select
+            id='campaignId'
+            name='campaignId'
             label={formContent.fields.campaignId.label}
             labelProps={{ size: 's' }}
             hint={formContent.fields.campaignId.hintMulti}
-            id='campaignId'
             defaultValue={campaignId}
             onChange={handleCampaignIdChange}
             error={state.errorState?.fieldErrors?.campaignId?.join(',')}

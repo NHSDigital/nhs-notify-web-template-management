@@ -180,7 +180,9 @@ exports[`renders error if form is submitted with empty name 1`] = `
         type="hidden"
         value="campaign-id"
       />
-      <p>
+      <p
+        data-testid="single-campaign-id"
+      >
         campaign-id
       </p>
     </div>
@@ -326,7 +328,9 @@ exports[`renders error if form is submitted with name too long 1`] = `
         type="hidden"
         value="campaign-id"
       />
-      <p>
+      <p
+        data-testid="single-campaign-id"
+      >
         campaign-id
       </p>
     </div>
@@ -775,7 +779,9 @@ exports[`renders form with single campaign id displayed 1`] = `
         type="hidden"
         value="campaign-id"
       />
-      <p>
+      <p
+        data-testid="single-campaign-id"
+      >
         campaign-id
       </p>
     </div>

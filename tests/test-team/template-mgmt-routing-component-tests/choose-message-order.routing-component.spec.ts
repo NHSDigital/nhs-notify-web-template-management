@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { RoutingChooseMessageOrderPage } from '../pages/routing-choose-message-order-page';
+import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import {
   assertFooterLinks,
   assertGoBackLink,
