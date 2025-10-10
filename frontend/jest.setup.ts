@@ -35,3 +35,6 @@ createMocks();
 if (typeof window !== 'undefined') {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
 }
+
+// Pin timezone for deterministic date rendering
+process.env.TZ = 'Europe/London';
