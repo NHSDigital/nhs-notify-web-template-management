@@ -4,7 +4,7 @@ import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { ErrorCase } from './types/error-cases';
 
-const httpClient = createAxiosClient();
+export const httpClient = createAxiosClient();
 
 export const clientConfigurationApiClient = {
   async fetch(token: string): Promise<Result<ClientConfiguration | null>> {

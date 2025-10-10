@@ -1,9 +1,11 @@
-import axios from 'axios';
-import { ClientConfigurationApiClient as client } from '../client-configuration-api-client';
+import {
+  clientConfigurationApiClient as client,
+  httpClient,
+} from '../client-configuration-api-client';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('ClientConfiguration', () => {
-  const axiosMock = new MockAdapter(axios);
+  const axiosMock = new MockAdapter(httpClient);
 
   beforeEach(() => {
     axiosMock.reset();

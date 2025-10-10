@@ -1,9 +1,11 @@
-import axios from 'axios';
-import { routingConfigurationApiClient as client } from '../routing-config-api-client';
+import {
+  routingConfigurationApiClient as client,
+  httpClient,
+} from '../routing-config-api-client';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('RoutingConfigurationApiClient', () => {
-  const axiosMock = new MockAdapter(axios);
+  const axiosMock = new MockAdapter(httpClient);
 
   beforeEach(() => {
     axiosMock.reset();

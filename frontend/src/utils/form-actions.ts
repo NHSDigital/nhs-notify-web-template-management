@@ -6,11 +6,11 @@ import {
   isTemplateDtoValid,
   RoutingConfig,
   RoutingConfigStatusActive,
-  routingConfigurationApiClient,
   TemplateDto,
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { sortAscByCreatedAt } from './sort';
 

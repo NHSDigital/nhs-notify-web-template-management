@@ -8,7 +8,7 @@ import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
 
-const httpClient = createAxiosClient();
+export const httpClient = createAxiosClient();
 
 export const templateApiClient = {
   async createTemplate(

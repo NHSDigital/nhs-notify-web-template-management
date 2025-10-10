@@ -1,8 +1,10 @@
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { templateApiClient as client } from '../template-api-client';
+import {
+  templateApiClient as client,
+  httpClient,
+} from '../template-api-client';
 
-const axiosMock = new MockAdapter(axios);
+const axiosMock = new MockAdapter(httpClient);
 
 const testToken = 'abc';
 

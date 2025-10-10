@@ -19,12 +19,9 @@ import {
   countRoutingConfigs,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import {
-  RoutingConfig,
-  TemplateDto,
-  routingConfigurationApiClient,
-} from 'nhs-notify-backend-client';
+import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);

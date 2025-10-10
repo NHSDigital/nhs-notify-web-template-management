@@ -9,7 +9,7 @@ import type {
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 
-const httpClient = createAxiosClient();
+export const httpClient = createAxiosClient();
 
 export const routingConfigurationApiClient = {
   async count(
