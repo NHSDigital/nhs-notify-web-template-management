@@ -20,13 +20,16 @@ import {
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { randomUUID } from 'node:crypto';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
+const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
+jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -701,7 +704,7 @@ describe('form-actions', () => {
       const now = new Date();
       const id = randomUUID();
 
-      mockedTemplateClient.createRoutingConfig.mockImplementationOnce(
+      mockedRoutingConfigClient.create.mockImplementationOnce(
         async (input) => ({
           data: {
             ...input,
@@ -728,7 +731,7 @@ describe('form-actions', () => {
         cascadeGroupOverrides: [{ name: 'standard' }],
       });
 
-      expect(mockedTemplateClient.createRoutingConfig).toHaveBeenCalledWith(
+      expect(mockedRoutingConfigClient.create).toHaveBeenCalledWith(
         {
           name: 'My Routing Config',
           campaignId: 'my-campaign-id',
@@ -788,11 +791,11 @@ describe('form-actions', () => {
         })
       ).rejects.toThrow('Failed to get access token');
 
-      expect(mockedTemplateClient.createRoutingConfig).not.toHaveBeenCalled();
+      expect(mockedRoutingConfigClient.create).not.toHaveBeenCalled();
     });
 
     test('errors when request fails', async () => {
-      mockedTemplateClient.createRoutingConfig.mockResolvedValueOnce({
+      mockedRoutingConfigClient.create.mockResolvedValueOnce({
         error: {
           errorMeta: {
             code: 400,

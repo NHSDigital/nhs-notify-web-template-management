@@ -199,7 +199,7 @@ exports[`renders error if form is submitted with empty name 1`] = `
       </button>
       <a
         class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-        href="/templates/message-plans/choose-message-order"
+        href="/message-plans/choose-message-order"
       >
         Go back
       </a>
@@ -347,7 +347,7 @@ exports[`renders error if form is submitted with name too long 1`] = `
       </button>
       <a
         class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-        href="/templates/message-plans/choose-message-order"
+        href="/message-plans/choose-message-order"
       >
         Go back
       </a>
@@ -510,7 +510,7 @@ exports[`renders error if form is submitted with no campaign id selected 1`] = `
       </button>
       <a
         class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-        href="/templates/message-plans/choose-message-order"
+        href="/message-plans/choose-message-order"
       >
         Go back
       </a>
@@ -662,7 +662,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
       </button>
       <a
         class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-        href="/templates/message-plans/choose-message-order"
+        href="/message-plans/choose-message-order"
       >
         Go back
       </a>
@@ -798,7 +798,7 @@ exports[`renders form with single campaign id displayed 1`] = `
       </button>
       <a
         class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-        href="/templates/message-plans/choose-message-order"
+        href="/message-plans/choose-message-order"
       >
         Go back
       </a>

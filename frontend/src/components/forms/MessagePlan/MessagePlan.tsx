@@ -13,9 +13,9 @@ import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { getBasePath } from '@utils/get-base-path';
 import { messagePlanServerAction } from './server-action';
 import content from '@content/content';
+import Link from 'next/link';
 
 const formContent = content.components.messagePlanForm;
 
@@ -109,8 +109,8 @@ export function MessagePlanForm({
         <NHSNotifyButton data-testid='submit-button'>
           {formContent.submitButton}
         </NHSNotifyButton>
-        <a
-          href={`${getBasePath()}/message-plans/choose-message-order`}
+        <Link
+          href={formContent.backLink.href}
           className={classNames(
             'nhsuk-u-font-size-19',
             'nhsuk-u-margin-left-3',
@@ -118,8 +118,8 @@ export function MessagePlanForm({
             'inline-block'
           )}
         >
-          {formContent.backLink}
-        </a>
+          {formContent.backLink.text}
+        </Link>
       </div>
     </NHSNotifyFormWrapper>
   );

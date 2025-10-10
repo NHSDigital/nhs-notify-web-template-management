@@ -1,7 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { TemplateApiClient } from '../template-api-client';
-import { RoutingConfig } from '../types/generated';
 
 const axiosMock = new MockAdapter(axios);
 
@@ -480,82 +479,6 @@ describe('TemplateAPIClient', () => {
       const client = new TemplateApiClient();
 
       const result = await client.requestProof('real-id', testToken);
-
-      expect(result.data).toEqual(data);
-
-      expect(result.error).toBeUndefined();
-    });
-  });
-
-  describe('createRoutingConfig', () => {
-    test('should return error', async () => {
-      axiosMock.onPost('/v1/routing-configuration').reply(400, {
-        statusCode: 400,
-        technicalMessage: 'Bad request',
-        details: {
-          message: 'Something went wrong',
-        },
-      });
-
-      const client = new TemplateApiClient();
-
-      const result = await client.createRoutingConfig(
-        {
-          name: 'test',
-          campaignId: 'campaign-id',
-          cascade: [],
-          cascadeGroupOverrides: [],
-        },
-        testToken
-      );
-
-      expect(result.error).toEqual({
-        errorMeta: {
-          code: 400,
-          description: 'Bad request',
-          details: {
-            message: 'Something went wrong',
-          },
-        },
-      });
-
-      expect(result.data).toBeUndefined();
-
-      expect(axiosMock.history.post.length).toBe(1);
-    });
-
-    test('should return routing config', async () => {
-      const data: RoutingConfig = {
-        campaignId: 'campaign-id',
-        cascade: [],
-        cascadeGroupOverrides: [],
-        clientId: 'client-id',
-        createdAt: new Date().toISOString(),
-        id: 'id',
-        name: 'name',
-        status: 'DRAFT',
-        updatedAt: new Date().toISOString(),
-      };
-
-      axiosMock.onPost('/v1/routing-configuration').reply(201, {
-        statusCode: 201,
-        data,
-      });
-
-      const client = new TemplateApiClient();
-
-      const body = {
-        campaignId: data.campaignId,
-        cascade: data.cascade,
-        cascadeGroupOverrides: data.cascadeGroupOverrides,
-        name: data.name,
-      };
-
-      const result = await client.createRoutingConfig(body, testToken);
-
-      expect(axiosMock.history.post.length).toBe(1);
-      expect(JSON.parse(axiosMock.history.post[0].data)).toEqual(body);
-      expect(axiosMock.history.post[0].headers?.Authorization).toBe(testToken);
 
       expect(result.data).toEqual(data);
 

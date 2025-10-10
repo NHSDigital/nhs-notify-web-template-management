@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -209,7 +210,7 @@ export async function createRoutingConfig(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateApiClient.createRoutingConfig(
+  const { data, error } = await routingConfigurationApiClient.create(
     routingConfig,
     accessToken
   );

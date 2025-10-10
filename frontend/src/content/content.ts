@@ -1079,7 +1079,7 @@ const messagePlanForm = {
     },
   },
   submitButton: 'Save and continue',
-  backLink: 'Go back',
+  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
 const content = {
