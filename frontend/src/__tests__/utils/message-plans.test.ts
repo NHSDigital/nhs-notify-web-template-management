@@ -114,9 +114,21 @@ describe('@utils/message-plans', () => {
       );
     });
 
-    it('should throw error for invalid routing config ID', async () => {
-      await expect(getMessagePlan(invalidRoutingConfigId)).rejects.toThrow(
-        'Invalid routing configuration ID'
+    it('should return undefined and log error for invalid routing config object', async () => {
+      routingConfigApiMock.get.mockResolvedValueOnce({
+        data: { ...baseConfig, id: invalidRoutingConfigId },
+      });
+
+      const response = await getMessagePlan(invalidRoutingConfigId);
+
+      expect(routingConfigApiMock.get).toHaveBeenCalledWith(
+        'mock-token',
+        invalidRoutingConfigId
+      );
+      expect(response).toBeUndefined();
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Invalid routing configuration object',
+        expect.any(Object)
       );
     });
   });
@@ -183,10 +195,26 @@ describe('@utils/message-plans', () => {
       );
     });
 
-    it('should throw error for invalid routing config ID', async () => {
-      await expect(
-        updateMessagePlan(invalidRoutingConfigId, baseConfig)
-      ).rejects.toThrow('Invalid routing configuration ID');
+    it('should return undefined and log error for invalid routing config object after update', async () => {
+      routingConfigApiMock.update.mockResolvedValueOnce({
+        data: { ...baseConfig, id: invalidRoutingConfigId },
+      });
+
+      const response = await updateMessagePlan(
+        invalidRoutingConfigId,
+        baseConfig
+      );
+
+      expect(routingConfigApiMock.update).toHaveBeenCalledWith(
+        'mock-token',
+        invalidRoutingConfigId,
+        baseConfig
+      );
+      expect(response).toBeUndefined();
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Invalid routing configuration object',
+        expect.any(Object)
+      );
     });
   });
 

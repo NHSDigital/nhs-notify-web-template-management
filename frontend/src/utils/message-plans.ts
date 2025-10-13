@@ -2,21 +2,17 @@
 
 import {
   RoutingConfig,
+  $RoutingConfig,
   routingConfigurationApiClient,
   TemplateDto,
 } from 'nhs-notify-backend-client';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
-import { isValidUuid } from './is-valid-uuid';
 
 export async function getMessagePlan(
   routingConfigId: string
 ): Promise<RoutingConfig | undefined> {
-  if (!isValidUuid(routingConfigId)) {
-    throw new Error('Invalid routing configuration ID');
-  }
-
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
@@ -34,17 +30,24 @@ export async function getMessagePlan(
     });
   }
 
-  return data;
+  if (!data) return undefined;
+
+  const result = $RoutingConfig.safeParse(data);
+
+  if (!result.success) {
+    logger.error('Invalid routing configuration object', {
+      error: result.error,
+    });
+    return undefined;
+  }
+
+  return result.data;
 }
 
 export async function updateMessagePlan(
   routingConfigId: string,
   updatedMessagePlan: RoutingConfig
 ): Promise<RoutingConfig | undefined> {
-  if (!isValidUuid(routingConfigId)) {
-    throw new Error('Invalid routing configuration ID');
-  }
-
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
@@ -64,7 +67,18 @@ export async function updateMessagePlan(
     return;
   }
 
-  return data;
+  if (!data) return undefined;
+
+  const result = $RoutingConfig.safeParse(data);
+
+  if (!result.success) {
+    logger.error('Invalid routing configuration object', {
+      error: result.error,
+    });
+    return undefined;
+  }
+
+  return result.data;
 }
 
 export type MessagePlanTemplates = Record<string, TemplateDto>;
