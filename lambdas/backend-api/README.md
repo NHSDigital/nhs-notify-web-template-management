@@ -1,7 +1,6 @@
 <!-- vale off -->
 # Backend-api
 
-<!-- vale off -->
 Template UI backend APIs
 
 ## Template APIs
