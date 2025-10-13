@@ -3,7 +3,7 @@
 import content from '@content/content';
 import { MessagePlans } from '@molecules/MessagePlans/MessagePlans';
 import { Metadata } from 'next';
-import { countRoutingConfigs, getRoutingConfigs } from '@utils/form-actions';
+import { countRoutingConfigs, getRoutingConfigs } from '@utils/message-plans';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

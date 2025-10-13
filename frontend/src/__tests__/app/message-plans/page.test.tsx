@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { getRoutingConfigs, countRoutingConfigs } from '@utils/form-actions';
+import { getRoutingConfigs, countRoutingConfigs } from '@utils/message-plans';
 import {
   type MessagePlansProps,
   MessagePlans,
@@ -11,7 +11,7 @@ import MessagePlansPage, { generateMetadata } from '@app/message-plans/page';
 import { ReactElement } from 'react';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 
-jest.mock('@utils/form-actions');
+jest.mock('@utils/message-plans');
 jest.mock('@utils/server-features');
 
 const countRoutingConfigsMock = jest.mocked(countRoutingConfigs);
