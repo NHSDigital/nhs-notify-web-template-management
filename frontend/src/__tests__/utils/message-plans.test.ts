@@ -10,18 +10,25 @@ import { routingConfigurationApiClient } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from '@utils/form-actions';
 import type {
+  CascadeGroupName,
+  Channel,
+  ChannelType,
   RoutingConfig,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '@testhelpers';
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client', () => ({
-  routingConfigurationApiClient: {
-    get: jest.fn(),
-    update: jest.fn(),
-  },
-}));
+jest.mock('nhs-notify-backend-client', () => {
+  const actual = jest.requireActual('nhs-notify-backend-client');
+  return {
+    routingConfigurationApiClient: {
+      get: jest.fn(),
+      update: jest.fn(),
+    },
+    $RoutingConfig: actual.$RoutingConfig,
+  };
+});
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: {
     error: jest.fn(),
@@ -42,6 +49,14 @@ const getTemplateMock = jest.mocked(getTemplate);
 const validRoutingConfigId = 'a3f1c2e4-5b6d-4e8f-9a2b-1c3d4e5f6a7b';
 const notFoundRoutingConfigId = 'b1a2c3d4-e5f6-4890-ab12-cd34ef56ab78';
 const invalidRoutingConfigId = 'not-a-uuid';
+const validTemplateId = 'd4e5f6a7-b8c9-40d1-ef23-ab45cd67ef89';
+
+const validCascadeItem = {
+  cascadeGroups: ['standard' as CascadeGroupName],
+  channel: 'EMAIL' as Channel,
+  channelType: 'primary' as ChannelType,
+  defaultTemplateId: validTemplateId,
+};
 
 const baseConfig: RoutingConfig = {
   id: validRoutingConfigId,
@@ -51,8 +66,8 @@ const baseConfig: RoutingConfig = {
   campaignId: 'campaign-1',
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
-  cascade: [],
-  cascadeGroupOverrides: [],
+  cascade: [validCascadeItem],
+  cascadeGroupOverrides: [{ name: 'standard' }],
 };
 
 describe('@utils/message-plans', () => {
@@ -262,6 +277,7 @@ describe('@utils/message-plans', () => {
             cascadeGroups: ['standard'],
             channel: 'NHSAPP',
             channelType: 'primary',
+            defaultTemplateId: '',
           },
         ],
       };
@@ -357,6 +373,7 @@ describe('@utils/message-plans', () => {
             cascadeGroups: ['standard'],
             channel: 'NHSAPP',
             channelType: 'primary',
+            defaultTemplateId: '',
           },
         ],
       };

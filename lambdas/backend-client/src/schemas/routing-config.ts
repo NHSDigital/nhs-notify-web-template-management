@@ -86,13 +86,31 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
 );
 
 const $CascadeItem = schemaFor<CascadeItem>()(
-  $CascadeItemBase.extend({
-    defaultTemplateId: z.string(),
-    conditionalTemplates: z.array(
-      z.union([$ConditionalTemplateAccessible, $ConditionalTemplateLanguage])
-    ),
-  })
-).strict();
+  $CascadeItemBase.and(
+    z.union([
+      z.object({
+        defaultTemplateId: z.string(),
+        conditionalTemplates: z
+          .array(
+            z.union([
+              $ConditionalTemplateAccessible,
+              $ConditionalTemplateLanguage,
+            ])
+          )
+          .optional(),
+      }),
+      z.object({
+        defaultTemplateId: z.string().optional(),
+        conditionalTemplates: z.array(
+          z.union([
+            $ConditionalTemplateAccessible,
+            $ConditionalTemplateLanguage,
+          ])
+        ),
+      }),
+    ])
+  )
+);
 
 export const $CreateUpdateRoutingConfig =
   schemaFor<CreateUpdateRoutingConfig>()(
