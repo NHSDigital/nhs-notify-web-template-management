@@ -13,6 +13,7 @@ import type {
   CascadeGroupName,
   Channel,
   ChannelType,
+  Result,
   RoutingConfig,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
@@ -146,6 +147,16 @@ describe('@utils/message-plans', () => {
         expect.any(Object)
       );
     });
+
+    it('should return undefined if API returns no data', async () => {
+      routingConfigApiMock.get.mockResolvedValueOnce(
+        {} as Result<RoutingConfig>
+      );
+
+      const response = await getMessagePlan(validRoutingConfigId);
+
+      expect(response).toBeUndefined();
+    });
   });
 
   describe('updateMessagePlan', () => {
@@ -180,6 +191,19 @@ describe('@utils/message-plans', () => {
       );
       expect(response).toEqual(updated);
       expect(loggerMock.error).not.toHaveBeenCalled();
+    });
+
+    it('should return undefined if API returns no data', async () => {
+      routingConfigApiMock.update.mockResolvedValueOnce(
+        {} as Result<RoutingConfig>
+      );
+
+      const response = await updateMessagePlan(
+        validRoutingConfigId,
+        baseConfig
+      );
+
+      expect(response).toBeUndefined();
     });
 
     it('should log and return undefined on API error', async () => {
