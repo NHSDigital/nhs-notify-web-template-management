@@ -26,25 +26,25 @@ const INITIAL_CASCADE_ITEMS: Record<Channel, CascadeItem> = {
     cascadeGroups: ['standard'],
     channel: 'NHSAPP',
     channelType: 'primary',
-    defaultTemplateId: '',
+    defaultTemplateId: null,
   },
   EMAIL: {
     cascadeGroups: ['standard'],
     channel: 'EMAIL',
     channelType: 'primary',
-    defaultTemplateId: '',
+    defaultTemplateId: null,
   },
   SMS: {
     cascadeGroups: ['standard'],
     channel: 'SMS',
     channelType: 'primary',
-    defaultTemplateId: '',
+    defaultTemplateId: null,
   },
   LETTER: {
     cascadeGroups: ['standard'],
     channel: 'LETTER',
     channelType: 'primary',
-    defaultTemplateId: '',
+    defaultTemplateId: null,
   },
 };
 

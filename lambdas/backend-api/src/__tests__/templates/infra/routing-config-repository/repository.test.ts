@@ -716,10 +716,10 @@ describe('RoutingConfigRepository', () => {
             issues: expect.arrayContaining([
               {
                 code: 'invalid_value',
-                values: ['COMPLETED', 'DRAFT', 'DELETED'],
+                values: ['COMPLETED', 'DELETED', 'DRAFT'],
                 path: ['status'],
                 message:
-                  'Invalid option: expected one of "COMPLETED"|"DRAFT"|"DELETED"',
+                  'Invalid option: expected one of "COMPLETED"|"DELETED"|"DRAFT"',
               },
             ]),
           }),

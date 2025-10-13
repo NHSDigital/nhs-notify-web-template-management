@@ -62,7 +62,7 @@ export type CascadeItemWithConditional = CascadeItemBase & {
 };
 
 export type CascadeItemWithDefault = CascadeItemBase & {
-  defaultTemplateId: string;
+  defaultTemplateId: string | null;
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -90,12 +90,12 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
-  templateId: string;
+  templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
-  templateId: string;
+  templateId: string | null;
 };
 
 export type CountSuccess = {
