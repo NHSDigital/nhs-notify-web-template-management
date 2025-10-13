@@ -190,12 +190,43 @@
         ]
       },
       "CascadeItem": {
-        "oneOf": [
+        "allOf": [
+          { "$ref": "#/components/schemas/CascadeItemBase" },
           {
-            "$ref": "#/components/schemas/CascadeItemWithDefault"
-          },
-          {
-            "$ref": "#/components/schemas/CascadeItemWithConditional"
+            "anyOf": [
+              {
+                "type": "object",
+                "required": ["defaultTemplateId"],
+                "properties": {
+                  "defaultTemplateId": { "format": "uuid", "type": "string" },
+                  "conditionalTemplates": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        { "$ref": "#/components/schemas/ConditionalTemplateLanguage" },
+                        { "$ref": "#/components/schemas/ConditionalTemplateAccessible" }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": ["conditionalTemplates"],
+                "properties": {
+                  "defaultTemplateId": { "format": "uuid", "type": "string" },
+                  "conditionalTemplates": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        { "$ref": "#/components/schemas/ConditionalTemplateLanguage" },
+                        { "$ref": "#/components/schemas/ConditionalTemplateAccessible" }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -220,63 +251,6 @@
           "channelType"
         ],
         "type": "object"
-      },
-      "CascadeItemWithConditional": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CascadeItemBase"
-          },
-          {
-            "not": {
-              "required": [
-                "defaultTemplateId"
-              ]
-            },
-            "properties": {
-              "conditionalTemplates": {
-                "items": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ConditionalTemplateLanguage"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ConditionalTemplateAccessible"
-                    }
-                  ]
-                },
-                "type": "array"
-              }
-            },
-            "required": [
-              "conditionalTemplates"
-            ],
-            "type": "object"
-          }
-        ]
-      },
-      "CascadeItemWithDefault": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CascadeItemBase"
-          },
-          {
-            "not": {
-              "required": [
-                "conditionalTemplates"
-              ]
-            },
-            "properties": {
-              "defaultTemplateId": {
-                "format": "uuid",
-                "type": "string"
-              }
-            },
-            "required": [
-              "defaultTemplateId"
-            ],
-            "type": "object"
-          }
-        ]
       },
       "Channel": {
         "enum": [
