@@ -22,6 +22,13 @@ get_user_command_output=$(aws cognito-idp admin-get-user --user-pool-id "$cognit
 get_user_command_exit_code=$?
 set -e #re-enable
 
+if [[ $get_user_command_exit_code -ne 0 ]]; then
+  if ! echo "$get_user_command_output" | grep -q "UserNotFoundException"; then
+    echo "$get_user_command_output" >&2
+    exit $get_user_command_exit_code
+  fi
+fi
+
 function gen_temp_password() {
   upper=$(LC_ALL=C tr -dc 'A-Z' </dev/urandom | head -c 4; echo)
   lower=$(LC_ALL=C tr -dc 'a-z' </dev/urandom | head -c 4; echo)
