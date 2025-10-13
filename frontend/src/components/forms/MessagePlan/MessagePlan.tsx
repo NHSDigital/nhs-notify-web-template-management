@@ -117,6 +117,7 @@ export function MessagePlanForm({
             'nhsuk-u-padding-top-3',
             'inline-block'
           )}
+          data-testid='go-back-link'
         >
           {formContent.backLink.text}
         </Link>

@@ -5,11 +5,13 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
 } from 'helpers/template-mgmt-common.steps';
-import { MessagePlanCampaignIdRequiredPage } from 'pages/routing/campaign-id-required-page';
+import { RoutingMessagePlanCampaignIdRequiredPage } from 'pages/routing/campaign-id-required-page';
 
 test.describe('Message Plan Campaign Id Required Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
-    const campaignIdRequiredPage = new MessagePlanCampaignIdRequiredPage(page);
+    const campaignIdRequiredPage = new RoutingMessagePlanCampaignIdRequiredPage(
+      page
+    );
 
     await campaignIdRequiredPage.loadPage();
 
