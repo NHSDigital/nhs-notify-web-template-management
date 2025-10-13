@@ -6,7 +6,7 @@ import { Details, Table } from 'nhsuk-react-components';
 import { format } from 'date-fns/format';
 import Link from 'next/link';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
-import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import type { RoutingConfigStatusActive } from 'nhs-notify-backend-client';
 import { messagePlanStatusToDisplayText } from 'nhs-notify-web-template-management-utils';
 
 export type MessagePlanListItem = {
@@ -16,7 +16,7 @@ export type MessagePlanListItem = {
 };
 
 type MessagePlansListProps = {
-  status: Exclude<RoutingConfigStatus, 'DELETED'>;
+  status: RoutingConfigStatusActive;
   count: number;
   plans: MessagePlanListItem[];
 };
