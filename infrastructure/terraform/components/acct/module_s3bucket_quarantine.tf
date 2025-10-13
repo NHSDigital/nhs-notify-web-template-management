@@ -1,5 +1,5 @@
 module "s3bucket_quarantine" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.24/terraform-s3bucket.zip"
 
   name = "quarantine"
 
@@ -9,7 +9,7 @@ module "s3bucket_quarantine" {
   environment    = var.environment
   component      = var.component
 
-  kms_key_arn = var.kms_key_arn
+  kms_key_arn = module.kms.key_arn
 
   notification_events = {
     eventbridge = true
