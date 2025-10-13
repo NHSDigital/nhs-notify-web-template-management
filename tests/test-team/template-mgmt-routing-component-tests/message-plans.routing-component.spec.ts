@@ -61,6 +61,16 @@ test.describe('Message plans Page', () => {
     const messagePlanPage = new RoutingMessagePlansPage(page);
     await messagePlanPage.loadPage();
 
+    await expect(messagePlanPage.draftMessagePlansTable).not.toHaveAttribute(
+      'open'
+    );
+
+    await messagePlanPage.draftMessagePlansTable.click();
+
+    await expect(messagePlanPage.draftMessagePlansTable).toHaveAttribute(
+      'open'
+    );
+
     const draftIdCells = messagePlanPage.draftMessagePlansTable.getByTestId(
       'message-plan-id-cell'
     );
@@ -83,6 +93,16 @@ test.describe('Message plans Page', () => {
         cell.includes(routingConfigs.deleted.id)
       )
     ).toBeUndefined();
+
+    await expect(
+      messagePlanPage.productionMessagePlansTable
+    ).not.toHaveAttribute('open');
+
+    await messagePlanPage.productionMessagePlansTable.click();
+
+    await expect(messagePlanPage.productionMessagePlansTable).toHaveAttribute(
+      'open'
+    );
 
     const productionIdCells =
       messagePlanPage.productionMessagePlansTable.getByTestId(

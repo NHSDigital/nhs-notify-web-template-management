@@ -14,11 +14,11 @@ export class RoutingMessagePlansPage extends TemplateMgmtBasePageNonDynamic {
 
   constructor(page: Page) {
     super(page);
-    this.messagePlanStatusInfo = page.locator('#message-plans-status-info');
-    this.newMessagePlanButton = page.locator('#create-message-plan-button');
-    this.draftMessagePlansTable = page.locator('#message-plans-list-draft');
-    this.productionMessagePlansTable = page.locator(
-      '#message-plans-list-production'
+    this.messagePlanStatusInfo = page.getByTestId('message-plans-status-info');
+    this.newMessagePlanButton = page.getByTestId('create-message-plan-button');
+    this.draftMessagePlansTable = page.getByTestId('message-plans-list-draft');
+    this.productionMessagePlansTable = page.getByTestId(
+      'message-plans-list-production'
     );
   }
 

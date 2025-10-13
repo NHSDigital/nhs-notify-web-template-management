@@ -785,7 +785,7 @@ describe('form-actions', () => {
         },
       ];
 
-      // a487ed49-e2f7-4871-ac8d-0c6c682c71f5 is the newest, 8f5157fe-72d7-4a9c-818f-77c128ec8197 is the oldest.
+      // a48... is the newest, 8f5... is the oldest.
       // the others all have the same createdAt.
       const expectedOrder = [
         'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',

@@ -42,7 +42,7 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.get.length).toBe(1);
     });
 
-    it('should return number of routing configuration', async () => {
+    it('should return number of routing configurations', async () => {
       axiosMock
         .onGet('/v1/routing-configurations/count', {
           params: { status: 'COMPLETED' },
@@ -86,7 +86,7 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.get.length).toBe(1);
     });
 
-    it('should return list of routing configuration', async () => {
+    it('should return list of routing configurations', async () => {
       const data = {
         campaignId: 'campaignId',
         cascade: [],

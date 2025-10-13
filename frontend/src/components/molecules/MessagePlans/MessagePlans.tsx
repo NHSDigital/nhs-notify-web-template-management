@@ -35,7 +35,7 @@ export const MessagePlans = (props: MessagePlansProps) => {
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
           <h1>{pageHeading}</h1>
-          <Details id='message-plans-status-info'>
+          <Details data-testid='message-plans-status-info'>
             <Details.Summary>{draftAndProdHeading}</Details.Summary>
             <Details.Text>
               {draftAndProductionInfo.map(
@@ -56,7 +56,9 @@ export const MessagePlans = (props: MessagePlansProps) => {
             </Details.Text>
           </Details>
           <Link passHref legacyBehavior href={button.link}>
-            <Button id='create-message-plan-button'>{button.text}</Button>
+            <Button data-testid='create-message-plan-button'>
+              {button.text}
+            </Button>
           </Link>
           <MessagePlansList
             status='DRAFT'

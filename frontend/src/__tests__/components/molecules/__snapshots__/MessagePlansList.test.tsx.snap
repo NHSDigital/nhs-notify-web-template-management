@@ -4,7 +4,7 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
 <DocumentFragment>
   <details
     class="nhsuk-details nhsuk-expander"
-    id="message-plans-list-draft"
+    data-testid="message-plans-list-draft"
   >
     <summary
       class="nhsuk-details__summary nhsuk-heading-s nhsuk-u-margin-bottom-0"
@@ -117,7 +117,7 @@ exports[`MessagePlansList matches snapshot when no data is available 1`] = `
 <DocumentFragment>
   <details
     class="nhsuk-details nhsuk-expander"
-    id="message-plans-list-draft"
+    data-testid="message-plans-list-draft"
   >
     <summary
       class="nhsuk-details__summary nhsuk-heading-s nhsuk-u-margin-bottom-0"

@@ -74,8 +74,6 @@ describe('MessagePlansPage', () => {
       typeof MessagePlans
     >;
 
-    expect(page.props).toBeDefined();
-
     expect(getRoutingConfigsMock).toHaveBeenCalledTimes(1);
 
     expect(countRoutingConfigsMock).toHaveBeenNthCalledWith(1, 'DRAFT');

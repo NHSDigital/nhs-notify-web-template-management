@@ -18,7 +18,7 @@ exports[`MessagePlans matches snapshot 1`] = `
         </h1>
         <details
           class="nhsuk-details"
-          id="message-plans-status-info"
+          data-testid="message-plans-status-info"
         >
           <summary
             class="nhsuk-details__summary"
@@ -89,9 +89,9 @@ exports[`MessagePlans matches snapshot 1`] = `
         <a
           aria-disabled="false"
           class="nhsuk-button"
+          data-testid="create-message-plan-button"
           draggable="false"
           href="/message-plans/choose-message-order"
-          id="create-message-plan-button"
           role="button"
         >
           New message plan
