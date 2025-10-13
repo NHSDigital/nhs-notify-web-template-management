@@ -1,3 +1,4 @@
+<!-- vale off -->
 # Backend-api
 
 Template UI backend APIs
@@ -200,10 +201,19 @@ curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_
 }'
 ```
 
-### PATCH - /v1/template/:templateId/submit - Submit a routing configuration
+### PATCH - /v1/routing-configuration/:routingConfigId/submit - Submit a routing configuration
 
 ```bash
 curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}/submit" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
+
+### DELETE - /v1/routing-configuration/:routingConfigId - Delete a routing configuration
+
+```bash
+curl -X DELETE --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```
+<!-- vale on -->

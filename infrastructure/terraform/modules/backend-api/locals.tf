@@ -18,6 +18,7 @@ locals {
     CREATE_LAMBDA_ARN                = module.create_template_lambda.function_arn
     CREATE_ROUTING_CONFIG_LAMBDA_ARN = module.create_routing_config_lambda.function_arn
     DELETE_LAMBDA_ARN                = module.delete_template_lambda.function_arn
+    DELETE_ROUTING_CONFIG_LAMBDA_ARN = module.delete_routing_config_lambda.function_arn
     GET_CLIENT_LAMBDA_ARN            = module.get_client_lambda.function_arn
     GET_LAMBDA_ARN                   = module.get_template_lambda.function_arn
     GET_ROUTING_CONFIG_LAMBDA_ARN    = module.get_routing_config_lambda.function_arn
