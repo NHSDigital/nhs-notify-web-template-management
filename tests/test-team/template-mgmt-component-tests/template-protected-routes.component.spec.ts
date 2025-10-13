@@ -34,11 +34,15 @@ import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/templa
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
 import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
+import { CreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
+import { MessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
+  CreateMessagePlanPage,
+  MessagePlanCampaignIdRequiredPage,
   MessageTemplatesPage,
   RoutingChooseMessageOrderPage,
   TemplateMgmtChoosePage,
