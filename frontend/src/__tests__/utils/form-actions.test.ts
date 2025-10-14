@@ -488,17 +488,17 @@ describe('form-actions', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template',
       message: 'Message',
-      updatedAt: '2021-01-01T00:00:00.000Z',
+      createdAt: '2020-01-01T00:00:00.000Z',
     } satisfies Partial<TemplateDto>;
 
     const templates = [
-      { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '06', updatedAt: '2022-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '08', updatedAt: '2020-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '05', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '02', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '01', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '03', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '04', updatedAt: '2021-01-01T00:00:00.000Z' },
     ];
 
     // 06 is the newest, 08 is the oldest.

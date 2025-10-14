@@ -64,7 +64,7 @@ export function MessageTemplates({
                 {messageTemplatesContent.tableHeadings.status}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-date-created'>
-                {messageTemplatesContent.tableHeadings.dateCreated}
+                {messageTemplatesContent.tableHeadings.lastEdited}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-action'>
                 {messageTemplatesContent.tableHeadings.action.text}
@@ -86,9 +86,9 @@ export function MessageTemplates({
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>
-                  {format(`${template.createdAt}`, 'do MMM yyyy')}
+                  {format(`${template.updatedAt}`, 'do MMM yyyy')}
                   <br />
-                  {format(`${template.createdAt}`, 'HH:mm')}
+                  {format(`${template.updatedAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
                   <div className={style.actionLinksWrapper}>

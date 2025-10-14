@@ -184,13 +184,13 @@ export async function getTemplates(): Promise<TemplateDto[]> {
       (template): template is ValidatedTemplateDto => template !== undefined
     )
     .sort((a, b) => {
-      const aCreatedAt = a.createdAt;
-      const bCreatedAt = b.createdAt;
+      const aUpdatedAt = a.updatedAt;
+      const bUpdatedAt = b.updatedAt;
 
-      if (aCreatedAt === bCreatedAt) {
+      if (aUpdatedAt === bUpdatedAt) {
         return a.id.localeCompare(b.id);
       }
-      return aCreatedAt < bCreatedAt ? 1 : -1;
+      return aUpdatedAt < bUpdatedAt ? 1 : -1;
     });
 
   return sortedData;
