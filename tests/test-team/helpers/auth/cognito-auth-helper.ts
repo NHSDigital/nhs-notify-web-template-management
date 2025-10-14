@@ -266,7 +266,7 @@ export class CognitoAuthHelper {
     const clientConfig: ClientConfiguration | undefined =
       testClients[userDetails.clientKey];
 
-    const { name: clientName, campaignId, campaignIds } = clientConfig ?? {};
+    const { name: clientName, campaignIds } = clientConfig ?? {};
 
     const clientAttributes = [
       { Name: 'custom:sbx_client_id', Value: clientId },
@@ -326,7 +326,6 @@ export class CognitoAuthHelper {
       {
         email,
         userId: sub,
-        campaignId,
         campaignIds,
         clientId,
         clientKey: userDetails.clientKey,
