@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import content from '@content/content';
 import ChooseTemplatesPage, {
   generateMetadata,
@@ -18,12 +15,12 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
+import { render } from '@testing-library/react';
 
 const { pageTitle } = content.pages.chooseTemplatesForMessagePlan;
 
 jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
-jest.mock('@organisms/CreateEditMessagePlan/CreateEditMessagePlan');
 
 const redirectMock = jest.mocked(redirect);
 const getMessagePlanMock = jest.mocked(getMessagePlan);
@@ -225,6 +222,8 @@ describe('ChooseTemplatesPage', () => {
       params: Promise.resolve({ routingConfigId: validRoutingConfigId }),
     });
 
-    expect(page).toMatchSnapshot();
+    const { container } = render(page);
+
+    expect(container).toMatchSnapshot();
   });
 });
