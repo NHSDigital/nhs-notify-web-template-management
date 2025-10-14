@@ -298,8 +298,15 @@ describe('RoutingConfigClient', () => {
       });
     });
 
-    test('returns 400 error when input is invalid', async () => {
+    test('returns validation error when input is invalid', async () => {
       const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: true },
+          campaignIds: [routingConfig.campaignId],
+        },
+      });
 
       const result = await client.createRoutingConfig(
         { a: 1 } as unknown as CreateUpdateRoutingConfig,
@@ -671,6 +678,12 @@ describe('RoutingConfigClient', () => {
 
     test('returns validation error when update is invalid', async () => {
       const { client, mocks } = setup();
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: true },
+          campaignIds: [routingConfig.campaignId],
+        },
+      });
 
       const update: CreateUpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,

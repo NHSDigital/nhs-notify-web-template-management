@@ -22,15 +22,6 @@ export class RoutingConfigClient {
     payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const validationResult = await validate(
-      $CreateUpdateRoutingConfig,
-      payload
-    );
-
-    if (validationResult.error) return validationResult;
-
-    const validated = validationResult.data;
-
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -47,6 +38,15 @@ export class RoutingConfigClient {
       );
     }
 
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      payload
+    );
+
+    if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
+
     if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
@@ -62,15 +62,6 @@ export class RoutingConfigClient {
     payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const validationResult = await validate(
-      $CreateUpdateRoutingConfig,
-      payload
-    );
-
-    if (validationResult.error) return validationResult;
-
-    const validated = validationResult.data;
-
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -79,6 +70,15 @@ export class RoutingConfigClient {
       clientConfigurationResult;
 
     if (clientConfigurationError) return clientConfigurationResult;
+
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      payload
+    );
+
+    if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
 
     if (!clientConfiguration?.features.routing) {
       return failure(
