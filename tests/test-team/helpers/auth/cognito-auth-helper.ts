@@ -118,11 +118,6 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'ClientWithMultipleCampaigns',
   },
 
-  UserWithFallbackCampaignId: {
-    userId: 'UserWithFallbackCampaignId',
-    clientKey: 'ClientWithFallbackCampaignId',
-  },
-
   /**
    * UserRoutingEnabled belongs to an alternate client with routing enabled
    */

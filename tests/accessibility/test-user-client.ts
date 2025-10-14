@@ -39,7 +39,7 @@ export class TestUserClient {
         Name: `${this.clientSsmPathPrefix}/${clientId}`,
         Value: JSON.stringify({
           features: { proofing: true },
-          campaignId: 'accessibility-test-campaign',
+          campaignIds: ['accessibility-test-campaign'],
         } satisfies ClientConfiguration),
         Overwrite: true,
         Type: 'String',
