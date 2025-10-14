@@ -3,8 +3,8 @@ import type {
   GetV1RoutingConfigurationsCountData,
   GetV1RoutingConfigurationsData,
   RoutingConfig,
-  RoutingConfigStatusActive,
   RoutingConfigSuccess,
+  RoutingConfigStatusActive,
   RoutingConfigSuccessList,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';

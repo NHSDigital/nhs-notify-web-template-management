@@ -33,10 +33,10 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
+import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
-import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
-import { RoutingMessagePlansPage } from 'pages/routing-message-plans-page';
+import { RoutingMessagePlansPage } from '../pages/routing-message-plans-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });

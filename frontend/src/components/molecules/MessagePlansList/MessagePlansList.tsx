@@ -22,7 +22,7 @@ type MessagePlansListProps = {
 };
 
 const {
-  components: { messagePlanComponent },
+  components: { messagePlansListComponent },
 } = content;
 
 export const MessagePlansList = (props: MessagePlansListProps) => {
@@ -32,7 +32,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
 
   const header = (
     <Table.Row>
-      {messagePlanComponent.tableHeadings.map((item) => (
+      {messagePlansListComponent.tableHeadings.map((item) => (
         <Table.Cell key={item}>{item}</Table.Cell>
       ))}
     </Table.Row>
@@ -41,7 +41,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const rows = props.plans.map((plan) => (
     <Table.Row key={plan.id}>
       <Table.Cell>
-        <Link href={messagePlanComponent.previewLink(plan.id)}>
+        <Link href={messagePlansListComponent.previewLink(plan.id)}>
           {plan.name}
         </Link>
       </Table.Cell>
@@ -69,7 +69,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
           </Table>
         ) : (
           <MarkdownContent
-            content={messagePlanComponent.noMessagePlansMessage}
+            content={messagePlansListComponent.noMessagePlansMessage}
             variables={{ status: statusDisplayLower }}
           />
         )}

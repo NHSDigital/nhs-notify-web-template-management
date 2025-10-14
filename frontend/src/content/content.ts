@@ -1172,7 +1172,7 @@ const messagePlansPage = {
   },
 };
 
-const messagePlanComponent = {
+const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
   previewLink: (id: string) => `/message-plan/${id}`,
@@ -1243,9 +1243,9 @@ const content = {
     messageFormatting,
     messagePlanBlock,
     messagePlanChannelTemplate,
-    messagePlanComponent,
     messagePlanFallbackConditions,
     messagePlanForm,
+    messagePlansListComponent,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
