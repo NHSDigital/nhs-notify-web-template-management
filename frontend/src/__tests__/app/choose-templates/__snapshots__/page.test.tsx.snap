@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChooseTemplatesPage renders correctly for a message plan with multiple templates (snapshot) 1`] = `
+<CreateEditMessagePlan
+  messagePlan={
+    {
+      "campaignId": "campaign-2",
+      "cascade": [
+        {
+          "cascadeGroups": [
+            "standard",
+          ],
+          "channel": "NHSAPP",
+          "channelType": "primary",
+          "defaultTemplateId": "d3a2c6ba-438a-4bf4-b94a-7c64c6528e7f",
+        },
+        {
+          "cascadeGroups": [
+            "standard",
+          ],
+          "channel": "SMS",
+          "channelType": "primary",
+          "defaultTemplateId": "5f7c3e1d-9b1a-4d3a-8f3e-2c6b8e9f1a2b",
+        },
+        {
+          "cascadeGroups": [
+            "standard",
+          ],
+          "channel": "LETTER",
+          "channelType": "primary",
+          "defaultTemplateId": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+        },
+      ],
+      "cascadeGroupOverrides": [],
+      "clientId": "client-1",
+      "createdAt": "2025-01-13T10:19:25.579Z",
+      "id": "fbb81055-79b9-4759-ac07-d191ae57be34",
+      "name": "Autumn Campaign Plan",
+      "status": "DRAFT",
+      "updatedAt": "2025-01-13T10:19:25.579Z",
+    }
+  }
+  templates={
+    {
+      "test-template-app": {
+        "createdAt": "2025-01-13T10:19:25.579Z",
+        "id": "d3a2c6ba-438a-4bf4-b94a-7c64c6528e7f",
+        "message": "message",
+        "name": "name",
+        "templateStatus": "NOT_YET_SUBMITTED",
+        "templateType": "NHS_APP",
+        "updatedAt": "2025-01-13T10:19:25.579Z",
+      },
+      "test-template-letter": {
+        "createdAt": "2025-01-13T10:19:25.579Z",
+        "files": {
+          "pdfTemplate": {
+            "currentVersion": "8ADED236B5AE",
+            "fileName": "template.pdf",
+            "virusScanStatus": "PASSED",
+          },
+        },
+        "id": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+        "language": "en",
+        "letterType": "x0",
+        "name": "name",
+        "templateStatus": "NOT_YET_SUBMITTED",
+        "templateType": "LETTER",
+        "updatedAt": "2025-01-13T10:19:25.579Z",
+      },
+      "test-template-sms": {
+        "createdAt": "2025-01-13T10:19:25.579Z",
+        "id": "5f7c3e1d-9b1a-4d3a-8f3e-2c6b8e9f1a2b",
+        "message": "message",
+        "name": "name",
+        "templateStatus": "NOT_YET_SUBMITTED",
+        "templateType": "SMS",
+        "updatedAt": "2025-01-13T10:19:25.579Z",
+      },
+    }
+  }
+/>
+`;

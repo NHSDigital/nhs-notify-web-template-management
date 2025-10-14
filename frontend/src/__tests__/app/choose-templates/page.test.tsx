@@ -29,12 +29,14 @@ const redirectMock = jest.mocked(redirect);
 const getMessagePlanMock = jest.mocked(getMessagePlan);
 const getMessagePlanTemplatesMock = jest.mocked(getMessagePlanTemplates);
 
+const validRoutingConfigId = 'fbb81055-79b9-4759-ac07-d191ae57be34';
+
 const routingConfig: RoutingConfig = {
-  id: 'routing-config-001',
+  id: validRoutingConfigId,
   name: 'Autumn Campaign Plan',
   status: 'DRAFT' as RoutingConfigStatus,
-  clientId: 'clientemplate-123',
-  campaignId: 'camp-123',
+  clientId: 'client-1',
+  campaignId: 'campaign-2',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   cascadeGroupOverrides: [],
@@ -66,10 +68,10 @@ describe('ChooseTemplatesPage', () => {
     getMessagePlanTemplatesMock.mockResolvedValueOnce({});
 
     const page = await ChooseTemplatesPage({
-      params: Promise.resolve({ routingConfigId: 'routing-config-001' }),
+      params: Promise.resolve({ routingConfigId: validRoutingConfigId }),
     });
 
-    expect(getMessagePlanMock).toHaveBeenCalledWith('routing-config-001');
+    expect(getMessagePlanMock).toHaveBeenCalledWith(validRoutingConfigId);
     expect(getMessagePlanTemplatesMock).toHaveBeenCalledWith(routingConfig);
 
     expect(page).toEqual(
@@ -98,10 +100,10 @@ describe('ChooseTemplatesPage', () => {
     getMessagePlanTemplatesMock.mockResolvedValueOnce(templates);
 
     const page = await ChooseTemplatesPage({
-      params: Promise.resolve({ routingConfigId: 'routing-config-001' }),
+      params: Promise.resolve({ routingConfigId: validRoutingConfigId }),
     });
 
-    expect(getMessagePlanMock).toHaveBeenCalledWith('routing-config-001');
+    expect(getMessagePlanMock).toHaveBeenCalledWith(validRoutingConfigId);
     expect(getMessagePlanTemplatesMock).toHaveBeenCalledWith(planWithCascade);
 
     expect(page).toEqual(
@@ -176,5 +178,53 @@ describe('ChooseTemplatesPage', () => {
       'replace'
     );
     expect(getMessagePlanTemplatesMock).not.toHaveBeenCalled();
+  });
+
+  it('renders correctly for a message plan with multiple templates (snapshot)', async () => {
+    const appTemplateId = 'd3a2c6ba-438a-4bf4-b94a-7c64c6528e7f';
+    const smsTemplateId = '5f7c3e1d-9b1a-4d3a-8f3e-2c6b8e9f1a2b';
+    const letterTemplateId = '9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d';
+
+    const planWithMultiple: RoutingConfig = {
+      ...routingConfig,
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: appTemplateId,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'SMS',
+          channelType: 'primary',
+          defaultTemplateId: smsTemplateId,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplateId,
+        },
+      ],
+    };
+
+    const templates = {
+      'test-template-app': { ...NHS_APP_TEMPLATE, id: appTemplateId },
+      'test-template-sms': { ...SMS_TEMPLATE, id: smsTemplateId },
+      'test-template-letter': {
+        ...LETTER_TEMPLATE,
+        id: letterTemplateId,
+      },
+    };
+
+    getMessagePlanMock.mockResolvedValueOnce(planWithMultiple);
+    getMessagePlanTemplatesMock.mockResolvedValueOnce(templates);
+
+    const page = await ChooseTemplatesPage({
+      params: Promise.resolve({ routingConfigId: validRoutingConfigId }),
+    });
+
+    expect(page).toMatchSnapshot();
   });
 });
