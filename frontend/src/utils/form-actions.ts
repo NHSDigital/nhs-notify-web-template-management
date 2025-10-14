@@ -4,13 +4,12 @@ import { getSessionServer } from '@utils/amplify-utils';
 import {
   CreateUpdateTemplate,
   isTemplateDtoValid,
-  RoutingConfig,
   TemplateDto,
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
+import { sortAscByCreatedAt } from './sort';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -27,7 +26,7 @@ export async function createTemplate(
   );
 
   if (error) {
-    logger.error('Failed to create template', { error });
+    logger.error('Failed to create template', error);
     throw new Error('Failed to create new template');
   }
 
@@ -53,7 +52,7 @@ export async function uploadLetterTemplate(
   );
 
   if (error) {
-    logger.error('Failed to create letter template', { error });
+    logger.error('Failed to create letter template', error);
     throw new Error('Failed to create new letter template');
   }
 
@@ -61,6 +60,7 @@ export async function uploadLetterTemplate(
 }
 
 export async function saveTemplate(
+  templateId: string,
   template: Extract<TemplateDto, { templateType: 'EMAIL' | 'SMS' | 'NHS_APP' }>
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();
@@ -70,13 +70,13 @@ export async function saveTemplate(
   }
 
   const { data, error } = await templateApiClient.updateTemplate(
-    template.id,
+    templateId,
     template,
     accessToken
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 
@@ -98,7 +98,7 @@ export async function setTemplateToSubmitted(
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 
@@ -118,7 +118,7 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
   );
 
   if (error) {
-    logger.error('Failed to save template', { error });
+    logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
   }
 }
@@ -138,7 +138,7 @@ export async function requestTemplateProof(
   );
 
   if (error) {
-    logger.error('Failed to request proof', { error });
+    logger.error('Failed to request proof', error);
     throw new Error('Failed to request proof');
   }
 
@@ -160,7 +160,7 @@ export async function getTemplate(
   );
 
   if (error) {
-    logger.error('Failed to get template', { error });
+    logger.error('Failed to get template', error);
   }
 
   return data;
@@ -184,41 +184,7 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     .map((template) => isTemplateDtoValid(template))
     .filter(
       (template): template is ValidatedTemplateDto => template !== undefined
-    )
-    .sort((a, b) => {
-      const aCreatedAt = a.createdAt;
-      const bCreatedAt = b.createdAt;
+    );
 
-      if (aCreatedAt === bCreatedAt) {
-        return a.id.localeCompare(b.id);
-      }
-      return aCreatedAt < bCreatedAt ? 1 : -1;
-    });
-
-  return sortedData;
-}
-
-export async function createRoutingConfig(
-  routingConfig: Pick<
-    RoutingConfig,
-    'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
-  >
-): Promise<RoutingConfig> {
-  const { accessToken } = await getSessionServer();
-
-  if (!accessToken) {
-    throw new Error('Failed to get access token');
-  }
-
-  const { data, error } = await routingConfigurationApiClient.create(
-    routingConfig,
-    accessToken
-  );
-
-  if (error) {
-    logger.error('Failed to create message plan', { error });
-    throw new Error('Failed to create message plan');
-  }
-
-  return data;
+  return sortAscByCreatedAt(sortedData);
 }

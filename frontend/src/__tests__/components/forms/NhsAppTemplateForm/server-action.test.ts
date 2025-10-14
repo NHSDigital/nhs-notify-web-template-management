@@ -1,6 +1,6 @@
 import { getMockFormData } from '@testhelpers/helpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
-import {
+import type {
   NHSAppTemplate,
   CreateUpdateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -23,7 +23,7 @@ const initialState: CreateUpdateNHSAppTemplate = {
 
 const savedState: NHSAppTemplate = {
   ...initialState,
-  id: 'template-id',
+  id: 'a28c9e75-d6c9-4efe-879e-e082238938cf',
   templateStatus: 'NOT_YET_SUBMITTED',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
@@ -130,16 +130,35 @@ describe('CreateNHSAppTemplate server actions', () => {
       })
     );
 
-    expect(saveTemplateMock).toHaveBeenCalledWith({
+    expect(saveTemplateMock).toHaveBeenCalledWith(savedState.id, {
       ...savedState,
       name: 'template-name',
       message: 'template-message',
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      `/preview-nhs-app-template/template-id?from=edit`,
+      `/preview-nhs-app-template/${savedState.id}?from=edit`,
       'push'
     );
+  });
+
+  test('redirects to invalid-template if the ID in formState is not a uuid', async () => {
+    const badIdState = {
+      ...savedState,
+      id: 'no-uuid',
+    };
+
+    await processFormActions(
+      badIdState,
+      getMockFormData({
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage: 'template-message',
+      })
+    );
+
+    expect(saveTemplateMock).not.toHaveBeenCalled();
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test('should save a template that contains a url with angle brackets, if they are url encoded', async () => {
@@ -159,7 +178,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       })
     );
 
-    expect(saveTemplateMock).toHaveBeenCalledWith({
+    expect(saveTemplateMock).toHaveBeenCalledWith(savedState.id, {
       ...savedState,
       name: 'template-name',
       message:
@@ -167,7 +186,7 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      `/preview-nhs-app-template/template-id?from=edit`,
+      `/preview-nhs-app-template/${savedState.id}?from=edit`,
       'push'
     );
   });
@@ -190,7 +209,7 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-nhs-app-template/template-id?from=edit',
+      `/preview-nhs-app-template/${savedState.id}?from=edit`,
       'push'
     );
   });

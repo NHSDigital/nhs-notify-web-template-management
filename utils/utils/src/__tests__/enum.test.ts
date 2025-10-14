@@ -8,17 +8,11 @@ import {
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
-  letterTypeDisplayMappings,
-  previewTemplatePages,
-  templateTypeDisplayMappings,
-  templateTypeToUrlTextMappings,
-  previewSubmittedTemplatePages,
-  templateDisplayCopyAction,
-  templateDisplayDeleteAction,
   isRightToLeft,
   languageMapping,
-  templateCreationPages,
-  statusToDisplayMapping,
+  letterTypeDisplayMappings,
+  previewSubmittedTemplatePages,
+  previewTemplatePages,
   statusToColourMapping,
   channelToTemplateType,
   templateTypeToChannel,
@@ -27,6 +21,12 @@ import {
   messagePlanStatusToTagColour,
   messagePlanChooseTemplateUrl,
   ORDINALS,
+  statusToDisplayMapping,
+  templateCreationPages,
+  templateDisplayCopyAction,
+  templateDisplayDeleteAction,
+  templateTypeDisplayMappings,
+  templateTypeToUrlTextMappings,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 

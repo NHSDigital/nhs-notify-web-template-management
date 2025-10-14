@@ -1,4 +1,12 @@
-import type { RoutingConfig, RoutingConfigSuccess } from './types/generated';
+import type {
+  CountSuccess,
+  GetV1RoutingConfigurationsCountData,
+  GetV1RoutingConfigurationsData,
+  RoutingConfig,
+  RoutingConfigStatusActive,
+  RoutingConfigSuccess,
+  RoutingConfigSuccessList,
+} from './types/generated';
 import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
@@ -9,9 +17,47 @@ export function isValidUuid(id: string): boolean {
   );
 }
 
-export const httpClient = createAxiosClient();
+export const axiosClient = createAxiosClient();
 
 class RoutingConfigurationApiClient {
+  async list(token: string): Promise<Result<RoutingConfig[]>> {
+    const url =
+      '/v1/routing-configurations' satisfies GetV1RoutingConfigurationsData['url'];
+
+    const { data, error } = await catchAxiosError(
+      axiosClient.get<RoutingConfigSuccessList>(url, {
+        headers: { Authorization: token },
+      })
+    );
+
+    if (error) {
+      return { error };
+    }
+
+    return { ...data };
+  }
+
+  async count(
+    token: string,
+    status: RoutingConfigStatusActive
+  ): Promise<Result<{ count: number }>> {
+    const url =
+      '/v1/routing-configurations/count' satisfies GetV1RoutingConfigurationsCountData['url'];
+
+    const { data, error } = await catchAxiosError(
+      axiosClient.get<CountSuccess>(url, {
+        headers: { Authorization: token },
+        params: { status },
+      })
+    );
+
+    if (error) {
+      return { error };
+    }
+
+    return { ...data };
+  }
+
   async get(token: string, id: string): Promise<Result<RoutingConfig>> {
     if (!isValidUuid(id)) {
       return {
@@ -28,7 +74,7 @@ class RoutingConfigurationApiClient {
     const url = `/v1/routing-configuration/${id}`;
 
     const { data, error } = await catchAxiosError(
-      httpClient.get<RoutingConfigSuccess>(url, {
+      axiosClient.get<RoutingConfigSuccess>(url, {
         headers: { Authorization: token },
       })
     );
@@ -48,7 +94,7 @@ class RoutingConfigurationApiClient {
     token: string
   ): Promise<Result<RoutingConfig>> {
     const response = await catchAxiosError(
-      httpClient.post<RoutingConfigSuccess>(
+      axiosClient.post<RoutingConfigSuccess>(
         '/v1/routing-configuration',
         routingConfig,
         {
@@ -91,7 +137,7 @@ class RoutingConfigurationApiClient {
     const url = `/v1/routing-configuration/${id}`;
 
     const { data, error } = await catchAxiosError(
-      httpClient.put<RoutingConfigSuccess>(url, routingConfig, {
+      axiosClient.put<RoutingConfigSuccess>(url, routingConfig, {
         headers: { Authorization: token },
       })
     );

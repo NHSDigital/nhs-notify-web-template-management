@@ -71,18 +71,30 @@ export async function processFormActions(
 
   const { nhsAppTemplateName, nhsAppTemplateMessage } = parsedForm.data;
 
-  const updatedTemplate = {
+  const template = {
     ...formState,
     name: nhsAppTemplateName,
     message: nhsAppTemplateMessage,
   };
 
-  const savedTemplate = await ('id' in updatedTemplate
-    ? saveTemplate(updatedTemplate)
-    : createTemplate(updatedTemplate));
+  let savedId: string;
+
+  if ('id' in template) {
+    const { success, data: templateId } = z.uuidv4().safeParse(template.id);
+
+    if (!success) {
+      return redirect('/invalid-template', RedirectType.replace);
+    }
+
+    const saved = await saveTemplate(templateId, template);
+    savedId = saved.id;
+  } else {
+    const saved = await createTemplate(template);
+    savedId = saved.id;
+  }
 
   return redirect(
-    `/preview-nhs-app-template/${savedTemplate.id}?from=edit`,
+    `/preview-nhs-app-template/${savedId}?from=edit`,
     RedirectType.push
   );
 }
