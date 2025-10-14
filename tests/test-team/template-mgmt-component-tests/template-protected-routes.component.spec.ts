@@ -36,6 +36,7 @@ import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/le
 import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
+import { RoutingMessagePlansPage } from '../pages/routing-message-plans-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -44,6 +45,7 @@ const protectedPages = [
   RoutingChooseMessageOrderPage,
   RoutingCreateMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
+  RoutingMessagePlansPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,

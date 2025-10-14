@@ -14,7 +14,7 @@ const createTemplateMock = jest.mocked(createTemplate);
 const redirectMock = jest.mocked(redirect);
 
 const initialState: SMSTemplate = {
-  id: 'template-id',
+  id: '9e23faa1-521d-4708-8edb-be42ed4a3aae',
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
@@ -102,24 +102,45 @@ describe('CreateSmsTemplate server actions', () => {
       })
     );
 
-    expect(saveTemplateMock).toHaveBeenCalledWith({
+    expect(saveTemplateMock).toHaveBeenCalledWith(initialState.id, {
       ...initialState,
       name: 'template-name',
       message: 'template-message',
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-text-message-template/template-id?from=edit',
+      `/preview-text-message-template/${initialState.id}?from=edit`,
       'push'
     );
+  });
+
+  test('redirects to invalid-template if the ID in formState is not a uuid', async () => {
+    const badIdState = {
+      ...initialState,
+      id: 'non-uuid',
+    };
+
+    await processFormActions(
+      badIdState,
+      getMockFormData({
+        smsTemplateName: 'template-name',
+        smsTemplateMessage: 'template-message',
+      })
+    );
+
+    expect(saveTemplateMock).not.toHaveBeenCalled();
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test('should create the template and redirect', async () => {
     const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/no-unused-vars
 
+    const generatedId = '1cc83326-2076-4917-9920-6b297c20d08a';
+
     createTemplateMock.mockResolvedValue({
       ...initialDraftState,
-      id: 'new-template-id',
+      id: generatedId,
       name: 'template-name',
       message: 'template-message',
     } as TemplateDto);
@@ -139,7 +160,7 @@ describe('CreateSmsTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-text-message-template/new-template-id?from=edit',
+      `/preview-text-message-template/${generatedId}?from=edit`,
       'push'
     );
   });

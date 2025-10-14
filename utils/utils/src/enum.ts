@@ -1,9 +1,10 @@
-import {
+import type {
   TemplateType,
   TemplateStatus,
   LetterType,
   Language,
   TemplateDto,
+  RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -271,3 +272,14 @@ export const MESSAGE_ORDER_OPTIONS_LIST = [
 ] as const;
 
 export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
+
+const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
+  {
+    DRAFT: 'Draft',
+    COMPLETED: 'Production',
+    DELETED: '',
+  } as const;
+
+export const messagePlanStatusToDisplayText = (
+  status: RoutingConfigStatus
+): string => messagePlanStatusToDisplayMappings[status];
