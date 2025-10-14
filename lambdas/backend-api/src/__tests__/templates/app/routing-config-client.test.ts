@@ -275,7 +275,7 @@ describe('RoutingConfigClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: [campaignId] },
+        data: { features: { routing: true }, campaignIds: [campaignId] },
       });
 
       mocks.routingConfigRepository.create.mockResolvedValueOnce({
@@ -356,7 +356,7 @@ describe('RoutingConfigClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: ['campaign'] },
+        data: { features: { routing: true }, campaignIds: ['campaign'] },
       });
 
       mocks.routingConfigRepository.create.mockResolvedValueOnce({
@@ -420,6 +420,41 @@ describe('RoutingConfigClient', () => {
       });
     });
 
+    test('returns failure if routing feature is disabled for the client', async () => {
+      const { client, mocks } = setup();
+
+      const input: CreateUpdateRoutingConfig = {
+        name: 'rc',
+        campaignId: 'campaign',
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'sms',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false }, campaignIds: ['campaign'] },
+      });
+
+      const result = await client.createRoutingConfig(input, user);
+
+      expect(mocks.routingConfigRepository.create).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Routing feature is disabled',
+          },
+        },
+      });
+    });
+
     test('returns failure if campaignId is not allowed for the client', async () => {
       const { client, mocks } = setup();
 
@@ -438,7 +473,10 @@ describe('RoutingConfigClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: ['another campaign'] },
+        data: {
+          features: { routing: true },
+          campaignIds: ['another campaign'],
+        },
       });
 
       const result = await client.createRoutingConfig(input, user);
@@ -459,6 +497,10 @@ describe('RoutingConfigClient', () => {
   describe('submitRoutingConfig', () => {
     test('returns completed routing config', async () => {
       const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
 
       const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
 
@@ -482,11 +524,36 @@ describe('RoutingConfigClient', () => {
         data: completed,
       });
     });
+
+    test('returns failure if routing feature is disabled for the client', async () => {
+      const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      const result = await client.submitRoutingConfig('some-id', user);
+
+      expect(mocks.routingConfigRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Routing feature is disabled',
+          },
+        },
+      });
+    });
   });
 
   describe('deleteRoutingConfig', () => {
     test('returns undefined after deleting routing config', async () => {
       const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
 
       const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
 
@@ -514,6 +581,10 @@ describe('RoutingConfigClient', () => {
     test('returns error response from repository', async () => {
       const { client, mocks } = setup();
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
+
       const id = '2cb1c52d-befa-42f4-8628-06cfe63aa64d';
 
       const errorResponse = {
@@ -530,6 +601,27 @@ describe('RoutingConfigClient', () => {
       );
 
       expect(result).toEqual(errorResponse);
+    });
+
+    test('returns failure if routing feature is disabled for the client', async () => {
+      const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false }, campaignIds: ['campaign'] },
+      });
+
+      const result = await client.deleteRoutingConfig('some-id', user);
+
+      expect(mocks.routingConfigRepository.delete).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Routing feature is disabled',
+          },
+        },
+      });
     });
   });
 
@@ -550,7 +642,10 @@ describe('RoutingConfigClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: [routingConfig.campaignId] },
+        data: {
+          features: { routing: true },
+          campaignIds: [routingConfig.campaignId],
+        },
       });
 
       mocks.routingConfigRepository.update.mockResolvedValueOnce({
@@ -648,6 +743,41 @@ describe('RoutingConfigClient', () => {
       });
     });
 
+    test('returns failure if routing feature is disabled for the client', async () => {
+      const { client, mocks } = setup();
+
+      const update: CreateUpdateRoutingConfig = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+        campaignId: 'this campaign',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: false },
+          campaignIds: ['this campaign'],
+        },
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Routing feature is disabled',
+          },
+        },
+      });
+    });
+
     test('returns failure if campaignId is not allowed for the client', async () => {
       const { client, mocks } = setup();
 
@@ -659,7 +789,10 @@ describe('RoutingConfigClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: ['another campaign'] },
+        data: {
+          features: { routing: true },
+          campaignIds: ['another campaign'],
+        },
       });
 
       const result = await client.updateRoutingConfig(
