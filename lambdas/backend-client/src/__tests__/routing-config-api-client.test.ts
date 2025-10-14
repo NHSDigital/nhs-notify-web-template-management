@@ -1,33 +1,21 @@
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { createAxiosClient } from '../axios-client';
 import {
   isValidUuid,
-  RoutingConfigurationApiClient,
+  routingConfigurationApiClient as client,
+  httpClient,
 } from '../routing-config-api-client';
 import { RoutingConfig, RoutingConfigStatus } from '../types/generated';
 import { ErrorCase } from '../types/error-cases';
-
-jest.mock('../axios-client', () => {
-  const actual = jest.requireActual('../axios-client');
-  return {
-    ...actual,
-    createAxiosClient: jest.fn(),
-  };
-});
-
-const createAxiosClientMock = jest.mocked(createAxiosClient);
 
 const validRoutingConfigId = '2a4b6c8d-0e1f-4a2b-9c3d-5e6f7a8b9c0d';
 const notFoundRoutingConfigId = '3b5d7f9a-1c2e-4b3d-8f0a-6e7d8c9b0a1f';
 const invalidRoutingConfigId = 'not-a-uuid';
 
 describe('RoutingConfigurationApiClient', () => {
-  const axiosMock = new MockAdapter(axios);
+  const axiosMock = new MockAdapter(httpClient);
 
   beforeEach(() => {
     axiosMock.reset();
-    createAxiosClientMock.mockReturnValue(axios);
   });
 
   describe('get', () => {
@@ -39,8 +27,6 @@ describe('RoutingConfigurationApiClient', () => {
           technicalMessage: 'Not Found',
           details: { message: 'Routing configuration not found' },
         });
-
-      const client = new RoutingConfigurationApiClient();
 
       const response = await client.get('mock-token', notFoundRoutingConfigId);
 
@@ -56,8 +42,6 @@ describe('RoutingConfigurationApiClient', () => {
     });
 
     it('should return error for invalid routing config ID', async () => {
-      const client = new RoutingConfigurationApiClient();
-
       const response = await client.get('mock-token', invalidRoutingConfigId);
 
       expect(response.error).toEqual({
@@ -91,8 +75,6 @@ describe('RoutingConfigurationApiClient', () => {
           data,
         });
 
-      const client = new RoutingConfigurationApiClient();
-
       const response = await client.get('mock-token', validRoutingConfigId);
 
       expect(response.error).toBeUndefined();
@@ -110,8 +92,6 @@ describe('RoutingConfigurationApiClient', () => {
           message: 'Something went wrong',
         },
       });
-
-      const client = new RoutingConfigurationApiClient();
 
       const result = await client.create(
         {
@@ -163,8 +143,6 @@ describe('RoutingConfigurationApiClient', () => {
         name: data.name,
       };
 
-      const client = new RoutingConfigurationApiClient();
-
       const result = await client.create(body, 'test-token');
 
       expect(axiosMock.history.post.length).toBe(1);
@@ -188,8 +166,6 @@ describe('RoutingConfigurationApiClient', () => {
           technicalMessage: 'Not Found',
           details: { message: 'Routing configuration not found' },
         });
-
-      const client = new RoutingConfigurationApiClient();
 
       const body = {
         id: notFoundRoutingConfigId,
@@ -221,8 +197,6 @@ describe('RoutingConfigurationApiClient', () => {
     });
 
     it('should return error for invalid routing config ID', async () => {
-      const client = new RoutingConfigurationApiClient();
-
       const body = {
         id: invalidRoutingConfigId,
         name: 'Test plan',
@@ -255,7 +229,7 @@ describe('RoutingConfigurationApiClient', () => {
 
     it('should return updated routing configuration on success', async () => {
       const body = {
-        id: '4c6e8f0a-2b3d-4c5e-9a1b-7d8c9b0a1f2e',
+        id: validRoutingConfigId,
         name: 'Updated Plan',
         status: 'DRAFT' as RoutingConfigStatus,
         clientId: 'client-1',
@@ -266,15 +240,15 @@ describe('RoutingConfigurationApiClient', () => {
         cascadeGroupOverrides: [],
       };
 
-      axiosMock.onPut('/v1/routing-configuration/routing-config-2').reply(200, {
-        data: body,
-      });
-
-      const client = new RoutingConfigurationApiClient();
+      axiosMock
+        .onPut(`/v1/routing-configuration/${validRoutingConfigId}`)
+        .reply(200, {
+          data: body,
+        });
 
       const response = await client.update(
         'test-token',
-        '4c6e8f0a-2b3d-4c5e-9a1b-7d8c9b0a1f2e',
+        validRoutingConfigId,
         body
       );
 

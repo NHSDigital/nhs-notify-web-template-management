@@ -9,9 +9,9 @@ export function isValidUuid(id: string): boolean {
   );
 }
 
-export class RoutingConfigurationApiClient {
-  private readonly httpClient = createAxiosClient();
+export const httpClient = createAxiosClient();
 
+class RoutingConfigurationApiClient {
   async get(token: string, id: string): Promise<Result<RoutingConfig>> {
     if (!isValidUuid(id)) {
       return {
@@ -28,7 +28,7 @@ export class RoutingConfigurationApiClient {
     const url = `/v1/routing-configuration/${id}`;
 
     const { data, error } = await catchAxiosError(
-      this.httpClient.get<RoutingConfigSuccess>(url, {
+      httpClient.get<RoutingConfigSuccess>(url, {
         headers: { Authorization: token },
       })
     );
@@ -48,7 +48,7 @@ export class RoutingConfigurationApiClient {
     token: string
   ): Promise<Result<RoutingConfig>> {
     const response = await catchAxiosError(
-      this.httpClient.post<RoutingConfigSuccess>(
+      httpClient.post<RoutingConfigSuccess>(
         '/v1/routing-configuration',
         routingConfig,
         {
@@ -91,7 +91,7 @@ export class RoutingConfigurationApiClient {
     const url = `/v1/routing-configuration/${id}`;
 
     const { data, error } = await catchAxiosError(
-      this.httpClient.put<RoutingConfigSuccess>(url, routingConfig, {
+      httpClient.put<RoutingConfigSuccess>(url, routingConfig, {
         headers: { Authorization: token },
       })
     );
