@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import {
   ContentRenderer,
   ContentBlock,
+  ContentItem,
 } from '@molecules/ContentRenderer/ContentRenderer';
 
 describe('ContentRenderer', () => {
@@ -10,6 +11,11 @@ describe('ContentRenderer', () => {
 
     const { container } = render(<ContentRenderer content={content} />);
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders a plain string as MarkdownContent in inline mode', () => {
+    render(<ContentRenderer content='Just a string block' />);
+    expect(screen.getByText('Just a string block')).toBeInTheDocument();
   });
 
   it('throws an error for an unsupported block type', () => {
@@ -40,8 +46,61 @@ describe('ContentRenderer', () => {
     ];
 
     render(<ContentRenderer content={content} />);
+
+    const listItems = screen.getAllByRole('paragraph');
+    expect(listItems).toHaveLength(2);
     expect(screen.getByText('This is a paragraph.')).toBeInTheDocument();
     expect(screen.getByText('Another paragraph.')).toBeInTheDocument();
+  });
+
+  it('renders an inline-text block without a paragraph wrapper', () => {
+    const content: ContentBlock[] = [
+      { type: 'inline-text', text: 'Inline content' },
+    ];
+
+    render(
+      <ul>
+        <li data-testid='list-item'>
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline content');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
+
+  it('treats a string as inline text (no paragraph wrapper)', () => {
+    const content: string = 'Inline via string';
+
+    render(
+      <ul>
+        <li data-testid='list-item'>
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline via string');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
+
+  it('treats a string array as inline text (no paragraph wrapper)', () => {
+    const content: ContentItem[] = ['Inline via string'];
+
+    render(
+      <ul>
+        <li data-testid='list-item'>
+          <ContentRenderer content={content} />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline via string');
+    expect(listItem.querySelector('p')).toBeNull();
   });
 
   it('renders code blocks with accessible description', () => {
