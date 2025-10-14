@@ -11,7 +11,7 @@ import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
-} from '@testhelpers';
+} from '@testhelpers/helpers';
 
 const mockTemplates: MessagePlanTemplates = {} as MessagePlanTemplates;
 

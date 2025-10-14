@@ -16,7 +16,7 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '@testhelpers';
+} from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
 
 const { pageTitle } = content.pages.chooseTemplatesForMessagePlan;

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import type { CascadeItem, Channel } from 'nhs-notify-backend-client';
 import type { TemplateDto } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE } from '@testhelpers';
+import { EMAIL_TEMPLATE } from '@testhelpers/helpers';
 
 function buildCascadeItem(channel: Channel): CascadeItem {
   return {

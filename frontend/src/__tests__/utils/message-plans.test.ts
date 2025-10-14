@@ -17,7 +17,11 @@ import type {
   RoutingConfig,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '@testhelpers';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '@testhelpers/helpers';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client', () => {
