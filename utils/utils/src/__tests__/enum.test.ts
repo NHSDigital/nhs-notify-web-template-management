@@ -8,18 +8,19 @@ import {
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
-  letterTypeDisplayMappings,
-  previewTemplatePages,
-  templateTypeDisplayMappings,
-  templateTypeToUrlTextMappings,
-  previewSubmittedTemplatePages,
-  templateDisplayCopyAction,
-  templateDisplayDeleteAction,
   isRightToLeft,
   languageMapping,
-  templateCreationPages,
-  statusToDisplayMapping,
+  letterTypeDisplayMappings,
+  messagePlanStatusToDisplayText,
+  previewSubmittedTemplatePages,
+  previewTemplatePages,
   statusToColourMapping,
+  statusToDisplayMapping,
+  templateCreationPages,
+  templateDisplayCopyAction,
+  templateDisplayDeleteAction,
+  templateTypeDisplayMappings,
+  templateTypeToUrlTextMappings,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -333,5 +334,15 @@ describe('Right-to-left language indicator', () => {
 
     // assert
     expect(result).toEqual(expectedRtlLanguages);
+  });
+});
+
+describe('messagePlanStatusToDisplayText', () => {
+  test.each([
+    ['DRAFT', 'Draft'],
+    ['COMPLETED', 'Production'],
+    ['DELETED', ''],
+  ] as const)('should map %s to "%s"', (status, expected) => {
+    expect(messagePlanStatusToDisplayText(status)).toBe(expected);
   });
 });

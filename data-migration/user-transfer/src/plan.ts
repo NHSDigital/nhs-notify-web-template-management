@@ -71,6 +71,7 @@ export async function plan(params: PlanParameters) {
 
   await writeRemote(path, data, templatesS3BackupBucketName);
 
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   writeFileSync(`./migrations/${filename}.json`, data);
 
   print(`Results written to ${filename}.json`);

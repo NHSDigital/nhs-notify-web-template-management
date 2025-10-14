@@ -15,29 +15,30 @@ const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 const requestTemplateProofMock = jest.mocked(requestTemplateProof);
 
-const mockLetterTemplate = {
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'name',
-  id: '1',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-  letterType: 'x0',
-  language: 'en',
-  files: {
-    pdfTemplate: {
-      currentVersion: 'a',
-      virusScanStatus: 'PASSED',
-      fileName: 'a.pdf',
+const mockLetterTemplate = (id: string) =>
+  ({
+    templateType: 'LETTER',
+    templateStatus: 'NOT_YET_SUBMITTED',
+    name: 'name',
+    id,
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
+    letterType: 'x0',
+    language: 'en',
+    files: {
+      pdfTemplate: {
+        currentVersion: 'a',
+        virusScanStatus: 'PASSED',
+        fileName: 'a.pdf',
+      },
     },
-  },
-} satisfies TemplateDto;
+  }) satisfies TemplateDto;
 
 describe('requestProof', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should redirect when templateId from form is invalid', async () => {
-    const formData = getMockFormData({});
+    const formData = getMockFormData({ templateId: 'not-uuid' });
 
     await requestProof('LETTER', formData);
 
@@ -49,7 +50,9 @@ describe('requestProof', () => {
   it('should redirect when template is not found in the DB', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    const formData = getMockFormData({ templateId: '1' });
+    const formData = getMockFormData({
+      templateId: '2abc25f0-7e59-4d53-b20c-7547ef983789',
+    });
 
     await requestProof('LETTER', formData);
 
@@ -61,7 +64,9 @@ describe('requestProof', () => {
       id: 'template-id',
     } as unknown as TemplateDto);
 
-    const formData = getMockFormData({ templateId: '1' });
+    const formData = getMockFormData({
+      templateId: '992fe769-f8b3-43a9-84f1-6e10d0480bb6',
+    });
 
     await requestProof('LETTER', formData);
 
@@ -69,14 +74,16 @@ describe('requestProof', () => {
   });
 
   it('should handle error when failing to save template', async () => {
-    getTemplateMock.mockResolvedValueOnce(mockLetterTemplate);
+    const templateId = '14216f4b-d01b-401c-8351-1356809174d9';
+
+    getTemplateMock.mockResolvedValueOnce(mockLetterTemplate(templateId));
 
     requestTemplateProofMock.mockImplementationOnce(() => {
       throw new Error('failed to save template');
     });
 
     const formData = getMockFormData({
-      templateId: '1',
+      templateId: '14216f4b-d01b-401c-8351-1356809174d9',
     });
 
     await expect(requestProof('LETTER', formData)).rejects.toThrow(
@@ -85,18 +92,20 @@ describe('requestProof', () => {
   });
 
   it('should redirect when successfully submitted', async () => {
-    getTemplateMock.mockResolvedValueOnce(mockLetterTemplate);
+    const templateId = '465eecc3-2ab8-4291-a898-ee6edcb03d33';
+
+    getTemplateMock.mockResolvedValueOnce(mockLetterTemplate(templateId));
 
     const formData = getMockFormData({
-      templateId: '1',
+      templateId,
     });
 
     await requestProof('LETTER', formData);
 
-    expect(requestTemplateProofMock).toHaveBeenCalledWith('1');
+    expect(requestTemplateProofMock).toHaveBeenCalledWith(templateId);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-letter-template/1',
+      `/preview-letter-template/${templateId}`,
       'push'
     );
   });

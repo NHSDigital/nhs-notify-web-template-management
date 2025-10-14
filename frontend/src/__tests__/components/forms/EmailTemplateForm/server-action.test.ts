@@ -14,7 +14,7 @@ const createTemplateMock = jest.mocked(createTemplate);
 const redirectMock = jest.mocked(redirect);
 
 const initialState: EmailTemplate = {
-  id: 'template-id',
+  id: '89cc73bb-6d61-4b8b-a728-b5e40f0751fd',
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
@@ -109,7 +109,7 @@ describe('CreateEmailTemplate server actions', () => {
       })
     );
 
-    expect(saveTemplateMock).toHaveBeenCalledWith({
+    expect(saveTemplateMock).toHaveBeenCalledWith(initialState.id, {
       ...initialState,
       name: 'template-name',
       subject: 'template-subject-line',
@@ -117,17 +117,44 @@ describe('CreateEmailTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-email-template/template-id?from=edit',
+      `/preview-email-template/${initialState.id}?from=edit`,
       'push'
     );
+  });
+
+  test('redirects to invalid-template if the ID in formState is not a uuid', async () => {
+    const badIdState = {
+      ...initialState,
+      id: 'non-uuid',
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+    };
+
+    await processFormActions(
+      badIdState,
+      getMockFormData({
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'template-message',
+      })
+    );
+
+    expect(saveTemplateMock).not.toHaveBeenCalled();
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test('should create the template and redirect', async () => {
     const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/no-unused-vars
 
+    const generatedId = '06c6fb58-e749-4ee4-8343-57d7f7ecfe1f';
+
     createTemplateMock.mockResolvedValue({
       ...initialDraftState,
-      id: 'new-template-id',
+      id: generatedId,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -152,7 +179,7 @@ describe('CreateEmailTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-email-template/new-template-id?from=edit',
+      `/preview-email-template/${generatedId}?from=edit`,
       'push'
     );
   });

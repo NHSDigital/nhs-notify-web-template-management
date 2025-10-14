@@ -1,9 +1,10 @@
-import {
+import type {
   TemplateType,
   TemplateStatus,
   LetterType,
   Language,
   TemplateDto,
+  RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -258,3 +259,14 @@ export const templateDisplayDeleteAction = ({
 export function isRightToLeft(language: Language): boolean {
   return languageMap[language].rtl;
 }
+
+const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
+  {
+    DRAFT: 'Draft',
+    COMPLETED: 'Production',
+    DELETED: '',
+  } as const;
+
+export const messagePlanStatusToDisplayText = (
+  status: RoutingConfigStatus
+): string => messagePlanStatusToDisplayMappings[status];

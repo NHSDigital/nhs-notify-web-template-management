@@ -4,12 +4,12 @@ import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { ErrorCase } from './types/error-cases';
 
-export class ClientConfigurationApiClient {
-  private readonly httpClient = createAxiosClient();
+export const httpClient = createAxiosClient();
 
+export const clientConfigurationApiClient = {
   async fetch(token: string): Promise<Result<ClientConfiguration | null>> {
     const response = await catchAxiosError(
-      this.httpClient.get<{ clientConfiguration: ClientConfiguration }>(
+      httpClient.get<{ clientConfiguration: ClientConfiguration }>(
         `/v1/client-configuration`,
         {
           headers: { Authorization: token },
@@ -42,7 +42,5 @@ export class ClientConfigurationApiClient {
     }
 
     return { data: parseResult.data };
-  }
-}
-
-export const clientConfigurationApiClient = new ClientConfigurationApiClient();
+  },
+};
