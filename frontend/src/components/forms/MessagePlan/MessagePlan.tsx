@@ -34,7 +34,7 @@ export function MessagePlanForm({
 
   return (
     <NHSNotifyFormWrapper formId='message-plan' action={action}>
-      <div className='nhsuk-form-group'>
+      <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
         <input
           type='hidden'
           name='messageOrder'
@@ -70,6 +70,8 @@ export function MessagePlanForm({
           error={state.errorState?.fieldErrors?.name?.join(',')}
           data-testid='name-field'
         />
+      </div>
+      <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
         {campaignIds.length === 1 ? (
           <>
             <Label htmlFor='campaignId' size='s'>
