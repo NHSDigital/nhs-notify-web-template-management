@@ -66,7 +66,7 @@ const $ChannelType = schemaFor<ChannelType>()(z.enum(CHANNEL_TYPE_LIST));
 const $ConditionalTemplateLanguage = schemaFor<ConditionalTemplateLanguage>()(
   z.object({
     language: $Language,
-    templateId: z.string().nullable(),
+    templateId: z.string().nonempty().nullable(),
   })
 );
 
@@ -74,7 +74,7 @@ const $ConditionalTemplateAccessible =
   schemaFor<ConditionalTemplateAccessible>()(
     z.object({
       accessibleFormat: $LetterType,
-      templateId: z.string().nullable(),
+      templateId: z.string().nonempty().nullable(),
     })
   );
 
@@ -88,7 +88,7 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
 
 const $CascadeItemWithDefault = schemaFor<CascadeItemWithDefault>()(
   $CascadeItemBase.extend({
-    defaultTemplateId: z.string().nullable(),
+    defaultTemplateId: z.string().nonempty().nullable(),
   })
 ).strict();
 
