@@ -53,12 +53,10 @@ describe('MessagePlansList', () => {
       />
     );
 
-    expect(
-      screen.getByTestId('message-plans-list-lastEdited-date')
-    ).toHaveTextContent('8th Sep 2025');
+    const lastEditedCell = screen.getByTestId('message-plans-list-lastEdited');
 
-    expect(
-      screen.getByTestId('message-plans-list-lastEdited-time')
-    ).toHaveTextContent('13:00');
+    expect(lastEditedCell).toHaveTextContent('8th Sep 2025');
+
+    expect(lastEditedCell).toHaveTextContent('13:00');
   });
 });

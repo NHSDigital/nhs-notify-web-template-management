@@ -46,14 +46,10 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
         </Link>
       </Table.Cell>
       <Table.Cell data-testid='message-plan-id-cell'>{plan.id}</Table.Cell>
-      <Table.Cell>
-        <span data-testid='message-plans-list-lastEdited-date'>
-          {format(`${plan.lastUpdated}`, 'do MMM yyyy')}
-        </span>
+      <Table.Cell data-testid='message-plans-list-lastEdited'>
+        {format(`${plan.lastUpdated}`, 'do MMM yyyy')}
         <br />
-        <span data-testid='message-plans-list-lastEdited-time'>
-          {format(`${plan.lastUpdated}`, 'HH:mm')}
-        </span>
+        {format(`${plan.lastUpdated}`, 'HH:mm')}
       </Table.Cell>
     </Table.Row>
   ));

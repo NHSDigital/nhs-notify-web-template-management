@@ -85,6 +85,7 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
             </td>
             <td
               class="nhsuk-table__cell"
+              data-testid="message-plans-list-lastEdited"
               role="cell"
             >
               <span
@@ -93,17 +94,9 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
               >
                 Last edited 
               </span>
-              <span
-                data-testid="message-plans-list-lastEdited-date"
-              >
-                8th Sep 2025
-              </span>
+              8th Sep 2025
               <br />
-              <span
-                data-testid="message-plans-list-lastEdited-time"
-              >
-                13:00
-              </span>
+              13:00
             </td>
           </tr>
         </tbody>
