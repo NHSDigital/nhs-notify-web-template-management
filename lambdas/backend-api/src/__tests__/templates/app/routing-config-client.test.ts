@@ -532,6 +532,32 @@ describe('RoutingConfigClient', () => {
       });
     });
 
+    test('returns failures from client config repository', async () => {
+      const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+
+      const result = await client.submitRoutingConfig('some-id', user);
+
+      expect(mocks.routingConfigRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+    });
+
     test('returns failure if routing feature is disabled for the client', async () => {
       const { client, mocks } = setup();
 
@@ -608,6 +634,32 @@ describe('RoutingConfigClient', () => {
       );
 
       expect(result).toEqual(errorResponse);
+    });
+
+    test('returns failures from client config repository', async () => {
+      const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
+
+      const result = await client.deleteRoutingConfig('some-id', user);
+
+      expect(mocks.routingConfigRepository.delete).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'could not fetch client config',
+          },
+        },
+      });
     });
 
     test('returns failure if routing feature is disabled for the client', async () => {
