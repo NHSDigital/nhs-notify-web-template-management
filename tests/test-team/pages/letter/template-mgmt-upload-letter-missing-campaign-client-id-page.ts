@@ -13,7 +13,7 @@ export class TemplateMgmtUploadLetterMissingCampaignClientIdPage extends Templat
     super(page);
 
     this.errorDetailsInsetText = page.locator('[class="nhsuk-inset-text"] > p');
-    this.goBackLink = page.getByTestId('back-to-choose-template-type-link');
+    this.goBackLink = page.getByTestId('back-link');
     this.heading = page.getByTestId('page-heading');
   }
 }

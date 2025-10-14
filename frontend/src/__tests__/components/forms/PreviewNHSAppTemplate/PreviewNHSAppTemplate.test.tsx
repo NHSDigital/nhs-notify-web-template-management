@@ -9,6 +9,7 @@ import {
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@utils/markdownit');
 
@@ -33,8 +34,18 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
+jest.mock('@providers/client-config-provider');
+
+beforeEach(() => {
+  jest.mocked(useFeatureFlags).mockReset().mockReturnValue({});
+});
+
 describe('Preview nhs app form renders', () => {
   describe('Routing feature flag - Disabled', () => {
+    beforeEach(() => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    });
+
     it('matches error snapshot', () => {
       const container = render(
         <PreviewNHSAppTemplate
@@ -98,10 +109,13 @@ describe('Preview nhs app form renders', () => {
   });
 
   describe('Routing feature flag - Enabled', () => {
+    beforeEach(() => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    });
+
     it('renders component correctly', () => {
       render(
         <PreviewNHSAppTemplate
-          routingEnabled={true}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',
@@ -122,9 +136,10 @@ describe('Preview nhs app form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from manage templates screen when routing is %p',
     (routing) => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+
       const container = render(
         <PreviewNHSAppTemplate
-          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',
@@ -142,6 +157,8 @@ describe('Preview nhs app form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from edit screen when routing is %p',
     (routing) => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+
       const mockSearchParams = new Map([['from', 'edit']]);
       (useSearchParams as jest.Mock).mockImplementationOnce(() => ({
         get: (key: string) => mockSearchParams.get(key),
@@ -149,7 +166,6 @@ describe('Preview nhs app form renders', () => {
 
       const container = render(
         <PreviewNHSAppTemplate
-          routingEnabled={routing}
           initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
             errorState: undefined,
             id: 'template-id',

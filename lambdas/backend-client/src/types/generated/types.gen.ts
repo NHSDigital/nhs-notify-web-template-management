@@ -50,13 +50,13 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
 export type CascadeItem = CascadeItemBase &
   (
     | {
-        defaultTemplateId: string;
+        defaultTemplateId: string | null;
         conditionalTemplates?: Array<
           ConditionalTemplateLanguage | ConditionalTemplateAccessible
         >;
       }
     | {
-        defaultTemplateId?: string;
+        defaultTemplateId?: string | null;
         conditionalTemplates: Array<
           ConditionalTemplateLanguage | ConditionalTemplateAccessible
         >;
@@ -94,12 +94,12 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
-  templateId: string;
+  templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
-  templateId: string;
+  templateId: string | null;
 };
 
 export type CountSuccess = {

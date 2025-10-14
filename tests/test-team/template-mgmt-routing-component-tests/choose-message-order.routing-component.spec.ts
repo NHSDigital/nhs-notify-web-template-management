@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { RoutingChooseMessageOrderPage } from '../pages/routing-choose-message-order-page';
+import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -7,6 +7,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../helpers/template-mgmt-common.steps';
+import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
 
 test.describe('Choose Message Order Page', () => {
   test('should land on "Choose Message Order" page when navigating to "/choose-message-order" url', async ({
@@ -69,41 +70,11 @@ test.describe('Choose Message Order Page', () => {
     ]);
   });
 
-  for (const { label, option } of [
-    {
-      option: 'NHSAPP',
-      label: 'NHS App only',
-    },
-    {
-      option: 'NHSAPP,EMAIL',
-      label: 'NHS App, Email',
-    },
-    {
-      option: 'NHSAPP,SMS',
-      label: 'NHS App, Text message',
-    },
-    {
-      option: 'NHSAPP,EMAIL,SMS',
-      label: 'NHS App, Email, Text message',
-    },
-    {
-      option: 'NHSAPP,SMS,EMAIL',
-      label: 'NHS App, Text message, Email',
-    },
-    {
-      option: 'NHSAPP,SMS,LETTER',
-      label: 'NHS App, Text message, Letter',
-    },
-    {
-      option: 'NHSAPP,EMAIL,SMS,LETTER',
-      label: 'NHS App, Email, Text message, Letter',
-    },
-    {
-      option: 'LETTER',
-      label: 'Letter only',
-    },
-  ])
-    test(`when the ${label} option is selected, nagivates to the create-message-plan page with the correct query parameter`, async ({
+  for (const {
+    label,
+    messageOrder,
+  } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
+    test(`when the ${label} message order is selected, nagivates to the create-message-plan page with the correct query parameter`, async ({
       page,
       baseURL,
     }) => {
@@ -114,7 +85,7 @@ test.describe('Choose Message Order Page', () => {
       await chooseMessageOrderPage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(option)}`
+        `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(messageOrder)}`
       );
     });
 });

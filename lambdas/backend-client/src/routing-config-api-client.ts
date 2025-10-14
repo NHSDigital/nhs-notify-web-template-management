@@ -40,6 +40,37 @@ export class RoutingConfigurationApiClient {
     return { ...data };
   }
 
+  async create(
+    routingConfig: Pick<
+      RoutingConfig,
+      'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
+    >,
+    token: string
+  ): Promise<Result<RoutingConfig>> {
+    const response = await catchAxiosError(
+      this.httpClient.post<RoutingConfigSuccess>(
+        '/v1/routing-configuration',
+        routingConfig,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  }
+
   async update(
     token: string,
     id: string,

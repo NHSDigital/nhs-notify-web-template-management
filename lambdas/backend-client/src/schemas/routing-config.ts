@@ -22,7 +22,6 @@ import {
   CASCADE_GROUP_NAME_LIST,
   CHANNEL_LIST,
   CHANNEL_TYPE_LIST,
-  ROUTING_CONFIG_STATUS_ACTIVE_LIST,
   ROUTING_CONFIG_STATUS_LIST,
 } from './union-lists';
 
@@ -65,7 +64,7 @@ const $ChannelType = schemaFor<ChannelType>()(z.enum(CHANNEL_TYPE_LIST));
 const $ConditionalTemplateLanguage = schemaFor<ConditionalTemplateLanguage>()(
   z.object({
     language: $Language,
-    templateId: z.string(),
+    templateId: z.string().nonempty().nullable(),
   })
 );
 
@@ -73,7 +72,7 @@ const $ConditionalTemplateAccessible =
   schemaFor<ConditionalTemplateAccessible>()(
     z.object({
       accessibleFormat: $LetterType,
-      templateId: z.string(),
+      templateId: z.string().nonempty().nullable(),
     })
   );
 
@@ -89,7 +88,7 @@ const $CascadeItem = schemaFor<CascadeItem>()(
   $CascadeItemBase.and(
     z.union([
       z.object({
-        defaultTemplateId: z.string(),
+        defaultTemplateId: z.string().nonempty().nullable(),
         conditionalTemplates: z
           .array(
             z.union([
@@ -100,7 +99,7 @@ const $CascadeItem = schemaFor<CascadeItem>()(
           .optional(),
       }),
       z.object({
-        defaultTemplateId: z.string().optional(),
+        defaultTemplateId: z.string().nonempty().nullable().optional(),
         conditionalTemplates: z.array(
           z.union([
             $ConditionalTemplateAccessible,
@@ -127,7 +126,7 @@ const $RoutingConfigStatus = schemaFor<RoutingConfigStatus>()(
 );
 
 const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
-  z.enum(ROUTING_CONFIG_STATUS_ACTIVE_LIST)
+  $RoutingConfigStatus.exclude(['DELETED'])
 );
 
 export const $RoutingConfig = schemaFor<RoutingConfig>()(
