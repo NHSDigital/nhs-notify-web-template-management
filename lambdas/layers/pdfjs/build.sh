@@ -10,7 +10,7 @@ echo
 cd $(realpath $(dirname $0))
 rm -rf dist node_modules
 mkdir -p dist/layer/nodejs/node_modules
-npm install --force
+npm install --force --no-save
 cp -r node_modules/* dist/layer/nodejs/node_modules
 
 cd dist/layer
