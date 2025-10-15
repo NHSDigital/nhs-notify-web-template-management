@@ -10,15 +10,15 @@ import {
 import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
-import { createRoutingConfig } from '@utils/form-actions';
 import {
   NextRedirectBoundary,
   NextRedirectError,
 } from '../../../helpers/next-redirect';
+import { createRoutingConfig } from '@utils/message-plans';
 
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
-jest.mock('@utils/form-actions');
+jest.mock('@utils/message-plans');
 
 beforeEach(() => {
   jest.resetAllMocks();

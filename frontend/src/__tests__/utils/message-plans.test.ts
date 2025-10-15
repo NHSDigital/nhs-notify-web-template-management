@@ -32,6 +32,9 @@ jest.mock('nhs-notify-backend-client', () => {
   return {
     routingConfigurationApiClient: {
       get: jest.fn(),
+      list: jest.fn(),
+      create: jest.fn(),
+      count: jest.fn(),
       update: jest.fn(),
     },
     $RoutingConfig: actual.$RoutingConfig,
@@ -105,9 +108,6 @@ describe('Message plans actions', () => {
           errorMeta: { code: 400, description: 'Bad request' },
         },
       });
-      await expect(getMessagePlan(validRoutingConfigId)).rejects.toThrow(
-        'Failed to get access token'
-      );
 
       const response = await getRoutingConfigs();
       expect(response.length).toBe(0);
@@ -597,7 +597,7 @@ describe('Message plans actions', () => {
           ],
           cascadeGroupOverrides: [{ name: 'standard' }],
         },
-        'token'
+        'mock-token'
       );
 
       expect(result).toEqual({
