@@ -15,6 +15,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL
       </h3>
       <a
         class="nhsuk-link nhsuk-link--no-visited-state"
+        data-testid="choose-template-link-EMAIL"
         href="/message-plans/choose-email-template"
       >
         Choose
@@ -46,6 +47,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
       </h3>
       <a
         class="nhsuk-link nhsuk-link--no-visited-state"
+        data-testid="choose-template-link-LETTER"
         href="/message-plans/choose-standard-english-letter-template"
       >
         Choose
@@ -77,6 +79,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAP
       </h3>
       <a
         class="nhsuk-link nhsuk-link--no-visited-state"
+        data-testid="choose-template-link-NHSAPP"
         href="/message-plans/choose-nhs-app-template"
       >
         Choose
@@ -108,6 +111,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 
       </h3>
       <a
         class="nhsuk-link nhsuk-link--no-visited-state"
+        data-testid="choose-template-link-SMS"
         href="/message-plans/choose-text-message-template"
       >
         Choose
@@ -142,6 +146,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <br />
         <a
           class="nhsuk-link nhsuk-link--no-visited-state"
+          data-testid="change-template-link-EMAIL"
           href="/message-plans/choose-email-template"
         >
           Change
@@ -157,6 +162,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       <p>
         <a
           class="channel-template-link--remove nhsuk-link"
+          data-testid="remove-template-link-EMAIL"
           href="todo"
         >
           Remove
@@ -192,6 +198,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <br />
         <a
           class="nhsuk-link nhsuk-link--no-visited-state"
+          data-testid="change-template-link-LETTER"
           href="/message-plans/choose-standard-english-letter-template"
         >
           Change
@@ -207,6 +214,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       <p>
         <a
           class="channel-template-link--remove nhsuk-link"
+          data-testid="remove-template-link-LETTER"
           href="todo"
         >
           Remove
@@ -242,6 +250,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <br />
         <a
           class="nhsuk-link nhsuk-link--no-visited-state"
+          data-testid="change-template-link-NHSAPP"
           href="/message-plans/choose-nhs-app-template"
         >
           Change
@@ -257,6 +266,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       <p>
         <a
           class="channel-template-link--remove nhsuk-link"
+          data-testid="remove-template-link-NHSAPP"
           href="todo"
         >
           Remove
@@ -292,6 +302,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <br />
         <a
           class="nhsuk-link nhsuk-link--no-visited-state"
+          data-testid="change-template-link-SMS"
           href="/message-plans/choose-text-message-template"
         >
           Change
@@ -307,6 +318,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       <p>
         <a
           class="channel-template-link--remove nhsuk-link"
+          data-testid="remove-template-link-SMS"
           href="todo"
         >
           Remove

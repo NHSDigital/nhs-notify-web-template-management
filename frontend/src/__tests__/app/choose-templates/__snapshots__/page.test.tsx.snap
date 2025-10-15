@@ -100,6 +100,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-NHSAPP"
                   href="/message-plans/choose-nhs-app-template"
                 >
                   Choose
@@ -231,6 +232,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-SMS"
                   href="/message-plans/choose-text-message-template"
                 >
                   Choose
@@ -362,6 +364,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-LETTER"
                   href="/message-plans/choose-standard-english-letter-template"
                 >
                   Choose
@@ -466,6 +469,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <a
             aria-disabled="false"
             class="nhsuk-button"
+            data-testid="move-to-production-cta"
             draggable="false"
             href="/message-plans/move-to-production"
             role="button"
@@ -475,6 +479,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+            data-testid="save-and-close-cta"
             draggable="false"
             href="/message-plans"
             role="button"

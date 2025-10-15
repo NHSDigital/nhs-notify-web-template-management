@@ -100,6 +100,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-NHSAPP"
                   href="/message-plans/choose-nhs-app-template"
                 >
                   Choose
@@ -230,6 +231,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-SMS"
                   href="/message-plans/choose-text-message-template"
                 >
                   Choose
@@ -360,6 +362,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-EMAIL"
                   href="/message-plans/choose-email-template"
                 >
                   Choose
@@ -490,6 +493,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
+                  data-testid="choose-template-link-LETTER"
                   href="/message-plans/choose-standard-english-letter-template"
                 >
                   Choose
@@ -593,6 +597,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           <a
             aria-disabled="false"
             class="nhsuk-button"
+            data-testid="move-to-production-cta"
             draggable="false"
             href="/message-plans/move-to-production"
             role="button"
@@ -602,6 +607,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+            data-testid="save-and-close-cta"
             draggable="false"
             href="/message-plans"
             role="button"
@@ -718,6 +724,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-NHSAPP"
                     href="/message-plans/choose-nhs-app-template"
                   >
                     Change
@@ -732,6 +739,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-NHSAPP"
                     href="todo"
                   >
                     Remove
@@ -866,6 +874,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-EMAIL"
                     href="/message-plans/choose-email-template"
                   >
                     Change
@@ -880,6 +889,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-EMAIL"
                     href="todo"
                   >
                     Remove
@@ -1014,6 +1024,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   <br />
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-LETTER"
                     href="/message-plans/choose-standard-english-letter-template"
                   >
                     Change
@@ -1028,6 +1039,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                 <p>
                   <a
                     class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-LETTER"
                     href="todo"
                   >
                     Remove
@@ -1132,6 +1144,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           <a
             aria-disabled="false"
             class="nhsuk-button"
+            data-testid="move-to-production-cta"
             draggable="false"
             href="/message-plans/move-to-production"
             role="button"
@@ -1141,6 +1154,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+            data-testid="save-and-close-cta"
             draggable="false"
             href="/message-plans"
             role="button"

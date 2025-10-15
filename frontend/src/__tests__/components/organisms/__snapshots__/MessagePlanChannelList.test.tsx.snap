@@ -36,6 +36,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-NHSAPP"
               href="/message-plans/choose-nhs-app-template"
             >
               Change
@@ -50,6 +51,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-NHSAPP"
               href="todo"
             >
               Remove
@@ -184,6 +186,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-EMAIL"
               href="/message-plans/choose-email-template"
             >
               Change
@@ -198,6 +201,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-EMAIL"
               href="todo"
             >
               Remove
@@ -332,6 +336,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-SMS"
               href="/message-plans/choose-text-message-template"
             >
               Change
@@ -346,6 +351,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-SMS"
               href="todo"
             >
               Remove
@@ -489,6 +495,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-NHSAPP"
               href="/message-plans/choose-nhs-app-template"
             >
               Change
@@ -503,6 +510,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-NHSAPP"
               href="todo"
             >
               Remove
@@ -637,6 +645,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-EMAIL"
               href="/message-plans/choose-email-template"
             >
               Change
@@ -651,6 +660,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-EMAIL"
               href="todo"
             >
               Remove
@@ -785,6 +795,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
             <br />
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-LETTER"
               href="/message-plans/choose-standard-english-letter-template"
             >
               Change
@@ -799,6 +810,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
           <p>
             <a
               class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-LETTER"
               href="todo"
             >
               Remove

@@ -69,10 +69,16 @@ export function CreateEditMessagePlan({
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
             {/* TODO: CCM-11495 Add validation */}
             <Link href={content.ctas.primary.href} passHref legacyBehavior>
-              <NHSNotifyButton>{content.ctas.primary.text}</NHSNotifyButton>
+              <NHSNotifyButton data-testid='move-to-production-cta'>
+                {content.ctas.primary.text}
+              </NHSNotifyButton>
             </Link>
             <Link href={content.ctas.secondary.href} passHref legacyBehavior>
-              <NHSNotifyButton secondary className='nhsuk-u-margin-left-3'>
+              <NHSNotifyButton
+                secondary
+                data-testid='save-and-close-cta'
+                className='nhsuk-u-margin-left-3'
+              >
                 {content.ctas.secondary.text}
               </NHSNotifyButton>
             </Link>
