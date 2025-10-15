@@ -7,6 +7,7 @@ import {
   TemplateDto,
   RoutingConfigStatusActive,
 } from 'nhs-notify-backend-client';
+import { getMessagePlanTemplateIds } from './get-message-plan-template-ids';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
@@ -169,25 +170,6 @@ export async function getMessagePlanTemplates(
   if (templateIds.size === 0) return {};
 
   return getTemplatesByIds([...templateIds]);
-}
-
-export function getMessagePlanTemplateIds(
-  messagePlan: RoutingConfig
-): Set<string> {
-  const templateIds = new Set<string>();
-
-  for (const cascadeItem of messagePlan.cascade) {
-    if (cascadeItem.defaultTemplateId)
-      templateIds.add(cascadeItem.defaultTemplateId);
-    if (cascadeItem.conditionalTemplates) {
-      for (const conditionalTemplate of cascadeItem.conditionalTemplates) {
-        if (conditionalTemplate.templateId)
-          templateIds.add(conditionalTemplate.templateId);
-      }
-    }
-  }
-
-  return templateIds;
 }
 
 export async function getTemplatesByIds(templateIds: string[]) {
