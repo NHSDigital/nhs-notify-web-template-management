@@ -25,6 +25,7 @@ const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
+jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -303,7 +304,7 @@ describe('form-actions', () => {
     });
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'id',
+      id: 'ee22daa2-9fce-455a-9e07-91679e4d7999',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -312,7 +313,10 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    const response = await saveTemplate(updateTemplateInput);
+    const response = await saveTemplate(
+      updateTemplateInput.id,
+      updateTemplateInput
+    );
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
@@ -334,7 +338,7 @@ describe('form-actions', () => {
     });
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'id',
+      id: 'bde7301a-e8c0-404a-8d19-c0b8ef7817f9',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -343,9 +347,9 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
-      'Failed to save template data'
-    );
+    await expect(
+      saveTemplate(updateTemplateInput.id, updateTemplateInput)
+    ).rejects.toThrow('Failed to save template data');
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
@@ -362,7 +366,7 @@ describe('form-actions', () => {
     });
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'id',
+      id: 'bde7301a-e8c0-404a-8d19-c0b8ef7817f9',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -371,9 +375,9 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
-      'Failed to get access token'
-    );
+    await expect(
+      saveTemplate(updateTemplateInput.id, updateTemplateInput)
+    ).rejects.toThrow('Failed to get access token');
   });
 
   test('getTemplate', async () => {

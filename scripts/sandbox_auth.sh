@@ -22,6 +22,13 @@ get_user_command_output=$(aws cognito-idp admin-get-user --user-pool-id "$cognit
 get_user_command_exit_code=$?
 set -e #re-enable
 
+if [[ $get_user_command_exit_code -ne 0 ]]; then
+  if ! echo "$get_user_command_output" | grep -q "UserNotFoundException"; then
+    echo "$get_user_command_output" >&2
+    exit $get_user_command_exit_code
+  fi
+fi
+
 function gen_temp_password() {
   upper=$(LC_ALL=C tr -dc 'A-Z' </dev/urandom | head -c 4; echo)
   lower=$(LC_ALL=C tr -dc 'a-z' </dev/urandom | head -c 4; echo)
@@ -47,7 +54,7 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   client_config_param_name="$client_ssm_path_prefix/$notify_client_id"
 
-  client_config_param_value='{ "campaignIds": ["campaign"], "features": { "proofing": true } }'
+  client_config_param_value='{ "campaignIds": ["campaign"], "features": { "proofing": true, "routing": true } }'
 
   if aws ssm get-parameter --name "$client_config_param_name" --with-decryption >/dev/null 2>&1; then
     echo "Client config parameter already exists: $client_config_param_name"

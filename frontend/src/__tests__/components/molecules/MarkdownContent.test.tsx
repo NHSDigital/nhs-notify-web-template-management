@@ -80,6 +80,26 @@ describe('MarkdownContent', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('renders inline mode without a paragraph wrapper', () => {
+    render(
+      <ul>
+        <li data-testid='list-item'>
+          <MarkdownContent content='Inline text here' mode='inline' />
+        </li>
+      </ul>
+    );
+
+    const listItem = screen.getByTestId('list-item');
+    expect(listItem).toHaveTextContent('Inline text here');
+    expect(listItem.querySelector('p')).toBeNull();
+  });
+
+  it('renders block mode with a paragraph wrapper by default', () => {
+    const { container } = render(<MarkdownContent content='Block content' />);
+    expect(container.querySelector('p')).not.toBeNull();
+    expect(container.querySelector('p')).toHaveTextContent('Block content');
+  });
+
   it('renders interpolated variables correctly', () => {
     render(
       <MarkdownContent
