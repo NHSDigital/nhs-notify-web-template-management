@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlans matches snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1>
+          Message plans
+        </h1>
+        <details
+          class="nhsuk-details"
+          data-testid="message-plans-status-info"
+        >
+          <summary
+            class="nhsuk-details__summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              What draft and production mean
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+          >
+            <h2
+              class="nhsuk-heading-s nhsuk-u-margin-bottom-1"
+            >
+              Draft
+            </h2>
+            <p>
+              Message plans that you're working on and are not ready to be sent. You can test these, using our:
+            </p>
+            <ul>
+              <li>
+                <a
+                  href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  API integration environment (opens in a new tab)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Integration MESH mailbox (opens in a new tab)
+                </a>
+              </li>
+            </ul>
+            <h2
+              class="nhsuk-heading-s nhsuk-u-margin-bottom-1"
+            >
+              Production
+            </h2>
+            <p>
+              Message plans that are ready to be sent using 
+              <a
+                href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API (opens in a new tab)
+              </a>
+               or 
+              <a
+                href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH (opens in a new tab)
+              </a>
+              .
+            </p>
+          </div>
+        </details>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="create-message-plan-button"
+          draggable="false"
+          href="/message-plans/choose-message-order"
+          role="button"
+        >
+          New message plan
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

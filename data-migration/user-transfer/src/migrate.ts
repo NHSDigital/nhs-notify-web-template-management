@@ -126,6 +126,7 @@ export async function migrate(params: MigrateParameters) {
   const filename = `${name}-${params.dryRun ? 'dryrun' : 'run'}${ext}`;
   const data = JSON.stringify(output);
 
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   writeFileSync(path.join(dir, filename), data);
 
   await writeRemote(

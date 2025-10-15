@@ -1,9 +1,11 @@
-import axios from 'axios';
-import { ClientConfigurationApiClient } from '../client-configuration-api-client';
+import {
+  clientConfigurationApiClient as client,
+  httpClient,
+} from '../client-configuration-api-client';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('ClientConfiguration', () => {
-  const axiosMock = new MockAdapter(axios);
+  const axiosMock = new MockAdapter(httpClient);
 
   beforeEach(() => {
     axiosMock.reset();
@@ -20,9 +22,7 @@ describe('ClientConfiguration', () => {
       },
     });
 
-    const apiClient = new ClientConfigurationApiClient();
-
-    const notifyClientConfig = await apiClient.fetch('token');
+    const notifyClientConfig = await client.fetch('token');
 
     expect(notifyClientConfig).toEqual({
       data: {
@@ -40,9 +40,7 @@ describe('ClientConfiguration', () => {
       technicalMessage: 'Client configuration is not available',
     });
 
-    const apiClient = new ClientConfigurationApiClient();
-
-    const notifyClientConfig = await apiClient.fetch('token');
+    const notifyClientConfig = await client.fetch('token');
 
     expect(notifyClientConfig).toEqual({
       data: null,
@@ -55,9 +53,7 @@ describe('ClientConfiguration', () => {
       technicalMessage: 'Invalid Request',
     });
 
-    const apiClient = new ClientConfigurationApiClient();
-
-    const notifyClientConfig = await apiClient.fetch('token');
+    const notifyClientConfig = await client.fetch('token');
 
     expect(notifyClientConfig).toEqual({
       error: {
@@ -80,9 +76,7 @@ describe('ClientConfiguration', () => {
         },
       },
     });
-    const apiClient = new ClientConfigurationApiClient();
-
-    const notifyClientConfig = await apiClient.fetch('token');
+    const notifyClientConfig = await client.fetch('token');
 
     expect(notifyClientConfig).toEqual({
       error: {
