@@ -191,40 +191,62 @@
       },
       "CascadeItem": {
         "allOf": [
-          { "$ref": "#/components/schemas/CascadeItemBase" },
+          {
+            "$ref": "#/components/schemas/CascadeItemBase"
+          },
           {
             "anyOf": [
               {
-                "type": "object",
-                "required": ["defaultTemplateId"],
                 "properties": {
-                  "defaultTemplateId": { "format": "uuid", "nullable": true, "type": "string" },
                   "conditionalTemplates": {
-                    "type": "array",
                     "items": {
                       "oneOf": [
-                        { "$ref": "#/components/schemas/ConditionalTemplateLanguage" },
-                        { "$ref": "#/components/schemas/ConditionalTemplateAccessible" }
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                        },
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                        }
                       ]
-                    }
+                    },
+                    "type": "array"
+                  },
+                  "defaultTemplateId": {
+                    "format": "uuid",
+                    "nullable": true,
+                    "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "defaultTemplateId"
+                ],
+                "type": "object"
               },
               {
-                "type": "object",
-                "required": ["conditionalTemplates"],
                 "properties": {
-                  "defaultTemplateId": { "format": "uuid", "nullable": true, "type": "string" },
                   "conditionalTemplates": {
-                    "type": "array",
                     "items": {
                       "oneOf": [
-                        { "$ref": "#/components/schemas/ConditionalTemplateLanguage" },
-                        { "$ref": "#/components/schemas/ConditionalTemplateAccessible" }
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                        },
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                        }
                       ]
-                    }
+                    },
+                    "type": "array"
+                  },
+                  "defaultTemplateId": {
+                    "format": "uuid",
+                    "nullable": true,
+                    "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "conditionalTemplates"
+                ],
+                "type": "object"
               }
             ]
           }
