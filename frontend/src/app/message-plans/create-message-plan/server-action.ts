@@ -1,3 +1,5 @@
+'use server';
+
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
 import type {
@@ -14,7 +16,9 @@ import { createRoutingConfig } from '@utils/form-actions';
 
 const $MessagePlanFormData = z.object({
   campaignId: z.string().min(1, { error: 'Select a campaign' }),
-  messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST),
+  messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {
+    error: 'Invalid message order selected',
+  }),
   name: z
     .string()
     .min(1, { error: 'Enter a message plan name' })
@@ -92,7 +96,7 @@ function messageOrderToInitialCascadeGroups(_: MessageOrder): CascadeGroup[] {
   return [{ name: 'standard' }];
 }
 
-export async function messagePlanServerAction(
+export async function createMessagePlanServerAction(
   formState: FormState,
   formData: FormData
 ): Promise<FormState> {

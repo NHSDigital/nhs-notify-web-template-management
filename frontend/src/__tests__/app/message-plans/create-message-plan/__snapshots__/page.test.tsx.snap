@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateMessagePlanPage renders the page when messageOrder is "LETTER" 1`] = `
+exports[`CreateMessagePlanPage renders the page 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -8,208 +8,23 @@ exports[`CreateMessagePlanPage renders the page when messageOrder is "LETTER" 1`
     role="main"
   >
     <div
-      class="nhsuk-grid-row"
+      data-testid="mocked-form-provider"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        class="nhsuk-grid-row"
       >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
         <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
+          class="nhsuk-grid-column-two-thirds"
         >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMAIL" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMAIL,SMS" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,EMAIL,SMS,LETTER" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS,EMAIL" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`CreateMessagePlanPage renders the page when messageOrder is "NHSAPP,SMS,LETTER" 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1
-          class="nhsuk-heading-xl"
-        >
-          Create a message plan
-        </h1>
-        <div
-          data-testid="mocked-message-plan-form"
-        />
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Create a message plan
+          </h1>
+          <div
+            data-testid="mocked-message-plan-form"
+          />
+        </div>
       </div>
     </div>
   </main>

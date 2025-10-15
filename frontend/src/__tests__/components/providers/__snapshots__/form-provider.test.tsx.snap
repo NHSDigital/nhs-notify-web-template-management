@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NHSNotifyFormProvider renders the child form with the error summary before children 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="error-summary"
+  />
+  <h1>
+    Page Heading
+  </h1>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      data-testid="name"
+      name="name"
+      type="text"
+    />
+    <button
+      data-testid="submit"
+    >
+      Submit
+    </button>
+  </form>
+</DocumentFragment>
+`;
