@@ -486,7 +486,7 @@ describe('form-actions', () => {
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
   });
 
-  test('getTemplates - order by createdAt and then id', async () => {
+  test('getTemplates - order by updatedAt and then id', async () => {
     const baseTemplate = {
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
