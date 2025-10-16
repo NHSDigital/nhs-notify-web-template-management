@@ -40,6 +40,10 @@ const {
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
   waitingForProofsLetterTemplatePage,
+  messagePlansPage,
+  chooseMessageOrderPage,
+  chooseMessageOrderErrorPage,
+
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -139,6 +143,12 @@ const userEmails = [
   },
 ];
 
+const routing = [
+  {
+    url: `${baseUrl}/message-plans/`
+  }
+]
+
 const allJourneys = {
   landingPage,
   allTemplates,
@@ -149,6 +159,7 @@ const allJourneys = {
   letters,
   userEmails,
   errors,
+  routing,
 };
 
 const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]
@@ -176,5 +187,6 @@ module.exports = {
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
+    concurrency: 4,
   },
 };

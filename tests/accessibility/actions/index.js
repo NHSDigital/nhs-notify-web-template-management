@@ -29,5 +29,6 @@ module.exports = {
   ...require('./view-not-yet-submitted-letter-template.actions'),
   ...require('./view-not-yet-submitted-nhs-app-template.actions'),
   ...require('./view-not-yet-submitted-text-message-template.actions'),
-  ...require('./waiting-for-proofs-letter-template.actions'),
+  ...require('./choose-message-order.actions'),
+  ...require('./message-plans.actions'),
 };
