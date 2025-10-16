@@ -113,7 +113,7 @@ header=$( echo -n "${header_json}" | b64enc )
 payload_json="{
     \"iat\":${iat},
     \"exp\":${exp},
-    \"iss\":\"${$CLIENT_ID}\"
+    \"iss\":\"${APP_CLIENT_ID}\"
 }"
 # Payload encode
 payload=$( echo -n "${payload_json}" | b64enc )
@@ -121,7 +121,7 @@ payload=$( echo -n "${payload_json}" | b64enc )
 # Signature
 header_payload="${header}"."${payload}"
 signature=$(
-    openssl dgst -sha256 -sign <(echo -n "${$PEM_FILE}") \
+    openssl dgst -sha256 -sign <(echo -n "${APP_PEM_FILE}") \
     <(echo -n "${header_payload}") | b64enc
 )
 
