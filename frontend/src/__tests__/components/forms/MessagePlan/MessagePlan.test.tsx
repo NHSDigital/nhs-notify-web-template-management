@@ -6,7 +6,7 @@ import { verifyFormCsrfToken } from '@utils/csrf-utils';
 
 jest.mock('@providers/form-provider');
 const mockAction = jest.fn();
-jest.mocked(useNHSNotifyForm).mockReturnValue([{}, mockAction]);
+jest.mocked(useNHSNotifyForm).mockReturnValue([{}, mockAction, false]);
 
 jest.mock('@utils/csrf-utils');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
@@ -43,6 +43,7 @@ test('renders errors', async () => {
       },
     },
     jest.fn(),
+    false,
   ]);
 
   const container = render(

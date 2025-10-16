@@ -1,6 +1,6 @@
 'use client';
 
-import React, {
+import {
   type PropsWithChildren,
   createContext,
   useActionState,
@@ -9,17 +9,19 @@ import React, {
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 
-type Ctx = [FormState, (formData: FormData) => void];
+type NHSNotifyFormActionState = ReturnType<
+  typeof useActionState<FormState, FormData>
+>;
 
-const FormCtx = createContext<Ctx | null>(null);
+const FormContext = createContext<NHSNotifyFormActionState | null>(null);
 
 export function useNHSNotifyForm() {
-  const ctx = useContext(FormCtx);
-  if (!ctx)
+  const context = useContext(FormContext);
+  if (!context)
     throw new Error(
       'useNHSNotifyForm must be used within NHSNotifyFormProvider'
     );
-  return ctx;
+  return context;
 }
 
 export function NHSNotifyFormProvider({
@@ -30,15 +32,15 @@ export function NHSNotifyFormProvider({
   initialState?: FormState;
   serverAction: (state: FormState, data: FormData) => Promise<FormState>;
 }>) {
-  const [state, action] = useActionState<FormState, FormData>(
+  const [state, action, isPending] = useActionState<FormState, FormData>(
     serverAction,
     initialState
   );
 
   return (
-    <FormCtx.Provider value={[state, action]}>
+    <FormContext.Provider value={[state, action, isPending]}>
       <NhsNotifyErrorSummary errorState={state.errorState} />
       {children}
-    </FormCtx.Provider>
+    </FormContext.Provider>
   );
 }

@@ -1,36 +1,28 @@
-import { render } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-utils';
 import CreateMessagePlanPage from '@app/message-plans/create-message-plan/page';
 import { createMessagePlanServerAction } from '@app/message-plans/create-message-plan/server-action';
-import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
-import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { NextRedirectError } from '@testhelpers/next-redirect';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { fetchClient } from '@utils/server-features';
 
 jest.mock('next/navigation');
-jest.mock('@app/message-plans/create-message-plan/server-action');
-jest.mock('@forms/MessagePlan/MessagePlan');
-jest.mock('@providers/form-provider');
-jest.mock('@utils/server-features');
-
 jest.mocked(redirect).mockImplementation((url, type) => {
   throw new NextRedirectError(url, type);
 });
 
-jest
-  .mocked(NHSNotifyFormProvider)
-  .mockImplementation(({ children }) => (
-    <div data-testid='mocked-form-provider'>{children}</div>
-  ));
+jest.mock('@app/message-plans/create-message-plan/server-action');
 
-jest
-  .mocked(MessagePlanForm)
-  .mockImplementation(() => <div data-testid='mocked-message-plan-form' />);
+jest.mock('@utils/csrf-utils');
+jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
-jest
-  .mocked(fetchClient)
-  .mockResolvedValue({ campaignIds: ['campaign-1'], features: {} });
+jest.mock('@utils/server-features');
+jest.mocked(fetchClient).mockResolvedValue({
+  campaignIds: ['campaign-1', 'campaign-2'],
+  features: {},
+});
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -45,6 +37,62 @@ describe('CreateMessagePlanPage', () => {
     const container = render(ui);
 
     expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  test('on submit it invokes the server action and renders error summary', async () => {
+    const user = await userEvent.setup();
+
+    jest.mocked(createMessagePlanServerAction).mockResolvedValue({
+      errorState: {
+        fieldErrors: {
+          name: ['Name Error'],
+          campaignId: ['Campaign Id Error'],
+        },
+      },
+    });
+
+    const ui = await CreateMessagePlanPage({
+      searchParams: Promise.resolve({ messageOrder: 'NHSAPP' }),
+    });
+
+    const container = render(ui);
+
+    await user.click(screen.getByTestId('name-field'));
+
+    await user.keyboard('My Message Plan');
+
+    await user.selectOptions(
+      screen.getByTestId('campaign-id-field'),
+      'campaign-2'
+    );
+
+    await user.click(screen.getByTestId('submit-button'));
+
+    expect(container.asFragment()).toMatchSnapshot();
+
+    expect(createMessagePlanServerAction).toHaveBeenCalledTimes(1);
+    expect(createMessagePlanServerAction).toHaveBeenCalledWith(
+      {},
+      expect.any(FormData)
+    );
+
+    const formData = jest
+      .mocked(createMessagePlanServerAction)
+      .mock.lastCall?.at(1) as FormData;
+
+    expect(Object.fromEntries(formData.entries())).toMatchObject({
+      campaignId: 'campaign-2',
+      messageOrder: 'NHSAPP',
+      name: 'My Message Plan',
+    });
+
+    const errorSummaryHeading = await screen.getByTestId('error-summary');
+
+    // "error-summary" test id targets the nested heading rather than the top level of the error summary
+    // so we need to assert against the parent element
+    await waitFor(() => {
+      expect(errorSummaryHeading.parentElement).toHaveFocus();
+    });
   });
 
   test('redirects when there are no campaignIds', async () => {
@@ -84,22 +132,11 @@ describe('CreateMessagePlanPage', () => {
   test.each(MESSAGE_ORDER_OPTIONS_LIST)(
     'renders the page when messageOrder is "%s"',
     async (messageOrder) => {
-      const ui = await CreateMessagePlanPage({
-        searchParams: Promise.resolve({ messageOrder }),
-      });
-
-      render(ui);
-
-      expect(
-        jest.mocked(NHSNotifyFormProvider).mock.lastCall?.at(0)
-      ).toMatchObject({
-        serverAction: jest.mocked(createMessagePlanServerAction),
-      });
-
-      expect(jest.mocked(MessagePlanForm).mock.lastCall?.at(0)).toEqual({
-        messageOrder,
-        campaignIds: ['campaign-1'],
-      });
+      await expect(
+        CreateMessagePlanPage({
+          searchParams: Promise.resolve({ messageOrder }),
+        })
+      ).resolves.not.toThrow();
     }
   );
 });
