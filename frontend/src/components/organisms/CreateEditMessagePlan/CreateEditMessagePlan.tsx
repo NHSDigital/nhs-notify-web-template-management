@@ -15,6 +15,7 @@ import { MessagePlanTemplates } from '@utils/message-plans';
 import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
 
 import copy from '@content/content';
+import { interpolate } from '@utils/interpolate';
 const { createEditMessagePlan: content } = copy.components;
 
 export function CreateEditMessagePlan({
@@ -34,7 +35,9 @@ export function CreateEditMessagePlan({
           <p className='nhsuk-body-s'>
             <Link
               data-testid='change-message-plan-name-link'
-              href={content.changeNameLink.href}
+              href={interpolate(content.changeNameLink.href, {
+                routingConfigId: messagePlan.id,
+              })}
             >
               {content.changeNameLink.text}
             </Link>
@@ -68,7 +71,13 @@ export function CreateEditMessagePlan({
 
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
             {/* TODO: CCM-11495 Add validation */}
-            <Link href={content.ctas.primary.href} passHref legacyBehavior>
+            <Link
+              href={interpolate(content.ctas.primary.href, {
+                routingConfigId: messagePlan.id,
+              })}
+              passHref
+              legacyBehavior
+            >
               <NHSNotifyButton data-testid='move-to-production-cta'>
                 {content.ctas.primary.text}
               </NHSNotifyButton>

@@ -1110,7 +1110,7 @@ const messagePlanBlock = {
 const createEditMessagePlan = {
   headerCaption: 'Message plan',
   changeNameLink: {
-    href: '/message-plans/create-message-plan', // TODO: Check if this is correct
+    href: '/message-plans/edit-message-plan/{{routingConfigId}}',
     text: 'Change name',
   },
   rowHeadings: {
@@ -1119,7 +1119,7 @@ const createEditMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '/message-plans/move-to-production',
+      href: '/message-plans/move-to-production/{{routingConfigId}}',
       text: 'Move to production',
     },
     secondary: {

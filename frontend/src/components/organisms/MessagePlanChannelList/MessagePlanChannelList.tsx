@@ -1,7 +1,11 @@
 import { Fragment } from 'react';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
-import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import {
+  CascadeItem,
+  RoutingConfig,
+  TemplateDto,
+} from 'nhs-notify-backend-client';
 import { MessagePlanTemplates } from '@utils/message-plans';
 
 import styles from '@organisms/MessagePlanChannelList/MessagePlanChannelList.module.scss';
@@ -14,7 +18,7 @@ export function MessagePlanChannelList({
   templates: MessagePlanTemplates;
 }) {
   function getMessagePlanTemplateById(
-    templateId?: string
+    templateId?: string | null
   ): TemplateDto | undefined {
     if (!templateId) return;
     return templates[templateId];
@@ -22,18 +26,27 @@ export function MessagePlanChannelList({
 
   return (
     <ul className={styles['channel-list']}>
-      {messagePlan.cascade.map((messagePlanChannel, index) => (
-        <Fragment key={`channel-${index + 1}`}>
-          <MessagePlanBlock
-            index={index}
-            channelItem={messagePlanChannel}
-            template={getMessagePlanTemplateById(
-              messagePlanChannel.defaultTemplateId
-            )}
-          />
-          <MessagePlanFallbackConditions channel={messagePlanChannel.channel} />
-        </Fragment>
-      ))}
+      {messagePlan.cascade.map(
+        (messagePlanChannel: CascadeItem, index: number) => (
+          <Fragment key={`channel-${index + 1}`}>
+            <MessagePlanBlock
+              index={index}
+              channelItem={messagePlanChannel}
+              template={getMessagePlanTemplateById(
+                messagePlanChannel.defaultTemplateId
+              )}
+            />
+            {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
+            {/* TODO: Update this logic for letter formats */}
+            {messagePlan.cascade.length > 1 &&
+              index < messagePlan.cascade.length - 1 && (
+                <MessagePlanFallbackConditions
+                  channel={messagePlanChannel.channel}
+                />
+              )}
+          </Fragment>
+        )
+      )}
     </ul>
   );
 }

@@ -57,7 +57,7 @@ describe('MessagePlanChannelList', () => {
     expect(container.querySelector('ul.channel-list')).toBeInTheDocument();
   });
 
-  it('should render a block and a fallback section for each cascade item', () => {
+  it('should render a block and a fallback section for each cascade item, apart from the final channel', () => {
     const channels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS'];
     const messagePlan = buildRoutingConfig(channels);
 
@@ -68,14 +68,20 @@ describe('MessagePlanChannelList', () => {
       />
     );
 
-    for (const channel of channels) {
-      expect(
-        screen.getByTestId(`message-plan-block-${channel}`)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByTestId(`message-plan-fallback-conditions-${channel}`)
-      ).toBeInTheDocument();
-    }
+    expect(screen.getByTestId('message-plan-block-NHSAPP')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('message-plan-fallback-conditions-NHSAPP')
+    ).toBeInTheDocument();
+
+    expect(screen.getByTestId('message-plan-block-EMAIL')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('message-plan-fallback-conditions-EMAIL')
+    ).toBeInTheDocument();
+
+    expect(screen.getByTestId('message-plan-block-SMS')).toBeInTheDocument();
+    expect(
+      screen.queryByTestId('message-plan-fallback-conditions-SMS')
+    ).toBeNull();
   });
 
   it('should render nothing inside the list when cascade is empty', () => {

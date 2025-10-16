@@ -94,14 +94,15 @@ describe('CreateEditMessagePlan', () => {
       ...(messagePlanChannelList.children as HTMLCollectionOf<HTMLElement>),
     ].map((el) => el.dataset.testid);
 
-    expect(listItemsTestIds).toEqual([
-      'message-plan-block-NHSAPP',
-      'message-plan-fallback-conditions-NHSAPP',
-      'message-plan-block-EMAIL',
-      'message-plan-fallback-conditions-EMAIL',
-      'message-plan-block-SMS',
-      'message-plan-fallback-conditions-SMS',
-    ]);
+    const expectedTestIds: string[] = [];
+    for (const [id, channel] of channels.entries()) {
+      expectedTestIds.push(`message-plan-block-${channel}`);
+      if (id < channels.length - 1) {
+        expectedTestIds.push(`message-plan-fallback-conditions-${channel}`);
+      }
+    }
+
+    expect(listItemsTestIds).toEqual(expectedTestIds);
   });
 
   it('should render CTAs for both saving and moving to production', () => {
@@ -131,7 +132,7 @@ describe('CreateEditMessagePlan', () => {
     const link = screen.getByTestId('change-message-plan-name-link');
     expect(link.textContent).toBe('Change name');
     expect(link.getAttribute('href')).toBe(
-      '/message-plans/create-message-plan'
+      `/message-plans/edit-message-plan/${plan.id}`
     );
   });
 
