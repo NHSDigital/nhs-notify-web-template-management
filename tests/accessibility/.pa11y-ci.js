@@ -42,7 +42,7 @@ const {
   waitingForProofsLetterTemplatePage,
   messagePlansPage,
   chooseMessageOrderPage,
-  chooseMessageOrderErrorPage,
+  chooseMessageOrderPageError,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -145,7 +145,7 @@ const userEmails = [
 const routing = [
   messagePlansPage(`${baseUrl}/message-plans`),
   chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`),
-  chooseMessageOrderErrorPage(`${baseUrl}/message-plans/choose-message-order`),
+  chooseMessageOrderPageError(`${baseUrl}/message-plans/choose-message-order`),
 ];
 
 const allJourneys = {
