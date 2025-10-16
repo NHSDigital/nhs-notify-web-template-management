@@ -28,7 +28,8 @@ jobs:
 
       - name: Deploy Nonprod Environment
         env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+            PEM_FILE: ${{ secrets.GITHUB_APP_PEM_FILE }}
+            CLIENT_ID: ${{ secrets.GITHUB_APP_CLIENT_ID }}
         run: |
           bash .github/scripts/dispatch_internal_repo_workflow.sh \
             --releaseVersion "${{ github.event.release.tag_name }}" \

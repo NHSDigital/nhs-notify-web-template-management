@@ -20,7 +20,8 @@ jobs:
       - uses: actions/checkout@v5.0.0
       - name: Trigger dynamic environment creation
         env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+            PEM_FILE: ${{ secrets.GITHUB_APP_PEM_FILE }}
+            CLIENT_ID: ${{ secrets.GITHUB_APP_CLIENT_ID }}
         shell: bash
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \

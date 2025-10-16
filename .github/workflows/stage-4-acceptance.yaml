@@ -22,7 +22,8 @@ jobs:
       - name: Trigger Sandbox Environment Build
         shell: bash
         env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+          PEM_FILE: ${{ secrets.GITHUB_APP_PEM_FILE }}
+          CLIENT_ID: ${{ secrets.GITHUB_APP_CLIENT_ID }}
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
             --infraRepoName "nhs-notify-web-template-management" \
@@ -36,7 +37,8 @@ jobs:
       - name: Trigger Acceptance Tests
         shell: bash
         env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+          PEM_FILE: ${{ secrets.GITHUB_APP_PEM_FILE }}
+          CLIENT_ID: ${{ secrets.GITHUB_APP_CLIENT_ID }}
         run: |
           .github/scripts/dispatch_internal_repo_workflow.sh \
             --infraRepoName "nhs-notify-web-template-management" \
