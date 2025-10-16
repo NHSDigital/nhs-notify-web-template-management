@@ -98,20 +98,40 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   NHS App
                 </h3>
-                <a
-                  class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-NHSAPP"
-                  href="/message-plans/choose-nhs-app-template"
-                >
-                  Choose
-                  <span
-                    class="nhsuk-u-visually-hidden"
+                <p>
+                  name
+                  <br />
+                  <a
+                    class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-NHSAPP"
+                    href="/message-plans/choose-nhs-app-template"
                   >
-                    NHS App
-                  </span>
-                   
-                  template
-                </a>
+                    Change
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      NHS App
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
+                <p>
+                  <a
+                    class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-NHSAPP"
+                    href="todo"
+                  >
+                    Remove
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      NHS App
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
               </div>
             </div>
           </li>
@@ -230,20 +250,40 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   Text message (SMS)
                 </h3>
-                <a
-                  class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-SMS"
-                  href="/message-plans/choose-text-message-template"
-                >
-                  Choose
-                  <span
-                    class="nhsuk-u-visually-hidden"
+                <p>
+                  name
+                  <br />
+                  <a
+                    class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-SMS"
+                    href="/message-plans/choose-text-message-template"
                   >
-                    Text message (SMS)
-                  </span>
-                   
-                  template
-                </a>
+                    Change
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      Text message (SMS)
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
+                <p>
+                  <a
+                    class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-SMS"
+                    href="todo"
+                  >
+                    Remove
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      Text message (SMS)
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
               </div>
             </div>
           </li>
@@ -338,7 +378,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           </li>
           <li
             class="message-plan-block"
-            data-testid="message-plan-block-LETTER"
+            data-testid="message-plan-block-EMAIL"
           >
             <div
               aria-hidden="true"
@@ -360,18 +400,18 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 <h3
                   class="nhsuk-heading-s"
                 >
-                  Letter
+                  Email
                 </h3>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-LETTER"
-                  href="/message-plans/choose-standard-english-letter-template"
+                  data-testid="choose-template-link-EMAIL"
+                  href="/message-plans/choose-email-template"
                 >
                   Choose
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Letter
+                    Email
                   </span>
                    
                   template
@@ -381,7 +421,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           </li>
           <li
             class="fallback-conditions"
-            data-testid="message-plan-fallback-conditions-LETTER"
+            data-testid="message-plan-fallback-conditions-EMAIL"
           >
             <div
               aria-hidden="true"
@@ -425,7 +465,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 <span
                   class="nhsuk-details__summary-text"
                 >
-                  Conditions for accessible and language letters
+                  Fallback conditions
                 </span>
               </summary>
               <div
@@ -434,6 +474,21 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 <ul
                   class="nhsuk-list nhsuk-list--tick"
                 >
+                  <li>
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      class="nhsuk-icon nhsuk-icon--tick"
+                      data-nimg="1"
+                      decoding="async"
+                      height="34"
+                      loading="lazy"
+                      src="/templates/lib/assets/icons/icon-tick.svg"
+                      style="color: transparent;"
+                      width="34"
+                    />
+                    If first message read within 24 hours, no further messages sent.
+                  </li>
                   <li>
                     <img
                       alt=""
@@ -447,19 +502,74 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       style="color: transparent;"
                       width="34"
                     />
-                    The relevant accessible or language letter will be sent instead of the standard English letter if, both: 
-                    <ul>
-                      <li>
-                        the recipient has requested an accessible or language letter in PDS
-                      </li>
-                      <li>
-                        you've included the relevant template in this message plan
-                      </li>
-                    </ul>
+                    If first message not read within 24 hours, second message sent.
                   </li>
                 </ul>
               </div>
             </details>
+          </li>
+          <li
+            class="message-plan-block"
+            data-testid="message-plan-block-LETTER"
+          >
+            <div
+              aria-hidden="true"
+              class="message-plan-block-number"
+            >
+              4
+            </div>
+            <h2
+              class="nhsuk-heading-m nhsuk-u-padding-top-1"
+            >
+              Fourth message
+            </h2>
+            <div
+              class="channel-template-outer"
+            >
+              <div
+                class="channel-template-inner"
+              >
+                <h3
+                  class="nhsuk-heading-s"
+                >
+                  Letter
+                </h3>
+                <p>
+                  name
+                  <br />
+                  <a
+                    class="nhsuk-link nhsuk-link--no-visited-state"
+                    data-testid="change-template-link-LETTER"
+                    href="/message-plans/choose-standard-english-letter-template"
+                  >
+                    Change
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      Letter
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
+                <p>
+                  <a
+                    class="channel-template-link--remove nhsuk-link"
+                    data-testid="remove-template-link-LETTER"
+                    href="todo"
+                  >
+                    Remove
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                      Letter
+                    </span>
+                     
+                    template
+                  </a>
+                </p>
+              </div>
+            </div>
           </li>
         </ul>
         <div

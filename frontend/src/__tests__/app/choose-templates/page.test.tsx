@@ -199,6 +199,12 @@ describe('ChooseTemplatesPage', () => {
         },
         {
           cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+        {
+          cascadeGroups: ['standard'],
           channel: 'LETTER',
           channelType: 'primary',
           defaultTemplateId: letterTemplateId,
@@ -207,9 +213,9 @@ describe('ChooseTemplatesPage', () => {
     };
 
     const templates = {
-      'test-template-app': { ...NHS_APP_TEMPLATE, id: appTemplateId },
-      'test-template-sms': { ...SMS_TEMPLATE, id: smsTemplateId },
-      'test-template-letter': {
+      [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
+      [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
+      [letterTemplateId]: {
         ...LETTER_TEMPLATE,
         id: letterTemplateId,
       },
