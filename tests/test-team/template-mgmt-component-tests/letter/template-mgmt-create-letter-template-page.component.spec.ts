@@ -22,7 +22,6 @@ test.describe('Upload letter Template Page', () => {
   let user: TestUser;
   let userWithoutCampaignId: TestUser;
   let userWithMultipleCampaigns: TestUser;
-  let userWithFallbackCampaignId: TestUser;
 
   test.beforeAll(async () => {
     const authHelper = createAuthHelper();
@@ -32,9 +31,6 @@ test.describe('Upload letter Template Page', () => {
     );
     userWithMultipleCampaigns = await authHelper.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
-    );
-    userWithFallbackCampaignId = await authHelper.getTestUser(
-      testUsers.UserWithFallbackCampaignId.userId
     );
   });
 
@@ -132,40 +128,6 @@ test.describe('Upload letter Template Page', () => {
         'Choose a campaign ID',
         'Select a letter template PDF',
       ]);
-    });
-
-    test('when user with a fallback campaign ID submits form with valid data, then the next page is displayed', async ({
-      page,
-    }) => {
-      await loginAsUser(userWithFallbackCampaignId, page);
-      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
-
-      await createTemplatePage.loadPage();
-      await page
-        .locator('[id="letterTemplateName"]')
-        .fill('This is an NHS App template name');
-
-      await page.locator('input[name="letterTemplatePdf"]').click();
-      await page
-        .locator('input[name="letterTemplatePdf"]')
-        .setInputFiles(
-          './fixtures/pdf-upload/with-personalisation/template.pdf'
-        );
-
-      await createTemplatePage.clickSaveAndPreviewButton();
-
-      const previewPageRegex =
-        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
-
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      await expect(page).toHaveURL(new RegExp(previewPageRegex));
-
-      const previewPageParts = page.url().match(previewPageRegex);
-      expect(previewPageParts?.length).toEqual(2);
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: previewPageParts![1],
-        clientId: user.clientId,
-      });
     });
 
     test('when user with a multiple campaign IDs submits form with valid data, then the next page is displayed', async ({

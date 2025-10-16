@@ -5,7 +5,6 @@ import {
 } from '@aws-sdk/client-ssm';
 
 export type ClientConfiguration = {
-  campaignId?: string;
   campaignIds?: string[];
   features: {
     proofing: boolean;
@@ -15,7 +14,7 @@ export type ClientConfiguration = {
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'WithFallbackCampaignId' | 'RoutingEnabled'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled'}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -51,7 +50,6 @@ export const testClients: TestClients = {
    * Client 4 has configuration but no campaignId set
    */
   Client4: {
-    campaignId: undefined,
     name: 'NHS Test Client 4',
     features: {
       proofing: true,
@@ -83,14 +81,6 @@ export const testClients: TestClients = {
 
   ClientWithMultipleCampaigns: {
     campaignIds: ['campaign-id', 'other-campaign-id'],
-    features: {
-      proofing: true,
-      routing: false,
-    },
-  },
-
-  ClientWithFallbackCampaignId: {
-    campaignId: 'campaign-id',
     features: {
       proofing: true,
       routing: false,

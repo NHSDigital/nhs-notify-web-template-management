@@ -30,7 +30,7 @@ const mockClientId = 'test-client-123';
 const mockKey = `${mockSSMKeyPrefix}/${mockClientId}`;
 
 const validClient: ClientConfiguration = {
-  campaignId: 'campaign-123',
+  campaignIds: ['campaign-123'],
   features: {
     proofing: true,
   },
