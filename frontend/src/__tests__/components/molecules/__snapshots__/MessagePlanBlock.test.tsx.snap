@@ -28,19 +28,25 @@ exports[`MessagePlanBlock for channel EMAIL with no template should match snapsh
         >
           Email
         </h3>
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="choose-template-link-EMAIL"
-          href="/message-plans/choose-email-template"
+        <ul
+          class="channel-template-actions"
         >
-          Choose
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Email
-          </span>
-           template
-        </a>
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-EMAIL"
+              href="/message-plans/choose-email-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Email
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -75,38 +81,46 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
         >
           Email
         </h3>
-        <p>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-EMAIL"
+        >
           Test email template
-          <br />
-          <a
-            class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="change-template-link-EMAIL"
-            href="/message-plans/choose-email-template"
-          >
-            Change
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              Email
-            </span>
-             template
-          </a>
         </p>
-        <p>
-          <a
-            class="channel-template-link--remove nhsuk-link"
-            data-testid="remove-template-link-EMAIL"
-            href="todo"
-          >
-            Remove
-            <span
-              class="nhsuk-u-visually-hidden"
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-EMAIL"
+              href="/message-plans/choose-email-template/test-routing-config-id"
             >
-              Email
-            </span>
-             template
-          </a>
-        </p>
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Email
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-EMAIL"
+              type="button"
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Email
+              </span>
+               template
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -141,19 +155,25 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
         >
           Letter
         </h3>
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="choose-template-link-LETTER"
-          href="/message-plans/choose-standard-english-letter-template"
+        <ul
+          class="channel-template-actions"
         >
-          Choose
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Letter
-          </span>
-           template
-        </a>
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-LETTER"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Letter
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -188,38 +208,46 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
         >
           Letter
         </h3>
-        <p>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-LETTER"
+        >
           Test email template
-          <br />
-          <a
-            class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="change-template-link-LETTER"
-            href="/message-plans/choose-standard-english-letter-template"
-          >
-            Change
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              Letter
-            </span>
-             template
-          </a>
         </p>
-        <p>
-          <a
-            class="channel-template-link--remove nhsuk-link"
-            data-testid="remove-template-link-LETTER"
-            href="todo"
-          >
-            Remove
-            <span
-              class="nhsuk-u-visually-hidden"
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-LETTER"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
             >
-              Letter
-            </span>
-             template
-          </a>
-        </p>
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Letter
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-LETTER"
+              type="button"
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Letter
+              </span>
+               template
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -254,19 +282,25 @@ exports[`MessagePlanBlock for channel NHSAPP with no template should match snaps
         >
           NHS App
         </h3>
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="choose-template-link-NHSAPP"
-          href="/message-plans/choose-nhs-app-template"
+        <ul
+          class="channel-template-actions"
         >
-          Choose
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            NHS App
-          </span>
-           template
-        </a>
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-NHSAPP"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                NHS App
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -301,38 +335,46 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
         >
           NHS App
         </h3>
-        <p>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-NHSAPP"
+        >
           Test email template
-          <br />
-          <a
-            class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="change-template-link-NHSAPP"
-            href="/message-plans/choose-nhs-app-template"
-          >
-            Change
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              NHS App
-            </span>
-             template
-          </a>
         </p>
-        <p>
-          <a
-            class="channel-template-link--remove nhsuk-link"
-            data-testid="remove-template-link-NHSAPP"
-            href="todo"
-          >
-            Remove
-            <span
-              class="nhsuk-u-visually-hidden"
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-NHSAPP"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
             >
-              NHS App
-            </span>
-             template
-          </a>
-        </p>
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                NHS App
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-NHSAPP"
+              type="button"
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                NHS App
+              </span>
+               template
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -367,19 +409,25 @@ exports[`MessagePlanBlock for channel SMS with no template should match snapshot
         >
           Text message (SMS)
         </h3>
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="choose-template-link-SMS"
-          href="/message-plans/choose-text-message-template"
+        <ul
+          class="channel-template-actions"
         >
-          Choose
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Text message (SMS)
-          </span>
-           template
-        </a>
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-SMS"
+              href="/message-plans/choose-text-message-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </li>
@@ -414,38 +462,46 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
         >
           Text message (SMS)
         </h3>
-        <p>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-SMS"
+        >
           Test email template
-          <br />
-          <a
-            class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="change-template-link-SMS"
-            href="/message-plans/choose-text-message-template"
-          >
-            Change
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              Text message (SMS)
-            </span>
-             template
-          </a>
         </p>
-        <p>
-          <a
-            class="channel-template-link--remove nhsuk-link"
-            data-testid="remove-template-link-SMS"
-            href="todo"
-          >
-            Remove
-            <span
-              class="nhsuk-u-visually-hidden"
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-SMS"
+              href="/message-plans/choose-text-message-template/test-routing-config-id"
             >
-              Text message (SMS)
-            </span>
-             template
-          </a>
-        </p>
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-SMS"
+              type="button"
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </li>

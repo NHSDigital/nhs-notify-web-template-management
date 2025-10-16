@@ -20,7 +20,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-EMAIL"
-            href="/message-plans/choose-email-template"
+            href="/message-plans/choose-email-template/test-routing-config-id"
           >
             Choose
             <span
@@ -58,7 +58,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-LETTER"
-            href="/message-plans/choose-standard-english-letter-template"
+            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
           >
             Choose
             <span
@@ -96,7 +96,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAP
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-NHSAPP"
-            href="/message-plans/choose-nhs-app-template"
+            href="/message-plans/choose-nhs-app-template/test-routing-config-id"
           >
             Choose
             <span
@@ -134,7 +134,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-SMS"
-            href="/message-plans/choose-text-message-template"
+            href="/message-plans/choose-text-message-template/test-routing-config-id"
           >
             Choose
             <span
@@ -178,7 +178,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-EMAIL"
-            href="/message-plans/choose-email-template"
+            href="/message-plans/choose-email-template/test-routing-config-id"
           >
             Change
             <span
@@ -238,7 +238,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-LETTER"
-            href="/message-plans/choose-standard-english-letter-template"
+            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
           >
             Change
             <span
@@ -298,7 +298,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-NHSAPP"
-            href="/message-plans/choose-nhs-app-template"
+            href="/message-plans/choose-nhs-app-template/test-routing-config-id"
           >
             Change
             <span
@@ -358,7 +358,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-SMS"
-            href="/message-plans/choose-text-message-template"
+            href="/message-plans/choose-text-message-template/test-routing-config-id"
           >
             Change
             <span

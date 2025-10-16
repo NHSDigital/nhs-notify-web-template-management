@@ -24,7 +24,11 @@ describe('MessagePlanBlock', () => {
     const channelItem = buildCascadeItem('EMAIL');
 
     const { container } = render(
-      <MessagePlanBlock index={0} channelItem={channelItem} />
+      <MessagePlanBlock
+        index={0}
+        channelItem={channelItem}
+        routingConfigId='test-routing-config-id'
+      />
     );
 
     const stepNumber = container.querySelector('.message-plan-block-number');
@@ -39,7 +43,11 @@ describe('MessagePlanBlock', () => {
     const channelItem = buildCascadeItem('NHSAPP');
 
     const { container } = render(
-      <MessagePlanBlock index={2} channelItem={channelItem} />
+      <MessagePlanBlock
+        index={2}
+        channelItem={channelItem}
+        routingConfigId='test-routing-config-id'
+      />
     );
 
     const stepNumber = container.querySelector('.message-plan-block-number');
@@ -52,7 +60,13 @@ describe('MessagePlanBlock', () => {
   it('should render the channel template section with the correct channel subheading', () => {
     const channelItem = buildCascadeItem('EMAIL');
 
-    render(<MessagePlanBlock index={0} channelItem={channelItem} />);
+    render(
+      <MessagePlanBlock
+        index={0}
+        channelItem={channelItem}
+        routingConfigId='test-routing-config-id'
+      />
+    );
 
     expect(
       screen.getByRole('heading', { level: 3, name: 'Email' })
@@ -68,6 +82,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           template={mockTemplate}
+          routingConfigId='test-routing-config-id'
         />
       );
       expect(screen.getByText('Test email template')).toBeInTheDocument();
@@ -81,6 +96,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           template={mockTemplate}
+          routingConfigId='test-routing-config-id'
         />
       );
 
@@ -88,7 +104,7 @@ describe('MessagePlanBlock', () => {
         screen.getByRole('link', { name: 'Change Email template' })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole('link', { name: 'Remove Email template' })
+        screen.getByRole('button', { name: 'Remove Email template' })
       ).toBeInTheDocument();
       expect(
         screen.queryByRole('link', { name: 'Choose Email template' })
@@ -100,7 +116,13 @@ describe('MessagePlanBlock', () => {
     it('should show Choose link (and no Change/Remove links)', () => {
       const channelItem = buildCascadeItem('SMS');
 
-      render(<MessagePlanBlock index={0} channelItem={channelItem} />);
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          routingConfigId='test-routing-config-id'
+        />
+      );
 
       expect(
         screen.getByRole('link', { name: 'Choose Text message (SMS) template' })
@@ -128,6 +150,7 @@ describe('MessagePlanBlock', () => {
             index={0}
             channelItem={channelItem}
             template={mockTemplate}
+            routingConfigId='test-routing-config-id'
           />
         );
         expect(asFragment()).toMatchSnapshot();
@@ -141,7 +164,11 @@ describe('MessagePlanBlock', () => {
       it('should match snapshot', async () => {
         const channelItem = buildCascadeItem(channel);
         const { asFragment } = render(
-          <MessagePlanBlock index={0} channelItem={channelItem} />
+          <MessagePlanBlock
+            index={0}
+            channelItem={channelItem}
+            routingConfigId='test-routing-config-id'
+          />
         );
         expect(asFragment()).toMatchSnapshot();
       });

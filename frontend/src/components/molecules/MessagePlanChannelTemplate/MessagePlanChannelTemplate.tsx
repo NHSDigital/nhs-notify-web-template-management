@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Channel, TemplateDto } from 'nhs-notify-backend-client';
+import { Channel, RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
 import {
   channelDisplayMappings,
   channelToTemplateType,
@@ -15,9 +15,11 @@ const { messagePlanChannelTemplate: content } = copy.components;
 export function MessagePlanChannelTemplate({
   channel,
   template,
+  routingConfigId,
   required = true,
 }: {
   channel: Channel;
+  routingConfigId: RoutingConfig['id'];
   template?: TemplateDto;
   required?: boolean;
 }) {
@@ -44,7 +46,7 @@ export function MessagePlanChannelTemplate({
               <Link
                 data-testid={`choose-template-link-${channel}`}
                 className='nhsuk-link nhsuk-link--no-visited-state'
-                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
+                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
               >
                 {content.templateLinks.choose}
                 <span className='nhsuk-u-visually-hidden'>
@@ -61,7 +63,7 @@ export function MessagePlanChannelTemplate({
                 <Link
                   data-testid={`change-template-link-${channel}`}
                   className='nhsuk-link nhsuk-link--no-visited-state'
-                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
+                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
                 >
                   {content.templateLinks.change}
                   <span className='nhsuk-u-visually-hidden'>

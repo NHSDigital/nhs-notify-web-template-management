@@ -13,9 +13,11 @@ import styles from '@organisms/MessagePlanChannelList/MessagePlanChannelList.mod
 export function MessagePlanChannelList({
   messagePlan,
   templates,
+  routingConfigId,
 }: {
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
+  routingConfigId: RoutingConfig['id'];
 }) {
   function getMessagePlanTemplateById(
     templateId?: string | null
@@ -35,6 +37,7 @@ export function MessagePlanChannelList({
               template={getMessagePlanTemplateById(
                 messagePlanChannel.defaultTemplateId
               )}
+              routingConfigId={routingConfigId}
             />
             {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
             {/* TODO: Update this logic for letter formats */}

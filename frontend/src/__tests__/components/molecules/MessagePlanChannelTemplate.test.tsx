@@ -3,8 +3,15 @@ import { MessagePlanChannelTemplate } from '@molecules/MessagePlanChannelTemplat
 import type { TemplateDto } from 'nhs-notify-backend-client';
 
 describe('MessagePlanChannelTemplate', () => {
+  const routingConfigId = 'test-routing-config-id';
+
   it('should display the channel heading', () => {
-    render(<MessagePlanChannelTemplate channel='EMAIL' />);
+    render(
+      <MessagePlanChannelTemplate
+        channel='EMAIL'
+        routingConfigId={routingConfigId}
+      />
+    );
 
     expect(
       screen.getByRole('heading', { level: 3, name: 'Email' })
@@ -13,7 +20,13 @@ describe('MessagePlanChannelTemplate', () => {
 
   describe('when the channel is not required', () => {
     beforeEach(() => {
-      render(<MessagePlanChannelTemplate channel='LETTER' required={false} />);
+      render(
+        <MessagePlanChannelTemplate
+          channel='LETTER'
+          required={false}
+          routingConfigId={routingConfigId}
+        />
+      );
     });
 
     it('should display the heading with the "(optional)" suffix', () => {
@@ -25,7 +38,12 @@ describe('MessagePlanChannelTemplate', () => {
 
   describe('when no template is selected', () => {
     beforeEach(() => {
-      render(<MessagePlanChannelTemplate channel='NHSAPP' />);
+      render(
+        <MessagePlanChannelTemplate
+          channel='NHSAPP'
+          routingConfigId={routingConfigId}
+        />
+      );
     });
 
     it('should show the "Choose template" link with accessible name and href', () => {
@@ -34,7 +52,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        '/message-plans/choose-nhs-app-template'
+        `/message-plans/choose-nhs-app-template/${routingConfigId}`
       );
     });
 
@@ -56,7 +74,11 @@ describe('MessagePlanChannelTemplate', () => {
 
     beforeEach(() => {
       render(
-        <MessagePlanChannelTemplate channel='SMS' template={testTemplate} />
+        <MessagePlanChannelTemplate
+          channel='SMS'
+          template={testTemplate}
+          routingConfigId={routingConfigId}
+        />
       );
     });
 
@@ -70,7 +92,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        '/message-plans/choose-text-message-template'
+        `/message-plans/choose-text-message-template/${routingConfigId}`
       );
     });
 
@@ -95,7 +117,10 @@ describe('MessagePlanChannelTemplate', () => {
     'should match snapshot for empty state (%s)',
     (channel) => {
       const { container } = render(
-        <MessagePlanChannelTemplate channel={channel} />
+        <MessagePlanChannelTemplate
+          channel={channel}
+          routingConfigId={routingConfigId}
+        />
       );
 
       expect(container).toMatchSnapshot();
@@ -111,7 +136,11 @@ describe('MessagePlanChannelTemplate', () => {
       } as TemplateDto;
 
       const { container } = render(
-        <MessagePlanChannelTemplate channel={channel} template={testTemplate} />
+        <MessagePlanChannelTemplate
+          channel={channel}
+          template={testTemplate}
+          routingConfigId={routingConfigId}
+        />
       );
       expect(container).toMatchSnapshot();
     }

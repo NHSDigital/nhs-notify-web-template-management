@@ -44,7 +44,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-NHSAPP"
-                href="/message-plans/choose-nhs-app-template"
+                href="/message-plans/choose-nhs-app-template/routingconfig-1"
               >
                 Change
                 <span
@@ -56,10 +56,10 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-NHSAPP"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -68,7 +68,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
                   NHS App
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -202,7 +202,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-EMAIL"
-                href="/message-plans/choose-email-template"
+                href="/message-plans/choose-email-template/routingconfig-1"
               >
                 Change
                 <span
@@ -214,10 +214,10 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-EMAIL"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -226,7 +226,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
                   Email
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -360,7 +360,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-SMS"
-                href="/message-plans/choose-text-message-template"
+                href="/message-plans/choose-text-message-template/routingconfig-1"
               >
                 Change
                 <span
@@ -372,10 +372,10 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-SMS"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -384,7 +384,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
                   Text message (SMS)
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -438,7 +438,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-NHSAPP"
-                href="/message-plans/choose-nhs-app-template"
+                href="/message-plans/choose-nhs-app-template/routingconfig-1"
               >
                 Change
                 <span
@@ -450,10 +450,10 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-NHSAPP"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -462,7 +462,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   NHS App
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -596,7 +596,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-EMAIL"
-                href="/message-plans/choose-email-template"
+                href="/message-plans/choose-email-template/routingconfig-1"
               >
                 Change
                 <span
@@ -608,10 +608,10 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-EMAIL"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -620,7 +620,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   Email
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -754,7 +754,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-LETTER"
-                href="/message-plans/choose-standard-english-letter-template"
+                href="/message-plans/choose-standard-english-letter-template/routingconfig-1"
               >
                 Change
                 <span
@@ -766,10 +766,10 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               </a>
             </li>
             <li>
-              <a
+              <button
                 class="channel-template-link--remove nhsuk-link"
                 data-testid="remove-template-link-LETTER"
-                href="todo"
+                type="button"
               >
                 Remove
                 <span
@@ -778,7 +778,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   Letter
                 </span>
                  template
-              </a>
+              </button>
             </li>
           </ul>
         </div>

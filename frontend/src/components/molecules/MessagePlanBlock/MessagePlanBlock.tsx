@@ -1,4 +1,8 @@
-import { CascadeItem, TemplateDto } from 'nhs-notify-backend-client';
+import {
+  CascadeItem,
+  RoutingConfig,
+  TemplateDto,
+} from 'nhs-notify-backend-client';
 import { interpolate } from '@utils/interpolate';
 import { ORDINALS } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanChannelTemplate } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
@@ -12,10 +16,12 @@ export function MessagePlanBlock({
   index,
   channelItem,
   template,
+  routingConfigId,
 }: {
   index: number;
   channelItem: CascadeItem;
   template?: TemplateDto;
+  routingConfigId: RoutingConfig['id'];
 }) {
   return (
     <li
@@ -33,6 +39,7 @@ export function MessagePlanBlock({
         channel={channelItem.channel}
         template={template}
         required={true}
+        routingConfigId={routingConfigId}
       />
     </li>
   );
