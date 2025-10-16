@@ -20,7 +20,19 @@ describe('UploadLetterTemplatePage', () => {
     jest.resetAllMocks();
   });
 
-  it('should render UploadLetterTemplatePage with campaignIds field when available', async () => {
+  it('should render UploadLetterTemplatePage when one campaignId is available', async () => {
+    mockFetchClient.mockResolvedValueOnce({
+      campaignIds: ['campaign-id'],
+      features: {},
+    });
+
+    const page = await UploadLetterTemplatePage();
+
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
+    expect(page).toMatchSnapshot();
+  });
+
+  it('should render UploadLetterTemplatePage with multiple campaignIds available', async () => {
     mockFetchClient.mockResolvedValueOnce({
       campaignIds: ['campaign-id', 'other-campaign-id'],
       features: {},
@@ -28,7 +40,6 @@ describe('UploadLetterTemplatePage', () => {
 
     const page = await UploadLetterTemplatePage();
 
-    expect(await generateMetadata()).toEqual({ title: pageTitle });
     expect(page).toMatchSnapshot();
   });
 
