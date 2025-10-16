@@ -15,7 +15,7 @@ export type ClientConfiguration = {
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'WithFallbackCampaignId'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'WithFallbackCampaignId' | 'RoutingEnabled'}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -95,6 +95,15 @@ export const testClients: TestClients = {
       proofing: true,
       routing: false,
     },
+  },
+
+  /**
+   * ClientRoutingEnabled is an alternative client with routing enabled
+   */
+  ClientRoutingEnabled: {
+    campaignIds: ['RoutingEnabledCampaign'],
+    name: 'Routing Enabled Client',
+    features: { proofing: false, routing: true },
   },
 };
 

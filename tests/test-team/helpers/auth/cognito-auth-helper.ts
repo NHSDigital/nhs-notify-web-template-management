@@ -122,6 +122,14 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'UserWithFallbackCampaignId',
     clientKey: 'ClientWithFallbackCampaignId',
   },
+
+  /**
+   * UserRoutingEnabled belongs to an alternate client with routing enabled
+   */
+  UserRoutingEnabled: {
+    userId: 'UserWithRoutingEnabled',
+    clientKey: 'ClientRoutingEnabled',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
