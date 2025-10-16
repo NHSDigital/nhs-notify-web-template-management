@@ -14,6 +14,7 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   let user1: TestUser;
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
+  let userRoutingDisabled: TestUser;
 
   let routingConfigNoUpdates: FactoryRoutingConfig;
   let routingConfigSuccessfullyDelete: FactoryRoutingConfig;
@@ -23,8 +24,11 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDifferentClient = await authHelper.getTestUser(testUsers.User2.userId);
+    userDifferentClient = await authHelper.getTestUser(
+      testUsers.UserRoutingEnabled.userId
+    );
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
 
     routingConfigNoUpdates = RoutingConfigFactory.create(user1);
     routingConfigSuccessfullyDelete = RoutingConfigFactory.create(user1);
@@ -170,5 +174,25 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
     );
 
     expect(response.status()).toBe(204);
+  });
+
+  test('returns 400 if routing feature is disabled on the client', async ({
+    request,
+  }) => {
+    const response = await request.delete(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config`,
+      {
+        headers: {
+          Authorization: await userRoutingDisabled.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Routing feature is disabled',
+    });
   });
 });

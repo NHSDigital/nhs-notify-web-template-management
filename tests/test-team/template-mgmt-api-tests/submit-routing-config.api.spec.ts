@@ -16,6 +16,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   let user1: TestUser;
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
+  let userRoutingDisabled: TestUser;
 
   let routingConfigNoUpdates: FactoryRoutingConfig;
   let routingConfigSuccessfullySubmit: FactoryRoutingConfig;
@@ -25,8 +26,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDifferentClient = await authHelper.getTestUser(testUsers.User2.userId);
+    userDifferentClient = await authHelper.getTestUser(
+      testUsers.UserRoutingEnabled.userId
+    );
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
 
     routingConfigNoUpdates = RoutingConfigFactory.create(user1);
     routingConfigSuccessfullySubmit = RoutingConfigFactory.create(user1);
@@ -202,6 +206,26 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
         status: 'COMPLETED' satisfies RoutingConfigStatus,
         updatedAt: expect.stringMatching(isoDateRegExp),
       },
+    });
+  });
+
+  test('returns 400 if routing feature is disabled on the client', async ({
+    request,
+  }) => {
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config/submit`,
+      {
+        headers: {
+          Authorization: await userRoutingDisabled.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Routing feature is disabled',
     });
   });
 });
