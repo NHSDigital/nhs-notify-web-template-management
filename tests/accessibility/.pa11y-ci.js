@@ -43,7 +43,6 @@ const {
   messagePlansPage,
   chooseMessageOrderPage,
   chooseMessageOrderErrorPage,
-
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -144,10 +143,10 @@ const userEmails = [
 ];
 
 const routing = [
-  {
-    url: `${baseUrl}/message-plans/`
-  }
-]
+  messagePlansPage(`${baseUrl}/message-plans`),
+  chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`),
+  chooseMessageOrderErrorPage(`${baseUrl}/message-plans/choose-message-order`),
+];
 
 const allJourneys = {
   landingPage,
