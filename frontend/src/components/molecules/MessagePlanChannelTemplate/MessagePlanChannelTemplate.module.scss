@@ -11,6 +11,12 @@
     border: 2px solid var(--nhsuk-border-colour);
   }
 
+  &-actions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   &-link {
     &--remove {
       color: var(--nhsuk-error-colour);

@@ -13,20 +13,26 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL
       >
         Email
       </h3>
-      <a
-        class="nhsuk-link nhsuk-link--no-visited-state"
-        data-testid="choose-template-link-EMAIL"
-        href="/message-plans/choose-email-template"
+      <ul
+        class="channel-template-actions"
       >
-        Choose
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          Email
-        </span>
-         
-        template
-      </a>
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-EMAIL"
+            href="/message-plans/choose-email-template"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Email
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -45,20 +51,26 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
       >
         Letter
       </h3>
-      <a
-        class="nhsuk-link nhsuk-link--no-visited-state"
-        data-testid="choose-template-link-LETTER"
-        href="/message-plans/choose-standard-english-letter-template"
+      <ul
+        class="channel-template-actions"
       >
-        Choose
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          Letter
-        </span>
-         
-        template
-      </a>
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-LETTER"
+            href="/message-plans/choose-standard-english-letter-template"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Letter
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -77,20 +89,26 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAP
       >
         NHS App
       </h3>
-      <a
-        class="nhsuk-link nhsuk-link--no-visited-state"
-        data-testid="choose-template-link-NHSAPP"
-        href="/message-plans/choose-nhs-app-template"
+      <ul
+        class="channel-template-actions"
       >
-        Choose
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          NHS App
-        </span>
-         
-        template
-      </a>
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-NHSAPP"
+            href="/message-plans/choose-nhs-app-template"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              NHS App
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -109,20 +127,26 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 
       >
         Text message (SMS)
       </h3>
-      <a
-        class="nhsuk-link nhsuk-link--no-visited-state"
-        data-testid="choose-template-link-SMS"
-        href="/message-plans/choose-text-message-template"
+      <ul
+        class="channel-template-actions"
       >
-        Choose
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          Text message (SMS)
-        </span>
-         
-        template
-      </a>
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-SMS"
+            href="/message-plans/choose-text-message-template"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Text message (SMS)
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -141,40 +165,48 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         Email
       </h3>
-      <p>
+      <p
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-name-EMAIL"
+      >
         Covid 65+ reminder v1
-        <br />
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="change-template-link-EMAIL"
-          href="/message-plans/choose-email-template"
-        >
-          Change
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Email
-          </span>
-           
-          template
-        </a>
       </p>
-      <p>
-        <a
-          class="channel-template-link--remove nhsuk-link"
-          data-testid="remove-template-link-EMAIL"
-          href="todo"
-        >
-          Remove
-          <span
-            class="nhsuk-u-visually-hidden"
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-EMAIL"
+            href="/message-plans/choose-email-template"
           >
-            Email
-          </span>
-           
-          template
-        </a>
-      </p>
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Email
+            </span>
+             
+            template
+          </a>
+        </li>
+        <li>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            data-testid="remove-template-link-EMAIL"
+            href="todo"
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Email
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -193,40 +225,48 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         Letter
       </h3>
-      <p>
+      <p
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-name-LETTER"
+      >
         Covid 65+ reminder v1
-        <br />
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="change-template-link-LETTER"
-          href="/message-plans/choose-standard-english-letter-template"
-        >
-          Change
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Letter
-          </span>
-           
-          template
-        </a>
       </p>
-      <p>
-        <a
-          class="channel-template-link--remove nhsuk-link"
-          data-testid="remove-template-link-LETTER"
-          href="todo"
-        >
-          Remove
-          <span
-            class="nhsuk-u-visually-hidden"
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-LETTER"
+            href="/message-plans/choose-standard-english-letter-template"
           >
-            Letter
-          </span>
-           
-          template
-        </a>
-      </p>
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Letter
+            </span>
+             
+            template
+          </a>
+        </li>
+        <li>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            data-testid="remove-template-link-LETTER"
+            href="todo"
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Letter
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -245,40 +285,48 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         NHS App
       </h3>
-      <p>
+      <p
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-name-NHSAPP"
+      >
         Covid 65+ reminder v1
-        <br />
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="change-template-link-NHSAPP"
-          href="/message-plans/choose-nhs-app-template"
-        >
-          Change
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            NHS App
-          </span>
-           
-          template
-        </a>
       </p>
-      <p>
-        <a
-          class="channel-template-link--remove nhsuk-link"
-          data-testid="remove-template-link-NHSAPP"
-          href="todo"
-        >
-          Remove
-          <span
-            class="nhsuk-u-visually-hidden"
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-NHSAPP"
+            href="/message-plans/choose-nhs-app-template"
           >
-            NHS App
-          </span>
-           
-          template
-        </a>
-      </p>
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              NHS App
+            </span>
+             
+            template
+          </a>
+        </li>
+        <li>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            data-testid="remove-template-link-NHSAPP"
+            href="todo"
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              NHS App
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -297,40 +345,48 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         Text message (SMS)
       </h3>
-      <p>
+      <p
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-name-SMS"
+      >
         Covid 65+ reminder v1
-        <br />
-        <a
-          class="nhsuk-link nhsuk-link--no-visited-state"
-          data-testid="change-template-link-SMS"
-          href="/message-plans/choose-text-message-template"
-        >
-          Change
-          <span
-            class="nhsuk-u-visually-hidden"
-          >
-            Text message (SMS)
-          </span>
-           
-          template
-        </a>
       </p>
-      <p>
-        <a
-          class="channel-template-link--remove nhsuk-link"
-          data-testid="remove-template-link-SMS"
-          href="todo"
-        >
-          Remove
-          <span
-            class="nhsuk-u-visually-hidden"
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-SMS"
+            href="/message-plans/choose-text-message-template"
           >
-            Text message (SMS)
-          </span>
-           
-          template
-        </a>
-      </p>
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Text message (SMS)
+            </span>
+             
+            template
+          </a>
+        </li>
+        <li>
+          <a
+            class="channel-template-link--remove nhsuk-link"
+            data-testid="remove-template-link-SMS"
+            href="todo"
+          >
+            Remove
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Text message (SMS)
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
