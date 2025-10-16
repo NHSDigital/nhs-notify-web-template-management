@@ -98,33 +98,18 @@ describe('templateClient', () => {
           {
             features: {},
             campaignIds: ['pea-campaign'],
-            campaignId: 'bean-campaign',
           },
           'bean-campaign'
         )
       ).toEqual(false);
     });
 
-    test('campaignIds list not present and campaign ID matches fallback campaign ID', () => {
+    test('campaignIds not present', () => {
       const { templateClient } = setup();
       expect(
         templateClient.isCampaignIdValid(
           {
             features: {},
-            campaignId: 'bean-campaign',
-          },
-          'bean-campaign'
-        )
-      ).toEqual(true);
-    });
-
-    test('campaign ID does not match config', () => {
-      const { templateClient } = setup();
-      expect(
-        templateClient.isCampaignIdValid(
-          {
-            features: {},
-            campaignId: 'pea-campaign',
           },
           'bean-campaign'
         )
@@ -191,34 +176,6 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result when client configuration unexpectedly cant be fetched', async () => {
-      const { templateClient, mocks } = setup();
-
-      const data: CreateUpdateTemplate = {
-        templateType: 'EMAIL',
-        name: 'name',
-        message: 'message',
-        subject: 'subject',
-      };
-
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { errorMeta: { code: 500, description: 'err' } },
-      });
-
-      const result = await templateClient.createTemplate(data, user);
-
-      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            code: 500,
-            description: 'err',
-          },
-        },
-      });
-    });
-
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -247,8 +204,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
-        'NOT_YET_SUBMITTED',
-        undefined
+        'NOT_YET_SUBMITTED'
       );
 
       expect(result).toEqual({
@@ -298,8 +254,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
-        'NOT_YET_SUBMITTED',
-        undefined
+        'NOT_YET_SUBMITTED'
       );
 
       expect(result).toEqual({
@@ -354,8 +309,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
-        'NOT_YET_SUBMITTED',
-        undefined
+        'NOT_YET_SUBMITTED'
       );
 
       expect(result).toEqual({
@@ -1762,7 +1716,7 @@ describe('templateClient', () => {
       const { templateClient, mocks, logMessages } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { proofing: true }, campaignId: 'campaignId' },
+        data: { features: { proofing: true }, campaignIds: ['campaignId'] },
       });
 
       const actualError = new Error('from db');
@@ -1779,7 +1733,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignIds: ['campaignId'],
           features: {
             proofing: true,
           },
@@ -1840,7 +1794,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignIds: ['campaignId'],
           features: {
             proofing: true,
           },
@@ -1891,7 +1845,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignIds: ['campaignId'],
           features: {
             proofing: true,
           },
@@ -1959,7 +1913,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaign-id-from-ssm',
+          campaignIds: ['campaign-id-from-ssm'],
           features: {
             proofing: true,
           },
@@ -2027,7 +1981,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaign-from-ssm',
+          campaignIds: ['campaign-from-ssm'],
           features: {
             proofing: true,
           },
@@ -2179,7 +2133,7 @@ describe('templateClient', () => {
 
       const client: ClientConfiguration = {
         features: { proofing: true },
-        campaignId: 'campaign',
+        campaignIds: ['campaign'],
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: client });

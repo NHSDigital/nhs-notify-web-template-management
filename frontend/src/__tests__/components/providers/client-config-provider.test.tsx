@@ -19,7 +19,6 @@ const renderProvider =
 
 it('returns client config from context', () => {
   const config: ClientConfiguration = {
-    campaignId: 'campaign-0',
     campaignIds: ['campaign-1', 'campaign-2'],
     features: { proofing: true, routing: false },
   };
@@ -32,9 +31,8 @@ it('returns client config from context', () => {
 });
 
 describe('useCampaignIds', () => {
-  it('returns a sorted list of all campaign ids (ignores deprecated)', () => {
+  it('returns a sorted list of all campaign ids', () => {
     const config: ClientConfiguration = {
-      campaignId: 'b',
       campaignIds: ['c', 'a'],
       features: {},
     };
@@ -46,9 +44,8 @@ describe('useCampaignIds', () => {
     expect(result.current).toEqual(['a', 'c']);
   });
 
-  it('returns a empty list of all campaign ids if present (ignores deprecated)', () => {
+  it('returns an empty list of campaign ids if present', () => {
     const config: ClientConfiguration = {
-      campaignId: 'b',
       campaignIds: [],
       features: {},
     };
@@ -60,9 +57,8 @@ describe('useCampaignIds', () => {
     expect(result.current).toEqual([]);
   });
 
-  it('returns a list of campaign ids (only legacy present)', () => {
+  it('returns an empty list of campaign ids if not present', () => {
     const config: ClientConfiguration = {
-      campaignId: 'campaign-0',
       features: {},
     };
 
@@ -70,7 +66,7 @@ describe('useCampaignIds', () => {
       wrapper: renderProvider(config),
     });
 
-    expect(result.current).toEqual(['campaign-0']);
+    expect(result.current).toEqual([]);
   });
 
   it('removes duplicates', () => {

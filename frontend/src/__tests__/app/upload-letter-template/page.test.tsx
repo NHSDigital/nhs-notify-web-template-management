@@ -23,20 +23,6 @@ describe('UploadLetterTemplatePage', () => {
   it('should render UploadLetterTemplatePage with campaignIds field when available', async () => {
     mockFetchClient.mockResolvedValueOnce({
       campaignIds: ['campaign-id', 'other-campaign-id'],
-      campaignId: 'campaign-id',
-      features: {},
-    });
-
-    const page = await UploadLetterTemplatePage();
-
-    expect(await generateMetadata()).toEqual({ title: pageTitle });
-    expect(page).toMatchSnapshot();
-  });
-
-  it('should render UploadLetterTemplatePage with campaignId field when campaignIds is not available', async () => {
-    mockFetchClient.mockResolvedValueOnce({
-      campaignIds: undefined,
-      campaignId: 'campaign-id',
       features: {},
     });
 
@@ -64,7 +50,6 @@ describe('UploadLetterTemplatePage', () => {
 
     mockFetchClient.mockResolvedValueOnce({
       campaignIds: [],
-      campaignId: 'campaign-id',
       features: {},
     });
 
@@ -76,12 +61,11 @@ describe('UploadLetterTemplatePage', () => {
     );
   });
 
-  it('should redirect to error page when neither campaignIds nor campaignId is present', async () => {
+  it('should redirect to error page when campaignIds are not present', async () => {
     const mockRedirect = jest.mocked(redirect);
 
     mockFetchClient.mockResolvedValueOnce({
       campaignIds: undefined,
-      campaignId: undefined,
       features: {},
     });
 

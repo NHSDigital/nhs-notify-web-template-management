@@ -70,10 +70,6 @@ export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
 export type ChannelType = 'primary' | 'secondary';
 
 export type ClientConfiguration = {
-  /**
-   * @deprecated
-   */
-  campaignId?: string;
   campaignIds?: Array<string>;
   features: ClientFeatures;
 };

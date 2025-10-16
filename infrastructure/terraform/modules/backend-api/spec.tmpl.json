@@ -297,10 +297,6 @@
       },
       "ClientConfiguration": {
         "properties": {
-          "campaignId": {
-            "deprecated": true,
-            "type": "string"
-          },
           "campaignIds": {
             "items": {
               "type": "string"

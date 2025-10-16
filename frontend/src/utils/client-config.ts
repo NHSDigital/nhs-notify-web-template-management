@@ -7,17 +7,7 @@ export const initialFeatureFlags: ClientFeatures = Object.fromEntries(
 ) as ClientFeatures;
 
 export const getCampaignIds = (client: ClientConfiguration | null) => {
-  if (!client) return [];
+  if (!client?.campaignIds) return [];
 
-  const { campaignIds, campaignId } = client;
-
-  if (campaignIds) {
-    return [...new Set(campaignIds)].sort();
-  }
-
-  if (campaignId) {
-    return [campaignId];
-  }
-
-  return [];
+  return [...new Set(client.campaignIds)].sort();
 };

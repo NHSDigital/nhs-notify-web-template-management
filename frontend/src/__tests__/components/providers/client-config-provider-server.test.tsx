@@ -9,7 +9,6 @@ const mockFetchClient = jest.mocked(fetchClient);
 describe('ClientConfigProviderServer', () => {
   it('returns ClientConfigProvider with value set', async () => {
     mockFetchClient.mockResolvedValueOnce({
-      campaignId: 'legacy-campaign-id',
       campaignIds: ['new-campaign-id'],
       features: { proofing: true, routing: true },
     });
@@ -19,7 +18,6 @@ describe('ClientConfigProviderServer', () => {
     expect(rendered.type).toBe(ClientConfigProvider);
 
     expect(rendered.props.value).toEqual({
-      campaignId: 'legacy-campaign-id',
       campaignIds: ['new-campaign-id'],
       features: { proofing: true, routing: true },
     });
