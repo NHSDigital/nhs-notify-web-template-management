@@ -46,7 +46,7 @@ export function MessagePlanChannelTemplate({
                 className='nhsuk-link nhsuk-link--no-visited-state'
                 href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
               >
-                {content.templateLinks.choose.text}
+                {content.templateLinks.choose}
                 <span className='nhsuk-u-visually-hidden'>
                   {channelDisplayText}
                 </span>{' '}
@@ -63,7 +63,7 @@ export function MessagePlanChannelTemplate({
                   className='nhsuk-link nhsuk-link--no-visited-state'
                   href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}`}
                 >
-                  {content.templateLinks.change.text}
+                  {content.templateLinks.change}
                   <span className='nhsuk-u-visually-hidden'>
                     {channelDisplayText}
                   </span>{' '}
@@ -71,20 +71,20 @@ export function MessagePlanChannelTemplate({
                 </Link>
               </li>
               <li>
-                <Link
+                <button
                   data-testid={`remove-template-link-${channel}`}
-                  href={content.templateLinks.remove.href}
                   className={classNames(
                     styles['channel-template-link--remove'],
                     'nhsuk-link'
                   )}
+                  type='button'
                 >
-                  {content.templateLinks.remove.text}
+                  {content.templateLinks.remove}
                   <span className='nhsuk-u-visually-hidden'>
                     {channelDisplayText}
                   </span>{' '}
                   {content.templateLinks.template}
-                </Link>
+                </button>
               </li>
             </>
           )}

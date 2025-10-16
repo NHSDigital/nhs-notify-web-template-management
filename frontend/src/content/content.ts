@@ -1047,9 +1047,9 @@ export type FallbackConditionBlock = {
 
 const messagePlanChannelTemplate = {
   templateLinks: {
-    choose: { text: 'Choose' },
-    change: { text: 'Change' },
-    remove: { text: 'Remove', href: 'todo' }, // TODO: Update href
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove',
     template: 'template',
   },
   optional: '(optional)',

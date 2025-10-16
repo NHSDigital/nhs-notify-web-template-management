@@ -74,12 +74,12 @@ describe('MessagePlanChannelTemplate', () => {
       );
     });
 
-    it('should display the "Remove template" link with accessible name and href', () => {
-      const link = screen.getByRole('link', {
+    it('should display the "Remove template" button with accessible name and href', () => {
+      const removeTemplateLink = screen.getByRole('button', {
         name: 'Remove Text message (SMS) template',
       });
 
-      expect(link).toHaveAttribute('href', 'todo'); // TODO: CHANGE
+      expect(removeTemplateLink).toBeInTheDocument();
     });
 
     it('should not display the "Choose template" link', () => {

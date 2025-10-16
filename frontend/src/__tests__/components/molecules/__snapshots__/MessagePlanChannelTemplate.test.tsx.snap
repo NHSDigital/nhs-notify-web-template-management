@@ -191,10 +191,10 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           </a>
         </li>
         <li>
-          <a
+          <button
             class="channel-template-link--remove nhsuk-link"
             data-testid="remove-template-link-EMAIL"
-            href="todo"
+            type="button"
           >
             Remove
             <span
@@ -204,7 +204,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
             </span>
              
             template
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -251,10 +251,10 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           </a>
         </li>
         <li>
-          <a
+          <button
             class="channel-template-link--remove nhsuk-link"
             data-testid="remove-template-link-LETTER"
-            href="todo"
+            type="button"
           >
             Remove
             <span
@@ -264,7 +264,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
             </span>
              
             template
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -311,10 +311,10 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           </a>
         </li>
         <li>
-          <a
+          <button
             class="channel-template-link--remove nhsuk-link"
             data-testid="remove-template-link-NHSAPP"
-            href="todo"
+            type="button"
           >
             Remove
             <span
@@ -324,7 +324,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
             </span>
              
             template
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -371,10 +371,10 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           </a>
         </li>
         <li>
-          <a
+          <button
             class="channel-template-link--remove nhsuk-link"
             data-testid="remove-template-link-SMS"
-            href="todo"
+            type="button"
           >
             Remove
             <span
@@ -384,7 +384,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
             </span>
              
             template
-          </a>
+          </button>
         </li>
       </ul>
     </div>

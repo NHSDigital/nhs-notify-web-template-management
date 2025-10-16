@@ -68,3 +68,13 @@ pre {
 .inline-block {
   display: inline-block;
 }
+
+a.nhsuk-link--no-visited-state {
+  &:hover {
+    color: nhsuk.$nhsuk-link-colour;
+
+    &:visited {
+      color: nhsuk.$nhsuk-link-colour;
+    }
+  }
+}
