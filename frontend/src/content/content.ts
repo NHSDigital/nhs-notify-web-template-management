@@ -1175,7 +1175,7 @@ const messagePlansPage = {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  previewLink: (id: string) => `/message-plan/${id}`,
+  messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
 };
 
 const chooseMessageOrder = {
