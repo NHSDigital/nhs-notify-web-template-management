@@ -34,6 +34,13 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
             </th>
             <th
               class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-id"
+              scope="col"
+            >
+              ID
+            </th>
+            <th
+              class="nhsuk-table__header"
               data-testid="manage-template-table-header-template-type"
               scope="col"
             >
@@ -83,6 +90,18 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               >
                 Template 1
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              1
             </td>
             <td
               class="nhsuk-table__cell"
@@ -192,6 +211,18 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              2
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               NHS App message
@@ -281,6 +312,18 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              3
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               Standard letter
@@ -348,6 +391,18 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               >
                 Template 4
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              4
             </td>
             <td
               class="nhsuk-table__cell"
@@ -459,6 +514,13 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
             </th>
             <th
               class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-id"
+              scope="col"
+            >
+              ID
+            </th>
+            <th
+              class="nhsuk-table__header"
               data-testid="manage-template-table-header-template-type"
               scope="col"
             >
@@ -508,6 +570,18 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
               >
                 Template 1
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              1
             </td>
             <td
               class="nhsuk-table__cell"
@@ -617,6 +691,18 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              2
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               NHS App message
@@ -706,6 +792,18 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              3
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               Standard letter
@@ -773,6 +871,18 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
               >
                 Template 4
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              4
             </td>
             <td
               class="nhsuk-table__cell"
@@ -884,6 +994,13 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
             </th>
             <th
               class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-id"
+              scope="col"
+            >
+              ID
+            </th>
+            <th
+              class="nhsuk-table__header"
               data-testid="manage-template-table-header-template-type"
               scope="col"
             >
@@ -933,6 +1050,18 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               >
                 Template 1
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              1
             </td>
             <td
               class="nhsuk-table__cell"
@@ -1031,6 +1160,18 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              2
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               NHS App message
@@ -1120,6 +1261,18 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              3
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               Standard letter
@@ -1187,6 +1340,18 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               >
                 Template 4
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              4
             </td>
             <td
               class="nhsuk-table__cell"
@@ -1298,6 +1463,13 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
             </th>
             <th
               class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-id"
+              scope="col"
+            >
+              ID
+            </th>
+            <th
+              class="nhsuk-table__header"
               data-testid="manage-template-table-header-template-type"
               scope="col"
             >
@@ -1347,6 +1519,18 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               >
                 Template 1
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              1
             </td>
             <td
               class="nhsuk-table__cell"
@@ -1423,6 +1607,18 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               >
                 Template 2
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              2
             </td>
             <td
               class="nhsuk-table__cell"
@@ -1521,6 +1717,18 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
+                ID 
+              </span>
+              3
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
                 Type 
               </span>
               Standard letter
@@ -1588,6 +1796,18 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               >
                 Template 4
               </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              4
             </td>
             <td
               class="nhsuk-table__cell"
