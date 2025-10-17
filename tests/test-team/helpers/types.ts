@@ -1,4 +1,5 @@
 import type {
+  Channel,
   CreateUpdateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
@@ -80,4 +81,12 @@ export type FactoryRoutingConfig = {
   apiPayload: CreateUpdateRoutingConfig;
   apiResponse: RoutingConfig;
   dbEntry: RoutingConfigDbEntry;
+};
+
+export type FactoryRoutingConfigWithModifiers = FactoryRoutingConfig & {
+  addTemplate: (
+    channel: Channel,
+    templateId?: string
+  ) => FactoryRoutingConfigWithModifiers;
+  withTemplates: (...channels: Channel[]) => FactoryRoutingConfigWithModifiers;
 };

@@ -50,16 +50,16 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
 export type CascadeItem = CascadeItemBase &
   (
     | {
-        defaultTemplateId: string | null;
         conditionalTemplates?: Array<
           ConditionalTemplateLanguage | ConditionalTemplateAccessible
         >;
+        defaultTemplateId: string | null;
       }
     | {
-        defaultTemplateId?: string | null;
         conditionalTemplates: Array<
           ConditionalTemplateLanguage | ConditionalTemplateAccessible
         >;
+        defaultTemplateId?: string | null;
       }
   );
 

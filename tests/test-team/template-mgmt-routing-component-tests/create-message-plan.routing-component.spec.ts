@@ -16,6 +16,9 @@ import {
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 
+const chooseTemplatesRegexp =
+  /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
+
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 
 let user: TestUser;
@@ -58,9 +61,6 @@ test.describe('Create Message Plan Page', () => {
         await expect(createMessagePlanPage.campaignIdSelector).toHaveCount(0);
 
         await createMessagePlanPage.clickSubmit();
-
-        const chooseTemplatesRegexp =
-          /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
 
         await expect(page).toHaveURL(chooseTemplatesRegexp);
 
@@ -131,9 +131,6 @@ test.describe('Create Message Plan Page', () => {
       );
 
       await createMessagePlanPage.clickSubmit();
-
-      const chooseTemplatesRegexp =
-        /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
 
       await expect(page).toHaveURL(chooseTemplatesRegexp);
 

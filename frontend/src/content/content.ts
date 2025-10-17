@@ -1062,7 +1062,7 @@ const messagePlanFallbackConditions: Record<
   NHS_APP: {
     title: 'Fallback conditions',
     content: {
-      stop: 'If first message read within 24 hours, no further messages sent.',
+      stop: 'If first message read within 24 hours, no further messages sent.', // TODO: change
       continue:
         'If first message not read within 24 hours, second message sent.',
     },
@@ -1070,7 +1070,7 @@ const messagePlanFallbackConditions: Record<
   SMS: {
     title: 'Fallback conditions',
     content: {
-      stop: 'If first message read within 24 hours, no further messages sent.',
+      stop: 'If first message read within 24 hours, no further messages sent.', // TODO: change
       continue:
         'If first message not read within 24 hours, second message sent.',
     },
@@ -1078,7 +1078,7 @@ const messagePlanFallbackConditions: Record<
   EMAIL: {
     title: 'Fallback conditions',
     content: {
-      stop: 'If first message read within 24 hours, no further messages sent.',
+      stop: 'If first message read within 24 hours, no further messages sent.', // TODO: change
       continue:
         'If first message not read within 24 hours, second message sent.',
     },
