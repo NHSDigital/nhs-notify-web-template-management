@@ -1,11 +1,15 @@
-import { render } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 
-const focusMock = jest.fn();
-window.HTMLElement.prototype.focus = focusMock;
+const focusMock = jest.spyOn(window.HTMLElement.prototype, 'focus');
+const scrollIntoViewMock = jest.spyOn(
+  window.HTMLElement.prototype,
+  'scrollIntoView'
+);
 
-const scrollIntoViewMock = jest.fn();
-window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 test('Renders NhsNotifyErrorSummary correctly without errors', () => {
   const container = render(<NhsNotifyErrorSummary errorState={undefined} />);
@@ -15,7 +19,7 @@ test('Renders NhsNotifyErrorSummary correctly without errors', () => {
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
-test('Renders NhsNotifyErrorSummary correctly with errors', () => {
+test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   const container = render(
     <NhsNotifyErrorSummary
       errorState={{
@@ -31,4 +35,12 @@ test('Renders NhsNotifyErrorSummary correctly with errors', () => {
   expect(container.asFragment()).toMatchSnapshot();
   expect(focusMock).toHaveBeenCalled();
   expect(scrollIntoViewMock).toHaveBeenCalled();
+
+  const errorSummaryHeading = await screen.getByTestId('error-summary');
+
+  // "error-summary" test id targets the nested heading rather than the top level of the error summary
+  // so we need to assert against the parent element
+  await waitFor(() => {
+    expect(errorSummaryHeading.parentElement).toHaveFocus();
+  });
 });

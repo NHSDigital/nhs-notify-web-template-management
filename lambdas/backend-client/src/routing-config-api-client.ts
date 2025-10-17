@@ -3,6 +3,7 @@ import type {
   GetV1RoutingConfigurationsCountData,
   GetV1RoutingConfigurationsData,
   RoutingConfig,
+  RoutingConfigSuccess,
   RoutingConfigStatusActive,
   RoutingConfigSuccessList,
 } from './types/generated';
@@ -12,6 +13,37 @@ import { Result } from './types/result';
 export const httpClient = createAxiosClient();
 
 export const routingConfigurationApiClient = {
+  async create(
+    routingConfig: Pick<
+      RoutingConfig,
+      'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
+    >,
+    token: string
+  ): Promise<Result<RoutingConfig>> {
+    const response = await catchAxiosError(
+      httpClient.post<RoutingConfigSuccess>(
+        '/v1/routing-configuration',
+        routingConfig,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
   async count(
     token: string,
     status: RoutingConfigStatusActive

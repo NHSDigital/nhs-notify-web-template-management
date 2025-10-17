@@ -11,7 +11,6 @@ import {
   Language,
   LetterType,
   RoutingConfigStatus,
-  RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
   VirusScanStatus,
@@ -93,12 +92,10 @@ export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([
   'PASSED',
 ]);
 
-export const ROUTING_CONFIG_STATUS_ACTIVE_LIST =
-  arrayOfAll<RoutingConfigStatusActive>()(['COMPLETED', 'DRAFT']);
-
 export const ROUTING_CONFIG_STATUS_LIST = arrayOfAll<RoutingConfigStatus>()([
-  ...ROUTING_CONFIG_STATUS_ACTIVE_LIST,
+  'COMPLETED',
   'DELETED',
+  'DRAFT',
 ]);
 
 export const CHANNEL_TYPE_LIST = arrayOfAll<ChannelType>()([

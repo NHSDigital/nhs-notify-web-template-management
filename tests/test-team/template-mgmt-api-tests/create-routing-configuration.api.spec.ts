@@ -71,6 +71,77 @@ test.describe('POST /v1/routing-configuration', () => {
     expect(created.data.createdAt).toEqual(created.data.updatedAt);
   });
 
+  test('returns 201 if routing config input is valid - allows null templateIds', async ({
+    request,
+  }) => {
+    const payload = RoutingConfigFactory.create(user1, {
+      cascadeGroupOverrides: [
+        { name: 'standard' },
+        { name: 'translations', language: ['ar'] },
+        { name: 'accessible', accessibleFormat: ['x0'] },
+      ],
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+        {
+          cascadeGroups: ['accessible'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+        {
+          cascadeGroups: ['translations'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+      ],
+    }).apiPayload;
+
+    const start = new Date();
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: payload,
+      }
+    );
+
+    expect(response.status()).toBe(201);
+
+    const created = await response.json();
+
+    storageHelper.addAdHocKey({
+      id: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    expect(created).toEqual({
+      statusCode: 201,
+      data: {
+        clientId: user1.clientId,
+        campaignId: payload.campaignId,
+        cascade: payload.cascade,
+        cascadeGroupOverrides: payload.cascadeGroupOverrides,
+        createdAt: expect.stringMatching(isoDateRegExp),
+        name: payload.name,
+        id: expect.stringMatching(uuidRegExp),
+        status: 'DRAFT',
+        updatedAt: expect.stringMatching(isoDateRegExp),
+      },
+    });
+
+    expect(created.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(created.data.createdAt).toEqual(created.data.updatedAt);
+  });
+
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.post(
       `${process.env.API_BASE_URL}/v1/routing-configuration`

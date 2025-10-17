@@ -8,6 +8,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 export const SubmitLetterTemplateProofingDisabled: FC<{
   templateName: string;
@@ -86,8 +87,7 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
 export const SubmitLetterTemplate: FC<{
   templateName: string;
   templateId: string;
-  proofingEnabled: boolean;
-}> = ({ templateName, templateId, proofingEnabled }) => {
+}> = ({ templateName, templateId }) => {
   const {
     buttonText,
     goBackButtonText,
@@ -103,7 +103,9 @@ export const SubmitLetterTemplate: FC<{
 
   const [_, action] = useActionState(submitTemplate, 'LETTER');
 
-  if (!proofingEnabled) {
+  const features = useFeatureFlags();
+
+  if (!features.proofing) {
     return (
       <SubmitLetterTemplateProofingDisabled
         templateName={templateName}
