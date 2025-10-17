@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MessagePlanFallbackConditions should match snapshot for EMAIL 1`] = `
+exports[`MessagePlanFallbackConditions should match snapshot for EMAIL at index 1 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
@@ -70,7 +70,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for EMAIL 1`] = `
               style="color: transparent;"
               width="34"
             />
-            If first message read within 24 hours, no further messages sent.
+            If second message delivered within 72 hours, no further messages sent.
           </li>
           <li>
             <img
@@ -85,7 +85,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for EMAIL 1`] = `
               style="color: transparent;"
               width="34"
             />
-            If first message not read within 24 hours, second message sent.
+            If second message not delivered within 72 hours, third message sent.
           </li>
         </ul>
       </div>
@@ -94,7 +94,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for EMAIL 1`] = `
 </DocumentFragment>
 `;
 
-exports[`MessagePlanFallbackConditions should match snapshot for LETTER 1`] = `
+exports[`MessagePlanFallbackConditions should match snapshot for LETTER at index 3 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
@@ -181,7 +181,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for LETTER 1`] = `
 </DocumentFragment>
 `;
 
-exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP 1`] = `
+exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP at index 0 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
@@ -275,7 +275,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP 1`] = `
 </DocumentFragment>
 `;
 
-exports[`MessagePlanFallbackConditions should match snapshot for SMS 1`] = `
+exports[`MessagePlanFallbackConditions should match snapshot for SMS at index 2 1`] = `
 <DocumentFragment>
   <li
     class="fallback-conditions"
@@ -345,7 +345,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for SMS 1`] = `
               style="color: transparent;"
               width="34"
             />
-            If first message read within 24 hours, no further messages sent.
+            If third message delivered within 72 hours, no further messages sent.
           </li>
           <li>
             <img
@@ -360,7 +360,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for SMS 1`] = `
               style="color: transparent;"
               width="34"
             />
-            If first message not read within 24 hours, second message sent.
+            If third message not delivered within 72 hours, fourth message sent.
           </li>
         </ul>
       </div>

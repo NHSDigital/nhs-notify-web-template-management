@@ -371,7 +371,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message read within 24 hours, no further messages sent.
+                    If second message delivered within 72 hours, no further messages sent.
                   </li>
                   <li>
                     <img
@@ -386,7 +386,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message not read within 24 hours, second message sent.
+                    If second message not delivered within 72 hours, third message sent.
                   </li>
                 </ul>
               </div>
@@ -509,7 +509,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message read within 24 hours, no further messages sent.
+                    If third message delivered within 72 hours, no further messages sent.
                   </li>
                   <li>
                     <img
@@ -524,7 +524,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message not read within 24 hours, second message sent.
+                    If third message not delivered within 72 hours, fourth message sent.
                   </li>
                 </ul>
               </div>

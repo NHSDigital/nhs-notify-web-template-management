@@ -28,7 +28,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
         >
           <a
             data-testid="change-message-plan-name-link"
-            href="/message-plans/edit-message-plan/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+            href="/message-plans/edit-message-plan/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
           >
             Change name
           </a>
@@ -47,7 +47,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             <dd
               class="nhsuk-summary-list__value create-edit-message-plan-routing-config-id"
             >
-              1a1b029a-248b-4e68-9b91-fe1079f2ae8b
+              30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
             </dd>
           </div>
           <div
@@ -105,7 +105,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Choose
                       <span
@@ -242,7 +242,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-SMS"
-                      href="/message-plans/choose-text-message-template/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+                      href="/message-plans/choose-text-message-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Choose
                       <span
@@ -325,7 +325,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message read within 24 hours, no further messages sent.
+                    If second message delivered within 72 hours, no further messages sent.
                   </li>
                   <li>
                     <img
@@ -340,7 +340,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message not read within 24 hours, second message sent.
+                    If second message not delivered within 72 hours, third message sent.
                   </li>
                 </ul>
               </div>
@@ -379,7 +379,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Choose
                       <span
@@ -462,7 +462,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message read within 24 hours, no further messages sent.
+                    If third message delivered within 72 hours, no further messages sent.
                   </li>
                   <li>
                     <img
@@ -477,7 +477,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message not read within 24 hours, second message sent.
+                    If third message not delivered within 72 hours, fourth message sent.
                   </li>
                 </ul>
               </div>
@@ -516,7 +516,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Choose
                       <span
@@ -541,7 +541,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production/1a1b029a-248b-4e68-9b91-fe1079f2ae8b"
+            href="/message-plans/move-to-production/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
             role="button"
           >
             Move to production
@@ -591,7 +591,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
         >
           <a
             data-testid="change-message-plan-name-link"
-            href="/message-plans/edit-message-plan/135dcd77-ad2e-4c9f-91c3-10ca593abf67"
+            href="/message-plans/edit-message-plan/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
           >
             Change name
           </a>
@@ -610,7 +610,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             <dd
               class="nhsuk-summary-list__value create-edit-message-plan-routing-config-id"
             >
-              135dcd77-ad2e-4c9f-91c3-10ca593abf67
+              30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
             </dd>
           </div>
           <div
@@ -674,7 +674,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/135dcd77-ad2e-4c9f-91c3-10ca593abf67"
+                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Change
                       <span
@@ -832,7 +832,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/135dcd77-ad2e-4c9f-91c3-10ca593abf67"
+                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Change
                       <span
@@ -930,7 +930,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message read within 24 hours, no further messages sent.
+                    If second message delivered within 72 hours, no further messages sent.
                   </li>
                   <li>
                     <img
@@ -945,7 +945,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       style="color: transparent;"
                       width="34"
                     />
-                    If first message not read within 24 hours, second message sent.
+                    If second message not delivered within 72 hours, third message sent.
                   </li>
                 </ul>
               </div>
@@ -990,7 +990,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/135dcd77-ad2e-4c9f-91c3-10ca593abf67"
+                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                     >
                       Change
                       <span
@@ -1030,7 +1030,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production/135dcd77-ad2e-4c9f-91c3-10ca593abf67"
+            href="/message-plans/move-to-production/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
             role="button"
           >
             Move to production

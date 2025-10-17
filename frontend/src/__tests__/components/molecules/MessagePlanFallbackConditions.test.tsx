@@ -1,12 +1,13 @@
+import { Channel } from 'nhs-notify-backend-client';
 import React from 'react';
-import { render, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 
 describe('MessagePlanFallbackConditions', () => {
   it('should render the title and list items for a digital channel', () => {
     const { container } = render(
-      <MessagePlanFallbackConditions channel='NHSAPP' />
+      <MessagePlanFallbackConditions channel='NHSAPP' index={0} />
     );
 
     const details = container.querySelector('details')!;
@@ -41,7 +42,7 @@ describe('MessagePlanFallbackConditions', () => {
   it('should toggle details open/closed when clicking the summary', async () => {
     const user = userEvent.setup();
     const { container } = render(
-      <MessagePlanFallbackConditions channel='EMAIL' />
+      <MessagePlanFallbackConditions channel='EMAIL' index={0} />
     );
 
     const details = container.querySelector('details')!;
@@ -58,7 +59,7 @@ describe('MessagePlanFallbackConditions', () => {
 
   it('should render correct title and only the continue item for letter channel', () => {
     const { container } = render(
-      <MessagePlanFallbackConditions channel='LETTER' />
+      <MessagePlanFallbackConditions channel='LETTER' index={0} />
     );
 
     const details = container.querySelector('details')!;
@@ -98,13 +99,45 @@ describe('MessagePlanFallbackConditions', () => {
     ]);
   });
 
-  it.each(['NHSAPP', 'EMAIL', 'SMS', 'LETTER'] as const)(
-    'should match snapshot for %s',
-    (channel) => {
-      const { asFragment } = render(
-        <MessagePlanFallbackConditions channel={channel} />
-      );
-      expect(asFragment()).toMatchSnapshot();
-    }
-  );
+  it('renders correct ordinals at different indexes', async () => {
+    render(
+      <>
+        <MessagePlanFallbackConditions channel='NHSAPP' index={0} />
+        <MessagePlanFallbackConditions channel='NHSAPP' index={1} />
+      </>
+    );
+
+    const [firstInstance, secondInstance] = screen.getAllByTestId(
+      'message-plan-fallback-conditions-NHSAPP'
+    );
+
+    const firstInstanceListItems = within(
+      within(firstInstance.querySelector('details')!).getByRole('list')
+    ).getAllByRole('listitem');
+    expect(firstInstanceListItems[1].textContent).toBe(
+      'If first message not read within 24 hours, second message sent.'
+    );
+
+    const secondInstanceListItems = within(
+      within(secondInstance.querySelector('details')!).getByRole('list')
+    ).getAllByRole('listitem');
+    expect(secondInstanceListItems[1].textContent).toBe(
+      'If second message not read within 24 hours, third message sent.'
+    );
+  });
+
+  it.each([
+    ['NHSAPP', 0],
+    ['EMAIL', 1],
+    ['SMS', 2],
+    ['LETTER', 3],
+  ])('should match snapshot for %s at index %i', (channel, index) => {
+    const { asFragment } = render(
+      <MessagePlanFallbackConditions
+        channel={channel as Channel}
+        index={index}
+      />
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

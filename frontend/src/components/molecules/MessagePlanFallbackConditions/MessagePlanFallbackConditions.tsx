@@ -2,7 +2,10 @@ import { Details } from 'nhsuk-react-components';
 import { FallbackConditionBlock } from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { Channel } from 'nhs-notify-backend-client';
-import { channelToTemplateType } from 'nhs-notify-web-template-management-utils';
+import {
+  channelToTemplateType,
+  ORDINALS,
+} from 'nhs-notify-web-template-management-utils';
 import Image from 'next/image';
 
 import styles from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions.module.scss';
@@ -12,11 +15,18 @@ const { messagePlanFallbackConditions } = copy.components;
 
 export function MessagePlanFallbackConditions({
   channel,
+  index,
 }: {
   channel: Channel;
+  index: number;
 }) {
   const { title, content }: FallbackConditionBlock =
     messagePlanFallbackConditions[channelToTemplateType(channel)];
+
+  const ordinalVariables = {
+    ordinal: ORDINALS[index].toLowerCase(),
+    nextOrdinal: ORDINALS[index + 1].toLowerCase(),
+  };
 
   return (
     <li
@@ -58,7 +68,10 @@ export function MessagePlanFallbackConditions({
                   alt=''
                   className='nhsuk-icon nhsuk-icon--tick'
                 />
-                <ContentRenderer content={content.stop} />
+                <ContentRenderer
+                  content={content.stop}
+                  variables={ordinalVariables}
+                />
               </li>
             )}
             {content.continue && (
@@ -71,7 +84,10 @@ export function MessagePlanFallbackConditions({
                   alt=''
                   className='nhsuk-icon nhsuk-icon--arrow-down'
                 />
-                <ContentRenderer content={content.continue} />
+                <ContentRenderer
+                  content={content.continue}
+                  variables={ordinalVariables}
+                />
               </li>
             )}
           </ul>

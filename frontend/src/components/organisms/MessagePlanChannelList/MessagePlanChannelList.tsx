@@ -43,6 +43,7 @@ export function MessagePlanChannelList({
               index < messagePlan.cascade.length - 1 && (
                 <MessagePlanFallbackConditions
                   channel={messagePlanChannel.channel}
+                  index={index}
                 />
               )}
           </Fragment>
