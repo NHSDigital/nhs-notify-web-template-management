@@ -1,6 +1,6 @@
 import {
-  getMessagePlan,
-  updateMessagePlan,
+  getRoutingConfig,
+  updateRoutingConfig,
   getTemplatesByIds,
   getMessagePlanTemplates,
   getRoutingConfigs,
@@ -284,7 +284,7 @@ describe('Message plans actions', () => {
         clientId: undefined,
       });
 
-      await expect(getMessagePlan(validRoutingConfigId)).rejects.toThrow(
+      await expect(getRoutingConfig(validRoutingConfigId)).rejects.toThrow(
         'Failed to get access token'
       );
 
@@ -294,7 +294,7 @@ describe('Message plans actions', () => {
     it('should return the routing config on success', async () => {
       routingConfigApiMock.get.mockResolvedValueOnce({ data: baseConfig });
 
-      const response = await getMessagePlan(validRoutingConfigId);
+      const response = await getRoutingConfig(validRoutingConfigId);
 
       expect(routingConfigApiMock.get).toHaveBeenCalledWith(
         'mock-token',
@@ -310,7 +310,7 @@ describe('Message plans actions', () => {
         },
       });
 
-      const response = await getMessagePlan(notFoundRoutingConfigId);
+      const response = await getRoutingConfig(notFoundRoutingConfigId);
 
       expect(routingConfigApiMock.get).toHaveBeenCalledWith(
         'mock-token',
@@ -332,7 +332,7 @@ describe('Message plans actions', () => {
         data: { ...baseConfig, id: invalidRoutingConfigId },
       });
 
-      const response = await getMessagePlan(invalidRoutingConfigId);
+      const response = await getRoutingConfig(invalidRoutingConfigId);
 
       expect(routingConfigApiMock.get).toHaveBeenCalledWith(
         'mock-token',
@@ -350,7 +350,7 @@ describe('Message plans actions', () => {
         {} as Result<RoutingConfig>
       );
 
-      const response = await getMessagePlan(validRoutingConfigId);
+      const response = await getRoutingConfig(validRoutingConfigId);
 
       expect(response).toBeUndefined();
     });
@@ -364,7 +364,7 @@ describe('Message plans actions', () => {
       });
 
       await expect(
-        updateMessagePlan(validRoutingConfigId, baseConfig)
+        updateRoutingConfig(validRoutingConfigId, baseConfig)
       ).rejects.toThrow('Failed to get access token');
 
       expect(routingConfigApiMock.update).not.toHaveBeenCalled();
@@ -379,7 +379,7 @@ describe('Message plans actions', () => {
 
       routingConfigApiMock.update.mockResolvedValueOnce({ data: updated });
 
-      const response = await updateMessagePlan(validRoutingConfigId, updated);
+      const response = await updateRoutingConfig(validRoutingConfigId, updated);
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
@@ -395,7 +395,7 @@ describe('Message plans actions', () => {
         {} as Result<RoutingConfig>
       );
 
-      const response = await updateMessagePlan(
+      const response = await updateRoutingConfig(
         validRoutingConfigId,
         baseConfig
       );
@@ -410,7 +410,7 @@ describe('Message plans actions', () => {
         },
       });
 
-      const response = await updateMessagePlan(
+      const response = await updateRoutingConfig(
         validRoutingConfigId,
         baseConfig
       );
@@ -436,7 +436,7 @@ describe('Message plans actions', () => {
         data: { ...baseConfig, id: invalidRoutingConfigId },
       });
 
-      const response = await updateMessagePlan(
+      const response = await updateRoutingConfig(
         invalidRoutingConfigId,
         baseConfig
       );

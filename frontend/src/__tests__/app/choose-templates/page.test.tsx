@@ -3,7 +3,7 @@ import ChooseTemplatesPage, {
   generateMetadata,
 } from '@app/message-plans/choose-templates/[routingConfigId]/page';
 import { CreateEditMessagePlan } from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan';
-import { getMessagePlan, getMessagePlanTemplates } from '@utils/message-plans';
+import { getRoutingConfig, getMessagePlanTemplates } from '@utils/message-plans';
 import type {
   RoutingConfig,
   RoutingConfigStatus,
@@ -23,7 +23,7 @@ jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
 
 const redirectMock = jest.mocked(redirect);
-const getMessagePlanMock = jest.mocked(getMessagePlan);
+const getMessagePlanMock = jest.mocked(getRoutingConfig);
 const getMessagePlanTemplatesMock = jest.mocked(getMessagePlanTemplates);
 
 const validRoutingConfigId = 'fbb81055-79b9-4759-ac07-d191ae57be34';

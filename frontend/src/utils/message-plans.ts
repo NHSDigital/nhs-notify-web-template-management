@@ -64,7 +64,7 @@ export async function countRoutingConfigs(
   return data.count;
 }
 
-export async function getMessagePlan(
+export async function getRoutingConfig(
   routingConfigId: string
 ): Promise<RoutingConfig | undefined> {
   const { accessToken } = await getSessionServer();
@@ -123,9 +123,9 @@ export async function createRoutingConfig(
   return data;
 }
 
-export async function updateMessagePlan(
+export async function updateRoutingConfig(
   routingConfigId: string,
-  updatedMessagePlan: RoutingConfig
+  updatedRoutingConfig: RoutingConfig
 ): Promise<RoutingConfig | undefined> {
   const { accessToken } = await getSessionServer();
 
@@ -136,7 +136,7 @@ export async function updateMessagePlan(
   const { data, error } = await routingConfigurationApiClient.update(
     accessToken,
     routingConfigId,
-    updatedMessagePlan
+    updatedRoutingConfig
   );
 
   if (error) {
