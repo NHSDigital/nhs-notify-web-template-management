@@ -11,7 +11,7 @@ import {
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
-import { sortAscByCreatedAt } from './sort';
+import { sortAscByUpdatedAt } from './sort';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -188,7 +188,7 @@ export async function getTemplates(): Promise<TemplateDto[]> {
       (template): template is ValidatedTemplateDto => template !== undefined
     );
 
-  return sortAscByCreatedAt(sortedData);
+  return sortAscByUpdatedAt(sortedData);
 }
 
 export async function createRoutingConfig(
