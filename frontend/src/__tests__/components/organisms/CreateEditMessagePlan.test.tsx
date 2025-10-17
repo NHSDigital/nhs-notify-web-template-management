@@ -12,11 +12,12 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
 } from '@testhelpers/helpers';
+import { randomUUID } from 'node:crypto';
 
 const mockTemplates: MessagePlanTemplates = {} as MessagePlanTemplates;
 
 function buildRoutingConfig({
-  id = 'routing-config-123',
+  id = randomUUID(),
   name = 'Test Campaign',
   status = 'DRAFT' as RoutingConfigStatus,
   channels = ['NHSAPP', 'EMAIL'] as Channel[],

@@ -28,7 +28,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
         >
           <a
             data-testid="change-message-plan-name-link"
-            href="/message-plans/create-message-plan"
+            href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
           >
             Change name
           </a>
@@ -98,40 +98,48 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   NHS App
                 </h3>
-                <p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                  data-testid="template-name-NHSAPP"
+                >
                   name
-                  <br />
-                  <a
-                    class="nhsuk-link nhsuk-link--no-visited-state"
-                    data-testid="change-template-link-NHSAPP"
-                    href="/message-plans/choose-nhs-app-template"
-                  >
-                    Change
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      NHS App
-                    </span>
-                     
-                    template
-                  </a>
                 </p>
-                <p>
-                  <a
-                    class="channel-template-link--remove nhsuk-link"
-                    data-testid="remove-template-link-NHSAPP"
-                    href="todo"
-                  >
-                    Remove
-                    <span
-                      class="nhsuk-u-visually-hidden"
+                <ul
+                  class="channel-template-actions"
+                >
+                  <li>
+                    <a
+                      class="nhsuk-link nhsuk-link--no-visited-state"
+                      data-testid="change-template-link-NHSAPP"
+                      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34"
                     >
-                      NHS App
-                    </span>
-                     
-                    template
-                  </a>
-                </p>
+                      Change
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        NHS App
+                      </span>
+                       
+                      template
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      class="channel-template-link--remove nhsuk-link"
+                      data-testid="remove-template-link-NHSAPP"
+                      type="button"
+                    >
+                      Remove
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        NHS App
+                      </span>
+                       
+                      template
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
           </li>
@@ -250,40 +258,48 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   Text message (SMS)
                 </h3>
-                <p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                  data-testid="template-name-SMS"
+                >
                   name
-                  <br />
-                  <a
-                    class="nhsuk-link nhsuk-link--no-visited-state"
-                    data-testid="change-template-link-SMS"
-                    href="/message-plans/choose-text-message-template"
-                  >
-                    Change
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Text message (SMS)
-                    </span>
-                     
-                    template
-                  </a>
                 </p>
-                <p>
-                  <a
-                    class="channel-template-link--remove nhsuk-link"
-                    data-testid="remove-template-link-SMS"
-                    href="todo"
-                  >
-                    Remove
-                    <span
-                      class="nhsuk-u-visually-hidden"
+                <ul
+                  class="channel-template-actions"
+                >
+                  <li>
+                    <a
+                      class="nhsuk-link nhsuk-link--no-visited-state"
+                      data-testid="change-template-link-SMS"
+                      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
                     >
-                      Text message (SMS)
-                    </span>
-                     
-                    template
-                  </a>
-                </p>
+                      Change
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        Text message (SMS)
+                      </span>
+                       
+                      template
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      class="channel-template-link--remove nhsuk-link"
+                      data-testid="remove-template-link-SMS"
+                      type="button"
+                    >
+                      Remove
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        Text message (SMS)
+                      </span>
+                       
+                      template
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
           </li>
@@ -402,20 +418,26 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   Email
                 </h3>
-                <a
-                  class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-EMAIL"
-                  href="/message-plans/choose-email-template"
+                <ul
+                  class="channel-template-actions"
                 >
-                  Choose
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Email
-                  </span>
-                   
-                  template
-                </a>
+                  <li>
+                    <a
+                      class="nhsuk-link nhsuk-link--no-visited-state"
+                      data-testid="choose-template-link-EMAIL"
+                      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                    >
+                      Choose
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        Email
+                      </span>
+                       
+                      template
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </li>
@@ -534,40 +556,48 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                 >
                   Letter
                 </h3>
-                <p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                  data-testid="template-name-LETTER"
+                >
                   name
-                  <br />
-                  <a
-                    class="nhsuk-link nhsuk-link--no-visited-state"
-                    data-testid="change-template-link-LETTER"
-                    href="/message-plans/choose-standard-english-letter-template"
-                  >
-                    Change
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Letter
-                    </span>
-                     
-                    template
-                  </a>
                 </p>
-                <p>
-                  <a
-                    class="channel-template-link--remove nhsuk-link"
-                    data-testid="remove-template-link-LETTER"
-                    href="todo"
-                  >
-                    Remove
-                    <span
-                      class="nhsuk-u-visually-hidden"
+                <ul
+                  class="channel-template-actions"
+                >
+                  <li>
+                    <a
+                      class="nhsuk-link nhsuk-link--no-visited-state"
+                      data-testid="change-template-link-LETTER"
+                      href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
                     >
-                      Letter
-                    </span>
-                     
-                    template
-                  </a>
-                </p>
+                      Change
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        Letter
+                      </span>
+                       
+                      template
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      class="channel-template-link--remove nhsuk-link"
+                      data-testid="remove-template-link-LETTER"
+                      type="button"
+                    >
+                      Remove
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                        Letter
+                      </span>
+                       
+                      template
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
           </li>
@@ -581,7 +611,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production"
+            href="/message-plans/move-to-production/fbb81055-79b9-4759-ac07-d191ae57be34"
             role="button"
           >
             Move to production

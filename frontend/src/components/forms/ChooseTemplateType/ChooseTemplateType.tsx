@@ -39,7 +39,7 @@ export const ChooseTemplateType = ({
     learnMoreLink,
     learnMoreText,
     backLinkText,
-  } = content.components.chooseTemplate;
+  } = content.components.chooseTemplateType;
 
   return (
     <>

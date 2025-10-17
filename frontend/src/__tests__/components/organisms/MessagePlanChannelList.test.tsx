@@ -51,7 +51,6 @@ describe('MessagePlanChannelList', () => {
       <MessagePlanChannelList
         messagePlan={messagePlan}
         templates={testTemplates}
-        routingConfigId={messagePlan.id}
       />
     );
 
@@ -66,7 +65,6 @@ describe('MessagePlanChannelList', () => {
       <MessagePlanChannelList
         messagePlan={messagePlan}
         templates={testTemplates}
-        routingConfigId={messagePlan.id}
       />
     );
 
@@ -93,7 +91,6 @@ describe('MessagePlanChannelList', () => {
       <MessagePlanChannelList
         messagePlan={messagePlan}
         templates={testTemplates}
-        routingConfigId={messagePlan.id}
       />
     );
 
@@ -123,7 +120,6 @@ describe('MessagePlanChannelList', () => {
       <MessagePlanChannelList
         messagePlan={messagePlan}
         templates={testTemplates}
-        routingConfigId={messagePlan.id}
       />
     );
     expect(asFragment()).toMatchSnapshot();
@@ -136,7 +132,6 @@ describe('MessagePlanChannelList', () => {
       <MessagePlanChannelList
         messagePlan={messagePlan}
         templates={testTemplates}
-        routingConfigId={messagePlan.id}
       />
     );
     expect(asFragment()).toMatchSnapshot();
