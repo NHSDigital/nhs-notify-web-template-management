@@ -31,5 +31,6 @@ module.exports = {
   ...require('./view-not-yet-submitted-text-message-template.actions'),
   ...require('./waiting-for-proofs-letter-template.actions'),
   ...require('./choose-message-order.actions'),
+  ...require('./create-message-plan.actions'),
   ...require('./message-plans.actions'),
 };

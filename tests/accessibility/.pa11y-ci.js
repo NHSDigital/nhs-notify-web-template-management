@@ -43,6 +43,8 @@ const {
   messagePlansPage,
   chooseMessageOrderPage,
   chooseMessageOrderPageError,
+  createMessagePlanPage,
+  createMessagePlanPageError,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -146,6 +148,8 @@ const routing = [
   messagePlansPage(`${baseUrl}/message-plans`),
   chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`),
   chooseMessageOrderPageError(`${baseUrl}/message-plans/choose-message-order`),
+  createMessagePlanPage(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
+  createMessagePlanPageError(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
 ];
 
 const allJourneys = {
