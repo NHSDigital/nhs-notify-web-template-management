@@ -5,14 +5,14 @@ const pageActions = [
   'wait for element #choose-a-template-type-submit-button to be visible',
 ];
 
-const chooseATemplatePage = (url) => ({
-  name: 'choose-a-template',
+const chooseATemplatePageType = (url) => ({
+  name: 'choose-a-template-type',
   url,
   actions: pageActions,
 });
 
-const chooseATemplatePageError = (url) => ({
-  name: 'choose-a-template-error',
+const chooseATemplatePageTypeError = (url) => ({
+  name: 'choose-a-template-type-error',
   url,
   actions: [
     ...pageActions,
@@ -26,6 +26,6 @@ const chooseATemplatePageError = (url) => ({
 });
 
 module.exports = {
-  chooseATemplatePage,
-  chooseATemplatePageError,
+  chooseATemplatePageType,
+  chooseATemplatePageTypeError,
 };

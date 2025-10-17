@@ -694,7 +694,7 @@ const copyTemplate = {
   },
 };
 
-const chooseTemplate = {
+const chooseTemplateType = {
   pageTitle: generatePageTitle('Choose a template type'),
   pageHeading: 'Choose a template type to create',
   buttonText: 'Continue',
@@ -1233,7 +1233,7 @@ const content = {
   components: {
     channelGuidance,
     chooseMessageOrder,
-    chooseTemplate,
+    chooseTemplateType,
     copyTemplate,
     createEditMessagePlan,
     deleteTemplate,
