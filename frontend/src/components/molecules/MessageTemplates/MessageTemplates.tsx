@@ -57,6 +57,9 @@ export function MessageTemplates({
               <Table.Cell data-testid='manage-template-table-header-template-name'>
                 {messageTemplatesContent.tableHeadings.name}
               </Table.Cell>
+              <Table.Cell data-testid='manage-template-table-header-template-id'>
+                {messageTemplatesContent.tableHeadings.id}
+              </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-type'>
                 {messageTemplatesContent.tableHeadings.type}
               </Table.Cell>
@@ -79,6 +82,7 @@ export function MessageTemplates({
                     {template.name}
                   </Link>
                 </Table.Cell>
+                <Table.Cell>{template.id}</Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag color={statusToColourMapping(template)}>

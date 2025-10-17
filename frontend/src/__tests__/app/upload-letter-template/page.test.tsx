@@ -30,7 +30,7 @@ describe('UploadLetterTemplatePage', () => {
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
-        campaignId: 'campaign2',
+        campaignIds: ['campaign2'],
         features: {},
       },
     });
@@ -49,26 +49,6 @@ describe('UploadLetterTemplatePage', () => {
     mockFetchClient.mockResolvedValueOnce({
       data: {
         campaignIds: ['campaign-id', 'other-campaign-id'],
-        campaignId: 'campaign-id',
-        features: {},
-      },
-    });
-
-    const page = await UploadLetterTemplatePage();
-
-    expect(await generateMetadata()).toEqual({ title: pageTitle });
-    expect(page).toMatchSnapshot();
-  });
-
-  it('should render UploadLetterTemplatePage with campaignId field when campaignIds is not available', async () => {
-    mockGetSessionServer.mockResolvedValueOnce({
-      accessToken: 'mocktoken',
-      clientId: 'client1',
-    });
-    mockFetchClient.mockResolvedValueOnce({
-      data: {
-        campaignIds: undefined,
-        campaignId: 'campaign-id',
         features: {},
       },
     });
@@ -107,7 +87,7 @@ describe('UploadLetterTemplatePage', () => {
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
-        campaignId: 'campaign2',
+        campaignIds: ['campaign2'],
         features: {},
       },
     });
@@ -130,7 +110,6 @@ describe('UploadLetterTemplatePage', () => {
     mockFetchClient.mockResolvedValueOnce({
       data: {
         campaignIds: [],
-        campaignId: 'campaign-id',
         features: {},
       },
     });
@@ -143,7 +122,7 @@ describe('UploadLetterTemplatePage', () => {
     );
   });
 
-  it('should redirect to error page when neither campaignIds nor campaignId is present', async () => {
+  it('should redirect to error page when neither campaignIds are not present', async () => {
     const mockRedirect = jest.mocked(redirect);
 
     mockGetSessionServer.mockResolvedValueOnce({
@@ -153,7 +132,6 @@ describe('UploadLetterTemplatePage', () => {
     mockFetchClient.mockResolvedValueOnce({
       data: {
         campaignIds: undefined,
-        campaignId: undefined,
         features: {},
       },
     });

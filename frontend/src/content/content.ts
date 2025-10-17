@@ -443,6 +443,7 @@ const messageTemplates = {
   listOfTemplates: 'List of templates',
   tableHeadings: {
     name: 'Name',
+    id: 'ID',
     type: 'Type',
     status: 'Status',
     lastEdited: 'Last edited',

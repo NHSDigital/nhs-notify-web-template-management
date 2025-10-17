@@ -22,15 +22,6 @@ export class RoutingConfigClient {
     payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
-    const validationResult = await validate(
-      $CreateUpdateRoutingConfig,
-      payload
-    );
-
-    if (validationResult.error) return validationResult;
-
-    const validated = validationResult.data;
-
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -39,6 +30,22 @@ export class RoutingConfigClient {
       clientConfigurationResult;
 
     if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.features.routing) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing feature is disabled'
+      );
+    }
+
+    const validationResult = await validate(
+      $CreateUpdateRoutingConfig,
+      payload
+    );
+
+    if (validationResult.error) return validationResult;
+
+    const validated = validationResult.data;
 
     if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
       return failure(
@@ -55,6 +62,15 @@ export class RoutingConfigClient {
     payload: unknown,
     user: User
   ): Promise<Result<RoutingConfig>> {
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
     const validationResult = await validate(
       $CreateUpdateRoutingConfig,
       payload
@@ -64,14 +80,12 @@ export class RoutingConfigClient {
 
     const validated = validationResult.data;
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      user.clientId
-    );
-
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
-
-    if (clientConfigurationError) return clientConfigurationResult;
+    if (!clientConfiguration?.features.routing) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing feature is disabled'
+      );
+    }
 
     if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
       return failure(
@@ -91,6 +105,22 @@ export class RoutingConfigClient {
     routingConfigId: string,
     user: User
   ): Promise<Result<RoutingConfig>> {
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.features.routing) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing feature is disabled'
+      );
+    }
+
     return this.routingConfigRepository.submit(routingConfigId, user);
   }
 
@@ -98,6 +128,22 @@ export class RoutingConfigClient {
     routingConfigId: string,
     user: User
   ): Promise<Result<undefined>> {
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) return clientConfigurationResult;
+
+    if (!clientConfiguration?.features.routing) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing feature is disabled'
+      );
+    }
+
     const result = await this.routingConfigRepository.delete(
       routingConfigId,
       user

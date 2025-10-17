@@ -22,15 +22,9 @@ const getSortedCampaignIds = (
     return;
   }
 
-  const { campaignIds, campaignId } = clientConfiguration;
+  const { campaignIds = [] } = clientConfiguration;
 
-  if (campaignIds) {
-    return campaignIds.sort();
-  }
-
-  if (campaignId) {
-    return [campaignId];
-  }
+  return campaignIds.sort();
 };
 
 const UploadLetterTemplatePage = async () => {
