@@ -40,6 +40,11 @@ const {
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
   waitingForProofsLetterTemplatePage,
+  messagePlansPage,
+  chooseMessageOrderPage,
+  chooseMessageOrderPageError,
+  createMessagePlanPage,
+  createMessagePlanPageError,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -139,6 +144,14 @@ const userEmails = [
   },
 ];
 
+const routing = [
+  messagePlansPage(`${baseUrl}/message-plans`),
+  chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`),
+  chooseMessageOrderPageError(`${baseUrl}/message-plans/choose-message-order`),
+  createMessagePlanPage(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
+  createMessagePlanPageError(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
+];
+
 const allJourneys = {
   landingPage,
   allTemplates,
@@ -149,6 +162,7 @@ const allJourneys = {
   letters,
   userEmails,
   errors,
+  routing,
 };
 
 const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]
@@ -176,5 +190,6 @@ module.exports = {
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
+    concurrency: 4,
   },
 };
