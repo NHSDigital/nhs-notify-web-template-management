@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
-import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
+import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
@@ -95,7 +95,7 @@ test.describe('Manage templates page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new MessageTemplatesPage(page),
+      page: new TemplateMgmtMessageTemplatesPage(page),
       baseURL,
     };
 
@@ -110,7 +110,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
     await expect(messageTemplatesPage.pageHeading).toHaveText(
@@ -123,7 +123,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -148,7 +148,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -173,7 +173,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
     await expect(messageTemplatesPage.pageHeading).toHaveText(
@@ -188,7 +188,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -211,7 +211,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -234,7 +234,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -258,7 +258,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -278,7 +278,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
@@ -294,7 +294,7 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/message-templates`);

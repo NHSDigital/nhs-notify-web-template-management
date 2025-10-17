@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with campaignId field when campaignIds is not available 1`] = `
+exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage when one campaignId is available 1`] = `
 <LetterTemplateForm
   campaignIds={
     [
@@ -19,7 +19,7 @@ exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with ca
 />
 `;
 
-exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with campaignIds field when available 1`] = `
+exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with multiple campaignIds available 1`] = `
 <LetterTemplateForm
   campaignIds={
     [

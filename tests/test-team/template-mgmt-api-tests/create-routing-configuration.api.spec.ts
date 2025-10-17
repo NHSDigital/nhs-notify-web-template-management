@@ -16,10 +16,12 @@ test.describe('POST /v1/routing-configuration', () => {
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
   let userSharedClient: TestUser;
+  let userRoutingDisabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
   });
 
   test.afterAll(async () => {
@@ -28,6 +30,77 @@ test.describe('POST /v1/routing-configuration', () => {
 
   test('returns 201 if routing config input is valid', async ({ request }) => {
     const payload = RoutingConfigFactory.create(user1).apiPayload;
+
+    const start = new Date();
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: payload,
+      }
+    );
+
+    expect(response.status()).toBe(201);
+
+    const created = await response.json();
+
+    storageHelper.addAdHocKey({
+      id: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    expect(created).toEqual({
+      statusCode: 201,
+      data: {
+        clientId: user1.clientId,
+        campaignId: payload.campaignId,
+        cascade: payload.cascade,
+        cascadeGroupOverrides: payload.cascadeGroupOverrides,
+        createdAt: expect.stringMatching(isoDateRegExp),
+        name: payload.name,
+        id: expect.stringMatching(uuidRegExp),
+        status: 'DRAFT',
+        updatedAt: expect.stringMatching(isoDateRegExp),
+      },
+    });
+
+    expect(created.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(created.data.createdAt).toEqual(created.data.updatedAt);
+  });
+
+  test('returns 201 if routing config input is valid - allows null templateIds', async ({
+    request,
+  }) => {
+    const payload = RoutingConfigFactory.create(user1, {
+      cascadeGroupOverrides: [
+        { name: 'standard' },
+        { name: 'translations', language: ['ar'] },
+        { name: 'accessible', accessibleFormat: ['x0'] },
+      ],
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+        {
+          cascadeGroups: ['accessible'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+        {
+          cascadeGroups: ['translations'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+      ],
+    }).apiPayload;
 
     const start = new Date();
 
@@ -227,6 +300,27 @@ test.describe('POST /v1/routing-configuration', () => {
     expect(await getResponse.json()).toEqual({
       statusCode: 200,
       data: created.data,
+    });
+  });
+
+  test('returns 400 if routing feature is disabled on the client', async ({
+    request,
+  }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await userRoutingDisabled.getAccessToken(),
+        },
+        data: RoutingConfigFactory.create(userRoutingDisabled).apiPayload,
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Routing feature is disabled',
     });
   });
 });

@@ -34,7 +34,10 @@ export class RoutingConfigRepository {
     private readonly tableName: string
   ) {}
 
-  async create(routingConfigInput: CreateUpdateRoutingConfig, user: User) {
+  async create(
+    routingConfigInput: CreateUpdateRoutingConfig,
+    user: User
+  ): Promise<ApplicationResult<RoutingConfig>> {
     const date = new Date().toISOString();
 
     try {

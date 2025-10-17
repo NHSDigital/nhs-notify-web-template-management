@@ -268,6 +268,7 @@
             "properties": {
               "defaultTemplateId": {
                 "format": "uuid",
+                "nullable": true,
                 "type": "string"
               }
             },
@@ -296,10 +297,6 @@
       },
       "ClientConfiguration": {
         "properties": {
-          "campaignId": {
-            "deprecated": true,
-            "type": "string"
-          },
           "campaignIds": {
             "items": {
               "type": "string"
@@ -350,6 +347,7 @@
           },
           "templateId": {
             "format": "uuid",
+            "nullable": true,
             "type": "string"
           }
         },
@@ -367,6 +365,7 @@
           },
           "templateId": {
             "format": "uuid",
+            "nullable": true,
             "type": "string"
           }
         },

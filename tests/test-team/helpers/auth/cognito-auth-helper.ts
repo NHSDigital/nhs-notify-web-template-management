@@ -118,9 +118,12 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'ClientWithMultipleCampaigns',
   },
 
-  UserWithFallbackCampaignId: {
-    userId: 'UserWithFallbackCampaignId',
-    clientKey: 'ClientWithFallbackCampaignId',
+  /**
+   * UserRoutingEnabled belongs to an alternate client with routing enabled
+   */
+  UserRoutingEnabled: {
+    userId: 'UserWithRoutingEnabled',
+    clientKey: 'ClientRoutingEnabled',
   },
 };
 
@@ -263,7 +266,7 @@ export class CognitoAuthHelper {
     const clientConfig: ClientConfiguration | undefined =
       testClients[userDetails.clientKey];
 
-    const { name: clientName, campaignId, campaignIds } = clientConfig ?? {};
+    const { name: clientName, campaignIds } = clientConfig ?? {};
 
     const clientAttributes = [
       { Name: 'custom:sbx_client_id', Value: clientId },
@@ -323,7 +326,6 @@ export class CognitoAuthHelper {
       {
         email,
         userId: sub,
-        campaignId,
         campaignIds,
         clientId,
         clientKey: userDetails.clientKey,
