@@ -7,6 +7,8 @@ import content from '@content/content';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
 import { getCampaignIds } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
+import { createMessagePlanServerAction } from './server-action';
 
 const pageContent = content.pages.createMessagePlan;
 
@@ -45,15 +47,17 @@ export default async function CreateMessagePlanPage({
 
   return (
     <NHSNotifyMain>
-      <div className='nhsuk-grid-row'>
-        <div className='nhsuk-grid-column-two-thirds'>
-          <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
-          <MessagePlanForm
-            messageOrder={params.messageOrder}
-            campaignIds={campaignIds}
-          />
+      <NHSNotifyFormProvider serverAction={createMessagePlanServerAction}>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-two-thirds'>
+            <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
+            <MessagePlanForm
+              messageOrder={params.messageOrder}
+              campaignIds={campaignIds}
+            />
+          </div>
         </div>
-      </div>
+      </NHSNotifyFormProvider>
     </NHSNotifyMain>
   );
 }

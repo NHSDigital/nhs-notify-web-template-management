@@ -86,7 +86,7 @@ describe('Template API - get client configuration', () => {
 
     const clientConfiguration: ClientConfiguration = {
       features: { proofing: false },
-      campaignId: 'campaign',
+      campaignIds: ['campaign'],
     };
 
     mocks.templateClient.getClientConfiguration.mockResolvedValueOnce({

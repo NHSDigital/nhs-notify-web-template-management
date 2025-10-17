@@ -16,10 +16,12 @@ test.describe('POST /v1/routing-configuration', () => {
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
   let userSharedClient: TestUser;
+  let userRoutingDisabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
   });
 
   test.afterAll(async () => {
@@ -298,6 +300,27 @@ test.describe('POST /v1/routing-configuration', () => {
     expect(await getResponse.json()).toEqual({
       statusCode: 200,
       data: created.data,
+    });
+  });
+
+  test('returns 400 if routing feature is disabled on the client', async ({
+    request,
+  }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await userRoutingDisabled.getAccessToken(),
+        },
+        data: RoutingConfigFactory.create(userRoutingDisabled).apiPayload,
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Routing feature is disabled',
     });
   });
 });

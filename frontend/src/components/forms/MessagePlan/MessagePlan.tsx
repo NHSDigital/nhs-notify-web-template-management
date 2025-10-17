@@ -1,7 +1,7 @@
 'use client';
 
-import { useActionState } from 'react';
 import classNames from 'classnames';
+import Link from 'next/link';
 import {
   Details,
   HintText,
@@ -13,9 +13,8 @@ import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { messagePlanServerAction } from './server-action';
 import content from '@content/content';
-import Link from 'next/link';
+import { useNHSNotifyForm } from '@providers/form-provider';
 
 const formContent = content.components.messagePlanForm;
 
@@ -26,21 +25,25 @@ export function MessagePlanForm({
   messageOrder: MessageOrder;
   campaignIds: string[];
 }) {
-  const [state, action] = useActionState(messagePlanServerAction, {});
+  const [state, action] = useNHSNotifyForm();
 
   const [name, handleNameChange] = useTextInput<HTMLInputElement>('');
   const [campaignId, handleCampaignIdChange] =
     useTextInput<HTMLSelectElement>('');
 
+  const nameError = state.errorState?.fieldErrors?.name?.join(',');
+  const campaignIdError = state.errorState?.fieldErrors?.campaignId?.join(',');
+
   return (
     <NHSNotifyFormWrapper formId='message-plan' action={action}>
-      <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
-        <input
-          type='hidden'
-          name='messageOrder'
-          value={messageOrder}
-          readOnly
-        />
+      <input type='hidden' name='messageOrder' value={messageOrder} readOnly />
+      <div
+        className={classNames(
+          'nhsuk-form-group',
+          'nhsuk-u-margin-bottom-6',
+          nameError && 'nhsuk-form-group--error'
+        )}
+      >
         <Label htmlFor='name' size='s'>
           {formContent.fields.name.label}
         </Label>
@@ -67,7 +70,7 @@ export function MessagePlanForm({
           name='name'
           value={name}
           onChange={handleNameChange}
-          error={state.errorState?.fieldErrors?.name?.join(',')}
+          error={nameError}
           data-testid='name-field'
         />
       </div>
@@ -95,7 +98,7 @@ export function MessagePlanForm({
             hint={formContent.fields.campaignId.hintMulti}
             defaultValue={campaignId}
             onChange={handleCampaignIdChange}
-            error={state.errorState?.fieldErrors?.campaignId?.join(',')}
+            error={campaignIdError}
             data-testid='campaign-id-field'
           >
             <Select.Option />

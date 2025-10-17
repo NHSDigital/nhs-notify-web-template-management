@@ -1,38 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mock } from 'jest-mock-extended';
-import { redirect, RedirectType } from 'next/navigation';
-import {
-  CascadeGroup,
-  CascadeItem,
-  RoutingConfig,
-} from 'nhs-notify-backend-client';
-import { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { useNHSNotifyForm } from '@providers/form-provider';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
-import {
-  NextRedirectBoundary,
-  NextRedirectError,
-} from '../../../helpers/next-redirect';
-import { createRoutingConfig } from '@utils/message-plans';
 
-jest.mock('next/navigation');
+jest.mock('@providers/form-provider');
+const mockAction = jest.fn();
+jest.mocked(useNHSNotifyForm).mockReturnValue([{}, mockAction, false]);
+
 jest.mock('@utils/csrf-utils');
-jest.mock('@utils/message-plans');
+jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 beforeEach(() => {
-  jest.resetAllMocks();
-  jest.mocked(verifyFormCsrfToken).mockResolvedValueOnce(true);
-  jest.mocked(createRoutingConfig).mockResolvedValueOnce(
-    mock<RoutingConfig>({
-      id: 'mock-routing-config-id',
-    })
-  );
-  jest.mocked(redirect).mockImplementationOnce((url, type) => {
-    // Next redirect return type is `never` because it throws an error
-    // Mock this behaviour using custom error and error boundary
-    throw new NextRedirectError(url, type);
-  });
+  jest.clearAllMocks();
 });
 
 test('renders form with single campaign id displayed', () => {
@@ -52,62 +32,35 @@ test('renders form with select for multiple campaign ids', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('renders error if form is submitted with empty name', async () => {
-  const user = userEvent.setup();
-
-  const container = render(
-    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
-  );
-
-  await user.click(screen.getByTestId('submit-button'));
-
-  expect(container.asFragment()).toMatchSnapshot();
-});
-
-test('renders error if form is submitted with name too long', async () => {
-  const user = userEvent.setup();
-
-  const container = render(
-    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
-  );
-
-  await user.click(screen.getByTestId('name-field'));
-
-  await user.keyboard('x'.repeat(201));
-
-  await user.click(screen.getByTestId('submit-button'));
-
-  expect(container.asFragment()).toMatchSnapshot();
-});
-
-test('renders error if form is submitted with no campaign id selected', async () => {
-  const user = userEvent.setup();
+test('renders errors', async () => {
+  jest.mocked(useNHSNotifyForm).mockReturnValueOnce([
+    {
+      errorState: {
+        fieldErrors: {
+          name: ['Name error'],
+          campaignId: ['CampaignId error'],
+        },
+      },
+    },
+    jest.fn(),
+    false,
+  ]);
 
   const container = render(
     <MessagePlanForm
       messageOrder='NHSAPP'
-      campaignIds={['campaign-1', 'campaign-2']}
+      campaignIds={['campaign-id', 'campaign-2']}
     />
   );
-
-  await user.click(screen.getByTestId('name-field'));
-
-  await user.keyboard('My template');
-
-  await user.click(screen.getByTestId('submit-button'));
 
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('creates a new routing config with single campaign id and redirects to the choose-templates page', async () => {
+test('invokes the action with the form data when the form is submitted - single campaign id', async () => {
   const user = userEvent.setup();
 
-  const container = render(
-    <NextRedirectBoundary>
-      <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-1']} />
-    </NextRedirectBoundary>,
-    // @ts-expect-error silence noisy error logging from react error boundary
-    { onCaughtError: () => {} }
+  render(
+    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -116,33 +69,27 @@ test('creates a new routing config with single campaign id and redirects to the 
 
   await user.click(screen.getByTestId('submit-button'));
 
-  expect(createRoutingConfig).toHaveBeenCalledWith(
-    expect.objectContaining({
-      name: 'My Message Plan',
-      campaignId: 'campaign-1',
-    })
-  );
+  expect(mockAction).toHaveBeenCalledTimes(1);
 
-  expect(redirect).toHaveBeenCalledWith(
-    '/message-plans/choose-templates/mock-routing-config-id',
-    RedirectType.push
-  );
+  expect(mockAction).toHaveBeenLastCalledWith(expect.any(FormData));
 
-  expect(container.asFragment()).toMatchSnapshot();
+  const formData = mockAction.mock.lastCall?.at(0) as FormData;
+
+  expect(Object.fromEntries(formData.entries())).toMatchObject({
+    campaignId: 'campaign-id',
+    messageOrder: 'NHSAPP',
+    name: 'My Message Plan',
+  });
 });
 
-test('creates a new routing config with selected campaign id and redirects to the choose-templates page', async () => {
+test('invokes the action with the form data when the form is submitted - multiple campaign id', async () => {
   const user = userEvent.setup();
 
-  const container = render(
-    <NextRedirectBoundary>
-      <MessagePlanForm
-        messageOrder='NHSAPP'
-        campaignIds={['campaign-1', 'campaign-2']}
-      />
-    </NextRedirectBoundary>,
-    // @ts-expect-error silence noisy error logging from react error boundary
-    { onCaughtError: () => {} }
+  render(
+    <MessagePlanForm
+      messageOrder='NHSAPP'
+      campaignIds={['campaign-id', 'campaign-id-2']}
+    />
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -151,219 +98,20 @@ test('creates a new routing config with selected campaign id and redirects to th
 
   await user.selectOptions(
     screen.getByTestId('campaign-id-field'),
-    'campaign-2'
+    'campaign-id-2'
   );
 
   await user.click(screen.getByTestId('submit-button'));
 
-  expect(createRoutingConfig).toHaveBeenCalledWith(
-    expect.objectContaining({
-      name: 'My Message Plan',
-      campaignId: 'campaign-2',
-    })
-  );
+  expect(mockAction).toHaveBeenCalledTimes(1);
 
-  expect(redirect).toHaveBeenCalledWith(
-    '/message-plans/choose-templates/mock-routing-config-id',
-    RedirectType.push
-  );
+  expect(mockAction).toHaveBeenLastCalledWith(expect.any(FormData));
 
-  expect(container.asFragment()).toMatchSnapshot();
+  const formData = mockAction.mock.lastCall?.at(0) as FormData;
+
+  expect(Object.fromEntries(formData.entries())).toMatchObject({
+    campaignId: 'campaign-id-2',
+    messageOrder: 'NHSAPP',
+    name: 'My Message Plan',
+  });
 });
-
-const MESSAGE_ORDER_SCENARIOS: [MessageOrder, CascadeItem[], CascadeGroup[]][] =
-  [
-    [
-      'NHSAPP',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,EMAIL',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,SMS',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,EMAIL,SMS',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,SMS,EMAIL',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,SMS,LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'NHSAPP,EMAIL,SMS,LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-    [
-      'LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
-    ],
-  ];
-
-test.each(MESSAGE_ORDER_SCENARIOS)(
-  'creates the routing config with the correct initial cascade for %s message order',
-  async (messageOrder, expectedCascade, expectedCascadeGroups) => {
-    const user = userEvent.setup();
-
-    render(
-      <NextRedirectBoundary>
-        <MessagePlanForm
-          messageOrder={messageOrder}
-          campaignIds={['campaign-1']}
-        />
-      </NextRedirectBoundary>,
-      // @ts-expect-error silence noisy error logging from react error boundary
-      { onCaughtError: () => {} }
-    );
-
-    await user.click(screen.getByTestId('name-field'));
-
-    await user.keyboard('My Message Plan');
-
-    await user.click(screen.getByTestId('submit-button'));
-
-    expect(createRoutingConfig).toHaveBeenCalledWith(
-      expect.objectContaining({
-        cascade: expectedCascade,
-        cascadeGroupOverrides: expectedCascadeGroups,
-      })
-    );
-  }
-);

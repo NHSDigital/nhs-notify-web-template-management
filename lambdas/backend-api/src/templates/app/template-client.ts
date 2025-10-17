@@ -62,26 +62,10 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      user.clientId
-    );
-
-    if (clientConfigurationResult.error) {
-      log
-        .child(clientConfigurationResult.error.errorMeta)
-        .error(
-          'Failed to fetch client configuration',
-          clientConfigurationResult.error.actualError
-        );
-
-      return clientConfigurationResult;
-    }
-
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
-      'NOT_YET_SUBMITTED',
-      clientConfigurationResult.data?.campaignId
+      'NOT_YET_SUBMITTED'
     );
 
     if (createResult.error) {
@@ -539,13 +523,9 @@ export class TemplateClient {
       return false;
     }
 
-    const { campaignIds, campaignId } = clientConfiguration;
+    const { campaignIds = [] } = clientConfiguration;
 
-    const validCampaignId = campaignIds?.includes(campaignIdFromRequest);
-    const validFallbackCampaignId =
-      !campaignIds && campaignIdFromRequest === campaignId;
-
-    return validCampaignId || validFallbackCampaignId;
+    return campaignIds.includes(campaignIdFromRequest);
   }
 
   async getClientConfiguration(
