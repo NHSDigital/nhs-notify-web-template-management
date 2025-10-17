@@ -4,8 +4,12 @@ import path from 'node:path';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { generate } from 'generate-password';
-import { TemplateStatus, TemplateType, VirusScanStatus } from 'nhs-notify-backend-client';
-import { LetterTemplate, NHSAppTemplate, EmailTemplate, SMSTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateStatus,
+  TemplateType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import { TestUserClient } from './test-user-client';
 
@@ -84,7 +88,7 @@ const generateDigitalTemplateData = (
     templateStatus,
     ...(templateType === 'EMAIL' && {
       subject: 'template-subject',
-    })
+    }),
   };
 };
 
