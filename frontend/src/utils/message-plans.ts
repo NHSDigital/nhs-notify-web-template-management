@@ -6,7 +6,7 @@ import {
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getSessionServer } from './amplify-utils';
-import { sortAscByCreatedAt } from './sort';
+import { sortAscByUpdatedAt } from './sort';
 
 export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { accessToken } = await getSessionServer();
@@ -32,7 +32,7 @@ export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
     return success;
   });
 
-  return sortAscByCreatedAt(valid);
+  return sortAscByUpdatedAt(valid);
 }
 
 export async function countRoutingConfigs(

@@ -27,7 +27,8 @@ function createTemplates(owner: string) {
       subject: 'test example subject',
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
-      createdAt: '2010-10-11T11:11:11.111Z',
+      createdAt: '2010-10-10T11:11:11.111Z',
+      updatedAt: '2010-10-11T11:11:11.111Z',
     }),
     emailNotYetSubmitted: TemplateFactory.create({
       id: randomUUID(),
@@ -39,6 +40,7 @@ function createTemplates(owner: string) {
       templateType: 'EMAIL',
       templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-11T10:10:10.100Z',
+      updatedAt: '2010-10-11T10:10:10.100Z',
     }),
     smsSubmitted: TemplateFactory.create({
       id: randomUUID(),
@@ -47,7 +49,8 @@ function createTemplates(owner: string) {
       message: 'test example message',
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
-      createdAt: '2010-10-10T11:11:11.111Z',
+      createdAt: '2010-10-09T11:11:11.111Z',
+      updatedAt: '2010-10-10T11:11:11.111Z',
     }),
     smsNotYetSubmitted: TemplateFactory.create({
       id: randomUUID(),
@@ -56,7 +59,8 @@ function createTemplates(owner: string) {
       message: 'test example message',
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
-      createdAt: '2010-10-10T10:10:10.100Z',
+      createdAt: '2010-10-09T10:10:10.100Z',
+      updatedAt: '2010-10-10T10:10:10.100Z',
     }),
     nhsAppSubmitted: TemplateFactory.create({
       id: randomUUID(),
@@ -65,7 +69,8 @@ function createTemplates(owner: string) {
       message: 'test example message',
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
-      createdAt: '2010-10-09T11:11:11.111Z',
+      createdAt: '2010-10-08T11:11:11.111Z',
+      updatedAt: '2010-10-09T11:11:11.111Z',
     }),
     nhsAppNotYetSubmitted: TemplateFactory.create({
       id: randomUUID(),
@@ -74,7 +79,8 @@ function createTemplates(owner: string) {
       message: 'test example message',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
-      createdAt: '2010-10-09T10:10:10.100Z',
+      createdAt: '2010-10-08T10:10:10.100Z',
+      updatedAt: '2010-10-09T10:10:10.100Z',
     }),
   };
 }
@@ -290,7 +296,7 @@ test.describe('Manage templates page', () => {
     await expect(templateDeleteLink).toBeHidden();
   });
 
-  test('templates are ordered by createdAt descending', async ({
+  test('templates are ordered by updatedAt descending', async ({
     page,
     baseURL,
   }) => {

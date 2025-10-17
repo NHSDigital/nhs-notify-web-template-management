@@ -24,8 +24,8 @@ const messageTemplatesProps: {
       templateStatus: 'SUBMITTED',
       name: 'Template 2',
       message: 'Message',
-      createdAt: '2021-02-01T00:00:00.000Z',
-      updatedAt: '2021-02-01T00:00:00.000Z',
+      createdAt: '2021-01-01T00:00:00.000Z',
+      updatedAt: '2021-03-01T00:00:00.000Z',
     },
     {
       id: '3',
@@ -120,7 +120,7 @@ describe('MessageTemplates component', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-template-date-created')
-    ).toHaveTextContent(messageTemplatesContent.tableHeadings.dateCreated);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.lastEdited);
     expect(
       screen.getByTestId('manage-template-table-header-action')
     ).toBeInTheDocument();

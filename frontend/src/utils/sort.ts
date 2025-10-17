@@ -1,12 +1,12 @@
-export const sortAscByCreatedAt = <T>(
-  items: T & { createdAt: string; id: string }[]
+export const sortAscByUpdatedAt = <T>(
+  items: T & { updatedAt: string; id: string }[]
 ) =>
   items.sort((a, b) => {
-    const aCreatedAt = a.createdAt;
-    const bCreatedAt = b.createdAt;
+    const aUpdatedAt = a.updatedAt;
+    const bUpdatedAt = b.updatedAt;
 
-    if (aCreatedAt === bCreatedAt) {
+    if (aUpdatedAt === bUpdatedAt) {
       return a.id.localeCompare(b.id);
     }
-    return aCreatedAt < bCreatedAt ? 1 : -1;
+    return aUpdatedAt < bUpdatedAt ? 1 : -1;
   });
