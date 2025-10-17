@@ -18,6 +18,17 @@ export const templateTypeToUrlTextMappings: Record<string, string> = {
   LETTER: 'letter',
 };
 
+export const expectedChannelLabels: Record<Channel, string> = {
+  NHSAPP: 'NHS App',
+  SMS: 'Text message (SMS)',
+  EMAIL: 'Email',
+  LETTER: 'Letter',
+};
+
+export const allChannels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS', 'LETTER'];
+
+export const ordinals = ['first', 'second', 'third', 'fourth', 'fifth'];
+
 export type File = {
   fileName: string;
   currentVersion: string;
