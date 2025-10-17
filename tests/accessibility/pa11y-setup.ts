@@ -4,8 +4,8 @@ import path from 'node:path';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { generate } from 'generate-password';
-import { TemplateStatus, VirusScanStatus } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { TemplateStatus, TemplateType, VirusScanStatus } from 'nhs-notify-backend-client';
+import { LetterTemplate, NHSAppTemplate, EmailTemplate, SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import { TestUserClient } from './test-user-client';
 
@@ -40,7 +40,7 @@ const generateLetterTemplateData = (
         currentVersion: randomUUID(),
         virusScanStatus,
       },
-      ...(templateStatus === 'PROOF_AVAILABLE' && {
+      ...(['PROOF_AVAILABLE', 'SUBMITTED'].includes(templateStatus) && {
         proofs: {
           proof1: {
             fileName: 'proof1.pdf',
@@ -61,6 +61,30 @@ const generateLetterTemplateData = (
       }),
     },
     templateStatus,
+  };
+};
+
+const generateDigitalTemplateData = (
+  name: string,
+  clientId: string,
+  templateType: TemplateType,
+  templateStatus: TemplateStatus
+) => {
+  const now = new Date().toISOString();
+
+  return {
+    name,
+    message: 'template-message',
+    owner: `CLIENT#${clientId}`,
+    clientId,
+    id: randomUUID(),
+    templateType,
+    createdAt: now,
+    updatedAt: now,
+    templateStatus,
+    ...(templateType === 'EMAIL' && {
+      subject: 'template-subject',
+    })
   };
 };
 
@@ -145,6 +169,30 @@ const setup = async () => {
       clientId,
       'PASSED',
       'PROOF_AVAILABLE'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-proof-submitted',
+      clientId,
+      'PASSED',
+      'SUBMITTED'
+    ),
+    generateDigitalTemplateData(
+      'pa11y-email-proof-submitted',
+      clientId,
+      'EMAIL',
+      'SUBMITTED'
+    ),
+    generateDigitalTemplateData(
+      'pa11y-sms-proof-submitted',
+      clientId,
+      'SMS',
+      'SUBMITTED'
+    ),
+    generateDigitalTemplateData(
+      'pa11y-nhsapp-proof-submitted',
+      clientId,
+      'NHS_APP',
+      'SUBMITTED'
     ),
   ];
 
