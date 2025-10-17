@@ -26,7 +26,7 @@ async function createRoutingConfigs(): Promise<MessagePlansPageData> {
     draftNew: RoutingConfigFactory.create(user).dbEntry,
     draftOld: {
       ...RoutingConfigFactory.create(user).dbEntry,
-      createdAt: new Date('2020-10-09T00:00:00.000Z').toISOString(),
+      updatedAt: new Date('2020-10-09T00:00:00.000Z').toISOString(),
     },
     production: RoutingConfigFactory.create(user, { status: 'COMPLETED' })
       .dbEntry,
