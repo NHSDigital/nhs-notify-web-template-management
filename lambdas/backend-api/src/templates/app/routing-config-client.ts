@@ -26,10 +26,9 @@ export class RoutingConfigClient {
       user.clientId
     );
 
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
+    if (clientConfigurationResult.error) return clientConfigurationResult;
 
-    if (clientConfigurationError) return clientConfigurationResult;
+    const { data: clientConfiguration } = clientConfigurationResult;
 
     if (!clientConfiguration?.features.routing) {
       return failure(
@@ -66,10 +65,16 @@ export class RoutingConfigClient {
       user.clientId
     );
 
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
+    if (clientConfigurationResult.error) return clientConfigurationResult;
 
-    if (clientConfigurationError) return clientConfigurationResult;
+    const { data: clientConfiguration } = clientConfigurationResult;
+
+    if (!clientConfiguration?.features.routing) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing feature is disabled'
+      );
+    }
 
     const validationResult = await validate(
       $CreateUpdateRoutingConfig,
@@ -80,13 +85,6 @@ export class RoutingConfigClient {
 
     const validated = validationResult.data;
 
-    if (!clientConfiguration?.features.routing) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Routing feature is disabled'
-      );
-    }
-
     if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
@@ -96,7 +94,7 @@ export class RoutingConfigClient {
 
     return this.routingConfigRepository.update(
       routingConfigId,
-      validationResult.data,
+      validated,
       user
     );
   }
@@ -109,12 +107,9 @@ export class RoutingConfigClient {
       user.clientId
     );
 
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
+    if (clientConfigurationResult.error) return clientConfigurationResult;
 
-    if (clientConfigurationError) return clientConfigurationResult;
-
-    if (!clientConfiguration?.features.routing) {
+    if (!clientConfigurationResult.data?.features.routing) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
         'Routing feature is disabled'
@@ -132,12 +127,9 @@ export class RoutingConfigClient {
       user.clientId
     );
 
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
+    if (clientConfigurationResult.error) return clientConfigurationResult;
 
-    if (clientConfigurationError) return clientConfigurationResult;
-
-    if (!clientConfiguration?.features.routing) {
+    if (!clientConfigurationResult.data?.features.routing) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
         'Routing feature is disabled'

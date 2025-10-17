@@ -6,10 +6,13 @@ import { PreviewTemplateProps } from './preview-digital-template.types';
 import { Button } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 const { editButton } = content.components.previewDigitalTemplate;
 
 export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
+  const features = useFeatureFlags();
+
   return (
     <>
       {props.sectionHeading && (
@@ -17,7 +20,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
           {props.sectionHeading}
         </div>
       )}
-      {props.routingEnabled ? (
+      {features.routing ? (
         <>
           {props.previewDetailsComponent}
           <Link href={props.editPath} passHref legacyBehavior>

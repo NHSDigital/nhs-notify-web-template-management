@@ -52,8 +52,8 @@
       "@styles/*": [
         "./src/styles/*"
       ],
-      "@testhelpers": [
-        "./src/__tests__/helpers"
+      "@testhelpers/*": [
+        "./src/__tests__/helpers/*"
       ],
       "@types/*": [
         "./src/types/*"

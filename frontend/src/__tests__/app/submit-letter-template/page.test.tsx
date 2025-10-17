@@ -13,52 +13,41 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers';
+} from '@testhelpers/helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitLetterTemplate');
-jest.mock('@utils/server-features');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
-const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('SubmitLetterTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  test.each([true, false])(
-    'should load page when client proofing is %s',
-    async (clientProofingEnabled) => {
-      getTemplateMock.mockResolvedValue({
-        ...LETTER_TEMPLATE,
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+  test('should load page', async () => {
+    getTemplateMock.mockResolvedValue({
+      ...LETTER_TEMPLATE,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
-      serverIsFeatureEnabledMock.mockResolvedValueOnce(clientProofingEnabled);
+    const page = await SubmitLetterTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
 
-      const page = await SubmitLetterTemplatePage({
-        params: Promise.resolve({
-          templateId: 'template-id',
-        }),
-      });
-
-      expect(page).toEqual(
-        <SubmitLetterTemplate
-          templateName={LETTER_TEMPLATE.name}
-          templateId={LETTER_TEMPLATE.id}
-          proofingEnabled={clientProofingEnabled}
-        />
-      );
-
-      expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('proofing');
-    }
-  );
+    expect(page).toEqual(
+      <SubmitLetterTemplate
+        templateName={LETTER_TEMPLATE.name}
+        templateId={LETTER_TEMPLATE.id}
+      />
+    );
+  });
 
   test('should handle invalid template', async () => {
     getTemplateMock.mockResolvedValue(undefined);

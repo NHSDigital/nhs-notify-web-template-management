@@ -9,9 +9,25 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 /*
  * Caches at the request context level. Not a global cache.
  */
-export const fetchClient = cache(async (accessToken: string) =>
+const fetchClientCache = cache(async (accessToken: string) =>
   clientConfigurationApiClient.fetch(accessToken)
 );
+
+export const fetchClient = async () => {
+  const { accessToken, clientId } = await getSessionServer();
+
+  if (!accessToken || !clientId) return null;
+
+  const clientConfig = await fetchClientCache(accessToken);
+
+  if (clientConfig.error) {
+    logger.error('Failed to fetch client configuration', clientConfig.error);
+
+    return null;
+  }
+
+  return clientConfig.data;
+};
 
 /**
  * Server-Side
@@ -23,18 +39,7 @@ export const fetchClient = cache(async (accessToken: string) =>
 export async function serverIsFeatureEnabled(
   feature: keyof ClientFeatures
 ): Promise<boolean> {
-  const { accessToken } = await getSessionServer();
+  const clientConfig = await fetchClient();
 
-  if (!accessToken) return false;
-
-  const clientConfiguration = await fetchClient(accessToken);
-
-  if (clientConfiguration.error) {
-    logger.error(
-      'Failed to fetch client configuration',
-      clientConfiguration.error
-    );
-  }
-
-  return clientConfiguration.data?.features[feature] ?? false;
+  return clientConfig?.features[feature] ?? false;
 }

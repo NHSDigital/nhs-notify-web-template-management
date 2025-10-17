@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
-import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
-import { getSessionServer } from '@utils/amplify-utils';
 import { redirect, RedirectType } from 'next/navigation';
-import { fetchClient } from '@utils/server-features';
+import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import { fetchClient } from '@utils/server-features';
+import { getCampaignIds } from '@utils/client-config';
 
 const { pageTitle } = content.components.templateFormLetter;
 
@@ -15,36 +14,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const getSortedCampaignIds = (
-  clientConfiguration: ClientConfiguration | null | undefined
-) => {
-  if (!clientConfiguration) {
-    return;
-  }
-
-  const { campaignIds = [] } = clientConfiguration;
-
-  return campaignIds.sort();
-};
-
 const UploadLetterTemplatePage = async () => {
-  const sessionServer = await getSessionServer();
-  const { accessToken, clientId } = sessionServer;
+  const clientConfig = await fetchClient();
 
-  if (!accessToken || !clientId) {
-    return redirect(
-      '/upload-letter-template/client-id-and-campaign-id-required',
-      RedirectType.replace
-    );
-  }
+  const campaignIds = getCampaignIds(clientConfig);
 
-  const clientConfigurationResult = await fetchClient(accessToken);
-
-  const clientConfiguration = clientConfigurationResult?.data;
-
-  const campaignIds = getSortedCampaignIds(clientConfiguration);
-
-  if (!campaignIds || campaignIds.length === 0) {
+  if (campaignIds.length === 0) {
     return redirect(
       '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace

@@ -83,7 +83,7 @@ export const testClients: TestClients = {
     campaignIds: ['campaign-id', 'other-campaign-id'],
     features: {
       proofing: true,
-      routing: false,
+      routing: true,
     },
   },
 

@@ -7,6 +7,8 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly pageUrlSegment: string;
 
+  queryParameters?: URLSearchParams;
+
   readonly header: Locator;
 
   readonly headerLogoLink: Locator;
