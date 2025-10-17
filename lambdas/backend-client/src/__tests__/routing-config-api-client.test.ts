@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {
   isValidUuid,
   routingConfigurationApiClient as client,
-  axiosClient,
+  httpClient,
 } from '../routing-config-api-client';
 import { RoutingConfig, RoutingConfigStatus } from '../types/generated';
 import { ErrorCase } from '../types/error-cases';
@@ -12,7 +12,7 @@ const notFoundRoutingConfigId = '3b5d7f9a-1c2e-4b3d-8f0a-6e7d8c9b0a1f';
 const invalidRoutingConfigId = 'not-a-uuid';
 
 describe('RoutingConfigurationApiClient', () => {
-  const axiosMock = new MockAdapter(axiosClient);
+  const axiosMock = new MockAdapter(httpClient);
 
   beforeEach(() => {
     axiosMock.reset();

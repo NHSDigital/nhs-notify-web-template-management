@@ -1,8 +1,7 @@
-import { ApplicationResult, failure, success } from '@backend-api/utils/result';
+import { failure } from '@backend-api/utils/result';
 import {
   $CreateUpdateRoutingConfig,
   $ListRoutingConfigFilters,
-  type CreateUpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
   type Result,
@@ -212,27 +211,5 @@ export class RoutingConfigClient {
     }
 
     return query.count();
-  }
-
-  private async validateCampaignId(
-    clientId: string,
-    data: CreateUpdateRoutingConfig
-  ): Promise<ApplicationResult<null>> {
-    const clientConfigurationResult =
-      await this.clientConfigRepository.get(clientId);
-
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
-
-    if (clientConfigurationError) return clientConfigurationResult;
-
-    if (!clientConfiguration?.campaignIds?.includes(data.campaignId)) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid campaign ID in request'
-      );
-    }
-
-    return success(null);
   }
 }
