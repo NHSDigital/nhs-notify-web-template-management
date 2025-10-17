@@ -18,24 +18,24 @@ exports[`InvalidConfig 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          You cannot create letter templates yet
+          Example Heading
         </h1>
         <p>
-          To get access, contact your onboarding manager and give them this error message:
+          Example Text
         </p>
         <div
           class="nhsuk-inset-text"
         >
           <p>
-            Account needs a client ID and campaign ID
+            Example Inset Text
           </p>
         </div>
         <p>
           <a
-            data-testid="back-to-choose-template-type-link"
-            href="/choose-a-template-type"
+            data-testid="back-link"
+            href="/example-back-link-url"
           >
-            Go back
+            Example Back Link Text
           </a>
         </p>
       </div>

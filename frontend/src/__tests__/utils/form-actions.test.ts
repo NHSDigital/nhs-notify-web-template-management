@@ -15,12 +15,16 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
+  createRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
+import { randomUUID } from 'node:crypto';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
+const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
@@ -486,23 +490,23 @@ describe('form-actions', () => {
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
   });
 
-  test('getTemplates - order by createdAt and then id', async () => {
+  test('getTemplates - order by updatedAt and then id', async () => {
     const baseTemplate = {
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template',
       message: 'Message',
-      updatedAt: '2021-01-01T00:00:00.000Z',
+      createdAt: '2020-01-01T00:00:00.000Z',
     } satisfies Partial<TemplateDto>;
 
     const templates = [
-      { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '06', updatedAt: '2022-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '08', updatedAt: '2020-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '05', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '02', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '01', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '03', updatedAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '04', updatedAt: '2021-01-01T00:00:00.000Z' },
     ];
 
     // 06 is the newest, 08 is the oldest.
@@ -695,6 +699,129 @@ describe('form-actions', () => {
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
       );
+    });
+  });
+
+  describe('createRoutingConfig', () => {
+    test('creates a routing config', async () => {
+      const now = new Date();
+      const id = randomUUID();
+
+      mockedRoutingConfigClient.create.mockImplementationOnce(
+        async (input) => ({
+          data: {
+            ...input,
+            id,
+            clientId: 'client1',
+            createdAt: now.toISOString(),
+            status: 'DRAFT',
+            updatedAt: now.toISOString(),
+          },
+        })
+      );
+
+      const result = await createRoutingConfig({
+        name: 'My Routing Config',
+        campaignId: 'my-campaign-id',
+        cascade: [
+          {
+            channelType: 'primary',
+            channel: 'NHSAPP',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: null,
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      });
+
+      expect(mockedRoutingConfigClient.create).toHaveBeenCalledWith(
+        {
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: null,
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        },
+        'token'
+      );
+
+      expect(result).toEqual({
+        id,
+        clientId: 'client1',
+        createdAt: now.toISOString(),
+        status: 'DRAFT',
+        updatedAt: now.toISOString(),
+        name: 'My Routing Config',
+        campaignId: 'my-campaign-id',
+        cascade: [
+          {
+            channelType: 'primary',
+            channel: 'NHSAPP',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: null,
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      });
+    });
+
+    test('errors when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(
+        createRoutingConfig({
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: null,
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        })
+      ).rejects.toThrow('Failed to get access token');
+
+      expect(mockedRoutingConfigClient.create).not.toHaveBeenCalled();
+    });
+
+    test('errors when request fails', async () => {
+      mockedRoutingConfigClient.create.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(
+        createRoutingConfig({
+          name: 'My Routing Config',
+          campaignId: 'my-campaign-id',
+          cascade: [
+            {
+              channelType: 'primary',
+              channel: 'NHSAPP',
+              cascadeGroups: ['standard'],
+              defaultTemplateId: null,
+            },
+          ],
+          cascadeGroupOverrides: [{ name: 'standard' }],
+        })
+      ).rejects.toThrow('Failed to create message plan');
     });
   });
 });

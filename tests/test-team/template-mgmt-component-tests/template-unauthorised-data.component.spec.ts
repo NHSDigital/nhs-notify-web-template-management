@@ -6,7 +6,7 @@ import {
   TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
-import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
+import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
 import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
 
@@ -59,7 +59,7 @@ test.describe('Unauthorised data access Tests', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatesPage = new MessageTemplatesPage(page);
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     await messageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
     await expect(messageTemplatesPage.pageHeading).toHaveText(

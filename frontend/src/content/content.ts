@@ -443,9 +443,10 @@ const messageTemplates = {
   listOfTemplates: 'List of templates',
   tableHeadings: {
     name: 'Name',
+    id: 'ID',
     type: 'Type',
     status: 'Status',
-    dateCreated: 'Date created',
+    lastEdited: 'Last edited',
     action: { text: 'Action', copy: 'Copy', delete: 'Delete' },
   },
   createTemplateButton: {
@@ -607,12 +608,22 @@ const error404 = {
   },
 };
 
-const invalidConfiguration = {
-  pageTitle: generatePageTitle('Configuration error'),
-  pageHeading: 'You cannot create letter templates yet',
+const letterTemplateInvalidConfiguration = {
+  title: generatePageTitle('Configuration error'),
+  heading: 'You cannot create letter templates yet',
   text: 'To get access, contact your onboarding manager and give them this error message:',
   insetText: 'Account needs a client ID and campaign ID',
   backLinkText: goBackButtonText,
+  backLinkUrl: '/choose-a-template-type',
+};
+
+const messagePlanInvalidConfiguration = {
+  title: generatePageTitle('Configuration error'),
+  heading: 'You cannot create message plans yet',
+  text: 'To get access, contact your onboarding manager and give them this error message:',
+  insetText: 'Account needs a campaign ID',
+  backLinkText: goBackButtonText,
+  backLinkUrl: '/message-plans',
 };
 
 const submitTemplate = {
@@ -1065,7 +1076,7 @@ const messagePlansPage = {
   },
 };
 
-const messagePlanComponent = {
+const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
   previewLink: (id: string) => `/message-plan/${id}`,
@@ -1082,10 +1093,49 @@ const chooseMessageOrder = {
   },
 };
 
+const createMessagePlan = {
+  pageTitle: generatePageTitle('Create message plan'),
+  pageHeading: 'Create a message plan',
+};
+
+const messagePlanForm = {
+  fields: {
+    name: {
+      label: 'Message plan name',
+      hint: 'This will not be visible to recipients.',
+      details: {
+        summary: 'Naming your message plans',
+        text: {
+          main: 'You should name your message plans in a way that works best for your service or organisation.',
+          commonNames: {
+            main: 'Common message plan names include the:',
+            list: [
+              'channels it uses',
+              'subject or reason for the message',
+              'intended audience for the message',
+              'version number',
+            ],
+            example:
+              "For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'",
+          },
+        },
+      },
+    },
+    campaignId: {
+      label: 'Campaign',
+      hintSingle: 'This message plan will link to your only campaign:',
+      hintMulti: 'Choose which campaign this message plan will link to',
+    },
+  },
+  submitButton: 'Save and continue',
+  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
+};
+
 const content = {
   global: { mainLayout },
   components: {
     channelGuidance,
+    chooseMessageOrder,
     chooseTemplate,
     copyTemplate,
     deleteTemplate,
@@ -1094,7 +1144,8 @@ const content = {
     header,
     logoutWarning,
     messageFormatting,
-    messagePlanComponent,
+    messagePlanForm,
+    messagePlansListComponent,
     nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
@@ -1112,12 +1163,13 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
-    chooseMessageOrder,
   },
   pages: {
-    homePage,
+    createMessagePlan,
     error404,
-    invalidConfiguration,
+    homePage,
+    letterTemplateInvalidConfiguration,
+    messagePlanInvalidConfiguration,
     messageTemplates,
     messagePlansPage,
   },

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { glob } from 'glob';
 import { execSync } from 'node:child_process';
-import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
+import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
@@ -33,15 +33,18 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
-import { RoutingChooseMessageOrderPage } from '../pages/routing-choose-message-order-page';
-import { RoutingMessagePlansPage } from 'pages/routing-message-plans-page';
+import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
+import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
+import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
+import { RoutingMessagePlansPage } from '../pages/routing-message-plans-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
-  MessageTemplatesPage,
   RoutingChooseMessageOrderPage,
+  RoutingCreateMessagePlanPage,
+  RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
@@ -53,6 +56,7 @@ const protectedPages = [
   TemplateMgmtEditNhsAppPage,
   TemplateMgmtEditSmsPage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtMessageTemplatesPage,
   TemplateMgmtPreviewEmailPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewNhsAppPage,

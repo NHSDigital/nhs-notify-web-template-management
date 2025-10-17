@@ -14,25 +14,21 @@ import {
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-} from '../../helpers';
+} from '@testhelpers/helpers';
 import content from '@content/content';
-import { serverIsFeatureEnabled } from '@utils/server-features';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate');
-jest.mock('@utils/server-features');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
-const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    serverIsFeatureEnabledMock.mockResolvedValueOnce(true);
   });
 
   it('should load page', async () => {
@@ -64,10 +60,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewNHSAppTemplate
-        initialState={nhsAppTemplate}
-        routingEnabled={true}
-      />
+      <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );
   });
 

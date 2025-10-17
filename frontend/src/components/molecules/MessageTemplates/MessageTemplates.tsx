@@ -57,6 +57,9 @@ export function MessageTemplates({
               <Table.Cell data-testid='manage-template-table-header-template-name'>
                 {messageTemplatesContent.tableHeadings.name}
               </Table.Cell>
+              <Table.Cell data-testid='manage-template-table-header-template-id'>
+                {messageTemplatesContent.tableHeadings.id}
+              </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-type'>
                 {messageTemplatesContent.tableHeadings.type}
               </Table.Cell>
@@ -64,7 +67,7 @@ export function MessageTemplates({
                 {messageTemplatesContent.tableHeadings.status}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-date-created'>
-                {messageTemplatesContent.tableHeadings.dateCreated}
+                {messageTemplatesContent.tableHeadings.lastEdited}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-action'>
                 {messageTemplatesContent.tableHeadings.action.text}
@@ -79,6 +82,7 @@ export function MessageTemplates({
                     {template.name}
                   </Link>
                 </Table.Cell>
+                <Table.Cell>{template.id}</Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag color={statusToColourMapping(template)}>
@@ -86,9 +90,9 @@ export function MessageTemplates({
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>
-                  {format(`${template.createdAt}`, 'do MMM yyyy')}
+                  {format(`${template.updatedAt}`, 'do MMM yyyy')}
                   <br />
-                  {format(`${template.createdAt}`, 'HH:mm')}
+                  {format(`${template.updatedAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
                   <div className={style.actionLinksWrapper}>
