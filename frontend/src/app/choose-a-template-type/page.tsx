@@ -1,11 +1,11 @@
 'use server';
 
-import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
+import { ChooseTemplateType } from '@forms/ChooseTemplateType/ChooseTemplateType';
 import { Metadata } from 'next';
 import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 import content from '@content/content';
 
-const { pageTitle } = content.components.chooseTemplate;
+const { pageTitle } = content.components.chooseTemplateType;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const ChooseATemplateTypePage = async () => {
-  return <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />;
+  return <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />;
 };
 
 export default ChooseATemplateTypePage;

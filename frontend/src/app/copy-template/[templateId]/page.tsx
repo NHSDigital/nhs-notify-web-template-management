@@ -2,11 +2,11 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { isTemplateDtoValid } from 'nhs-notify-backend-client';
 
-const CopyTemplatePage = async (props: PageProps) => {
+const CopyTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);

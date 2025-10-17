@@ -47,22 +47,26 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
   name?: 'translations';
 };
 
-export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+export type CascadeItem = CascadeItemBase &
+  (
+    | {
+        conditionalTemplates?: Array<
+          ConditionalTemplateLanguage | ConditionalTemplateAccessible
+        >;
+        defaultTemplateId: string | null;
+      }
+    | {
+        conditionalTemplates: Array<
+          ConditionalTemplateLanguage | ConditionalTemplateAccessible
+        >;
+        defaultTemplateId?: string | null;
+      }
+  );
 
 export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
-};
-
-export type CascadeItemWithConditional = CascadeItemBase & {
-  conditionalTemplates: Array<
-    ConditionalTemplateLanguage | ConditionalTemplateAccessible
-  >;
-};
-
-export type CascadeItemWithDefault = CascadeItemBase & {
-  defaultTemplateId: string | null;
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';

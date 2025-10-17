@@ -190,12 +190,65 @@
         ]
       },
       "CascadeItem": {
-        "oneOf": [
+        "allOf": [
           {
-            "$ref": "#/components/schemas/CascadeItemWithDefault"
+            "$ref": "#/components/schemas/CascadeItemBase"
           },
           {
-            "$ref": "#/components/schemas/CascadeItemWithConditional"
+            "anyOf": [
+              {
+                "properties": {
+                  "conditionalTemplates": {
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                        },
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                        }
+                      ]
+                    },
+                    "type": "array"
+                  },
+                  "defaultTemplateId": {
+                    "format": "uuid",
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "defaultTemplateId"
+                ],
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "conditionalTemplates": {
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateLanguage"
+                        },
+                        {
+                          "$ref": "#/components/schemas/ConditionalTemplateAccessible"
+                        }
+                      ]
+                    },
+                    "type": "array"
+                  },
+                  "defaultTemplateId": {
+                    "format": "uuid",
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "conditionalTemplates"
+                ],
+                "type": "object"
+              }
+            ]
           }
         ]
       },
@@ -220,64 +273,6 @@
           "channelType"
         ],
         "type": "object"
-      },
-      "CascadeItemWithConditional": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CascadeItemBase"
-          },
-          {
-            "not": {
-              "required": [
-                "defaultTemplateId"
-              ]
-            },
-            "properties": {
-              "conditionalTemplates": {
-                "items": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ConditionalTemplateLanguage"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ConditionalTemplateAccessible"
-                    }
-                  ]
-                },
-                "type": "array"
-              }
-            },
-            "required": [
-              "conditionalTemplates"
-            ],
-            "type": "object"
-          }
-        ]
-      },
-      "CascadeItemWithDefault": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CascadeItemBase"
-          },
-          {
-            "not": {
-              "required": [
-                "conditionalTemplates"
-              ]
-            },
-            "properties": {
-              "defaultTemplateId": {
-                "format": "uuid",
-                "nullable": true,
-                "type": "string"
-              }
-            },
-            "required": [
-              "defaultTemplateId"
-            ],
-            "type": "object"
-          }
-        ]
       },
       "Channel": {
         "enum": [

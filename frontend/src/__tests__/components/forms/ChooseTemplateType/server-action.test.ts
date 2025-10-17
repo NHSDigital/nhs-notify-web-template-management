@@ -1,4 +1,4 @@
-import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
+import { chooseTemplateTypeAction } from '@forms/ChooseTemplateType/server-action';
 import { getMockFormData } from '@testhelpers/helpers';
 import { redirect, RedirectType } from 'next/navigation';
 
@@ -7,7 +7,7 @@ jest.mock('next/navigation');
 jest.mock('@utils/amplify-utils');
 
 test('submit form - validation error', async () => {
-  const response = await chooseTemplateAction(
+  const response = await chooseTemplateTypeAction(
     {},
     getMockFormData({
       'form-id': 'create-nhs-app-template',
@@ -35,7 +35,7 @@ test.each([
   async (templateType, url) => {
     const mockRedirect = jest.mocked(redirect);
 
-    await chooseTemplateAction(
+    await chooseTemplateTypeAction(
       {},
       getMockFormData({
         templateType,
