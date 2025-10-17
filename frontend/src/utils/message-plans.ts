@@ -11,7 +11,7 @@ import { getMessagePlanTemplateIds } from './get-message-plan-template-ids';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
-import { sortAscByCreatedAt } from './sort';
+import { sortAscByUpdatedAt } from './sort';
 
 export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { accessToken } = await getSessionServer();
@@ -37,7 +37,7 @@ export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
     return success;
   });
 
-  return sortAscByCreatedAt(valid);
+  return sortAscByUpdatedAt(valid);
 }
 
 export async function countRoutingConfigs(

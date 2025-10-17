@@ -446,7 +446,7 @@ const messageTemplates = {
     id: 'ID',
     type: 'Type',
     status: 'Status',
-    dateCreated: 'Date created',
+    lastEdited: 'Last edited',
     action: { text: 'Action', copy: 'Copy', delete: 'Delete' },
   },
   createTemplateButton: {
