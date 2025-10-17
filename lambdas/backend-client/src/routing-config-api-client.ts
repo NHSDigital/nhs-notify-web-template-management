@@ -6,10 +6,14 @@ import type {
   RoutingConfigSuccess,
   RoutingConfigStatusActive,
   RoutingConfigSuccessList,
+  PostV1RoutingConfigurationData,
+  GetV1RoutingConfigurationByRoutingConfigIdData,
+  PutV1RoutingConfigurationByRoutingConfigIdData,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
+import { OpenApiToTemplate } from './types/open-api-helper';
 
 export function isValidUuid(id: string): boolean {
   return /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(
@@ -27,17 +31,16 @@ class RoutingConfigurationApiClient {
     >,
     token: string
   ): Promise<Result<RoutingConfig>> {
+    const url =
+      '/v1/routing-configuration' satisfies PostV1RoutingConfigurationData['url'];
+
     const response = await catchAxiosError(
-      axiosClient.post<RoutingConfigSuccess>(
-        '/v1/routing-configuration',
-        routingConfig,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        }
-      )
+      axiosClient.post<RoutingConfigSuccess>(url, routingConfig, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
     );
 
     if (response.error) {
@@ -72,7 +75,10 @@ class RoutingConfigurationApiClient {
     return { ...data };
   }
 
-  async get(token: string, id: string): Promise<Result<RoutingConfig>> {
+  async get(
+    token: string,
+    id: RoutingConfig['id']
+  ): Promise<Result<RoutingConfig>> {
     if (!isValidUuid(id)) {
       return {
         error: {
@@ -85,7 +91,10 @@ class RoutingConfigurationApiClient {
         },
       };
     }
-    const url = `/v1/routing-configuration/${id}`;
+
+    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
+      GetV1RoutingConfigurationByRoutingConfigIdData['url']
+    >;
 
     const { data, error } = await catchAxiosError(
       axiosClient.get<RoutingConfigSuccess>(url, {
@@ -119,7 +128,7 @@ class RoutingConfigurationApiClient {
 
   async update(
     token: string,
-    id: string,
+    id: RoutingConfig['id'],
     routingConfig: RoutingConfig
   ): Promise<Result<RoutingConfig>> {
     if (!isValidUuid(id)) {
@@ -134,7 +143,9 @@ class RoutingConfigurationApiClient {
         },
       };
     }
-    const url = `/v1/routing-configuration/${id}`;
+    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
+      PutV1RoutingConfigurationByRoutingConfigIdData['url']
+    >;
 
     const { data, error } = await catchAxiosError(
       axiosClient.put<RoutingConfigSuccess>(url, routingConfig, {
