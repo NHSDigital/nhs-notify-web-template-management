@@ -99,7 +99,7 @@ fi
 
 now=$(date +%s)
 iat=$((${now} - 60)) # Issues 60 seconds in the past
-exp=$((${now} + 1200)) # Expires 20 minutes in the future
+exp=$((${now} + 600)) # Expires 10 minutes in the future
 
 b64enc() { openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'; }
 
