@@ -267,6 +267,19 @@ export function isRightToLeft(language: Language): boolean {
   return languageMap[language].rtl;
 }
 
+export const MESSAGE_ORDER_OPTIONS_LIST = [
+  'NHSAPP',
+  'NHSAPP,EMAIL',
+  'NHSAPP,SMS',
+  'NHSAPP,EMAIL,SMS',
+  'NHSAPP,SMS,EMAIL',
+  'NHSAPP,SMS,LETTER',
+  'NHSAPP,EMAIL,SMS,LETTER',
+  'LETTER',
+] as const;
+
+export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
+
 export const ORDINALS = [
   'First',
   'Second',
@@ -326,16 +339,3 @@ export const messagePlanStatusToDisplayText = (
 export const messagePlanStatusToTagColour = (
   status: RoutingConfigStatus
 ): Colour => messagePlanStatusColourMappings[status];
-
-export const MESSAGE_ORDER_OPTIONS_LIST = [
-  'NHSAPP',
-  'NHSAPP,EMAIL',
-  'NHSAPP,SMS',
-  'NHSAPP,EMAIL,SMS',
-  'NHSAPP,SMS,EMAIL',
-  'NHSAPP,SMS,LETTER',
-  'NHSAPP,EMAIL,SMS,LETTER',
-  'LETTER',
-] as const;
-
-export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];

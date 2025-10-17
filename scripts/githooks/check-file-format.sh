@@ -103,7 +103,7 @@ function run-editorconfig-in-docker() {
   docker run --rm --platform linux/amd64 \
     --volume "$PWD":/check \
     "$image" \
-      sh -c "set -x; ec --exclude '.git/' $dry_run_opt \$($filter) /dev/null"
+      sh -c "ec --exclude '.git/' $dry_run_opt \$($filter) /dev/null"
 }
 
 # ==============================================================================
