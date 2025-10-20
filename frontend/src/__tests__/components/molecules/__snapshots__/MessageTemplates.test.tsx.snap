@@ -58,7 +58,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               data-testid="manage-template-table-header-template-date-created"
               scope="col"
             >
-              Date created
+              Last edited
             </th>
             <th
               class="nhsuk-table__header"
@@ -139,7 +139,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Jan 2021
               <br />
@@ -251,9 +251,9 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
-              1st Feb 2021
+              1st Mar 2021
               <br />
               00:00
             </td>
@@ -352,7 +352,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -440,7 +440,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -538,7 +538,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
               data-testid="manage-template-table-header-template-date-created"
               scope="col"
             >
-              Date created
+              Last edited
             </th>
             <th
               class="nhsuk-table__header"
@@ -619,7 +619,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Jan 2021
               <br />
@@ -731,9 +731,9 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
-              1st Feb 2021
+              1st Mar 2021
               <br />
               00:00
             </td>
@@ -832,7 +832,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -920,7 +920,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -1018,7 +1018,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               data-testid="manage-template-table-header-template-date-created"
               scope="col"
             >
-              Date created
+              Last edited
             </th>
             <th
               class="nhsuk-table__header"
@@ -1099,7 +1099,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Jan 2021
               <br />
@@ -1200,9 +1200,9 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
-              1st Feb 2021
+              1st Mar 2021
               <br />
               00:00
             </td>
@@ -1301,7 +1301,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -1389,7 +1389,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -1487,7 +1487,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
               data-testid="manage-template-table-header-template-date-created"
               scope="col"
             >
-              Date created
+              Last edited
             </th>
             <th
               class="nhsuk-table__header"
@@ -1568,7 +1568,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Jan 2021
               <br />
@@ -1656,9 +1656,9 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
-              1st Feb 2021
+              1st Mar 2021
               <br />
               00:00
             </td>
@@ -1757,7 +1757,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
@@ -1845,7 +1845,7 @@ exports[`MessageTemplates component matches snapshot with waiting for proof stat
                 aria-hidden="true"
                 class="nhsuk-table-responsive__heading"
               >
-                Date created 
+                Last edited 
               </span>
               1st Feb 2021
               <br />
