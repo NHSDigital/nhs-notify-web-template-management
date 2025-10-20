@@ -189,6 +189,7 @@ describe('middleware function', () => {
         /^script-src 'self' 'nonce-[\dA-Za-z]+' 'unsafe-eval'$/
       ),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
+      '',
     ]);
   });
 });
