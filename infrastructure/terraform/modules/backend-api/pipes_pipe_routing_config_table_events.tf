@@ -27,7 +27,7 @@ resource "aws_pipes_pipe" "routing_config_table_events" {
     input_template = "{\"dynamodb\": <$.dynamodb>,\"eventID\": <$.eventID>,\"eventName\": <$.eventName>,\"eventSource\": <$.eventSource>,\"tableName\": \"${aws_dynamodb_table.routing_configuration.name}\"}"
 
     sqs_queue_parameters {
-      message_group_id         = "${local.db_entity_shortnames["routing_configuration"]}:<$.dynamodb.Keys.id.S>"
+      message_group_id         = "${local.db_entity_shortnames["routing_config"]}:<$.dynamodb.Keys.id.S>"
       message_deduplication_id = "$.eventID"
     }
   }
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "pipes_routing_config_trust_policy" {
 
 resource "aws_iam_role_policy" "pipe_routing_config_table_events" {
   name   = "${local.csi}-pipe-routing-config-table-events"
-  role   = aws_iam_role.pipes_execution_role.id
+  role   = aws_iam_role.pipe_routing_config_table_events.id
   policy = data.aws_iam_policy_document.pipe_routing_config_table_events.json
 }
 
