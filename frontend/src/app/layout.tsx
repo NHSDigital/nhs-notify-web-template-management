@@ -57,6 +57,22 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
+        <link
+          rel='preload'
+          as='font'
+          href='https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2'
+          type='font/woff2'
+          crossOrigin='anonymous'
+        />
+
+        <link
+          rel='preload'
+          as='font'
+          href='https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2'
+          type='font/woff2'
+          crossOrigin='anonymous'
+        />
+
         <script
           src={`${getBasePath()}/lib/nhsuk-frontend-10.0.0.min.js`}
           defer
