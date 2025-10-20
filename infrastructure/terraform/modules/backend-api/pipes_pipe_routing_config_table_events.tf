@@ -42,6 +42,25 @@ resource "aws_pipes_pipe" "routing_config_table_events" {
   }
 }
 
+resource "aws_iam_role" "pipe_routing_config_table_events" {
+  name               = "${local.csi}-pipe-routing-config-table-events"
+  description        = "IAM Role for Pipe to forward routing config table stream events to SQS"
+  assume_role_policy = data.aws_iam_policy_document.pipes_trust_policy.json
+}
+
+data "aws_iam_policy_document" "pipes_trust_policy" {
+  statement {
+    sid     = "PipesAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["pipes.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role_policy" "pipe_routing_config_table_events" {
   name   = "${local.csi}-pipe-routing-config-table-events"
   role   = aws_iam_role.pipes_execution_role.id

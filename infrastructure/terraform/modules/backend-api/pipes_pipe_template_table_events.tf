@@ -42,9 +42,28 @@ resource "aws_pipes_pipe" "template_table_events" {
   }
 }
 
+resource "aws_iam_role" "pipe_template_table_events" {
+  name               = "${local.csi}-pipe-template-table-events"
+  description        = "IAM Role for Pipe to forward template table stream events to SQS"
+  assume_role_policy = data.aws_iam_policy_document.pipes_trust_policy.json
+}
+
+data "aws_iam_policy_document" "pipes_trust_policy" {
+  statement {
+    sid     = "PipesAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["pipes.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role_policy" "pipe_template_table_events" {
   name   = "${local.csi}-pipe-template-table-events"
-  role   = aws_iam_role.pipes_execution_role.id
+  role   = aws_iam_role.pipe_template_table_events.id
   policy = data.aws_iam_policy_document.pipe_template_table_events.json
 }
 
