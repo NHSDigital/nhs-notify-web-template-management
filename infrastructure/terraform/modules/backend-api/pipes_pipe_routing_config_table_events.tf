@@ -45,10 +45,10 @@ resource "aws_pipes_pipe" "routing_config_table_events" {
 resource "aws_iam_role" "pipe_routing_config_table_events" {
   name               = "${local.csi}-pipe-routing-config-table-events"
   description        = "IAM Role for Pipe to forward routing config table stream events to SQS"
-  assume_role_policy = data.aws_iam_policy_document.pipes_trust_policy.json
+  assume_role_policy = data.aws_iam_policy_document.pipes_routing_config_trust_policy.json
 }
 
-data "aws_iam_policy_document" "pipes_trust_policy" {
+data "aws_iam_policy_document" "pipes_routing_config_trust_policy" {
   statement {
     sid     = "PipesAssumeRole"
     effect  = "Allow"

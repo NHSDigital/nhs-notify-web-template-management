@@ -45,10 +45,10 @@ resource "aws_pipes_pipe" "template_table_events" {
 resource "aws_iam_role" "pipe_template_table_events" {
   name               = "${local.csi}-pipe-template-table-events"
   description        = "IAM Role for Pipe to forward template table stream events to SQS"
-  assume_role_policy = data.aws_iam_policy_document.pipes_trust_policy.json
+  assume_role_policy = data.aws_iam_policy_document.pipes_templates_trust_policy.json
 }
 
-data "aws_iam_policy_document" "pipes_trust_policy" {
+data "aws_iam_policy_document" "pipes_templates_trust_policy" {
   statement {
     sid     = "PipesAssumeRole"
     effect  = "Allow"
