@@ -45,9 +45,7 @@ test.describe('Event publishing - Routing Config', () => {
 
     expect(submittedResponse.status()).toBe(200);
 
-    // Note: not ideal - but we are expecting 0 events and there can be a delay
-    // in events arriving. We should wait for a moment
-    // 5 seconds seems to largest delay when testing locally
+    // 5s is longest observed delivery delay
     await setTimeout(5000);
 
     // This would throw if a routing config event was present,
