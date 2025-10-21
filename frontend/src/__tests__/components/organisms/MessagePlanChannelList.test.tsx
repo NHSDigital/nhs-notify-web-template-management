@@ -106,7 +106,6 @@ describe('MessagePlanChannelList', () => {
         <MessagePlanChannelList
           messagePlan={messagePlan}
           templates={testTemplates}
-          routingConfigId={messagePlan.id}
         />
       );
     }).not.toThrow();

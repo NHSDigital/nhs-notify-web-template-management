@@ -3,7 +3,10 @@ import ChooseTemplatesPage, {
   generateMetadata,
 } from '@app/message-plans/choose-templates/[routingConfigId]/page';
 import { CreateEditMessagePlan } from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan';
-import { getRoutingConfig, getMessagePlanTemplates } from '@utils/message-plans';
+import {
+  getRoutingConfig,
+  getMessagePlanTemplates,
+} from '@utils/message-plans';
 import type {
   RoutingConfig,
   RoutingConfigStatus,
