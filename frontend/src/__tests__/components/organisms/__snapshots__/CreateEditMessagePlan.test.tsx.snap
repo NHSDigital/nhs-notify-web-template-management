@@ -686,19 +686,32 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     </a>
                   </li>
                   <li>
-                    <button
-                      class="channel-template-link--remove nhsuk-link"
-                      data-testid="remove-template-link-NHSAPP"
-                      type="button"
-                    >
-                      Remove
-                      <span
-                        class="nhsuk-u-visually-hidden"
+                    <form>
+                      <input
+                        name="channel"
+                        type="hidden"
+                        value="NHSAPP"
+                      />
+                      <input
+                        name="routingConfigId"
+                        type="hidden"
+                        value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <button
+                        class="channel-template-link--remove nhsuk-link"
+                        data-testid="remove-template-link-NHSAPP"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                        type="submit"
                       >
-                        NHS App
-                      </span>
-                       template
-                    </button>
+                        Remove
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          NHS App
+                        </span>
+                         template
+                      </button>
+                    </form>
                   </li>
                 </ul>
               </div>
@@ -844,19 +857,32 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     </a>
                   </li>
                   <li>
-                    <button
-                      class="channel-template-link--remove nhsuk-link"
-                      data-testid="remove-template-link-EMAIL"
-                      type="button"
-                    >
-                      Remove
-                      <span
-                        class="nhsuk-u-visually-hidden"
+                    <form>
+                      <input
+                        name="channel"
+                        type="hidden"
+                        value="EMAIL"
+                      />
+                      <input
+                        name="routingConfigId"
+                        type="hidden"
+                        value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <button
+                        class="channel-template-link--remove nhsuk-link"
+                        data-testid="remove-template-link-EMAIL"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                        type="submit"
                       >
-                        Email
-                      </span>
-                       template
-                    </button>
+                        Remove
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          Email
+                        </span>
+                         template
+                      </button>
+                    </form>
                   </li>
                 </ul>
               </div>
@@ -1002,19 +1028,32 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     </a>
                   </li>
                   <li>
-                    <button
-                      class="channel-template-link--remove nhsuk-link"
-                      data-testid="remove-template-link-LETTER"
-                      type="button"
-                    >
-                      Remove
-                      <span
-                        class="nhsuk-u-visually-hidden"
+                    <form>
+                      <input
+                        name="channel"
+                        type="hidden"
+                        value="LETTER"
+                      />
+                      <input
+                        name="routingConfigId"
+                        type="hidden"
+                        value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <button
+                        class="channel-template-link--remove nhsuk-link"
+                        data-testid="remove-template-link-LETTER"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                        type="submit"
                       >
-                        Letter
-                      </span>
-                       template
-                    </button>
+                        Remove
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          Letter
+                        </span>
+                         template
+                      </button>
+                    </form>
                   </li>
                 </ul>
               </div>

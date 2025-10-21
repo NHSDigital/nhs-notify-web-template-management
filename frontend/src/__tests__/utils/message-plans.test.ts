@@ -27,19 +27,7 @@ import {
 import { randomUUID } from 'node:crypto';
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client', () => {
-  const actual = jest.requireActual('nhs-notify-backend-client');
-  return {
-    routingConfigurationApiClient: {
-      get: jest.fn(),
-      list: jest.fn(),
-      create: jest.fn(),
-      count: jest.fn(),
-      update: jest.fn(),
-    },
-    $RoutingConfig: actual.$RoutingConfig,
-  };
-});
+jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: {
     error: jest.fn(),
@@ -320,9 +308,7 @@ describe('Message plans actions', () => {
       expect(loggerMock.error).toHaveBeenCalledWith(
         'Failed to get routing configuration',
         expect.objectContaining({
-          error: expect.objectContaining({
-            errorMeta: expect.objectContaining({ code: 404 }),
-          }),
+          errorMeta: expect.objectContaining({ code: 404 }),
         })
       );
     });
@@ -424,9 +410,7 @@ describe('Message plans actions', () => {
       expect(loggerMock.error).toHaveBeenCalledWith(
         'Failed to get routing configuration',
         expect.objectContaining({
-          error: expect.objectContaining({
-            errorMeta: expect.objectContaining({ code: 400 }),
-          }),
+          errorMeta: expect.objectContaining({ code: 400 }),
         })
       );
     });

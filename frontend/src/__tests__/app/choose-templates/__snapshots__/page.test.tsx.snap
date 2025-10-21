@@ -124,9 +124,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     </a>
                   </li>
                   <li>
-                    <form
-                      action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-                    >
+                    <form>
                       <input
                         name="channel"
                         type="hidden"
@@ -140,6 +138,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       <button
                         class="channel-template-link--remove nhsuk-link"
                         data-testid="remove-template-link-NHSAPP"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
                         type="submit"
                       >
                         Remove
@@ -298,9 +297,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     </a>
                   </li>
                   <li>
-                    <form
-                      action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-                    >
+                    <form>
                       <input
                         name="channel"
                         type="hidden"
@@ -314,6 +311,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       <button
                         class="channel-template-link--remove nhsuk-link"
                         data-testid="remove-template-link-SMS"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
                         type="submit"
                       >
                         Remove
@@ -610,9 +608,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     </a>
                   </li>
                   <li>
-                    <form
-                      action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-                    >
+                    <form>
                       <input
                         name="channel"
                         type="hidden"
@@ -626,6 +622,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       <button
                         class="channel-template-link--remove nhsuk-link"
                         data-testid="remove-template-link-LETTER"
+                        formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
                         type="submit"
                       >
                         Remove

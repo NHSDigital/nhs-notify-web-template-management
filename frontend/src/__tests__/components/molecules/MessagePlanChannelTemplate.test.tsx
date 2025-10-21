@@ -96,7 +96,7 @@ describe('MessagePlanChannelTemplate', () => {
       );
     });
 
-    it('should display the "Remove template" button inside a form with hidden inputs and remove action', () => {
+    it('should display the "Remove template" button inside a form with hidden inputs', () => {
       const removeButton = screen.getByRole('button', {
         name: 'Remove Text message (SMS) template',
       });
@@ -104,7 +104,6 @@ describe('MessagePlanChannelTemplate', () => {
 
       expect(removeButton).toBeInTheDocument();
       expect(form).toBeInTheDocument();
-      expect(form).toHaveAttribute('action');
 
       const channelInput = form?.querySelector('input[name="channel"]');
       const routingConfigIdInput = form?.querySelector(
