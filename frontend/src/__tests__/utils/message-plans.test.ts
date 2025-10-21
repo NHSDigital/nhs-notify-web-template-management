@@ -8,7 +8,7 @@ import {
   createRoutingConfig,
 } from '@utils/message-plans';
 import { getSessionServer } from '@utils/amplify-utils';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from '@utils/form-actions';
 import type {
@@ -455,12 +455,11 @@ describe('Message plans actions', () => {
   });
 
   describe('getTemplatesById', () => {
-    it('should return a map of successful template fetches and ignore undefined/rejected', async () => {
+    it('should return a map of successful template fetches and ignore undefined', async () => {
       getTemplateMock.mockImplementation(async (id: string) => {
         if (id === 'template-1') return { ...EMAIL_TEMPLATE, id: 'template-1' };
         if (id === 'template-3') return { ...SMS_TEMPLATE, id: 'template-3' };
         if (id === 'template-2') return undefined;
-        if (id === 'error-template') throw new Error('error');
         return undefined;
       });
 
@@ -468,10 +467,9 @@ describe('Message plans actions', () => {
         'template-1',
         'template-2',
         'template-3',
-        'error-template',
       ]);
 
-      expect(getTemplateMock).toHaveBeenCalledTimes(4);
+      expect(getTemplateMock).toHaveBeenCalledTimes(3);
       expect(result).toEqual({
         'template-1': expect.objectContaining({
           id: 'template-1',
@@ -482,6 +480,26 @@ describe('Message plans actions', () => {
           name: SMS_TEMPLATE.name,
         }),
       });
+    });
+
+    it('should throw an error with the template id when a fetch fails', async () => {
+      getTemplateMock.mockImplementation(async (id: string) => {
+        if (id === 'template-1') return { ...EMAIL_TEMPLATE, id: 'template-1' };
+        if (id === 'template-3') return { ...SMS_TEMPLATE, id: 'template-3' };
+        if (id === 'template-2') return undefined;
+        if (id === 'error-template') throw new Error('error');
+        return undefined;
+      });
+
+      await expect(
+        getTemplatesByIds([
+          'template-1',
+          'template-2',
+          'template-3',
+          'error-template',
+        ])
+      ).rejects.toThrow('Failed to get template for id error-template');
+      expect(getTemplateMock).toHaveBeenCalledTimes(4);
     });
   });
 

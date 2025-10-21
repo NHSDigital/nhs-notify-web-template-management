@@ -3,7 +3,6 @@
 import {
   RoutingConfig,
   $RoutingConfig,
-  routingConfigurationApiClient,
   TemplateDto,
   RoutingConfigStatusActive,
 } from 'nhs-notify-backend-client';
@@ -12,6 +11,7 @@ import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
 import { sortAscByUpdatedAt } from './sort';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 
 export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { accessToken } = await getSessionServer();
@@ -55,9 +55,7 @@ export async function countRoutingConfigs(
   );
 
   if (error) {
-    logger.error(`Failed to count routing configuration for ${status}`, {
-      error,
-    });
+    logger.error(`Failed to count routing configuration for ${status}`, error);
     return 0;
   }
 
@@ -79,9 +77,7 @@ export async function getRoutingConfig(
   );
 
   if (error) {
-    logger.error('Failed to get routing configuration', {
-      error: error,
-    });
+    logger.error('Failed to get routing configuration', error);
   }
 
   if (!data) return undefined;
@@ -89,9 +85,7 @@ export async function getRoutingConfig(
   const result = $RoutingConfig.safeParse(data);
 
   if (!result.success) {
-    logger.error('Invalid routing configuration object', {
-      error: result.error,
-    });
+    logger.error('Invalid routing configuration object', result.error);
     return undefined;
   }
 
@@ -116,7 +110,7 @@ export async function createRoutingConfig(
   );
 
   if (error) {
-    logger.error('Failed to create message plan', { error });
+    logger.error('Failed to create message plan', error);
     throw new Error('Failed to create message plan');
   }
 
@@ -140,9 +134,7 @@ export async function updateRoutingConfig(
   );
 
   if (error) {
-    logger.error('Failed to get routing configuration', {
-      error: error,
-    });
+    logger.error('Failed to get routing configuration', error);
     return;
   }
 
@@ -151,9 +143,7 @@ export async function updateRoutingConfig(
   const result = $RoutingConfig.safeParse(data);
 
   if (!result.success) {
-    logger.error('Invalid routing configuration object', {
-      error: result.error,
-    });
+    logger.error('Invalid routing configuration object', result.error);
     return undefined;
   }
 
@@ -172,11 +162,17 @@ export async function getMessagePlanTemplates(
   return getTemplatesByIds([...templateIds]);
 }
 
-export async function getTemplatesByIds(templateIds: string[]) {
+export async function getTemplatesByIds(
+  templateIds: string[]
+): Promise<MessagePlanTemplates> {
   const results = await Promise.allSettled(
     templateIds.map(async (templateId) => {
-      const template = await getTemplate(templateId);
-      return { id: templateId, template };
+      try {
+        const template = await getTemplate(templateId);
+        return { id: templateId, template };
+      } catch (error) {
+        throw { id: templateId, error };
+      }
     })
   );
 
@@ -187,7 +183,8 @@ export async function getTemplatesByIds(templateIds: string[]) {
       const { id, template } = result.value;
       if (template) templates[id] = template;
     } else {
-      // TODO: Error handling
+      const { id, error } = result.reason;
+      throw new Error(`Failed to get template for id ${id}: ${error}`);
     }
   }
 
