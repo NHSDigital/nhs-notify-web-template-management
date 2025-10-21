@@ -24,10 +24,19 @@ resource "aws_pipes_pipe" "template_table_events" {
   }
 
   target_parameters {
-    input_template = "{\"dynamodb\": <$.dynamodb>,\"eventID\": <$.eventID>,\"eventName\": <$.eventName>,\"eventSource\": <$.eventSource>,\"tableName\": \"${aws_dynamodb_table.templates.name}\"}"
+    input_template = <<-EOF
+      {
+        "dynamodb": <$.dynamodb>,
+        "eventID": <$.eventID>,
+        "eventName": <$.eventName>,
+        "eventSource": <$.eventSource>,
+        "tableName": "${aws_dynamodb_table.templates.name}",
+        "prefixedGroupId": "${local.db_entity_shortnames["template"]}:<$.dynamodb.Keys.id.S>"
+      }
+    EOF
 
     sqs_queue_parameters {
-      message_group_id         = "${local.db_entity_shortnames["template"]}:<$.dynamodb.Keys.id.S>"
+      message_group_id         = "$.prefixedGroupId"
       message_deduplication_id = "$.eventID"
     }
   }
