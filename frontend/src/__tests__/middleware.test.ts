@@ -41,8 +41,8 @@ describe('middleware function', () => {
 
     expect(response.status).toBe(404);
     expect(getLinkHeaders(response)).toEqual([
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
     ]);
   });
 
@@ -102,8 +102,8 @@ describe('middleware function', () => {
     ]);
 
     expect(getLinkHeaders(response)).toEqual([
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
     ]);
   });
 
@@ -151,8 +151,8 @@ describe('middleware function', () => {
     ]);
 
     expect(getLinkHeaders(response)).toEqual([
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
     ]);
   });
 
@@ -183,8 +183,8 @@ describe('middleware function', () => {
     ]);
 
     expect(getLinkHeaders(response)).toEqual([
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
-      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous',
     ]);
   });
 

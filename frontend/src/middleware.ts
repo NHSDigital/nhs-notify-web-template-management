@@ -81,11 +81,11 @@ function getContentSecurityPolicy(nonce: string) {
 function preloadFonts(res: NextResponse) {
   res.headers.append(
     'Link',
-    '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous'
+    '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous'
   );
   res.headers.append(
     'Link',
-    '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous'
+    '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous'
   );
 }
 
