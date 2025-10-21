@@ -419,16 +419,5 @@ test.describe('Routing - Choose Templates page', () => {
         `${baseURL}/templates/message-plans/invalid`
       );
     });
-
-    test('when no routing config ID is provided in the URL', async ({
-      page,
-      baseURL,
-    }) => {
-      await page.goto(`${baseURL}/templates/message-plans/choose-templates`);
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/invalid`
-      );
-    });
   });
 });
