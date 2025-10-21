@@ -6,8 +6,6 @@ import { $Channel } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
 
 export async function removeTemplateFromMessagePlan(formData: FormData) {
-  console.log('remove template from message plan');
-
   const parseResult = z
     .object({
       routingConfigId: z.uuidv4(),
@@ -29,14 +27,11 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   if (!routingConfig)
     throw new Error(`Routing configuration ${routingConfigId} not found`);
 
-  const updatedCascade = routingConfig.cascade.map((cascadeItem) => {
-    if (cascadeItem.channel === channel) {
-      console.log('template ID to remove', cascadeItem.defaultTemplateId);
-      return { ...cascadeItem, defaultTemplateId: null };
-    } else {
-      return cascadeItem;
-    }
-  });
+  const updatedCascade = routingConfig.cascade.map((cascadeItem) =>
+    cascadeItem.channel === channel
+      ? { ...cascadeItem, defaultTemplateId: null }
+      : cascadeItem
+  );
 
   const updatedConfig = { ...routingConfig, cascade: updatedCascade };
 
