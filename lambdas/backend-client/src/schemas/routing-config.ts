@@ -57,7 +57,7 @@ const $CascadeGroup = schemaFor<CascadeGroup>()(
   ])
 );
 
-const $Channel = schemaFor<Channel>()(z.enum(CHANNEL_LIST));
+export const $Channel = schemaFor<Channel>()(z.enum(CHANNEL_LIST));
 
 const $ChannelType = schemaFor<ChannelType>()(z.enum(CHANNEL_TYPE_LIST));
 
