@@ -17,6 +17,10 @@ function getCsp(response: Response) {
   return csp?.split(';').map((s) => s.trim());
 }
 
+function getLinkHeaders(response: Response) {
+  return response.headers.get('Link')?.split(', ');
+}
+
 const OLD_ENV = { ...process.env };
 afterAll(() => {
   process.env = OLD_ENV;
@@ -36,6 +40,10 @@ describe('middleware function', () => {
     const response = await middleware(request);
 
     expect(response.status).toBe(404);
+    expect(getLinkHeaders(response)).toEqual([
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+    ]);
   });
 
   it('if request path is protected, and no access/id token is obtained, redirect to auth page', async () => {
@@ -61,7 +69,7 @@ describe('middleware function', () => {
     expect(response.cookies.get('csrf_token')?.value).toEqual('');
   });
 
-  it('if request path is protected, tokens exist AND token has client-id, respond with CSP', async () => {
+  it('if request path is protected, tokens exist AND token has client-id, respond with CSP and links to preload fonts', async () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'access-token',
       clientId: 'client1',
@@ -92,6 +100,11 @@ describe('middleware function', () => {
       'upgrade-insecure-requests',
       '',
     ]);
+
+    expect(getLinkHeaders(response)).toEqual([
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
+    ]);
   });
 
   it('if request path is protected, tokens exist BUT token missing client-id, redirect to request-to-be-added page', async () => {
@@ -113,7 +126,7 @@ describe('middleware function', () => {
     );
   });
 
-  it('if request path is not protected, respond with CSP', async () => {
+  it('if request path is not protected, respond with CSP and links to preload fonts', async () => {
     const url = new URL('https://url.com/create-and-submit-templates');
     const request = new NextRequest(url);
     const response = await middleware(request);
@@ -135,6 +148,11 @@ describe('middleware function', () => {
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       'upgrade-insecure-requests',
       '',
+    ]);
+
+    expect(getLinkHeaders(response)).toEqual([
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
     ]);
   });
 
@@ -162,6 +180,11 @@ describe('middleware function', () => {
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       'upgrade-insecure-requests',
       '',
+    ]);
+
+    expect(getLinkHeaders(response)).toEqual([
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; crossorigin=anonymous',
+      '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; crossorigin=anonymous',
     ]);
   });
 
