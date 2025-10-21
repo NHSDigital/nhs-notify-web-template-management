@@ -38,7 +38,7 @@ export function MessagePlanChannelList({
               routingConfigId={messagePlan.id}
             />
             {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
-            {/* TODO: Update this logic for letter formats */}
+            {/* TODO: CCM-11494 Update this logic for letter formats */}
             {messagePlan.cascade.length > 1 &&
               index < messagePlan.cascade.length - 1 && (
                 <MessagePlanFallbackConditions
