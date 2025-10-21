@@ -96,12 +96,24 @@ describe('MessagePlanChannelTemplate', () => {
       );
     });
 
-    it('should display the "Remove template" button with accessible name and href', () => {
-      const removeTemplateLink = screen.getByRole('button', {
+    it('should display the "Remove template" button inside a form with hidden inputs and remove action', () => {
+      const removeButton = screen.getByRole('button', {
         name: 'Remove Text message (SMS) template',
       });
+      const form = removeButton.closest('form');
 
-      expect(removeTemplateLink).toBeInTheDocument();
+      expect(removeButton).toBeInTheDocument();
+      expect(form).toBeInTheDocument();
+      expect(form).toHaveAttribute('action');
+
+      const channelInput = form?.querySelector('input[name="channel"]');
+      const routingConfigIdInput = form?.querySelector(
+        'input[name="routingConfigId"]'
+      );
+      expect(channelInput).toHaveAttribute('type', 'hidden');
+      expect(channelInput).toHaveAttribute('value', 'SMS');
+      expect(routingConfigIdInput).toHaveAttribute('type', 'hidden');
+      expect(routingConfigIdInput).toHaveAttribute('value', routingConfigId);
     });
 
     it('should not display the "Choose template" link', () => {

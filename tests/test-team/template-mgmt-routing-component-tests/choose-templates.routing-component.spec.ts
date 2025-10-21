@@ -369,13 +369,12 @@ test.describe('Routing - Choose Templates page', () => {
 
     await chooseTemplatesPage.nhsApp.clickRemoveTemplateLink();
 
-    // TODO: Implement remove
-
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-templates/${validRoutingConfigId}`
     );
 
     await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
+    await expect(chooseTemplatesPage.nhsApp.removeTemplateLink).toBeHidden();
     await expect(chooseTemplatesPage.nhsApp.chooseTemplateLink).toBeVisible();
   });
 

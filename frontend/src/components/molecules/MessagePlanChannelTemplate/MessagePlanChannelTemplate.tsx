@@ -6,6 +6,7 @@ import {
   messagePlanChooseTemplateUrl,
 } from 'nhs-notify-web-template-management-utils';
 import classNames from 'classnames';
+import { removeTemplateFromMessagePlan } from '@app/message-plans/choose-templates/[routingConfigId]/actions';
 
 import styles from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate.module.scss';
 
@@ -57,7 +58,7 @@ export function MessagePlanChannelTemplate({
             </li>
           )}
 
-          {template && template.id && (
+          {template && (
             <>
               <li>
                 <Link
@@ -73,20 +74,29 @@ export function MessagePlanChannelTemplate({
                 </Link>
               </li>
               <li>
-                <button
-                  data-testid={`remove-template-link-${channel}`}
-                  className={classNames(
-                    styles['channel-template-link--remove'],
-                    'nhsuk-link'
-                  )}
-                  type='button'
-                >
-                  {content.templateLinks.remove}
-                  <span className='nhsuk-u-visually-hidden'>
-                    {channelDisplayText}
-                  </span>{' '}
-                  {content.templateLinks.template}
-                </button>
+                <form>
+                  <input type='hidden' name='channel' value={channel} />
+                  <input
+                    type='hidden'
+                    name='routingConfigId'
+                    value={routingConfigId}
+                  />
+                  <button
+                    data-testid={`remove-template-link-${channel}`}
+                    className={classNames(
+                      styles['channel-template-link--remove'],
+                      'nhsuk-link'
+                    )}
+                    formAction={removeTemplateFromMessagePlan}
+                    type='submit'
+                  >
+                    {content.templateLinks.remove}
+                    <span className='nhsuk-u-visually-hidden'>
+                      {channelDisplayText}
+                    </span>{' '}
+                    {content.templateLinks.template}
+                  </button>
+                </form>
               </li>
             </>
           )}
