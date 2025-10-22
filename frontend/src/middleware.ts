@@ -78,17 +78,6 @@ function getContentSecurityPolicy(nonce: string) {
     .concat(';');
 }
 
-function preloadFonts(res: NextResponse) {
-  res.headers.append(
-    'Link',
-    '<https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous'
-  );
-  res.headers.append(
-    'Link',
-    '<https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin=anonymous'
-  );
-}
-
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -108,17 +97,11 @@ export async function middleware(request: NextRequest) {
 
     publicPathResponse.headers.set('Content-Security-Policy', csp);
 
-    preloadFonts(publicPathResponse);
-
     return publicPathResponse;
   }
 
   if (!protectedPaths.some((p) => p.test(pathname))) {
-    const notFound = new NextResponse('Page not found', { status: 404 });
-
-    preloadFonts(notFound);
-
-    return notFound;
+    return new NextResponse('Page not found', { status: 404 });
   }
 
   const { accessToken, idToken } = await getSessionServer({
@@ -161,8 +144,6 @@ export async function middleware(request: NextRequest) {
   });
 
   response.headers.set('Content-Security-Policy', csp);
-
-  preloadFonts(response);
 
   return response;
 }
