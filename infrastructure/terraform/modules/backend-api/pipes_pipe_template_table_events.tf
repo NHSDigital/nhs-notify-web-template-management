@@ -35,7 +35,7 @@ resource "aws_pipes_pipe" "template_table_events" {
     EOF
 
     sqs_queue_parameters {
-      message_group_id         = "<$.dynamodb.Keys.id.S>"
+      message_group_id         = "$.dynamodb.Keys.id.S"
       message_deduplication_id = "$.eventID"
     }
   }
