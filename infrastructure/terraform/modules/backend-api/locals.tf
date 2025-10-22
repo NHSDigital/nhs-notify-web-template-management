@@ -57,9 +57,4 @@ locals {
   ][0], "")
 
   sftp_environment = "${var.group}-${var.environment}-${var.component}"
-
-  db_entity_shortnames = {
-    "routing_config" = "rc"
-    "template"       = "tm"
-  }
 }

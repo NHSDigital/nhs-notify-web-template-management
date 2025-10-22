@@ -30,13 +30,12 @@ resource "aws_pipes_pipe" "template_table_events" {
         "eventID": <$.eventID>,
         "eventName": <$.eventName>,
         "eventSource": <$.eventSource>,
-        "tableName": "${aws_dynamodb_table.templates.name}",
-        "prefixedGroupId": "${local.db_entity_shortnames["template"]}:<$.dynamodb.Keys.id.S>"
+        "tableName": "${aws_dynamodb_table.templates.name}"
       }
     EOF
 
     sqs_queue_parameters {
-      message_group_id         = "$.prefixedGroupId"
+      message_group_id         = "<$.dynamodb.Keys.id.S>"
       message_deduplication_id = "$.eventID"
     }
   }

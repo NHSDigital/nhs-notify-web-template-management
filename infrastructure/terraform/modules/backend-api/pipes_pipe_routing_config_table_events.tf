@@ -30,13 +30,12 @@ resource "aws_pipes_pipe" "routing_config_table_events" {
         "eventID": <$.eventID>,
         "eventName": <$.eventName>,
         "eventSource": <$.eventSource>,
-        "tableName": "${aws_dynamodb_table.routing_configuration.name}",
-        "prefixedGroupId": "${local.db_entity_shortnames["routing_config"]}:<$.dynamodb.Keys.id.S>"
+        "tableName": "${aws_dynamodb_table.routing_configuration.name}"
       }
     EOF
 
     sqs_queue_parameters {
-      message_group_id         = "$.prefixedGroupId"
+      message_group_id         = "<$.dynamodb.Keys.id.S>"
       message_deduplication_id = "$.eventID"
     }
   }
