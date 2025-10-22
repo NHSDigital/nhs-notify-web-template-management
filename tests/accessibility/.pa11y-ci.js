@@ -118,7 +118,7 @@ const emailTests = [
 
 const lettersTests = [
   withSignIn(uploadLetterTemplatePage(chooseTemplateUrl), email, password),
-  withSignIn(previewLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', PENDING_UPLOAD')), email, password),
+  withSignIn(previewLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PENDING_UPLOAD')), email, password),
   withSignIn(previewLetterTemplatePageWithError(previewLetterTemplateUrl('accessibility-test-client', 'VIRUS_SCAN_FAILED')), email, password),
   withSignIn(previewLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PENDING_VALIDATION')), email, password),
   withSignIn(previewLetterTemplatePageWithError(previewLetterTemplateUrl('accessibility-test-client', 'VALIDATION_FAILED')), email, password),
