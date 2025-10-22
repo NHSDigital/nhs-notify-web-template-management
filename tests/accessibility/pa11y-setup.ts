@@ -93,7 +93,11 @@ const generateDigitalTemplateData = (
   };
 };
 
-const setupTestUser = async (testUserClient: TestUserClient, clientId: string, clientName: string) => {
+const setupTestUser = async (
+  testUserClient: TestUserClient,
+  clientId: string,
+  clientName: string
+) => {
   const email = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
   const password = generate({
     length: 20,
@@ -115,83 +119,83 @@ const setupTestUser = async (testUserClient: TestUserClient, clientId: string, c
     email,
     password,
     userId,
+    clientId,
   };
-}
+};
 
-const getTestTemplates = (clientId: string) => ([
-    generateLetterTemplateData(
-      'pa11y-letter-pending-virus-check',
-      clientId,
-      'PENDING',
-      'PENDING_UPLOAD'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-failed-virus-check',
-      clientId,
-      'FAILED',
-      'VIRUS_SCAN_FAILED'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-pending-validation',
-      clientId,
-      'PASSED',
-      'PENDING_VALIDATION'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-failed-validation',
-      clientId,
-      'PASSED',
-      'VALIDATION_FAILED'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-passed-validation',
-      clientId,
-      'PASSED',
-      'PENDING_PROOF_REQUEST'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-proof-requested',
-      clientId,
-      'PASSED',
-      'WAITING_FOR_PROOF'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-proof-available',
-      clientId,
-      'PASSED',
-      'PROOF_AVAILABLE'
-    ),
-    generateLetterTemplateData(
-      'pa11y-letter-proof-submitted',
-      clientId,
-      'PASSED',
-      'SUBMITTED'
-    ),
-    generateDigitalTemplateData(
-      'pa11y-email-proof-submitted',
-      clientId,
-      'EMAIL',
-      'SUBMITTED'
-    ),
-    generateDigitalTemplateData(
-      'pa11y-sms-proof-submitted',
-      clientId,
-      'SMS',
-      'SUBMITTED'
-    ),
-    generateDigitalTemplateData(
-      'pa11y-nhsapp-proof-submitted',
-      clientId,
-      'NHS_APP',
-      'SUBMITTED'
-    ),
-  ]);
+const getTestTemplates = (clientId: string) => [
+  generateLetterTemplateData(
+    'pa11y-letter-pending-virus-check',
+    clientId,
+    'PENDING',
+    'PENDING_UPLOAD'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-failed-virus-check',
+    clientId,
+    'FAILED',
+    'VIRUS_SCAN_FAILED'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-pending-validation',
+    clientId,
+    'PASSED',
+    'PENDING_VALIDATION'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-failed-validation',
+    clientId,
+    'PASSED',
+    'VALIDATION_FAILED'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-passed-validation',
+    clientId,
+    'PASSED',
+    'PENDING_PROOF_REQUEST'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-proof-requested',
+    clientId,
+    'PASSED',
+    'WAITING_FOR_PROOF'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-proof-available',
+    clientId,
+    'PASSED',
+    'PROOF_AVAILABLE'
+  ),
+  generateLetterTemplateData(
+    'pa11y-letter-proof-submitted',
+    clientId,
+    'PASSED',
+    'SUBMITTED'
+  ),
+  generateDigitalTemplateData(
+    'pa11y-email-proof-submitted',
+    clientId,
+    'EMAIL',
+    'SUBMITTED'
+  ),
+  generateDigitalTemplateData(
+    'pa11y-sms-proof-submitted',
+    clientId,
+    'SMS',
+    'SUBMITTED'
+  ),
+  generateDigitalTemplateData(
+    'pa11y-nhsapp-proof-submitted',
+    clientId,
+    'NHS_APP',
+    'SUBMITTED'
+  ),
+];
 
 const setup = async () => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
     path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
   );
-
 
   const mainClientId = 'accessibility-test-client';
   const routingClientId = 'routing-accessibility-test-client';
@@ -204,39 +208,45 @@ const setup = async () => {
   const mainUser = await setupTestUser(
     testUserClient,
     mainClientId,
-    'NHS Accessibility',
+    'NHS Accessibility'
   );
 
   const routingUser = await setupTestUser(
     testUserClient,
     routingClientId,
-    'NHS Routing Accessibility',
+    'NHS Routing Accessibility'
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(
     new DynamoDBClient({ region: 'eu-west-2' })
   );
 
-  const templateIdsList = await Promise.all([mainClientId, routingClientId].map(async (clientId) => {
-    const templatesForClient = getTestTemplates(clientId);
+  const templateIdsList = await Promise.all(
+    [mainClientId, routingClientId].map(async (clientId) => {
+      const templatesForClient = getTestTemplates(clientId);
 
-    await Promise.all(
-      templatesForClient.map((template) =>
-        ddbDocClient.send(
-          new PutCommand({
-            TableName: backendConfig.templatesTableName,
-            Item: template,
-          })
+      await Promise.all(
+        templatesForClient.map((template) =>
+          ddbDocClient.send(
+            new PutCommand({
+              TableName: backendConfig.templatesTableName,
+              Item: template,
+            })
+          )
         )
-      )
-    );
+      );
 
-    return [
-      clientId, Object.fromEntries(
-        templatesForClient.map((template) => [template.templateStatus, template.id])
-      )
-    ];
-  }));
+      return [
+        clientId,
+        Object.fromEntries(
+          templatesForClient.map((template) => [
+            template.templateStatus,
+            template.id,
+          ])
+        ),
+      ];
+    })
+  );
 
   const templateIds = Object.fromEntries(templateIdsList);
 

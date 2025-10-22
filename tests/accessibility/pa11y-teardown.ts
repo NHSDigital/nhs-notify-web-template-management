@@ -19,14 +19,16 @@ const teardown = async () => {
     path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
   );
 
-  const templatesToDelete = Object.entries(templateIds).flatMap(([clientId, templateIdsForClientMap]) => {
-    const templateIdsForClient = Object.values(templateIdsForClientMap);
+  const templatesToDelete = Object.entries(templateIds).flatMap(
+    ([clientId, templateIdsForClientMap]) => {
+      const templateIdsForClient = Object.values(templateIdsForClientMap);
 
-    return templateIdsForClient.map(id => ({
-      clientId,
-      id,
-    }));
-  });
+      return templateIdsForClient.map((id) => ({
+        clientId,
+        id,
+      }));
+    }
+  );
 
   await Promise.all(
     templatesToDelete.map(({ clientId, id }) =>
@@ -42,10 +44,16 @@ const teardown = async () => {
     )
   );
 
-  await new TestUserClient(
+  const testUserClient = new TestUserClient(
     backendConfig.userPoolId,
     backendConfig.clientSsmPathPrefix
-  ).deleteTestUser(email, clientId);
+  );
+
+  await Promise.all(
+    Object.values(users).map(({ email, clientId }) =>
+      testUserClient.deleteTestUser(email, clientId)
+    )
+  );
 };
 
 teardown();
