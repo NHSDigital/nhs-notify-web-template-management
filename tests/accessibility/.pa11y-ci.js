@@ -1,8 +1,8 @@
 const { readFileSync } = require('node:fs');
 const { performCheck } = require('./helpers');
 const {
-  chooseATemplatePage,
-  chooseATemplatePageError,
+  chooseATemplateTypePage,
+  chooseATemplateTypePageError,
   copyTemplatePage,
   createEmailTemplateErrorPage,
   createEmailTemplatePage,
@@ -61,8 +61,8 @@ const allTemplates = [
 ];
 
 const chooseTemplateType = [
-  chooseATemplatePage(chooseTemplateTypeUrl),
-  chooseATemplatePageError(chooseTemplateTypeUrl),
+  chooseATemplateTypePage(chooseTemplateTypeUrl),
+  chooseATemplateTypePageError(chooseTemplateTypeUrl),
 ];
 
 const nhsApp = [
