@@ -19,12 +19,14 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
     await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${idParameter}`);
   }
 
-  static getIdFromUrl(
-    fullUrl: string,
-    pageSegment: string
-  ): string | undefined {
-    // eslint-disable-next-line security/detect-non-literal-regexp
-    const match = fullUrl.match(new RegExp(`${pageSegment}/([^#/?]+)`));
+  getIdFromUrl(): string | undefined {
+    const { pageUrlSegment } = this
+      .constructor as typeof TemplateMgmtBasePageDynamic;
+
+    const match = this.page
+      .url()
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      .match(new RegExp(`${pageUrlSegment}/([^#/?]+)`));
     const id = match ? match[1] : undefined;
     return id;
   }

@@ -266,10 +266,7 @@ test.describe('Routing - Choose Templates page', () => {
       /\/templates\/message-plans\/choose-templates\//
     );
 
-    const routingConfigId = TemplateMgmtBasePageDynamic.getIdFromUrl(
-      page.url(),
-      'choose-templates'
-    );
+    const routingConfigId = chooseTemplatesPage.getIdFromUrl();
 
     await test.step('app channel with no template has only choose link', async () => {
       await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
