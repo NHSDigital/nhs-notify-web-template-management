@@ -29,6 +29,7 @@ const {
   previewTextMessageTemplatePage,
   requestProofOfTemplatePage,
   signInPageActions,
+  withSignIn,
   submitEmailTemplatePage,
   submitLetterTemplatePage,
   submitNHSAppTemplatePage,
@@ -47,93 +48,105 @@ const {
   createMessagePlanPageError,
 } = require('./actions');
 
+const pa11yConfig = JSON.parse(
+  readFileSync('./pa11y-fixtures.json', 'utf8')
+);
+
+const { users: {
+  mainUser: {
+    email,
+    password,
+  },
+  routingUser: {
+    email: routingEnabledEmail,
+    password: routingEnabledPassword,
+  },
+  templateIds,
+}} = pa11yConfig;
+
 const baseUrl = 'http://localhost:3000/templates';
 const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 const messageTemplatesUrl = `${baseUrl}/message-templates`;
 
-const { templateIds } = JSON.parse(
-  readFileSync('./pa11y-fixtures.json', 'utf8')
-);
-
-function previewLetterTemplateUrl(status) {
-  return `${baseUrl}/preview-letter-template/${templateIds[status]}`;
+function previewLetterTemplateUrl(clientId, status) {
+  return `${baseUrl}/preview-letter-template/${templateIds[clientId][status]}`;
 }
 
-const allTemplates = [
-  messageTemplatesPage(messageTemplatesUrl),
-  copyTemplatePage(chooseTemplateUrl),
+const allTemplatesTests = [
+  withSignIn(messageTemplatesPage(messageTemplatesUrl)),
+  withSignIn(copyTemplatePage(chooseTemplateUrl)),
 ];
 
-const chooseTemplate = [
-  chooseATemplatePage(chooseTemplateUrl),
-  chooseATemplatePageError(chooseTemplateUrl),
+const chooseTemplateTests = [
+  withSignIn(chooseATemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(chooseATemplatePageError(chooseTemplateUrl), email, password),
 ];
 
-const nhsApp = [
-  createNHSAppTemplatePage(chooseTemplateUrl),
-  createNHSAppTemplateErrorPage(chooseTemplateUrl),
-  previewNHSAppTemplatePage(chooseTemplateUrl),
-  previewNHSAppTemplateErrorPage(chooseTemplateUrl),
-  viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl),
-  submitNHSAppTemplatePage(chooseTemplateUrl),
-  nhsAppTemplateSubmittedPage(chooseTemplateUrl),
-  previewSubmittedNHSAppTemplatePage(messageTemplatesUrl),
+const nhsAppTests = [
+  withSignIn(createNHSAppTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(createNHSAppTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(previewNHSAppTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(previewNHSAppTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl), email, password),
+  withSignIn(submitNHSAppTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(nhsAppTemplateSubmittedPage(chooseTemplateUrl), email, password),
+  withSignIn(previewSubmittedNHSAppTemplatePage(messageTemplatesUrl), email, password),
 ];
 
-const sms = [
-  createTextMessageTemplatePage(chooseTemplateUrl),
-  createTextMessageTemplateErrorPage(chooseTemplateUrl),
-  previewTextMessageTemplatePage(chooseTemplateUrl),
-  previewTextMessageTemplateErrorPage(chooseTemplateUrl),
-  viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl),
-  submitTextMessageTemplatePage(chooseTemplateUrl),
-  textMessageTemplateSubmittedPage(chooseTemplateUrl),
-  previewSubmittedTextMessageTemplatePage(messageTemplatesUrl),
+const smsTests = [
+  withSignIn(createTextMessageTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(createTextMessageTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(previewTextMessageTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(previewTextMessageTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl), email, password),
+  withSignIn(submitTextMessageTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(textMessageTemplateSubmittedPage(chooseTemplateUrl), email, password),
+  withSignIn(previewSubmittedTextMessageTemplatePage(messageTemplatesUrl), email, password),
 ];
 
-const email = [
-  createEmailTemplatePage(chooseTemplateUrl),
-  createEmailTemplateErrorPage(chooseTemplateUrl),
-  previewEmailTemplatePage(chooseTemplateUrl),
-  previewEmailTemplateErrorPage(chooseTemplateUrl),
-  viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl),
-  submitEmailTemplatePage(chooseTemplateUrl),
-  emailTemplateSubmittedPage(chooseTemplateUrl),
-  previewSubmittedEmailTemplatePage(messageTemplatesUrl),
+const emailTests = [
+  withSignIn(createEmailTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(createEmailTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(previewEmailTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(previewEmailTemplateErrorPage(chooseTemplateUrl), email, password),
+  withSignIn(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl), email, password),
+  withSignIn(submitEmailTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(emailTemplateSubmittedPage(chooseTemplateUrl), email, password),
+  withSignIn(previewSubmittedEmailTemplatePage(messageTemplatesUrl), email, password),
 ];
 
-const letters = [
-  uploadLetterTemplatePage(chooseTemplateUrl),
-  previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_UPLOAD')),
-  previewLetterTemplatePageWithError(previewLetterTemplateUrl('VIRUS_SCAN_FAILED')),
-  previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_VALIDATION')),
-  previewLetterTemplatePageWithError(previewLetterTemplateUrl('VALIDATION_FAILED')),
-  viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds.PENDING_PROOF_REQUEST),
-  requestProofOfTemplatePage(previewLetterTemplateUrl('PENDING_PROOF_REQUEST')),
-  waitingForProofsLetterTemplatePage(previewLetterTemplateUrl('WAITING_FOR_PROOF')),
-  viewAvailableProofsForLetterTemplatePage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
-  submitLetterTemplatePage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
-  letterTemplateSubmittedPage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
-  previewSubmittedLetterTemplatePage(messageTemplatesUrl),
+const lettersTests = [
+  withSignIn(uploadLetterTemplatePage(chooseTemplateUrl), email, password),
+  withSignIn(previewLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', PENDING_UPLOAD')), email, password),
+  withSignIn(previewLetterTemplatePageWithError(previewLetterTemplateUrl('accessibility-test-client', 'VIRUS_SCAN_FAILED')), email, password),
+  withSignIn(previewLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PENDING_VALIDATION')), email, password),
+  withSignIn(previewLetterTemplatePageWithError(previewLetterTemplateUrl('accessibility-test-client', 'VALIDATION_FAILED')), email, password),
+  withSignIn(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds['accessibility-test-client'].PENDING_PROOF_REQUEST), email, password),
+  withSignIn(requestProofOfTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PENDING_PROOF_REQUEST')), email, password),
+  withSignIn(waitingForProofsLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'WAITING_FOR_PROOF')), email, password),
+  withSignIn(viewAvailableProofsForLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PROOF_AVAILABLE')), email, password),
+  withSignIn(submitLetterTemplatePage(previewLetterTemplateUrl('accessibility-test-client', 'PROOF_AVAILABLE')), email, password),
+  withSignIn(letterTemplateSubmittedPage(previewLetterTemplateUrl('accessibility-test-client', 'PROOF_AVAILABLE')), email, password),
+  withSignIn(previewSubmittedLetterTemplatePage(messageTemplatesUrl), email, password),
 ];
 
-const landingPage = [{ url: startUrl, name: 'landing-page' }];
+const landingPageTests = [{ url: startUrl, name: 'landing-page' }];
 
-const errors = [
+const errorsTests = [
   {
     url: `${baseUrl}/invalid-template`,
-    actions: [...signInPageActions, 'wait for h1 to be visible'],
+    actions: [...signInPageActions(email, password), 'wait for h1 to be visible'],
     name: 'invalid-template',
   },
   {
     url: `${baseUrl}/upload-letter-template/client-id-and-campaign-id-required`,
-    actions: [...signInPageActions, 'wait for h1 to be visible'],
+    actions: [...signInPageActions(email, password), 'wait for h1 to be visible'],
     name: 'client-campaign-id-required',
   },
 ];
 
-const userEmails = [
+const userEmailsTests = [
   {
     url: `${baseUrl}/testing/template-submitted-email.html`,
     name: 'email-template',
@@ -144,25 +157,37 @@ const userEmails = [
   },
 ];
 
-const routing = [
-  messagePlansPage(`${baseUrl}/message-plans`),
-  chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`),
-  chooseMessageOrderPageError(`${baseUrl}/message-plans/choose-message-order`),
-  createMessagePlanPage(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
-  createMessagePlanPageError(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`),
+const routingTests = [
+  withSignIn(messagePlansPage(`${baseUrl}/message-plans`), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(chooseMessageOrderPage(`${baseUrl}/message-plans/choose-message-order`), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(chooseMessageOrderPageError(`${baseUrl}/message-plans/choose-message-order`), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(createMessagePlanPage(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(createMessagePlanPageError(`${baseUrl}/message-plans/create-message-plan?messageOrder=NHSAPP`), routingEnabledEmail, routingEnabledPassword),
+];
+
+const templatesPagesWithRoutingContentEnabledTests = [
+  withSignIn(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds['routing-accessibility-test-client'].PENDING_PROOF_REQUEST), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(submitLetterTemplatePage(previewLetterTemplateUrl('routingaccessibility-test-client', 'PROOF_AVAILABLE')), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(submitEmailTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(submitTextMessageTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(submitNHSAppTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
 ];
 
 const allJourneys = {
-  landingPage,
-  allTemplates,
-  chooseTemplate,
-  nhsApp,
-  sms,
-  email,
-  letters,
-  userEmails,
-  errors,
-  routing,
+  landingPageTests,
+  allTemplatesTests,
+  chooseTemplateTests,
+  nhsAppTests,
+  smsTests,
+  emailTests,
+  lettersTests,
+  userEmailsTests,
+  errorsTests,
+  routingTests,
+  templatesPagesWithRoutingContentEnabledTests,
 };
 
 const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]

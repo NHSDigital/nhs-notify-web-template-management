@@ -1,11 +1,12 @@
 import { readFileSync } from 'node:fs';
-import { TestUserClient } from './test-user-client';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
+import { TestUserClient } from './test-user-client';
+import type { FixtureData } from './types';
 
-const { email, templateIds, clientId } = JSON.parse(
+const { users, templateIds }: FixtureData = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
@@ -18,8 +19,17 @@ const teardown = async () => {
     path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
   );
 
+  const templatesToDelete = Object.entries(templateIds).flatMap(([clientId, templateIdsForClientMap]) => {
+    const templateIdsForClient = Object.values(templateIdsForClientMap);
+
+    return templateIdsForClient.map(id => ({
+      clientId,
+      id,
+    }));
+  });
+
   await Promise.all(
-    Object.values(templateIds).map((id) =>
+    templatesToDelete.map(({ clientId, id }) =>
       ddbDocClient.send(
         new DeleteCommand({
           TableName: backendConfig.templatesTableName,

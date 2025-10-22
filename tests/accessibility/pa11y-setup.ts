@@ -12,6 +12,7 @@ import {
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import { TestUserClient } from './test-user-client';
+import type { FixtureData } from './types';
 
 // pa11y can't interact with a file upload dialogue, so letters must be seeded
 const generateLetterTemplateData = (
@@ -92,13 +93,9 @@ const generateDigitalTemplateData = (
   };
 };
 
-const setup = async () => {
-  const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
-    path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
-  );
-
-  const testEmail = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
-  const testPassword = generate({
+const setupTestUser = async (testUserClient: TestUserClient, clientId: string, clientName: string) => {
+  const email = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
+  const password = generate({
     length: 20,
     lowercase: true,
     uppercase: true,
@@ -107,31 +104,21 @@ const setup = async () => {
     strict: true,
   });
 
-  const clientId = 'accessibility-test-client';
-
-  const clientName = 'NHS Accessibility';
-
-  const testUserClient = new TestUserClient(
-    backendConfig.userPoolId,
-    backendConfig.clientSsmPathPrefix
-  );
-
-  const givenName = 'Orval';
-  const familyName = 'Bergstrom';
-  const userName = ['Dr', givenName, familyName];
-
   const { userId } = await testUserClient.createTestUser(
-    testEmail,
-    testPassword,
+    email,
+    password,
     clientId,
     clientName
   );
 
-  const ddbDocClient = DynamoDBDocumentClient.from(
-    new DynamoDBClient({ region: 'eu-west-2' })
-  );
+  return {
+    email,
+    password,
+    userId,
+  };
+}
 
-  const templates = [
+const getTestTemplates = (clientId: string) => ([
     generateLetterTemplateData(
       'pa11y-letter-pending-virus-check',
       clientId,
@@ -198,31 +185,67 @@ const setup = async () => {
       'NHS_APP',
       'SUBMITTED'
     ),
-  ];
+  ]);
 
-  await Promise.all(
-    templates.map((template) =>
-      ddbDocClient.send(
-        new PutCommand({
-          TableName: backendConfig.templatesTableName,
-          Item: template,
-        })
+const setup = async () => {
+  const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
+    path.join(__dirname, '..', '..', 'sandbox_tf_outputs.json')
+  );
+
+
+  const mainClientId = 'accessibility-test-client';
+  const routingClientId = 'routing-accessibility-test-client';
+
+  const testUserClient = new TestUserClient(
+    backendConfig.userPoolId,
+    backendConfig.clientSsmPathPrefix
+  );
+
+  const mainUser = await setupTestUser(
+    testUserClient,
+    mainClientId,
+    'NHS Accessibility',
+  );
+
+  const routingUser = await setupTestUser(
+    testUserClient,
+    routingClientId,
+    'NHS Routing Accessibility',
+  );
+
+  const ddbDocClient = DynamoDBDocumentClient.from(
+    new DynamoDBClient({ region: 'eu-west-2' })
+  );
+
+  const templateIdsList = await Promise.all([mainClientId, routingClientId].map(async (clientId) => {
+    const templatesForClient = getTestTemplates(clientId);
+
+    await Promise.all(
+      templatesForClient.map((template) =>
+        ddbDocClient.send(
+          new PutCommand({
+            TableName: backendConfig.templatesTableName,
+            Item: template,
+          })
+        )
       )
-    )
-  );
+    );
 
-  const templateIds = Object.fromEntries(
-    templates.map((t) => [t.templateStatus, t.id])
-  );
+    return [
+      clientId, Object.fromEntries(
+        templatesForClient.map((template) => [template.templateStatus, template.id])
+      )
+    ];
+  }));
 
-  const fixtureData = {
-    email: testEmail,
-    password: testPassword,
+  const templateIds = Object.fromEntries(templateIdsList);
+
+  const fixtureData: FixtureData = {
+    users: {
+      mainUser,
+      routingUser,
+    },
     templateIds,
-    userId,
-    clientId,
-    clientName,
-    userName,
   };
 
   writeFileSync('./pa11y-fixtures.json', JSON.stringify(fixtureData, null, 2));
