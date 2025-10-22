@@ -29,7 +29,7 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { getIdFromUrl } from 'helpers/url-helper';
+import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -266,7 +266,10 @@ test.describe('Routing - Choose Templates page', () => {
       /\/templates\/message-plans\/choose-templates\//
     );
 
-    const routingConfigId = getIdFromUrl(page.url(), 'choose-templates');
+    const routingConfigId = TemplateMgmtBasePageDynamic.getIdFromUrl(
+      page.url(),
+      'choose-templates'
+    );
 
     await test.step('app channel with no template has only choose link', async () => {
       await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
