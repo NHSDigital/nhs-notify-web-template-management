@@ -1,6 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
 import {
-  isValidUuid,
   routingConfigurationApiClient as client,
   httpClient,
 } from '../routing-config-api-client';
@@ -271,11 +270,7 @@ describe('RoutingConfigurationApiClient', () => {
       const body = {
         id: notFoundRoutingConfigId,
         name: 'Test plan',
-        status: 'DRAFT' as RoutingConfigStatus,
-        clientId: 'client-1',
         campaignId: 'campaign-1',
-        createdAt: '2025-01-01T00:00:00.000Z',
-        updatedAt: '2025-01-02T00:00:00.000Z',
         cascade: [],
         cascadeGroupOverrides: [],
       };
@@ -301,11 +296,7 @@ describe('RoutingConfigurationApiClient', () => {
       const body = {
         id: invalidRoutingConfigId,
         name: 'Test plan',
-        status: 'DRAFT' as RoutingConfigStatus,
-        clientId: 'client-1',
         campaignId: 'campaign-1',
-        createdAt: '2025-01-01T00:00:00.000Z',
-        updatedAt: '2025-01-02T00:00:00.000Z',
         cascade: [],
         cascadeGroupOverrides: [],
       };
@@ -332,11 +323,7 @@ describe('RoutingConfigurationApiClient', () => {
       const body = {
         id: validRoutingConfigId,
         name: 'Updated Plan',
-        status: 'DRAFT' as RoutingConfigStatus,
-        clientId: 'client-1',
         campaignId: 'campaign-1',
-        createdAt: '2025-01-01T00:00:00.000Z',
-        updatedAt: '2025-01-02T00:00:00.000Z',
         cascade: [],
         cascadeGroupOverrides: [],
       };
@@ -356,19 +343,6 @@ describe('RoutingConfigurationApiClient', () => {
       expect(response.error).toBeUndefined();
       expect(response.data).toEqual(body);
       expect(axiosMock.history.put.length).toBe(1);
-    });
-  });
-
-  describe('isValidUuid', () => {
-    it('returns true for valid UUID v4', () => {
-      expect(isValidUuid('a3f1c2e4-5b6d-4e8f-9a2b-1c3d4e5f6a7b')).toBe(true);
-      expect(isValidUuid('b7e2d3c4-8f9a-4b1c-9d2e-3f4a5b6c7d8e')).toBe(true);
-    });
-
-    it('returns false for invalid UUIDs', () => {
-      expect(isValidUuid('not-a-uuid')).toBe(false);
-      expect(isValidUuid('123456')).toBe(false);
-      expect(isValidUuid('11111111-1111-1111-1111-111111111111')).toBe(false);
     });
   });
 });

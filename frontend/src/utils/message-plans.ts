@@ -5,6 +5,7 @@ import {
   $RoutingConfig,
   TemplateDto,
   RoutingConfigStatusActive,
+  CreateUpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
 import { getMessagePlanTemplateIds } from './get-message-plan-template-ids';
 import { getSessionServer } from './amplify-utils';
@@ -93,10 +94,7 @@ export async function getRoutingConfig(
 }
 
 export async function createRoutingConfig(
-  routingConfig: Pick<
-    RoutingConfig,
-    'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
-  >
+  routingConfig: CreateUpdateRoutingConfig
 ): Promise<RoutingConfig> {
   const { accessToken } = await getSessionServer();
 
@@ -119,7 +117,7 @@ export async function createRoutingConfig(
 
 export async function updateRoutingConfig(
   routingConfigId: string,
-  updatedRoutingConfig: RoutingConfig
+  updatedRoutingConfig: CreateUpdateRoutingConfig
 ): Promise<RoutingConfig | undefined> {
   const { accessToken } = await getSessionServer();
 

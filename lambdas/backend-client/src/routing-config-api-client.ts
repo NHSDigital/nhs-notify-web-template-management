@@ -9,26 +9,21 @@ import type {
   PostV1RoutingConfigurationData,
   GetV1RoutingConfigurationByRoutingConfigIdData,
   PutV1RoutingConfigurationByRoutingConfigIdData,
+  CreateUpdateRoutingConfig,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';
+import { z } from 'zod';
 
-export function isValidUuid(id: string): boolean {
-  return /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(
-    id
-  );
-}
+const uuidSchema = z.uuidv4();
 
 export const httpClient = createAxiosClient();
 
 export const routingConfigurationApiClient = {
   async create(
-    routingConfig: Pick<
-      RoutingConfig,
-      'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
-    >,
+    routingConfig: CreateUpdateRoutingConfig,
     token: string
   ): Promise<Result<RoutingConfig>> {
     const url =
@@ -79,7 +74,7 @@ export const routingConfigurationApiClient = {
     token: string,
     id: RoutingConfig['id']
   ): Promise<Result<RoutingConfig>> {
-    if (!isValidUuid(id)) {
+    if (!uuidSchema.safeParse(id).success) {
       return {
         error: {
           errorMeta: {
@@ -129,9 +124,9 @@ export const routingConfigurationApiClient = {
   async update(
     token: string,
     id: RoutingConfig['id'],
-    routingConfig: RoutingConfig
+    routingConfig: CreateUpdateRoutingConfig
   ): Promise<Result<RoutingConfig>> {
-    if (!isValidUuid(id)) {
+    if (!uuidSchema.safeParse(id).success) {
       return {
         error: {
           errorMeta: {
