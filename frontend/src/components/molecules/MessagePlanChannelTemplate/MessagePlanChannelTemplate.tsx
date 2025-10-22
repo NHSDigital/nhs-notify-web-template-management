@@ -32,7 +32,7 @@ export function MessagePlanChannelTemplate({
       <div className={styles['channel-template-inner']}>
         <h3 className='nhsuk-heading-s'>{channelDisplayText}</h3>
 
-        {template && template.id && (
+        {template && (
           <p
             className='nhsuk-u-margin-bottom-2'
             data-testid={`template-name-${channel}`}
