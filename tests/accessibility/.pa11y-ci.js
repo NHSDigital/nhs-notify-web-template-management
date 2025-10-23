@@ -52,17 +52,19 @@ const pa11yConfig = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
-const { users: {
-  mainUser: {
-    email,
-    password,
-  },
-  routingUser: {
-    email: routingEnabledEmail,
-    password: routingEnabledPassword,
+const {
+  users: {
+    mainUser: {
+      email,
+      password,
+    },
+    routingUser: {
+      email: routingEnabledEmail,
+      password: routingEnabledPassword,
+    },
   },
   templateIds,
-}} = pa11yConfig;
+} = pa11yConfig;
 
 const baseUrl = 'http://localhost:3000/templates';
 const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
