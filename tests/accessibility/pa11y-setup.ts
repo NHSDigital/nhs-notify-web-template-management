@@ -96,7 +96,11 @@ const generateDigitalTemplateData = (
 const setupTestUser = async (
   testUserClient: TestUserClient,
   clientId: string,
-  clientName: string
+  clientName: string,
+  features: {
+    proofing: boolean;
+    routing: boolean;
+  }
 ) => {
   const email = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
   const password = generate({
@@ -112,7 +116,8 @@ const setupTestUser = async (
     email,
     password,
     clientId,
-    clientName
+    clientName,
+    features,
   );
 
   return {
@@ -173,6 +178,24 @@ const getTestTemplates = (clientId: string) => [
     'SUBMITTED'
   ),
   generateDigitalTemplateData(
+    'pa11y-email-proof-not-yetsubmitted',
+    clientId,
+    'EMAIL',
+    'NOT_YET_SUBMITTED'
+  ),
+  generateDigitalTemplateData(
+    'pa11y-sms-proof-not-yet-submitted',
+    clientId,
+    'SMS',
+    'NOT_YET_SUBMITTED'
+  ),
+  generateDigitalTemplateData(
+    'pa11y-nhsapp-proof-not-yet-submitted',
+    clientId,
+    'NHS_APP',
+    'NOT_YET_SUBMITTED'
+  ),
+  generateDigitalTemplateData(
     'pa11y-email-proof-submitted',
     clientId,
     'EMAIL',
@@ -208,13 +231,15 @@ const setup = async () => {
   const mainUser = await setupTestUser(
     testUserClient,
     mainClientId,
-    'NHS Accessibility'
+    'NHS Accessibility',
+    { proofing: true, routing: false },
   );
 
   const routingUser = await setupTestUser(
     testUserClient,
     routingClientId,
-    'NHS Routing Accessibility'
+    'NHS Routing Accessibility',
+    { proofing: true, routing: true },
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(

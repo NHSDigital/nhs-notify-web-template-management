@@ -76,8 +76,8 @@ function previewLetterTemplateUrl(clientId, status) {
 }
 
 const allTemplatesTests = [
-  withSignIn(messageTemplatesPage(messageTemplatesUrl)),
-  withSignIn(copyTemplatePage(chooseTemplateUrl)),
+  withSignIn(messageTemplatesPage(messageTemplatesUrl), email, password),
+  withSignIn(copyTemplatePage(chooseTemplateUrl), email, password),
 ];
 
 const chooseTemplateTests = [
