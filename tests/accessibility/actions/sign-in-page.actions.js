@@ -8,7 +8,7 @@ const signInPageActions = (email, password) => [
 const withSignIn = (accessibilityTest, email, password) => ({
   ...accessibilityTest,
   actions: [
-    signInPageActions(email, password),
+    ...signInPageActions(email, password),
     ...accessibilityTest.actions
   ]
 });
