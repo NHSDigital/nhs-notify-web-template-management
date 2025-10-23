@@ -172,7 +172,7 @@ const templatesPagesWithRoutingContentEnabledTests = [
   withSignIn(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
   withSignIn(viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
   withSignIn(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl), routingEnabledEmail, routingEnabledPassword),
-  withSignIn(submitLetterTemplatePage(previewLetterTemplateUrl('routingaccessibility-test-client', 'PROOF_AVAILABLE')), routingEnabledEmail, routingEnabledPassword),
+  withSignIn(submitLetterTemplatePage(previewLetterTemplateUrl('routing-accessibility-test-client', 'PROOF_AVAILABLE')), routingEnabledEmail, routingEnabledPassword),
   withSignIn(submitEmailTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
   withSignIn(submitTextMessageTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
   withSignIn(submitNHSAppTemplatePage(chooseTemplateUrl), routingEnabledEmail, routingEnabledPassword),
