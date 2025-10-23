@@ -7,10 +7,10 @@ const signInPageActions = (email, password) => [
   'click element button[type="submit"]',
 ];
 
-export const withSignIn = (accessibilityTest, email, password) => ({
+const withSignIn = (accessibilityTest, email, password) => ({
   ...accessibilityTest,
   actions: [
-    signInPageActions,
+    signInPageActions(email, password),
     ...accessibilityTest.actions
   ]
 });
