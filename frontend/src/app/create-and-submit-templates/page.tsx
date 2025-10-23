@@ -1,3 +1,4 @@
+import DocxExtract from '@atoms/DocxExtract/DocxExtract';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
@@ -17,25 +18,9 @@ export default function HomePage() {
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {homePageContent.pageHeading}
           </h1>
-
-          <p>{homePageContent.text1}</p>
-          <p>{homePageContent.text2}</p>
-
-          <ul className='nhsuk-list nhsuk-list--bullet'>
-            {homePageContent.channelList.map((channel, i) => (
-              <li key={`template${i + 1}`}>{channel}</li>
-            ))}
-          </ul>
-
-          <p>{homePageContent.text3}</p>
-          <h2 className='nhsuk-heading-l' data-testid='page-sub-heading'>
-            {homePageContent.pageSubHeading}
-          </h2>
-          <p>{homePageContent.text4}</p>
-          <p>{homePageContent.text5}</p>
-          <p>{homePageContent.text6}</p>
-          <p>{homePageContent.text7}</p>
-
+          <DocxExtract />
+          <br />
+          <br />
           <NHSNotifyButton
             href={homePageContent.linkButton.url}
             data-testid='start-now-button'
