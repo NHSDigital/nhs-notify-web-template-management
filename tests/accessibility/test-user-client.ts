@@ -36,7 +36,7 @@ export class TestUserClient {
       'Dr',
       'Test',
       'User',
-    ],
+    ]
   ) {
     await this.ssmClient.send(
       new PutParameterCommand({

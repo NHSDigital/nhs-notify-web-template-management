@@ -117,7 +117,7 @@ const setupTestUser = async (
     password,
     clientId,
     clientName,
-    features,
+    features
   );
 
   return {
@@ -232,14 +232,14 @@ const setup = async () => {
     testUserClient,
     mainClientId,
     'NHS Accessibility',
-    { proofing: true, routing: false },
+    { proofing: true, routing: false }
   );
 
   const routingUser = await setupTestUser(
     testUserClient,
     routingClientId,
     'NHS Routing Accessibility',
-    { proofing: true, routing: true },
+    { proofing: true, routing: true }
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(
