@@ -1,5 +1,3 @@
-const { readFileSync } = require('node:fs');
-
 const signInPageActions = (email, password) => [
   'wait for element button[type="submit"] to be visible',
   `set field input[type="text"] to ${email}`,
