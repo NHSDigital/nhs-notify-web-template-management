@@ -11,10 +11,16 @@ import {
   isRightToLeft,
   languageMapping,
   letterTypeDisplayMappings,
-  messagePlanStatusToDisplayText,
   previewSubmittedTemplatePages,
   previewTemplatePages,
   statusToColourMapping,
+  channelToTemplateType,
+  templateTypeToChannel,
+  channelDisplayMappings,
+  messagePlanStatusToDisplayText,
+  messagePlanStatusToTagColour,
+  messagePlanChooseTemplateUrl,
+  ORDINALS,
   statusToDisplayMapping,
   templateCreationPages,
   templateDisplayCopyAction,
@@ -217,6 +223,17 @@ describe('templateCreationPages', () => {
   });
 });
 
+describe('messagePlanChooseTemplateUrl', () => {
+  test.each([
+    ['NHS_APP', 'choose-nhs-app-template'],
+    ['EMAIL', 'choose-email-template'],
+    ['SMS', 'choose-text-message-template'],
+    ['LETTER', 'choose-standard-english-letter-template'],
+  ] as const)('should map %s to "%s"', (type, expected) => {
+    expect(messagePlanChooseTemplateUrl(type)).toBe(expected);
+  });
+});
+
 describe('previewTemplatePages', () => {
   test('NHS_APP', () => {
     expect(previewTemplatePages('NHS_APP')).toEqual('preview-nhs-app-template');
@@ -337,6 +354,50 @@ describe('Right-to-left language indicator', () => {
   });
 });
 
+describe('channelToTemplateType', () => {
+  test.each([
+    ['NHSAPP', 'NHS_APP'],
+    ['SMS', 'SMS'],
+    ['EMAIL', 'EMAIL'],
+    ['LETTER', 'LETTER'],
+  ] as const)('should map %s → %s', (channel, expected) => {
+    expect(channelToTemplateType(channel)).toBe(expected);
+  });
+});
+
+describe('templateTypeToChannel', () => {
+  test.each([
+    ['NHS_APP', 'NHSAPP'],
+    ['SMS', 'SMS'],
+    ['EMAIL', 'EMAIL'],
+    ['LETTER', 'LETTER'],
+  ] as const)('should map %s → %s', (type, expected) => {
+    expect(templateTypeToChannel(type)).toBe(expected);
+  });
+});
+
+describe('channel mappings are reversable', () => {
+  test.each(['NHSAPP', 'SMS', 'EMAIL', 'LETTER'] as const)(
+    'templateTypeToChannel(channelToTemplateType(%s)) → same channel',
+    (channel) => {
+      expect(templateTypeToChannel(channelToTemplateType(channel))).toBe(
+        channel
+      );
+    }
+  );
+});
+
+describe('channelDisplayMappings', () => {
+  test.each([
+    ['NHSAPP', 'NHS App'],
+    ['SMS', 'Text message (SMS)'],
+    ['EMAIL', 'Email'],
+    ['LETTER', 'Letter'],
+  ] as const)('should map %s to "%s"', (channel, expected) => {
+    expect(channelDisplayMappings(channel)).toBe(expected);
+  });
+});
+
 describe('messagePlanStatusToDisplayText', () => {
   test.each([
     ['DRAFT', 'Draft'],
@@ -344,5 +405,36 @@ describe('messagePlanStatusToDisplayText', () => {
     ['DELETED', ''],
   ] as const)('should map %s to "%s"', (status, expected) => {
     expect(messagePlanStatusToDisplayText(status)).toBe(expected);
+  });
+});
+
+describe('messagePlanStatusToTagColour', () => {
+  test.each([
+    ['DRAFT', 'green'],
+    ['COMPLETED', 'red'],
+  ] as const)('should map %s to colour "%s"', (status, colour) => {
+    expect(messagePlanStatusToTagColour(status)).toBe(colour);
+  });
+
+  test('should map DELETED to undefined colour (not displayed)', () => {
+    expect(messagePlanStatusToTagColour('DELETED')).toBeUndefined();
+  });
+});
+
+describe('ORDINALS', () => {
+  test('should contain first six ordinals in order', () => {
+    expect(ORDINALS).toEqual([
+      'First',
+      'Second',
+      'Third',
+      'Fourth',
+      'Fifth',
+      'Sixth',
+    ]);
+  });
+
+  test('should be indexable', () => {
+    expect(ORDINALS[0]).toBe('First');
+    expect(ORDINALS.at(-1)).toBe('Sixth');
   });
 });

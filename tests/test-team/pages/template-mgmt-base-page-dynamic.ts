@@ -8,7 +8,7 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
     super(page);
   }
 
-  async loadPage(templateId: string) {
+  async loadPage(idParameter: string) {
     const { appUrlSegment, pageUrlSegment } = this
       .constructor as typeof TemplateMgmtBasePageDynamic;
 
@@ -16,6 +16,18 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
       throw new Error('pageUrlSegment is not defined');
     }
 
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
+    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${idParameter}`);
+  }
+
+  getIdFromUrl(): string | undefined {
+    const { pageUrlSegment } = this
+      .constructor as typeof TemplateMgmtBasePageDynamic;
+
+    const match = this.page
+      .url()
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      .match(new RegExp(`${pageUrlSegment}/([^#/?]+)`));
+    const id = match ? match[1] : undefined;
+    return id;
   }
 }

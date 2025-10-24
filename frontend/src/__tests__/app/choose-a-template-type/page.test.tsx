@@ -5,7 +5,7 @@ import ChooseATemplateTypePage, {
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
-const { pageTitle } = content.components.chooseTemplate;
+const { pageTitle } = content.components.chooseTemplateType;
 
 jest.mock('next/navigation', () => ({
   redirect: () => {

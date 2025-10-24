@@ -1,8 +1,8 @@
 const { readFileSync } = require('node:fs');
 const { performCheck } = require('./helpers');
 const {
-  chooseATemplatePage,
-  chooseATemplatePageError,
+  chooseATemplateTypePage,
+  chooseATemplateTypePageError,
   copyTemplatePage,
   createEmailTemplateErrorPage,
   createEmailTemplatePage,
@@ -43,7 +43,7 @@ const {
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
-const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
+const chooseTemplateTypeUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 const messageTemplatesUrl = `${baseUrl}/message-templates`;
 
@@ -57,49 +57,49 @@ function previewLetterTemplateUrl(status) {
 
 const allTemplates = [
   messageTemplatesPage(messageTemplatesUrl),
-  copyTemplatePage(chooseTemplateUrl),
+  copyTemplatePage(chooseTemplateTypeUrl),
 ];
 
-const chooseTemplate = [
-  chooseATemplatePage(chooseTemplateUrl),
-  chooseATemplatePageError(chooseTemplateUrl),
+const chooseTemplateType = [
+  chooseATemplateTypePage(chooseTemplateTypeUrl),
+  chooseATemplateTypePageError(chooseTemplateTypeUrl),
 ];
 
 const nhsApp = [
-  createNHSAppTemplatePage(chooseTemplateUrl),
-  createNHSAppTemplateErrorPage(chooseTemplateUrl),
-  previewNHSAppTemplatePage(chooseTemplateUrl),
-  previewNHSAppTemplateErrorPage(chooseTemplateUrl),
+  createNHSAppTemplatePage(chooseTemplateTypeUrl),
+  createNHSAppTemplateErrorPage(chooseTemplateTypeUrl),
+  previewNHSAppTemplatePage(chooseTemplateTypeUrl),
+  previewNHSAppTemplateErrorPage(chooseTemplateTypeUrl),
   viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl),
-  submitNHSAppTemplatePage(chooseTemplateUrl),
-  nhsAppTemplateSubmittedPage(chooseTemplateUrl),
+  submitNHSAppTemplatePage(chooseTemplateTypeUrl),
+  nhsAppTemplateSubmittedPage(chooseTemplateTypeUrl),
   previewSubmittedNHSAppTemplatePage(messageTemplatesUrl),
 ];
 
 const sms = [
-  createTextMessageTemplatePage(chooseTemplateUrl),
-  createTextMessageTemplateErrorPage(chooseTemplateUrl),
-  previewTextMessageTemplatePage(chooseTemplateUrl),
-  previewTextMessageTemplateErrorPage(chooseTemplateUrl),
+  createTextMessageTemplatePage(chooseTemplateTypeUrl),
+  createTextMessageTemplateErrorPage(chooseTemplateTypeUrl),
+  previewTextMessageTemplatePage(chooseTemplateTypeUrl),
+  previewTextMessageTemplateErrorPage(chooseTemplateTypeUrl),
   viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl),
-  submitTextMessageTemplatePage(chooseTemplateUrl),
-  textMessageTemplateSubmittedPage(chooseTemplateUrl),
+  submitTextMessageTemplatePage(chooseTemplateTypeUrl),
+  textMessageTemplateSubmittedPage(chooseTemplateTypeUrl),
   previewSubmittedTextMessageTemplatePage(messageTemplatesUrl),
 ];
 
 const email = [
-  createEmailTemplatePage(chooseTemplateUrl),
-  createEmailTemplateErrorPage(chooseTemplateUrl),
-  previewEmailTemplatePage(chooseTemplateUrl),
-  previewEmailTemplateErrorPage(chooseTemplateUrl),
+  createEmailTemplatePage(chooseTemplateTypeUrl),
+  createEmailTemplateErrorPage(chooseTemplateTypeUrl),
+  previewEmailTemplatePage(chooseTemplateTypeUrl),
+  previewEmailTemplateErrorPage(chooseTemplateTypeUrl),
   viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl),
-  submitEmailTemplatePage(chooseTemplateUrl),
-  emailTemplateSubmittedPage(chooseTemplateUrl),
+  submitEmailTemplatePage(chooseTemplateTypeUrl),
+  emailTemplateSubmittedPage(chooseTemplateTypeUrl),
   previewSubmittedEmailTemplatePage(messageTemplatesUrl),
 ];
 
 const letters = [
-  uploadLetterTemplatePage(chooseTemplateUrl),
+  uploadLetterTemplatePage(chooseTemplateTypeUrl),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_UPLOAD')),
   previewLetterTemplatePageWithError(previewLetterTemplateUrl('VIRUS_SCAN_FAILED')),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_VALIDATION')),
@@ -142,7 +142,7 @@ const userEmails = [
 const allJourneys = {
   landingPage,
   allTemplates,
-  chooseTemplate,
+  chooseTemplateType,
   nhsApp,
   sms,
   email,

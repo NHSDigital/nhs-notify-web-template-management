@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { RoutingMessagePlansPage } from '../pages/routing-message-plans-page';
+import { RoutingMessagePlansPage } from '../pages/routing/message-plans-page';
 import {
   assertFooterLinks,
   assertSignOutLink,

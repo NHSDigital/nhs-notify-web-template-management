@@ -13,16 +13,16 @@ test.describe('Choose Template Type Page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage();
+    await chooseTemplateTypePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
-    await expect(chooseTemplatePage.pageHeading).toHaveText(
+    await expect(chooseTemplateTypePage.pageHeading).toHaveText(
       'Choose a template type to create'
     );
 
-    await expect(chooseTemplatePage.learnMoreLink).toHaveAttribute(
+    await expect(chooseTemplateTypePage.learnMoreLink).toHaveAttribute(
       'href',
       '/features'
     );
@@ -45,26 +45,26 @@ test.describe('Choose Template Type Page', () => {
   test('should display correct number of radio button options', async ({
     page,
   }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage();
+    await chooseTemplateTypePage.loadPage();
 
-    await expect(chooseTemplatePage.radioButtons).toHaveCount(4);
+    await expect(chooseTemplateTypePage.radioButtons).toHaveCount(4);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({
     page,
     baseURL,
   }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage();
-    await chooseTemplatePage.clickContinueButton();
+    await chooseTemplateTypePage.loadPage();
+    await chooseTemplateTypePage.clickContinueButton();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
 
-    await expect(chooseTemplatePage.errorSummary).toBeVisible();
-    await expect(chooseTemplatePage.errorSummaryList).toHaveText([
+    await expect(chooseTemplateTypePage.errorSummary).toBeVisible();
+    await expect(chooseTemplateTypePage.errorSummaryList).toHaveText([
       'Select a template type',
     ]);
   });
@@ -78,11 +78,11 @@ test.describe('Choose Template Type Page', () => {
       page,
       baseURL,
     }) => {
-      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+      const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.loadPage();
-      await chooseTemplatePage.checkRadioButton(label);
-      await chooseTemplatePage.clickContinueButton();
+      await chooseTemplateTypePage.loadPage();
+      await chooseTemplateTypePage.checkRadioButton(label);
+      await chooseTemplateTypePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/create-${path}-template`

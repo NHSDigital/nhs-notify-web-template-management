@@ -1,25 +1,4 @@
 .preview {
-  background-color: var(--nhsuk-card-background-colour);
-  border: solid 1px var(--nhsuk-border-colour);
-
-  & :global(.nhsuk-summary-list__key) {
-    width: 20%;
-    padding: 1rem;
-
-    @media screen and (max-width: 768px) {
-      width: auto;
-    }
-  }
-
-  & :global(.nhsuk-summary-list__value) {
-    width: 80%;
-    padding: 1rem;
-
-    @media screen and (max-width: 768px) {
-      width: auto;
-    }
-  }
-
   &__content {
     word-wrap: anywhere;
 

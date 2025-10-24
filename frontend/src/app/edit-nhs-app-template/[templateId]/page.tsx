@@ -3,7 +3,7 @@
 import { Metadata } from 'next';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import {
-  PageProps,
+  TemplatePageProps,
   validateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const CreateNhsAppTemplatePage = async (props: PageProps) => {
+const CreateNhsAppTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
