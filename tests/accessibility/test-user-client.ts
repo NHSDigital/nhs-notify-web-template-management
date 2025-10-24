@@ -28,6 +28,10 @@ export class TestUserClient {
     password: string,
     clientId: string,
     clientName: string = 'NHS Client accessibility',
+    features: {
+      proofing: boolean;
+      routing: boolean;
+    },
     displayUsernameParts: [string, string] | [string, string, string] = [
       'Dr',
       'Test',
@@ -38,7 +42,7 @@ export class TestUserClient {
       new PutParameterCommand({
         Name: `${this.clientSsmPathPrefix}/${clientId}`,
         Value: JSON.stringify({
-          features: { proofing: true },
+          features,
           campaignIds: ['accessibility-test-campaign'],
         } satisfies ClientConfiguration),
         Overwrite: true,
