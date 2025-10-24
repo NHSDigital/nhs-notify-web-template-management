@@ -16,7 +16,7 @@ No requirements.
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
 | <a name="input_email_domain"></a> [email\_domain](#input\_email\_domain) | Email domain | `string` | n/a | yes |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
-| <a name="input_enable_event_stream"></a> [enable\_event\_stream](#input\_enable\_event\_stream) | Enable DynamoDB streaming to EventBridge | `bool` | `true` | no |
+| <a name="input_enable_routing_config_event_stream"></a> [enable\_routing\_config\_event\_stream](#input\_enable\_routing\_config\_event\_stream) | Enable DynamoDB streaming from routing config table to EventBridge | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_function_s3_bucket"></a> [function\_s3\_bucket](#input\_function\_s3\_bucket) | Name of S3 bucket to upload lambda artefacts to | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
@@ -60,6 +60,7 @@ No requirements.
 | <a name="module_s3bucket_download"></a> [s3bucket\_download](#module\_s3bucket\_download) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
+| <a name="module_sqs_routing_config_table_events_pipe_dlq"></a> [sqs\_routing\_config\_table\_events\_pipe\_dlq](#module\_sqs\_routing\_config\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_sftp_upload"></a> [sqs\_sftp\_upload](#module\_sqs\_sftp\_upload) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_mgmt_events"></a> [sqs\_template\_mgmt\_events](#module\_sqs\_template\_mgmt\_events) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_table_events_pipe_dlq"></a> [sqs\_template\_table\_events\_pipe\_dlq](#module\_sqs\_template\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip | n/a |
