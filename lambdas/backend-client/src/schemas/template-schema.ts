@@ -134,12 +134,14 @@ export const $CreateUpdateTemplate = schemaFor<
   ])
 );
 
+const $LockNumber = z.number().min(0);
+
 const $TemplateDtoFields = z
   .object({
     campaignId: z.string().optional(),
     clientId: z.string().optional(),
     createdAt: z.string(),
-    lockNumber: z.number().default(1),
+    lockNumber: $LockNumber.default(0),
     id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
     updatedAt: z.string(),

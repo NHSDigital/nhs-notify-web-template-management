@@ -39,7 +39,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/some-template/submit`
+      `${process.env.API_BASE_URL}/v1/template/some-template/submit`,
+      {
+        headers: {
+          'X-Lock-Number': '0',
+        },
+      }
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -53,6 +58,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': '0',
         },
       }
     );
@@ -90,6 +96,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       {
         headers: {
           Authorization: await user2.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
       }
     );
@@ -155,13 +162,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         clientId: user1.clientId,
       });
 
-      await orchestrator.send(
+      const latest = await orchestrator.send(
         new SimulatePassedValidation({
           templateId,
           clientId: user1.clientId,
           hasTestData: true,
         })
       );
+
+      console.log({ latest: latest.lockNumber });
 
       const start = new Date();
 
@@ -170,6 +179,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(latest.lockNumber),
           },
         }
       );
@@ -187,6 +197,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: createResult.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: latest.lockNumber + 1,
         }),
       });
 
@@ -267,7 +278,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       expect(createResponse.status(), debug).toBe(201);
 
-      await orchestrator.send(
+      const latest = await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.data.id,
           clientId: user1.clientId,
@@ -280,6 +291,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(latest.lockNumber),
           },
         }
       );
@@ -296,6 +308,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
       );
@@ -381,6 +394,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(failedVirusScanUpdate.lockNumber),
           },
         }
       );
@@ -453,6 +467,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(createResult.data.lockNumber),
           },
         }
       );
@@ -464,6 +479,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(createResult.data.lockNumber + 1),
           },
         }
       );
@@ -507,6 +523,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -526,6 +543,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -563,17 +581,21 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const failedSubmitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -615,6 +637,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -626,6 +649,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -669,6 +693,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -688,6 +713,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -725,17 +751,21 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const failedSubmitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -777,6 +807,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -788,6 +819,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -831,6 +863,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -851,6 +884,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -888,17 +922,21 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const failedSubmitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -940,6 +978,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -951,6 +990,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -994,6 +1034,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -1021,3 +1062,5 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     });
   });
 });
+
+// TODO: CCM-12327 - tests for missing / invalid lock number header

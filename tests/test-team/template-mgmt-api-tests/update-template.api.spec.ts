@@ -1997,3 +1997,9 @@ test.describe('PUT /v1/template/:templateId', () => {
     });
   });
 });
+
+/**
+ * TODO: CCM-12327
+ * - tests for missing / invalid lock number header
+ * - add in these headers to valid tests
+ */

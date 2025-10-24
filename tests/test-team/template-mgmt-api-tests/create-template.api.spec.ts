@@ -145,6 +145,7 @@ test.describe('POST /v1/template', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: 0,
         },
       });
 
@@ -353,6 +354,7 @@ test.describe('POST /v1/template', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: 0,
         },
       });
 
@@ -562,6 +564,7 @@ test.describe('POST /v1/template', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: 0,
         },
       });
 

@@ -62,6 +62,7 @@ export type Template = TypeSpecificProperties & {
   createdAt: string;
   id: string;
   name: string;
+  lockNumber: number;
   owner: string;
   templateStatus: string;
   templateType: string;

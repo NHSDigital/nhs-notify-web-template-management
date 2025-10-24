@@ -104,6 +104,7 @@ test.describe('POST /v1/letter-template', () => {
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
+        lockNumber: 0,
       },
     });
 
@@ -184,6 +185,7 @@ test.describe('POST /v1/letter-template', () => {
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
+        lockNumber: 0,
       },
     });
 

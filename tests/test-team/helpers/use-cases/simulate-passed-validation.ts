@@ -29,6 +29,7 @@ export class SimulatePassedValidation implements IUseCase<Template> {
           id: this.#config.templateId,
         },
         UpdateExpression: [
+          'ADD #lockNumber :lockNumberIncrement',
           'SET files.pdfTemplate.virusScanStatus = :virusScanStatus',
           'templateStatus = :readyForSubmissionStatus',
           'files.proofs = :proofs',
@@ -36,7 +37,11 @@ export class SimulatePassedValidation implements IUseCase<Template> {
             ? ['files.testDataCsv.virusScanStatus = :virusScanStatus']
             : []),
         ].join(', '),
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
         ExpressionAttributeValues: {
+          ':lockNumberIncrement': 1,
           ':virusScanStatus': 'PASSED',
           ':readyForSubmissionStatus': 'PROOF_AVAILABLE',
           ':proofs': {
