@@ -232,6 +232,7 @@ describe('templateClient', () => {
         id: templateId,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
@@ -283,6 +284,7 @@ describe('templateClient', () => {
         id: templateId,
         templateStatus: 'NOT_YET_SUBMITTED',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -339,7 +341,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -355,7 +357,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const creationTime = '2025-03-12T08:41:08.805Z';
@@ -376,6 +378,7 @@ describe('templateClient', () => {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
+        lockNumber: 1,
       };
 
       const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
@@ -519,6 +522,7 @@ describe('templateClient', () => {
           ...initialCreatedTemplate,
           templateStatus: 'PENDING_VALIDATION',
           updatedAt: updateTime,
+          lockNumber: 1,
         };
 
         const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
@@ -804,7 +808,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -815,7 +819,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const templateRepoFailure = {
@@ -910,7 +914,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -921,7 +925,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const expectedTemplateDto: TemplateDto = {
@@ -930,6 +934,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
+        lockNumber: 1,
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1006,7 +1011,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -1017,7 +1022,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const expectedTemplateDto: TemplateDto = {
@@ -1026,6 +1031,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
+        lockNumber: 1,
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1106,7 +1112,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -1123,7 +1129,7 @@ describe('templateClient', () => {
 
       const initialCreatedTemplate: DatabaseTemplate = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
         id: templateId,
         createdAt: creationTime,
         updatedAt: creationTime,
@@ -1292,6 +1298,7 @@ describe('templateClient', () => {
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1343,6 +1350,7 @@ describe('templateClient', () => {
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.update.mockResolvedValueOnce({
@@ -1410,6 +1418,7 @@ describe('templateClient', () => {
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1451,6 +1460,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1509,6 +1519,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
       const template2: TemplateDto = {
         id: undefined as unknown as string,
@@ -1519,6 +1530,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
@@ -1549,6 +1561,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
@@ -1606,6 +1619,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1646,6 +1660,7 @@ describe('templateClient', () => {
         id: templateId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
@@ -1780,6 +1795,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1829,6 +1845,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1893,6 +1910,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
@@ -1977,6 +1995,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -2062,6 +2081,7 @@ describe('templateClient', () => {
         id: templateId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.delete.mockResolvedValueOnce({

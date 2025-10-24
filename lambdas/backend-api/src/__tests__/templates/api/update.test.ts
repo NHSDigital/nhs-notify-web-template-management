@@ -186,6 +186,7 @@ describe('Template API - Update', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 1,
     };
 
     mocks.templateClient.updateTemplate.mockResolvedValueOnce({

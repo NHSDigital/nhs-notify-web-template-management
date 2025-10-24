@@ -50,6 +50,7 @@ describe('RequestProofPage', () => {
           fileName: 'a.pdf',
         },
       },
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -141,6 +142,7 @@ describe('RequestProofPage', () => {
           fileName: 'a.pdf',
         },
       },
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({

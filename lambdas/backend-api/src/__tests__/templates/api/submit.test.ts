@@ -115,6 +115,7 @@ describe('Template API - Submit', () => {
       templateType: 'SMS',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 1,
     };
 
     mocks.templateClient.submitTemplate.mockResolvedValueOnce({

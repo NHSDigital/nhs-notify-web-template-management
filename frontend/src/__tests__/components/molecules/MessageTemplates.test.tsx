@@ -17,6 +17,7 @@ const messageTemplatesProps: {
       message: 'Message',
       createdAt: '2021-01-01T00:00:00.000Z',
       updatedAt: '2021-01-01T00:00:00.000Z',
+      lockNumber: 1,
     },
     {
       id: '2',
@@ -26,6 +27,7 @@ const messageTemplatesProps: {
       message: 'Message',
       createdAt: '2021-01-01T00:00:00.000Z',
       updatedAt: '2021-03-01T00:00:00.000Z',
+      lockNumber: 1,
     },
     {
       id: '3',
@@ -36,6 +38,7 @@ const messageTemplatesProps: {
       letterType: 'x0',
       language: 'en',
       updatedAt: '2021-02-01T00:00:00.000Z',
+      lockNumber: 1,
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -53,6 +56,7 @@ const messageTemplatesProps: {
       letterType: 'x0',
       language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
+      lockNumber: 1,
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',

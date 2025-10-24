@@ -24,6 +24,9 @@
               "id": {
                 "type": "string"
               },
+              "lockNumber": {
+                "type": "integer"
+              },
               "templateStatus": {
                 "$ref": "#/components/schemas/TemplateStatus"
               },
@@ -38,6 +41,7 @@
             "required": [
               "createdAt",
               "id",
+              "lockNumber",
               "templateStatus",
               "updatedAt"
             ],

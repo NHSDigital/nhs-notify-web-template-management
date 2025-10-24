@@ -456,4 +456,65 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectLockNumber', () => {
+    test('adds lockNumber condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectLockNumber(1)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_1_lockNumber': 1,
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#lockNumber': 'lockNumber',
+        },
+        ConditionExpression:
+          '(#lockNumber = :condition_1_1_lockNumber OR attribute_not_exists (#lockNumber))',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+  });
+
+  describe('incrementLockNumber', () => {
+    test('sets lock number and increments it by 1', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.incrementLockNumber().build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber_value': 1,
+        },
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'ADD #lockNumber :lockNumber_value',
+      });
+    });
+  });
 });

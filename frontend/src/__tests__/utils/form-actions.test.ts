@@ -49,6 +49,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
@@ -137,6 +138,7 @@ describe('form-actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
@@ -191,6 +193,7 @@ describe('form-actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
@@ -301,6 +304,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
@@ -315,6 +319,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     };
 
     const response = await saveTemplate(
@@ -349,6 +354,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     };
 
     await expect(
@@ -377,6 +383,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     };
 
     await expect(
@@ -393,6 +400,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
@@ -451,6 +459,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
@@ -497,6 +506,7 @@ describe('form-actions', () => {
       name: 'Template',
       message: 'Message',
       createdAt: '2020-01-01T00:00:00.000Z',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     const templates = [
@@ -537,6 +547,7 @@ describe('form-actions', () => {
         message: 'message',
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 1,
       } satisfies TemplateDto;
 
       mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
@@ -653,6 +664,7 @@ describe('form-actions', () => {
         },
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 1,
       } satisfies TemplateDto;
 
       mockedTemplateClient.requestProof.mockResolvedValueOnce({
@@ -716,6 +728,7 @@ describe('form-actions', () => {
             createdAt: now.toISOString(),
             status: 'DRAFT',
             updatedAt: now.toISOString(),
+            lockNumber: 1,
           },
         })
       );
@@ -757,6 +770,7 @@ describe('form-actions', () => {
         createdAt: now.toISOString(),
         status: 'DRAFT',
         updatedAt: now.toISOString(),
+        lockNumber: 1,
         name: 'My Routing Config',
         campaignId: 'my-campaign-id',
         cascade: [

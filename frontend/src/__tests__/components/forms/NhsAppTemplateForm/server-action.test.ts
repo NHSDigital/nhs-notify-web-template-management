@@ -27,6 +27,7 @@ const savedState: NHSAppTemplate = {
   templateStatus: 'NOT_YET_SUBMITTED',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
 };
 
 describe('CreateNHSAppTemplate server actions', () => {

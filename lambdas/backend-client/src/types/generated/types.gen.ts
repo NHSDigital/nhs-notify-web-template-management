@@ -6,6 +6,7 @@ export type BaseCreatedTemplate = BaseTemplate & {
   createdAt: string;
   createdBy?: string;
   id: string;
+  lockNumber: number;
   templateStatus: TemplateStatus;
   updatedAt: string;
   updatedBy?: string;

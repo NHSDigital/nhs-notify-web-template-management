@@ -104,6 +104,7 @@ export type DatabaseTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  lockNumber?: number;
   message?: string;
   name: string;
   proofingEnabled?: boolean;

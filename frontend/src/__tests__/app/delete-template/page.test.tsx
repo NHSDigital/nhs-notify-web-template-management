@@ -27,6 +27,7 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     const emailTemplate: TemplateDto = {
@@ -66,6 +67,7 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: 'today',
       updatedAt: 'today',
+      lockNumber: 1,
     });
 
     await DeleteTemplatePage({
@@ -86,6 +88,7 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: 'today',
       updatedAt: 'today',
+      lockNumber: 1,
     });
 
     await DeleteTemplatePage({

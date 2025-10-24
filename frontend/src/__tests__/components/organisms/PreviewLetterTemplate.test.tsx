@@ -33,6 +33,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -60,6 +61,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -87,6 +89,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -122,6 +125,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -156,6 +160,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -188,6 +193,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -215,6 +221,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -242,6 +249,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -280,6 +288,7 @@ describe('PreviewLetterTemplate component', () => {
           proofingEnabled: false,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
         }}
       />
     );

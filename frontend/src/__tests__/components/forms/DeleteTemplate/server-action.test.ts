@@ -37,6 +37,7 @@ test('calls form action and redirects', async () => {
     templateStatus: 'NOT_YET_SUBMITTED',
     createdAt: 'today',
     updatedAt: 'today',
+    lockNumber: 1,
   };
 
   await deleteTemplateYesAction(mockTemplate);

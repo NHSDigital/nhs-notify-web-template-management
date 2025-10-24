@@ -37,6 +37,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     const submittedEmailTemplate: EmailTemplate = {

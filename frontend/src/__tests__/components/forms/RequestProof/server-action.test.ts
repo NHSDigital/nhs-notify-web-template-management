@@ -32,6 +32,7 @@ const mockLetterTemplate = (id: string) =>
         fileName: 'a.pdf',
       },
     },
+    lockNumber: 1,
   }) satisfies TemplateDto;
 
 describe('requestProof', () => {

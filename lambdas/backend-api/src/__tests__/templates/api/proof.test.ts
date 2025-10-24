@@ -111,6 +111,7 @@ describe('Template API - request proof', () => {
       name: 'template-name',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
       letterType: 'q4',
       language: 'fr',
       files: {
