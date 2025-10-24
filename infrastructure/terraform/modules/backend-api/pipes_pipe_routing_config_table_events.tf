@@ -1,11 +1,11 @@
-resource "aws_pipes_pipe" "template_table_events" {
-  depends_on = [module.sqs_template_table_events_pipe_dlq]
+resource "aws_pipes_pipe" "routing_config_table_events" {
+  depends_on = [module.sqs_routing_config_table_events_pipe_dlq]
 
-  name               = "${local.csi}-template-table-events"
-  role_arn           = aws_iam_role.pipe_template_table_events.arn
-  source             = aws_dynamodb_table.templates.stream_arn
+  name               = "${local.csi}-routing-config-table-events"
+  role_arn           = aws_iam_role.pipe_routing_config_table_events.arn
+  source             = aws_dynamodb_table.routing_configuration.stream_arn
   target             = module.sqs_template_mgmt_events.sqs_queue_arn
-  desired_state      = "RUNNING"
+  desired_state      = var.enable_routing_config_event_stream ? "RUNNING" : "STOPPED"
   kms_key_identifier = var.kms_key_arn
 
   source_parameters {
@@ -18,7 +18,7 @@ resource "aws_pipes_pipe" "template_table_events" {
       maximum_record_age_in_seconds      = -1
 
       dead_letter_config {
-        arn = module.sqs_template_table_events_pipe_dlq.sqs_queue_arn
+        arn = module.sqs_routing_config_table_events_pipe_dlq.sqs_queue_arn
       }
     }
   }
@@ -30,7 +30,7 @@ resource "aws_pipes_pipe" "template_table_events" {
         "eventID": <$.eventID>,
         "eventName": <$.eventName>,
         "eventSource": <$.eventSource>,
-        "tableName": "${aws_dynamodb_table.templates.name}"
+        "tableName": "${aws_dynamodb_table.routing_configuration.name}"
       }
     EOF
 
@@ -45,18 +45,18 @@ resource "aws_pipes_pipe" "template_table_events" {
     include_execution_data = ["ALL"]
 
     cloudwatch_logs_log_destination {
-      log_group_arn = aws_cloudwatch_log_group.pipe_template_table_events.arn
+      log_group_arn = aws_cloudwatch_log_group.pipe_routing_config_table_events.arn
     }
   }
 }
 
-resource "aws_iam_role" "pipe_template_table_events" {
-  name               = "${local.csi}-pipe-template-table-events"
-  description        = "IAM Role for Pipe to forward template table stream events to SQS"
-  assume_role_policy = data.aws_iam_policy_document.pipes_templates_trust_policy.json
+resource "aws_iam_role" "pipe_routing_config_table_events" {
+  name               = "${local.csi}-pipe-routing-config-table-events"
+  description        = "IAM Role for Pipe to forward routing config table stream events to SQS"
+  assume_role_policy = data.aws_iam_policy_document.pipes_routing_config_trust_policy.json
 }
 
-data "aws_iam_policy_document" "pipes_templates_trust_policy" {
+data "aws_iam_policy_document" "pipes_routing_config_trust_policy" {
   statement {
     sid     = "PipesAssumeRole"
     effect  = "Allow"
@@ -69,13 +69,13 @@ data "aws_iam_policy_document" "pipes_templates_trust_policy" {
   }
 }
 
-resource "aws_iam_role_policy" "pipe_template_table_events" {
-  name   = "${local.csi}-pipe-template-table-events"
-  role   = aws_iam_role.pipe_template_table_events.id
-  policy = data.aws_iam_policy_document.pipe_template_table_events.json
+resource "aws_iam_role_policy" "pipe_routing_config_table_events" {
+  name   = "${local.csi}-pipe-routing-config-table-events"
+  role   = aws_iam_role.pipe_routing_config_table_events.id
+  policy = data.aws_iam_policy_document.pipe_routing_config_table_events.json
 }
 
-data "aws_iam_policy_document" "pipe_template_table_events" {
+data "aws_iam_policy_document" "pipe_routing_config_table_events" {
   version = "2012-10-17"
 
   statement {
@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
       "dynamodb:GetShardIterator",
       "dynamodb:ListStreams",
     ]
-    resources = [aws_dynamodb_table.templates.stream_arn]
+    resources = [aws_dynamodb_table.routing_configuration.stream_arn]
   }
 
   statement {
@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
     actions = ["sqs:SendMessage"]
     resources = [
       module.sqs_template_mgmt_events.sqs_queue_arn,
-      module.sqs_template_table_events_pipe_dlq.sqs_queue_arn,
+      module.sqs_routing_config_table_events_pipe_dlq.sqs_queue_arn,
     ]
   }
 
