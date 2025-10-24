@@ -11,9 +11,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { readFileSync } from 'node:fs';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
-
-const sleep = (delaySeconds: number) =>
-  new Promise((resolve) => setTimeout(resolve, delaySeconds * 1000));
+import { setTimeout } from 'node:timers/promises';
 
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
@@ -68,7 +66,7 @@ test.describe('Event publishing - Letters', () => {
     // Note: not ideal - but we are expecting 0 events and there can be a delay
     // in events arriving. We should wait for a moment
     // 5 seconds seems to largest delay when testing locally
-    await sleep(5);
+    await setTimeout(5000);
 
     const events = await eventCacheHelper.findEvents(start, [templateId]);
 
@@ -105,7 +103,7 @@ test.describe('Event publishing - Letters', () => {
     expect(deletedResponse.status()).toBe(204);
 
     // Note: not ideal - but we are expecting 0 events and there can be a delay
-    await sleep(5);
+    await setTimeout(5000);
 
     const events = await eventCacheHelper.findEvents(start, [templateId]);
 
