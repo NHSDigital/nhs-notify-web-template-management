@@ -144,15 +144,17 @@ export const SubmitLetterTemplate: FC<{
               readOnly
             />
             <NHSNotifyButton
-              secondary
-              id='go-back-button'
+              id='submit-template-button'
               className='nhsuk-u-margin-right-3'
+            >
+              {buttonText}
+            </NHSNotifyButton>
+            <NHSNotifyButton
+              className='nhsuk-button-background-button'
+              id='go-back-button'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
             >
               {goBackButtonText}
-            </NHSNotifyButton>
-            <NHSNotifyButton id='submit-template-button'>
-              {buttonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>

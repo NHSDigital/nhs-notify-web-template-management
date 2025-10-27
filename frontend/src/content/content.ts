@@ -666,10 +666,10 @@ const submitLetterTemplate = {
     warningCalloutLabel: 'Important',
     warningCalloutText: `You cannot edit a template after you've submitted it. You can only replace it with a new template.`,
   },
-  pageHeading: 'Approve and submit',
+  pageHeading: 'Approve',
   leadParagraph:
-    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
-  submitChecklistHeading: 'Before you submit this template',
+    'When you approve your template proof, your template will be ready to add to a message plan.',
+  submitChecklistHeading: 'Before you approve this template proof',
   submitChecklistIntroduction: 'Check that your template proof:',
   submitChecklistItems: [
     'looks exactly as you expect your recipient to get it',
@@ -677,10 +677,10 @@ const submitLetterTemplate = {
     'shows QR codes correctly (if used)',
   ],
   warningCalloutLabel: 'Important',
-  warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
+  warningCalloutText: `You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.`,
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
-  buttonText: 'Approve and submit',
+  buttonText: 'Approve template proof',
 };
 
 const copyTemplate = {

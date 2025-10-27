@@ -44,3 +44,11 @@ pre {
 .inline-block {
   display: inline-block;
 }
+
+.nhsuk-button-background-button {
+  background-color: nhsuk.$nhsuk-input-border-colour;
+}
+
+.nhsuk-button-background-button:hover {
+  background-color: nhsuk.$nhsuk-text-colour;
+}
