@@ -929,7 +929,7 @@ const smsTemplateFooter: ContentBlock[] = [
   {
     type: 'text',
     testId: 'character-message-count',
-    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`,
+    text: `{{characters}} {{characters|character|characters}}  \nThis template will be charged as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could be charged as more.`,
   },
   {
     type: 'text',
@@ -946,8 +946,6 @@ const templateFormSms = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   templateMessageFooterText: smsTemplateFooter,
-  smsCountText1: 'This template will be sent as ',
-  smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
