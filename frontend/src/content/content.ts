@@ -484,9 +484,15 @@ const previewLetterFooter: Partial<Record<TemplateStatus, string[]>> = {
 const previewLetterPreSubmissionText = {
   ifDoesNotMatch: {
     summary: 'If this proof does not match the template',
-    paragraphs: [
+    paragraphsSubmit: [
       "If the content or formatting of your proof does not match the template you originally provided, contact NHS Notify to describe what's wrong with the proof.",
       'NHS Notify will make the relevant changes and reproof your template.',
+      'It can take 5 to 10 working days to get another proof of your template.',
+      "If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.",
+    ],
+    paragraphsApproval: [
+      "If the content or formatting of your template proof does not match the template you originally provided, contact us to describe what's wrong with the template proof.",
+      "We'll update the template proof and email it to you.",
       'It can take 5 to 10 working days to get another proof of your template.',
       "If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.",
     ],
@@ -496,14 +502,17 @@ const previewLetterPreSubmissionText = {
     paragraph:
       'Edit your original template on your computer, convert it to PDF and then upload as a new template.',
   },
-  ifYouAreHappyParagraph:
+  ifYouAreHappyParagraphSubmit:
     "If you're happy with this proof, submit the template and NHS Notify will use it to set up the messages you want to send.",
+  ifYouAreHappyParagraphApproval:
+    "If you're happy with this template proof, approve it. Then your template will be ready to add to a message plan.",
 };
 
 const previewLetterTemplate = {
   pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
+  approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
   virusScanError: 'The file(s) you uploaded may contain a virus.',
@@ -920,7 +929,7 @@ const smsTemplateFooter: ContentBlock[] = [
   {
     type: 'text',
     testId: 'character-message-count',
-    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`,
+    text: `{{characters}} {{characters|character|characters}}  \nThis template will be charged as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could be charged as more.`,
   },
   {
     type: 'text',
@@ -937,8 +946,6 @@ const templateFormSms = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   templateMessageFooterText: smsTemplateFooter,
-  smsCountText1: 'This template will be sent as ',
-  smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',

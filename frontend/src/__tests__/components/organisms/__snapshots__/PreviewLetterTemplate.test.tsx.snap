@@ -1004,6 +1004,260 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 </DocumentFragment>
 `;
 
+exports[`PreviewLetterTemplate component matches snapshot when template status is PROOF_AVAILABLE and routing flag is enabled 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag"
+                  data-test-id="status-tag-proof-available"
+                />
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template proof files
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <ul
+                  class="proofs"
+                >
+                  <li>
+                    <a
+                      data-testid="proof-link_your-proof.pdf"
+                      href="/templates/files/client-id/proofs/2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE/your-proof.pdf"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <div
+                        class="container"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="icon"
+                          fill="none"
+                          height="26"
+                          viewBox="0 0 20 26"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                            fill="#4C6272"
+                          />
+                        </svg>
+                        <p
+                          class="text"
+                        >
+                          your-proof.pdf
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <section
+          class="nhsuk-u-reading-width"
+        >
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                If this proof does not match the template
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                If the content or formatting of your template proof does not match the template you originally provided, contact us to describe what's wrong with the template proof.
+              </p>
+              <p>
+                We'll update the template proof and email it to you.
+              </p>
+              <p>
+                It can take 5 to 10 working days to get another proof of your template.
+              </p>
+              <p>
+                If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.
+              </p>
+            </div>
+          </details>
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                If you need to edit the template
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                Edit your original template on your computer, convert it to PDF and then upload as a new template.
+              </p>
+            </div>
+          </details>
+          <p>
+            If you're happy with this template proof, approve it. Then your template will be ready to add to a message plan.
+          </p>
+        </section>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="preview-letter-template-cta"
+          draggable="false"
+          href="/templates/submit-letter-template/2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE"
+          id="preview-letter-template-cta"
+          role="button"
+        >
+          Approve template proof
+        </a>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`PreviewLetterTemplate component matches snapshot when template status is VALIDATION_FAILED 1`] = `
 <DocumentFragment>
   <a
