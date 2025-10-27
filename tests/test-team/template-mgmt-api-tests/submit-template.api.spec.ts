@@ -170,8 +170,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         })
       );
 
-      console.log({ latest: latest.lockNumber });
-
       const start = new Date();
 
       const updateResponse = await request.patch(
@@ -1057,10 +1055,92 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateStatus: 'SUBMITTED',
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
     });
   });
-});
 
-// TODO: CCM-12327 - tests for missing / invalid lock number header
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const submitResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(submitResponse.status()).toBe(409);
+
+    const body = await submitResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
+  });
+
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const submitResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber + 1),
+        },
+      }
+    );
+
+    expect(submitResponse.status()).toBe(409);
+
+    const body = await submitResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
+  });
+});

@@ -28,15 +28,14 @@ export class SimulatePassedValidation implements IUseCase<Template> {
 
           id: this.#config.templateId,
         },
-        UpdateExpression: [
-          'ADD #lockNumber :lockNumberIncrement',
+        UpdateExpression: `ADD #lockNumber :lockNumberIncrement ${[
           'SET files.pdfTemplate.virusScanStatus = :virusScanStatus',
           'templateStatus = :readyForSubmissionStatus',
           'files.proofs = :proofs',
           ...(this.#config.hasTestData
             ? ['files.testDataCsv.virusScanStatus = :virusScanStatus']
             : []),
-        ].join(', '),
+        ].join(', ')}`,
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
         },

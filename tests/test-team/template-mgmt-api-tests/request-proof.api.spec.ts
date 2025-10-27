@@ -288,7 +288,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
   });
 
-  test('returns 400 if the lock number header is not set', async ({
+  test('returns 409 if the lock number header is not set', async ({
     request,
   }) => {
     const template = {
@@ -328,15 +328,15 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const result = await response.json();
     const debug = JSON.stringify(result, null, 2);
 
-    expect(response.status(), debug).toBe(400);
+    expect(response.status(), debug).toBe(409);
 
     expect(result).toEqual({
-      statusCode: 400,
+      statusCode: 409,
       technicalMessage: 'Invalid lock number',
     });
   });
 
-  test('returns 400 if the lock number header does not match the current one', async ({
+  test('returns 409 if the lock number header does not match the current one', async ({
     request,
   }) => {
     const template = {
@@ -377,10 +377,10 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const result = await response.json();
     const debug = JSON.stringify(result, null, 2);
 
-    expect(response.status(), debug).toBe(400);
+    expect(response.status(), debug).toBe(409);
 
     expect(result).toEqual({
-      statusCode: 400,
+      statusCode: 409,
       technicalMessage: 'Invalid lock number',
     });
   });

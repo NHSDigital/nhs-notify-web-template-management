@@ -29,7 +29,7 @@ export class SimulateFailedVirusScan implements IUseCase<Template> {
           owner: `CLIENT#${this.#config.clientId}`,
           id: this.#config.templateId,
         },
-        UpdateExpression: `ADD #lockNumber :lockNumberIncrement, SET ${this.#config.filePath} = :virusScanStatus, templateStatus = :virusScanStatusFailedTemplateStatus`,
+        UpdateExpression: `ADD #lockNumber :lockNumberIncrement SET ${this.#config.filePath} = :virusScanStatus, templateStatus = :virusScanStatusFailedTemplateStatus`,
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
         },
