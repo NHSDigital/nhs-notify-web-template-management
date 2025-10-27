@@ -71,10 +71,10 @@ variable "enable_backup" {
   default     = true
 }
 
-variable "enable_event_stream" {
+variable "enable_routing_config_event_stream" {
   type        = bool
-  description = "Enable DynamoDB streaming to EventBridge"
-  default     = true
+  description = "Enable DynamoDB streaming from routing config table to EventBridge"
+  default     = false
 }
 
 variable "kms_key_arn" {
