@@ -1,7 +1,4 @@
-const { signInPageActions } = require('./sign-in-page.actions');
-
 const pageActions = [
-  ...signInPageActions,
   'wait for [data-testid="preview-message__heading"] to be visible',
 ];
 

@@ -1,7 +1,4 @@
-const { signInPageActions } = require('./sign-in-page.actions');
-
 const pageActions = [
-  ...signInPageActions,
   'wait for element a[href*="preview-email-template"] to be visible',
   'click element a[href*="preview-email-template"]',
   'wait for element #preview-heading-message to be visible',

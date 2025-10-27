@@ -1,7 +1,4 @@
-const { signInPageActions } = require('./sign-in-page.actions');
-
 const pageActions = [
-  ...signInPageActions,
   'wait for element #templateType-email to be visible',
   'click element #templateType-email',
   'click element #choose-a-template-type-submit-button',
