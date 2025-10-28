@@ -56,9 +56,9 @@ export class UpdateCommandBuilder<Entity> {
     value: K
   ) {
     this._expressionAttributeNames[`#${attributeName}`] = attributeName;
-    this._expressionAttributeValues[`:${attributeName}_value`] = value;
+    this._expressionAttributeValues[`:${attributeName}`] = value;
     this._updateExpressionSet.ADD[attributeName] =
-      `#${attributeName} :${attributeName}_value`;
+      `#${attributeName} :${attributeName}`;
     return this;
   }
 
@@ -109,8 +109,6 @@ export class UpdateCommandBuilder<Entity> {
     conditionIndex: number,
     depthPrefix: string
   ) {
-    let localIndex = conditionIndex;
-
     const { attribute, value, conditionJoiner, negated } = condition;
 
     const values = Array.isArray(value) ? value : [value];
@@ -120,8 +118,10 @@ export class UpdateCommandBuilder<Entity> {
 
     const inValueKeys = [];
 
+    let localIndex = 1;
+
     for (const conditionValue of values) {
-      const conditionValueKey = `:condition_${[depthPrefix, localIndex, attribute].filter(Boolean).join('_')}`;
+      const conditionValueKey = `:condition_${[depthPrefix, conditionIndex, localIndex, attribute].filter(Boolean).join('_')}`;
       this._expressionAttributeValues[conditionValueKey] = conditionValue;
       inValueKeys.push(conditionValueKey);
 

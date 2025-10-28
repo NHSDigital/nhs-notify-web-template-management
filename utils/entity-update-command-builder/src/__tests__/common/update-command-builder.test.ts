@@ -353,30 +353,44 @@ describe('UpdateExpressionBuilder', () => {
       expectedJoiner: ConditionJoiner;
       expectedFirstCondition: string;
       expectedSecondCondition: string;
+      expectedConditionAttributeValues: Record<string, string>;
     }> = [
       {
         firstCall: 'IN',
         secondCall: 'AND',
         secondCallNegated: true,
         expectedJoiner: 'AND',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
         expectedSecondCondition: 'NOT #ATTRIBUTE1 > :condition_2_ATTRIBUTE1',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'IN',
         secondCall: 'OR',
         secondCallNegated: false,
         expectedJoiner: 'OR',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
         expectedSecondCondition: '#ATTRIBUTE1 > :condition_2_ATTRIBUTE1',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'IN',
         secondCall: 'IN',
         secondCallNegated: true,
         expectedJoiner: 'AND',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
-        expectedSecondCondition: 'NOT #ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
+        expectedSecondCondition:
+          'NOT #ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'AND',
@@ -384,7 +398,11 @@ describe('UpdateExpressionBuilder', () => {
         secondCallNegated: false,
         expectedJoiner: 'AND',
         expectedFirstCondition: '#ATTRIBUTE1 = :condition_1_ATTRIBUTE1',
-        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'OR',
@@ -392,7 +410,11 @@ describe('UpdateExpressionBuilder', () => {
         secondCallNegated: false,
         expectedJoiner: 'AND',
         expectedFirstCondition: '#ATTRIBUTE1 = :condition_1_ATTRIBUTE1',
-        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
     ];
 
@@ -405,6 +427,7 @@ describe('UpdateExpressionBuilder', () => {
         expectedJoiner,
         expectedFirstCondition,
         expectedSecondCondition,
+        expectedConditionAttributeValues,
       }) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
@@ -478,8 +501,7 @@ describe('UpdateExpressionBuilder', () => {
           },
           ExpressionAttributeValues: {
             ':ATTRIBUTE1': attributeValue,
-            ':condition_1_ATTRIBUTE1': attributeExpectedValue1,
-            ':condition_2_ATTRIBUTE1': attributeExpectedValue2,
+            ...expectedConditionAttributeValues,
           },
           Key: mockEntityKeys,
           TableName: mockTableName,
@@ -598,14 +620,14 @@ describe('UpdateExpressionBuilder', () => {
         const res = builder.finalise();
 
         expect(res).toEqual({
-          ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 OR #ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)`,
+          ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 OR #ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)`,
           ExpressionAttributeNames: {
             '#ATTRIBUTE1': 'ATTRIBUTE1',
           },
           ExpressionAttributeValues: {
             ':ATTRIBUTE1': attributeValue,
             ':condition_1_ATTRIBUTE1': attributeExpectedValue1,
-            ':condition_2_ATTRIBUTE1': attributeExpectedValue2,
+            ':condition_2_1_ATTRIBUTE1': attributeExpectedValue2,
           },
           Key: mockEntityKeys,
           TableName: mockTableName,
@@ -633,13 +655,13 @@ describe('UpdateExpressionBuilder', () => {
 
       expect(res).toEqual({
         ConditionExpression:
-          'NOT #ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1) OR attribute_type (#ATTRIBUTE1, :condition_2_ATTRIBUTE1)',
+          'NOT #ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1) OR attribute_type (#ATTRIBUTE1, :condition_2_ATTRIBUTE1)',
         ExpressionAttributeNames: {
           '#ATTRIBUTE1': attributeName,
         },
         ExpressionAttributeValues: {
           ':ATTRIBUTE1': attributeValue,
-          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
           ':condition_2_ATTRIBUTE1': 'S',
         },
         Key: mockEntityKeys,
@@ -679,12 +701,12 @@ describe('UpdateExpressionBuilder', () => {
           ':condition_1_1_status': 'DRAFT',
           ':condition_1_2_status': 'PENDING',
           ':condition_2_1_lockNumber': '10',
-          ':condition_2_2_lockNumber': '1',
-          ':condition_2_3_lockNumber': '2',
+          ':condition_2_2_1_lockNumber': '1',
+          ':condition_2_2_2_lockNumber': '2',
         },
         UpdateExpression: `SET #name = :name`,
         ConditionExpression:
-          '(#status = :condition_1_1_status OR #status = :condition_1_2_status) OR (#lockNumber = :condition_2_1_lockNumber OR #lockNumber IN (:condition_2_2_lockNumber, :condition_2_3_lockNumber))',
+          '(#status = :condition_1_1_status OR #status = :condition_1_2_status) OR (#lockNumber = :condition_2_1_lockNumber OR #lockNumber IN (:condition_2_2_1_lockNumber, :condition_2_2_2_lockNumber))',
       });
     });
 
@@ -749,12 +771,12 @@ describe('UpdateExpressionBuilder', () => {
           ':name': 'Michael',
           ':condition_1_status': 'DRAFT',
           ':condition_2_1_lockNumber': '10',
-          ':condition_2_2_2_lockNumber': '12',
-          ':condition_2_2_3_lockNumber': '34',
+          ':condition_2_2_2_1_lockNumber': '12',
+          ':condition_2_2_2_2_lockNumber': '34',
         },
         UpdateExpression: `SET #name = :name`,
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR (attribute_not_exists (#lockNumber) OR #lockNumber IN (:condition_2_2_2_lockNumber, :condition_2_2_3_lockNumber)))',
+          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR (attribute_not_exists (#lockNumber) OR #lockNumber IN (:condition_2_2_2_1_lockNumber, :condition_2_2_2_2_lockNumber)))',
       });
     });
   });
@@ -1021,12 +1043,12 @@ describe('UpdateExpressionBuilder', () => {
         TableName: mockTableName,
         Key: mockEntityKeys,
         ExpressionAttributeValues: {
-          ':ATTRIBUTE_value': 1,
+          ':ATTRIBUTE': 1,
         },
         ExpressionAttributeNames: {
           [`#${attributeName}`]: attributeName,
         },
-        UpdateExpression: `ADD #${attributeName} :${attributeName}_value`,
+        UpdateExpression: `ADD #${attributeName} :${attributeName}`,
       });
     });
   });

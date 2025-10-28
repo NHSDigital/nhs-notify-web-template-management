@@ -20,12 +20,32 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     );
   }
 
+  setName(name: string) {
+    this.updateBuilder.setValue('name', name);
+    return this;
+  }
+
+  setSubject(subject: string) {
+    this.updateBuilder.setValue('subject', subject);
+    return this;
+  }
+
+  setMessage(message: string) {
+    this.updateBuilder.setValue('message', message);
+    return this;
+  }
+
   setStatus(status: TemplateStatus) {
     this.updateBuilder.setValue('templateStatus', status);
     return this;
   }
 
-  expectedStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
+  setTTL(ttl: number) {
+    this.updateBuilder.setValue('ttl', ttl);
+    return this;
+  }
+
+  expectStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
     if (Array.isArray(expectedStatus)) {
       this.updateBuilder.conditions.andIn('templateStatus', expectedStatus);
       return this;
@@ -80,12 +100,12 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  expectedTemplateType(type: TemplateType) {
+  expectTemplateType(type: TemplateType) {
     this.updateBuilder.conditions.and('templateType', '=', type);
     return this;
   }
 
-  expectedClientId(id: string) {
+  expectClientId(id: string) {
     this.updateBuilder.conditions.and('clientId', '=', id);
     return this;
   }
@@ -107,6 +127,15 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
         .orFn('attribute_not_exists', 'lockNumber');
     });
 
+    return this;
+  }
+
+  expectNotFinalStatus() {
+    this.updateBuilder.conditions.andIn(
+      'templateStatus',
+      ['DELETED', 'SUBMITTED'],
+      true
+    );
     return this;
   }
 

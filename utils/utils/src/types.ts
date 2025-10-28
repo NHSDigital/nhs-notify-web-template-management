@@ -121,6 +121,7 @@ export type DatabaseTemplate = {
 type DbOnlyTemplateProperties = {
   owner: string;
   version: number;
+  ttl?: number;
 };
 
 type AssertExtendsMerged<

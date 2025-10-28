@@ -569,6 +569,12 @@ export type PostV1TemplateResponse =
 
 export type DeleteV1TemplateByTemplateIdData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to update
@@ -636,6 +642,12 @@ export type PutV1TemplateByTemplateIdData = {
    * Template to update
    */
   body: CreateUpdateTemplate;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to update
@@ -668,6 +680,12 @@ export type PutV1TemplateByTemplateIdResponse =
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of the template to request a proof of
@@ -700,6 +718,12 @@ export type PostV1TemplateByTemplateIdProofResponse =
 
 export type PatchV1TemplateByTemplateIdSubmitData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to submit

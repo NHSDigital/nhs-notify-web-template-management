@@ -69,7 +69,7 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
-  expectedStatus(expectedStatus: RoutingConfigStatus) {
+  expectStatus(expectedStatus: RoutingConfigStatus) {
     this.updateBuilder.conditions.and('status', '=', expectedStatus);
     return this;
   }

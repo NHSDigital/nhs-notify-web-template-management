@@ -1553,6 +1553,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1665,6 +1674,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "requestBody": {
@@ -1741,6 +1759,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1805,6 +1832,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],

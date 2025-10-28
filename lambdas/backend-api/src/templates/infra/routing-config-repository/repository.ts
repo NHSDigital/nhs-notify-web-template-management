@@ -91,7 +91,7 @@ export class RoutingConfigRepository {
       .setCascade(cascade)
       .setName(name)
       .setCascadeGroupOverrides(cascadeGroupOverrides)
-      .expectedStatus('DRAFT')
+      .expectStatus('DRAFT')
       .build();
 
     try {
@@ -124,7 +124,7 @@ export class RoutingConfigRepository {
       this.updateCmdOpts
     )
       .setStatus('COMPLETED')
-      .expectedStatus('DRAFT')
+      .expectStatus('DRAFT')
       .setUpdatedByUserAt(user.userId)
       .build();
 
@@ -159,7 +159,7 @@ export class RoutingConfigRepository {
     )
       .setStatus('DELETED')
       .setTtl(calculateTTL())
-      .expectedStatus('DRAFT')
+      .expectStatus('DRAFT')
       .setUpdatedByUserAt(user.userId)
       .build();
 
