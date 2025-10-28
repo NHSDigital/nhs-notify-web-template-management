@@ -703,7 +703,7 @@ const copyTemplate = {
   },
 };
 
-const chooseTemplate = {
+const chooseTemplateType = {
   pageTitle: generatePageTitle('Choose a template type'),
   pageHeading: 'Choose a template type to create',
   buttonText: 'Continue',
@@ -1041,6 +1041,103 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
+};
+
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove',
+    template: 'template',
+  },
+  optional: '(optional)',
+};
+
+const messagePlanFallbackConditions: Record<
+  TemplateType,
+  FallbackConditionBlock
+> = {
+  NHS_APP: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message read within 24 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not read within 24 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  SMS: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message delivered within 72 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not delivered within 72 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  EMAIL: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message delivered within 72 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not delivered within 72 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  LETTER: {
+    title: 'Conditions for accessible and language letters',
+    content: {
+      continue: [
+        {
+          type: 'inline-text',
+          text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
+        },
+        {
+          type: 'list',
+          items: [
+            'the recipient has requested an accessible or language letter in PDS',
+            `you've included the relevant template in this message plan`,
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
+};
+
+const createEditMessagePlan = {
+  headerCaption: 'Message plan',
+  changeNameLink: {
+    href: '/message-plans/edit-message-plan/{{routingConfigId}}',
+    text: 'Change name',
+  },
+  rowHeadings: {
+    routingPlanId: 'Routing Plan ID',
+    status: 'Status',
+  },
+  ctas: {
+    primary: {
+      href: '/message-plans/move-to-production/{{routingConfigId}}',
+      text: 'Move to production',
+    },
+    secondary: {
+      href: '/message-plans',
+      text: 'Save and close',
+    },
+  },
+  messagePlanFallbackConditions,
+};
+
 const messagePlanDraftAndProdInfo: {
   title: string;
   content: ContentBlock[];
@@ -1086,7 +1183,7 @@ const messagePlansPage = {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  previewLink: (id: string) => `/message-plan/${id}`,
+  messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
 };
 
 const chooseMessageOrder = {
@@ -1143,14 +1240,18 @@ const content = {
   components: {
     channelGuidance,
     chooseMessageOrder,
-    chooseTemplate,
+    chooseTemplateType,
     copyTemplate,
+    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanBlock,
+    messagePlanChannelTemplate,
+    messagePlanFallbackConditions,
     messagePlanForm,
     messagePlansListComponent,
     nameYourTemplate,
@@ -1178,6 +1279,7 @@ const content = {
     letterTemplateInvalidConfiguration,
     messagePlanInvalidConfiguration,
     messageTemplates,
+    chooseTemplatesForMessagePlan,
     messagePlansPage,
   },
 };

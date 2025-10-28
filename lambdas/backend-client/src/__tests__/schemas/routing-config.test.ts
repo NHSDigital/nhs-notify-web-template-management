@@ -224,7 +224,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
     expect(res.success).toBe(false);
   });
 
-  test('CascadeItem with both defaultTemplateId and conditionalTemplates is invalid', () => {
+  test('CascadeItem with both defaultTemplateId and conditionalTemplates is valid', () => {
     const res = $CreateUpdateRoutingConfig.safeParse({
       ...baseInput,
       cascade: [
@@ -235,7 +235,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
         },
       ],
     });
-    expect(res.success).toBe(false);
+    expect(res.success).toBe(true);
   });
 
   test('CascadeItem missing both defaultTemplateId and conditionalTemplates is invalid', () => {
