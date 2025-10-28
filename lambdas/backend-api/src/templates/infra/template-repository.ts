@@ -578,7 +578,7 @@ export class TemplateRepository {
     }
   }
 
-  async proofRequestUpdate(templateId: string, user: User) {
+  async proofRequestUpdate(templateId: string, user: User, lockNumber: number) {
     try {
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
@@ -600,6 +600,8 @@ export class TemplateRepository {
         .expectTemplateType('LETTER')
         .expectClientId(user.clientId)
         .expectProofingEnabled()
+        .expectLockNumber(lockNumber)
+        .incrementLockNumber()
         .build();
 
       const response = await this.client.send(new UpdateCommand(update));
@@ -608,6 +610,12 @@ export class TemplateRepository {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
           return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
         }
 
         return failure(

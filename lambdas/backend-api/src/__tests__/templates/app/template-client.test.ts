@@ -1766,6 +1766,25 @@ describe('templateClient', () => {
   });
 
   describe('requestProof', () => {
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.requestProof(templateId, user, '');
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description: 'Invalid lock number',
+          },
+        },
+      });
+    });
+
     test('should return a failure result, when proofing is disabled', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1773,7 +1792,7 @@ describe('templateClient', () => {
         data: { features: { proofing: false } },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -1796,7 +1815,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -1840,11 +1859,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1902,11 +1922,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1954,11 +1975,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -2023,11 +2045,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
@@ -2098,11 +2121,12 @@ describe('templateClient', () => {
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);

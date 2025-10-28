@@ -5,8 +5,6 @@ import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder'
 const THIRTY_DAYS_MS = 2_592_000_000;
 
 export class TemplateLockRepository {
-  private readonly clientOwnerPrefix = 'CLIENT#';
-
   constructor(
     private readonly client: DynamoDBDocumentClient,
     private readonly templatesTableName: string,
@@ -14,6 +12,7 @@ export class TemplateLockRepository {
     private readonly lockTtl: number
   ) {}
 
+  // TODO: CCM-12327
   async acquireLockAndSetSupplierReference(
     clientId: string,
     id: string,
@@ -43,6 +42,7 @@ export class TemplateLockRepository {
     return true;
   }
 
+  // TODO: CCM-12327
   async finaliseLock(clientId: string, id: string) {
     const time = this.getDate().getTime();
 

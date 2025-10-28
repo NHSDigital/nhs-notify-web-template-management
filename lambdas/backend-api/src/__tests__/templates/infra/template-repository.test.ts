@@ -1734,14 +1734,15 @@ describe('templateRepository', () => {
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({ data: { id: 'template-id' } });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND #proofingEnabled = :condition_4_proofingEnabled',
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND #proofingEnabled = :condition_4_proofingEnabled AND (#lockNumber = :condition_5_1_lockNumber OR attribute_not_exists (#lockNumber))',
         ExpressionAttributeNames: {
           '#clientId': 'clientId',
           '#templateStatus': 'templateStatus',
@@ -1750,12 +1751,15 @@ describe('templateRepository', () => {
           '#updatedBy': 'updatedBy',
           '#proofingEnabled': 'proofingEnabled',
           '#supplierReferences': 'supplierReferences',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
           ':condition_2_templateType': 'LETTER',
           ':condition_3_clientId': clientId,
           ':condition_4_proofingEnabled': true,
+          ':condition_5_1_lockNumber': 0,
+          ':lockNumber': 1,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':updatedBy': userId,
@@ -1766,7 +1770,7 @@ describe('templateRepository', () => {
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
         UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences)',
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy, #supplierReferences = if_not_exists(#supplierReferences, :supplierReferences) ADD #lockNumber :lockNumber',
       });
     });
 
@@ -1782,7 +1786,8 @@ describe('templateRepository', () => {
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1796,6 +1801,37 @@ describe('templateRepository', () => {
       });
     });
 
+    it('returns 409 error response when conditional check fails when lock numbers are different', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'PENDING_UPLOAD' },
+          lockNumber: { N: '1' },
+        },
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-id',
+        user,
+        0
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 409,
+            description: 'Invalid lock number',
+          },
+        },
+      });
+    });
+
     it('returns 400 error response when conditional check fails, but item exists, with a status other than DELETED or PENDING_PROOF_REQUEST', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -1804,6 +1840,7 @@ describe('templateRepository', () => {
         $metadata: {},
         Item: {
           templateStatus: { S: 'PENDING_UPLOAD' },
+          lockNumber: { N: '0' },
         },
       });
 
@@ -1811,7 +1848,8 @@ describe('templateRepository', () => {
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1834,7 +1872,8 @@ describe('templateRepository', () => {
 
       const result = await templateRepository.proofRequestUpdate(
         'template-id',
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({

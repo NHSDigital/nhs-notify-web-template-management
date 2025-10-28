@@ -419,9 +419,21 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
 
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
@@ -451,7 +463,11 @@ export class TemplateClient {
     }
 
     const proofRequestUpdateResult =
-      await this.templateRepository.proofRequestUpdate(templateId, user);
+      await this.templateRepository.proofRequestUpdate(
+        templateId,
+        user,
+        lockNumberValidation.data
+      );
 
     if (proofRequestUpdateResult.error) {
       log
