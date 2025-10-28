@@ -697,6 +697,7 @@ describe('templateRepository', () => {
   describe('submit', () => {
     test.each([
       {
+        testName: 'When template does not exist',
         Item: undefined,
         code: 404,
         message: 'Template not found',
@@ -707,6 +708,7 @@ describe('templateRepository', () => {
         Item: marshall({
           templateType: 'EMAIL',
           templateStatus: 'SUBMITTED',
+          lockNumber: 0,
         }),
         code: 400,
         message: 'Template with status SUBMITTED cannot be updated',
@@ -717,6 +719,7 @@ describe('templateRepository', () => {
         Item: marshall({
           templateType: 'LETTER',
           templateStatus: 'PENDING_UPLOAD',
+          lockNumber: 0,
         }),
         code: 400,
         message: 'Template cannot be submitted',
@@ -727,6 +730,7 @@ describe('templateRepository', () => {
         Item: marshall({
           templateType: 'LETTER',
           templateStatus: 'PENDING_VALIDATION',
+          lockNumber: 0,
         }),
         code: 400,
         message: 'Template cannot be submitted',
@@ -737,6 +741,7 @@ describe('templateRepository', () => {
         Item: marshall({
           templateType: 'EMAIL',
           templateStatus: 'DELETED',
+          lockNumber: 0,
         }),
         code: 404,
         message: 'Template not found',
@@ -747,6 +752,7 @@ describe('templateRepository', () => {
         Item: marshall({
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 0,
           files: {
             pdfTemplate: {
               virusScanStatus: 'PASSED',
@@ -763,6 +769,16 @@ describe('templateRepository', () => {
         code: 400,
         message: 'Template cannot be submitted',
       },
+      {
+        testName: 'Fails when stored lock number differs from input',
+        Item: marshall({
+          templateType: 'SMS',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 1,
+        }),
+        code: 409,
+        message: 'Invalid lock number',
+      },
     ])('submit: $testName', async ({ Item, code, message }) => {
       const { templateRepository, mocks } = setup();
 
@@ -776,7 +792,8 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.submit(
         'abc-def-ghi-jkl-123',
-        user
+        user,
+        0
       );
 
       expect(response).toEqual({
@@ -799,7 +816,8 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.submit(
         'abc-def-ghi-jkl-123',
-        user
+        user,
+        0
       );
 
       expect(response).toEqual({
@@ -827,6 +845,7 @@ describe('templateRepository', () => {
         templateType: 'NHS_APP',
         updatedAt: 'now',
         createdAt: 'yesterday',
+        lockNumber: 1,
       };
 
       mocks.ddbDocClient
@@ -836,10 +855,40 @@ describe('templateRepository', () => {
         })
         .resolves({ Attributes: databaseTemplate });
 
-      const response = await templateRepository.submit(id, user);
+      const response = await templateRepository.submit(id, user, 0);
 
       expect(response).toEqual({
         data: databaseTemplate,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':deleted': 'DELETED',
+          ':expectedLetterStatus': 'PROOF_AVAILABLE',
+          ':expectedLockNumber': 0,
+          ':expectedStatus': 'NOT_YET_SUBMITTED',
+          ':lockNumberIncrement': 1,
+          ':newStatus': 'SUBMITTED',
+          ':passed': 'PASSED',
+          ':submitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': 'user-id',
+        },
+
+        UpdateExpression:
+          'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND (#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus) AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
       });
     });
   });

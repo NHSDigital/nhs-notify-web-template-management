@@ -1664,6 +1664,23 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.submitTemplate(templateId, user, '');
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description: 'Invalid lock number',
+          },
+        },
+      });
+    });
+
     test('submitTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1676,11 +1693,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1717,11 +1735,12 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1752,11 +1771,12 @@ describe('templateClient', () => {
         data: { ...template, owner: user.userId, version: 1 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({

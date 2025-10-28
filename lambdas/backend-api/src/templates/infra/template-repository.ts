@@ -204,20 +204,23 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, user: User) {
+  async submit(templateId: string, user: User, lockNumber: number) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
-    const expressionAttributeValues: Record<string, string> = {
-      ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
-      ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-      ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
-      ':passed': 'PASSED' satisfies VirusScanStatus,
-    };
+    const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
+        ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
+        ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':passed': 'PASSED' satisfies VirusScanStatus,
+        ':expectedLockNumber': lockNumber,
+      };
 
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus',
+      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus)',
+      '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
     ];
 
     try {
@@ -652,12 +655,13 @@ export class TemplateRepository {
         id: templateId,
         owner: this.clientOwnerKey(clientId),
       },
-      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
+      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement`,
       ExpressionAttributeNames: {
         ...expressionAttributeNames,
         '#updatedAt': 'updatedAt',
         '#updatedBy': 'updatedBy',
         '#templateStatus': 'templateStatus',
+        '#lockNumber': 'lockNumber',
       },
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
@@ -665,6 +669,7 @@ export class TemplateRepository {
         ':updatedBy': userId,
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':lockNumberIncrement': 1,
       },
       ConditionExpression: andConditions,
       ReturnValues: 'ALL_NEW',

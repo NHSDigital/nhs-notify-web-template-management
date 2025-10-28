@@ -303,11 +303,27 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const submitResult = await this.templateRepository.submit(templateId, user);
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
+
+    const submitResult = await this.templateRepository.submit(
+      templateId,
+      user,
+      lockNumber
+    );
 
     if (submitResult.error) {
       log
