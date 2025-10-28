@@ -216,4 +216,5 @@ curl -X DELETE --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONF
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
+
 <!-- vale on -->

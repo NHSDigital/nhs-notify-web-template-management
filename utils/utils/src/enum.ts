@@ -4,6 +4,7 @@ import type {
   LetterType,
   Language,
   TemplateDto,
+  Channel,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 
@@ -185,10 +186,16 @@ const creationAction = (type: TemplateType) =>
 
 export const templateCreationPages = (type: TemplateType) =>
   `/${creationAction(type)}-${templateTypeToUrlTextMappings(type)}-template`;
+
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+
+export const messagePlanChooseTemplateUrl = (type: TemplateType) =>
+  type === 'LETTER'
+    ? 'choose-standard-english-letter-template'
+    : `choose-${templateTypeToUrlTextMappings(type)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (
@@ -273,6 +280,45 @@ export const MESSAGE_ORDER_OPTIONS_LIST = [
 
 export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
 
+export const ORDINALS = [
+  'First',
+  'Second',
+  'Third',
+  'Fourth',
+  'Fifth',
+  'Sixth',
+];
+
+export const channelToTemplateType = (channel: Channel): TemplateType => {
+  const map: Record<Channel, TemplateType> = {
+    EMAIL: 'EMAIL',
+    LETTER: 'LETTER',
+    NHSAPP: 'NHS_APP',
+    SMS: 'SMS',
+  };
+  return map[channel];
+};
+
+export const templateTypeToChannel = (templateType: TemplateType): Channel => {
+  const map: Record<TemplateType, Channel> = {
+    EMAIL: 'EMAIL',
+    LETTER: 'LETTER',
+    NHS_APP: 'NHSAPP',
+    SMS: 'SMS',
+  };
+  return map[templateType];
+};
+
+export const channelDisplayMappings = (channel: Channel) => {
+  const map: Record<Channel, string> = {
+    NHSAPP: 'NHS App',
+    SMS: 'Text message (SMS)',
+    EMAIL: 'Email',
+    LETTER: 'Letter',
+  };
+  return map[channel];
+};
+
 const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
   {
     DRAFT: 'Draft',
@@ -280,6 +326,16 @@ const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
     DELETED: '',
   } as const;
 
+const messagePlanStatusColourMappings: Record<RoutingConfigStatus, Colour> = {
+  DRAFT: 'green',
+  COMPLETED: 'red',
+  DELETED: undefined,
+} as const;
+
 export const messagePlanStatusToDisplayText = (
   status: RoutingConfigStatus
 ): string => messagePlanStatusToDisplayMappings[status];
+
+export const messagePlanStatusToTagColour = (
+  status: RoutingConfigStatus
+): Colour => messagePlanStatusColourMappings[status];

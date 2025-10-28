@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import type { RoutingConfigStatusActive } from 'nhs-notify-backend-client';
 import { messagePlanStatusToDisplayText } from 'nhs-notify-web-template-management-utils';
+import { interpolate } from '@utils/interpolate';
 
 export type MessagePlanListItem = {
   name: string;
@@ -41,7 +42,11 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const rows = props.plans.map((plan) => (
     <Table.Row key={plan.id}>
       <Table.Cell>
-        <Link href={messagePlansListComponent.previewLink(plan.id)}>
+        <Link
+          href={interpolate(messagePlansListComponent.messagePlanLink, {
+            routingConfigId: plan.id,
+          })}
+        >
           {plan.name}
         </Link>
       </Table.Cell>

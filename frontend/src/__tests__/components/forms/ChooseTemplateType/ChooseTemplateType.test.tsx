@@ -1,6 +1,6 @@
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
+import { ChooseTemplateType } from '@forms/ChooseTemplateType/ChooseTemplateType';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 
@@ -28,7 +28,7 @@ jest.mock('react', () => {
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
     const container = render(
-      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
+      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
     );
     expect(container.asFragment()).toMatchSnapshot();
 
@@ -77,14 +77,14 @@ describe('Choose template page', () => {
     jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
     const container = render(
-      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
+      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
     );
     expect(container.asFragment()).toMatchSnapshot();
   });
 
   test('Client-side validation triggers', () => {
     const container = render(
-      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
+      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
     );
     const submitButton = screen.getByTestId('submit-button');
     fireEvent.click(submitButton);
