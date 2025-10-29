@@ -1,8 +1,10 @@
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { render } from '@testing-library/react';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('nhs-notify-web-template-management-utils/enum');
+jest.mock('@providers/client-config-provider');
 
 const isRightToLeftMock = jest.mocked(isRightToLeft);
 
@@ -10,6 +12,7 @@ describe('PreviewLetterTemplate component', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     isRightToLeftMock.mockReturnValueOnce(false);
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
   });
 
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
@@ -126,6 +129,42 @@ describe('PreviewLetterTemplate component', () => {
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
           lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template status is PROOF_AVAILABLE and routing flag is enabled', () => {
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE',
+          clientId: 'client-id',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'PROOF_AVAILABLE',
+          letterType: 'x1',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+            },
+          },
+          proofingEnabled: true,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
         }}
       />
     );

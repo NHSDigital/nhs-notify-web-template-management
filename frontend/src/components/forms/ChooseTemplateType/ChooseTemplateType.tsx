@@ -9,23 +9,23 @@ import {
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { $ChooseTemplate, chooseTemplateAction } from './server-action';
+import { $ChooseTemplateType, chooseTemplateTypeAction } from './server-action';
 import { TemplateType } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 
-export const ChooseTemplate = ({
+export const ChooseTemplateType = ({
   templateTypes,
 }: {
   templateTypes: TemplateType[];
 }) => {
-  const [state, action] = useActionState(chooseTemplateAction, {});
+  const [state, action] = useActionState(chooseTemplateTypeAction, {});
   const [errorState, setErrorState] = useState<ErrorState | undefined>(
     state.errorState
   );
 
-  const formValidate = validate($ChooseTemplate, setErrorState);
+  const formValidate = validate($ChooseTemplateType, setErrorState);
 
   const options = templateTypes.map((templateType) => ({
     id: templateType,
@@ -39,7 +39,7 @@ export const ChooseTemplate = ({
     learnMoreLink,
     learnMoreText,
     backLinkText,
-  } = content.components.chooseTemplate;
+  } = content.components.chooseTemplateType;
 
   return (
     <>

@@ -78,7 +78,7 @@ test.describe('Create SMS message template Page', () => {
       );
 
       await expect(createSmsTemplatePage.characterCountText).toHaveText(
-        /This template will be sent as \d+ text messages/
+        /This template will be charged as \d+ text messages/
       );
     });
 

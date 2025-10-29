@@ -5,7 +5,7 @@ resource "aws_pipes_pipe" "template_table_events" {
   role_arn           = aws_iam_role.pipe_template_table_events.arn
   source             = aws_dynamodb_table.templates.stream_arn
   target             = module.sqs_template_mgmt_events.sqs_queue_arn
-  desired_state      = var.enable_event_stream ? "RUNNING" : "STOPPED"
+  desired_state      = "RUNNING"
   kms_key_identifier = var.kms_key_arn
 
   source_parameters {
@@ -24,7 +24,15 @@ resource "aws_pipes_pipe" "template_table_events" {
   }
 
   target_parameters {
-      input_template = "{\"dynamodb\": <$.dynamodb>,\"eventID\": <$.eventID>,\"eventName\": <$.eventName>,\"eventSource\": <$.eventSource>,\"tableName\": \"${aws_dynamodb_table.templates.name}\"}"
+    input_template = <<-EOF
+      {
+        "dynamodb": <$.dynamodb>,
+        "eventID": <$.eventID>,
+        "eventName": <$.eventName>,
+        "eventSource": <$.eventSource>,
+        "tableName": "${aws_dynamodb_table.templates.name}"
+      }
+    EOF
 
     sqs_queue_parameters {
       message_group_id         = "$.dynamodb.Keys.id.S"
@@ -44,11 +52,11 @@ resource "aws_pipes_pipe" "template_table_events" {
 
 resource "aws_iam_role" "pipe_template_table_events" {
   name               = "${local.csi}-pipe-template-table-events"
-  description        = "IAM Role for Pipe forward template table stream events to SQS"
-  assume_role_policy = data.aws_iam_policy_document.pipes_trust_policy.json
+  description        = "IAM Role for Pipe to forward template table stream events to SQS"
+  assume_role_policy = data.aws_iam_policy_document.pipes_templates_trust_policy.json
 }
 
-data "aws_iam_policy_document" "pipes_trust_policy" {
+data "aws_iam_policy_document" "pipes_templates_trust_policy" {
   statement {
     sid     = "PipesAssumeRole"
     effect  = "Allow"
