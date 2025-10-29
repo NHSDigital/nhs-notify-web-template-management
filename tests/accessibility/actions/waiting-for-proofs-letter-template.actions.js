@@ -8,7 +8,7 @@ const pageActions = [
 ];
 
 const waitingForProofsLetterTemplatePage = (url) => ({
-  name: 'proof-available-letter-template',
+  name: 'waiting-for-proofs-letter-template',
   url,
   actions: pageActions,
 });

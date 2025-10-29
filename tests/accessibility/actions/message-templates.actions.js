@@ -1,6 +1,4 @@
-const pageActions = [
-  'wait for element #create-template-button to be visible',
-];
+const pageActions = ['wait for element #create-template-button to be visible'];
 
 const messageTemplatesPage = (url) => ({
   name: 'message-templates',

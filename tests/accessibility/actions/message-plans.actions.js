@@ -1,6 +1,4 @@
-const pageActions = [
-  'wait for element .nhsuk-button to be visible',
-];
+const pageActions = ['wait for element .nhsuk-button to be visible'];
 
 const messagePlansPage = (url) => ({
   name: 'message-plans',

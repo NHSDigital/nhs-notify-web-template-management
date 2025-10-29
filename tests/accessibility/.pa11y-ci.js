@@ -196,17 +196,20 @@ const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]
   ? [process.env.JOURNEY]
   : Object.keys(allJourneys);
 
+const reportDest =
+  process.env.REPORT_DEST || './.reports/accessibility';
+
 module.exports = {
   urls: selectedJourney
     .flatMap(journey => allJourneys[journey] || [])
-    .map(performCheck),
+    .map((config) => performCheck({...config, reportDest})),
   defaults: {
     reporters: [
       'cli',
       [
         'pa11y-ci-reporter-html',
         {
-          destination: './.reports/accessibility',
+          destination: reportDest,
           includeZeroIssues: true,
         },
       ],
@@ -217,6 +220,6 @@ module.exports = {
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
-    concurrency: 4,
+    concurrency: 2,
   },
 };

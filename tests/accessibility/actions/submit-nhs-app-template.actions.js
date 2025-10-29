@@ -12,7 +12,7 @@ const pageActions = [
 ];
 
 const submitNHSAppTemplatePage = (url) => ({
-  name: 'preview-nhs-app-template',
+  name: 'submit-nhs-app-template',
   url,
   actions: pageActions,
 });

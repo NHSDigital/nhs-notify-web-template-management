@@ -8,7 +8,7 @@ const pageActions = [
 ];
 
 const viewAvailableProofsForLetterTemplatePage = (url) => ({
-  name: 'proof-available-letter-template',
+  name: 'view-available-proofs-for-letter-template',
   url,
   actions: pageActions,
 });

@@ -14,7 +14,7 @@ function performCheck(options) {
   return {
     ...defaultOptions,
     url: `${defaultOptions.url}?pageName=${defaultOptions.name}`,
-    screenCapture: `./.reports/accessibility/${defaultOptions.name}.png`,
+    screenCapture: `./${defaultOptions.reportDest}/${defaultOptions.name}.png`,
   };
 }
 
