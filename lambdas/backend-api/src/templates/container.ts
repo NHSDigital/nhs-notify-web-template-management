@@ -123,3 +123,27 @@ export const uploadLetterFileRepositoryAndTemplateRepositoryContainer = () => ({
   ...uploadLetterFileRepositoryContainer(),
   logger,
 });
+
+export const submitRoutingConfigContainer = () => {
+  const config = loadConfig();
+
+  const clientConfigRepository = new ClientConfigRepository(
+    config.clientConfigSsmKeyPrefix,
+    ssmClient,
+    new NodeCache({ stdTTL: config.clientConfigTtlSeconds })
+  );
+
+  const routingConfigRepository = new RoutingConfigRepository(
+    ddbDocClient,
+    config.routingConfigTableName
+  );
+
+  const routingConfigClient = new RoutingConfigClient(
+    routingConfigRepository,
+    clientConfigRepository
+  );
+
+  return {
+    routingConfigClient,
+  };
+};

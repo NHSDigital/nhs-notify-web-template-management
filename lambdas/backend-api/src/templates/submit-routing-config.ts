@@ -1,4 +1,4 @@
 import { createHandler } from './api/submit-routing-config';
-import { createContainer } from './container';
+import { submitRoutingConfigContainer } from './container';
 
-export const handler = createHandler(createContainer());
+export const handler = createHandler(submitRoutingConfigContainer());
