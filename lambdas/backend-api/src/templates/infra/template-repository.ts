@@ -329,6 +329,7 @@ export class TemplateRepository {
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
+        '#lockNumber': 'lockNumber',
       };
 
     const resolvedPostValidationSuccessStatus = proofingEnabled
@@ -344,6 +345,7 @@ export class TemplateRepository {
         ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
         ':updatedAt': new Date().toISOString(),
         ':version': versionId,
+        ':lockNumberIncrement': 1,
       };
 
     const updates = [
@@ -371,7 +373,7 @@ export class TemplateRepository {
         new UpdateCommand({
           TableName: this.templatesTableName,
           Key: this.toDatabaseKey(templateKey),
-          UpdateExpression: `SET ${updates.join(' , ')}`,
+          UpdateExpression: `SET ${updates.join(' , ')} ADD #lockNumber :lockNumberIncrement`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
           ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
@@ -551,6 +553,7 @@ export class TemplateRepository {
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
+        '#lockNumber': 'lockNumber',
       };
 
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
@@ -560,6 +563,7 @@ export class TemplateRepository {
         ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
         ':version': versionId,
         ':updatedAt': new Date().toISOString(),
+        ':lockNumberIncrement': 1,
       };
 
     if (status === 'FAILED') {
@@ -573,7 +577,7 @@ export class TemplateRepository {
         new UpdateCommand({
           TableName: this.templatesTableName,
           Key: this.toDatabaseKey(templateKey),
-          UpdateExpression: `SET ${updates.join(' , ')}`,
+          UpdateExpression: `SET ${updates.join(' , ')} ADD #lockNumber :lockNumberIncrement`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
           ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,

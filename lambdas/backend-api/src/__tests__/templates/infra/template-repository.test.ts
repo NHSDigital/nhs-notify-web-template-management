@@ -1067,15 +1067,7 @@ describe('templateRepository', () => {
           Item,
         });
 
-        mocks.ddbDocClient
-          .on(QueryCommand)
-          .resolves({
-            Items: [
-              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
-            ],
-          })
-          .on(UpdateCommand)
-          .rejects(error);
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
         const response = await templateRepository.updateStatus(
           'abc-def-ghi-jkl-123',
@@ -1100,13 +1092,7 @@ describe('templateRepository', () => {
 
       const error = new Error('mocked');
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .rejects(error);
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.updateStatus(
         'abc-def-ghi-jkl-123',
@@ -1142,10 +1128,6 @@ describe('templateRepository', () => {
       };
 
       mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
-        })
         .on(UpdateCommand, {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
@@ -1164,6 +1146,31 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         data: databaseTemplate,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':deleted': 'DELETED',
+          ':newStatus': 'PENDING_VALIDATION',
+          ':submitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': 'user-id',
+          ':lockNumberIncrement': 1,
+        },
+        UpdateExpression:
+          'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted)',
       });
     });
   });
@@ -1413,7 +1420,7 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
@@ -1423,6 +1430,7 @@ describe('templateRepository', () => {
           '#templateStatus': 'templateStatus',
           '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'PASSED',
@@ -1430,6 +1438,7 @@ describe('templateRepository', () => {
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
+          ':lockNumberIncrement': 1,
         },
       });
     });
@@ -1448,7 +1457,7 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
@@ -1458,6 +1467,7 @@ describe('templateRepository', () => {
           '#templateStatus': 'templateStatus',
           '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'PASSED',
@@ -1465,6 +1475,7 @@ describe('templateRepository', () => {
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'csv-version-id',
+          ':lockNumberIncrement': 1,
         },
       });
     });
@@ -1483,7 +1494,7 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
@@ -1493,6 +1504,7 @@ describe('templateRepository', () => {
           '#templateStatus': 'templateStatus',
           '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'FAILED',
@@ -1501,6 +1513,7 @@ describe('templateRepository', () => {
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
+          ':lockNumberIncrement': 1,
         },
       });
     });
@@ -1519,7 +1532,7 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
@@ -1529,6 +1542,7 @@ describe('templateRepository', () => {
           '#templateStatus': 'templateStatus',
           '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'FAILED',
@@ -1537,6 +1551,7 @@ describe('templateRepository', () => {
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'csv-version-id',
+          ':lockNumberIncrement': 1,
         },
       });
     });
@@ -1598,7 +1613,7 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders ADD #lockNumber :lockNumberIncrement',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
@@ -1609,6 +1624,7 @@ describe('templateRepository', () => {
             '#templateStatus': 'templateStatus',
             '#updatedAt': 'updatedAt',
             '#version': 'currentVersion',
+            '#lockNumber': 'lockNumber',
           },
           ExpressionAttributeValues: {
             ':testDataCsvHeaders': ['csv', 'headers'],
@@ -1618,6 +1634,7 @@ describe('templateRepository', () => {
             ':templateStatusSubmitted': 'SUBMITTED',
             ':updatedAt': '2024-12-27T00:00:00.000Z',
             ':version': 'file-version-id',
+            ':lockNumberIncrement': 1,
           },
         });
       });
@@ -1636,7 +1653,7 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
@@ -1645,6 +1662,7 @@ describe('templateRepository', () => {
             '#templateStatus': 'templateStatus',
             '#updatedAt': 'updatedAt',
             '#version': 'currentVersion',
+            '#lockNumber': 'lockNumber',
           },
           ExpressionAttributeValues: {
             ':templateStatus': 'VALIDATION_FAILED',
@@ -1652,6 +1670,7 @@ describe('templateRepository', () => {
             ':templateStatusSubmitted': 'SUBMITTED',
             ':updatedAt': '2024-12-27T00:00:00.000Z',
             ':version': 'file-version-id',
+            ':lockNumberIncrement': 1,
           },
         });
       });
@@ -1674,7 +1693,7 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders ADD #lockNumber :lockNumberIncrement',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
@@ -1685,6 +1704,7 @@ describe('templateRepository', () => {
             '#templateStatus': 'templateStatus',
             '#updatedAt': 'updatedAt',
             '#version': 'currentVersion',
+            '#lockNumber': 'lockNumber',
           },
           ExpressionAttributeValues: {
             ':testDataCsvHeaders': ['csv', 'headers'],
@@ -1694,6 +1714,7 @@ describe('templateRepository', () => {
             ':templateStatusSubmitted': 'SUBMITTED',
             ':updatedAt': '2024-12-27T00:00:00.000Z',
             ':version': 'file-version-id',
+            ':lockNumberIncrement': 1,
           },
         });
       });
@@ -1714,7 +1735,7 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
@@ -1723,6 +1744,7 @@ describe('templateRepository', () => {
             '#templateStatus': 'templateStatus',
             '#updatedAt': 'updatedAt',
             '#version': 'currentVersion',
+            '#lockNumber': 'lockNumber',
           },
           ExpressionAttributeValues: {
             ':templateStatus': 'VALIDATION_FAILED',
@@ -1730,6 +1752,7 @@ describe('templateRepository', () => {
             ':templateStatusSubmitted': 'SUBMITTED',
             ':updatedAt': '2024-12-27T00:00:00.000Z',
             ':version': 'file-version-id',
+            ':lockNumberIncrement': 1,
           },
         });
       });
