@@ -42,7 +42,7 @@ test('calls form action and redirects', async () => {
 
   await deleteTemplateYesAction(mockTemplate);
 
-  expect(mockSetTemplateToDeleted).toHaveBeenCalledWith('template-id');
+  expect(mockSetTemplateToDeleted).toHaveBeenCalledWith('template-id', 1);
 
   expect(mockRedirect).toHaveBeenCalledWith(
     '/message-templates',

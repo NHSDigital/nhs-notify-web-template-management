@@ -335,7 +335,6 @@
             "type": "boolean"
           }
         },
-        "required": [],
         "type": "object"
       },
       "ConditionalTemplateAccessible": {
@@ -841,6 +840,21 @@
           }
         ]
       },
+      "UploadLetterTemplate": {
+        "properties": {
+          "letterPdf": {
+            "format": "binary",
+            "type": "string"
+          },
+          "template": {
+            "$ref": "#/components/schemas/CreateUpdateTemplate"
+          },
+          "testCsv": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "VersionedFileDetails": {
         "properties": {
           "currentVersion": {
@@ -953,21 +967,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "UploadLetterTemplate": {
-                  "properties": {
-                    "letterPdf": {
-                      "format": "binary",
-                      "type": "string"
-                    },
-                    "template": {
-                      "$ref": "#/components/schemas/CreateUpdateTemplate"
-                    },
-                    "testCsv": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
+                "$ref": "#/components/schemas/UploadLetterTemplate"
               }
             }
           },

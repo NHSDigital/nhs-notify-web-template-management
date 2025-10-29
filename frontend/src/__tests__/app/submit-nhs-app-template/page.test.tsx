@@ -58,6 +58,7 @@ describe('SubmitNhsAppTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='NHS_APP'
+        lockNumber={state.lockNumber}
       />
     );
   });

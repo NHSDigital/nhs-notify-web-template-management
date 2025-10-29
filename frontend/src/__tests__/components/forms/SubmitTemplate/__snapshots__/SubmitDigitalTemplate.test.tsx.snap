@@ -84,6 +84,12 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
             type="hidden"
             value="template-id"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="500"
+          />
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"

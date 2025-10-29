@@ -58,6 +58,7 @@ describe('SubmitSmsTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='SMS'
+        lockNumber={state.lockNumber}
       />
     );
   });

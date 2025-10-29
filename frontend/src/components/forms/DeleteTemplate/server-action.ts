@@ -9,7 +9,7 @@ export const deleteTemplateNoAction = async () => {
 export const deleteTemplateYesAction = async (
   template: TemplateDto
 ): Promise<never> => {
-  await setTemplateToDeleted(template.id);
+  await setTemplateToDeleted(template.id, template.lockNumber);
 
   redirect('/message-templates', RedirectType.push);
 };

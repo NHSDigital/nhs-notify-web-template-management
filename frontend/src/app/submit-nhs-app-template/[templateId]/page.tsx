@@ -34,6 +34,7 @@ const SubmitNhsAppTemplatePage = async (props: TemplatePageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel='NHS_APP'
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

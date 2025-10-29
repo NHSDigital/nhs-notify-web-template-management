@@ -58,6 +58,7 @@ describe('SubmitEmailTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='EMAIL'
+        lockNumber={state.lockNumber}
       />
     );
   });

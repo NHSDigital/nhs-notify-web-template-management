@@ -25,6 +25,7 @@ describe('SubmitDigitalTemplate component', () => {
         templateId='template-id'
         templateName='template-name'
         channel='SMS'
+        lockNumber={500}
       />
     );
 

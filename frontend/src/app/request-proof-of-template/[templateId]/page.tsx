@@ -41,6 +41,7 @@ const RequestProofPage = async (props: TemplatePageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel={validatedTemplate.templateType}
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

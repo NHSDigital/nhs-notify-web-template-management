@@ -251,6 +251,12 @@ export type UploadLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
 };
 
+export type UploadLetterTemplate = {
+  letterPdf?: Blob | File;
+  template?: CreateUpdateTemplate;
+  testCsv?: string;
+};
+
 export type VersionedFileDetails = {
   currentVersion: string;
   fileName: string;
@@ -290,7 +296,7 @@ export type PostV1LetterTemplateData = {
   /**
    * Letter template to create
    */
-  body: unknown;
+  body: UploadLetterTemplate;
   path?: never;
   query?: never;
   url: '/v1/letter-template';

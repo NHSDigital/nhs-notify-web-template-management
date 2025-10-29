@@ -25,6 +25,7 @@ describe('RequestProof component', () => {
         templateId='template-id'
         templateName='template-name'
         channel='LETTER'
+        lockNumber={18}
       />
     );
 

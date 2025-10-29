@@ -13,6 +13,7 @@ export function RequestProof({
   templateName,
   templateId,
   channel,
+  lockNumber,
 }: ActionPageProps) {
   const {
     buttons,
@@ -47,6 +48,12 @@ export function RequestProof({
               type='hidden'
               name='templateId'
               value={templateId}
+              readOnly
+            />
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
               readOnly
             />
             <NHSNotifyButton

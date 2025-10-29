@@ -188,7 +188,8 @@ describe('TemplateAPIClient', () => {
         message: '<html></html>',
         templateType: 'NHS_APP',
       },
-      testToken
+      testToken,
+      1
     );
 
     expect(result.error).toEqual({
@@ -227,12 +228,17 @@ describe('TemplateAPIClient', () => {
         message: 'message',
         templateType: 'NHS_APP',
       },
-      testToken
+      testToken,
+      1
     );
 
     expect(result.data).toEqual(data);
 
     expect(result.error).toBeUndefined();
+
+    const headers = axiosMock.history.at(0)?.headers;
+
+    expect(headers ? headers['X-Lock-Number'] : null).toEqual('1');
   });
 
   test('getTemplate - should return error', async () => {
@@ -333,7 +339,7 @@ describe('TemplateAPIClient', () => {
         },
       });
 
-      const result = await client.submitTemplate('real-id', testToken);
+      const result = await client.submitTemplate('real-id', testToken, 2);
 
       expect(result.error).toEqual({
         errorMeta: {
@@ -348,6 +354,10 @@ describe('TemplateAPIClient', () => {
       expect(result.data).toBeUndefined();
 
       expect(axiosMock.history.patch.length).toBe(1);
+
+      const headers = axiosMock.history.at(0)?.headers;
+
+      expect(headers ? headers['X-Lock-Number'] : null).toEqual('2');
     });
 
     test('should return template', async () => {
@@ -364,7 +374,7 @@ describe('TemplateAPIClient', () => {
         data,
       });
 
-      const result = await client.submitTemplate('real-id', testToken);
+      const result = await client.submitTemplate('real-id', testToken, 2);
 
       expect(result.data).toEqual(data);
 
@@ -382,7 +392,7 @@ describe('TemplateAPIClient', () => {
         },
       });
 
-      const result = await client.deleteTemplate('real-id', testToken);
+      const result = await client.deleteTemplate('real-id', testToken, 3);
 
       expect(result.error).toEqual({
         errorMeta: {
@@ -397,12 +407,16 @@ describe('TemplateAPIClient', () => {
       expect(result.data).toBeUndefined();
 
       expect(axiosMock.history.delete.length).toBe(1);
+
+      const headers = axiosMock.history.at(0)?.headers;
+
+      expect(headers ? headers['X-Lock-Number'] : null).toEqual('3');
     });
 
     test('should return no content', async () => {
       axiosMock.onDelete('/v1/template/real-id').reply(204);
 
-      const result = await client.deleteTemplate('real-id', testToken);
+      const result = await client.deleteTemplate('real-id', testToken, 3);
 
       expect(result.data).toBeUndefined();
 
@@ -420,7 +434,7 @@ describe('TemplateAPIClient', () => {
         },
       });
 
-      const result = await client.requestProof('real-id', testToken);
+      const result = await client.requestProof('real-id', testToken, 4);
 
       expect(result.error).toEqual({
         errorMeta: {
@@ -435,6 +449,10 @@ describe('TemplateAPIClient', () => {
       expect(result.data).toBeUndefined();
 
       expect(axiosMock.history.post.length).toBe(1);
+
+      const headers = axiosMock.history.at(0)?.headers;
+
+      expect(headers ? headers['X-Lock-Number'] : null).toEqual('4');
     });
 
     test('should return content', async () => {
@@ -448,7 +466,7 @@ describe('TemplateAPIClient', () => {
 
       axiosMock.onPost('/v1/template/real-id/proof').reply(204, { data });
 
-      const result = await client.requestProof('real-id', testToken);
+      const result = await client.requestProof('real-id', testToken, 4);
 
       expect(result.data).toEqual(data);
 

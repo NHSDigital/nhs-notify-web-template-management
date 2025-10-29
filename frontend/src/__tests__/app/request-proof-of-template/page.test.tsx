@@ -74,6 +74,7 @@ describe('RequestProofPage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='LETTER'
+        lockNumber={state.lockNumber}
       />
     );
   });

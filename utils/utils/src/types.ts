@@ -84,6 +84,7 @@ export type ActionPageProps = {
   templateName: string;
   templateId: string;
   channel: TemplateType;
+  lockNumber: number;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);

@@ -8,19 +8,26 @@ import {
   templateTypeToUrlTextMappings,
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import type { TemplateType } from 'nhs-notify-backend-client';
+import { $LockNumber, type TemplateType } from 'nhs-notify-backend-client';
+
+const $SubmitTemplateFormData = z.object({
+  templateId: z.uuidv4(),
+  lockNumber: $LockNumber,
+});
 
 export async function submitTemplate(
   channel: TemplateType,
   formData: FormData
 ) {
-  const { success, data: templateId } = z
-    .uuidv4()
-    .safeParse(formData.get('templateId'));
+  const { success, data } = $SubmitTemplateFormData.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!success) {
     return redirect('/invalid-template', RedirectType.replace);
   }
+
+  const { templateId, lockNumber } = data;
 
   const template = await getTemplate(templateId);
 
@@ -31,7 +38,7 @@ export async function submitTemplate(
   }
 
   try {
-    await setTemplateToSubmitted(templateId);
+    await setTemplateToSubmitted(templateId, lockNumber);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,
