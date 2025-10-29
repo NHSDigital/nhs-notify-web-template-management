@@ -12,7 +12,6 @@ export class TemplateLockRepository {
     private readonly lockTtl: number
   ) {}
 
-  // TODO: CCM-12327
   async acquireLockAndSetSupplierReference(
     clientId: string,
     id: string,
@@ -28,6 +27,7 @@ export class TemplateLockRepository {
     )
       .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
       .setSupplierReference(supplier, supplierReference)
+      .incrementLockNumber()
       .build();
 
     try {
@@ -42,7 +42,6 @@ export class TemplateLockRepository {
     return true;
   }
 
-  // TODO: CCM-12327
   async finaliseLock(clientId: string, id: string) {
     const time = this.getDate().getTime();
 
@@ -52,6 +51,7 @@ export class TemplateLockRepository {
       id
     )
       .setLockTimeUnconditional('sftpSendLockTime', time + THIRTY_DAYS_MS)
+      .incrementLockNumber()
       .build();
 
     return await this.client.send(new UpdateCommand(update));
