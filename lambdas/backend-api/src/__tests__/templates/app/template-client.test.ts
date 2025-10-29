@@ -1291,7 +1291,10 @@ describe('templateClient', () => {
       const errorCases: [string, string | number][] = [
         ['empty', ''],
         ['negative', -1],
-        ['non-number', 'a'],
+        ['negative stringified', -1],
+        ['non-number string', 'a'],
+        ['NaN', Number.NaN],
+        ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
         'should return a failure result when lockNumber is invalid: %s',
@@ -2194,7 +2197,10 @@ describe('templateClient', () => {
       const errorCases: [string, string | number][] = [
         ['empty', ''],
         ['negative', -1],
-        ['non-number', 'a'],
+        ['negative stringified', -1],
+        ['non-number string', 'a'],
+        ['NaN', Number.NaN],
+        ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
         'should return a failure result when lockNumber is invalid: %s',

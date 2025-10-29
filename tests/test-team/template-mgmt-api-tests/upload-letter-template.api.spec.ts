@@ -104,7 +104,7 @@ test.describe('POST /v1/letter-template', () => {
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
-        lockNumber: 0,
+        lockNumber: 1, // the api endpoint does a create and then an update so this gets incremented to 1 rather than initial 0
       },
     });
 
@@ -185,7 +185,7 @@ test.describe('POST /v1/letter-template', () => {
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
-        lockNumber: 0,
+        lockNumber: 1,
       },
     });
 

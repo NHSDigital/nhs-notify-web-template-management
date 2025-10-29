@@ -91,6 +91,7 @@ export class TemplateRepository {
       ...(template.templateType === 'LETTER' && {
         campaignId,
       }),
+      lockNumber: 0,
     };
 
     try {

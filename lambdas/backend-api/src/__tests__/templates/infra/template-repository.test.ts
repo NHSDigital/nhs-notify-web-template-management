@@ -320,6 +320,7 @@ describe('templateRepository', () => {
         const template = {
           ...channelProperties,
           ...databaseTemplateProperties,
+          lockNumber: 0,
         };
 
         mocks.ddbDocClient
