@@ -41,22 +41,23 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingDisabled,
-          'user-proof-disabled'
-        ),
-        proofingEnabled: false,
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingDisabled,
+        'user-proof-disabled'
+      ),
+      proofingEnabled: false,
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const submittedResponse = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
       {
         headers: {
           Authorization: await userProofingDisabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -80,22 +81,23 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          'user-proof-disabled',
-          'VALIDATION_FAILED'
-        ),
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingEnabled,
+        'user-proof-disabled',
+        'VALIDATION_FAILED'
+      ),
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const deletedResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -268,25 +270,26 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          'user-proof-deleted',
-          'PENDING_PROOF_REQUEST'
-        ),
-        proofingEnabled: true,
-        // just so it is not empty
-        personalisationParameters: ['nhsNumber'],
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingEnabled,
+        'user-proof-deleted',
+        'PENDING_PROOF_REQUEST'
+      ),
+      proofingEnabled: true,
+      // just so it is not empty
+      personalisationParameters: ['nhsNumber'],
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const deletedResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );

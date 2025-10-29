@@ -49,7 +49,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          data: { id: templateId, name },
+          data: { id: templateId, name, lockNumber },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
@@ -62,6 +62,7 @@ test.describe('Event publishing - Digital', () => {
           {
             headers: {
               Authorization: await user1.getAccessToken(),
+              'X-Lock-Number': String(lockNumber),
             },
             data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
               templateType: digitalChannel,
@@ -145,7 +146,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          data: { id: templateId },
+          data: { id: templateId, lockNumber },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
@@ -158,6 +159,7 @@ test.describe('Event publishing - Digital', () => {
           {
             headers: {
               Authorization: await user1.getAccessToken(),
+              'X-Lock-Number': String(lockNumber),
             },
           }
         );
