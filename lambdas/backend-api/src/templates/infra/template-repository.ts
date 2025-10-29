@@ -237,6 +237,12 @@ export class TemplateRepository {
       return result;
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException && error.Item) {
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+        }
+
         return failure(
           ErrorCase.CANNOT_SUBMIT,
           'Template cannot be submitted',
@@ -396,9 +402,10 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
-          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ExpressionAttributeNames: {
           '#fileName': fileName,
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
@@ -409,6 +416,7 @@ export class TemplateRepository {
             virusScanStatus,
             supplier,
           } satisfies ProofFileDetails,
+          ':lockNumberIncrement': 1,
         },
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
@@ -425,13 +433,17 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
-          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
         ExpressionAttributeValues: {
           ':templateStatusWaitingForProof':
             'WAITING_FOR_PROOF' satisfies TemplateStatus,
           ':templateStatusProofAvailable':
             'PROOF_AVAILABLE' satisfies TemplateStatus,
           ':updatedAt': new Date().toISOString(),
+          ':lockNumberIncrement': 1,
         },
         ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
       })

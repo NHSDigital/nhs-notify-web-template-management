@@ -322,7 +322,7 @@ export class TemplateClient {
     const submitResult = await this.templateRepository.submit(
       templateId,
       user,
-      lockNumber
+      lockNumberValidation.data
     );
 
     if (submitResult.error) {

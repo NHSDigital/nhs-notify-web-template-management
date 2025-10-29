@@ -1188,11 +1188,12 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#fileName': 'pdf-template.pdf',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED',
@@ -1203,6 +1204,7 @@ describe('templateRepository', () => {
             virusScanStatus: 'PASSED',
             supplier: 'MBA',
           },
+          ':lockNumberIncrement': 1,
         },
       });
 
@@ -1210,11 +1212,15 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
         ExpressionAttributeValues: {
           ':templateStatusWaitingForProof': 'WAITING_FOR_PROOF',
           ':templateStatusProofAvailable': 'PROOF_AVAILABLE',
           ':updatedAt': new Date().toISOString(),
+          ':lockNumberIncrement': 1,
         },
         ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
       });
@@ -1239,11 +1245,12 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
-          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#fileName': 'pdf-template.pdf',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED',
@@ -1254,6 +1261,7 @@ describe('templateRepository', () => {
             virusScanStatus: 'FAILED',
             supplier: 'MBA',
           },
+          ':lockNumberIncrement': 1,
         },
       });
 
