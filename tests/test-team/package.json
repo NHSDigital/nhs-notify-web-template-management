@@ -11,6 +11,8 @@
     "@faker-js/faker": "^9.9.0",
     "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
     "@playwright/test": "^1.51.1",
+    "@axe-core/playwright": "^4.11.0",
+    "axe-core": "^4.11.0",
     "async-mutex": "^0.5.0",
     "aws-amplify": "^6.13.6",
     "date-fns": "^4.1.0",
@@ -30,6 +32,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
+    "test:accessibility": "playwright test --project accessibility -c config/accessibility/accessibility.config.ts",
     "test:api": "playwright test --project api -c config/api/api.config.ts",
     "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",
     "test:event": "playwright test -c config/event/event.config.ts",
