@@ -2,13 +2,10 @@ import { Prop, PropType } from '../types/generics';
 import {
   BuilderOptionalArgs,
   RegularCondition,
-  ConditionJoiner,
-  ConditionModel,
-  ConditionOperator,
   SpecialCondition,
   UpdateExpressionSet,
   FnCondition,
-  ConditionFnOperator,
+  ConditionGroup,
 } from '../types/builders';
 import { ConditionBuilder } from './condition-builder';
 
@@ -24,9 +21,7 @@ export class UpdateCommandBuilder<Entity> {
 
   private _expressionAttributeNames: Record<string, string> = {};
 
-  private _conditions: ConditionModel[] = [];
-
-  private _conditionBuilder = new ConditionBuilder<Entity>();
+  public readonly conditions = new ConditionBuilder<Entity>();
 
   constructor(
     private readonly _tableName: string,
@@ -61,9 +56,9 @@ export class UpdateCommandBuilder<Entity> {
     value: K
   ) {
     this._expressionAttributeNames[`#${attributeName}`] = attributeName;
-    this._expressionAttributeValues[`:${attributeName}_value`] = value;
+    this._expressionAttributeValues[`:${attributeName}`] = value;
     this._updateExpressionSet.ADD[attributeName] =
-      `#${attributeName} :${attributeName}_value`;
+      `#${attributeName} :${attributeName}`;
     return this;
   }
 
@@ -109,59 +104,11 @@ export class UpdateCommandBuilder<Entity> {
     return this;
   }
 
-  orCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
-    attribute: T,
-    operand: ConditionOperator,
-    value: K,
-    negate?: boolean
-  ) {
-    this._conditionBuilder.or(attribute, value, operand, negate);
-    return this;
-  }
-
-  andCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
-    attribute: T,
-    operand: ConditionOperator,
-    value: K,
-    negate?: boolean
-  ) {
-    this._conditionBuilder.and(attribute, value, operand, negate);
-    return this;
-  }
-
-  fnCondition<T extends Prop<Entity>>(
-    operand: ConditionFnOperator,
-    attribute: T,
-    secondArgument?: string,
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
-  ) {
-    this._conditionBuilder.fn(
-      attribute,
-      operand,
-      secondArgument,
-      negate,
-      conditionJoiner
-    );
-    return this;
-  }
-
-  inCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
-    attribute: T,
-    value: K | K[],
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
-  ) {
-    this._conditionBuilder.in(attribute, value, negate, conditionJoiner);
-    return this;
-  }
-
   private buildInCondition(
     condition: SpecialCondition,
-    conditionIndex: number
+    conditionIndex: number,
+    depthPrefix: string
   ) {
-    let localIndex = conditionIndex;
-
     const { attribute, value, conditionJoiner, negated } = condition;
 
     const values = Array.isArray(value) ? value : [value];
@@ -171,8 +118,10 @@ export class UpdateCommandBuilder<Entity> {
 
     const inValueKeys = [];
 
+    let localIndex = 1;
+
     for (const conditionValue of values) {
-      const conditionValueKey = `:condition_${localIndex}_${attribute}`;
+      const conditionValueKey = `:condition_${[depthPrefix, conditionIndex, localIndex, attribute].filter(Boolean).join('_')}`;
       this._expressionAttributeValues[conditionValueKey] = conditionValue;
       inValueKeys.push(conditionValueKey);
 
@@ -189,23 +138,28 @@ export class UpdateCommandBuilder<Entity> {
 
   private buildSpecialCondition(
     condition: SpecialCondition,
-    conditionIndex: number
+    conditionIndex: number,
+    depthPrefix: string
   ) {
-    return this.buildInCondition(condition, conditionIndex);
+    return this.buildInCondition(condition, conditionIndex, depthPrefix);
   }
 
-  private buildFnCondition(condition: FnCondition, conditionIndex: number) {
-    const { attribute, secondArgument, conditionJoiner, fnOperator, negated } =
+  private buildFnCondition(
+    condition: FnCondition,
+    conditionIndex: number,
+    depthPrefix: string
+  ) {
+    const { attribute, value, conditionJoiner, fnOperator, negated } =
       condition;
 
     const attributeNameKey = `#${attribute}`;
 
     this._expressionAttributeNames[attributeNameKey] = attribute;
 
-    const conditionArgKey = `:condition_${conditionIndex}_${attribute}`;
+    const conditionArgKey = `:condition_${[depthPrefix, conditionIndex, attribute].filter(Boolean).join('_')}`;
 
-    if (secondArgument) {
-      this._expressionAttributeValues[conditionArgKey] = secondArgument;
+    if (value) {
+      this._expressionAttributeValues[conditionArgKey] = value;
     }
 
     const negation = negated ? 'NOT ' : '';
@@ -213,15 +167,19 @@ export class UpdateCommandBuilder<Entity> {
       ? `${conditionJoiner} ${negation}`
       : negation;
 
-    const arg = secondArgument ? `, ${conditionArgKey}` : '';
+    const arg = value ? `, ${conditionArgKey}` : '';
 
     return `${prefix}${fnOperator} (${attributeNameKey}${arg})`;
   }
 
-  private buildCondition(condition: RegularCondition, conditionIndex: number) {
+  private buildCondition(
+    condition: RegularCondition,
+    conditionIndex: number,
+    depthPrefix: string
+  ) {
     const { attribute, value, conditionJoiner, operator, negated } = condition;
 
-    const conditionValueKey = `:condition_${conditionIndex}_${attribute}`;
+    const conditionValueKey = `:condition_${[depthPrefix, conditionIndex, attribute].filter(Boolean).join('_')}`;
     const attributeNameKey = `#${attribute}`;
 
     this._expressionAttributeNames[attributeNameKey] = attribute;
@@ -235,21 +193,44 @@ export class UpdateCommandBuilder<Entity> {
     return `${prefix}${attributeNameKey} ${operator} ${conditionValueKey}`;
   }
 
-  private buildConditionExpression() {
-    this._conditions = this._conditionBuilder.build();
+  private buildGroup(
+    condition: ConditionGroup,
+    conditionIndex: number,
+    depthPrefix: string
+  ): string {
+    const expression = `(${this.buildConditionExpression(
+      condition.conditions,
+      depthPrefix ? `${depthPrefix}_${conditionIndex}` : `${conditionIndex}`
+    )})`;
 
-    return this._conditions
+    return condition.conditionJoiner
+      ? `${condition.conditionJoiner} ${expression}`
+      : expression;
+  }
+
+  private buildConditionExpression(
+    conditions = this.conditions.build(),
+    depthPrefix = ''
+  ): string {
+    return conditions
       .map((condition, index) => {
         const conditionIndex = index + 1;
 
         if ('specialOperator' in condition) {
-          return this.buildSpecialCondition(condition, conditionIndex);
+          return this.buildSpecialCondition(
+            condition,
+            conditionIndex,
+            depthPrefix
+          );
         }
         if ('fnOperator' in condition) {
-          return this.buildFnCondition(condition, conditionIndex);
+          return this.buildFnCondition(condition, conditionIndex, depthPrefix);
         }
         if ('operator' in condition) {
-          return this.buildCondition(condition, conditionIndex);
+          return this.buildCondition(condition, conditionIndex, depthPrefix);
+        }
+        if ('conditions' in condition) {
+          return this.buildGroup(condition, conditionIndex, depthPrefix);
         }
         // unreachable
         /* istanbul ignore next */
@@ -283,7 +264,7 @@ export class UpdateCommandBuilder<Entity> {
       ...(expressionAttributeValuesPresent && {
         ExpressionAttributeValues: this._expressionAttributeValues,
       }),
-      ...(this._conditions.length > 0 && {
+      ...(conditionExpression.length > 0 && {
         ConditionExpression: conditionExpression,
       }),
       ...this._optionalArgs,

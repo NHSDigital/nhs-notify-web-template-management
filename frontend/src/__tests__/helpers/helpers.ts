@@ -25,6 +25,7 @@ export const NHS_APP_TEMPLATE: TemplateDto = {
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
 } as const;
 
 export const EMAIL_TEMPLATE: TemplateDto = {
@@ -36,6 +37,7 @@ export const EMAIL_TEMPLATE: TemplateDto = {
   subject: 'subject',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
 } as const;
 
 export const SMS_TEMPLATE: TemplateDto = {
@@ -46,6 +48,7 @@ export const SMS_TEMPLATE: TemplateDto = {
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
 } as const;
 
 export const LETTER_TEMPLATE: TemplateDto = {
@@ -64,4 +67,5 @@ export const LETTER_TEMPLATE: TemplateDto = {
   name: 'name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
 } as const;

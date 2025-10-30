@@ -35,6 +35,7 @@ describe('SubmitEmailTemplatePage', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -57,6 +58,7 @@ describe('SubmitEmailTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='EMAIL'
+        lockNumber={state.lockNumber}
       />
     );
   });

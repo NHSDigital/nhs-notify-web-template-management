@@ -12,6 +12,7 @@ describe('responses', () => {
       templateType: 'EMAIL',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 1,
     };
     expect(apiSuccess(200, dto)).toEqual({
       statusCode: 200,

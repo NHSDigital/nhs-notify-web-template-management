@@ -9,12 +9,13 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { ActionPageProps } from 'nhs-notify-web-template-management-utils';
 
-export const SubmitLetterTemplateProofingDisabled: FC<{
-  templateName: string;
-  templateId: string;
-  action: (payload: FormData) => void;
-}> = ({ templateName, templateId, action }) => {
+export const SubmitLetterTemplateProofingDisabled: FC<
+  Omit<ActionPageProps, 'channel'> & {
+    action: (payload: FormData) => void;
+  }
+> = ({ templateName, templateId, action, lockNumber }) => {
   const {
     proofingFlagDisabled: {
       afterSubmissionHeading,
@@ -66,6 +67,12 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
               value={templateId}
               readOnly
             />
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
+              readOnly
+            />
             <NHSNotifyButton
               secondary
               id='go-back-button'
@@ -84,10 +91,11 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
   );
 };
 
-export const SubmitLetterTemplate: FC<{
-  templateName: string;
-  templateId: string;
-}> = ({ templateName, templateId }) => {
+export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
+  templateName,
+  templateId,
+  lockNumber,
+}) => {
   const {
     buttonText,
     goBackButtonText,
@@ -111,6 +119,7 @@ export const SubmitLetterTemplate: FC<{
         templateName={templateName}
         templateId={templateId}
         action={action}
+        lockNumber={lockNumber}
       />
     );
   }
@@ -141,6 +150,12 @@ export const SubmitLetterTemplate: FC<{
               type='hidden'
               name='templateId'
               value={templateId}
+              readOnly
+            />
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
               readOnly
             />
             <NHSNotifyButton

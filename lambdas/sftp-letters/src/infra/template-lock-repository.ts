@@ -5,8 +5,6 @@ import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder'
 const THIRTY_DAYS_MS = 2_592_000_000;
 
 export class TemplateLockRepository {
-  private readonly clientOwnerPrefix = 'CLIENT#';
-
   constructor(
     private readonly client: DynamoDBDocumentClient,
     private readonly templatesTableName: string,
@@ -29,6 +27,7 @@ export class TemplateLockRepository {
     )
       .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
       .setSupplierReference(supplier, supplierReference)
+      .incrementLockNumber()
       .build();
 
     try {
@@ -52,6 +51,7 @@ export class TemplateLockRepository {
       id
     )
       .setLockTimeUnconditional('sftpSendLockTime', time + THIRTY_DAYS_MS)
+      .incrementLockNumber()
       .build();
 
     return await this.client.send(new UpdateCommand(update));

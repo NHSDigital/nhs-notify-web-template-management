@@ -84,6 +84,7 @@ export type ActionPageProps = {
   templateName: string;
   templateId: string;
   channel: TemplateType;
+  lockNumber: number;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
@@ -110,6 +111,7 @@ export type DatabaseTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  lockNumber?: number;
   message?: string;
   name: string;
   proofingEnabled?: boolean;
@@ -126,6 +128,7 @@ export type DatabaseTemplate = {
 type DbOnlyTemplateProperties = {
   owner: string;
   version: number;
+  ttl?: number;
 };
 
 type AssertExtendsMerged<

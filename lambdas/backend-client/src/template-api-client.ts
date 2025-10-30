@@ -69,14 +69,18 @@ export const templateApiClient = {
   async updateTemplate(
     templateId: string,
     template: CreateUpdateTemplate,
-    token: string
+    token: string,
+    lockNumber: number
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.put<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         template,
         {
-          headers: { Authorization: token },
+          headers: {
+            Authorization: token,
+            'X-Lock-Number': String(lockNumber),
+          },
         }
       )
     );
@@ -136,7 +140,8 @@ export const templateApiClient = {
 
   async submitTemplate(
     templateId: string,
-    owner: string
+    owner: string,
+    lockNumber: number
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.patch<TemplateSuccess>(
@@ -146,6 +151,7 @@ export const templateApiClient = {
           headers: {
             'Content-Type': 'application/json',
             Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
           },
         }
       )
@@ -164,7 +170,8 @@ export const templateApiClient = {
 
   async deleteTemplate(
     templateId: string,
-    owner: string
+    owner: string,
+    lockNumber: number
   ): Promise<Result<void>> {
     const response = await catchAxiosError(
       httpClient.delete<TemplateSuccess>(
@@ -173,6 +180,7 @@ export const templateApiClient = {
           headers: {
             'Content-Type': 'application/json',
             Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
           },
         }
       )
@@ -191,7 +199,8 @@ export const templateApiClient = {
 
   async requestProof(
     templateId: string,
-    owner: string
+    owner: string,
+    lockNumber: number
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.post<TemplateSuccess>(
@@ -201,6 +210,7 @@ export const templateApiClient = {
           headers: {
             'Content-Type': 'application/json',
             Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
           },
         }
       )

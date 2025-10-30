@@ -134,6 +134,7 @@ describe('Template API - Create', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 1,
     };
 
     mocks.templateClient.createTemplate.mockResolvedValueOnce({

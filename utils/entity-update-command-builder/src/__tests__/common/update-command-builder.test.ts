@@ -150,10 +150,16 @@ describe('UpdateExpressionBuilder', () => {
         const attributeValue = 'VALUE';
         const attributeExpectedValue = 'VALUE_1';
 
-        const res = builder
-          .setValue(attributeName, attributeValue)
-          .andCondition(attributeName, operand, attributeExpectedValue, negated)
-          .finalise();
+        builder.setValue(attributeName, attributeValue);
+
+        builder.conditions.and(
+          attributeName,
+          operand,
+          attributeExpectedValue,
+          negated
+        );
+
+        const res = builder.finalise();
 
         const expectedCondition = negated
           ? `NOT #${attributeName} ${operand} :condition_1_${attributeName}`
@@ -197,10 +203,9 @@ describe('UpdateExpressionBuilder', () => {
         const attributeValue = 'VALUE';
         const secondArg = undefined;
 
-        const res = builder
-          .setValue(attributeName, attributeValue)
-          .fnCondition(fn, attributeName, secondArg, negated)
-          .finalise();
+        builder.setValue(attributeName, attributeValue);
+        builder.conditions.andFn(fn, attributeName, secondArg, negated);
+        const res = builder.finalise();
 
         const expectedCondition = negated
           ? `NOT ${fn} (#${attributeName})`
@@ -242,10 +247,10 @@ describe('UpdateExpressionBuilder', () => {
         const attributeValue = 'VALUE';
         const secondArg = 'ARG';
 
-        const res = builder
-          .setValue(attributeName, attributeValue)
-          .fnCondition(fn, attributeName, secondArg, negated)
-          .finalise();
+        builder.setValue(attributeName, attributeValue);
+        builder.conditions.andFn(fn, attributeName, secondArg, negated);
+
+        const res = builder.finalise();
 
         const expectedCondition = negated
           ? `NOT ${fn} (#${attributeName}, :condition_1_${attributeName})`
@@ -296,11 +301,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (conditionJoiner1) {
           case 'AND': {
-            builder.andCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.and(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.or(attributeName, '=', attributeExpectedValue1);
             break;
           }
           default: {
@@ -310,11 +315,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (conditionJoiner2) {
           case 'AND': {
-            builder.andCondition(attributeName, '>', attributeExpectedValue2);
+            builder.conditions.and(attributeName, '>', attributeExpectedValue2);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, '>', attributeExpectedValue2);
+            builder.conditions.or(attributeName, '>', attributeExpectedValue2);
             break;
           }
           default: {
@@ -348,30 +353,44 @@ describe('UpdateExpressionBuilder', () => {
       expectedJoiner: ConditionJoiner;
       expectedFirstCondition: string;
       expectedSecondCondition: string;
+      expectedConditionAttributeValues: Record<string, string>;
     }> = [
       {
         firstCall: 'IN',
         secondCall: 'AND',
         secondCallNegated: true,
         expectedJoiner: 'AND',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
         expectedSecondCondition: 'NOT #ATTRIBUTE1 > :condition_2_ATTRIBUTE1',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'IN',
         secondCall: 'OR',
         secondCallNegated: false,
         expectedJoiner: 'OR',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
         expectedSecondCondition: '#ATTRIBUTE1 > :condition_2_ATTRIBUTE1',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'IN',
         secondCall: 'IN',
         secondCallNegated: true,
         expectedJoiner: 'AND',
-        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1)',
-        expectedSecondCondition: 'NOT #ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedFirstCondition: '#ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1)',
+        expectedSecondCondition:
+          'NOT #ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'AND',
@@ -379,7 +398,11 @@ describe('UpdateExpressionBuilder', () => {
         secondCallNegated: false,
         expectedJoiner: 'AND',
         expectedFirstCondition: '#ATTRIBUTE1 = :condition_1_ATTRIBUTE1',
-        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
       {
         firstCall: 'OR',
@@ -387,7 +410,11 @@ describe('UpdateExpressionBuilder', () => {
         secondCallNegated: false,
         expectedJoiner: 'AND',
         expectedFirstCondition: '#ATTRIBUTE1 = :condition_1_ATTRIBUTE1',
-        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)',
+        expectedSecondCondition: '#ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)',
+        expectedConditionAttributeValues: {
+          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_2_1_ATTRIBUTE1': 'EXPECTED_VALUE2',
+        },
       },
     ];
 
@@ -400,6 +427,7 @@ describe('UpdateExpressionBuilder', () => {
         expectedJoiner,
         expectedFirstCondition,
         expectedSecondCondition,
+        expectedConditionAttributeValues,
       }) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
@@ -416,15 +444,15 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (firstCall) {
           case 'AND': {
-            builder.andCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.and(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.or(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'IN': {
-            builder.inCondition(attributeName, attributeExpectedValue1);
+            builder.conditions.andIn(attributeName, attributeExpectedValue1);
             break;
           }
           default: {
@@ -434,7 +462,7 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (secondCall) {
           case 'AND': {
-            builder.andCondition(
+            builder.conditions.and(
               attributeName,
               '>',
               attributeExpectedValue2,
@@ -443,7 +471,7 @@ describe('UpdateExpressionBuilder', () => {
             break;
           }
           case 'OR': {
-            builder.orCondition(
+            builder.conditions.or(
               attributeName,
               '>',
               attributeExpectedValue2,
@@ -452,7 +480,7 @@ describe('UpdateExpressionBuilder', () => {
             break;
           }
           case 'IN': {
-            builder.inCondition(
+            builder.conditions.andIn(
               attributeName,
               attributeExpectedValue2,
               secondCallNegated
@@ -473,8 +501,7 @@ describe('UpdateExpressionBuilder', () => {
           },
           ExpressionAttributeValues: {
             ':ATTRIBUTE1': attributeValue,
-            ':condition_1_ATTRIBUTE1': attributeExpectedValue1,
-            ':condition_2_ATTRIBUTE1': attributeExpectedValue2,
+            ...expectedConditionAttributeValues,
           },
           Key: mockEntityKeys,
           TableName: mockTableName,
@@ -493,10 +520,11 @@ describe('UpdateExpressionBuilder', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
         mockEntityKeys
-      )
-        .setValue(attributeName, attributeValue)
-        .fnCondition('contains', attributeName, expectContained, true)
-        .andCondition(attributeName, '=', attributeExpectedValue);
+      );
+      builder.setValue(attributeName, attributeValue);
+      builder.conditions
+        .andFn('contains', attributeName, expectContained, true)
+        .and(attributeName, '=', attributeExpectedValue);
 
       const res = builder.finalise();
 
@@ -526,10 +554,12 @@ describe('UpdateExpressionBuilder', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
         mockEntityKeys
-      )
+      );
+
+      builder
         .setValue(attributeName, attributeValue)
-        .andCondition(attributeName, '=', attributeExpectedValue)
-        .fnCondition('attribute_exists', attributeName2, undefined, true);
+        .conditions.and(attributeName, '=', attributeExpectedValue)
+        .andFn('attribute_exists', attributeName2, undefined, true);
 
       const res = builder.finalise();
 
@@ -550,16 +580,14 @@ describe('UpdateExpressionBuilder', () => {
       });
     });
 
-    const optionalJoinerOverrideTestCases: Array<
-      [ConditionJoiner, ConditionJoiner, ConditionJoiner]
-    > = [
-      ['AND', 'OR', 'OR'],
-      ['OR', 'AND', 'AND'],
+    const optionalJoinerOverrideTestCases: Array<ConditionJoiner> = [
+      'AND',
+      'OR',
     ];
 
     test.each(optionalJoinerOverrideTestCases)(
-      'when %s is chained by IN with %s optional arg, an %s joiner is used',
-      (firstCall, optionalArg, joiner) => {
+      'when %s is chained by OR IN, an OR joiner is used',
+      (firstCall) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
           mockEntityKeys
@@ -575,11 +603,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (firstCall) {
           case 'AND': {
-            builder.andCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.and(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, '=', attributeExpectedValue1);
+            builder.conditions.or(attributeName, '=', attributeExpectedValue1);
             break;
           }
           default: {
@@ -587,24 +615,19 @@ describe('UpdateExpressionBuilder', () => {
           }
         }
 
-        builder.inCondition(
-          attributeName,
-          attributeExpectedValue2,
-          false,
-          optionalArg
-        );
+        builder.conditions.orIn(attributeName, attributeExpectedValue2, false);
 
         const res = builder.finalise();
 
         expect(res).toEqual({
-          ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 ${joiner} #ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)`,
+          ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 OR #ATTRIBUTE1 IN (:condition_2_1_ATTRIBUTE1)`,
           ExpressionAttributeNames: {
             '#ATTRIBUTE1': 'ATTRIBUTE1',
           },
           ExpressionAttributeValues: {
             ':ATTRIBUTE1': attributeValue,
             ':condition_1_ATTRIBUTE1': attributeExpectedValue1,
-            ':condition_2_ATTRIBUTE1': attributeExpectedValue2,
+            ':condition_2_1_ATTRIBUTE1': attributeExpectedValue2,
           },
           Key: mockEntityKeys,
           TableName: mockTableName,
@@ -613,7 +636,7 @@ describe('UpdateExpressionBuilder', () => {
       }
     );
 
-    test('Function condition follows an IN condition, and provides a joiner override', () => {
+    test('Function condition follows an IN condition with OR joiner', () => {
       const attributeName = 'ATTRIBUTE1';
       const attributeValue = 'VALUE1';
       const attributeExpectedArray = ['EXPECTED_VALUE1'];
@@ -622,33 +645,138 @@ describe('UpdateExpressionBuilder', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
         mockEntityKeys
-      )
+      );
+      builder
         .setValue(attributeName, attributeValue)
-        .inCondition(attributeName, attributeExpectedArray, true)
-        .fnCondition(
-          'attribute_type',
-          attributeName,
-          attributeExpectedType,
-          false,
-          'OR'
-        );
+        .conditions.andIn(attributeName, attributeExpectedArray, true)
+        .orFn('attribute_type', attributeName, attributeExpectedType, false);
 
       const res = builder.finalise();
 
       expect(res).toEqual({
         ConditionExpression:
-          'NOT #ATTRIBUTE1 IN (:condition_1_ATTRIBUTE1) OR attribute_type (#ATTRIBUTE1, :condition_2_ATTRIBUTE1)',
+          'NOT #ATTRIBUTE1 IN (:condition_1_1_ATTRIBUTE1) OR attribute_type (#ATTRIBUTE1, :condition_2_ATTRIBUTE1)',
         ExpressionAttributeNames: {
           '#ATTRIBUTE1': attributeName,
         },
         ExpressionAttributeValues: {
           ':ATTRIBUTE1': attributeValue,
-          ':condition_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
+          ':condition_1_1_ATTRIBUTE1': 'EXPECTED_VALUE1',
           ':condition_2_ATTRIBUTE1': 'S',
         },
         Key: mockEntityKeys,
         TableName: mockTableName,
         UpdateExpression: 'SET #ATTRIBUTE1 = :ATTRIBUTE1',
+      });
+    });
+  });
+
+  describe('condition groups', () => {
+    test('simple condition AND group with OR join', () => {
+      const builder = new UpdateCommandBuilder<Record<string, string>>(
+        mockTableName,
+        mockEntityKeys
+      );
+
+      builder.setValue('name', 'Michael');
+
+      builder.conditions
+        .andGroup((group) =>
+          group.or('status', '=', 'DRAFT').or('status', '=', 'PENDING')
+        )
+        .orGroup((group) => {
+          group.and('lockNumber', '=', '10').orIn('lockNumber', ['1', '2']);
+        });
+
+      expect(builder.finalise()).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#name': 'name',
+          '#status': 'status',
+        },
+        ExpressionAttributeValues: {
+          ':name': 'Michael',
+          ':condition_1_1_status': 'DRAFT',
+          ':condition_1_2_status': 'PENDING',
+          ':condition_2_1_lockNumber': '10',
+          ':condition_2_2_1_lockNumber': '1',
+          ':condition_2_2_2_lockNumber': '2',
+        },
+        UpdateExpression: `SET #name = :name`,
+        ConditionExpression:
+          '(#status = :condition_1_1_status OR #status = :condition_1_2_status) OR (#lockNumber = :condition_2_1_lockNumber OR #lockNumber IN (:condition_2_2_1_lockNumber, :condition_2_2_2_lockNumber))',
+      });
+    });
+
+    test('multiple groups', () => {
+      const builder = new UpdateCommandBuilder<Record<string, string>>(
+        mockTableName,
+        mockEntityKeys
+      );
+
+      builder.setValue('name', 'Michael');
+
+      builder.conditions.and('status', '=', 'DRAFT').andGroup((group) => {
+        group
+          .and('lockNumber', '=', '10')
+          .orFn('attribute_not_exists', 'lockNumber');
+      });
+
+      expect(builder.finalise()).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#name': 'name',
+          '#status': 'status',
+        },
+        ExpressionAttributeValues: {
+          ':name': 'Michael',
+          ':condition_1_status': 'DRAFT',
+          ':condition_2_1_lockNumber': '10',
+        },
+        UpdateExpression: `SET #name = :name`,
+        ConditionExpression:
+          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+      });
+    });
+
+    test('nested groups', () => {
+      const builder = new UpdateCommandBuilder<Record<string, string>>(
+        mockTableName,
+        mockEntityKeys
+      );
+
+      builder.setValue('name', 'Michael');
+
+      builder.conditions.and('status', '=', 'DRAFT').andGroup((g1) => {
+        g1.and('lockNumber', '=', '10').orGroup((g2) =>
+          g2
+            .andFn('attribute_not_exists', 'lockNumber')
+            .orIn('lockNumber', ['12', '34'])
+        );
+      });
+
+      expect(builder.finalise()).toEqual({
+        TableName: mockTableName,
+        Key: mockEntityKeys,
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#name': 'name',
+          '#status': 'status',
+        },
+        ExpressionAttributeValues: {
+          ':name': 'Michael',
+          ':condition_1_status': 'DRAFT',
+          ':condition_2_1_lockNumber': '10',
+          ':condition_2_2_2_1_lockNumber': '12',
+          ':condition_2_2_2_2_lockNumber': '34',
+        },
+        UpdateExpression: `SET #name = :name`,
+        ConditionExpression:
+          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR (attribute_not_exists (#lockNumber) OR #lockNumber IN (:condition_2_2_2_1_lockNumber, :condition_2_2_2_2_lockNumber)))',
       });
     });
   });
@@ -915,12 +1043,12 @@ describe('UpdateExpressionBuilder', () => {
         TableName: mockTableName,
         Key: mockEntityKeys,
         ExpressionAttributeValues: {
-          ':ATTRIBUTE_value': 1,
+          ':ATTRIBUTE': 1,
         },
         ExpressionAttributeNames: {
           [`#${attributeName}`]: attributeName,
         },
-        UpdateExpression: `ADD #${attributeName} :${attributeName}_value`,
+        UpdateExpression: `ADD #${attributeName} :${attributeName}`,
       });
     });
   });

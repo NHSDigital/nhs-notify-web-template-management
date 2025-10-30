@@ -49,6 +49,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
@@ -137,6 +138,7 @@ describe('form-actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
@@ -191,6 +193,7 @@ describe('form-actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
@@ -301,6 +304,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
@@ -315,6 +319,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 0,
     };
 
     const response = await saveTemplate(
@@ -325,7 +330,8 @@ describe('form-actions', () => {
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
       updateTemplateInput,
-      'token'
+      'token',
+      0
     );
 
     expect(response).toEqual(responseData);
@@ -349,6 +355,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     };
 
     await expect(
@@ -358,7 +365,8 @@ describe('form-actions', () => {
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
       updateTemplateInput,
-      'token'
+      'token',
+      1
     );
   });
 
@@ -377,6 +385,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     };
 
     await expect(
@@ -393,6 +402,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
@@ -451,6 +461,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
@@ -497,6 +508,7 @@ describe('form-actions', () => {
       name: 'Template',
       message: 'Message',
       createdAt: '2020-01-01T00:00:00.000Z',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     const templates = [
@@ -537,17 +549,19 @@ describe('form-actions', () => {
         message: 'message',
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 1,
       } satisfies TemplateDto;
 
       mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
         data: responseData,
       });
 
-      const response = await setTemplateToSubmitted('id');
+      const response = await setTemplateToSubmitted('id', 0);
 
       expect(mockedTemplateClient.submitTemplate).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
 
       expect(response).toEqual(responseData);
@@ -563,13 +577,14 @@ describe('form-actions', () => {
         },
       });
 
-      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+      await expect(setTemplateToSubmitted('id', 0)).rejects.toThrow(
         'Failed to save template data'
       );
 
       expect(mockedTemplateClient.submitTemplate).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
     });
 
@@ -580,7 +595,7 @@ describe('form-actions', () => {
         clientId: undefined,
       });
 
-      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+      await expect(setTemplateToSubmitted('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
     });
@@ -592,11 +607,12 @@ describe('form-actions', () => {
         data: undefined,
       });
 
-      const response = await setTemplateToDeleted('id');
+      const response = await setTemplateToDeleted('id', 0);
 
       expect(mockedTemplateClient.deleteTemplate).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
 
       expect(response).toEqual(undefined);
@@ -612,13 +628,14 @@ describe('form-actions', () => {
         },
       });
 
-      await expect(setTemplateToDeleted('id')).rejects.toThrow(
+      await expect(setTemplateToDeleted('id', 0)).rejects.toThrow(
         'Failed to save template data'
       );
 
       expect(mockedTemplateClient.deleteTemplate).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
     });
 
@@ -629,7 +646,7 @@ describe('form-actions', () => {
         clientId: undefined,
       });
 
-      await expect(setTemplateToDeleted('id')).rejects.toThrow(
+      await expect(setTemplateToDeleted('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
     });
@@ -653,17 +670,19 @@ describe('form-actions', () => {
         },
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 1,
       } satisfies TemplateDto;
 
       mockedTemplateClient.requestProof.mockResolvedValueOnce({
         data: responseData,
       });
 
-      const response = await requestTemplateProof('id');
+      const response = await requestTemplateProof('id', 0);
 
       expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
 
       expect(response).toEqual(responseData);
@@ -679,13 +698,14 @@ describe('form-actions', () => {
         },
       });
 
-      await expect(requestTemplateProof('id')).rejects.toThrow(
+      await expect(requestTemplateProof('id', 0)).rejects.toThrow(
         'Failed to request proof'
       );
 
       expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
         'id',
-        'token'
+        'token',
+        0
       );
     });
 
@@ -696,7 +716,7 @@ describe('form-actions', () => {
         clientId: undefined,
       });
 
-      await expect(requestTemplateProof('id')).rejects.toThrow(
+      await expect(requestTemplateProof('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
     });
@@ -716,6 +736,7 @@ describe('form-actions', () => {
             createdAt: now.toISOString(),
             status: 'DRAFT',
             updatedAt: now.toISOString(),
+            lockNumber: 1,
           },
         })
       );
@@ -757,6 +778,7 @@ describe('form-actions', () => {
         createdAt: now.toISOString(),
         status: 'DRAFT',
         updatedAt: now.toISOString(),
+        lockNumber: 1,
         name: 'My Routing Config',
         campaignId: 'my-campaign-id',
         cascade: [

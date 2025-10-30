@@ -11,6 +11,7 @@ import {
   TemplateStatus,
   $CreateUpdateNonLetter,
   ClientConfiguration,
+  $LockNumber,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -246,7 +247,7 @@ export class TemplateClient {
     templateId: string,
     template: CreateUpdateTemplate,
     user: User,
-    expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
+    lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -264,11 +265,23 @@ export class TemplateClient {
       return validationResult;
     }
 
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
+
     const updateResult = await this.templateRepository.update(
       templateId,
       validationResult.data,
       user,
-      expectedStatus
+      'NOT_YET_SUBMITTED',
+      lockNumberValidation.data
     );
 
     if (updateResult.error) {
@@ -290,11 +303,27 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const submitResult = await this.templateRepository.submit(templateId, user);
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
+
+    const submitResult = await this.templateRepository.submit(
+      templateId,
+      user,
+      lockNumberValidation.data
+    );
 
     if (submitResult.error) {
       log
@@ -316,16 +345,35 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
+  async deleteTemplate(
+    templateId: string,
+    user: User,
+    lockNumber: number | string
+  ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
-    const deleteResult = await this.templateRepository.delete(templateId, user);
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
+
+    const deleteResult = await this.templateRepository.delete(
+      templateId,
+      user,
+      lockNumberValidation.data
+    );
 
     if (deleteResult.error) {
       log
         .child(deleteResult.error.errorMeta)
         .error(
-          'Failed to save template to the database',
+          'Failed to delete template in the database',
           deleteResult.error.actualError
         );
 
@@ -387,9 +435,21 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+    }
 
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
@@ -419,7 +479,11 @@ export class TemplateClient {
     }
 
     const proofRequestUpdateResult =
-      await this.templateRepository.proofRequestUpdate(templateId, user);
+      await this.templateRepository.proofRequestUpdate(
+        templateId,
+        user,
+        lockNumberValidation.data
+      );
 
     if (proofRequestUpdateResult.error) {
       log

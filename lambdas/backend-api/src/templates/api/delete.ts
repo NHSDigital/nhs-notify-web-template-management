@@ -16,10 +16,14 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const { error } = await templateClient.deleteTemplate(templateId, {
-      userId,
-      clientId,
-    });
+    const { error } = await templateClient.deleteTemplate(
+      templateId,
+      {
+        userId,
+        clientId,
+      },
+      event.headers['X-Lock-Number'] ?? ''
+    );
 
     if (error) {
       return apiFailure(

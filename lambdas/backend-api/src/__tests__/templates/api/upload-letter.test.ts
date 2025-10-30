@@ -85,6 +85,7 @@ describe('upload-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
+      lockNumber: 1,
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
@@ -158,6 +159,7 @@ describe('upload-letter', () => {
       updatedAt: now,
       updatedBy: userId,
       createdBy: userId,
+      lockNumber: 1,
       clientId,
       templateStatus: 'PENDING_VALIDATION',
       files: {

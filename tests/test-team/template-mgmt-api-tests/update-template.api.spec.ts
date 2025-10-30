@@ -32,7 +32,12 @@ test.describe('PUT /v1/template/:templateId', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.put(
-      `${process.env.API_BASE_URL}/v1/template/some-template`
+      `${process.env.API_BASE_URL}/v1/template/some-template`,
+      {
+        headers: {
+          'X-Lock-Number': '1',
+        },
+      }
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -46,6 +51,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': '1',
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'NHS_APP',
@@ -86,6 +92,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user2.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'NHS_APP',
@@ -125,6 +132,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
       }
     );
@@ -164,6 +172,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'INVALID',
@@ -228,6 +237,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
         data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'LETTER',
@@ -281,6 +291,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -301,6 +312,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateStatus: updateData.templateStatus,
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -336,6 +348,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -360,6 +373,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -407,17 +421,21 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -458,32 +476,30 @@ test.describe('PUT /v1/template/:templateId', () => {
         clientId: user1.clientId,
       });
 
-      const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
-        templateType: 'NHS_APP',
-        templateStatus: 'SUBMITTED',
-      });
-
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
-          data: {
-            ...submitData,
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
             templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -523,6 +539,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -534,6 +551,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -582,6 +600,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -623,6 +642,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -672,6 +692,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -713,6 +734,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -759,6 +781,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -811,6 +834,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -831,6 +855,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateStatus: updateData.templateStatus,
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -866,6 +891,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -890,6 +916,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -937,17 +964,20 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -998,17 +1028,20 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
           data: {
             ...submitData,
@@ -1053,6 +1086,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -1064,6 +1098,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1112,6 +1147,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1152,6 +1188,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1201,6 +1238,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1242,6 +1280,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1288,6 +1327,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1340,6 +1380,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1361,6 +1402,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateStatus: updateData.templateStatus,
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -1396,6 +1438,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -1420,6 +1463,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1467,17 +1511,21 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1528,17 +1576,20 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const updateResponse = await request.put(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
           data: {
             ...submitData,
@@ -1584,6 +1635,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -1595,6 +1647,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1643,6 +1696,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1684,6 +1738,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1733,6 +1788,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1774,6 +1830,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1792,6 +1849,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if missing template message', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,
@@ -1822,6 +1880,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1863,6 +1922,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1909,6 +1969,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1963,6 +2024,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
           data: updateData,
         }
@@ -1986,6 +2048,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateStatus: updateData.templateStatus,
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.data.lockNumber + 1,
         },
       });
 
@@ -1994,6 +2057,95 @@ test.describe('PUT /v1/template/:templateId', () => {
         new Date(),
       ]);
       expect(updated.data.createdAt).toEqual(created.data.createdAt);
+    });
+  });
+
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const updateResponse = await request.put(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(409);
+
+    const body = await updateResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
+  });
+
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const updateResponse = await request.put(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber + 1),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(409);
+
+    const body = await updateResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
     });
   });
 });

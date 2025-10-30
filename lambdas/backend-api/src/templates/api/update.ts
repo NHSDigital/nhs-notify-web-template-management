@@ -21,7 +21,8 @@ export function createHandler({
     const { data, error } = await templateClient.updateTemplate(
       templateId,
       dto,
-      { userId, clientId }
+      { userId, clientId },
+      event.headers['X-Lock-Number'] ?? ''
     );
 
     if (error) {

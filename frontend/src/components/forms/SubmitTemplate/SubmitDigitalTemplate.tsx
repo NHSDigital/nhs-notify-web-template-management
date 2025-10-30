@@ -17,6 +17,7 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
   templateName,
   templateId,
   channel,
+  lockNumber,
 }: ActionPageProps) => {
   const {
     pageHeading,
@@ -64,6 +65,12 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
               type='hidden'
               name='templateId'
               value={templateId}
+              readOnly
+            />
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
               readOnly
             />
             <NHSNotifyButton

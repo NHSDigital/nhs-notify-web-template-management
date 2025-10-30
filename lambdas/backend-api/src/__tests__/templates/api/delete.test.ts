@@ -26,6 +26,9 @@ describe('Template API - Delete', () => {
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
         pathParameters: { templateId: 'id' },
+        headers: {
+          'X-Lock-Number': '0',
+        },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -51,6 +54,9 @@ describe('Template API - Delete', () => {
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -83,6 +89,9 @@ describe('Template API - Delete', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -95,10 +104,14 @@ describe('Template API - Delete', () => {
       }),
     });
 
-    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
+    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {
+        userId: 'sub',
+        clientId: 'nhs-notify-client-id',
+      },
+      '0'
+    );
   });
 
   test('should return no content', async () => {
@@ -113,6 +126,9 @@ describe('Template API - Delete', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -122,9 +138,44 @@ describe('Template API - Delete', () => {
       body: JSON.stringify({ statusCode: 204, template: undefined }),
     });
 
-    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
+    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {
+        userId: 'sub',
+        clientId: 'nhs-notify-client-id',
+      },
+      '0'
+    );
+  });
+
+  test('coerces missing lock number header to empty string', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.deleteTemplate.mockResolvedValueOnce({
+      error: { errorMeta: { code: 409, description: 'Invalid lock number' } },
     });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
+      pathParameters: { templateId: '1-2-3' },
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 409,
+      body: JSON.stringify({
+        statusCode: 409,
+        technicalMessage: 'Invalid lock number',
+      }),
+    });
+
+    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      ''
+    );
   });
 });

@@ -16,6 +16,7 @@ describe('PreviewTemplateDetailsNhsApp', () => {
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         message='app content'
       />
@@ -38,6 +39,7 @@ describe('PreviewTemplateDetailsEmail', () => {
           templateType: 'EMAIL',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         message='email content'
         subject='email subject'
@@ -60,6 +62,7 @@ describe('PreviewTemplateDetailsSms', () => {
           templateType: 'SMS',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         message='SMS content'
       />
@@ -94,6 +97,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -120,6 +124,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -169,6 +174,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -195,6 +201,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
       />
     );
@@ -221,6 +228,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
       />
     );

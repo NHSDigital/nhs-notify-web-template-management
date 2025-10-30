@@ -97,7 +97,7 @@ describe('TemplateUpdateBuilder', () => {
       const value = 'DELETED';
       const expected = 'NOT_YET_SUBMITTED';
 
-      const res = builder.setStatus(value).expectedStatus(expected).build();
+      const res = builder.setStatus(value).expectStatus(expected).build();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -130,7 +130,7 @@ describe('TemplateUpdateBuilder', () => {
         'PENDING_VALIDATION',
       ];
 
-      const res = builder.setStatus(value).expectedStatus(expected).build();
+      const res = builder.setStatus(value).expectStatus(expected).build();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -139,15 +139,15 @@ describe('TemplateUpdateBuilder', () => {
           id: mockId,
         },
         ExpressionAttributeValues: {
-          ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
-          ':condition_2_templateStatus': 'PENDING_VALIDATION',
+          ':condition_1_1_templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': value,
         },
         ExpressionAttributeNames: {
           '#templateStatus': 'templateStatus',
         },
         ConditionExpression:
-          '#templateStatus IN (:condition_1_templateStatus, :condition_2_templateStatus)',
+          '#templateStatus IN (:condition_1_1_templateStatus, :condition_1_2_templateStatus)',
         UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
@@ -358,7 +358,7 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
-  describe('expectedTemplateType', () => {
+  describe('expectTemplateType', () => {
     test('adds templateType condition', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
@@ -368,7 +368,7 @@ describe('TemplateUpdateBuilder', () => {
 
       const res = builder
         .setStatus('NOT_YET_SUBMITTED')
-        .expectedTemplateType('SMS')
+        .expectTemplateType('SMS')
         .build();
 
       expect(res).toEqual({
@@ -391,7 +391,7 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
-  describe('expectedClientId', () => {
+  describe('expectClientId', () => {
     test('adds clientId condition', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
@@ -401,7 +401,7 @@ describe('TemplateUpdateBuilder', () => {
 
       const res = builder
         .setStatus('NOT_YET_SUBMITTED')
-        .expectedClientId('9703B712-53ED-4E4E-8767-0E7AAC9ECC09')
+        .expectClientId('9703B712-53ED-4E4E-8767-0E7AAC9ECC09')
         .build();
 
       expect(res).toEqual({
@@ -453,6 +453,169 @@ describe('TemplateUpdateBuilder', () => {
         },
         ConditionExpression: '#proofingEnabled = :condition_1_proofingEnabled',
         UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+  });
+
+  describe('expectLockNumber', () => {
+    test('adds lockNumber condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectLockNumber(1)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_1_lockNumber': 1,
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#lockNumber': 'lockNumber',
+        },
+        ConditionExpression:
+          '(#lockNumber = :condition_1_1_lockNumber OR attribute_not_exists (#lockNumber))',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+  });
+
+  describe('incrementLockNumber', () => {
+    test('increments lock number by 1', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.incrementLockNumber().build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+        },
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'ADD #lockNumber :lockNumber',
+      });
+    });
+  });
+
+  describe('setName', () => {
+    test('sets the name', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.setName('some name').build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#name': 'name',
+        },
+        ExpressionAttributeValues: {
+          ':name': 'some name',
+        },
+        UpdateExpression: 'SET #name = :name',
+      });
+    });
+  });
+
+  describe('setSubject', () => {
+    test('sets the subject', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.setSubject('some subject').build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#subject': 'subject',
+        },
+        ExpressionAttributeValues: {
+          ':subject': 'some subject',
+        },
+        UpdateExpression: 'SET #subject = :subject',
+      });
+    });
+  });
+
+  describe('setMessage', () => {
+    test('sets the message', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.setMessage('some message').build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#message': 'message',
+        },
+        ExpressionAttributeValues: {
+          ':message': 'some message',
+        },
+        UpdateExpression: 'SET #message = :message',
+      });
+    });
+  });
+
+  describe('setTTL', () => {
+    test('sets the ttl', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.setTTL(20).build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#ttl': 'ttl',
+        },
+        ExpressionAttributeValues: {
+          ':ttl': 20,
+        },
+        UpdateExpression: 'SET #ttl = :ttl',
+      });
+    });
+  });
+
+  describe('expectNotFinalStatus', () => {
+    test('adds condition that status is not DELETED or SUBMITTED', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.expectNotFinalStatus().build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_templateStatus': 'DELETED',
+          ':condition_1_2_templateStatus': 'SUBMITTED',
+        },
+        ConditionExpression:
+          'NOT #templateStatus IN (:condition_1_1_templateStatus, :condition_1_2_templateStatus)',
       });
     });
   });

@@ -33,7 +33,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/some-template`
+      `${process.env.API_BASE_URL}/v1/template/some-template`,
+      {
+        headers: {
+          'X-Lock-Number': '1',
+        },
+      }
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -47,6 +52,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': '1',
         },
       }
     );
@@ -84,6 +90,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user2.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
       }
     );
@@ -152,6 +159,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(createResult.data.lockNumber),
           },
         }
       );
@@ -212,7 +220,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
       expect(response.status(), debug).toBe(201);
 
-      await orchestrator.send(
+      const latest = await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.data.id,
           clientId: user1.clientId,
@@ -225,6 +233,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(latest.lockNumber),
           },
         }
       );
@@ -241,6 +250,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
       );
@@ -313,6 +323,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(createResult.data.lockNumber),
           },
         }
       );
@@ -324,6 +335,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(createResult.data.lockNumber + 1),
           },
         }
       );
@@ -365,6 +377,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -399,17 +412,20 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -451,6 +467,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -462,6 +479,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -503,6 +521,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -537,17 +556,20 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
+      const submitted = await submitResponse.json();
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -589,6 +611,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -600,6 +623,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -641,6 +665,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -675,17 +700,21 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(submitResponse.status()).toBe(200);
 
+      const submitted = await submitResponse.json();
+
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
       );
@@ -727,6 +756,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
@@ -738,6 +768,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
       );
@@ -781,11 +812,95 @@ test.describe('DELETE /v1/template/:templateId', () => {
         {
           headers: {
             Authorization: await userSharedClient.getAccessToken(),
+            'X-Lock-Number': String(created.data.lockNumber),
           },
         }
       );
 
       expect(deleteResponse.status()).toBe(204);
+    });
+  });
+
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(409);
+
+    const body = await deleteResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
+  });
+
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'EMAIL',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber + 1),
+        },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(409);
+
+    const body = await deleteResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
     });
   });
 });

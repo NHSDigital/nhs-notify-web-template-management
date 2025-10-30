@@ -28,6 +28,9 @@ describe('Template API - Update', () => {
         requestContext: { authorizer: ctx },
         pathParameters: { templateId: 'id' },
         body: JSON.stringify({ name: 'test' }),
+        headers: {
+          'X-Lock-Number': '1',
+        },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -51,6 +54,9 @@ describe('Template API - Update', () => {
       requestContext: { authorizer: undefined },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '1',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -88,6 +94,9 @@ describe('Template API - Update', () => {
       },
       pathParameters: { templateId: '1-2-3' },
       body: undefined,
+      headers: {
+        'X-Lock-Number': '1',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -106,7 +115,8 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {},
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      '1'
     );
   });
 
@@ -119,6 +129,9 @@ describe('Template API - Update', () => {
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
+      headers: {
+        'X-Lock-Number': '1',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -152,6 +165,9 @@ describe('Template API - Update', () => {
       },
       body: JSON.stringify({ name: 'name' }),
       pathParameters: { templateId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '1',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -167,7 +183,8 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       { name: 'name' },
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      '1'
     );
   });
 
@@ -186,10 +203,50 @@ describe('Template API - Update', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 2,
     };
 
     mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       data: response,
+    });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
+      body: JSON.stringify(update),
+      pathParameters: { templateId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '1',
+      },
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: response }),
+    });
+
+    expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      update,
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      '1'
+    );
+  });
+
+  test('coerces lock number header to empty string if missing', async () => {
+    const { handler, mocks } = setup();
+
+    const update: CreateUpdateTemplate = {
+      name: 'updated-name',
+      message: 'message',
+      templateType: 'SMS',
+    };
+
+    mocks.templateClient.updateTemplate.mockResolvedValueOnce({
+      error: { errorMeta: { code: 409, description: 'Invalid lock number' } },
     });
 
     const event = mock<APIGatewayProxyEvent>({
@@ -203,14 +260,18 @@ describe('Template API - Update', () => {
     const result = await handler(event, mock<Context>(), jest.fn());
 
     expect(result).toEqual({
-      statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, data: response }),
+      statusCode: 409,
+      body: JSON.stringify({
+        statusCode: 409,
+        technicalMessage: 'Invalid lock number',
+      }),
     });
 
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       update,
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      ''
     );
   });
 });

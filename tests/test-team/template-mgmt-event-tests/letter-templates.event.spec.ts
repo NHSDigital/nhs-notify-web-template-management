@@ -12,6 +12,7 @@ import { readFileSync } from 'node:fs';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { setTimeout } from 'node:timers/promises';
+import { Template } from 'helpers/types';
 
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
@@ -41,22 +42,23 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingDisabled,
-          'user-proof-disabled'
-        ),
-        proofingEnabled: false,
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingDisabled,
+        'user-proof-disabled'
+      ),
+      proofingEnabled: false,
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const submittedResponse = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
       {
         headers: {
           Authorization: await userProofingDisabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -80,22 +82,23 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          'user-proof-disabled',
-          'VALIDATION_FAILED'
-        ),
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingEnabled,
+        'user-proof-disabled',
+        'VALIDATION_FAILED'
+      ),
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const deletedResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -115,18 +118,18 @@ test.describe('Event publishing - Letters', () => {
   }) => {
     const templateId = randomUUID();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          'userProofingEnabledTemplate',
-          'PENDING_PROOF_REQUEST'
-        ),
-        // the values in this array do not matter at this point
-        personalisationParameters: ['nhsNumber'],
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingEnabled,
+        'userProofingEnabledTemplate',
+        'PENDING_PROOF_REQUEST'
+      ),
+      // the values in this array do not matter at this point
+      personalisationParameters: ['nhsNumber'],
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const start = new Date();
 
@@ -160,6 +163,7 @@ test.describe('Event publishing - Letters', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -175,13 +179,15 @@ test.describe('Event publishing - Letters', () => {
       })
     );
 
+    let latest: Template = template;
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      latest = await templateStorageHelper.getTemplate({
         templateId,
         clientId: userProofingEnabled.clientId,
       });
 
-      expect(template.templateStatus).toBe('PROOF_AVAILABLE');
+      expect(latest.templateStatus).toBe('PROOF_AVAILABLE');
     }).toPass({ timeout: 15_000, intervals: [1000, 3000, 5000] });
 
     const submitResponse = await request.patch(
@@ -189,6 +195,7 @@ test.describe('Event publishing - Letters', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(latest.lockNumber),
         },
       }
     );
@@ -268,25 +275,26 @@ test.describe('Event publishing - Letters', () => {
 
     const start = new Date();
 
-    await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.uploadLetterTemplate(
-          templateId,
-          userProofingEnabled,
-          'user-proof-deleted',
-          'PENDING_PROOF_REQUEST'
-        ),
-        proofingEnabled: true,
-        // just so it is not empty
-        personalisationParameters: ['nhsNumber'],
-      },
-    ]);
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        templateId,
+        userProofingEnabled,
+        'user-proof-deleted',
+        'PENDING_PROOF_REQUEST'
+      ),
+      proofingEnabled: true,
+      // just so it is not empty
+      personalisationParameters: ['nhsNumber'],
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     const deletedResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );

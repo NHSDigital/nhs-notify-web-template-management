@@ -27,6 +27,7 @@ describe('Template API - request proof', () => {
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
         pathParameters: { templateId: 'id' },
+        headers: { 'X-Lock-Number': '0' },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -51,6 +52,7 @@ describe('Template API - request proof', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: undefined },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -83,6 +85,7 @@ describe('Template API - request proof', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: 'template-id' },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -97,7 +100,44 @@ describe('Template API - request proof', () => {
 
     expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
       'template-id',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      '0'
+    );
+  });
+
+  test('should coerce missing lock number header to empty string', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.requestProof.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 409,
+          description: 'Invalid lock number',
+        },
+      },
+    });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
+      pathParameters: { templateId: 'template-id' },
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 409,
+      body: JSON.stringify({
+        statusCode: 409,
+        technicalMessage: 'Invalid lock number',
+      }),
+    });
+
+    expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
+      'template-id',
+      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      ''
     );
   });
 
@@ -111,6 +151,7 @@ describe('Template API - request proof', () => {
       name: 'template-name',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
       letterType: 'q4',
       language: 'fr',
       files: {
@@ -136,6 +177,7 @@ describe('Template API - request proof', () => {
         authorizer: { user: 'sub', clientId: 'notify-client-id' },
       },
       pathParameters: { templateId: 'id' },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -145,9 +187,13 @@ describe('Template API - request proof', () => {
       body: JSON.stringify({ statusCode: 200, data: response }),
     });
 
-    expect(mocks.templateClient.requestProof).toHaveBeenCalledWith('id', {
-      userId: 'sub',
-      clientId: 'notify-client-id',
-    });
+    expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
+      'id',
+      {
+        userId: 'sub',
+        clientId: 'notify-client-id',
+      },
+      '0'
+    );
   });
 });

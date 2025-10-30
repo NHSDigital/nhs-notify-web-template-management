@@ -34,6 +34,7 @@ const SubmitSmsTemplatePage = async (props: TemplatePageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel='SMS'
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

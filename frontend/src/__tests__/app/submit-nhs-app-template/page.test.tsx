@@ -35,6 +35,7 @@ describe('SubmitNhsAppTemplatePage', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -57,6 +58,7 @@ describe('SubmitNhsAppTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='NHS_APP'
+        lockNumber={state.lockNumber}
       />
     );
   });

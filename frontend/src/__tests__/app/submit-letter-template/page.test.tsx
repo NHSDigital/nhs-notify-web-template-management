@@ -45,6 +45,7 @@ describe('SubmitLetterTemplatePage', () => {
       <SubmitLetterTemplate
         templateName={LETTER_TEMPLATE.name}
         templateId={LETTER_TEMPLATE.id}
+        lockNumber={LETTER_TEMPLATE.lockNumber}
       />
     );
   });

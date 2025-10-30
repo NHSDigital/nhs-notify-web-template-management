@@ -8,16 +8,23 @@ import {
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { TemplateType } from 'nhs-notify-backend-client';
+import { $LockNumber, TemplateType } from 'nhs-notify-backend-client';
+
+const $RequestProofFormData = z.object({
+  templateId: z.uuidv4(),
+  lockNumber: $LockNumber,
+});
 
 export async function requestProof(channel: TemplateType, formData: FormData) {
-  const { success, data: templateId } = z
-    .uuidv4()
-    .safeParse(formData.get('templateId'));
+  const { success, data } = $RequestProofFormData.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!success) {
     return redirect('/invalid-template', RedirectType.replace);
   }
+
+  const { templateId, lockNumber } = data;
 
   const template = await getTemplate(templateId);
 
@@ -28,7 +35,7 @@ export async function requestProof(channel: TemplateType, formData: FormData) {
   }
 
   try {
-    await requestTemplateProof(templateId);
+    await requestTemplateProof(templateId, lockNumber);
   } catch (error) {
     logger.error('Failed to request template proof', {
       error,

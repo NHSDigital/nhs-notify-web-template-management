@@ -35,6 +35,7 @@ describe('SubmitSmsTemplatePage', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -57,6 +58,7 @@ describe('SubmitSmsTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='SMS'
+        lockNumber={state.lockNumber}
       />
     );
   });
