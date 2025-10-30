@@ -1,6 +1,6 @@
 import { ValidateLetterTemplateFilesLambda } from './api/validate-letter-template-files';
-import { validateLetterTemplateContainer } from './container';
+import { validateLetterTemplateFilesContainer } from './container';
 
 export const handler = new ValidateLetterTemplateFilesLambda(
-  validateLetterTemplateContainer()
+  validateLetterTemplateFilesContainer()
 ).sqsHandler;

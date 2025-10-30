@@ -25,7 +25,7 @@ const ddbDocClient = DynamoDBDocumentClient.from(
   }
 );
 
-const letterFileRepositoryContainer = () => {
+export const letterFileRepositoryContainer = () => {
   const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
 
   const letterFileRepository = new LetterFileRepository(
@@ -40,22 +40,7 @@ const letterFileRepositoryContainer = () => {
   };
 };
 
-const letterUploadRepositoryContainer = () => {
-  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
-
-  const letterUploadRepository = new LetterUploadRepository(
-    quarantineBucket,
-    internalBucket,
-    downloadBucket
-  );
-
-  return {
-    letterUploadRepository,
-    logger,
-  };
-};
-
-const templateRepositoryContainer = () => {
+export const templateRepositoryContainer = () => {
   const { templatesTableName } = loadConfig();
 
   const templateRepository = new TemplateRepository(
@@ -75,10 +60,19 @@ export const letterFileRepositoryAndTemplateRepositoryContainer = () => ({
   logger,
 });
 
-export const validateLetterTemplateContainer = () => {
+export const validateLetterTemplateFilesContainer = () => {
+  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
+
+  const letterUploadRepository = new LetterUploadRepository(
+    quarantineBucket,
+    internalBucket,
+    downloadBucket
+  );
+
   return {
     ...templateRepositoryContainer(),
-    ...letterUploadRepositoryContainer(),
+    letterUploadRepository,
+    logger,
   };
 };
 
