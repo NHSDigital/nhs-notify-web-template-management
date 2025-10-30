@@ -53,6 +53,16 @@ describe('deleteProps', () => {
     expect(log.cause.$response).toBeUndefined();
   });
 
+  test('can strip a $response field from an object in an array', () => {
+    const log = {
+      level: 'error',
+      message: 'err',
+      errors: [{ $response: {} }],
+    };
+    deleteProps(log);
+    expect(log.errors[0].$response).toBeUndefined();
+  });
+
   test('does not remove nested $response field from log object when its more than 2 levels deep', () => {
     const log = {
       level: 'error',
