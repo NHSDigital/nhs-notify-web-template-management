@@ -1180,6 +1180,11 @@ const messagePlansPage = {
   },
 };
 
+const moveMessagePlanToProduction = {
+  title: generatePageTitle('Move message plan to production'),
+  heading: 'Move message plan to production',
+};
+
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
@@ -1273,14 +1278,15 @@ const content = {
     viewSubmittedTemplate,
   },
   pages: {
+    chooseTemplatesForMessagePlan,
     createMessagePlan,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,
     messagePlanInvalidConfiguration,
     messageTemplates,
-    chooseTemplatesForMessagePlan,
     messagePlansPage,
+    moveMessagePlanToProduction,
   },
 };
 
