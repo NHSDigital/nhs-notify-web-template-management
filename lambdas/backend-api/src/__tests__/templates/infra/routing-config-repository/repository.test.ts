@@ -333,7 +333,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -357,7 +356,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -381,7 +379,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 400,
             description:
@@ -500,7 +497,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -524,7 +520,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -548,7 +543,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 400,
             description:
@@ -745,7 +739,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -769,7 +762,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Routing configuration not found',
@@ -793,7 +785,6 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 400,
             description:

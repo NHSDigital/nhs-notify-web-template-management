@@ -15,7 +15,7 @@ module "delete_routing_config_lambda" {
   handler_function_name = "handler"
   description           = "Delete Routing Config API endpoint"
 
-  memory  = 512
+  memory  = 2048
   timeout = 3
   runtime = "nodejs20.x"
 

@@ -15,7 +15,7 @@ module "get_client_lambda" {
   handler_function_name = "handler"
   description           = "Get client configuration API endpoint"
 
-  memory  = 512
+  memory  = 2048
   timeout = 20
   runtime = "nodejs20.x"
 

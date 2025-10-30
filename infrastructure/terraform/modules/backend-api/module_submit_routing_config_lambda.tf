@@ -2,7 +2,7 @@ module "submit_routing_config_lambda" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip"
 
   system_log_level      = "DEBUG"
-  application_log_level = "FATAL"
+  application_log_level = "INFO"
 
   project        = var.project
   environment    = var.environment
@@ -18,7 +18,7 @@ module "submit_routing_config_lambda" {
   handler_function_name = "handler"
   description           = "Submit Routing Config API endpoint"
 
-  memory  = 512
+  memory  = 2048
   timeout = 3
   runtime = "nodejs20.x"
 

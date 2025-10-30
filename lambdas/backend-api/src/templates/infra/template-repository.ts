@@ -184,7 +184,7 @@ export class TemplateRepository {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
           'Can not change template templateType',
-          error,
+          undefined,
           {
             templateType: `Expected ${error.Item.templateType.S} but got ${template.templateType}`,
           }
@@ -627,7 +627,7 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
         }
 
         return failure(
@@ -690,14 +690,13 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
         }
 
         if (error.Item.templateStatus.S === 'SUBMITTED') {
           return failure(
             ErrorCase.ALREADY_SUBMITTED,
-            `Template with status ${error.Item.templateStatus.S} cannot be updated`,
-            error
+            `Template with status ${error.Item.templateStatus.S} cannot be updated`
           );
         }
       }

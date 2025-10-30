@@ -17,9 +17,6 @@ import { ProofingQueue } from './infra/proofing-queue';
 import { RoutingConfigRepository } from './infra/routing-config-repository';
 
 const awsConfig = { region: 'eu-west-2' };
-const sqsClient = new SQSClient(awsConfig);
-const ssmClient = new SSMClient(awsConfig);
-const sesClient = new SESClient({ region: 'eu-west-2' });
 
 const ddbDocClient = DynamoDBDocumentClient.from(
   new DynamoDBClient({ region: 'eu-west-2' }),
@@ -28,8 +25,68 @@ const ddbDocClient = DynamoDBDocumentClient.from(
   }
 );
 
-export function createContainer() {
+const letterFileRepositoryContainer = () => {
+  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
+
+  const letterFileRepository = new LetterFileRepository(
+    quarantineBucket,
+    internalBucket,
+    downloadBucket
+  );
+
+  return {
+    letterFileRepository,
+    logger,
+  };
+};
+
+const letterUploadRepositoryContainer = () => {
+  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
+
+  const letterUploadRepository = new LetterUploadRepository(
+    quarantineBucket,
+    internalBucket,
+    downloadBucket
+  );
+
+  return {
+    letterUploadRepository,
+    logger,
+  };
+};
+
+const templateRepositoryContainer = () => {
+  const { templatesTableName } = loadConfig();
+
+  const templateRepository = new TemplateRepository(
+    ddbDocClient,
+    templatesTableName
+  );
+
+  return {
+    templateRepository,
+    logger,
+  };
+};
+
+export const letterFileRepositoryAndTemplateRepositoryContainer = () => ({
+  ...templateRepositoryContainer(),
+  ...letterFileRepositoryContainer(),
+  logger,
+});
+
+export const validateLetterTemplateContainer = () => {
+  return {
+    ...templateRepositoryContainer(),
+    ...letterUploadRepositoryContainer(),
+  };
+};
+
+export const templatesContainer = () => {
   const config = loadConfig();
+
+  const sqsClient = new SQSClient(awsConfig);
+  const ssmClient = new SSMClient(awsConfig);
 
   const templateRepository = new TemplateRepository(
     ddbDocClient,
@@ -62,70 +119,15 @@ export function createContainer() {
     logger
   );
 
-  const emailClient = new EmailClient(
-    sesClient,
-    config.templateSubmittedSenderEmailAddress,
-    config.supplierRecipientEmailAddresses,
-    logger
-  );
-
-  const routingConfigRepository = new RoutingConfigRepository(
-    ddbDocClient,
-    config.routingConfigTableName
-  );
-
-  const routingConfigClient = new RoutingConfigClient(
-    routingConfigRepository,
-    clientConfigRepository
-  );
-
   return {
-    clientConfigRepository,
-    emailClient,
-    letterUploadRepository,
-    routingConfigClient,
     templateClient,
-    templateRepository,
-  };
-}
-
-export const uploadLetterFileRepositoryContainer = () => {
-  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
-
-  const letterFileRepository = new LetterFileRepository(
-    quarantineBucket,
-    internalBucket,
-    downloadBucket
-  );
-
-  return {
-    letterFileRepository,
-    logger,
   };
 };
 
-export const createTemplateRepositoryContainer = () => {
-  const { templatesTableName } = loadConfig();
-
-  const templateRepository = new TemplateRepository(
-    ddbDocClient,
-    templatesTableName
-  );
-
-  return {
-    templateRepository,
-    logger,
-  };
-};
-
-export const uploadLetterFileRepositoryAndTemplateRepositoryContainer = () => ({
-  ...createTemplateRepositoryContainer(),
-  ...uploadLetterFileRepositoryContainer(),
-  logger,
-});
-
-export const submitRoutingConfigContainer = () => {
+export const routingConfigContainer = () => {
   const config = loadConfig();
+
+  const ssmClient = new SSMClient(awsConfig);
 
   const clientConfigRepository = new ClientConfigRepository(
     config.clientConfigSsmKeyPrefix,
@@ -145,5 +147,26 @@ export const submitRoutingConfigContainer = () => {
 
   return {
     routingConfigClient,
+  };
+};
+
+export const submitTemplateContainer = () => {
+  const {
+    templateSubmittedSenderEmailAddress,
+    supplierRecipientEmailAddresses,
+  } = loadConfig();
+
+  const sesClient = new SESClient({ region: 'eu-west-2' });
+
+  const emailClient = new EmailClient(
+    sesClient,
+    templateSubmittedSenderEmailAddress,
+    supplierRecipientEmailAddresses,
+    logger
+  );
+
+  return {
+    ...templatesContainer(),
+    emailClient,
   };
 };

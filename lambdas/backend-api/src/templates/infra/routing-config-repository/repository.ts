@@ -226,18 +226,13 @@ export class RoutingConfigRepository {
       const status = err?.Item?.status.S;
 
       if (!status || status === ('DELETED' satisfies RoutingConfigStatus)) {
-        return failure(
-          ErrorCase.NOT_FOUND,
-          `Routing configuration not found`,
-          err
-        );
+        return failure(ErrorCase.NOT_FOUND, `Routing configuration not found`);
       }
 
       if (status === ('COMPLETED' satisfies RoutingConfigStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
-          `Routing configuration with status COMPLETED cannot be updated`,
-          err
+          `Routing configuration with status COMPLETED cannot be updated`
         );
       }
     }
