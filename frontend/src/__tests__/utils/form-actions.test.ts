@@ -16,12 +16,14 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
   createRoutingConfig,
+  submitRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { randomUUID } from 'node:crypto';
+import { mock } from 'jest-mock-extended';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
@@ -34,7 +36,7 @@ jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 describe('form-actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    authIdTokenServerMock.mockResolvedValueOnce({
+    authIdTokenServerMock.mockResolvedValue({
       accessToken: 'token',
       clientId: 'client1',
     });
@@ -98,7 +100,6 @@ describe('form-actions', () => {
   });
 
   test('createTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
@@ -266,7 +267,6 @@ describe('form-actions', () => {
   });
 
   test('uploadLetterTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
@@ -363,7 +363,6 @@ describe('form-actions', () => {
   });
 
   test('saveTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
@@ -431,7 +430,6 @@ describe('form-actions', () => {
   });
 
   test('getTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
@@ -481,7 +479,6 @@ describe('form-actions', () => {
   });
 
   test('getTemplates - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
@@ -574,11 +571,7 @@ describe('form-actions', () => {
     });
 
     test('submitTemplate - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce({
-        accessToken: undefined,
-        clientId: undefined,
-      });
+      authIdTokenServerMock.mockResolvedValueOnce({});
 
       await expect(setTemplateToSubmitted('id')).rejects.toThrow(
         'Failed to get access token'
@@ -623,11 +616,7 @@ describe('form-actions', () => {
     });
 
     test('deleteTemplate - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce({
-        accessToken: undefined,
-        clientId: undefined,
-      });
+      authIdTokenServerMock.mockResolvedValueOnce({});
 
       await expect(setTemplateToDeleted('id')).rejects.toThrow(
         'Failed to get access token'
@@ -690,11 +679,7 @@ describe('form-actions', () => {
     });
 
     test('requestTemplateProof - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce({
-        accessToken: undefined,
-        clientId: undefined,
-      });
+      authIdTokenServerMock.mockResolvedValueOnce({});
 
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
@@ -772,11 +757,7 @@ describe('form-actions', () => {
     });
 
     test('errors when no token', async () => {
-      authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce({
-        accessToken: undefined,
-        clientId: undefined,
-      });
+      authIdTokenServerMock.mockResolvedValueOnce({});
 
       await expect(
         createRoutingConfig({
@@ -822,6 +803,46 @@ describe('form-actions', () => {
           cascadeGroupOverrides: [{ name: 'standard' }],
         })
       ).rejects.toThrow('Failed to create message plan');
+    });
+  });
+
+  describe('submitRoutingConfig', () => {
+    it('submits the routing config', async () => {
+      mockedRoutingConfigClient.submit.mockResolvedValueOnce({
+        data: mock<RoutingConfig>(),
+      });
+
+      await submitRoutingConfig('id');
+
+      expect(mockedRoutingConfigClient.submit).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+    });
+
+    it('throws if there is no token', async () => {
+      authIdTokenServerMock.mockResolvedValueOnce({});
+
+      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+
+      expect(mockedRoutingConfigClient.submit).not.toHaveBeenCalled();
+    });
+
+    it('throws if the api request returns an error', async () => {
+      mockedRoutingConfigClient.submit.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
+        'Failed to submit message plan'
+      );
     });
   });
 });

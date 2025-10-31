@@ -100,6 +100,27 @@ describe('MarkdownContent', () => {
     expect(container.querySelector('p')).toHaveTextContent('Block content');
   });
 
+  it('renders block content with overrides', () => {
+    const { container } = render(
+      <MarkdownContent
+        content='Block content'
+        overrides={{ p: { props: { className: 'foobar' } } }}
+      />
+    );
+    expect(container.querySelector('p')).toHaveClass('foobar');
+  });
+
+  it('renders inline mode with overrides', () => {
+    const { container } = render(
+      <MarkdownContent
+        content='Here is a [link](https://example.com)'
+        mode='inline'
+        overrides={{ a: { props: { className: 'foobar' } } }}
+      />
+    );
+    expect(container.querySelector('a')).toHaveClass('foobar');
+  });
+
   it('renders interpolated variables correctly', () => {
     render(
       <MarkdownContent

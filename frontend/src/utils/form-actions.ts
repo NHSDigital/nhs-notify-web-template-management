@@ -209,9 +209,26 @@ export async function createRoutingConfig(
   );
 
   if (error) {
-    logger.error('Failed to create message plan', { error });
+    logger.error('Failed to create message plan', error);
     throw new Error('Failed to create message plan');
   }
 
   return data;
+}
+
+export async function submitRoutingConfig(id: string) {
+  const { accessToken } = await getSessionServer();
+
+  console.log({ accessToken });
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { error } = await routingConfigurationApiClient.submit(id, accessToken);
+
+  if (error) {
+    logger.error('Failed to submit message plan', error);
+    throw new Error('Failed to submit message plan');
+  }
 }

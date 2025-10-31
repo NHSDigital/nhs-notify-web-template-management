@@ -22,6 +22,7 @@ const protectedPaths = [
   /^\/message-plans\/choose-message-order$/,
   /^\/message-plans\/create-message-plan$/,
   /^\/message-plans\/invalid$/,
+  /^\/message-plans\/move-to-production\/[^/]+$/,
   /^\/message-plans$/,
   /^\/message-templates$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,

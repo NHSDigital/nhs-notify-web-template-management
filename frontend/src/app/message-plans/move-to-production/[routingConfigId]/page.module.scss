@@ -1,0 +1,13 @@
+.table {
+  background-color: #fff;
+  border: 1px solid var(--nhsuk-border-colour);
+
+  th {
+    width: 20%;
+  }
+
+  th,
+  td {
+    padding: 1rem;
+  }
+}
