@@ -347,6 +347,20 @@ describe('RoutingConfigurationApiClient', () => {
   });
 
   describe('submit', () => {
+    it('should return updated routing configuration on success', async () => {
+      axiosMock
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}/submit`)
+        .reply(200, {
+          data: { id: validRoutingConfigId },
+        });
+
+      const response = await client.submit(validRoutingConfigId, 'test-token');
+
+      expect(response.error).toBeUndefined();
+      expect(response.data).toEqual({ id: validRoutingConfigId });
+      expect(axiosMock.history.patch.length).toBe(1);
+    });
+
     it('should return error when failing to update via API', async () => {
       axiosMock
         .onPatch(`/v1/routing-configuration/${notFoundRoutingConfigId}/submit`)
@@ -372,18 +386,20 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.patch.length).toBe(1);
     });
 
-    it('should return updated routing configuration on success', async () => {
-      axiosMock
-        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}/submit`)
-        .reply(200, {
-          data: { id: validRoutingConfigId },
-        });
+    it('should return error for invalid routing config ID', async () => {
+      const response = await client.submit(
+        invalidRoutingConfigId,
+        'test-token'
+      );
 
-      const response = await client.submit(validRoutingConfigId, 'test-token');
-
-      expect(response.error).toBeUndefined();
-      expect(response.data).toEqual({ id: validRoutingConfigId });
-      expect(axiosMock.history.patch.length).toBe(1);
+      expect(response.error).toEqual({
+        errorMeta: {
+          code: 400,
+          description: 'Invalid routing configuration ID format',
+          details: { id: invalidRoutingConfigId },
+        },
+      });
+      expect(axiosMock.history.length).toBe(0);
     });
   });
 });
