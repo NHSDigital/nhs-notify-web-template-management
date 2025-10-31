@@ -10,6 +10,7 @@ import type {
   GetV1RoutingConfigurationByRoutingConfigIdData,
   PutV1RoutingConfigurationByRoutingConfigIdData,
   CreateUpdateRoutingConfig,
+  PatchV1RoutingConfigurationByRoutingConfigIdSubmitData,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
@@ -153,5 +154,24 @@ export const routingConfigurationApiClient = {
     }
 
     return { ...data };
+  },
+
+  async submit(id: string, token: string): Promise<Result<RoutingConfig>> {
+    const url =
+      `/v1/routing-configuration/${id}/submit` satisfies OpenApiToTemplate<
+        PatchV1RoutingConfigurationByRoutingConfigIdSubmitData['url']
+      >;
+
+    const result = await catchAxiosError(
+      httpClient.patch<RoutingConfigSuccess>(url, null, {
+        headers: { Authorization: token },
+      })
+    );
+
+    if (result.error) {
+      return result;
+    }
+
+    return result.data;
   },
 };

@@ -4,6 +4,7 @@ import {
   ContentBlock,
   ContentItem,
 } from '@molecules/ContentRenderer/ContentRenderer';
+import { markdownList } from '@utils/markdown-list';
 
 describe('ContentRenderer', () => {
   it('renders nothing for empty content array', () => {
@@ -130,8 +131,8 @@ describe('ContentRenderer', () => {
   it('renders list blocks', () => {
     const content: ContentBlock[] = [
       {
-        type: 'list',
-        items: ['Item 1', 'Item 2', 'Item 3'],
+        type: 'text',
+        text: markdownList('ul', ['Item 1', 'Item 2', 'Item 3']),
       },
     ];
 
@@ -141,5 +142,42 @@ describe('ContentRenderer', () => {
     expect(listItems[0]).toHaveTextContent('Item 1');
     expect(listItems[1]).toHaveTextContent('Item 2');
     expect(listItems[2]).toHaveTextContent('Item 3');
+  });
+
+  it('renders with overrides on text blocks', () => {
+    const content: ContentBlock[] = [
+      {
+        type: 'text',
+        text: 'This is a paragraph.',
+        overrides: { p: { props: { className: 'foo' } } },
+      },
+      {
+        type: 'text',
+        text: 'Another paragraph.',
+        overrides: { p: { props: { className: 'bar' } } },
+      },
+    ];
+
+    render(<ContentRenderer content={content} />);
+
+    const listItems = screen.getAllByRole('paragraph');
+    expect(listItems).toHaveLength(2);
+    expect(listItems[0]).toHaveClass('foo');
+    expect(listItems[1]).toHaveClass('bar');
+  });
+
+  it('renders with overrides on inline-text blocks', () => {
+    const content: ContentBlock[] = [
+      {
+        type: 'inline-text',
+        text: 'This is a [link](https://example.com).',
+        overrides: { a: { props: { className: 'foo' } } },
+      },
+    ];
+
+    render(<ContentRenderer content={content} />);
+
+    const link = screen.getByRole('link');
+    expect(link).toHaveClass('foo');
   });
 });

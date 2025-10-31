@@ -3,7 +3,11 @@
   border: 1px solid var(--nhsuk-border-colour);
 
   th {
-    padding: 1rem;
     width: 20%;
+  }
+
+  th,
+  td {
+    padding: 1rem;
   }
 }

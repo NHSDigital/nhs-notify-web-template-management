@@ -1,5 +1,6 @@
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
+import { markdownList } from '@utils/markdown-list';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
@@ -116,14 +117,14 @@ const personalisation: {
           text: 'You can use the following PDS personalisation fields:',
         },
         {
-          type: 'list',
-          items: [
+          type: 'text',
+          text: markdownList('ul', [
             '((fullName))',
             '((firstName))',
             '((lastName))',
             '((nhsNumber))',
             '((date))',
-          ],
+          ]),
         },
         {
           type: 'text',
@@ -1100,11 +1101,11 @@ const messagePlanFallbackConditions: Record<
           text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
         },
         {
-          type: 'list',
-          items: [
+          type: 'text',
+          text: markdownList('ul', [
             'the recipient has requested an accessible or language letter in PDS',
             `you've included the relevant template in this message plan`,
-          ],
+          ]),
         },
       ],
     },
@@ -1150,11 +1151,11 @@ const messagePlanDraftAndProdInfo: {
         text: "Message plans that you're working on and are not ready to be sent. You can test these, using our:",
       },
       {
-        type: 'list',
-        items: [
+        type: 'text',
+        text: markdownList('ul', [
           '[API integration environment (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing)',
           '[Integration MESH mailbox (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request)',
-        ],
+        ]),
       },
     ],
   },
@@ -1180,9 +1181,70 @@ const messagePlansPage = {
   },
 };
 
+const moveMessagePlanToProductionContent: ContentBlock[] = [
+  {
+    type: 'text',
+    text: 'Moving message plans from draft to production means that they are ready to send.',
+  },
+  {
+    type: 'text',
+    text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
+  },
+  {
+    type: 'text',
+    text: '## Before you move message plans to production',
+    overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+  },
+  {
+    type: 'text',
+    text: 'Any templates used in these message plans will be locked.',
+  },
+  {
+    type: 'text',
+    text: 'Make sure:',
+  },
+  {
+    type: 'text',
+    text: markdownList('ul', [
+      'the relevant stakeholders in your team have approved your templates and message plan',
+      'your templates have no errors',
+    ]),
+    overrides: {
+      ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+    },
+  },
+];
+
+const moveMessagePlanToProductionCalloutContent: ContentBlock[] = [
+  {
+    type: 'text',
+    text: 'You cannot edit anything that is in production.',
+  },
+  {
+    type: 'text',
+    text: 'If you need to edit your templates or message plans, you can copy and replace them.',
+  },
+];
+
 const moveMessagePlanToProduction = {
   title: generatePageTitle('Move message plan to production'),
   heading: 'Move message plan to production',
+  previewLink: {
+    text: 'Preview',
+    href: (id: string) => `/message-plans/preview-message-plan/${id}`,
+  },
+  content: moveMessagePlanToProductionContent,
+  callout: {
+    label: 'Important',
+    content: moveMessagePlanToProductionCalloutContent,
+  },
+  submit: {
+    text: 'Move to production',
+  },
+  cancel: {
+    text: 'Keep in draft',
+    href: `${getBasePath()}/message-plans`,
+  },
 };
 
 const messagePlansListComponent = {

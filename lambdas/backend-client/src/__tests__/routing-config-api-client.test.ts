@@ -345,4 +345,45 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.put.length).toBe(1);
     });
   });
+
+  describe('submit', () => {
+    it('should return error when failing to update via API', async () => {
+      axiosMock
+        .onPatch(`/v1/routing-configuration/${notFoundRoutingConfigId}/submit`)
+        .reply(404, {
+          statusCode: 404,
+          technicalMessage: 'Not Found',
+          details: { message: 'Routing configuration not found' },
+        });
+
+      const response = await client.submit(
+        notFoundRoutingConfigId,
+        'test-token'
+      );
+
+      expect(response.error).toEqual({
+        errorMeta: {
+          code: 404,
+          description: 'Not Found',
+          details: { message: 'Routing configuration not found' },
+        },
+      });
+      expect(response.data).toBeUndefined();
+      expect(axiosMock.history.patch.length).toBe(1);
+    });
+
+    it('should return updated routing configuration on success', async () => {
+      axiosMock
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}/submit`)
+        .reply(200, {
+          data: { id: validRoutingConfigId },
+        });
+
+      const response = await client.submit(validRoutingConfigId, 'test-token');
+
+      expect(response.error).toBeUndefined();
+      expect(response.data).toEqual({ id: validRoutingConfigId });
+      expect(axiosMock.history.patch.length).toBe(1);
+    });
+  });
 });

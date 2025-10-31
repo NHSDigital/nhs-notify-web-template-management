@@ -1,12 +1,13 @@
-import { interpolate } from '@utils/interpolate';
-import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
+import { interpolate } from '@utils/interpolate';
 
 type MarkdownContentProps = {
   content: string | string[];
   variables?: Record<string, string | number>;
   testId?: string;
   mode?: 'block' | 'inline';
+  overrides?: MarkdownToJSX.Overrides;
 };
 
 export function MarkdownContent({
@@ -14,6 +15,7 @@ export function MarkdownContent({
   variables,
   testId,
   mode = 'block',
+  overrides,
 }: MarkdownContentProps) {
   const items = Array.isArray(content) ? content : [content];
 
@@ -35,6 +37,7 @@ export function MarkdownContent({
         props: { target: '_blank', rel: 'noopener noreferrer' },
       },
       span: { component: NoWrap },
+      ...overrides,
     },
   };
 
@@ -47,6 +50,7 @@ export function MarkdownContent({
         component: 'a',
         props: { target: '_blank', rel: 'noopener noreferrer' },
       },
+      ...overrides,
     },
   };
 
