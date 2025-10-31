@@ -41,6 +41,7 @@ exports[`matches snapshot 1`] = `
                 class="nhsuk-table__cell"
               >
                 <a
+                  data-testid="preview-link"
                   href="/message-plans/preview-message-plan/routing-config-id"
                 >
                   Preview
@@ -148,6 +149,7 @@ exports[`matches snapshot 1`] = `
             <a
               aria-disabled="false"
               class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+              data-testid="cancel-link"
               draggable="false"
               href="/templates/message-plans"
               role="button"

@@ -42,7 +42,10 @@ export default async function MoveMessagePlanToProductionPage({
                 <th className='nhsuk-table__cell'>Name</th>
                 <td className='nhsuk-table__cell'>{routingConfig.name}</td>
                 <td className='nhsuk-table__cell'>
-                  <Link href={pageContent.previewLink.href(routingConfigId)}>
+                  <Link
+                    href={pageContent.previewLink.href(routingConfigId)}
+                    data-testid='preview-link'
+                  >
                     {pageContent.previewLink.text}
                   </Link>
                 </td>
@@ -76,6 +79,7 @@ export default async function MoveMessagePlanToProductionPage({
                 secondary
                 href={pageContent.cancel.href}
                 className='nhsuk-u-margin-left-3'
+                data-testid='cancel-link'
               >
                 {pageContent.cancel.text}
               </NHSNotifyButton>
