@@ -23,6 +23,9 @@ test-coverage: # Evaluate code coverage from scripts/test/coverage @Testing
 test-accessibility: # Run tests from scripts/tests/accessibility.sh @Testing
 	make _test name="accessibility"
 
+test-ui-accessibility: # Run tests from scripts/tests/ui-accessibility.sh @Testing
+	make _test name="ui-accessibility"
+
 test-ui-routing-component: # Run tests from scripts/tests/ui-routing-component.sh @Testing
 	make _test name="ui-routing-component"
 
@@ -50,6 +53,7 @@ test: # Run all the test tasks @Testing
 		test-lint \
 		test-typecheck \
 		test-coverage \
+		test-ui-accessibility \
 		test-ui-component \
 		test-ui-e2e \
 		test-api \
@@ -73,6 +77,7 @@ ${VERBOSE}.SILENT: \
 	test-coverage \
 	test-lint \
 	test-typecheck \
+	test-ui-accessibility \
 	test-ui-component \
 	test-api \
 	test-ui-e2e \
