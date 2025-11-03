@@ -2,7 +2,7 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import { submitRoutingConfig } from '@utils/form-actions';
+import { submitRoutingConfig } from '@utils/message-plans';
 
 export async function moveRoutingConfigToProduction(formData: FormData) {
   const { data: routingConfigId } = z

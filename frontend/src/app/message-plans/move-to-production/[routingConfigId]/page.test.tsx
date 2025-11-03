@@ -1,18 +1,18 @@
+import { randomUUID } from 'node:crypto';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock } from 'jest-mock-extended';
 import { redirect, RedirectType } from 'next/navigation';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
-import { submitRoutingConfig } from '@utils/form-actions';
+import { submitRoutingConfig } from '@utils/message-plans';
 import { getRoutingConfig } from '@utils/message-plans';
 import Page, { metadata } from './page';
-import { randomUUID } from 'node:crypto';
 
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
 jest.mock('@utils/message-plans');
-jest.mock('@utils/form-actions');
+jest.mock('@utils/message-plans');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 const routingConfig = mock<RoutingConfig>({
