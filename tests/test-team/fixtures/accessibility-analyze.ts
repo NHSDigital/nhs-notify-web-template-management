@@ -19,7 +19,7 @@ const makeAxeBuilder = (page: Page) =>
   new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']);
 
 export const test = base.extend<AccessibilityFixture>({
-  analyze: async ({ page }, use) => {
+  analyze: async ({ baseURL, page }, use) => {
     const analyze: Analyze = async (pageUnderTest, opts) => {
       const { id, beforeAnalyze } = opts ?? {};
 
@@ -28,6 +28,14 @@ export const test = base.extend<AccessibilityFixture>({
       if (beforeAnalyze) {
         await beforeAnalyze(pageUnderTest);
       }
+
+      const pageUrlSegment = (
+        pageUnderTest.constructor as typeof TemplateMgmtBasePage
+      ).pageUrlSegment;
+
+      await expect(page).toHaveURL(
+        new RegExp(`${baseURL}/templates/${pageUrlSegment}(.*)`) // eslint-disable-line security/detect-non-literal-regexp
+      );
 
       const results = await makeAxeBuilder(page).analyze();
 
