@@ -7,6 +7,9 @@ exports[`ChooseMessageOrderPage 1`] = `
     id="maincontent"
     role="main"
   >
+    <img
+      src="broken"
+    />
     <form
       action="/action"
     >

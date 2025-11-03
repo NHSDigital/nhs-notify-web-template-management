@@ -32,6 +32,9 @@ exports[`Choose message order page Client-side validation triggers 1`] = `
         </li>
       </ul>
     </div>
+    <img
+      src="broken"
+    />
     <form
       action="/action"
     >
@@ -296,6 +299,9 @@ exports[`Choose message order page renders error component 1`] = `
         </li>
       </ul>
     </div>
+    <img
+      src="broken"
+    />
     <form
       action="/action"
     >
@@ -524,6 +530,9 @@ exports[`Choose message order page renders form 1`] = `
     id="maincontent"
     role="main"
   >
+    <img
+      src="broken"
+    />
     <form
       action="/action"
     >
