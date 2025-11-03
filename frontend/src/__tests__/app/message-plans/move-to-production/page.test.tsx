@@ -7,7 +7,9 @@ import { RoutingConfig } from 'nhs-notify-backend-client';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { submitRoutingConfig } from '@utils/message-plans';
 import { getRoutingConfig } from '@utils/message-plans';
-import Page, { metadata } from './page';
+import Page, {
+  metadata,
+} from '../../../../app/message-plans/move-to-production/[routingConfigId]/page';
 
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
