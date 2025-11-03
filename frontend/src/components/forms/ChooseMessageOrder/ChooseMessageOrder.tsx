@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useActionState, useState } from 'react';
@@ -43,6 +45,7 @@ export const ChooseMessageOrder = () => {
   return (
     <NHSNotifyMain>
       <NhsNotifyErrorSummary errorState={errorState} />
+      <img src='broken' />
       <NHSNotifyRadioButtonForm
         formId='choose-message-order'
         radiosId='messageOrder'
