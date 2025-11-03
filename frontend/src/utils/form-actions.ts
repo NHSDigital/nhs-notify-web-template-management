@@ -72,7 +72,8 @@ export async function saveTemplate(
   const { data, error } = await templateApiClient.updateTemplate(
     templateId,
     template,
-    accessToken
+    accessToken,
+    template.lockNumber
   );
 
   if (error) {
@@ -84,7 +85,8 @@ export async function saveTemplate(
 }
 
 export async function setTemplateToSubmitted(
-  templateId: string
+  templateId: string,
+  lockNumber: number
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();
 
@@ -94,7 +96,8 @@ export async function setTemplateToSubmitted(
 
   const { data, error } = await templateApiClient.submitTemplate(
     templateId,
-    accessToken
+    accessToken,
+    lockNumber
   );
 
   if (error) {
@@ -105,7 +108,10 @@ export async function setTemplateToSubmitted(
   return data;
 }
 
-export async function setTemplateToDeleted(templateId: string): Promise<void> {
+export async function setTemplateToDeleted(
+  templateId: string,
+  lockNumber: number
+): Promise<void> {
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
@@ -114,7 +120,8 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
 
   const { error } = await templateApiClient.deleteTemplate(
     templateId,
-    accessToken
+    accessToken,
+    lockNumber
   );
 
   if (error) {
@@ -124,7 +131,8 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
 }
 
 export async function requestTemplateProof(
-  templateId: string
+  templateId: string,
+  lockNumber: number
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();
 
@@ -134,7 +142,8 @@ export async function requestTemplateProof(
 
   const { data, error } = await templateApiClient.requestProof(
     templateId,
-    accessToken
+    accessToken,
+    lockNumber
   );
 
   if (error) {

@@ -64,6 +64,12 @@ exports[`RequestProof component should render 1`] = `
             type="hidden"
             value="template-id"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="18"
+          />
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"

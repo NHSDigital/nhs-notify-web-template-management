@@ -44,11 +44,13 @@ describe('TemplateLockRepository', () => {
           '#sftpSendLockTime': 'sftpSendLockTime',
           '#supplier': 'supplier',
           '#supplierReferences': 'supplierReferences',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
           ':sftpSendLockTime': mockDate.getTime(),
           ':supplier': 'supplier-reference',
+          ':lockNumber': 1,
         },
         ConditionExpression:
           'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
@@ -58,7 +60,7 @@ describe('TemplateLockRepository', () => {
         },
         TableName: templatesTableName,
         UpdateExpression:
-          'SET #sftpSendLockTime = :sftpSendLockTime, #supplierReferences.#supplier = :supplier',
+          'SET #sftpSendLockTime = :sftpSendLockTime, #supplierReferences.#supplier = :supplier ADD #lockNumber :lockNumber',
       });
     });
 
@@ -109,16 +111,19 @@ describe('TemplateLockRepository', () => {
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':sftpSendLockTime': mockDate.getTime() + 2_592_000_000,
+          ':lockNumber': 1,
         },
         Key: {
           id: templateId,
           owner: `CLIENT#${clientId}`,
         },
         TableName: templatesTableName,
-        UpdateExpression: 'SET #sftpSendLockTime = :sftpSendLockTime',
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime ADD #lockNumber :lockNumber',
       });
     });
   });

@@ -29,6 +29,7 @@ describe('Template API - Submit', () => {
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
         pathParameters: { templateId: 'id' },
+        headers: { 'X-Lock-Number': '0' },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -54,6 +55,7 @@ describe('Template API - Submit', () => {
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -86,6 +88,7 @@ describe('Template API - Submit', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -98,10 +101,53 @@ describe('Template API - Submit', () => {
       }),
     });
 
-    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
+    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {
+        userId: 'sub',
+        clientId: 'nhs-notify-client-id',
+      },
+      '0'
+    );
+  });
+
+  test('should coerce missing lock number header to empty string', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.submitTemplate.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 409,
+          description: 'Invalid lock number',
+        },
+      },
     });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
+      pathParameters: { templateId: '1-2-3' },
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 409,
+      body: JSON.stringify({
+        statusCode: 409,
+        technicalMessage: 'Invalid lock number',
+      }),
+    });
+
+    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {
+        userId: 'sub',
+        clientId: 'nhs-notify-client-id',
+      },
+      ''
+    );
   });
 
   test('should return template', async () => {
@@ -115,6 +161,7 @@ describe('Template API - Submit', () => {
       templateType: 'SMS',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 1,
     };
 
     mocks.templateClient.submitTemplate.mockResolvedValueOnce({
@@ -126,6 +173,7 @@ describe('Template API - Submit', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: { 'X-Lock-Number': '0' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -135,9 +183,13 @@ describe('Template API - Submit', () => {
       body: JSON.stringify({ statusCode: 200, data: response }),
     });
 
-    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith('1-2-3', {
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
+    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {
+        userId: 'sub',
+        clientId: 'nhs-notify-client-id',
+      },
+      '0'
+    );
   });
 });
