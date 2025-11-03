@@ -15,18 +15,12 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
-  createRoutingConfig,
-  submitRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
-import { randomUUID } from 'node:crypto';
-import { mock } from 'jest-mock-extended';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
-const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
@@ -683,165 +677,6 @@ describe('form-actions', () => {
 
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
-      );
-    });
-  });
-
-  describe('createRoutingConfig', () => {
-    test('creates a routing config', async () => {
-      const now = new Date();
-      const id = randomUUID();
-
-      mockedRoutingConfigClient.create.mockImplementationOnce(
-        async (input) => ({
-          data: {
-            ...input,
-            id,
-            clientId: 'client1',
-            createdAt: now.toISOString(),
-            status: 'DRAFT',
-            updatedAt: now.toISOString(),
-          },
-        })
-      );
-
-      const result = await createRoutingConfig({
-        name: 'My Routing Config',
-        campaignId: 'my-campaign-id',
-        cascade: [
-          {
-            channelType: 'primary',
-            channel: 'NHSAPP',
-            cascadeGroups: ['standard'],
-            defaultTemplateId: null,
-          },
-        ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
-      });
-
-      expect(mockedRoutingConfigClient.create).toHaveBeenCalledWith(
-        {
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
-        },
-        'token'
-      );
-
-      expect(result).toEqual({
-        id,
-        clientId: 'client1',
-        createdAt: now.toISOString(),
-        status: 'DRAFT',
-        updatedAt: now.toISOString(),
-        name: 'My Routing Config',
-        campaignId: 'my-campaign-id',
-        cascade: [
-          {
-            channelType: 'primary',
-            channel: 'NHSAPP',
-            cascadeGroups: ['standard'],
-            defaultTemplateId: null,
-          },
-        ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
-      });
-    });
-
-    test('errors when no token', async () => {
-      authIdTokenServerMock.mockResolvedValueOnce({});
-
-      await expect(
-        createRoutingConfig({
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
-        })
-      ).rejects.toThrow('Failed to get access token');
-
-      expect(mockedRoutingConfigClient.create).not.toHaveBeenCalled();
-    });
-
-    test('errors when request fails', async () => {
-      mockedRoutingConfigClient.create.mockResolvedValueOnce({
-        error: {
-          errorMeta: {
-            code: 400,
-            description: 'Bad request',
-          },
-        },
-      });
-
-      await expect(
-        createRoutingConfig({
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
-        })
-      ).rejects.toThrow('Failed to create message plan');
-    });
-  });
-
-  describe('submitRoutingConfig', () => {
-    it('submits the routing config', async () => {
-      mockedRoutingConfigClient.submit.mockResolvedValueOnce({
-        data: mock<RoutingConfig>(),
-      });
-
-      await submitRoutingConfig('id');
-
-      expect(mockedRoutingConfigClient.submit).toHaveBeenCalledWith(
-        'id',
-        'token'
-      );
-    });
-
-    it('throws if there is no token', async () => {
-      authIdTokenServerMock.mockResolvedValueOnce({});
-
-      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
-        'Failed to get access token'
-      );
-
-      expect(mockedRoutingConfigClient.submit).not.toHaveBeenCalled();
-    });
-
-    it('throws if the api request returns an error', async () => {
-      mockedRoutingConfigClient.submit.mockResolvedValueOnce({
-        error: {
-          errorMeta: {
-            code: 400,
-            description: 'Bad request',
-          },
-        },
-      });
-
-      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
-        'Failed to submit message plan'
       );
     });
   });

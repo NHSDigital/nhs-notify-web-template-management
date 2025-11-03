@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+import { mock } from 'jest-mock-extended';
 import {
   getRoutingConfig,
   updateRoutingConfig,
@@ -6,6 +8,7 @@ import {
   getRoutingConfigs,
   countRoutingConfigs,
   createRoutingConfig,
+  submitRoutingConfig,
 } from '@utils/message-plans';
 import { getSessionServer } from '@utils/amplify-utils';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
@@ -24,7 +27,6 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
-import { randomUUID } from 'node:crypto';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
@@ -673,6 +675,46 @@ describe('Message plans actions', () => {
           cascadeGroupOverrides: [{ name: 'standard' }],
         })
       ).rejects.toThrow('Failed to create message plan');
+    });
+  });
+
+  describe('submitRoutingConfig', () => {
+    it('submits the routing config', async () => {
+      routingConfigApiMock.submit.mockResolvedValueOnce({
+        data: mock<RoutingConfig>(),
+      });
+
+      await submitRoutingConfig('id');
+
+      expect(routingConfigApiMock.submit).toHaveBeenCalledWith(
+        'id',
+        'mock-token'
+      );
+    });
+
+    it('throws if there is no token', async () => {
+      getSessionServerMock.mockResolvedValueOnce({});
+
+      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+
+      expect(routingConfigApiMock.submit).not.toHaveBeenCalled();
+    });
+
+    it('throws if the api request returns an error', async () => {
+      routingConfigApiMock.submit.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(() => submitRoutingConfig('id')).rejects.toThrow(
+        'Failed to submit message plan'
+      );
     });
   });
 });

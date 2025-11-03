@@ -188,3 +188,18 @@ export async function getTemplatesByIds(
 
   return templates;
 }
+
+export async function submitRoutingConfig(id: string) {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { error } = await routingConfigurationApiClient.submit(id, accessToken);
+
+  if (error) {
+    logger.error('Failed to submit message plan', error);
+    throw new Error('Failed to submit message plan');
+  }
+}
