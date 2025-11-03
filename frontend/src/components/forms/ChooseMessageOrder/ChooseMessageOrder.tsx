@@ -45,7 +45,6 @@ export const ChooseMessageOrder = () => {
   return (
     <NHSNotifyMain>
       <NhsNotifyErrorSummary errorState={errorState} />
-      <img src='broken' />
       <NHSNotifyRadioButtonForm
         formId='choose-message-order'
         radiosId='messageOrder'
