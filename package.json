@@ -49,6 +49,7 @@
     "data-migration/user-transfer",
     "frontend",
     "lambdas/authorizer",
+    "lambdas/data-export-csv-writer",
     "lambdas/event-publisher",
     "lambdas/cognito-triggers",
     "lambdas/backend-api",
