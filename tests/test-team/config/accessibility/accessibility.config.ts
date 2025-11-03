@@ -32,10 +32,7 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
-        headless: false,
-        launchOptions: {
-          slowMo: 200,
-        },
+        headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['accessibility:setup'],
@@ -48,11 +45,12 @@ export default defineConfig({
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
-    timeout: 2 * 60 * 1000, // 2 minutes
+    timeout: 4 * 60 * 1000, // 2 minutes
     command: buildCommand,
     cwd: path.resolve(__dirname, '../../../..'),
     url: 'http://localhost:3000/templates/create-and-submit-templates',
     reuseExistingServer: !process.env.CI,
     stderr: 'pipe',
+    stdout: 'pipe',
   },
 });
