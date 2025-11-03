@@ -1,4 +1,4 @@
 import { createHandler } from './api/create';
-import { createContainer } from './container';
+import { templatesContainer } from './container/templates';
 
-export const handler = createHandler(createContainer());
+export const handler = createHandler(templatesContainer());

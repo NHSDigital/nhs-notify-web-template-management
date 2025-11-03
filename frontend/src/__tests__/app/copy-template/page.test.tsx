@@ -10,7 +10,7 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ChooseTemplate/ChooseTemplate');
+jest.mock('@forms/ChooseTemplateType/ChooseTemplateType');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);

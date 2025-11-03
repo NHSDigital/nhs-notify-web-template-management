@@ -37,13 +37,17 @@ import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-o
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
 import { RoutingMessagePlansPage } from '../pages/routing/message-plans-page';
+import { RoutingChooseTemplatesPage } from 'pages/routing/choose-templates-page';
+import { RoutingInvalidMessagePlanPage } from 'pages/routing/invalid-message-plan-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
   RoutingChooseMessageOrderPage,
+  RoutingChooseTemplatesPage,
   RoutingCreateMessagePlanPage,
+  RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
   TemplateMgmtChoosePage,

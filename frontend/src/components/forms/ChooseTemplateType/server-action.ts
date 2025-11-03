@@ -7,17 +7,17 @@ import {
 import { z } from 'zod';
 import content from '@content/content';
 
-export const $ChooseTemplate = z.object({
+export const $ChooseTemplateType = z.object({
   templateType: z.enum(TEMPLATE_TYPE_LIST, {
-    message: content.components.chooseTemplate.form.templateType.error,
+    message: content.components.chooseTemplateType.form.templateType.error,
   }),
 });
 
-export async function chooseTemplateAction(
+export async function chooseTemplateTypeAction(
   _: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const parsedForm = $ChooseTemplate.safeParse(
+  const parsedForm = $ChooseTemplateType.safeParse(
     Object.fromEntries(formData.entries())
   );
 

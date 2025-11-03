@@ -1,7 +1,7 @@
 'use server';
 
 import {
-  PageProps,
+  TemplatePageProps,
   validateSubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const PreviewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
+const PreviewSubmittedNHSAppTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);

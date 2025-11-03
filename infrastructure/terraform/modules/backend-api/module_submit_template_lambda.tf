@@ -15,7 +15,7 @@ module "submit_template_lambda" {
   handler_function_name = "handler"
   description           = "Update a template's status to SUBMITTED"
 
-  memory  = 512
+  memory  = 2048
   timeout = 20
   runtime = "nodejs20.x"
 

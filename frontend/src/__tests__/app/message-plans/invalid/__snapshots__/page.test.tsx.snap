@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InvalidMessagePlanPage 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row nhsuk-u-padding-left-3 nhsuk-u-padding-right-3"
+      data-testid="page-content-wrapper"
+    >
+      <h1
+        class="nhsuk-heading-xl"
+        data-testid="page-heading"
+      >
+        Sorry, we could not find that page
+      </h1>
+      <p>
+        You may have typed or pasted a web address incorrectly. 
+        <a
+          href="/create-and-submit-templates"
+        >
+          Go to the start page.
+        </a>
+      </p>
+      <p>
+        If the web address is correct or you selected a link or button, contact us to let us know there is a problem with this page:
+      </p>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        By email
+      </h2>
+      <p>
+        <a
+          href="mailto:ssd.nationalservicedesk@nhs.net"
+        >
+          ssd.nationalservicedesk@nhs.net
+        </a>
+      </p>
+    </div>
+  </main>
+</DocumentFragment>
+`;

@@ -69,10 +69,10 @@ export abstract class TemplateMgmtBasePage {
       .and(page.getByText('Skip to main content'));
   }
 
-  abstract loadPage(templateId?: string): Promise<void>;
+  abstract loadPage(idParameter?: string): Promise<void>;
 
-  async attemptToLoadPageExpectFailure(templateId?: string) {
-    await this.loadPage(templateId);
+  async attemptToLoadPageExpectFailure(idParameter?: string) {
+    await this.loadPage(idParameter);
   }
 
   async navigateTo(url: string) {
