@@ -54,7 +54,7 @@ exports[`matches snapshot 1`] = `
           Moving message plans from draft to production means that they are ready to send.
         </p>
         <p>
-          Messages will only be sent to recipients when you make a request with
+          Messages will only be sent to recipients when you make a request with 
           <a
             href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify"
             rel="noopener noreferrer"
@@ -62,7 +62,7 @@ exports[`matches snapshot 1`] = `
           >
             NHS Notify API
           </a>
-           or
+           or 
           <a
             href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh"
             rel="noopener noreferrer"

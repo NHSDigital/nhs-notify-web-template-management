@@ -12,6 +12,7 @@ import {
   assertSignOutLink,
   assertSkipToMainContent,
 } from 'helpers/template-mgmt-common.steps';
+import { RoutingMessagePlansPage } from 'pages/routing/message-plans-page';
 import { RoutingMoveToProductionPage } from 'pages/routing/move-to-production-page';
 
 const storageHelper = new RoutingConfigStorageHelper();
@@ -53,7 +54,7 @@ test.describe('Create Message Plan Page', () => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    storageHelper.seed([routingConfig.dbEntry]);
+    await storageHelper.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
@@ -66,7 +67,21 @@ test.describe('Create Message Plan Page', () => {
     await moveToProductionPage.submitButton.click();
 
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans`);
-    // TODO: CCM-11496 - assert status
+
+    const messagePlansPage = new RoutingMessagePlansPage(page);
+
+    await messagePlansPage.productionMessagePlansTable.click();
+
+    const productionIdCells =
+      messagePlansPage.productionMessagePlansTable.getByTestId(
+        'message-plan-id-cell'
+      );
+
+    const productionCellsText = await productionIdCells.allTextContents();
+
+    expect(productionCellsText).toContainEqual(
+      expect.stringContaining(routingConfig.dbEntry.id)
+    );
   });
 
   test('links to preview page for the message plan', async ({
@@ -76,7 +91,7 @@ test.describe('Create Message Plan Page', () => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    storageHelper.seed([routingConfig.dbEntry]);
+    await storageHelper.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
@@ -93,14 +108,14 @@ test.describe('Create Message Plan Page', () => {
     );
   });
 
-  test('cancel button links to the message plan list page', async ({
+  test('cancel button links to the message plan list page, does not move the plan to production', async ({
     baseURL,
     page,
   }) => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    storageHelper.seed([routingConfig.dbEntry]);
+    await storageHelper.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
@@ -113,5 +128,19 @@ test.describe('Create Message Plan Page', () => {
     await moveToProductionPage.cancelLink.click();
 
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans`);
+
+    const messagePlansPage = new RoutingMessagePlansPage(page);
+
+    await messagePlansPage.draftMessagePlansTable.click();
+
+    const draftIdCells = messagePlansPage.draftMessagePlansTable.getByTestId(
+      'message-plan-id-cell'
+    );
+
+    const draftCellsText = await draftIdCells.allTextContents();
+
+    expect(draftCellsText).toContainEqual(
+      expect.stringContaining(routingConfig.dbEntry.id)
+    );
   });
 });

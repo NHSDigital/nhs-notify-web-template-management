@@ -219,8 +219,6 @@ export async function createRoutingConfig(
 export async function submitRoutingConfig(id: string) {
   const { accessToken } = await getSessionServer();
 
-  console.log({ accessToken });
-
   if (!accessToken) {
     throw new Error('Failed to get access token');
   }

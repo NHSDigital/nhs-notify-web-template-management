@@ -167,7 +167,7 @@ export const routingConfigurationApiClient = {
     }
 
     const url =
-      `/v1/routing-configuration/${id}/submit` satisfies OpenApiToTemplate<
+      `/v1/routing-configuration/${parseResult.data}/submit` satisfies OpenApiToTemplate<
         PatchV1RoutingConfigurationByRoutingConfigIdSubmitData['url']
       >;
 
