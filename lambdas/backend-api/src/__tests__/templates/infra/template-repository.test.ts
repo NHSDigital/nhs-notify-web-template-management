@@ -411,7 +411,6 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            actualError: error,
             errorMeta: {
               code,
               description: message,
@@ -517,6 +516,7 @@ describe('templateRepository', () => {
         Item: undefined,
         code: 404,
         message: 'Template not found',
+        returnActualError: false,
       },
       {
         testName:
@@ -527,6 +527,7 @@ describe('templateRepository', () => {
         }),
         code: 400,
         message: 'Template with status SUBMITTED cannot be updated',
+        returnActualError: false,
       },
       {
         testName:
@@ -537,6 +538,7 @@ describe('templateRepository', () => {
         }),
         code: 400,
         message: 'Template cannot be submitted',
+        returnActualError: true,
       },
       {
         testName:
@@ -547,6 +549,7 @@ describe('templateRepository', () => {
         }),
         code: 400,
         message: 'Template cannot be submitted',
+        returnActualError: true,
       },
       {
         testName:
@@ -557,6 +560,7 @@ describe('templateRepository', () => {
         }),
         code: 404,
         message: 'Template not found',
+        returnActualError: false,
       },
       {
         testName:
@@ -579,39 +583,45 @@ describe('templateRepository', () => {
         }),
         code: 400,
         message: 'Template cannot be submitted',
+        returnActualError: true,
       },
-    ])('submit: $testName', async ({ Item, code, message }) => {
-      const { templateRepository, mocks } = setup();
+    ])(
+      'submit: $testName',
+      async ({ Item, code, message, returnActualError }) => {
+        const { templateRepository, mocks } = setup();
 
-      const error = new ConditionalCheckFailedException({
-        message: 'mocked',
-        $metadata: { httpStatusCode: 400 },
-        Item,
-      });
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
 
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
-        })
-        .on(UpdateCommand)
-        .rejects(error);
+        mocks.ddbDocClient
+          .on(QueryCommand)
+          .resolves({
+            Items: [
+              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+            ],
+          })
+          .on(UpdateCommand)
+          .rejects(error);
 
-      const response = await templateRepository.submit(
-        'abc-def-ghi-jkl-123',
-        user
-      );
+        const response = await templateRepository.submit(
+          'abc-def-ghi-jkl-123',
+          user
+        );
 
-      expect(response).toEqual({
-        error: {
-          actualError: error,
-          errorMeta: {
-            code,
-            description: message,
+        expect(response).toEqual({
+          error: {
+            ...(returnActualError ? { actualError: error } : {}),
+            errorMeta: {
+              code,
+              description: message,
+            },
           },
-        },
-      });
-    });
+        });
+      }
+    );
 
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
@@ -732,7 +742,6 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            actualError: error,
             errorMeta: {
               code,
               description: message,
@@ -869,7 +878,6 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            actualError: error,
             errorMeta: {
               code,
               description: message,
@@ -1620,7 +1628,6 @@ describe('templateRepository', () => {
 
       expect(result).toEqual({
         error: {
-          actualError: err,
           errorMeta: {
             code: 404,
             description: 'Template not found',
