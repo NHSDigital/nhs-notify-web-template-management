@@ -100,6 +100,7 @@ export const TemplateFactory = {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      lockNumber: 0,
       ...template,
     };
   },

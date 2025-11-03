@@ -30,6 +30,7 @@ const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
     <SubmitLetterTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

@@ -32,13 +32,30 @@ const mockLetterTemplate = (id: string) =>
         fileName: 'a.pdf',
       },
     },
+    lockNumber: 1,
   }) satisfies TemplateDto;
 
 describe('requestProof', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should redirect when templateId from form is invalid', async () => {
-    const formData = getMockFormData({ templateId: 'not-uuid' });
+    const formData = getMockFormData({
+      templateId: 'not-uuid',
+      lockNumber: '500',
+    });
+
+    await requestProof('LETTER', formData);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+
+    expect(getTemplateMock).not.toHaveBeenCalled();
+  });
+
+  it('should redirect when lockNumber from form is invalid', async () => {
+    const formData = getMockFormData({
+      templateId: '2abc25f0-7e59-4d53-b20c-7547ef983789',
+      lockNumber: 'invalid',
+    });
 
     await requestProof('LETTER', formData);
 
@@ -52,6 +69,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({
       templateId: '2abc25f0-7e59-4d53-b20c-7547ef983789',
+      lockNumber: '300',
     });
 
     await requestProof('LETTER', formData);
@@ -66,6 +84,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({
       templateId: '992fe769-f8b3-43a9-84f1-6e10d0480bb6',
+      lockNumber: '300',
     });
 
     await requestProof('LETTER', formData);
@@ -84,6 +103,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({
       templateId: '14216f4b-d01b-401c-8351-1356809174d9',
+      lockNumber: '300',
     });
 
     await expect(requestProof('LETTER', formData)).rejects.toThrow(
@@ -94,15 +114,18 @@ describe('requestProof', () => {
   it('should redirect when successfully submitted', async () => {
     const templateId = '465eecc3-2ab8-4291-a898-ee6edcb03d33';
 
-    getTemplateMock.mockResolvedValueOnce(mockLetterTemplate(templateId));
+    const template = mockLetterTemplate(templateId);
+
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const formData = getMockFormData({
       templateId,
+      lockNumber: '300',
     });
 
     await requestProof('LETTER', formData);
 
-    expect(requestTemplateProofMock).toHaveBeenCalledWith(templateId);
+    expect(requestTemplateProofMock).toHaveBeenCalledWith(templateId, 300);
 
     expect(redirectMock).toHaveBeenCalledWith(
       `/preview-letter-template/${templateId}`,

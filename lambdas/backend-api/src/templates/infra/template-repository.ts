@@ -1,23 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import {
-  EmailProperties,
-  ErrorCase,
-  LetterFiles,
-  NhsAppProperties,
-  SmsProperties,
-  TemplateStatus,
-  CreateUpdateTemplate,
-  ValidatedCreateUpdateTemplate,
-  VirusScanStatus,
-  UploadLetterProperties,
-  ProofFileDetails,
-} from 'nhs-notify-backend-client';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import type {
-  FileType,
-  TemplateKey,
-  User,
-} from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
@@ -28,37 +9,30 @@ import {
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
-import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
-import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
+import {
+  ErrorCase,
+  LetterFiles,
+  TemplateStatus,
+  ValidatedCreateUpdateTemplate,
+  VirusScanStatus,
+  ProofFileDetails,
+  ValidatedCreateUpdateTemplateNonLetter,
+} from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
+import type {
+  DatabaseTemplate,
+  FileType,
+  TemplateKey,
+  User,
+} from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import { ApplicationResult, failure, success } from '../../utils';
 
 export type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
-
-const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
-  templateType: null,
-  message: null,
-};
-
-const emailAttributes: Record<keyof EmailProperties, null> = {
-  templateType: null,
-  message: null,
-  subject: null,
-};
-
-const smsAttributes: Record<keyof SmsProperties, null> = {
-  templateType: null,
-  message: null,
-};
-
-const letterAttributes: Record<keyof UploadLetterProperties, null> = {
-  files: null,
-  language: null,
-  letterType: null,
-  templateType: null,
-  campaignId: null,
-};
 
 export class TemplateRepository {
   private readonly clientOwnerPrefix = 'CLIENT#';
@@ -117,6 +91,7 @@ export class TemplateRepository {
       ...(template.templateType === 'LETTER' && {
         campaignId,
       }),
+      lockNumber: 0,
     };
 
     try {
@@ -136,108 +111,117 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: ValidatedCreateUpdateTemplate,
+    template: ValidatedCreateUpdateTemplateNonLetter,
     user: User,
-    expectedStatus: TemplateStatus
+    expectedStatus: TemplateStatus,
+    lockNumber: number
   ): Promise<ApplicationResult<DatabaseTemplate>> {
-    const updateExpression = [
-      '#name = :name',
-      ...this.getChannelAttributeExpressions(template),
-    ];
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      user.clientId,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    );
 
-    const expressionAttributeNames: Record<string, string> = {
-      '#name': 'name',
-      '#templateStatus': 'templateStatus',
-      '#templateType': 'templateType',
-      ...this.getChannelAttributeNames(template),
-    };
+    update
+      .setName(template.name)
+      .setMessage(template.message)
+      .expectTemplateExists()
+      .expectStatus(expectedStatus)
+      .expectNotFinalStatus()
+      .expectTemplateType(template.templateType)
+      .expectLockNumber(lockNumber)
+      .setUpdatedByUserAt(user.userId)
+      .incrementLockNumber();
 
-    const expressionAttributeValues: Record<string, string | number> = {
-      ':name': template.name,
-      ':expectedStatus': expectedStatus,
-      ':templateType': template.templateType,
-      ...this.getChannelAttributeValues(template),
-    };
-
-    const conditions = [
-      '#templateStatus = :expectedStatus AND #templateType = :templateType',
-    ];
+    if (template.templateType === 'EMAIL') {
+      update.setSubject(template.subject);
+    }
 
     try {
-      const result = await this._update(
-        templateId,
-        user.clientId,
-        user.userId,
-        updateExpression,
-        expressionAttributeNames,
-        expressionAttributeValues,
-        { $and: conditions }
+      const response = await this.client.send(
+        new UpdateCommand(update.build())
       );
 
-      return result;
+      return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
-      if (
-        error instanceof ConditionalCheckFailedException &&
-        error.Item &&
-        error.Item.templateType.S !== template.templateType
-      ) {
-        return failure(
-          ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
-          'Can not change template templateType',
-          undefined,
-          {
-            templateType: `Expected ${error.Item.templateType.S} but got ${template.templateType}`,
-          }
-        );
+      return this._handleUpdateError(error, template, lockNumber);
+    }
+  }
+
+  async delete(
+    templateId: string,
+    user: User,
+    lockNumber: number
+  ): Promise<ApplicationResult<null>> {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      user.clientId,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    );
+
+    update
+      .setStatus('DELETED')
+      .setTTL(calculateTTL())
+      .expectTemplateExists()
+      .expectNotFinalStatus()
+      .expectLockNumber(lockNumber)
+      .setUpdatedByUserAt(user.userId)
+      .incrementLockNumber();
+
+    try {
+      await this.client.send(new UpdateCommand(update.build()));
+
+      return success(null);
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.templateStatus === 'SUBMITTED') {
+          return failure(
+            ErrorCase.ALREADY_SUBMITTED,
+            `Template with status ${oldItem.templateStatus} cannot be updated`,
+            error
+          );
+        }
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+        }
       }
 
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to delete template', error);
     }
   }
 
-  async delete(templateId: string, user: User) {
-    const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
-
-    const expressionAttributeNames: Record<string, string> = {
-      '#ttl': 'ttl',
-    };
-
-    const expressionAttributeValues = {
-      ':newStatus': 'DELETED' satisfies TemplateStatus,
-      ':ttl': calculateTTL(),
-    };
-
-    try {
-      const result = await this._update(
-        templateId,
-        user.clientId,
-        user.userId,
-        updateExpression,
-        expressionAttributeNames,
-        expressionAttributeValues,
-        {}
-      );
-
-      return result;
-    } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
-  }
-
-  async submit(templateId: string, user: User) {
+  async submit(templateId: string, user: User, lockNumber: number) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
-    const expressionAttributeValues: Record<string, string> = {
-      ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
-      ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-      ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
-      ':passed': 'PASSED' satisfies VirusScanStatus,
-    };
+    const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
+        ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
+        ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':passed': 'PASSED' satisfies VirusScanStatus,
+        ':expectedLockNumber': lockNumber,
+      };
 
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus',
+      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus)',
+      '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
     ];
 
     try {
@@ -254,6 +238,12 @@ export class TemplateRepository {
       return result;
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException && error.Item) {
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+        }
+
         return failure(
           ErrorCase.CANNOT_SUBMIT,
           'Template cannot be submitted',
@@ -340,6 +330,7 @@ export class TemplateRepository {
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
+        '#lockNumber': 'lockNumber',
       };
 
     const resolvedPostValidationSuccessStatus = proofingEnabled
@@ -355,6 +346,7 @@ export class TemplateRepository {
         ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
         ':updatedAt': new Date().toISOString(),
         ':version': versionId,
+        ':lockNumberIncrement': 1,
       };
 
     const updates = [
@@ -382,7 +374,7 @@ export class TemplateRepository {
         new UpdateCommand({
           TableName: this.templatesTableName,
           Key: this.toDatabaseKey(templateKey),
-          UpdateExpression: `SET ${updates.join(' , ')}`,
+          UpdateExpression: `SET ${updates.join(' , ')} ADD #lockNumber :lockNumberIncrement`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
           ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
@@ -413,9 +405,10 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
-          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
         ExpressionAttributeNames: {
           '#fileName': fileName,
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
@@ -426,6 +419,7 @@ export class TemplateRepository {
             virusScanStatus,
             supplier,
           } satisfies ProofFileDetails,
+          ':lockNumberIncrement': 1,
         },
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
@@ -442,13 +436,17 @@ export class TemplateRepository {
         TableName: this.templatesTableName,
         Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
-          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
         ExpressionAttributeValues: {
           ':templateStatusWaitingForProof':
             'WAITING_FOR_PROOF' satisfies TemplateStatus,
           ':templateStatusProofAvailable':
             'PROOF_AVAILABLE' satisfies TemplateStatus,
           ':updatedAt': new Date().toISOString(),
+          ':lockNumberIncrement': 1,
         },
         ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
       })
@@ -556,6 +554,7 @@ export class TemplateRepository {
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
+        '#lockNumber': 'lockNumber',
       };
 
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
@@ -565,6 +564,7 @@ export class TemplateRepository {
         ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
         ':version': versionId,
         ':updatedAt': new Date().toISOString(),
+        ':lockNumberIncrement': 1,
       };
 
     if (status === 'FAILED') {
@@ -578,7 +578,7 @@ export class TemplateRepository {
         new UpdateCommand({
           TableName: this.templatesTableName,
           Key: this.toDatabaseKey(templateKey),
-          UpdateExpression: `SET ${updates.join(' , ')}`,
+          UpdateExpression: `SET ${updates.join(' , ')} ADD #lockNumber :lockNumberIncrement`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
           ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
@@ -598,7 +598,7 @@ export class TemplateRepository {
     }
   }
 
-  async proofRequestUpdate(templateId: string, user: User) {
+  async proofRequestUpdate(templateId: string, user: User, lockNumber: number) {
     try {
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
@@ -610,16 +610,18 @@ export class TemplateRepository {
         }
       )
         .setStatus('WAITING_FOR_PROOF')
-        .expectedStatus('PENDING_PROOF_REQUEST')
+        .expectStatus('PENDING_PROOF_REQUEST')
         .setUpdatedByUserAt(user.userId)
 
         // dynamodb does not support conditional initialising of maps, so we have to
         // initialise an empty map here, then we set supplier-specific values in the
         // per-supplier sftp send lambda
         .initialiseSupplierReferences()
-        .expectedTemplateType('LETTER')
-        .expectedClientId(user.clientId)
+        .expectTemplateType('LETTER')
+        .expectClientId(user.clientId)
         .expectProofingEnabled()
+        .expectLockNumber(lockNumber)
+        .incrementLockNumber()
         .build();
 
       const response = await this.client.send(new UpdateCommand(update));
@@ -628,6 +630,12 @@ export class TemplateRepository {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
           return failure(ErrorCase.NOT_FOUND, `Template not found`);
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
         }
 
         return failure(
@@ -664,12 +672,13 @@ export class TemplateRepository {
         id: templateId,
         owner: this.clientOwnerKey(clientId),
       },
-      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
+      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement`,
       ExpressionAttributeNames: {
         ...expressionAttributeNames,
         '#updatedAt': 'updatedAt',
         '#updatedBy': 'updatedBy',
         '#templateStatus': 'templateStatus',
+        '#lockNumber': 'lockNumber',
       },
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
@@ -677,6 +686,7 @@ export class TemplateRepository {
         ':updatedBy': userId,
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':lockNumberIncrement': 1,
       },
       ConditionExpression: andConditions,
       ReturnValues: 'ALL_NEW',
@@ -715,114 +725,41 @@ export class TemplateRepository {
     return `CLIENT#${clientId}`;
   }
 
-  private attributeExpressionsFromMap<T>(
-    channelSpecificAttributes: Record<keyof T, null>
+  private _handleUpdateError(
+    error: unknown,
+    template: ValidatedCreateUpdateTemplateNonLetter,
+    lockNumber: number
   ) {
-    return Object.keys(channelSpecificAttributes).map(
-      (att) => `#${att} = :${att}`
-    );
-  }
+    if (error instanceof ConditionalCheckFailedException) {
+      if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+        return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+      }
 
-  private getChannelAttributeExpressions(template: CreateUpdateTemplate) {
-    const expressions = [];
-    if (template.templateType === 'NHS_APP') {
-      expressions.push(
-        ...this.attributeExpressionsFromMap<NhsAppProperties>(nhsAppAttributes)
-      );
-    }
-    if (template.templateType === 'EMAIL') {
-      expressions.push(
-        ...this.attributeExpressionsFromMap<EmailProperties>(emailAttributes)
-      );
-    }
-    if (template.templateType === 'SMS') {
-      expressions.push(
-        ...this.attributeExpressionsFromMap<SmsProperties>(smsAttributes)
-      );
-    }
-    if (template.templateType === 'LETTER') {
-      expressions.push(
-        ...this.attributeExpressionsFromMap<UploadLetterProperties>(
-          letterAttributes
-        )
-      );
-    }
-    return expressions;
-  }
+      const oldItem = unmarshall(error.Item);
 
-  private attributeNamesFromMap<T>(
-    channelSpecificAttributes: Record<keyof T, null>
-  ) {
-    let attributeNames = {};
+      if (oldItem.templateStatus === 'SUBMITTED') {
+        return failure(
+          ErrorCase.ALREADY_SUBMITTED,
+          `Template with status ${oldItem.templateStatus} cannot be updated`,
+          error
+        );
+      }
 
-    for (const att in channelSpecificAttributes) {
-      attributeNames = { ...attributeNames, [`#${att}`]: att };
+      if (oldItem.templateType !== template.templateType) {
+        return failure(
+          ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
+          'Can not change template templateType',
+          error,
+          {
+            templateType: `Expected ${oldItem.templateType} but got ${template.templateType}`,
+          }
+        );
+      }
+
+      if (oldItem.lockNumber !== lockNumber) {
+        return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+      }
     }
-
-    return attributeNames;
-  }
-
-  private getChannelAttributeNames(template: CreateUpdateTemplate) {
-    let names = {};
-
-    if (template.templateType === 'NHS_APP') {
-      names = this.attributeNamesFromMap<NhsAppProperties>(nhsAppAttributes);
-    }
-    if (template.templateType === 'EMAIL') {
-      names = this.attributeNamesFromMap<EmailProperties>(emailAttributes);
-    }
-    if (template.templateType === 'SMS') {
-      names = this.attributeNamesFromMap<SmsProperties>(smsAttributes);
-    }
-    if (template.templateType === 'LETTER') {
-      names =
-        this.attributeNamesFromMap<UploadLetterProperties>(letterAttributes);
-    }
-
-    return names;
-  }
-
-  private attributeValuesFromMapAndTemplate<T>(
-    channelSpecificAttributes: Record<keyof T, null>,
-    template: T
-  ) {
-    let attributeValues = {};
-
-    for (const att in channelSpecificAttributes) {
-      attributeValues = { ...attributeValues, [`:${att}`]: template[att] };
-    }
-
-    return attributeValues;
-  }
-
-  private getChannelAttributeValues(template: ValidatedCreateUpdateTemplate) {
-    let values = {};
-
-    if (template.templateType === 'NHS_APP') {
-      values = this.attributeValuesFromMapAndTemplate<NhsAppProperties>(
-        nhsAppAttributes,
-        template
-      );
-    }
-    if (template.templateType === 'EMAIL') {
-      values = this.attributeValuesFromMapAndTemplate<EmailProperties>(
-        emailAttributes,
-        template
-      );
-    }
-    if (template.templateType === 'SMS') {
-      values = this.attributeValuesFromMapAndTemplate<SmsProperties>(
-        smsAttributes,
-        template
-      );
-    }
-    if (template.templateType === 'LETTER') {
-      values = this.attributeValuesFromMapAndTemplate<UploadLetterProperties>(
-        letterAttributes,
-        template
-      );
-    }
-
-    return values;
+    return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
   }
 }

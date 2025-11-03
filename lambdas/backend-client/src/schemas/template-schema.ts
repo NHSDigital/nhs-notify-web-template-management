@@ -31,6 +31,11 @@ import {
 export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
   (EmailProperties | NhsAppProperties | SmsProperties | UploadLetterProperties);
 
+export type ValidatedCreateUpdateTemplateNonLetter = Exclude<
+  ValidatedCreateUpdateTemplate,
+  { templateType: 'LETTER' }
+>;
+
 export type ValidatedTemplateDto = TemplateDto &
   (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
 
@@ -112,8 +117,8 @@ export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
 );
 
 export const $CreateUpdateNonLetter = schemaFor<
-  Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
-  Exclude<ValidatedCreateUpdateTemplate, { templateType: 'LETTER' }>
+  ValidatedCreateUpdateTemplateNonLetter,
+  Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>
 >()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.merge($NhsAppProperties),
@@ -123,8 +128,8 @@ export const $CreateUpdateNonLetter = schemaFor<
 );
 
 export const $CreateUpdateTemplate = schemaFor<
-  CreateUpdateTemplate,
-  ValidatedCreateUpdateTemplate
+  ValidatedCreateUpdateTemplate,
+  CreateUpdateTemplate
 >()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.merge($NhsAppProperties),
@@ -134,11 +139,19 @@ export const $CreateUpdateTemplate = schemaFor<
   ])
 );
 
+export const $LockNumber = z.coerce
+  .string()
+  .trim()
+  .min(1)
+  .transform(Number)
+  .pipe(z.number().int().min(0));
+
 const $TemplateDtoFields = z
   .object({
     campaignId: z.string().optional(),
     clientId: z.string().optional(),
     createdAt: z.string(),
+    lockNumber: $LockNumber.default(0),
     id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
     updatedAt: z.string(),
@@ -147,7 +160,7 @@ const $TemplateDtoFields = z
 
 export const $TemplateDtoSchema = schemaFor<
   TemplateDto,
-  ValidatedTemplateDto
+  Omit<ValidatedTemplateDto, 'lockNumber'>
 >()(
   z.discriminatedUnion('templateType', [
     $TemplateDtoFields.merge($NhsAppProperties),

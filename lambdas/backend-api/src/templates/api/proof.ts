@@ -16,10 +16,14 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.requestProof(templateId, {
-      userId,
-      clientId,
-    });
+    const { data, error } = await templateClient.requestProof(
+      templateId,
+      {
+        userId,
+        clientId,
+      },
+      event.headers['X-Lock-Number'] ?? ''
+    );
 
     if (error) {
       return apiFailure(
