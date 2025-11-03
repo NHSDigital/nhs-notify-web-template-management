@@ -15,7 +15,7 @@ module "request_proof_lambda" {
   handler_function_name = "handler"
   description           = "Request a proof"
 
-  memory  = 512
+  memory  = 2048
   timeout = 20
   runtime = "nodejs20.x"
 

@@ -1,4 +1,4 @@
 import { createHandler } from './api/set-letter-upload-virus-scan-status';
-import { createTemplateRepositoryContainer } from './container';
+import { templateRepositoryContainer } from './container/templates-repository';
 
-export const handler = createHandler(createTemplateRepositoryContainer());
+export const handler = createHandler(templateRepositoryContainer());

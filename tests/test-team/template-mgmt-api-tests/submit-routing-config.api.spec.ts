@@ -77,8 +77,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
         },
       }
     );
-    expect(response.status()).toBe(404);
-    expect(await response.json()).toEqual({
+    const responseBody = await response.json();
+    const dbg = JSON.stringify(responseBody);
+
+    expect(response.status(), dbg).toBe(404);
+    expect(responseBody).toEqual({
       statusCode: 404,
       technicalMessage: 'Routing configuration not found',
     });

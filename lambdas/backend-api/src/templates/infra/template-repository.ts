@@ -629,7 +629,7 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
         }
 
         const oldItem = unmarshall(error.Item);
@@ -700,14 +700,13 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
         }
 
         if (error.Item.templateStatus.S === 'SUBMITTED') {
           return failure(
             ErrorCase.ALREADY_SUBMITTED,
-            `Template with status ${error.Item.templateStatus.S} cannot be updated`,
-            error
+            `Template with status ${error.Item.templateStatus.S} cannot be updated`
           );
         }
       }
