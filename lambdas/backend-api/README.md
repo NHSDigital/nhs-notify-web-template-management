@@ -42,6 +42,7 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \
 --data '{
   "name": "<string>",
   "message": "<string>",
@@ -106,7 +107,8 @@ Will delete a single template.
 
 ```bash
 curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID" \
---header "Authorization: $SANDBOX_TOKEN"
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
 ### PATCH - /v1/template/:templateId/submit - Submit a template
@@ -116,7 +118,8 @@ Will submit a template.
 ```bash
 curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/submit" \
 --header 'Accept: application/json' \
---header "Authorization: $SANDBOX_TOKEN"
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
 ### POST - /v1/template/:templateId/proof - Request a proof of a template
@@ -126,7 +129,8 @@ Will trigger a proof request for the template.
 ```bash
 curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/proof" \
 --header 'Accept: application/json' \
---header "Authorization: $SANDBOX_TOKEN"
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
 ### GET - /v1/client-configuration - Get client configuration for the caller

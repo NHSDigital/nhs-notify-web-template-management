@@ -33,6 +33,7 @@ const SubmitEmailTemplatePage = async (props: TemplatePageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      lockNumber={validatedTemplate.lockNumber}
       channel='EMAIL'
     />
   );

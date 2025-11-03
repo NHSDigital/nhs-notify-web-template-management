@@ -24,6 +24,9 @@
               "id": {
                 "type": "string"
               },
+              "lockNumber": {
+                "type": "integer"
+              },
               "templateStatus": {
                 "$ref": "#/components/schemas/TemplateStatus"
               },
@@ -38,6 +41,7 @@
             "required": [
               "createdAt",
               "id",
+              "lockNumber",
               "templateStatus",
               "updatedAt"
             ],
@@ -331,7 +335,6 @@
             "type": "boolean"
           }
         },
-        "required": [],
         "type": "object"
       },
       "ConditionalTemplateAccessible": {
@@ -837,6 +840,21 @@
           }
         ]
       },
+      "UploadLetterTemplate": {
+        "properties": {
+          "letterPdf": {
+            "format": "binary",
+            "type": "string"
+          },
+          "template": {
+            "$ref": "#/components/schemas/CreateUpdateTemplate"
+          },
+          "testCsv": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "VersionedFileDetails": {
         "properties": {
           "currentVersion": {
@@ -949,21 +967,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "UploadLetterTemplate": {
-                  "properties": {
-                    "letterPdf": {
-                      "format": "binary",
-                      "type": "string"
-                    },
-                    "template": {
-                      "$ref": "#/components/schemas/CreateUpdateTemplate"
-                    },
-                    "testCsv": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
+                "$ref": "#/components/schemas/UploadLetterTemplate"
               }
             }
           },
@@ -1544,6 +1548,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1656,6 +1669,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "requestBody": {
@@ -1732,6 +1754,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1796,6 +1827,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],

@@ -97,7 +97,7 @@ describe('RoutingConfigUpdateBuilder', () => {
       const value = 'DELETED';
       const expected = 'DRAFT';
 
-      const res = builder.setStatus(value).expectedStatus(expected).build();
+      const res = builder.setStatus(value).expectStatus(expected).build();
 
       expect(res).toEqual({
         TableName: mockTableName,

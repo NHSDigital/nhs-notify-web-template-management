@@ -50,6 +50,7 @@ describe('RequestProofPage', () => {
           fileName: 'a.pdf',
         },
       },
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -73,6 +74,7 @@ describe('RequestProofPage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='LETTER'
+        lockNumber={state.lockNumber}
       />
     );
   });
@@ -141,6 +143,7 @@ describe('RequestProofPage', () => {
           fileName: 'a.pdf',
         },
       },
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({

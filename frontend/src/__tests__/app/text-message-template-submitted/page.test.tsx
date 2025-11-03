@@ -29,6 +29,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
       templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
+      lockNumber: 1,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValueOnce({

@@ -49,7 +49,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          data: { id: templateId, name },
+          data: { id: templateId, name, lockNumber },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
@@ -62,6 +62,7 @@ test.describe('Event publishing - Digital', () => {
           {
             headers: {
               Authorization: await user1.getAccessToken(),
+              'X-Lock-Number': String(lockNumber),
             },
             data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
               templateType: digitalChannel,
@@ -72,11 +73,14 @@ test.describe('Event publishing - Digital', () => {
 
         expect(updateResponse.status()).toBe(200);
 
+        const updated = await updateResponse.json();
+
         const submitResponse = await request.patch(
           `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
           {
             headers: {
               Authorization: await user1.getAccessToken(),
+              'X-Lock-Number': String(updated.data.lockNumber),
             },
           }
         );
@@ -145,7 +149,7 @@ test.describe('Event publishing - Digital', () => {
         expect(createResponse.status()).toBe(201);
 
         const {
-          data: { id: templateId },
+          data: { id: templateId, lockNumber },
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
@@ -158,6 +162,7 @@ test.describe('Event publishing - Digital', () => {
           {
             headers: {
               Authorization: await user1.getAccessToken(),
+              'X-Lock-Number': String(lockNumber),
             },
           }
         );

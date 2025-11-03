@@ -16,6 +16,7 @@ describe('ViewEmailTemplate component', () => {
             message: 'Example message',
             createdAt: '2025-03-28T12:30:54.684Z',
             updatedAt: '2025-03-28T12:31:54.684Z',
+            lockNumber: 1,
           } satisfies EmailTemplate
         }
       />

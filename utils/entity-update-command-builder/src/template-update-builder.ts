@@ -20,17 +20,37 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     );
   }
 
+  setName(name: string) {
+    this.updateBuilder.setValue('name', name);
+    return this;
+  }
+
+  setSubject(subject: string) {
+    this.updateBuilder.setValue('subject', subject);
+    return this;
+  }
+
+  setMessage(message: string) {
+    this.updateBuilder.setValue('message', message);
+    return this;
+  }
+
   setStatus(status: TemplateStatus) {
     this.updateBuilder.setValue('templateStatus', status);
     return this;
   }
 
-  expectedStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
+  setTTL(ttl: number) {
+    this.updateBuilder.setValue('ttl', ttl);
+    return this;
+  }
+
+  expectStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
     if (Array.isArray(expectedStatus)) {
-      this.updateBuilder.inCondition('templateStatus', expectedStatus);
+      this.updateBuilder.conditions.andIn('templateStatus', expectedStatus);
       return this;
     }
-    this.updateBuilder.andCondition('templateStatus', '=', expectedStatus);
+    this.updateBuilder.conditions.and('templateStatus', '=', expectedStatus);
     return this;
   }
 
@@ -41,10 +61,10 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
   ) {
     this.updateBuilder
       .setValue(lockField, timeMs)
-      .fnCondition('attribute_not_exists', lockField);
+      .conditions.andFn('attribute_not_exists', lockField);
 
     if (lockExpiryTimeMs) {
-      this.updateBuilder.orCondition(lockField, '>', lockExpiryTimeMs);
+      this.updateBuilder.conditions.or(lockField, '>', lockExpiryTimeMs);
     }
     return this;
   }
@@ -75,23 +95,47 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  expectedTemplateType(type: TemplateType) {
-    this.updateBuilder.andCondition('templateType', '=', type);
+  incrementLockNumber() {
+    this.updateBuilder.addToValue('lockNumber', 1);
     return this;
   }
 
-  expectedClientId(id: string) {
-    this.updateBuilder.andCondition('clientId', '=', id);
+  expectTemplateType(type: TemplateType) {
+    this.updateBuilder.conditions.and('templateType', '=', type);
+    return this;
+  }
+
+  expectClientId(id: string) {
+    this.updateBuilder.conditions.and('clientId', '=', id);
     return this;
   }
 
   expectTemplateExists() {
-    this.updateBuilder.fnCondition('attribute_exists', 'id');
+    this.updateBuilder.conditions.andFn('attribute_exists', 'id');
     return this;
   }
 
   expectProofingEnabled() {
-    this.updateBuilder.andCondition('proofingEnabled', '=', true);
+    this.updateBuilder.conditions.and('proofingEnabled', '=', true);
+    return this;
+  }
+
+  expectLockNumber(lockNumber: number) {
+    this.updateBuilder.conditions.andGroup((group) => {
+      group
+        .and('lockNumber', '=', lockNumber)
+        .orFn('attribute_not_exists', 'lockNumber');
+    });
+
+    return this;
+  }
+
+  expectNotFinalStatus() {
+    this.updateBuilder.conditions.andIn(
+      'templateStatus',
+      ['DELETED', 'SUBMITTED'],
+      true
+    );
     return this;
   }
 

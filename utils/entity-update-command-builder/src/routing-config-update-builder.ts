@@ -69,13 +69,13 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
-  expectedStatus(expectedStatus: RoutingConfigStatus) {
-    this.updateBuilder.andCondition('status', '=', expectedStatus);
+  expectStatus(expectedStatus: RoutingConfigStatus) {
+    this.updateBuilder.conditions.and('status', '=', expectedStatus);
     return this;
   }
 
   expectRoutingConfigExists() {
-    this.updateBuilder.fnCondition('attribute_exists', 'id');
+    this.updateBuilder.conditions.andFn('attribute_exists', 'id');
     return this;
   }
 

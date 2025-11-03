@@ -232,6 +232,7 @@ describe('templateClient', () => {
         id: templateId,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
@@ -283,6 +284,7 @@ describe('templateClient', () => {
         id: templateId,
         templateStatus: 'NOT_YET_SUBMITTED',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -339,7 +341,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -355,7 +357,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const creationTime = '2025-03-12T08:41:08.805Z';
@@ -376,6 +378,7 @@ describe('templateClient', () => {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
+        lockNumber: 1,
       };
 
       const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
@@ -519,6 +522,7 @@ describe('templateClient', () => {
           ...initialCreatedTemplate,
           templateStatus: 'PENDING_VALIDATION',
           updatedAt: updateTime,
+          lockNumber: 1,
         };
 
         const { version: _1, owner: _2, ...expectedDto } = finalTemplate;
@@ -804,7 +808,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -815,7 +819,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const templateRepoFailure = {
@@ -910,7 +914,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -921,7 +925,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const expectedTemplateDto: TemplateDto = {
@@ -930,6 +934,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
+        lockNumber: 1,
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1006,7 +1011,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -1017,7 +1022,7 @@ describe('templateClient', () => {
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const expectedTemplateDto: TemplateDto = {
@@ -1026,6 +1031,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
+        lockNumber: 1,
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1106,7 +1112,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -1123,7 +1129,7 @@ describe('templateClient', () => {
 
       const initialCreatedTemplate: DatabaseTemplate = {
         ...data,
-        files: filesWithVerions,
+        files: filesWithVersions,
         id: templateId,
         createdAt: creationTime,
         updatedAt: creationTime,
@@ -1181,6 +1187,49 @@ describe('templateClient', () => {
   });
 
   describe('updateTemplate', () => {
+    test('should return updated template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        name: 'name',
+        message: 'message',
+        templateType: 'SMS',
+      };
+
+      const template: TemplateDto = {
+        ...data,
+        id: templateId,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        templateType: 'SMS',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 2,
+      };
+
+      mocks.templateRepository.update.mockResolvedValueOnce({
+        data: { ...template, owner: user.userId, version: 1 },
+      });
+
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        user,
+        1
+      );
+
+      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+        templateId,
+        data,
+        user,
+        'NOT_YET_SUBMITTED',
+        1
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
+
     test('updateTemplate should return a failure result, when template data is invalid', async () => {
       const { templateClient } = setup();
 
@@ -1193,7 +1242,8 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data as unknown as CreateUpdateTemplate,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1220,7 +1270,8 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1233,6 +1284,86 @@ describe('templateClient', () => {
             },
           },
         }),
+      });
+    });
+
+    describe('lock number parsing', () => {
+      const errorCases: [string, string | number][] = [
+        ['empty', ''],
+        ['negative', -1],
+        ['negative stringified', -1],
+        ['non-number string', 'a'],
+        ['NaN', Number.NaN],
+        ['NaN stringified', 'NaN'],
+      ];
+      test.each(errorCases)(
+        'should return a failure result when lockNumber is invalid: %s',
+        async (_, lockNumber) => {
+          const { templateClient } = setup();
+
+          const data: CreateUpdateTemplate = {
+            name: 'name',
+            templateType: 'NHS_APP',
+            message: 'new-message',
+          };
+
+          const result = await templateClient.updateTemplate(
+            templateId,
+            data,
+            user,
+            lockNumber
+          );
+
+          expect(result).toEqual({
+            error: expect.objectContaining({
+              errorMeta: {
+                code: 409,
+                description: 'Invalid lock number',
+              },
+            }),
+          });
+        }
+      );
+
+      test('coerces stringified lock number to number', async () => {
+        const { templateClient, mocks } = setup();
+
+        const data: CreateUpdateTemplate = {
+          name: 'name',
+          templateType: 'NHS_APP',
+          message: 'new-message',
+        };
+
+        const template: TemplateDto = {
+          ...data,
+          id: templateId,
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'NHS_APP',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 11,
+        };
+
+        mocks.templateRepository.update.mockResolvedValueOnce({
+          data: { ...template, owner: user.userId, version: 1 },
+        });
+
+        const result = await templateClient.updateTemplate(
+          templateId,
+          data,
+          user,
+          '10'
+        );
+
+        expect(result).toEqual({ data: template });
+
+        expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+          templateId,
+          data,
+          user,
+          'NOT_YET_SUBMITTED',
+          10
+        );
       });
     });
 
@@ -1257,14 +1388,16 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        user
+        user,
+        1
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
         user,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        1
       );
 
       expect(result).toEqual({
@@ -1292,6 +1425,7 @@ describe('templateClient', () => {
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 2,
       };
 
       const template: DatabaseTemplate = {
@@ -1307,14 +1441,16 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        user
+        user,
+        1
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
         user,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        1
       );
 
       expect(result).toEqual({
@@ -1324,46 +1460,6 @@ describe('templateClient', () => {
             description: 'Error retrieving template',
           },
         },
-      });
-    });
-
-    test('should return updated template', async () => {
-      const { templateClient, mocks } = setup();
-
-      const data: CreateUpdateTemplate = {
-        name: 'name',
-        message: 'message',
-        templateType: 'SMS',
-      };
-
-      const template: TemplateDto = {
-        ...data,
-        id: templateId,
-        templateStatus: 'NOT_YET_SUBMITTED',
-        templateType: 'SMS',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      mocks.templateRepository.update.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
-      });
-
-      const result = await templateClient.updateTemplate(
-        templateId,
-        data,
-        user
-      );
-
-      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
-        templateId,
-        data,
-        user,
-        'NOT_YET_SUBMITTED'
-      );
-
-      expect(result).toEqual({
-        data: template,
       });
     });
   });
@@ -1410,6 +1506,7 @@ describe('templateClient', () => {
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1451,6 +1548,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1509,6 +1607,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
       const template2: TemplateDto = {
         id: undefined as unknown as string,
@@ -1519,6 +1618,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
@@ -1549,6 +1649,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
@@ -1566,6 +1667,23 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.submitTemplate(templateId, user, '');
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description: 'Invalid lock number',
+          },
+        },
+      });
+    });
+
     test('submitTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1578,11 +1696,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1606,6 +1725,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1618,11 +1738,12 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1646,17 +1767,19 @@ describe('templateClient', () => {
         id: templateId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         data: { ...template, owner: user.userId, version: 1 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user);
+      const result = await templateClient.submitTemplate(templateId, user, 0);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        0
       );
 
       expect(result).toEqual({
@@ -1666,6 +1789,25 @@ describe('templateClient', () => {
   });
 
   describe('requestProof', () => {
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.requestProof(templateId, user, '');
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description: 'Invalid lock number',
+          },
+        },
+      });
+    });
+
     test('should return a failure result, when proofing is disabled', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1673,7 +1815,7 @@ describe('templateClient', () => {
         data: { features: { proofing: false } },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -1696,7 +1838,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -1740,11 +1882,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1780,6 +1923,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1801,11 +1945,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1829,6 +1974,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
+        lockNumber: 1,
       };
 
       const template: DatabaseTemplate = {
@@ -1852,11 +1998,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -1893,6 +2040,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
@@ -1920,11 +2068,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
@@ -1977,6 +2126,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         updatedAt: new Date().toISOString(),
+        lockNumber: 1,
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -1994,11 +2144,12 @@ describe('templateClient', () => {
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
 
-      const result = await templateClient.requestProof(templateId, user);
+      const result = await templateClient.requestProof(templateId, user, 1);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
@@ -2022,6 +2173,74 @@ describe('templateClient', () => {
   });
 
   describe('deleteTemplate', () => {
+    test('should return nothing when successful', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.delete.mockResolvedValueOnce({
+        data: null,
+      });
+
+      const result = await templateClient.deleteTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1
+      );
+
+      expect(result).toEqual({
+        data: undefined,
+      });
+    });
+
+    describe('lock number parsing', () => {
+      const errorCases: [string, string | number][] = [
+        ['empty', ''],
+        ['negative', -1],
+        ['negative stringified', -1],
+        ['non-number string', 'a'],
+        ['NaN', Number.NaN],
+        ['NaN stringified', 'NaN'],
+      ];
+      test.each(errorCases)(
+        'should return a failure result when lockNumber is invalid: %s',
+        async (_, lockNumber) => {
+          const { templateClient } = setup();
+
+          const result = await templateClient.deleteTemplate(
+            templateId,
+            user,
+            lockNumber
+          );
+
+          expect(result).toEqual({
+            error: expect.objectContaining({
+              errorMeta: {
+                code: 409,
+                description: 'Invalid lock number',
+              },
+            }),
+          });
+        }
+      );
+
+      test('coerces stringified lock number to number', async () => {
+        const { templateClient, mocks } = setup();
+
+        mocks.templateRepository.delete.mockResolvedValueOnce({
+          data: null,
+        });
+
+        await templateClient.deleteTemplate(templateId, user, '10');
+
+        expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
+          templateId,
+          user,
+          10
+        );
+      });
+    });
+
     test('deleteTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -2034,11 +2253,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user);
+      const result = await templateClient.deleteTemplate(templateId, user, 1);
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        user
+        user,
+        1
       );
 
       expect(result).toEqual({
@@ -2048,35 +2268,6 @@ describe('templateClient', () => {
             description: 'Internal server error',
           },
         },
-      });
-    });
-
-    test('should return nothing when successful', async () => {
-      const { templateClient, mocks } = setup();
-
-      const template: TemplateDto = {
-        name: 'name',
-        message: 'message',
-        templateStatus: 'DELETED',
-        templateType: 'SMS',
-        id: templateId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      mocks.templateRepository.delete.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
-      });
-
-      const result = await templateClient.deleteTemplate(templateId, user);
-
-      expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
-        templateId,
-        user
-      );
-
-      expect(result).toEqual({
-        data: undefined,
       });
     });
   });

@@ -115,6 +115,7 @@ describe('Template API - Get', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: 'NOT_YET_SUBMITTED',
+      lockNumber: 1,
     };
 
     mocks.templateClient.getTemplate.mockResolvedValueOnce({

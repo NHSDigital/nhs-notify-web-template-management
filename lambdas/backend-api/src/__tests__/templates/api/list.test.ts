@@ -111,6 +111,7 @@ describe('Template API - List', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: 'NOT_YET_SUBMITTED',
+      lockNumber: 1,
     };
 
     mocks.templateClient.listTemplates.mockResolvedValueOnce({
