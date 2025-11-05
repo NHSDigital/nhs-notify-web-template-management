@@ -745,6 +745,7 @@ describe('RoutingConfigRepository', () => {
           'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
     });
+
     test('partial update - does not set cascade without cascadeGroupOverrides', async () => {
       const { repo, mocks } = setup();
 

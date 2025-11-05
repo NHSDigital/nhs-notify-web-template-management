@@ -12,6 +12,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertGoBackLink,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 
@@ -198,16 +199,14 @@ test.describe('Create Message Plan Page', () => {
           page: createMessagePlanPage,
           id: '',
           baseURL,
+          expectedUrl: '/templates/message-plans/choose-message-order',
         };
 
         await assertSkipToMainContent(props);
         await assertHeaderLogoLink(props);
         await assertFooterLinks(props);
         await assertSignOutLink(props);
-        await expect(createMessagePlanPage.goBackLink).toHaveAttribute(
-          'href',
-          '/templates/message-plans/choose-message-order'
-        );
+        await assertGoBackLink(props);
       });
     });
 

@@ -13,6 +13,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertGoBackLink,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 
@@ -54,17 +55,14 @@ test('common page tests', async ({ page, baseURL }) => {
     page: editPage,
     id: plan.dbEntry.id,
     baseURL,
+    expectedUrl: `/templates/message-plans/choose-templates/${plan.dbEntry.id}`,
   };
 
   await assertSkipToMainContent(props);
   await assertHeaderLogoLink(props);
   await assertFooterLinks(props);
   await assertSignOutLink(props);
-
-  await expect(editPage.goBackLink).toHaveAttribute(
-    'href',
-    `/templates/message-plans/choose-templates/${plan.dbEntry.id}`
-  );
+  await assertGoBackLink(props);
 });
 
 test("message plan doesn't exist", async ({ page, baseURL }) => {
