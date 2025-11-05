@@ -1,6 +1,6 @@
 import type {
   Channel,
-  CreateUpdateRoutingConfig,
+  CreateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
 
@@ -90,7 +90,7 @@ export type RoutingConfigDbEntry = RoutingConfig & {
 };
 
 export type FactoryRoutingConfig = {
-  apiPayload: CreateUpdateRoutingConfig;
+  apiPayload: CreateRoutingConfig;
   apiResponse: RoutingConfig;
   dbEntry: RoutingConfigDbEntry;
 };

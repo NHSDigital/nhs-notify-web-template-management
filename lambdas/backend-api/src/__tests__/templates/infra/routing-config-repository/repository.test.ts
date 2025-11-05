@@ -10,9 +10,10 @@ import { ZodError } from 'zod';
 import { RoutingConfigRepository } from '@backend-api/templates/infra/routing-config-repository';
 import { routingConfig } from '../../fixtures/routing-config';
 import {
-  CreateUpdateRoutingConfig,
+  CreateRoutingConfig,
   RoutingConfig,
   RoutingConfigStatus,
+  UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
 import { randomUUID, type UUID } from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -135,7 +136,7 @@ describe('RoutingConfigRepository', () => {
   });
 
   describe('create', () => {
-    const input: CreateUpdateRoutingConfig = {
+    const input: CreateRoutingConfig = {
       name: 'rc',
       campaignId: 'campaign',
       cascade: [
@@ -557,7 +558,7 @@ describe('RoutingConfigRepository', () => {
     test('updates routing config mutable fields', async () => {
       const { repo, mocks } = setup();
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
@@ -602,7 +603,240 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
+          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('partial update - name only', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        name: 'new_name',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#name': 'name',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':name': update.name,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('partial update - campaignId only', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        campaignId: 'new_campaign',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':campaignId': update.campaignId,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('partial update - cascade/cascadeGroupOverrides', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'c003b4f1-d788-423d-a948-0df511d07a23',
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#cascade': 'cascade',
+          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':cascade': update.cascade,
+          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+    test('partial update - does not set cascade without cascadeGroupOverrides', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'c003b4f1-d788-423d-a948-0df511d07a23',
+          },
+        ],
+        name: 'new_name',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        name: 'new_name',
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#name': 'name',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':name': update.name,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      });
+    });
+
+    test('partial update - does not set cascadeGroupOverrides without cascade', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascadeGroupOverrides: [{ name: 'translations', language: ['ar'] }],
+        name: 'new_name',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        name: 'new_name',
+      };
+
+      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+
+      const result = await repo.update(routingConfig.id, update, user);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression: '#status = :condition_1_status',
+        ExpressionAttributeNames: {
+          '#name': 'name',
+          '#status': 'status',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_status': 'DRAFT',
+          ':name': update.name,
+          ':updatedAt': date.toISOString(),
+          ':updatedBy': user.userId,
+        },
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+        ReturnValues: 'ALL_NEW',
+        TableName: TABLE_NAME,
+        UpdateExpression:
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
     });
 
@@ -615,7 +849,7 @@ describe('RoutingConfigRepository', () => {
         name: routingConfig.name,
         campaignId: routingConfig.campaignId,
         status: 'DELETED',
-      } as CreateUpdateRoutingConfig;
+      } as UpdateRoutingConfig;
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: routingConfig });
 
@@ -650,7 +884,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
+          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
     });
 

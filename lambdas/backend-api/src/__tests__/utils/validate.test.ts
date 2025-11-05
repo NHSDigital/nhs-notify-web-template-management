@@ -49,12 +49,13 @@ describe('validate', () => {
 test('formatZodError', () => {
   const zodError = mockDeep<ZodError>({
     issues: [
+      { path: [], message: 'Root issue' },
       {
         path: [Symbol()],
         message: 'message',
       },
       {
-        path: ['path'],
+        path: ['example-path'],
         message: 'message',
       },
     ],
@@ -62,5 +63,5 @@ test('formatZodError', () => {
 
   const output = formatZodErrors(zodError);
 
-  expect(output).toEqual({ path: 'message' });
+  expect(output).toEqual({ 'example-path': 'message', $root: 'Root issue' });
 });

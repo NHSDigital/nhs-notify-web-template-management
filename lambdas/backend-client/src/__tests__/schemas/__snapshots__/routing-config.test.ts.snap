@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateUpdateRoutingConfig schema snapshot full error 1`] = `
+exports[`Create/Update - CreateRoutingConfig schema snapshot full error 1`] = `
 [ZodError: [
   {
     "expected": "string",
@@ -33,6 +33,16 @@ exports[`CreateUpdateRoutingConfig schema snapshot full error 1`] = `
       "name"
     ],
     "message": "Invalid input: expected string, received undefined"
+  }
+]]
+`;
+
+exports[`Create/Update - UpdateRoutingConfig schema snapshot full error 1`] = `
+[ZodError: [
+  {
+    "code": "custom",
+    "path": [],
+    "message": "At least one field must be provided."
   }
 ]]
 `;

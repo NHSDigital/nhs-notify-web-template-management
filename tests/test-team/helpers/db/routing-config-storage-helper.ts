@@ -2,7 +2,9 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
+  GetCommand,
 } from '@aws-sdk/lib-dynamodb';
+import type { RoutingConfigDbEntry } from 'helpers/types';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
 type RoutingConfigKey = { id: string; clientId: string };
@@ -15,6 +17,20 @@ export class RoutingConfigStorageHelper {
   private seedData: RoutingConfig[] = [];
 
   private adHocKeys: RoutingConfigKey[] = [];
+
+  async get(key: RoutingConfigKey): Promise<RoutingConfigDbEntry | null> {
+    const { Item } = await this.dynamo.send(
+      new GetCommand({
+        TableName: process.env.ROUTING_CONFIG_TABLE_NAME,
+        Key: {
+          id: key.id,
+          owner: this.clientOwnerKey(key.clientId),
+        },
+      })
+    );
+
+    return Item as RoutingConfigDbEntry;
+  }
 
   /**
    * Seed a load of routing configs into the database

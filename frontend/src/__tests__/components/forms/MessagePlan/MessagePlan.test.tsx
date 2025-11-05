@@ -17,7 +17,13 @@ beforeEach(() => {
 
 test('renders form with single campaign id displayed', () => {
   const container = render(
-    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    />
   );
   expect(container.asFragment()).toMatchSnapshot();
 });
@@ -25,9 +31,27 @@ test('renders form with single campaign id displayed', () => {
 test('renders form with select for multiple campaign ids', () => {
   const container = render(
     <MessagePlanForm
-      messageOrder='NHSAPP'
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
       campaignIds={['campaign-1', 'campaign-2']}
     />
+  );
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('renders form with children', () => {
+  const container = render(
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    >
+      <input type='hidden' name='messagePlanId' value='abc-123' />
+    </MessagePlanForm>
   );
   expect(container.asFragment()).toMatchSnapshot();
 });
@@ -48,7 +72,10 @@ test('renders errors', async () => {
 
   const container = render(
     <MessagePlanForm
-      messageOrder='NHSAPP'
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
       campaignIds={['campaign-id', 'campaign-2']}
     />
   );
@@ -60,7 +87,15 @@ test('invokes the action with the form data when the form is submitted - single 
   const user = userEvent.setup();
 
   render(
-    <MessagePlanForm messageOrder='NHSAPP' campaignIds={['campaign-id']} />
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    >
+      <input type='hidden' name='messageOrder' value='NHSAPP' />
+    </MessagePlanForm>
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -87,9 +122,14 @@ test('invokes the action with the form data when the form is submitted - multipl
 
   render(
     <MessagePlanForm
-      messageOrder='NHSAPP'
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
       campaignIds={['campaign-id', 'campaign-id-2']}
-    />
+    >
+      <input type='hidden' name='messagePlanId' value='abc-123' />
+    </MessagePlanForm>
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -111,7 +151,7 @@ test('invokes the action with the form data when the form is submitted - multipl
 
   expect(Object.fromEntries(formData.entries())).toMatchObject({
     campaignId: 'campaign-id-2',
-    messageOrder: 'NHSAPP',
+    messagePlanId: 'abc-123',
     name: 'My Message Plan',
   });
 });

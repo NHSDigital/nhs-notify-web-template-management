@@ -17,12 +17,6 @@ exports[`renders errors 1`] = `
       type="hidden"
       value="no_token"
     />
-    <input
-      name="messageOrder"
-      readonly=""
-      type="hidden"
-      value="NHSAPP"
-    />
     <div
       class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
     >
@@ -180,7 +174,7 @@ exports[`renders errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with select for multiple campaign ids 1`] = `
+exports[`renders form with children 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -197,11 +191,145 @@ exports[`renders form with select for multiple campaign ids 1`] = `
       type="hidden"
       value="no_token"
     />
+    <div
+      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+    >
+      <label
+        class="nhsuk-label nhsuk-label--s"
+        for="name"
+      >
+        Message plan name
+      </label>
+      <div
+        class="nhsuk-hint"
+      >
+        This will not be visible to recipients.
+      </div>
+      <details
+        class="nhsuk-details nhsuk-u-margin-top-3"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Naming your message plans
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <p>
+            You should name your message plans in a way that works best for your service or organisation.
+          </p>
+          <p>
+            Common message plan names include the:
+          </p>
+          <ul
+            class="nhsuk-list nhsuk-list--bullet"
+          >
+            <li>
+              channels it uses
+            </li>
+            <li>
+              subject or reason for the message
+            </li>
+            <li>
+              intended audience for the message
+            </li>
+            <li>
+              version number
+            </li>
+          </ul>
+          <p>
+            For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+          </p>
+        </div>
+      </details>
+      <div
+        class="nhsuk-form-group"
+      >
+        <input
+          class="nhsuk-input"
+          data-testid="name-field"
+          id="name"
+          name="name"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+    >
+      <label
+        class="nhsuk-label nhsuk-label--s"
+        for="campaignId"
+      >
+        Campaign
+      </label>
+      <div
+        class="nhsuk-hint"
+      >
+        This message plan will link to your only campaign:
+      </div>
+      <input
+        name="campaignId"
+        readonly=""
+        type="hidden"
+        value="campaign-id"
+      />
+      <p
+        data-testid="single-campaign-id"
+      >
+        campaign-id
+      </p>
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <button
+        aria-disabled="false"
+        class="nhsuk-button"
+        data-testid="submit-button"
+        type="submit"
+      >
+        Save and continue
+      </button>
+      <a
+        class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
+        data-testid="go-back-link"
+        href="/message-plans/choose-message-order"
+      >
+        Go back
+      </a>
+    </div>
     <input
-      name="messageOrder"
+      name="messagePlanId"
+      type="hidden"
+      value="abc-123"
+    />
+  </form>
+</DocumentFragment>
+`;
+
+exports[`renders form with select for multiple campaign ids 1`] = `
+<DocumentFragment>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      name="form-id"
       readonly=""
       type="hidden"
-      value="NHSAPP"
+      value="message-plan"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
     />
     <div
       class="nhsuk-form-group nhsuk-u-margin-bottom-6"
@@ -353,12 +481,6 @@ exports[`renders form with single campaign id displayed 1`] = `
       readonly=""
       type="hidden"
       value="no_token"
-    />
-    <input
-      name="messageOrder"
-      readonly=""
-      type="hidden"
-      value="NHSAPP"
     />
     <div
       class="nhsuk-form-group nhsuk-u-margin-bottom-6"

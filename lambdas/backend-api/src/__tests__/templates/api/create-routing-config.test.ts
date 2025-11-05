@@ -1,9 +1,6 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  CreateUpdateRoutingConfig,
-  RoutingConfig,
-} from 'nhs-notify-backend-client';
+import { CreateRoutingConfig, RoutingConfig } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/create-routing-config';
 import type { RoutingConfigClient } from '@backend-api/templates/app/routing-config-client';
 
@@ -128,7 +125,7 @@ describe('Create Routing Config Handler', () => {
   test('should return created routing config', async () => {
     const { handler, mocks } = setup();
 
-    const create: CreateUpdateRoutingConfig = {
+    const create: CreateRoutingConfig = {
       cascade: [
         {
           cascadeGroups: ['standard'],

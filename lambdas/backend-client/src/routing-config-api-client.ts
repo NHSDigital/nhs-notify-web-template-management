@@ -1,15 +1,16 @@
 import type {
   CountSuccess,
+  CreateRoutingConfig,
   GetV1RoutingConfigurationsCountData,
   GetV1RoutingConfigurationsData,
+  GetV1RoutingConfigurationByRoutingConfigIdData,
   RoutingConfig,
   RoutingConfigSuccess,
   RoutingConfigStatusActive,
   RoutingConfigSuccessList,
   PostV1RoutingConfigurationData,
-  GetV1RoutingConfigurationByRoutingConfigIdData,
   PutV1RoutingConfigurationByRoutingConfigIdData,
-  CreateUpdateRoutingConfig,
+  UpdateRoutingConfig,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
@@ -23,7 +24,7 @@ export const httpClient = createAxiosClient();
 
 export const routingConfigurationApiClient = {
   async create(
-    routingConfig: CreateUpdateRoutingConfig,
+    routingConfig: CreateRoutingConfig,
     token: string
   ): Promise<Result<RoutingConfig>> {
     const url =
@@ -124,7 +125,7 @@ export const routingConfigurationApiClient = {
   async update(
     token: string,
     id: RoutingConfig['id'],
-    routingConfig: CreateUpdateRoutingConfig
+    routingConfig: UpdateRoutingConfig
   ): Promise<Result<RoutingConfig>> {
     if (!uuidSchema.safeParse(id).success) {
       return {
