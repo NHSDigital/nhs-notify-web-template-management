@@ -1276,20 +1276,32 @@ const messagePlanForm = {
       hint: 'This will not be visible to recipients.',
       details: {
         summary: 'Naming your message plans',
-        text: {
-          main: 'You should name your message plans in a way that works best for your service or organisation.',
-          commonNames: {
-            main: 'Common message plan names include the:',
-            list: [
+        text: [
+          {
+            type: 'text',
+            text: 'You should name your message plans in a way that works best for your service or organisation.',
+          },
+          {
+            type: 'text',
+            text: 'Common message plan names include the:',
+          },
+          {
+            type: 'text',
+            text: markdownList('ul', [
               'channels it uses',
               'subject or reason for the message',
               'intended audience for the message',
               'version number',
-            ],
-            example:
-              "For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'",
+            ]),
+            overrides: {
+              ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+            },
           },
-        },
+          {
+            type: 'text',
+            text: "For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'",
+          },
+        ] satisfies ContentBlock[],
       },
     },
     campaignId: {
