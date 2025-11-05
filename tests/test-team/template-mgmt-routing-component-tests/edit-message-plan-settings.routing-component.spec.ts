@@ -55,7 +55,7 @@ test('common page tests', async ({ page, baseURL }) => {
     page: editPage,
     id: plan.dbEntry.id,
     baseURL,
-    expectedUrl: `/templates/message-plans/choose-templates/${plan.dbEntry.id}`,
+    expectedUrl: `templates/message-plans/choose-templates/${plan.dbEntry.id}`,
   };
 
   await assertSkipToMainContent(props);
@@ -101,10 +101,14 @@ test.describe('single campaign client', () => {
       `${baseURL}/templates/message-plans/choose-templates/${plan.dbEntry.id}`
     );
 
-    const latest = await storageHelper.get(plan.dbEntry);
+    // reload the edit page - should display the latest data
+    await editPage.loadPage(plan.dbEntry.id);
 
-    expect(latest?.name).toBe('New name!');
-    expect(latest?.campaignId).toBe(plan.dbEntry.campaignId);
+    await expect(editPage.nameField).toHaveValue('New name!');
+
+    await expect(editPage.singleCampaignIdElement).toHaveText(
+      plan.dbEntry.campaignId
+    );
   });
 
   test('displays error if name is empty', async ({ page }) => {
@@ -182,10 +186,14 @@ test.describe('client has multiple campaigns', () => {
       `${baseURL}/templates/message-plans/choose-templates/${plan.dbEntry.id}`
     );
 
-    const latest = await storageHelper.get(plan.dbEntry);
+    // reload the edit page - should display the latest data
+    await editPage.loadPage(plan.dbEntry.id);
 
-    expect(latest?.name).toBe('Updated name');
-    expect(latest?.campaignId).toBe(userWithMultipleCampaigns.campaignIds?.[1]);
+    await expect(editPage.nameField).toHaveValue('Updated name');
+
+    await expect(editPage.campaignIdSelector).toHaveValue(
+      userWithMultipleCampaigns.campaignIds?.[1] as string
+    );
   });
 
   test('displays error if campaign id is not selected', async ({ page }) => {

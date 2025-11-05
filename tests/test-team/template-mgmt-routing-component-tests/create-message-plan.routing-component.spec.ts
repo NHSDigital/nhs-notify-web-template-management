@@ -199,7 +199,7 @@ test.describe('Create Message Plan Page', () => {
           page: createMessagePlanPage,
           id: '',
           baseURL,
-          expectedUrl: '/templates/message-plans/choose-message-order',
+          expectedUrl: 'templates/message-plans/choose-message-order',
         };
 
         await assertSkipToMainContent(props);
