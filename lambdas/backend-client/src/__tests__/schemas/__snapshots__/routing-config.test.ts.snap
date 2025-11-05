@@ -127,3 +127,27 @@ exports[`RoutingConfig schema snapshot full error 1`] = `
   }
 ]]
 `;
+
+exports[`UpdateRoutingConfig invalid with cascade but without cascadeGroupOverrides 1`] = `
+[ZodError: [
+  {
+    "code": "custom",
+    "message": "cascade and cascadeGroupOverrides must either both be present or both be absent.",
+    "path": [
+      "cascade"
+    ]
+  }
+]]
+`;
+
+exports[`UpdateRoutingConfig invalid with cascadeGroupOverrides and without cascade 1`] = `
+[ZodError: [
+  {
+    "code": "custom",
+    "message": "cascade and cascadeGroupOverrides must either both be present or both be absent.",
+    "path": [
+      "cascadeGroupOverrides"
+    ]
+  }
+]]
+`;

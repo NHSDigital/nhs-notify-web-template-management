@@ -409,6 +409,8 @@ describe('UpdateRoutingConfig', () => {
     const res = $UpdateRoutingConfig.safeParse(rest);
 
     expect(res.success).toBe(false);
+
+    expect(res.error).toMatchSnapshot();
   });
 
   test('invalid with cascade but without cascadeGroupOverrides', () => {
@@ -417,5 +419,7 @@ describe('UpdateRoutingConfig', () => {
     const res = $UpdateRoutingConfig.safeParse(rest);
 
     expect(res.success).toBe(false);
+
+    expect(res.error).toMatchSnapshot();
   });
 });
