@@ -55,6 +55,7 @@
     "lambdas/backend-client",
     "lambdas/download-authorizer",
     "lambdas/sftp-letters",
+    "lambdas/queue-csv-writer",
     "packages/event-schemas",
     "tests/accessibility",
     "tests/contracts/provider",
