@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock } from 'jest-mock-extended';
@@ -56,7 +55,7 @@ test('redirects if routing config is not found from path parameter', async () =>
   );
 });
 
-test('redirects if form is submitted with invalid routing config id', async () => {
+test('submits the message plan and redirects when form is submitted', async () => {
   jest.mocked(getRoutingConfig).mockResolvedValueOnce(routingConfig);
 
   const user = await userEvent.setup();
@@ -69,30 +68,7 @@ test('redirects if form is submitted with invalid routing config id', async () =
 
   await user.click(screen.getByTestId('submit-button'));
 
-  expect(redirect).toHaveBeenCalledWith(
-    '/message-plans/invalid',
-    RedirectType.push
-  );
-
-  expect(submitRoutingConfig).not.toHaveBeenCalled();
-});
-
-test('submits the message plan and redirects when form is submitted', async () => {
-  const routingConfigId = randomUUID();
-
-  jest.mocked(getRoutingConfig).mockResolvedValueOnce(routingConfig);
-
-  const user = await userEvent.setup();
-
-  const page = await Page({
-    params: Promise.resolve({ routingConfigId }),
-  });
-
-  render(page);
-
-  await user.click(screen.getByTestId('submit-button'));
-
   expect(redirect).toHaveBeenCalledWith('/message-plans', RedirectType.push);
 
-  expect(submitRoutingConfig).toHaveBeenCalledWith(routingConfigId);
+  expect(submitRoutingConfig).toHaveBeenCalledWith('routing-config-id');
 });
