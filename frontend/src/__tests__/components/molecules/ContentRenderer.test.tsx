@@ -15,7 +15,8 @@ describe('ContentRenderer', () => {
   });
 
   it('renders a plain string as MarkdownContent in inline mode', () => {
-    render(<ContentRenderer content='Just a string block' />);
+    const container = render(<ContentRenderer content='Just a string block' />);
+    expect(container.asFragment()).toMatchSnapshot();
     expect(screen.getByText('Just a string block')).toBeInTheDocument();
   });
 
@@ -46,7 +47,9 @@ describe('ContentRenderer', () => {
       { type: 'text', text: 'Another paragraph.' },
     ];
 
-    render(<ContentRenderer content={content} />);
+    const container = render(<ContentRenderer content={content} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const listItems = screen.getAllByRole('paragraph');
     expect(listItems).toHaveLength(2);
@@ -59,13 +62,15 @@ describe('ContentRenderer', () => {
       { type: 'inline-text', text: 'Inline content' },
     ];
 
-    render(
+    const container = render(
       <ul>
         <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>
     );
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const listItem = screen.getByTestId('list-item');
     expect(listItem).toHaveTextContent('Inline content');
@@ -75,13 +80,15 @@ describe('ContentRenderer', () => {
   it('treats a string as inline text (no paragraph wrapper)', () => {
     const content: string = 'Inline via string';
 
-    render(
+    const container = render(
       <ul>
         <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>
     );
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const listItem = screen.getByTestId('list-item');
     expect(listItem).toHaveTextContent('Inline via string');
@@ -91,13 +98,15 @@ describe('ContentRenderer', () => {
   it('treats a string array as inline text (no paragraph wrapper)', () => {
     const content: ContentItem[] = ['Inline via string'];
 
-    render(
+    const container = render(
       <ul>
         <li data-testid='list-item'>
           <ContentRenderer content={content} />
         </li>
       </ul>
     );
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const listItem = screen.getByTestId('list-item');
     expect(listItem).toHaveTextContent('Inline via string');
@@ -116,7 +125,9 @@ describe('ContentRenderer', () => {
       },
     ];
 
-    render(<ContentRenderer content={content} />);
+    const container = render(<ContentRenderer content={content} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const hiddenText = screen.getByText('An example of heading markdown');
     expect(hiddenText).toHaveAttribute('id', 'heading-markdown-description');
@@ -128,7 +139,7 @@ describe('ContentRenderer', () => {
     );
   });
 
-  it('renders list blocks', () => {
+  it('renders unordered list blocks', () => {
     const content: ContentBlock[] = [
       {
         type: 'text',
@@ -136,9 +147,33 @@ describe('ContentRenderer', () => {
       },
     ];
 
-    render(<ContentRenderer content={content} />);
+    const container = render(<ContentRenderer content={content} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
+
     const listItems = screen.getAllByRole('listitem');
     expect(listItems).toHaveLength(3);
+    expect(listItems[0]?.parentElement?.tagName).toBe('UL');
+    expect(listItems[0]).toHaveTextContent('Item 1');
+    expect(listItems[1]).toHaveTextContent('Item 2');
+    expect(listItems[2]).toHaveTextContent('Item 3');
+  });
+
+  it('renders ordered list blocks', () => {
+    const content: ContentBlock[] = [
+      {
+        type: 'text',
+        text: markdownList('ol', ['Item 1', 'Item 2', 'Item 3']),
+      },
+    ];
+
+    const container = render(<ContentRenderer content={content} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
+
+    const listItems = screen.getAllByRole('listitem');
+    expect(listItems).toHaveLength(3);
+    expect(listItems[0]?.parentElement?.tagName).toBe('OL');
     expect(listItems[0]).toHaveTextContent('Item 1');
     expect(listItems[1]).toHaveTextContent('Item 2');
     expect(listItems[2]).toHaveTextContent('Item 3');
@@ -158,12 +193,14 @@ describe('ContentRenderer', () => {
       },
     ];
 
-    render(<ContentRenderer content={content} />);
+    const container = render(<ContentRenderer content={content} />);
 
-    const listItems = screen.getAllByRole('paragraph');
-    expect(listItems).toHaveLength(2);
-    expect(listItems[0]).toHaveClass('foo');
-    expect(listItems[1]).toHaveClass('bar');
+    expect(container.asFragment()).toMatchSnapshot();
+
+    const paragraphs = screen.getAllByRole('paragraph');
+    expect(paragraphs).toHaveLength(2);
+    expect(paragraphs[0]).toHaveClass('foo');
+    expect(paragraphs[1]).toHaveClass('bar');
   });
 
   it('renders with overrides on inline-text blocks', () => {
@@ -175,7 +212,9 @@ describe('ContentRenderer', () => {
       },
     ];
 
-    render(<ContentRenderer content={content} />);
+    const container = render(<ContentRenderer content={content} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
 
     const link = screen.getByRole('link');
     expect(link).toHaveClass('foo');
