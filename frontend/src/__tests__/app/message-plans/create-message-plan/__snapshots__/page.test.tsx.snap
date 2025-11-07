@@ -65,12 +65,6 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
             type="hidden"
             value="no_token"
           />
-          <input
-            name="messageOrder"
-            readonly=""
-            type="hidden"
-            value="NHSAPP"
-          />
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
           >
@@ -224,6 +218,12 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
               Go back
             </a>
           </div>
+          <input
+            name="messageOrder"
+            readonly=""
+            type="hidden"
+            value="NHSAPP"
+          />
         </form>
       </div>
     </div>
@@ -263,12 +263,6 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
             readonly=""
             type="hidden"
             value="no_token"
-          />
-          <input
-            name="messageOrder"
-            readonly=""
-            type="hidden"
-            value="NHSAPP"
           />
           <div
             class="nhsuk-form-group nhsuk-u-margin-bottom-6"
@@ -400,6 +394,12 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
               Go back
             </a>
           </div>
+          <input
+            name="messageOrder"
+            readonly=""
+            type="hidden"
+            value="NHSAPP"
+          />
         </form>
       </div>
     </div>

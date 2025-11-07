@@ -21,6 +21,7 @@ const protectedPaths = [
   /^\/message-plans\/campaign-id-required$/,
   /^\/message-plans\/choose-message-order$/,
   /^\/message-plans\/create-message-plan$/,
+  /^\/message-plans\/edit-message-plan-settings\/[^/]+$/,
   /^\/message-plans\/invalid$/,
   /^\/message-plans$/,
   /^\/message-templates$/,

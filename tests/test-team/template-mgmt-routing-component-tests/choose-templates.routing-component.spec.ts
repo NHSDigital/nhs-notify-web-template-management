@@ -213,7 +213,7 @@ test.describe('Routing - Choose Templates page', () => {
     await expect(chooseTemplatesPage.changeNameLink).toHaveText('Change name');
     await expect(chooseTemplatesPage.changeNameLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/edit-message-plan/${messagePlans.valid.id}`
+      `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
     );
 
     await expect(chooseTemplatesPage.routingConfigId).toHaveText(

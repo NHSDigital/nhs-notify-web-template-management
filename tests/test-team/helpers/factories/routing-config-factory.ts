@@ -3,7 +3,7 @@ import {
   CascadeGroupName,
   Channel,
   ChannelType,
-  CreateUpdateRoutingConfig,
+  CreateRoutingConfig,
   RoutingConfig,
 } from 'nhs-notify-backend-client';
 import type {
@@ -18,9 +18,10 @@ import {
 
 export const RoutingConfigFactory = {
   create(user: TestUser, routingConfig: Partial<RoutingConfig> = {}) {
-    const apiPayload: CreateUpdateRoutingConfig = {
-      campaignId: user.campaignIds?.[0] ?? 'campaign',
-      cascade: [
+    const apiPayload: CreateRoutingConfig = {
+      campaignId:
+        routingConfig.campaignId ?? user.campaignIds?.[0] ?? 'campaign',
+      cascade: routingConfig.cascade ?? [
         {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
@@ -28,9 +29,10 @@ export const RoutingConfigFactory = {
           defaultTemplateId: null,
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
-      name: 'Test config',
-      ...routingConfig,
+      cascadeGroupOverrides: routingConfig.cascadeGroupOverrides ?? [
+        { name: 'standard' },
+      ],
+      name: routingConfig.name ?? 'Test config',
     };
 
     const apiResponse: RoutingConfig = {
@@ -39,6 +41,7 @@ export const RoutingConfigFactory = {
       status: 'DRAFT',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      ...routingConfig,
       ...apiPayload,
     };
 

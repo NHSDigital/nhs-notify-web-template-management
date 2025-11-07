@@ -396,7 +396,7 @@
         ],
         "type": "object"
       },
-      "CreateUpdateRoutingConfig": {
+      "CreateRoutingConfig": {
         "properties": {
           "campaignId": {
             "type": "string"
@@ -419,8 +419,8 @@
         },
         "required": [
           "campaignId",
-          "cascadeGroupOverrides",
           "cascade",
+          "cascadeGroupOverrides",
           "name"
         ],
         "type": "object"
@@ -823,6 +823,55 @@
         ],
         "type": "string"
       },
+      "UpdateRoutingConfig": {
+        "additionalProperties": false,
+        "minProperties": 1,
+        "oneOf": [
+          {
+            "required": [
+              "cascade",
+              "cascadeGroupOverrides"
+            ]
+          },
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "cascade"
+                  ]
+                },
+                {
+                  "required": [
+                    "cascadeGroupOverrides"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "cascade": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeItem"
+            },
+            "type": "array"
+          },
+          "cascadeGroupOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/CascadeGroup"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UploadLetterProperties": {
         "allOf": [
           {
@@ -1032,7 +1081,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+                "$ref": "#/components/schemas/CreateRoutingConfig"
               }
             }
           },
@@ -1220,7 +1269,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUpdateRoutingConfig"
+                "$ref": "#/components/schemas/UpdateRoutingConfig"
               }
             }
           },
