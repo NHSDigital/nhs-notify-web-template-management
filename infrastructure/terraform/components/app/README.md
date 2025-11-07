@@ -13,7 +13,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_AMPLIFY_BASIC_AUTH_SECRET"></a> [AMPLIFY\_BASIC\_AUTH\_SECRET](#input\_AMPLIFY\_BASIC\_AUTH\_SECRET) | Secret key/password to use for Amplify Basic Auth - This is intended to be read from CI variables and not committed to any codebase | `string` | `"unset"` | no |
-| <a name="input_CSRF_SECRET"></a> [CSRF\_SECRET](#input\_CSRF\_SECRET) | Secure cryptographic key to be used for generating CSRF tokens - This is intended to be read from CI variables and not committed to any codebase | `string` | n/a | yes |
+| <a name="input_CSRF_SECRET"></a> [CSRF\_SECRET](#input\_CSRF\_SECRET) | Secure cryptographic key to be used for generating CSRF tokens - This is intended to be read from CI variables and not committed to any codebase | `string` | `"value"` | no |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | The AWS Account ID (numeric) | `string` | n/a | yes |
 | <a name="input_aws_principal_org_id"></a> [aws\_principal\_org\_id](#input\_aws\_principal\_org\_id) | The AWS Org ID (numeric) | `string` | n/a | yes |
 | <a name="input_backup_report_recipient"></a> [backup\_report\_recipient](#input\_backup\_report\_recipient) | Primary recipient of the Backup reports | `string` | `""` | no |
@@ -54,7 +54,7 @@
 | <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v2.0.19 |
 | <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_kms_us_east_1"></a> [kms\_us\_east\_1](#module\_kms\_us\_east\_1) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
-| <a name="module_nhse_backup_vault"></a> [nhse\_backup\_vault](#module\_nhse\_backup\_vault) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.23/terraform-aws-backup-source.zip | n/a |
+| <a name="module_nhse_backup_vault"></a> [nhse\_backup\_vault](#module\_nhse\_backup\_vault) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.25/terraform-aws-backup-source.zip | n/a |
 | <a name="module_s3bucket_cf_logs"></a> [s3bucket\_cf\_logs](#module\_s3bucket\_cf\_logs) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../modules/ses | n/a |
 ## Outputs

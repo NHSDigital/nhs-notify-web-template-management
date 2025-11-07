@@ -2,11 +2,8 @@
   "compilerOptions": {
     "isolatedModules": true,
     "paths": {
-      "@backend-api/templates/*": [
-        "./src/templates/*"
-      ],
-      "@backend-api/utils/*": [
-        "./src/utils/*"
+      "@backend-api/*": [
+        "./src/*"
       ]
     },
     "resolveJsonModule": true
