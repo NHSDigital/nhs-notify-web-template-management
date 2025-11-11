@@ -45,7 +45,7 @@ export default defineConfig({
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
-    timeout: 4 * 60 * 1000, // 2 minutes
+    timeout: 4 * 60 * 1000, // 4 minutes
     command: buildCommand,
     cwd: path.resolve(__dirname, '../../../..'),
     url: 'http://localhost:3000/templates/create-and-submit-templates',

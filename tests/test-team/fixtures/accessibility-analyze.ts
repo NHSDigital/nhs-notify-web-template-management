@@ -15,8 +15,17 @@ type AccessibilityFixture = {
   analyze: Analyze;
 };
 
+const DISABLED_RULES = [
+  /* We don't have control over NHS colours.
+   * Axe decides the page is 5.75 ratio and wcag2aaa expects 7:1
+   */
+  'color-contrast-enhanced',
+];
+
 const makeAxeBuilder = (page: Page) =>
-  new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']);
+  new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag2aaa'])
+    .disableRules(DISABLED_RULES);
 
 export const test = base.extend<AccessibilityFixture>({
   analyze: async ({ baseURL, page }, use) => {
