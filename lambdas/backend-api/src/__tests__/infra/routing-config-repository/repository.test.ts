@@ -928,7 +928,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
@@ -971,7 +971,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
@@ -1024,7 +1024,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
@@ -1075,7 +1075,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
@@ -1119,7 +1119,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
