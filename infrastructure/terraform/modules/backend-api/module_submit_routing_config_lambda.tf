@@ -37,7 +37,20 @@ module "submit_routing_config_lambda" {
 
 data "aws_iam_policy_document" "submit_routing_config_lambda_policy" {
   statement {
-    sid    = "AllowDynamoAccess"
+    sid    = "AllowDynamoRoutingConfigRead"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:GetItem",
+    ]
+
+    resources = [
+      aws_dynamodb_table.routing_configuration.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowDynamoTemplatesRoutingConfigWrite"
     effect = "Allow"
 
     actions = [
@@ -46,6 +59,7 @@ data "aws_iam_policy_document" "submit_routing_config_lambda_policy" {
 
     resources = [
       aws_dynamodb_table.routing_configuration.arn,
+      aws_dynamodb_table.templates.arn,
     ]
   }
 

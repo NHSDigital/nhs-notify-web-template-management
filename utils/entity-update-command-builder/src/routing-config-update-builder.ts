@@ -57,9 +57,9 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
-  setUpdatedByUserAt(userId: string) {
+  setUpdatedByUserAt(userId: string, date = new Date()) {
     this.updateBuilder
-      .setValue('updatedAt', new Date().toISOString())
+      .setValue('updatedAt', date.toISOString())
       .setValue('updatedBy', userId);
     return this;
   }

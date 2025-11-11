@@ -103,6 +103,7 @@ const statusToDisplayMappings: Record<TemplateStatus, string> = {
   VIRUS_SCAN_FAILED: 'Checks failed',
   WAITING_FOR_PROOF: 'Waiting for proof',
   PROOF_AVAILABLE: 'Proof available',
+  LOCKED: 'Locked',
 } as const;
 
 const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
@@ -145,6 +146,7 @@ const colourMappings: Record<TemplateStatus, Colour> = {
   VALIDATION_FAILED: 'red',
   WAITING_FOR_PROOF: 'yellow',
   PROOF_AVAILABLE: 'orange',
+  LOCKED: 'orange',
 } as const;
 
 const templateStatusToColourMappingsLetter = (
@@ -210,6 +212,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
+      LOCKED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -236,6 +239,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
+      LOCKED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 

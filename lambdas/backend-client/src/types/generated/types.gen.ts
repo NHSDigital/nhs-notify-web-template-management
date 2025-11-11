@@ -225,6 +225,7 @@ export type TemplateDto = BaseCreatedTemplate &
 
 export type TemplateStatus =
   | 'DELETED'
+  | 'LOCKED'
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'

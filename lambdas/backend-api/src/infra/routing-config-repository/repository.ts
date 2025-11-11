@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import {
   GetCommand,
   PutCommand,
+  TransactWriteCommand,
   UpdateCommand,
   type DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
@@ -19,9 +20,16 @@ import {
 } from 'nhs-notify-backend-client';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
-import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
-import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import {
+  RoutingConfigUpdateBuilder,
+  TemplateUpdateBuilder,
+} from 'nhs-notify-entity-update-command-builder';
+import {
+  ConditionalCheckFailedException,
+  TransactionCanceledException,
+} from '@aws-sdk/client-dynamodb';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import { getCascadeTemplateIds } from '@backend-api/domain/get-cascade-template-ids';
 
 export class RoutingConfigRepository {
   private updateCmdOpts = {
@@ -31,7 +39,10 @@ export class RoutingConfigRepository {
 
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly tableName: string
+    private readonly config: {
+      routingConfigTableName: string;
+      templatesTableName: string;
+    }
   ) {}
 
   async create(
@@ -52,7 +63,7 @@ export class RoutingConfigRepository {
 
       await this.client.send(
         new PutCommand({
-          TableName: this.tableName,
+          TableName: this.config.routingConfigTableName,
           Item: {
             ...routingConfig,
             owner: this.clientOwnerKey(user.clientId),
@@ -67,7 +78,7 @@ export class RoutingConfigRepository {
     } catch (error) {
       return failure(
         ErrorCase.INTERNAL,
-        'Failed to create routing config',
+        'Failed to create Routing Config',
         error
       );
     }
@@ -81,7 +92,7 @@ export class RoutingConfigRepository {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
     const cmdInput = new RoutingConfigUpdateBuilder(
-      this.tableName,
+      this.config.routingConfigTableName,
       user.clientId,
       id,
       this.updateCmdOpts
@@ -102,7 +113,7 @@ export class RoutingConfigRepository {
       if (!parsed.success) {
         return failure(
           ErrorCase.INTERNAL,
-          'Error parsing updated Routing Config',
+          'Error parsing Routing Config',
           parsed.error
         );
       }
@@ -117,33 +128,67 @@ export class RoutingConfigRepository {
     id: string,
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const cmdInput = new RoutingConfigUpdateBuilder(
-      this.tableName,
+    const getRoutingConfigResult = await this.get(id, user.clientId);
+
+    if (getRoutingConfigResult.error) return getRoutingConfigResult;
+
+    if (getRoutingConfigResult.data.status === 'DELETED') {
+      return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
+    }
+
+    const now = new Date();
+
+    const routingConfigUpdate = new RoutingConfigUpdateBuilder(
+      this.config.routingConfigTableName,
       user.clientId,
       id,
       this.updateCmdOpts
     )
       .setStatus('COMPLETED')
+      .expectRoutingConfigExists()
       .expectStatus('DRAFT')
-      .setUpdatedByUserAt(user.userId)
-      .build();
+      .setUpdatedByUserAt(user.userId, now);
+
+    const referencedTemplateIds = getCascadeTemplateIds(
+      getRoutingConfigResult.data.cascade
+    );
+
+    const templateUpdates = referencedTemplateIds.map((templateId) => ({
+      Update: new TemplateUpdateBuilder(
+        this.config.templatesTableName,
+        user.clientId,
+        templateId,
+        this.updateCmdOpts
+      )
+        .setStatus('LOCKED')
+        .expectTemplateExists()
+        .expectStatusByType(
+          ['NHS_APP', ['NOT_YET_SUBMITTED', 'LOCKED']],
+          ['EMAIL', ['NOT_YET_SUBMITTED', 'LOCKED']],
+          ['SMS', ['NOT_YET_SUBMITTED', 'LOCKED']],
+          ['LETTER', ['SUBMITTED', 'LOCKED']]
+        )
+        .incrementLockNumber()
+        .setUpdatedByUserAt(user.userId, now)
+        .build(),
+    }));
 
     try {
-      const result = await this.client.send(new UpdateCommand(cmdInput));
+      await this.client.send(
+        new TransactWriteCommand({
+          ClientRequestToken: randomUUID(),
+          TransactItems: [
+            {
+              Update: routingConfigUpdate.build(),
+            },
+            ...templateUpdates,
+          ],
+        })
+      );
 
-      const parsed = $RoutingConfig.safeParse(result.Attributes);
-
-      if (!parsed.success) {
-        return failure(
-          ErrorCase.INTERNAL,
-          'Error parsing submitted Routing Config',
-          parsed.error
-        );
-      }
-
-      return success(parsed.data);
+      return this.get(id, user.clientId);
     } catch (error) {
-      return this.handleUpdateError(error);
+      return this.handleSubmitError(error);
     }
   }
 
@@ -152,7 +197,7 @@ export class RoutingConfigRepository {
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
     const cmdInput = new RoutingConfigUpdateBuilder(
-      this.tableName,
+      this.config.routingConfigTableName,
       user.clientId,
       id,
       this.updateCmdOpts
@@ -171,7 +216,7 @@ export class RoutingConfigRepository {
       if (!parsed.success) {
         return failure(
           ErrorCase.INTERNAL,
-          'Error parsing deleted Routing Config',
+          'Error parsing Routing Config',
           parsed.error
         );
       }
@@ -186,10 +231,12 @@ export class RoutingConfigRepository {
     id: string,
     clientId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
+    let data: unknown;
+
     try {
       const result = await this.client.send(
         new GetCommand({
-          TableName: this.tableName,
+          TableName: this.config.routingConfigTableName,
           Key: {
             id,
             owner: this.clientOwnerKey(clientId),
@@ -201,9 +248,7 @@ export class RoutingConfigRepository {
         return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
       }
 
-      const parsed = $RoutingConfig.parse(result.Item);
-
-      return success(parsed);
+      data = result.Item;
     } catch (error) {
       return failure(
         ErrorCase.INTERNAL,
@@ -211,12 +256,24 @@ export class RoutingConfigRepository {
         error
       );
     }
+
+    const parsed = $RoutingConfig.safeParse(data);
+
+    if (parsed.success) {
+      return success(parsed.data);
+    }
+
+    return failure(
+      ErrorCase.INTERNAL,
+      'Error parsing Routing Config',
+      parsed.error
+    );
   }
 
   query(clientId: string): RoutingConfigQuery {
     return new RoutingConfigQuery(
       this.client,
-      this.tableName,
+      this.config.routingConfigTableName,
       this.clientOwnerKey(clientId)
     );
   }
@@ -226,18 +283,68 @@ export class RoutingConfigRepository {
       const status = err?.Item?.status.S;
 
       if (!status || status === ('DELETED' satisfies RoutingConfigStatus)) {
-        return failure(ErrorCase.NOT_FOUND, `Routing configuration not found`);
+        return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
       }
 
       if (status === ('COMPLETED' satisfies RoutingConfigStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
-          `Routing configuration with status COMPLETED cannot be updated`
+          `Routing Config with status COMPLETED cannot be updated`
         );
       }
     }
 
-    return failure(ErrorCase.INTERNAL, 'Failed to update routing config', err);
+    return failure(ErrorCase.INTERNAL, 'Failed to update Routing Config', err);
+  }
+
+  private handleSubmitError(err: unknown) {
+    // TODO: CCM-12744
+    // TODO: CCM-12685
+    // Since we are reading the item(s) before writing, we can probably remove all of this condition checking logic
+    // Do validation on the items that are retrieved from the database before writing (including the lock number)
+    // On write, just add a condition check on the lock number to check it's not changed since validation
+
+    // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TransactWriteItems.html#API_TransactWriteItems_Errors
+    if (
+      err instanceof TransactionCanceledException &&
+      err.CancellationReasons
+    ) {
+      // Cancellation reasons is an array that maps to the requests in the transactions - i.e same indexes.
+      const [routingConfigReason, ...templateReasons] = err.CancellationReasons;
+
+      if (routingConfigReason?.Code === 'ConditionalCheckFailed') {
+        if (
+          routingConfigReason.Item === undefined ||
+          routingConfigReason.Item.status.S ===
+            ('DELETED' satisfies RoutingConfigStatus)
+        ) {
+          return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
+        }
+
+        if (
+          routingConfigReason.Item.status.S ===
+          ('COMPLETED' satisfies RoutingConfigStatus)
+        ) {
+          return failure(
+            ErrorCase.ALREADY_SUBMITTED,
+            'Routing Config with status COMPLETED cannot be updated'
+          );
+        }
+      }
+
+      if (
+        templateReasons.some(
+          (reason) => reason.Code === 'ConditionalCheckFailed'
+        )
+      ) {
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Unable to lock one or more templates referenced in Routing Config'
+        );
+      }
+    }
+
+    return failure(ErrorCase.INTERNAL, 'Failed to submit Routing Config', err);
   }
 
   private clientOwnerKey(clientId: string) {

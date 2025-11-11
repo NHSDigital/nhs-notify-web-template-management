@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  TransactWriteCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
@@ -15,7 +16,11 @@ import {
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 import { randomUUID, type UUID } from 'node:crypto';
-import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import {
+  ConditionalCheckFailedException,
+  TransactionCanceledException,
+} from '@aws-sdk/client-dynamodb';
+import { marshall } from '@aws-sdk/util-dynamodb';
 
 jest.mock('node:crypto');
 const uuidMock = jest.mocked(randomUUID);
@@ -35,7 +40,8 @@ beforeAll(() => {
   jest.setSystemTime(date);
 });
 
-const TABLE_NAME = 'routing-config-table-name';
+const ROUTING_TABLE_NAME = 'routing-config-table-name';
+const TEMPLATES_TABLE_NAME = 'templates-table-name';
 const user = { userId: 'user', clientId: 'nhs-notify-client-id' };
 const clientOwnerKey = `CLIENT#${user.clientId}`;
 
@@ -46,7 +52,10 @@ function setup() {
 
   const repo = new RoutingConfigRepository(
     dynamo as unknown as DynamoDBDocumentClient,
-    TABLE_NAME
+    {
+      routingConfigTableName: ROUTING_TABLE_NAME,
+      templatesTableName: TEMPLATES_TABLE_NAME,
+    }
   );
 
   return { repo, mocks };
@@ -69,7 +78,7 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({ data: routingConfig });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: clientOwnerKey,
@@ -96,7 +105,37 @@ describe('RoutingConfigRepository', () => {
       });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
+        Key: {
+          id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
+          owner: clientOwnerKey,
+        },
+      });
+    });
+
+    test('returns error result if the database throws', async () => {
+      const { repo, mocks } = setup();
+
+      const error = new Error('oh no');
+      mocks.dynamo.on(GetCommand).rejectsOnce(error);
+
+      const result = await repo.get(
+        'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
+        user.clientId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving Routing Config',
+          },
+        },
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: ROUTING_TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: clientOwnerKey,
@@ -125,7 +164,7 @@ describe('RoutingConfigRepository', () => {
       expect(result.data).toBeUndefined();
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         Key: {
           id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
           owner: clientOwnerKey,
@@ -170,7 +209,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo
         .on(PutCommand, {
-          TableName: TABLE_NAME,
+          TableName: ROUTING_TABLE_NAME,
           Item: putPayload,
         })
         .resolves({});
@@ -194,7 +233,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 500,
-            description: 'Failed to create routing config',
+            description: 'Failed to create Routing Config',
           },
         },
       });
@@ -220,7 +259,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Failed to create routing config',
+            description: 'Failed to create Routing Config',
           },
         },
       });
@@ -228,50 +267,224 @@ describe('RoutingConfigRepository', () => {
   });
 
   describe('submit', () => {
-    test('updates routing config to COMPLETED', async () => {
+    const config: RoutingConfig = {
+      ...routingConfig,
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: 'nhsapp-template-id',
+        },
+        {
+          cascadeGroups: ['accessible'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          conditionalTemplates: [
+            {
+              templateId: 'x0-template-id',
+              accessibleFormat: 'x0',
+            },
+          ],
+        },
+        {
+          cascadeGroups: ['translations'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          conditionalTemplates: [
+            {
+              templateId: 'ar-template-id',
+              language: 'ar',
+            },
+          ],
+        },
+      ],
+    };
+
+    const completed: RoutingConfig = {
+      ...config,
+      status: 'COMPLETED',
+    };
+
+    test('updates routing config to COMPLETED and locks referenced templates in a transaction', async () => {
       const { repo, mocks } = setup();
 
-      const completed: RoutingConfig = {
-        ...routingConfig,
-        status: 'COMPLETED',
-      };
-
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completed });
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: config })
+        .resolvesOnce({ Item: completed });
 
       const result = await repo.submit(routingConfig.id, user);
 
       expect(result).toEqual({ data: completed });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
-        ExpressionAttributeNames: {
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':status': 'COMPLETED',
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
-        },
-        Key: {
-          id: routingConfig.id,
-          owner: clientOwnerKey,
-        },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+      expect(mocks.dynamo).toHaveReceivedCommandTimes(GetCommand, 2);
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        ClientRequestToken: generatedId,
+        TransactItems: [
+          {
+            Update: {
+              TableName: ROUTING_TABLE_NAME,
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ExpressionAttributeNames: {
+                '#id': 'id',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_2_status': 'DRAFT',
+                ':status': 'COMPLETED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': user.userId,
+              },
+              UpdateExpression:
+                'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+              ConditionExpression:
+                'attribute_exists (#id) AND #status = :condition_2_status',
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+            },
+          },
+          {
+            Update: {
+              TableName: TEMPLATES_TABLE_NAME,
+              Key: {
+                id: 'nhsapp-template-id',
+                owner: clientOwnerKey,
+              },
+              ExpressionAttributeNames: {
+                '#id': 'id',
+                '#lockNumber': 'lockNumber',
+                '#templateStatus': 'templateStatus',
+                '#templateType': 'templateType',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_2_1_1_templateType': 'NHS_APP',
+                ':condition_2_1_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_1_2_2_templateStatus': 'LOCKED',
+                ':condition_2_2_1_templateType': 'EMAIL',
+                ':condition_2_2_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_2_2_2_templateStatus': 'LOCKED',
+                ':condition_2_3_1_templateType': 'SMS',
+                ':condition_2_3_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_3_2_2_templateStatus': 'LOCKED',
+                ':condition_2_4_1_templateType': 'LETTER',
+                ':condition_2_4_2_1_templateStatus': 'SUBMITTED',
+                ':condition_2_4_2_2_templateStatus': 'LOCKED',
+                ':lockNumber': 1,
+                ':templateStatus': 'LOCKED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': user.userId,
+              },
+              UpdateExpression:
+                'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+              ConditionExpression:
+                'attribute_exists (#id) AND ((#templateType = :condition_2_1_1_templateType AND #templateStatus IN (:condition_2_1_2_1_templateStatus, :condition_2_1_2_2_templateStatus)) OR (#templateType = :condition_2_2_1_templateType AND #templateStatus IN (:condition_2_2_2_1_templateStatus, :condition_2_2_2_2_templateStatus)) OR (#templateType = :condition_2_3_1_templateType AND #templateStatus IN (:condition_2_3_2_1_templateStatus, :condition_2_3_2_2_templateStatus)) OR (#templateType = :condition_2_4_1_templateType AND #templateStatus IN (:condition_2_4_2_1_templateStatus, :condition_2_4_2_2_templateStatus)))',
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+            },
+          },
+          {
+            Update: {
+              TableName: TEMPLATES_TABLE_NAME,
+              Key: {
+                id: 'x0-template-id',
+                owner: clientOwnerKey,
+              },
+              ExpressionAttributeNames: {
+                '#id': 'id',
+                '#lockNumber': 'lockNumber',
+                '#templateStatus': 'templateStatus',
+                '#templateType': 'templateType',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_2_1_1_templateType': 'NHS_APP',
+                ':condition_2_1_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_1_2_2_templateStatus': 'LOCKED',
+                ':condition_2_2_1_templateType': 'EMAIL',
+                ':condition_2_2_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_2_2_2_templateStatus': 'LOCKED',
+                ':condition_2_3_1_templateType': 'SMS',
+                ':condition_2_3_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_3_2_2_templateStatus': 'LOCKED',
+                ':condition_2_4_1_templateType': 'LETTER',
+                ':condition_2_4_2_1_templateStatus': 'SUBMITTED',
+                ':condition_2_4_2_2_templateStatus': 'LOCKED',
+                ':lockNumber': 1,
+                ':templateStatus': 'LOCKED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': user.userId,
+              },
+              UpdateExpression:
+                'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+              ConditionExpression:
+                'attribute_exists (#id) AND ((#templateType = :condition_2_1_1_templateType AND #templateStatus IN (:condition_2_1_2_1_templateStatus, :condition_2_1_2_2_templateStatus)) OR (#templateType = :condition_2_2_1_templateType AND #templateStatus IN (:condition_2_2_2_1_templateStatus, :condition_2_2_2_2_templateStatus)) OR (#templateType = :condition_2_3_1_templateType AND #templateStatus IN (:condition_2_3_2_1_templateStatus, :condition_2_3_2_2_templateStatus)) OR (#templateType = :condition_2_4_1_templateType AND #templateStatus IN (:condition_2_4_2_1_templateStatus, :condition_2_4_2_2_templateStatus)))',
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+            },
+          },
+          {
+            Update: {
+              TableName: TEMPLATES_TABLE_NAME,
+              Key: {
+                id: 'ar-template-id',
+                owner: clientOwnerKey,
+              },
+              ExpressionAttributeNames: {
+                '#id': 'id',
+                '#lockNumber': 'lockNumber',
+                '#templateStatus': 'templateStatus',
+                '#templateType': 'templateType',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_2_1_1_templateType': 'NHS_APP',
+                ':condition_2_1_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_1_2_2_templateStatus': 'LOCKED',
+                ':condition_2_2_1_templateType': 'EMAIL',
+                ':condition_2_2_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_2_2_2_templateStatus': 'LOCKED',
+                ':condition_2_3_1_templateType': 'SMS',
+                ':condition_2_3_2_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_3_2_2_templateStatus': 'LOCKED',
+                ':condition_2_4_1_templateType': 'LETTER',
+                ':condition_2_4_2_1_templateStatus': 'SUBMITTED',
+                ':condition_2_4_2_2_templateStatus': 'LOCKED',
+                ':lockNumber': 1,
+                ':templateStatus': 'LOCKED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': user.userId,
+              },
+              UpdateExpression:
+                'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+              ConditionExpression:
+                'attribute_exists (#id) AND ((#templateType = :condition_2_1_1_templateType AND #templateStatus IN (:condition_2_1_2_1_templateStatus, :condition_2_1_2_2_templateStatus)) OR (#templateType = :condition_2_2_1_templateType AND #templateStatus IN (:condition_2_2_2_1_templateStatus, :condition_2_2_2_2_templateStatus)) OR (#templateType = :condition_2_3_1_templateType AND #templateStatus IN (:condition_2_3_2_1_templateStatus, :condition_2_3_2_2_templateStatus)) OR (#templateType = :condition_2_4_1_templateType AND #templateStatus IN (:condition_2_4_2_1_templateStatus, :condition_2_4_2_2_templateStatus)))',
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+            },
+          },
+        ],
       });
     });
 
     test('returns failure on client error', async () => {
       const { repo, mocks } = setup();
 
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: config });
+
       const err = new Error('ddb err');
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.submit(routingConfig.id, user);
 
@@ -280,7 +493,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 500,
-            description: 'Failed to update routing config',
+            description: 'Failed to submit Routing Config',
           },
         },
       });
@@ -290,14 +503,18 @@ describe('RoutingConfigRepository', () => {
       const { repo, mocks } = setup();
 
       const completedInvalid: RoutingConfig = {
-        ...routingConfig,
-        status: 'COMPLETED',
+        ...completed,
         name: 0 as unknown as string,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: config })
+        .resolvesOnce({ Item: completedInvalid });
 
       const result = await repo.submit(routingConfig.id, user);
+
+      expect(mocks.dynamo).toHaveReceivedCommand(TransactWriteCommand);
 
       expect(result).toEqual({
         error: {
@@ -313,7 +530,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Error parsing submitted Routing Config',
+            description: 'Error parsing Routing Config',
           },
         },
       });
@@ -322,12 +539,7 @@ describe('RoutingConfigRepository', () => {
     test('returns 404 failure if routing config does not exist', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        $metadata: {},
-        message: 'msg',
-      });
-
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(GetCommand).resolves({});
 
       const result = await repo.submit(routingConfig.id, user);
 
@@ -335,7 +547,7 @@ describe('RoutingConfigRepository', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -344,13 +556,9 @@ describe('RoutingConfigRepository', () => {
     test('returns 404 failure if routing config is DELETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
-        $metadata: {},
-        message: 'msg',
+      mocks.dynamo.on(GetCommand).resolves({
+        Item: { ...config, status: 'DELETED' },
       });
-
-      mocks.dynamo.on(UpdateCommand).rejects(err);
 
       const result = await repo.submit(routingConfig.id, user);
 
@@ -358,7 +566,7 @@ describe('RoutingConfigRepository', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -367,13 +575,21 @@ describe('RoutingConfigRepository', () => {
     test('returns 400 failure if routing config is COMPLETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: config });
+
+      const err = new TransactionCanceledException({
         $metadata: {},
-        message: 'msg',
+        message: 'Transaction was cancelled',
+        CancellationReasons: [
+          {
+            Item: marshall({ ...config, status: 'COMPLETED' }),
+            Message: 'The conditional request failed.',
+            Code: 'ConditionalCheckFailed',
+          },
+        ],
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.submit(routingConfig.id, user);
 
@@ -382,7 +598,75 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 400,
             description:
-              'Routing configuration with status COMPLETED cannot be updated',
+              'Routing Config with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if routing config is DELETED', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: config });
+
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'Transaction was cancelled',
+        CancellationReasons: [
+          {
+            Item: marshall({ ...config, status: 'DELETED' }),
+            Message: 'The conditional request failed.',
+            Code: 'ConditionalCheckFailed',
+          },
+        ],
+      });
+
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Routing Config not found',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if a template fails condition check', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: config });
+
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'Transaction was cancelled',
+        CancellationReasons: [
+          {
+            Item: marshall({ id: routingConfig.id }),
+            Message: 'Null',
+            Code: 'None',
+          },
+          {
+            Item: marshall({ id: 'ar-template-id' }),
+            Message: 'The conditional request failed.',
+            Code: 'ConditionalCheckFailed',
+          },
+        ],
+      });
+
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'Unable to lock one or more templates referenced in Routing Config',
           },
         },
       });
@@ -424,7 +708,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #status = :status, #ttl = :ttl, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
       });
@@ -444,7 +728,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 500,
-            description: 'Failed to update routing config',
+            description: 'Failed to update Routing Config',
           },
         },
       });
@@ -477,7 +761,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Error parsing deleted Routing Config',
+            description: 'Error parsing Routing Config',
           },
         },
       });
@@ -499,7 +783,7 @@ describe('RoutingConfigRepository', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -522,7 +806,7 @@ describe('RoutingConfigRepository', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -546,7 +830,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 400,
             description:
-              'Routing configuration with status COMPLETED cannot be updated',
+              'Routing Config with status COMPLETED cannot be updated',
           },
         },
       });
@@ -600,7 +884,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
       });
@@ -648,7 +932,7 @@ describe('RoutingConfigRepository', () => {
           owner: clientOwnerKey,
         },
         ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
+        TableName: ROUTING_TABLE_NAME,
         UpdateExpression:
           'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #campaignId = :campaignId, #cascade = :cascade, #name = :name, #cascadeGroupOverrides = :cascadeGroupOverrides',
       });
@@ -677,7 +961,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 500,
-            description: 'Failed to update routing config',
+            description: 'Failed to update Routing Config',
           },
         },
       });
@@ -719,7 +1003,7 @@ describe('RoutingConfigRepository', () => {
           }),
           errorMeta: {
             code: 500,
-            description: 'Error parsing updated Routing Config',
+            description: 'Error parsing Routing Config',
           },
         },
       });
@@ -735,13 +1019,22 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(
+        routingConfig.id,
+        {
+          cascade: routingConfig.cascade,
+          cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+          name: routingConfig.name,
+          campaignId: routingConfig.campaignId,
+        },
+        user
+      );
 
       expect(result).toEqual({
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -758,13 +1051,13 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(routingConfig.id, routingConfig, user);
 
       expect(result).toEqual({
         error: {
           errorMeta: {
             code: 404,
-            description: 'Routing configuration not found',
+            description: 'Routing Config not found',
           },
         },
       });
@@ -781,14 +1074,14 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(routingConfig.id, routingConfig, user);
 
       expect(result).toEqual({
         error: {
           errorMeta: {
             code: 400,
             description:
-              'Routing configuration with status COMPLETED cannot be updated',
+              'Routing Config with status COMPLETED cannot be updated',
           },
         },
       });
