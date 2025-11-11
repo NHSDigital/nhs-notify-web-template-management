@@ -9,10 +9,10 @@ import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-he
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertGoBackLink,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 
@@ -199,7 +199,7 @@ test.describe('Create Message Plan Page', () => {
           page: createMessagePlanPage,
           id: '',
           baseURL,
-          expectedUrl: 'templates/message-plans/choose-message-order', // expected backlink url
+          expectedUrl: 'templates/message-plans/choose-message-order',
         };
 
         await assertSkipToMainContent(props);

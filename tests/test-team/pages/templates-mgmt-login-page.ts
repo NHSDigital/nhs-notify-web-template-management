@@ -37,7 +37,7 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
 
     await this.emailInput.fill(user.email);
 
-    await this.passwordInput.fill(user.password);
+    await this.passwordInput.fill(await user.getPassword());
 
     await this.clickSignInButton();
 

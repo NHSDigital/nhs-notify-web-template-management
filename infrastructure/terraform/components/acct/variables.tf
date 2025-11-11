@@ -138,3 +138,9 @@ variable "cost_anomaly_threshold" {
   description = "The threshold percentage for cost anomaly detection"
   default     = 10
 }
+
+variable "enable_env_destroy_event_rule" {
+  type        = bool
+  description = "Toggles the creation of the CloudWatch Event Rule for environment destruction failures"
+  default     = false
+}

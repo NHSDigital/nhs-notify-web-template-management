@@ -27,7 +27,7 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   if (!routingConfig)
     throw new Error(`Routing configuration ${routingConfigId} not found`);
 
-  const { campaignId, cascade, cascadeGroupOverrides, name } = routingConfig;
+  const { cascade, cascadeGroupOverrides } = routingConfig;
 
   const updatedCascade = cascade.map((cascadeItem) =>
     cascadeItem.channel === channel
@@ -36,8 +36,6 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   );
 
   const updatedConfig = {
-    campaignId,
-    name,
     cascadeGroupOverrides,
     cascade: updatedCascade,
   };

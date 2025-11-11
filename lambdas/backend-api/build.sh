@@ -14,26 +14,26 @@ npx esbuild \
     --entry-names=[name]/[name] \
     --outdir=dist \
     --external:pdfjs-dist \
-    src/templates/copy-scanned-object-to-internal.ts \
-    src/templates/count-routing-configs.ts \
-    src/templates/create-routing-config.ts \
-    src/templates/create.ts \
-    src/templates/delete-failed-scanned-object.ts \
-    src/templates/delete.ts \
-    src/templates/delete-routing-config.ts \
-    src/templates/get-client.ts \
-    src/templates/get-routing-config.ts \
-    src/templates/get.ts \
-    src/templates/list-routing-configs.ts \
-    src/templates/list.ts \
-    src/templates/process-proof.ts \
-    src/templates/proof.ts \
-    src/templates/set-letter-upload-virus-scan-status.ts \
-    src/templates/submit-routing-config.ts \
-    src/templates/submit.ts \
-    src/templates/update-routing-config.ts \
-    src/templates/update.ts \
-    src/templates/upload-letter.ts \
-    src/templates/validate-letter-template-files.ts
+    src/copy-scanned-object-to-internal.ts \
+    src/count-routing-configs.ts \
+    src/create-routing-config.ts \
+    src/create.ts \
+    src/delete-failed-scanned-object.ts \
+    src/delete.ts \
+    src/delete-routing-config.ts \
+    src/get-client.ts \
+    src/get-routing-config.ts \
+    src/get.ts \
+    src/list-routing-configs.ts \
+    src/list.ts \
+    src/process-proof.ts \
+    src/proof.ts \
+    src/set-letter-upload-virus-scan-status.ts \
+    src/submit-routing-config.ts \
+    src/submit.ts \
+    src/update-routing-config.ts \
+    src/update.ts \
+    src/upload-letter.ts \
+    src/validate-letter-template-files.ts
 
 cp -r ../../utils/utils/src/email-templates ./dist/submit

@@ -6,7 +6,7 @@ export const formatZodErrors = (error: z.ZodError) => {
   const formattedErrors: Record<string, string[]> = {};
 
   for (const issue of error.issues) {
-    const [fieldName] = issue.path;
+    const [fieldName = '$root'] = issue.path;
     const errorMessage = issue.message;
 
     if (typeof fieldName === 'symbol') {
