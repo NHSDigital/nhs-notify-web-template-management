@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -6,6 +7,7 @@ import {
 } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
+import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
   assertFooterLinks,
   assertHeaderLogoLink,
@@ -14,8 +16,11 @@ import {
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingMessagePlansPage } from 'pages/routing/message-plans-page';
 import { RoutingMoveToProductionPage } from 'pages/routing/move-to-production-page';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
+import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
 
-const storageHelper = new RoutingConfigStorageHelper();
+const routingConfigStorage = new RoutingConfigStorageHelper();
+const templateStorage = new TemplateStorageHelper();
 
 let user: TestUser;
 
@@ -25,7 +30,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  await storageHelper.deleteSeeded();
+  await routingConfigStorage.deleteSeeded();
 });
 
 test.describe('Create Message Plan Page', () => {
@@ -33,7 +38,7 @@ test.describe('Create Message Plan Page', () => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    await storageHelper.seed([routingConfig.dbEntry]);
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
 
     const props = {
       page: new RoutingMoveToProductionPage(page),
@@ -51,10 +56,15 @@ test.describe('Create Message Plan Page', () => {
     baseURL,
     page,
   }) => {
-    const routingConfig =
-      RoutingConfigFactory.create(user).withTemplates('NHSAPP');
+    const template = TemplateFactory.createNhsAppTemplate(randomUUID(), user);
 
-    await storageHelper.seed([routingConfig.dbEntry]);
+    await templateStorage.seedTemplateData([template]);
+
+    const routingConfig = RoutingConfigFactory.createWithChannels(user, [
+      'NHSAPP',
+    ]).addTemplate('NHSAPP', template.id);
+
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
@@ -82,6 +92,14 @@ test.describe('Create Message Plan Page', () => {
     expect(productionCellsText).toContainEqual(
       expect.stringContaining(routingConfig.dbEntry.id)
     );
+
+    const templatesPage = new TemplateMgmtMessageTemplatesPage(page);
+
+    await templatesPage.loadPage();
+
+    expect(await templatesPage.getTemplateStatus(template.id)).toEqual(
+      'Locked'
+    );
   });
 
   test('links to preview page for the message plan', async ({
@@ -91,7 +109,7 @@ test.describe('Create Message Plan Page', () => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    await storageHelper.seed([routingConfig.dbEntry]);
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
@@ -115,7 +133,7 @@ test.describe('Create Message Plan Page', () => {
     const routingConfig =
       RoutingConfigFactory.create(user).withTemplates('NHSAPP');
 
-    await storageHelper.seed([routingConfig.dbEntry]);
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
 
     const moveToProductionPage = new RoutingMoveToProductionPage(page);
 
