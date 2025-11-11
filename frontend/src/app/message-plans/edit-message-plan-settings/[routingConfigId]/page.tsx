@@ -1,35 +1,34 @@
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { z } from 'zod/v4';
-import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-utils';
+import type { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
 import { getCampaignIds } from '@utils/client-config';
+import { getRoutingConfig } from '@utils/message-plans';
 import { fetchClient } from '@utils/server-features';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { createMessagePlanServerAction } from './server-action';
+import { editMessagePlanSettingsServerAction } from './server-action';
 
-const pageContent = content.pages.createMessagePlan;
+const pageContent = content.pages.editMessagePlanSettings;
 
 export const metadata: Metadata = {
   title: pageContent.pageTitle,
 };
 
-const $CreateMessagePlanPageSearchParams = z.object({
-  messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST),
-});
+export default async function EditMessagePlanSettingsPage({
+  params,
+}: MessagePlanPageProps) {
+  const { routingConfigId } = await params;
 
-type CreateMessagePlanPageSearchParams = z.infer<
-  typeof $CreateMessagePlanPageSearchParams
->;
+  const [routingConfig, clientConfig] = await Promise.all([
+    getRoutingConfig(routingConfigId),
+    fetchClient(),
+  ]);
 
-export default async function CreateMessagePlanPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const clientConfig = await fetchClient();
+  if (!routingConfig) {
+    redirect('/message-plans/invalid', RedirectType.replace);
+  }
 
   const campaignIds = getCampaignIds(clientConfig);
 
@@ -37,28 +36,21 @@ export default async function CreateMessagePlanPage({
     redirect('/message-plans/campaign-id-required', RedirectType.replace);
   }
 
-  let params: CreateMessagePlanPageSearchParams;
-
-  try {
-    params = $CreateMessagePlanPageSearchParams.parse(await searchParams);
-  } catch {
-    redirect('/message-plans/choose-message-order', RedirectType.replace);
-  }
-
   return (
     <NHSNotifyMain>
-      <NHSNotifyFormProvider serverAction={createMessagePlanServerAction}>
+      <NHSNotifyFormProvider serverAction={editMessagePlanSettingsServerAction}>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
             <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
             <MessagePlanForm
-              backLink={pageContent.backLink}
+              backLink={pageContent.backLink(routingConfigId)}
               campaignIds={campaignIds}
+              initialState={routingConfig}
             >
               <input
                 type='hidden'
-                name='messageOrder'
-                value={params.messageOrder}
+                name='routingConfigId'
+                value={routingConfigId}
                 readOnly
               />
             </MessagePlanForm>

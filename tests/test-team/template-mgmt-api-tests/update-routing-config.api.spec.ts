@@ -16,6 +16,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
   let userRoutingDisabled: TestUser;
+  let userMultiCampaign: TestUser;
 
   let routingConfigNoUpdates: FactoryRoutingConfig;
   let routingConfigSuccessfullyUpdate: FactoryRoutingConfig;
@@ -30,6 +31,9 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     );
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
     userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
+    userMultiCampaign = await authHelper.getTestUser(
+      testUsers.UserWithMultipleCampaigns.userId
+    );
 
     routingConfigNoUpdates = RoutingConfigFactory.create(user1);
     routingConfigSuccessfullyUpdate = RoutingConfigFactory.create(user1);
@@ -150,7 +154,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
   test('returns 400 - cannot update a COMPLETED routing config', async ({
     request,
   }) => {
-    const failedSubmitResponse = await request.put(
+    const response = await request.put(
       `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigCompleted.dbEntry.id}`,
       {
         headers: {
@@ -163,11 +167,9 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
       }
     );
 
-    expect(failedSubmitResponse.status()).toBe(400);
+    expect(response.status()).toBe(400);
 
-    const updateResponseBody = await failedSubmitResponse.json();
-
-    expect(updateResponseBody).toEqual({
+    expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage:
         'Routing Config with status COMPLETED cannot be updated',
@@ -282,6 +284,247 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage: 'Routing feature is disabled',
+    });
+  });
+
+  test.describe('partial updates', () => {
+    test('name only - returns 200 and the updated routing config data', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(user1);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        name: 'new name',
+      };
+
+      const start = new Date();
+
+      const updateResponse = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: {
+          ...routingConfig.apiResponse,
+          ...update,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+    });
+
+    test('campaignId only - returns 200 and the updated routing config data', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(userMultiCampaign);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        campaignId: userMultiCampaign.campaignIds?.[1],
+      };
+      const start = new Date();
+
+      const updateResponse = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await userMultiCampaign.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: {
+          ...routingConfig.apiResponse,
+          ...update,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+    });
+
+    test('cascade and cascadeGroupOverrides - returns 200 and the updated routing config data', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(user1);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'primary',
+            defaultTemplateId: null,
+          },
+        ],
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      const start = new Date();
+
+      const updateResponse = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: {
+          ...routingConfig.apiResponse,
+          ...update,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+    });
+
+    test('cascade without cascadeGroupOverrides - returns 400', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(user1);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'primary',
+            defaultTemplateId: null,
+          },
+        ],
+      };
+
+      const updateResponse = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const response = await updateResponse.json();
+
+      expect(response).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+        details: {
+          cascade:
+            'cascade and cascadeGroupOverrides must either both be present or both be absent.',
+        },
+      });
+    });
+
+    test('cascadeGroupOverrides without cascade - returns 400', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(user1);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        cascadeGroupOverrides: [{ name: 'standard' }],
+      };
+
+      const response = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      expect(await response.json()).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+        details: {
+          cascadeGroupOverrides:
+            'cascade and cascadeGroupOverrides must either both be present or both be absent.',
+        },
+      });
+    });
+
+    test('empty payload - returns 400', async ({ request }) => {
+      const routingConfig = RoutingConfigFactory.create(user1);
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {};
+
+      const response = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      expect(await response.json()).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+        details: {
+          $root: 'At least one field must be provided.',
+        },
+      });
     });
   });
 });

@@ -5,8 +5,9 @@ import { RoutingConfigClient } from '../../app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
 import {
   CascadeItem,
-  CreateUpdateRoutingConfig,
+  CreateRoutingConfig,
   RoutingConfig,
+  UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 
@@ -251,7 +252,7 @@ describe('RoutingConfigClient', () => {
       const date = new Date();
       const campaignId = 'campaign';
 
-      const input: CreateUpdateRoutingConfig = {
+      const input: CreateRoutingConfig = {
         name: 'rc',
         campaignId,
         cascade: [
@@ -309,7 +310,7 @@ describe('RoutingConfigClient', () => {
       });
 
       const result = await client.createRoutingConfig(
-        { a: 1 } as unknown as CreateUpdateRoutingConfig,
+        { a: 1 } as unknown as CreateRoutingConfig,
         user
       );
 
@@ -348,7 +349,7 @@ describe('RoutingConfigClient', () => {
     test('returns failures from the repository', async () => {
       const { client, mocks } = setup();
 
-      const input: CreateUpdateRoutingConfig = {
+      const input: CreateRoutingConfig = {
         name: 'rc',
         campaignId: 'campaign',
         cascade: [
@@ -390,7 +391,7 @@ describe('RoutingConfigClient', () => {
     test('returns failures from client config repository', async () => {
       const { client, mocks } = setup();
 
-      const input: CreateUpdateRoutingConfig = {
+      const input: CreateRoutingConfig = {
         name: 'rc',
         campaignId: 'campaign',
         cascade: [
@@ -430,7 +431,7 @@ describe('RoutingConfigClient', () => {
     test('returns failure if routing feature is disabled for the client', async () => {
       const { client, mocks } = setup();
 
-      const input: CreateUpdateRoutingConfig = {
+      const input: CreateRoutingConfig = {
         name: 'rc',
         campaignId: 'campaign',
         cascade: [
@@ -465,7 +466,7 @@ describe('RoutingConfigClient', () => {
     test('returns failure if campaignId is not allowed for the client', async () => {
       const { client, mocks } = setup();
 
-      const input: CreateUpdateRoutingConfig = {
+      const input: CreateRoutingConfig = {
         name: 'rc',
         campaignId: 'campaign',
         cascade: [
@@ -688,7 +689,7 @@ describe('RoutingConfigClient', () => {
     test('returns updated routing config', async () => {
       const { client, mocks } = setup();
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
@@ -737,7 +738,7 @@ describe('RoutingConfigClient', () => {
         },
       });
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
         cascade: {} as CascadeItem[],
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
@@ -774,7 +775,7 @@ describe('RoutingConfigClient', () => {
     test('returns failures from client config repository', async () => {
       const { client, mocks } = setup();
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
@@ -811,7 +812,7 @@ describe('RoutingConfigClient', () => {
     test('returns failure if routing feature is disabled for the client', async () => {
       const { client, mocks } = setup();
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
@@ -846,7 +847,7 @@ describe('RoutingConfigClient', () => {
     test('returns failure if campaignId is not allowed for the client', async () => {
       const { client, mocks } = setup();
 
-      const update: CreateUpdateRoutingConfig = {
+      const update: UpdateRoutingConfig = {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
@@ -875,6 +876,48 @@ describe('RoutingConfigClient', () => {
             description: 'Invalid campaign ID in request',
           },
         },
+      });
+    });
+
+    test('allows payloads with no campaign id', async () => {
+      const { client, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: true },
+          campaignIds: ['another campaign'],
+        },
+      });
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.routingConfigRepository.update.mockResolvedValueOnce({
+        data: updated,
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
+        routingConfig.id,
+        update,
+        user
+      );
+
+      expect(result).toEqual({
+        data: updated,
       });
     });
   });

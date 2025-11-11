@@ -13,16 +13,12 @@ import {
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
 import { createRoutingConfig } from '@utils/message-plans';
+import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 
-const $MessagePlanFormData = z.object({
-  campaignId: z.string().min(1, { error: 'Select a campaign' }),
+const $CreateMessagePlanFormData = $MessagePlanFormData.extend({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {
     error: 'Invalid message order selected',
   }),
-  name: z
-    .string()
-    .min(1, { error: 'Enter a message plan name' })
-    .max(200, { error: 'Message plan name too long' }),
 });
 
 const INITIAL_CASCADE_ITEMS: Record<Channel, CascadeItem> = {
@@ -100,7 +96,7 @@ export async function createMessagePlanServerAction(
   formState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const parsed = $MessagePlanFormData.safeParse(
+  const parsed = $CreateMessagePlanFormData.safeParse(
     Object.fromEntries(formData.entries())
   );
 

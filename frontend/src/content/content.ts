@@ -1119,7 +1119,7 @@ const messagePlanBlock = {
 const createEditMessagePlan = {
   headerCaption: 'Message plan',
   changeNameLink: {
-    href: '/message-plans/edit-message-plan/{{routingConfigId}}',
+    href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
     text: 'Change name',
   },
   rowHeadings: {
@@ -1267,6 +1267,16 @@ const chooseMessageOrder = {
 const createMessagePlan = {
   pageTitle: generatePageTitle('Create message plan'),
   pageHeading: 'Create a message plan',
+  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
+};
+
+const editMessagePlanSettings = {
+  pageTitle: generatePageTitle('Edit message plan settings'),
+  pageHeading: 'Edit message plan settings',
+  backLink: (id: string) => ({
+    href: `/message-plans/choose-templates/${id}`,
+    text: 'Go back',
+  }),
 };
 
 const messagePlanForm = {
@@ -1311,7 +1321,6 @@ const messagePlanForm = {
     },
   },
   submitButton: 'Save and continue',
-  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
 const content = {
@@ -1354,6 +1363,7 @@ const content = {
   pages: {
     chooseTemplatesForMessagePlan,
     createMessagePlan,
+    editMessagePlanSettings,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,

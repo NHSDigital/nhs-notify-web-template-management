@@ -1,7 +1,8 @@
 import {
-  $CreateUpdateRoutingConfig,
-  $RoutingConfig,
+  $CreateRoutingConfig,
   $ListRoutingConfigFilters,
+  $RoutingConfig,
+  $UpdateRoutingConfig,
 } from '../../schemas/routing-config';
 
 const cascadeItemDefault = {
@@ -55,14 +56,17 @@ const baseCreated = {
   updatedBy: 'user-1',
 };
 
-describe('CreateUpdateRoutingConfig schema', () => {
+describe.each([
+  ['CreateRoutingConfig', $CreateRoutingConfig],
+  ['UpdateRoutingConfig', $UpdateRoutingConfig],
+])('Create/Update - %s schema', (_, $Schema) => {
   test('valid minimal with defaultTemplateId cascade item', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse(baseInput);
+    const res = $Schema.safeParse(baseInput);
     expect(res.success).toBe(true);
   });
 
   test('valid with defaultTemplateId set to null', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [{ ...cascadeItemDefault, defaultTemplateId: null }],
     });
@@ -70,7 +74,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('valid with translations conditional cascade item', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [cascadeCondLang],
     });
@@ -78,7 +82,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('valid with accessible conditional cascade item', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [cascadeCondAcc],
     });
@@ -86,7 +90,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('valid with conditional template ids set to null', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -113,7 +117,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('snapshot full error', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({});
+    const res = $Schema.safeParse({});
 
     expect(res.success).toBe(false);
 
@@ -121,7 +125,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('cascade must be nonempty', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [],
     });
@@ -129,7 +133,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('defaultTemplateId cannot be empty string', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [{ ...cascadeItemDefault, defaultTemplateId: '' }],
     });
@@ -137,7 +141,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('conditional language template ids cannot be empty string', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -155,7 +159,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('conditional accessible template ids cannot be empty string', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -173,7 +177,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('cascadeGroupOverrides must be nonempty', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [],
     });
@@ -181,7 +185,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('translations override languages must be nonempty', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [{ name: 'translations', language: [] }],
     });
@@ -189,7 +193,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('accessible override accessibleFormat must be nonempty', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [{ name: 'accessible', accessibleFormat: [] }],
     });
@@ -197,7 +201,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('accessible cascade group does not accept "language"', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [
         { name: 'accessible', accessibleFormat: ['x1'], language: ['ar'] },
@@ -207,7 +211,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('translations cascade group does not accept "accessibleFormat"', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [
         { name: 'translations', language: ['ar'], accessibleFormat: ['x1'] },
@@ -217,7 +221,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('standard cascade group does not accept extra keys', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [{ name: 'standard', foo: 'bar' }],
     });
@@ -225,7 +229,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('CascadeItem with both defaultTemplateId and conditionalTemplates is valid', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -239,7 +243,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('CascadeItem missing both defaultTemplateId and conditionalTemplates is invalid', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -253,7 +257,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('invalid cascade channel', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -268,7 +272,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('invalid cascade group language', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [{ name: 'translations', language: ['xx'] }],
     });
@@ -276,7 +280,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('invalid cascade group accessible format', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascadeGroupOverrides: [{ name: 'accessible', accessibleFormat: ['xx'] }],
     });
@@ -284,7 +288,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('invalid cascade conditional language', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -304,7 +308,7 @@ describe('CreateUpdateRoutingConfig schema', () => {
   });
 
   test('invalid cascade conditional accessible format', () => {
-    const res = $CreateUpdateRoutingConfig.safeParse({
+    const res = $Schema.safeParse({
       ...baseInput,
       cascade: [
         {
@@ -371,5 +375,51 @@ describe('ListRoutingConfigFilters', () => {
   test('rejects other statuses', () => {
     const res = $ListRoutingConfigFilters.safeParse({ status: 'DELETED' });
     expect(res.success).toBe(false);
+  });
+});
+
+describe('UpdateRoutingConfig', () => {
+  test('accepts payload without a name', () => {
+    const { name, ...rest } = baseInput;
+
+    const res = $UpdateRoutingConfig.safeParse(rest);
+
+    expect(res.success).toBe(true);
+  });
+
+  test('accepts payload without a campaignId', () => {
+    const { campaignId, ...rest } = baseInput;
+
+    const res = $UpdateRoutingConfig.safeParse(rest);
+
+    expect(res.success).toBe(true);
+  });
+
+  test('accepts payload without a cascade and cascadeGroupOverrides', () => {
+    const { cascade, cascadeGroupOverrides, ...rest } = baseInput;
+
+    const res = $UpdateRoutingConfig.safeParse(rest);
+
+    expect(res.success).toBe(true);
+  });
+
+  test('invalid with cascadeGroupOverrides and without cascade', () => {
+    const { cascade, ...rest } = baseInput;
+
+    const res = $UpdateRoutingConfig.safeParse(rest);
+
+    expect(res.success).toBe(false);
+
+    expect(res.error).toMatchSnapshot();
+  });
+
+  test('invalid with cascade but without cascadeGroupOverrides', () => {
+    const { cascadeGroupOverrides, ...rest } = baseInput;
+
+    const res = $UpdateRoutingConfig.safeParse(rest);
+
+    expect(res.success).toBe(false);
+
+    expect(res.error).toMatchSnapshot();
   });
 });

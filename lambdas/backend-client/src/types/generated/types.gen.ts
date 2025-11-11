@@ -106,7 +106,7 @@ export type CountSuccess = {
   statusCode: number;
 };
 
-export type CreateUpdateRoutingConfig = {
+export type CreateRoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
   cascadeGroupOverrides: Array<CascadeGroup>;
@@ -248,6 +248,13 @@ export type TemplateSuccessList = {
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
+export type UpdateRoutingConfig = unknown & {
+  campaignId?: string;
+  cascade?: Array<CascadeItem>;
+  cascadeGroupOverrides?: Array<CascadeGroup>;
+  name?: string;
+};
+
 export type UploadLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
 };
@@ -327,7 +334,7 @@ export type PostV1RoutingConfigurationData = {
   /**
    * Routing configuration to create
    */
-  body: CreateUpdateRoutingConfig;
+  body: CreateRoutingConfig;
   path?: never;
   query?: never;
   url: '/v1/routing-configuration';
@@ -421,7 +428,7 @@ export type PutV1RoutingConfigurationByRoutingConfigIdData = {
   /**
    * Routing configuration update to apply
    */
-  body: CreateUpdateRoutingConfig;
+  body: UpdateRoutingConfig;
   path: {
     /**
      * ID of routing configuration to update

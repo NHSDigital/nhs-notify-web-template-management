@@ -1,7 +1,8 @@
 import { failure } from '@backend-api/utils/result';
 import {
-  $CreateUpdateRoutingConfig,
+  $CreateRoutingConfig,
   $ListRoutingConfigFilters,
+  $UpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
   type Result,
@@ -37,10 +38,7 @@ export class RoutingConfigClient {
       );
     }
 
-    const validationResult = await validate(
-      $CreateUpdateRoutingConfig,
-      payload
-    );
+    const validationResult = await validate($CreateRoutingConfig, payload);
 
     if (validationResult.error) return validationResult;
 
@@ -76,16 +74,16 @@ export class RoutingConfigClient {
       );
     }
 
-    const validationResult = await validate(
-      $CreateUpdateRoutingConfig,
-      payload
-    );
+    const validationResult = await validate($UpdateRoutingConfig, payload);
 
     if (validationResult.error) return validationResult;
 
     const validated = validationResult.data;
 
-    if (!clientConfiguration?.campaignIds?.includes(validated.campaignId)) {
+    if (
+      validated.campaignId &&
+      !clientConfiguration?.campaignIds?.includes(validated.campaignId)
+    ) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
         'Invalid campaign ID in request'

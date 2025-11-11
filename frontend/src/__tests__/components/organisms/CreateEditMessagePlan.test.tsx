@@ -132,7 +132,7 @@ describe('CreateEditMessagePlan', () => {
     const link = screen.getByTestId('change-message-plan-name-link');
     expect(link.textContent).toBe('Change name');
     expect(link.getAttribute('href')).toBe(
-      `/message-plans/edit-message-plan/${plan.id}`
+      `/message-plans/edit-message-plan-settings/${plan.id}`
     );
   });
 

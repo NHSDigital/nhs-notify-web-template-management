@@ -1,5 +1,6 @@
 'use client';
 
+import { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import {
@@ -9,35 +10,40 @@ import {
   Select,
   TextInput,
 } from 'nhsuk-react-components';
-import { MessageOrder } from 'nhs-notify-web-template-management-utils';
+import type { RoutingConfig } from 'nhs-notify-backend-client';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import content from '@content/content';
 import { useNHSNotifyForm } from '@providers/form-provider';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const formContent = content.components.messagePlanForm;
 
 export function MessagePlanForm({
-  messageOrder,
+  backLink,
   campaignIds,
-}: {
-  messageOrder: MessageOrder;
+  children,
+  initialState = { campaignId: '', name: '' },
+}: PropsWithChildren<{
   campaignIds: string[];
-}) {
+  backLink: { href: string; text: string };
+  initialState?: Pick<RoutingConfig, 'campaignId' | 'name'>;
+}>) {
   const [state, action] = useNHSNotifyForm();
 
-  const [name, handleNameChange] = useTextInput<HTMLInputElement>('');
-  const [campaignId, handleCampaignIdChange] =
-    useTextInput<HTMLSelectElement>('');
+  const [name, handleNameChange] = useTextInput<HTMLInputElement>(
+    initialState.name
+  );
+  const [campaignId, handleCampaignIdChange] = useTextInput<HTMLSelectElement>(
+    initialState.campaignId
+  );
 
   const nameError = state.errorState?.fieldErrors?.name?.join(',');
   const campaignIdError = state.errorState?.fieldErrors?.campaignId?.join(',');
 
   return (
     <NHSNotifyFormWrapper formId='message-plan' action={action}>
-      <input type='hidden' name='messageOrder' value={messageOrder} readOnly />
       <div
         className={classNames(
           'nhsuk-form-group',
@@ -107,7 +113,7 @@ export function MessagePlanForm({
           {formContent.submitButton}
         </NHSNotifyButton>
         <Link
-          href={formContent.backLink.href}
+          href={backLink.href}
           className={classNames(
             'nhsuk-u-font-size-19',
             'nhsuk-u-margin-left-3',
@@ -116,9 +122,10 @@ export function MessagePlanForm({
           )}
           data-testid='go-back-link'
         >
-          {formContent.backLink.text}
+          {backLink.text}
         </Link>
       </div>
+      {children}
     </NHSNotifyFormWrapper>
   );
 }

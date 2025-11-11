@@ -13,10 +13,11 @@ import {
 } from '@backend-api/utils/result';
 import {
   $RoutingConfig,
-  type CreateUpdateRoutingConfig,
+  type CreateRoutingConfig,
   ErrorCase,
   type RoutingConfig,
   RoutingConfigStatus,
+  type UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
@@ -46,7 +47,7 @@ export class RoutingConfigRepository {
   ) {}
 
   async create(
-    routingConfigInput: CreateUpdateRoutingConfig,
+    routingConfigInput: CreateRoutingConfig,
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
     const date = new Date().toISOString();
@@ -86,27 +87,35 @@ export class RoutingConfigRepository {
 
   async update(
     id: string,
-    updateData: CreateUpdateRoutingConfig,
+    updateData: UpdateRoutingConfig,
     user: User
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
-    const cmdInput = new RoutingConfigUpdateBuilder(
+    const update = new RoutingConfigUpdateBuilder(
       this.config.routingConfigTableName,
       user.clientId,
       id,
       this.updateCmdOpts
-    )
-      .setUpdatedByUserAt(user.userId)
-      .setCampaignId(campaignId)
-      .setCascade(cascade)
-      .setName(name)
-      .setCascadeGroupOverrides(cascadeGroupOverrides)
-      .expectStatus('DRAFT')
-      .build();
+    );
+
+    if (name) {
+      update.setName(name);
+    }
+
+    if (campaignId) {
+      update.setCampaignId(campaignId);
+    }
+
+    if (cascade && cascadeGroupOverrides) {
+      update
+        .setCascade(cascade)
+        .setCascadeGroupOverrides(cascadeGroupOverrides);
+    }
+    update.setUpdatedByUserAt(user.userId).expectStatus('DRAFT');
 
     try {
-      const result = await this.client.send(new UpdateCommand(cmdInput));
+      const result = await this.client.send(new UpdateCommand(update.build()));
 
       const parsed = $RoutingConfig.safeParse(result.Attributes);
 

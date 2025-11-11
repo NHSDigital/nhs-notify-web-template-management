@@ -11,10 +11,11 @@ import type {
   ChannelType,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
-  CreateUpdateRoutingConfig,
+  CreateRoutingConfig,
   RoutingConfig,
   RoutingConfigStatus,
   RoutingConfigStatusActive,
+  UpdateRoutingConfig,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
 import { $Language, $LetterType } from './template-schema';
@@ -111,15 +112,40 @@ const $CascadeItem = schemaFor<CascadeItem>()(
   )
 );
 
-export const $CreateUpdateRoutingConfig =
-  schemaFor<CreateUpdateRoutingConfig>()(
-    z.object({
-      campaignId: z.string(),
-      cascade: z.array($CascadeItem).nonempty(),
-      cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
-      name: z.string(),
+export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
+  z.object({
+    campaignId: z.string(),
+    cascade: z.array($CascadeItem).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    name: z.string(),
+  })
+);
+
+export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
+  z
+    .object({
+      campaignId: z.string().optional(),
+      cascade: z.array($CascadeItem).nonempty().optional(),
+      cascadeGroupOverrides: z.array($CascadeGroup).nonempty().optional(),
+      name: z.string().optional(),
     })
-  );
+    .strict()
+    .refine((obj) => Object.values(obj).some((v) => v !== undefined), {
+      message: 'At least one field must be provided.',
+    })
+    .superRefine((obj, ctx) => {
+      const hasCascade = obj.cascade !== undefined;
+      const hasOverrides = obj.cascadeGroupOverrides !== undefined;
+      if (hasCascade !== hasOverrides) {
+        ctx.addIssue({
+          code: 'custom',
+          message:
+            'cascade and cascadeGroupOverrides must either both be present or both be absent.',
+          path: hasCascade ? ['cascade'] : ['cascadeGroupOverrides'],
+        });
+      }
+    })
+);
 
 const $RoutingConfigStatus = schemaFor<RoutingConfigStatus>()(
   z.enum(ROUTING_CONFIG_STATUS_LIST)
