@@ -6,6 +6,7 @@ import {
   ContentPreview,
   DetailSection,
   DetailsHeader,
+  LockedTemplateWarning,
   StandardDetailRows,
 } from './common';
 import { Container } from 'nhsuk-react-components';
@@ -23,6 +24,11 @@ export default function PreviewTemplateDetailsEmail({
   return (
     <>
       <DetailsHeader templateName={template.name} />
+
+      {template.templateStatus === 'LOCKED' && (
+        <LockedTemplateWarning template={template} />
+      )}
+
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >

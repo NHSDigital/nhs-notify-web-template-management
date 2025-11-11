@@ -1,4 +1,4 @@
-import { Tag, SummaryList } from 'nhsuk-react-components';
+import { Tag, SummaryList, WarningCallout } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
   statusToColourMapping,
@@ -10,6 +10,8 @@ import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
+import Link from 'next/link';
+import { interpolate } from '@utils/interpolate';
 
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
@@ -123,5 +125,31 @@ export function DetailsHeader({
         {templateName}
       </h1>
     </div>
+  );
+}
+
+export function LockedTemplateWarning({ template }: { template: TemplateDto }) {
+  const warningContent = content.components.lockedTemplateWarning;
+
+  return (
+    <WarningCallout className='nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width'>
+      <Tag
+        className='nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3'
+        color={statusToColourMapping(template)}
+      >
+        {statusToDisplayMapping(template)}
+      </Tag>
+
+      <p>{warningContent.main}</p>
+
+      {template.templateType !== 'LETTER' && (
+        <p>
+          <Link href={interpolate(warningContent.copy.link.href, template)}>
+            {warningContent.copy.link.text}
+          </Link>
+          {warningContent.copy.link.after}
+        </p>
+      )}
+    </WarningCallout>
   );
 }

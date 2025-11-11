@@ -24,6 +24,26 @@ describe('PreviewTemplateDetailsNhsApp', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot when template is locked', () => {
+    const container = render(
+      <PreviewTemplateDetailsNhsApp
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          message: 'app message message',
+          templateStatus: 'LOCKED',
+          templateType: 'NHS_APP',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        message='app content'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
 
 describe('PreviewTemplateDetailsEmail', () => {
@@ -48,6 +68,28 @@ describe('PreviewTemplateDetailsEmail', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot when template is locked', () => {
+    const container = render(
+      <PreviewTemplateDetailsEmail
+        template={{
+          id: 'template-id',
+          name: 'Example Email template',
+          message: 'email message message',
+          subject: 'subject',
+          templateStatus: 'LOCKED',
+          templateType: 'EMAIL',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        message='email content'
+        subject='email subject'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
 
 describe('PreviewTemplateDetailsSms', () => {
@@ -59,6 +101,26 @@ describe('PreviewTemplateDetailsSms', () => {
           name: 'SMS template',
           message: 'SMS message',
           templateStatus: 'SUBMITTED',
+          templateType: 'SMS',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        message='SMS content'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template is locked', () => {
+    const container = render(
+      <PreviewTemplateDetailsSms
+        template={{
+          id: 'template-id',
+          name: 'SMS template',
+          message: 'SMS message',
+          templateStatus: 'LOCKED',
           templateType: 'SMS',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
@@ -216,6 +278,33 @@ describe('PreviewTemplateDetailsLetter', () => {
           id: 'template-id',
           name: 'Example letter',
           templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template is locked', () => {
+    const container = render(
+      <PreviewTemplateDetailsLetter
+        template={{
+          id: 'template-id',
+          name: 'Example letter',
+          templateStatus: 'LOCKED',
           templateType: 'LETTER',
           letterType: 'x0',
           language: 'en',

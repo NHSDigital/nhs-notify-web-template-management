@@ -20,7 +20,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
           {props.sectionHeading}
         </div>
       )}
-      {features.routing ? (
+      {features.routing && props.template.templateStatus !== 'LOCKED' ? (
         <>
           {props.previewDetailsComponent}
           <Link href={props.editPath} passHref legacyBehavior>

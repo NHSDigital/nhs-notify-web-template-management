@@ -5,7 +5,12 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { Filename } from '@atoms/Filename/Filename';
 import content from '@content/content';
-import { DetailSection, DetailsHeader, StandardDetailRows } from './common';
+import {
+  DetailSection,
+  DetailsHeader,
+  LockedTemplateWarning,
+  StandardDetailRows,
+} from './common';
 import styles from './PreviewTemplateDetails.module.scss';
 import { getBasePath } from '@utils/get-base-path';
 import concatClassNames from '@utils/concat-class-names';
@@ -30,6 +35,11 @@ export default function PreviewTemplateDetailsLetter({
   return (
     <>
       <DetailsHeader templateName={template.name} />
+
+      {template.templateStatus === 'LOCKED' && (
+        <LockedTemplateWarning template={template} />
+      )}
+
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >
