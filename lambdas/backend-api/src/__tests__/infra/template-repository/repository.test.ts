@@ -9,18 +9,22 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
-import {
-  EmailProperties,
-  NhsAppProperties,
-  SmsProperties,
-  UploadLetterProperties,
-  ValidatedCreateUpdateTemplateNonLetter,
-} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { TemplateRepository, WithAttachments } from '../../infra';
+import { TemplateRepository } from '../../../infra';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  CreateUpdateEmailTemplate,
+  CreateUpdateNHSAppTemplate,
+  CreateUpdateSMSTemplate,
+  DatabaseTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import {
+  makeAppTemplate,
+  makeEmailTemplate,
+  makeLetterTemplate,
+  makeSmsTemplate,
+} from '@backend-api/__tests__/fixtures/template';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 jest.mock('node:crypto');
@@ -28,6 +32,11 @@ jest.mock('@backend-api/utils/calculate-ttl');
 
 const templateId = 'abc-def-ghi-jkl-123';
 const templatesTableName = 'templates';
+
+const appTemplates = makeAppTemplate();
+const emailTemplates = makeEmailTemplate();
+const smsTemplates = makeSmsTemplate();
+const letterTemplates = makeLetterTemplate();
 
 const setup = () => {
   const ddbDocClient = mockClient(DynamoDBDocumentClient);
@@ -44,80 +53,6 @@ const userId = 'user-id';
 const clientId = 'client-id';
 const ownerWithClientPrefix = `CLIENT#${clientId}`;
 const user = { userId, clientId };
-
-const emailProperties: EmailProperties = {
-  message: 'message',
-  subject: 'pickles',
-  templateType: 'EMAIL',
-};
-
-const smsProperties: SmsProperties = {
-  message: 'message',
-  templateType: 'SMS',
-};
-
-const nhsAppProperties: NhsAppProperties = {
-  message: 'message',
-  templateType: 'NHS_APP',
-};
-
-const letterProperties: WithAttachments<UploadLetterProperties> = {
-  templateType: 'LETTER',
-  letterType: 'x0',
-  language: 'en',
-  files: {
-    pdfTemplate: {
-      fileName: 'template.pdf',
-      currentVersion: 'a',
-      virusScanStatus: 'PENDING',
-    },
-    testDataCsv: {
-      fileName: 'test.csv',
-      currentVersion: 'a',
-      virusScanStatus: 'PENDING',
-    },
-  },
-  campaignId: 'campaign-id',
-};
-
-const createTemplateProperties = { name: 'name' };
-
-const updateTemplateProperties = {
-  ...createTemplateProperties,
-  templateStatus: 'NOT_YET_SUBMITTED' as const,
-};
-
-const databaseTemplateProperties = {
-  ...updateTemplateProperties,
-  id: 'abc-def-ghi-jkl-123',
-  owner: `CLIENT#${clientId}`,
-  version: 1,
-  createdAt: '2024-12-27T00:00:00.000Z',
-  updatedAt: '2024-12-27T00:00:00.000Z',
-  updatedBy: userId,
-  clientId,
-  createdBy: userId,
-};
-
-const emailTemplate: DatabaseTemplate = {
-  ...emailProperties,
-  ...databaseTemplateProperties,
-};
-
-const smsTemplate: DatabaseTemplate = {
-  ...smsProperties,
-  ...databaseTemplateProperties,
-};
-
-const nhsAppTemplate: DatabaseTemplate = {
-  ...nhsAppProperties,
-  ...databaseTemplateProperties,
-};
-
-const letterTemplate: DatabaseTemplate = {
-  ...letterProperties,
-  ...databaseTemplateProperties,
-};
 
 describe('templateRepository', () => {
   beforeAll(() => {
@@ -218,63 +153,11 @@ describe('templateRepository', () => {
           TableName: templatesTableName,
           Key: { id: templateId, owner: ownerWithClientPrefix },
         })
-        .resolves({ Item: emailTemplate });
+        .resolves({ Item: emailTemplates.databaseTemplate });
 
       const response = await templateRepository.get(templateId, clientId);
 
-      expect(response).toEqual({ data: emailTemplate });
-    });
-  });
-
-  describe('list', () => {
-    test('should return an empty array when no items', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient.on(QueryCommand).resolves({ Items: undefined });
-
-      const response = await templateRepository.list(clientId);
-
-      expect(response).toEqual({ data: [] });
-    });
-
-    test('should error when unexpected error occurs', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(QueryCommand)
-        .rejects(new Error('InternalServerError'));
-      const response = await templateRepository.list(clientId);
-
-      expect(response).toEqual({
-        error: {
-          errorMeta: {
-            code: 500,
-            description: 'Failed to list templates',
-          },
-          actualError: new Error('InternalServerError'),
-        },
-      });
-    });
-
-    test('should return templates', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient
-        .on(QueryCommand, {
-          TableName: templatesTableName,
-          KeyConditionExpression: '#owner = :owner',
-          ExpressionAttributeNames: { '#owner': 'owner' },
-          ExpressionAttributeValues: { ':owner': ownerWithClientPrefix },
-        })
-        .resolves({
-          Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
-        });
-
-      const response = await templateRepository.list(clientId);
-
-      expect(response).toEqual({
-        data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
-      });
+      expect(response).toEqual({ data: emailTemplates.databaseTemplate });
     });
   });
 
@@ -307,43 +190,32 @@ describe('templateRepository', () => {
       });
     });
 
-    test.each([
-      emailProperties,
-      smsProperties,
-      nhsAppProperties,
-      letterProperties,
-    ])(
+    test.each([emailTemplates, smsTemplates, appTemplates, letterTemplates])(
       'should create template of type $templateType',
-      async (channelProperties) => {
+      async ({ createUpdateTemplate, databaseTemplate }) => {
         const { templateRepository, mocks } = setup();
-
-        const template = {
-          ...channelProperties,
-          ...databaseTemplateProperties,
-          lockNumber: 0,
-        };
 
         mocks.ddbDocClient
           .on(PutCommand, {
             TableName: templatesTableName,
-            Item: template,
+            Item: databaseTemplate,
           })
           .resolves({});
 
         const response = await templateRepository.create(
-          { ...channelProperties, ...createTemplateProperties },
+          createUpdateTemplate,
           user,
           'NOT_YET_SUBMITTED',
           'campaign-id'
         );
 
         expect(response).toEqual({
-          data: template,
+          data: databaseTemplate,
         });
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(PutCommand, {
           ConditionExpression: 'attribute_not_exists(id)',
-          Item: template,
+          Item: databaseTemplate,
           TableName: templatesTableName,
         });
       }
@@ -354,15 +226,13 @@ describe('templateRepository', () => {
     test('should correctly update email template and return updated value', async () => {
       const { templateRepository, mocks } = setup();
 
-      const requestedUpdate: ValidatedCreateUpdateTemplateNonLetter = {
-        ...emailProperties,
-        ...updateTemplateProperties,
+      const requestedUpdate: CreateUpdateEmailTemplate = {
+        ...emailTemplates.createUpdateTemplate,
         name: 'updated-name',
       };
 
       const updated: DatabaseTemplate = {
-        ...emailProperties,
-        ...databaseTemplateProperties,
+        ...emailTemplates.databaseTemplate,
         ...requestedUpdate,
         lockNumber: 2,
       };
@@ -427,15 +297,13 @@ describe('templateRepository', () => {
     test('should correctly update sms template and return updated value', async () => {
       const { templateRepository, mocks } = setup();
 
-      const requestedUpdate: ValidatedCreateUpdateTemplateNonLetter = {
-        ...smsProperties,
-        ...updateTemplateProperties,
+      const requestedUpdate: CreateUpdateSMSTemplate = {
+        ...smsTemplates.createUpdateTemplate,
         name: 'updated-name',
       };
 
       const updated: DatabaseTemplate = {
-        ...smsProperties,
-        ...databaseTemplateProperties,
+        ...smsTemplates.databaseTemplate,
         ...requestedUpdate,
         lockNumber: 2,
       };
@@ -498,15 +366,13 @@ describe('templateRepository', () => {
     test('should correctly update nhsapp template and return updated value', async () => {
       const { templateRepository, mocks } = setup();
 
-      const requestedUpdate: ValidatedCreateUpdateTemplateNonLetter = {
-        ...nhsAppProperties,
-        ...updateTemplateProperties,
+      const requestedUpdate: CreateUpdateNHSAppTemplate = {
+        ...appTemplates.createUpdateTemplate,
         name: 'updated-name',
       };
 
       const updated: DatabaseTemplate = {
-        ...nhsAppProperties,
-        ...databaseTemplateProperties,
+        ...appTemplates.databaseTemplate,
         ...requestedUpdate,
         lockNumber: 2,
       };

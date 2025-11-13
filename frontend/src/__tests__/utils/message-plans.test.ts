@@ -251,17 +251,13 @@ describe('Message plans actions', () => {
       const completedCount = await countRoutingConfigs('COMPLETED');
 
       expect(draftCount).toEqual(1);
-      expect(routingConfigApiMock.count).toHaveBeenNthCalledWith(
-        1,
-        'token',
-        'DRAFT'
-      );
+      expect(routingConfigApiMock.count).toHaveBeenNthCalledWith(1, 'token', {
+        status: 'DRAFT',
+      });
       expect(completedCount).toEqual(5);
-      expect(routingConfigApiMock.count).toHaveBeenNthCalledWith(
-        2,
-        'token',
-        'COMPLETED'
-      );
+      expect(routingConfigApiMock.count).toHaveBeenNthCalledWith(2, 'token', {
+        status: 'COMPLETED',
+      });
     });
   });
 

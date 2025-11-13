@@ -2,10 +2,8 @@ import {
   $UploadLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
-  isCreateUpdateTemplateValid,
-  isTemplateDtoValid,
 } from '../../schemas';
-import type { CreateUpdateTemplate, TemplateDto } from '../../types/generated';
+import type { CreateUpdateTemplate } from '../../types/generated';
 
 describe('Template schemas', () => {
   test.each([
@@ -249,57 +247,6 @@ describe('Template schemas', () => {
       const result = $CreateUpdateTemplate.safeParse(template);
 
       expect(result.data).toEqual(template);
-    });
-  });
-
-  describe('isCreateUpdateTemplateValid', () => {
-    const template: CreateUpdateTemplate = {
-      name: 'Test Template',
-      message: 'This is a test template',
-      templateType: 'NHS_APP',
-    };
-
-    test('Should return template on pass', async () => {
-      const result = isCreateUpdateTemplateValid(template);
-
-      expect(result).toEqual(template);
-    });
-
-    test('Should return undefined on fail', async () => {
-      const result = isCreateUpdateTemplateValid({
-        ...template,
-        name: undefined,
-      });
-
-      expect(result).toEqual(undefined);
-    });
-  });
-
-  describe('isTemplateDtoValid', () => {
-    const template: TemplateDto = {
-      name: 'Test Template',
-      message: 'This is a test template',
-      templateType: 'NHS_APP',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      id: 'id',
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
-      lockNumber: 1,
-    };
-
-    test('Should return template on pass', async () => {
-      const result = isTemplateDtoValid(template);
-
-      expect(result).toEqual(template);
-    });
-
-    test('Should return undefined on fail', async () => {
-      const result = isTemplateDtoValid({
-        ...template,
-        name: undefined,
-      });
-
-      expect(result).toEqual(undefined);
     });
   });
 });

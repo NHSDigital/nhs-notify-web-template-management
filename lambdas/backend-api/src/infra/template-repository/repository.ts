@@ -5,7 +5,6 @@ import {
   GetCommand,
   PutCommand,
   QueryCommand,
-  QueryCommandInput,
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
@@ -14,10 +13,9 @@ import {
   ErrorCase,
   LetterFiles,
   TemplateStatus,
-  ValidatedCreateUpdateTemplate,
   VirusScanStatus,
   ProofFileDetails,
-  ValidatedCreateUpdateTemplateNonLetter,
+  CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
@@ -28,7 +26,8 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
-import { ApplicationResult, failure, success } from '../utils';
+import { ApplicationResult, failure, success } from '../../utils';
+import { TemplateQuery } from './query';
 
 export type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -71,7 +70,7 @@ export class TemplateRepository {
   }
 
   async create(
-    template: WithAttachments<ValidatedCreateUpdateTemplate>,
+    template: WithAttachments<CreateUpdateTemplate>,
     user: User,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
@@ -111,7 +110,7 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: ValidatedCreateUpdateTemplateNonLetter,
+    template: Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
     user: User,
     expectedStatus: TemplateStatus,
     lockNumber: number
@@ -282,37 +281,12 @@ export class TemplateRepository {
     }
   }
 
-  async list(clientId: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
-    try {
-      const input: QueryCommandInput = {
-        TableName: this.templatesTableName,
-        KeyConditionExpression: '#owner = :owner',
-        ExpressionAttributeNames: {
-          '#owner': 'owner',
-          '#status': 'templateStatus',
-        },
-        ExpressionAttributeValues: {
-          ':owner': this.clientOwnerKey(clientId),
-          ':deletedStatus': 'DELETED',
-        },
-        FilterExpression: '#status <> :deletedStatus',
-      };
-
-      const items: DatabaseTemplate[] = [];
-
-      do {
-        // eslint-disable-next-line no-await-in-loop
-        const { Items = [], LastEvaluatedKey } = await this.client.send(
-          new QueryCommand(input)
-        );
-
-        input.ExclusiveStartKey = LastEvaluatedKey;
-        items.push(...(Items as DatabaseTemplate[]));
-      } while (input.ExclusiveStartKey);
-      return success(items);
-    } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
-    }
+  query(clientId: string): TemplateQuery {
+    return new TemplateQuery(
+      this.client,
+      this.templatesTableName,
+      this.clientOwnerKey(clientId)
+    );
   }
 
   async setLetterValidationResult(
@@ -727,7 +701,7 @@ export class TemplateRepository {
 
   private _handleUpdateError(
     error: unknown,
-    template: ValidatedCreateUpdateTemplateNonLetter,
+    template: Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
     lockNumber: number
   ) {
     if (error instanceof ConditionalCheckFailedException) {

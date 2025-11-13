@@ -6,14 +6,15 @@ import {
   TemplateDto,
   CreateUpdateTemplate,
   ErrorCase,
-  isTemplateDtoValid,
   LetterFiles,
   TemplateStatus,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
+  $TemplateDto,
+  $ListTemplateFilters,
+  ListTemplateFilters,
 } from 'nhs-notify-backend-client';
-import { TemplateRepository } from '../infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $UploadLetterTemplate,
@@ -27,6 +28,7 @@ import { z } from 'zod/v4';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
+import { TemplateRepository } from '../infra';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -415,22 +417,33 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
-    const listResult = await this.templateRepository.list(user.clientId);
+  async listTemplates(
+    user: User,
+    filters?: unknown
+  ): Promise<Result<TemplateDto[]>> {
+    let parsedFilters: ListTemplateFilters = {};
 
-    if (listResult.error) {
-      this.logger
-        .child({ ...listResult.error.errorMeta, user })
-        .error('Failed to list templates', listResult.error.actualError);
+    if (filters) {
+      const validation = await validate($ListTemplateFilters, filters);
 
-      return listResult;
+      if (validation.error) {
+        return validation;
+      }
+
+      parsedFilters = validation.data;
     }
 
-    const templateDTOs = listResult.data
-      .map((template) => this.mapDatabaseObjectToDTO(template))
-      .flatMap((t) => t ?? []);
+    const { templateStatus, templateType, language, letterType } =
+      parsedFilters;
+    const query = this.templateRepository
+      .query(user.clientId)
+      .excludeTemplateStatus(['DELETED'])
+      .templateStatus(templateStatus ? [templateStatus] : [])
+      .templateType(templateType ? [templateType] : [])
+      .language(language ? [language] : [])
+      .letterType(letterType ? [letterType] : []);
 
-    return success(templateDTOs);
+    return query.list();
   }
 
   async requestProof(
@@ -627,6 +640,10 @@ export class TemplateClient {
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
   ): TemplateDto | undefined {
-    return isTemplateDtoValid(databaseTemplate);
+    const parseResult = $TemplateDto.safeParse(databaseTemplate);
+    if (!parseResult.success) {
+      this.logger.child(databaseTemplate).error('Failed to parse template');
+    }
+    return parseResult.data;
   }
 }

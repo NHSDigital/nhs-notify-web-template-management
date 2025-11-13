@@ -2,11 +2,10 @@
 
 import { getSessionServer } from '@utils/amplify-utils';
 import {
+  $TemplateDto,
   CreateUpdateTemplate,
-  isTemplateDtoValid,
   RoutingConfig,
   TemplateDto,
-  ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
@@ -191,13 +190,17 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     return [];
   }
 
-  const sortedData = data
-    .map((template) => isTemplateDtoValid(template))
-    .filter(
-      (template): template is ValidatedTemplateDto => template !== undefined
-    );
+  const valid = data.filter((d) => {
+    const { error: validationError, success } = $TemplateDto.safeParse(d);
 
-  return sortAscByUpdatedAt(sortedData);
+    if (!success) {
+      logger.error('Listed invalid template', validationError);
+    }
+
+    return success;
+  });
+
+  return sortAscByUpdatedAt(valid);
 }
 
 export async function createRoutingConfig(

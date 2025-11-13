@@ -13,6 +13,10 @@ import {
   TemplateDto,
   LetterType,
   Language,
+  BaseCreatedTemplate,
+  TemplateStatus,
+  TemplateStatusActive,
+  TemplateType,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -27,17 +31,6 @@ import {
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
 } from './union-lists';
-
-export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
-  (EmailProperties | NhsAppProperties | SmsProperties | UploadLetterProperties);
-
-export type ValidatedCreateUpdateTemplateNonLetter = Exclude<
-  ValidatedCreateUpdateTemplate,
-  { templateType: 'LETTER' }
->;
-
-export type ValidatedTemplateDto = TemplateDto &
-  (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
 
 export const $LetterType = schemaFor<LetterType>()(z.enum(LETTER_TYPE_LIST));
 
@@ -96,13 +89,15 @@ export const $BaseLetterTemplateProperties = z.object({
 });
 
 export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
-  $BaseLetterTemplateProperties.extend({
+  z.object({
+    ...$BaseLetterTemplateProperties.shape,
     campaignId: z.string(),
   })
 );
 
 export const $LetterProperties = schemaFor<LetterProperties>()(
-  $BaseLetterTemplateProperties.extend({
+  z.object({
+    ...$BaseLetterTemplateProperties.shape,
     files: $LetterFiles,
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
@@ -117,25 +112,21 @@ export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
 );
 
 export const $CreateUpdateNonLetter = schemaFor<
-  ValidatedCreateUpdateTemplateNonLetter,
   Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>
 >()(
   z.discriminatedUnion('templateType', [
-    $BaseTemplateSchema.merge($NhsAppProperties),
-    $BaseTemplateSchema.merge($EmailProperties),
-    $BaseTemplateSchema.merge($SmsProperties),
+    $BaseTemplateSchema.extend($NhsAppProperties.shape),
+    $BaseTemplateSchema.extend($EmailProperties.shape),
+    $BaseTemplateSchema.extend($SmsProperties.shape),
   ])
 );
 
-export const $CreateUpdateTemplate = schemaFor<
-  ValidatedCreateUpdateTemplate,
-  CreateUpdateTemplate
->()(
+export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   z.discriminatedUnion('templateType', [
-    $BaseTemplateSchema.merge($NhsAppProperties),
-    $BaseTemplateSchema.merge($EmailProperties),
-    $BaseTemplateSchema.merge($SmsProperties),
-    $BaseTemplateSchema.merge($UploadLetterProperties),
+    $BaseTemplateSchema.extend($NhsAppProperties.shape),
+    $BaseTemplateSchema.extend($EmailProperties.shape),
+    $BaseTemplateSchema.extend($SmsProperties.shape),
+    $BaseTemplateSchema.extend($UploadLetterProperties.shape),
   ])
 );
 
@@ -146,35 +137,58 @@ export const $LockNumber = z.coerce
   .transform(Number)
   .pipe(z.number().int().min(0));
 
-const $TemplateDtoFields = z
-  .object({
+const $TemplateStatus = schemaFor<TemplateStatus>()(
+  z.enum(TEMPLATE_STATUS_LIST)
+);
+
+const $TemplateStatusActive = schemaFor<TemplateStatusActive>()(
+  $TemplateStatus.exclude(['DELETED'])
+);
+
+const $TemplateType = schemaFor<TemplateType>()(z.enum(TEMPLATE_TYPE_LIST));
+
+const $BaseTemplateDto = schemaFor<
+  BaseCreatedTemplate,
+  Omit<BaseCreatedTemplate, 'lockNumber'>
+>()(
+  z.object({
+    ...$BaseTemplateSchema.shape,
     campaignId: z.string().optional(),
     clientId: z.string().optional(),
     createdAt: z.string(),
     lockNumber: $LockNumber.default(0),
     id: z.string().trim().min(1),
-    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+    templateStatus: $TemplateStatus,
     updatedAt: z.string(),
+    createdBy: z.string().optional(),
+    updatedBy: z.string().optional(),
   })
-  .merge($BaseTemplateSchema);
+);
 
-export const $TemplateDtoSchema = schemaFor<
+export const $TemplateDto = schemaFor<
   TemplateDto,
-  Omit<ValidatedTemplateDto, 'lockNumber'>
+  Omit<TemplateDto, 'lockNumber'>
 >()(
   z.discriminatedUnion('templateType', [
-    $TemplateDtoFields.merge($NhsAppProperties),
-    $TemplateDtoFields.merge($EmailProperties),
-    $TemplateDtoFields.merge($SmsProperties),
-    $TemplateDtoFields.merge($LetterProperties),
+    $BaseTemplateDto.extend($NhsAppProperties.shape),
+    $BaseTemplateDto.extend($EmailProperties.shape),
+    $BaseTemplateDto.extend($SmsProperties.shape),
+    $BaseTemplateDto.extend($LetterProperties.shape),
   ])
 );
 
-export const isCreateUpdateTemplateValid = (
-  input: unknown
-): ValidatedCreateUpdateTemplate | undefined =>
-  $CreateUpdateTemplate.safeParse(input).data;
+export type ListTemplateFilters = {
+  templateStatus?: TemplateStatus;
+  templateType?: TemplateType;
+  language?: Language;
+  letterType?: LetterType;
+};
 
-export const isTemplateDtoValid = (
-  input: unknown
-): ValidatedTemplateDto | undefined => $TemplateDtoSchema.safeParse(input).data;
+export const $ListTemplateFilters = schemaFor<ListTemplateFilters>()(
+  z.object({
+    templateStatus: $TemplateStatusActive.optional(),
+    templateType: $TemplateType.optional(),
+    language: $Language.optional(),
+    letterType: $LetterType.optional(),
+  })
+);

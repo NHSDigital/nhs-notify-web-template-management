@@ -18,7 +18,7 @@ import {
   createRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { randomUUID } from 'node:crypto';
@@ -537,6 +537,39 @@ describe('form-actions', () => {
     }
 
     expect(actualOrder).toEqual(expectedOrder);
+  });
+
+  test('getTemplates - invalid templates are not listed', async () => {
+    const validTemplate: TemplateDto = {
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
+      name: 'Template',
+      message: 'Message',
+      createdAt: '2020-01-01T00:00:00.000Z',
+      id: '02',
+      updatedAt: '2021-01-01T00:00:00.000Z',
+      lockNumber: 1,
+    };
+
+    mockedTemplateClient.listTemplates.mockResolvedValueOnce({
+      data: [
+        {
+          templateType: 'SMS',
+          templateStatus: undefined as unknown as TemplateStatus,
+          name: 'Template',
+          message: 'Message',
+          createdAt: '2020-01-01T00:00:00.000Z',
+          id: '01',
+          updatedAt: '2021-01-01T00:00:00.000Z',
+          lockNumber: 1,
+        },
+        validTemplate,
+      ],
+    });
+
+    const response = await getTemplates();
+
+    expect(response).toEqual([validTemplate]);
   });
 
   describe('setTemplateToSubmitted', () => {

@@ -10,12 +10,16 @@ import type {
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
 import { LetterUploadRepository } from '../../infra/letter-upload-repository';
-import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  DatabaseTemplate,
+  TemplateFilter,
+} from 'nhs-notify-web-template-management-utils';
 import { ProofingQueue } from '../../infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+import { TemplateQuery } from '../../infra/template-repository/query';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
@@ -50,6 +54,14 @@ const setup = () => {
 
   isRightToLeftMock.mockReturnValueOnce(false);
 
+  const queryMock = mock<TemplateQuery>({
+    templateStatus: jest.fn().mockReturnThis(),
+    excludeTemplateStatus: jest.fn().mockReturnThis(),
+    templateType: jest.fn().mockReturnThis(),
+    language: jest.fn().mockReturnThis(),
+    letterType: jest.fn().mockReturnThis(),
+  });
+
   return {
     templateClient,
     mocks: {
@@ -59,6 +71,7 @@ const setup = () => {
       logger,
       clientConfigRepository,
       isRightToLeftMock,
+      queryMock,
     },
     logMessages,
   };
@@ -1570,9 +1583,13 @@ describe('templateClient', () => {
 
   describe('listTemplates', () => {
     test('listTemplates should return a failure result, when fetching from the database unexpectedly fails', async () => {
-      const { templateClient, mocks } = setup();
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
+      templateRepository.query.mockReturnValueOnce(queryMock);
+      queryMock.list.mockResolvedValueOnce({
         error: {
           errorMeta: {
             code: 500,
@@ -1583,7 +1600,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
 
       expect(result).toEqual({
         error: {
@@ -1595,8 +1612,11 @@ describe('templateClient', () => {
       });
     });
 
-    test('should filter out invalid templates', async () => {
-      const { templateClient, mocks } = setup();
+    test('should return templates', async () => {
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
 
       const template: TemplateDto = {
         id: templateId,
@@ -1609,36 +1629,62 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
         lockNumber: 1,
       };
-      const template2: TemplateDto = {
-        id: undefined as unknown as string,
-        templateType: 'EMAIL',
-        name: undefined as unknown as string,
-        message: 'message',
-        subject: 'subject',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateStatus: 'NOT_YET_SUBMITTED',
-        lockNumber: 1,
-      };
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [
-          { ...template, owner: user.userId, version: 1 },
-          { ...template2, owner: user.userId, version: 1 },
-        ],
+      templateRepository.query.mockReturnValueOnce(queryMock);
+
+      queryMock.list.mockResolvedValueOnce({
+        data: [template],
       });
 
-      const result = await templateClient.listTemplates(user);
+      const result = await templateClient.listTemplates(user, null);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith(['DELETED']);
+      expect(queryMock.templateStatus).toHaveBeenCalledWith([]);
+      expect(queryMock.templateType).toHaveBeenCalledWith([]);
+      expect(queryMock.language).toHaveBeenCalledWith([]);
+      expect(queryMock.letterType).toHaveBeenCalledWith([]);
 
       expect(result).toEqual({
         data: [template],
       });
     });
 
-    test('should return templates', async () => {
+    it('validates status filter parameter', async () => {
       const { templateClient, mocks } = setup();
+
+      const result = await templateClient.listTemplates(user, {
+        templateType: 'INVALID',
+      });
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              templateType:
+                'Invalid option: expected one of "NHS_APP"|"EMAIL"|"SMS"|"LETTER"',
+            },
+          },
+        }),
+      });
+
+      expect(mocks.templateRepository.query).not.toHaveBeenCalled();
+    });
+
+    test('uses filters', async () => {
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
+
+      const filter: TemplateFilter = {
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+        language: 'en',
+        letterType: 'x0',
+      };
 
       const template: TemplateDto = {
         id: templateId,
@@ -1652,13 +1698,20 @@ describe('templateClient', () => {
         lockNumber: 1,
       };
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [{ ...template, owner: user.userId, version: 1 }],
+      templateRepository.query.mockReturnValueOnce(queryMock);
+
+      queryMock.list.mockResolvedValueOnce({
+        data: [template],
       });
 
-      const result = await templateClient.listTemplates(user);
+      const result = await templateClient.listTemplates(user, filter);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith(['DELETED']);
+      expect(queryMock.templateStatus).toHaveBeenCalledWith(['SUBMITTED']);
+      expect(queryMock.templateType).toHaveBeenCalledWith(['NHS_APP']);
+      expect(queryMock.language).toHaveBeenCalledWith(['en']);
+      expect(queryMock.letterType).toHaveBeenCalledWith(['x0']);
 
       expect(result).toEqual({
         data: [template],

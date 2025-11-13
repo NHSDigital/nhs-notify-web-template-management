@@ -53,7 +53,7 @@ export async function countRoutingConfigs(
 
   const { data, error } = await routingConfigurationApiClient.count(
     accessToken,
-    status
+    { status }
   );
 
   if (error) {
