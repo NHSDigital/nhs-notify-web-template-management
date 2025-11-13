@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            email template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                email-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Email
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  subject
+                </div>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-1"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-1"
+                  id="preview-content-message"
+                >
+                  <p>
+                    message
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+          >
+            Go back
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

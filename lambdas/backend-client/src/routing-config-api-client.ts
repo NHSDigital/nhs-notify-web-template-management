@@ -6,7 +6,6 @@ import type {
   GetV1RoutingConfigurationByRoutingConfigIdData,
   RoutingConfig,
   RoutingConfigSuccess,
-  RoutingConfigStatusActive,
   RoutingConfigSuccessList,
   PostV1RoutingConfigurationData,
   PutV1RoutingConfigurationByRoutingConfigIdData,
@@ -17,6 +16,7 @@ import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';
 import { z } from 'zod';
+import { RoutingConfigFilter } from './types/filters';
 
 const uuidSchema = z.uuidv4();
 
@@ -52,7 +52,7 @@ export const routingConfigurationApiClient = {
 
   async count(
     token: string,
-    status: RoutingConfigStatusActive
+    filters?: RoutingConfigFilter
   ): Promise<Result<{ count: number }>> {
     const url =
       '/v1/routing-configurations/count' satisfies GetV1RoutingConfigurationsCountData['url'];
@@ -60,7 +60,7 @@ export const routingConfigurationApiClient = {
     const { data, error } = await catchAxiosError(
       httpClient.get<CountSuccess>(url, {
         headers: { Authorization: token },
-        params: { status },
+        params: filters,
       })
     );
 
@@ -105,13 +105,17 @@ export const routingConfigurationApiClient = {
     return { ...data };
   },
 
-  async list(token: string): Promise<Result<RoutingConfig[]>> {
+  async list(
+    token: string,
+    filters?: RoutingConfigFilter
+  ): Promise<Result<RoutingConfig[]>> {
     const url =
       '/v1/routing-configurations' satisfies GetV1RoutingConfigurationsData['url'];
 
     const { data, error } = await catchAxiosError(
       httpClient.get<RoutingConfigSuccessList>(url, {
         headers: { Authorization: token },
+        params: filters,
       })
     );
 

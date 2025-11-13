@@ -11,6 +11,14 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
 
+export type PreviewTemplateComponent<T extends TemplateDto> = ({
+  template,
+  hideStatus,
+}: {
+  template: T;
+  hideStatus?: boolean;
+}) => JSX.Element;
+
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
   id: string;
@@ -60,10 +68,12 @@ export function StandardDetailRows({
   template,
   templateTypeText,
   campaignId,
+  hideStatus,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
   campaignId?: string;
+  hideStatus?: boolean;
 }>): JSX.Element {
   return (
     <>
@@ -81,29 +91,31 @@ export function StandardDetailRows({
         <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
       </SummaryList.Row>
-      <SummaryList.Row>
-        <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
-        <SummaryList.Value>
-          <Tag
-            data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
-            color={statusToColourMapping(template)}
-          >
-            {statusToDisplayMapping(template)}
-          </Tag>
-          {previewTemplateStatusFootnote[template.templateStatus] && (
-            <small
-              className={classNames(
-                styles.preview__statusnote,
-                'nhsuk-body-s',
-                'nhsuk-u-margin-top-2',
-                'nhsuk-u-secondary-text-color'
-              )}
+      {!hideStatus && (
+        <SummaryList.Row>
+          <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
+          <SummaryList.Value>
+            <Tag
+              data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
+              color={statusToColourMapping(template)}
             >
-              {previewTemplateStatusFootnote[template.templateStatus]}
-            </small>
-          )}
-        </SummaryList.Value>
-      </SummaryList.Row>
+              {statusToDisplayMapping(template)}
+            </Tag>
+            {previewTemplateStatusFootnote[template.templateStatus] && (
+              <small
+                className={classNames(
+                  styles.preview__statusnote,
+                  'nhsuk-body-s',
+                  'nhsuk-u-margin-top-2',
+                  'nhsuk-u-secondary-text-color'
+                )}
+              >
+                {previewTemplateStatusFootnote[template.templateStatus]}
+              </small>
+            )}
+          </SummaryList.Value>
+        </SummaryList.Row>
+      )}
     </>
   );
 }

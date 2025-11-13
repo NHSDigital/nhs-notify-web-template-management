@@ -1,3 +1,5 @@
+'use client';
+
 import {
   type EmailTemplate,
   templateTypeDisplayMappings,
@@ -10,16 +12,18 @@ import {
 } from './common';
 import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
+import { renderEmailMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsEmail({
   template,
-  subject,
-  message,
+  hideStatus,
 }: {
   template: EmailTemplate;
-  subject: string;
-  message: string;
+  hideStatus?: boolean;
 }) {
+  const subject = template.subject;
+  const message = renderEmailMarkdown(template.message);
+
   return (
     <>
       <DetailsHeader templateName={template.name} />
@@ -32,6 +36,7 @@ export default function PreviewTemplateDetailsEmail({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
+            hideStatus={hideStatus}
           />
         </DetailSection>
         <DetailSection>

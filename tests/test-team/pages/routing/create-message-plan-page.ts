@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-plans/create-message-plan';
+  static readonly pageUrlSegments = ['message-plans/create-message-plan'];
 
   readonly submitButton: Locator;
 

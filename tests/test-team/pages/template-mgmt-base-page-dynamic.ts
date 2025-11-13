@@ -8,25 +8,33 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
     super(page);
   }
 
-  async loadPage(idParameter: string) {
-    const { appUrlSegment, pageUrlSegment } = this
+  async loadPage(...idParameters: string[]) {
+    const { appUrlSegment, pageUrlSegments } = this
       .constructor as typeof TemplateMgmtBasePageDynamic;
 
-    if (!pageUrlSegment) {
-      throw new Error('pageUrlSegment is not defined');
+    if (!pageUrlSegments || pageUrlSegments.length === 0) {
+      throw new Error('Invalid pageUrlSegments');
     }
 
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${idParameter}`);
+    if (idParameters.length !== pageUrlSegments.length) {
+      throw new Error('ID parameters and URL segments mismatch');
+    }
+
+    await this.navigateTo(
+      `/${appUrlSegment}/${pageUrlSegments
+        .map((segment, index) => `${segment}/${idParameters[index]}`)
+        .join('/')}`
+    );
   }
 
-  getIdFromUrl(): string | undefined {
-    const { pageUrlSegment } = this
+  getIdFromUrl(segmentIndex: number = 0): string | undefined {
+    const { pageUrlSegments } = this
       .constructor as typeof TemplateMgmtBasePageDynamic;
 
     const match = this.page
       .url()
       // eslint-disable-next-line security/detect-non-literal-regexp
-      .match(new RegExp(`${pageUrlSegment}/([^#/?]+)`));
+      .match(new RegExp(`${pageUrlSegments[segmentIndex]}/([^#/?]+)`));
     const id = match ? match[1] : undefined;
     return id;
   }

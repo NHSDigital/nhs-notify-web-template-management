@@ -94,7 +94,7 @@ test.describe('Routing - Accessibility', () => {
 
   test('Choose template', async ({ page, analyze }) =>
     analyze(new RoutingChooseTemplatesPage(page), {
-      id: validRoutingConfigId,
+      ids: [validRoutingConfigId],
     }));
 
   test('Choose message order - error', async ({ page, analyze }) =>

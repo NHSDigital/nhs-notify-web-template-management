@@ -10,7 +10,6 @@ import {
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
-import { renderSMSMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $FormSchema, previewSmsTemplateAction } from './server-actions';
@@ -36,8 +35,6 @@ export function PreviewSMSTemplate({
 
   const formValidate = validate($FormSchema, setErrorState);
 
-  const templateMessage = initialState.message;
-  const html = renderSMSMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
   return (
@@ -64,10 +61,7 @@ export function PreviewSMSTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
-                <PreviewTemplateDetailsSms
-                  template={initialState}
-                  message={html}
-                />
+                <PreviewTemplateDetailsSms template={initialState} />
               }
               editPath={`/edit-text-message-template/${initialState.id}`}
             />

@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
 
 export class RoutingChooseTemplatesPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'message-plans/choose-templates';
+  static readonly pageUrlSegments = ['message-plans/choose-templates'];
 
   public readonly errorSummary: Locator;
 

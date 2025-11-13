@@ -7,7 +7,7 @@ import {
   $LetterProperties,
   $NhsAppProperties,
   $SmsProperties,
-  $TemplateDtoSchema,
+  $TemplateDto,
   TEMPLATE_STATUS_LIST,
   TemplateDto,
 } from 'nhs-notify-backend-client';
@@ -24,14 +24,14 @@ export const zodValidate = <T extends z.Schema>(
 };
 
 export const $SubmittedTemplate = z.intersection(
-  $TemplateDtoSchema,
+  $TemplateDto,
   z.object({
     templateStatus: z.literal('SUBMITTED'),
   })
 );
 
 export const $NonSubmittedTemplate = z.intersection(
-  $TemplateDtoSchema,
+  $TemplateDto,
   z.object({
     templateStatus: z.enum(TEMPLATE_STATUS_LIST).exclude(['SUBMITTED']),
   })
@@ -41,10 +41,7 @@ export const $CreateNHSAppTemplate = z.intersection(
   $CreateUpdateTemplate,
   $NhsAppProperties
 );
-export const $NHSAppTemplate = z.intersection(
-  $TemplateDtoSchema,
-  $NhsAppProperties
-);
+export const $NHSAppTemplate = z.intersection($TemplateDto, $NhsAppProperties);
 export const $SubmittedNHSAppTemplate = z.intersection(
   $SubmittedTemplate,
   $NHSAppTemplate
@@ -55,10 +52,7 @@ export const $CreateEmailTemplate = z.intersection(
   $EmailProperties
 );
 
-export const $EmailTemplate = z.intersection(
-  $TemplateDtoSchema,
-  $EmailProperties
-);
+export const $EmailTemplate = z.intersection($TemplateDto, $EmailProperties);
 
 export const $SubmittedEmailTemplate = z.intersection(
   $SubmittedTemplate,
@@ -69,7 +63,7 @@ export const $CreateSMSTemplate = z.intersection(
   $CreateUpdateTemplate,
   $SmsProperties
 );
-export const $SMSTemplate = z.intersection($TemplateDtoSchema, $SmsProperties);
+export const $SMSTemplate = z.intersection($TemplateDto, $SmsProperties);
 
 export const $SubmittedSMSTemplate = z.intersection(
   $SubmittedTemplate,
@@ -81,7 +75,7 @@ export const $UploadLetterTemplate = z.intersection(
   $UploadLetterProperties
 );
 export const $LetterTemplate = z.intersection(
-  $TemplateDtoSchema,
+  $TemplateDto,
   $LetterProperties.extend({ files: $LetterFiles })
 );
 export const $SubmittedLetterTemplate = z.intersection(
@@ -111,7 +105,7 @@ export const validateSubmittedNHSAppTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedNHSAppTemplate, template);
 
 export const validateTemplate = (template?: TemplateDto) =>
-  zodValidate($TemplateDtoSchema, template);
+  zodValidate($TemplateDto, template);
 
 export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedLetterTemplate, template);

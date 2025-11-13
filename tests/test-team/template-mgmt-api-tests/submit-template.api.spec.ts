@@ -542,6 +542,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -712,6 +714,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -883,6 +887,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -1056,6 +1062,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: userSharedClient.userId,
         },
       });
     });

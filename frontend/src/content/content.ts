@@ -1001,7 +1001,10 @@ const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
-  backLinkText: backToAllTemplates,
+  backLink: {
+    href: '/message-templates',
+    text: backToAllTemplates,
+  },
 };
 
 const deleteTemplate = {
@@ -1138,6 +1141,59 @@ const createEditMessagePlan = {
   messagePlanFallbackConditions,
 };
 
+const chooseNhsAppTemplate = {
+  pageTitle: generatePageTitle('Choose an NHS App template'),
+  pageHeading: 'Choose an NHS App template',
+};
+
+const chooseEmailTemplate = {
+  pageTitle: generatePageTitle('Choose an email template'),
+  pageHeading: 'Choose an email template',
+};
+
+const chooseTextMessageTemplate = {
+  pageTitle: generatePageTitle('Choose a text message (SMS) template'),
+  pageHeading: 'Choose a text message (SMS) template',
+};
+
+const chooseStandardEnglishLetterTemplate = {
+  pageTitle: generatePageTitle('Choose a letter template'),
+  pageHeading: 'Choose a letter template',
+};
+
+const chooseChannelTemplate = {
+  errorHintText: 'You have not chosen a template',
+  previousSelectionLabel: 'Previously selected template',
+  noTemplatesText: 'You do not have any templates yet.',
+  tableHintText: 'Choose one option',
+  tableContent: {
+    selectHeading: 'Select',
+    nameHeading: 'Name',
+    typeHeading: 'Type',
+    lastEditedHeading: 'Last edited',
+    action: {
+      heading: '',
+      preview: {
+        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}',
+        text: 'Preview',
+      },
+    },
+  },
+  actions: {
+    save: {
+      text: 'Save and continue',
+    },
+    goToTemplates: {
+      text: 'Go to templates',
+      href: '/message-templates',
+    },
+    backLink: {
+      text: 'Go back',
+      href: '/message-plans/choose-templates/{{routingConfigId}}',
+    },
+  },
+};
+
 const messagePlanDraftAndProdInfo: {
   title: string;
   content: ContentBlock[];
@@ -1244,10 +1300,18 @@ const messagePlanForm = {
   submitButton: 'Save and continue',
 };
 
+const previewTemplateFromMessagePlan = {
+  backLink: {
+    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}',
+    text: 'Go back',
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
     channelGuidance,
+    chooseChannelTemplate,
     chooseMessageOrder,
     chooseTemplateType,
     copyTemplate,
@@ -1280,6 +1344,7 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
+    previewTemplateFromMessagePlan,
   },
   pages: {
     createMessagePlan,
@@ -1291,6 +1356,10 @@ const content = {
     messageTemplates,
     chooseTemplatesForMessagePlan,
     messagePlansPage,
+    chooseNhsAppTemplate,
+    chooseEmailTemplate,
+    chooseTextMessageTemplate,
+    chooseStandardEnglishLetterTemplate,
   },
 };
 

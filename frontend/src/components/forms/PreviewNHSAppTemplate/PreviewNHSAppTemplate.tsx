@@ -9,7 +9,6 @@ import {
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { useActionState, useState } from 'react';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -33,8 +32,6 @@ export function PreviewNHSAppTemplate({
 
   const formValidate = validate(schema, setErrorState);
 
-  const { message } = state;
-  const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
   const { sectionHeading, form, backLinkText } =
@@ -64,10 +61,7 @@ export function PreviewNHSAppTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
-                <PreviewTemplateDetailsNhsApp
-                  template={initialState}
-                  message={html}
-                />
+                <PreviewTemplateDetailsNhsApp template={initialState} />
               }
               editPath={`/edit-nhs-app-template/${initialState.id}`}
             />{' '}

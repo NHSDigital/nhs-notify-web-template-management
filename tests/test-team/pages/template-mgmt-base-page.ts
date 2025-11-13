@@ -5,7 +5,7 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly appUrlSegment = 'templates';
 
-  static readonly pageUrlSegment: string;
+  static readonly pageUrlSegments: string[];
 
   queryParameters?: URLSearchParams;
 
@@ -69,10 +69,10 @@ export abstract class TemplateMgmtBasePage {
       .and(page.getByText('Skip to main content'));
   }
 
-  abstract loadPage(idParameter?: string): Promise<void>;
+  abstract loadPage(...idParameters: string[]): Promise<void>;
 
-  async attemptToLoadPageExpectFailure(idParameter?: string) {
-    await this.loadPage(idParameter);
+  async attemptToLoadPageExpectFailure(...idParameters: string[]) {
+    await this.loadPage(...idParameters);
   }
 
   async navigateTo(url: string) {

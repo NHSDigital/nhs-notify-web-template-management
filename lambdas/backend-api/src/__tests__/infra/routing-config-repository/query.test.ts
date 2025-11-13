@@ -127,16 +127,16 @@ describe('RoutingConfigRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#status <> :notStatus0 AND #status <> :notStatus1 AND #status <> :notStatus2)',
+          'NOT(#status IN (:notstatus0, :notstatus1, :notstatus2))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#status': 'status',
         },
         ExpressionAttributeValues: {
           ':owner': clientOwnerKey,
-          ':notStatus0': 'COMPLETED',
-          ':notStatus1': 'DELETED',
-          ':notStatus2': 'DRAFT',
+          ':notstatus0': 'COMPLETED',
+          ':notstatus1': 'DELETED',
+          ':notstatus2': 'DRAFT',
         },
       });
     });
@@ -159,14 +159,14 @@ describe('RoutingConfigRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#status IN (:status0)) AND (#status <> :notStatus0)',
+          '(#status IN (:status0)) AND NOT(#status IN (:notstatus0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#status': 'status',
         },
         ExpressionAttributeValues: {
           ':owner': clientOwnerKey,
-          ':notStatus0': 'DELETED',
+          ':notstatus0': 'DELETED',
           ':status0': 'DRAFT',
         },
       });
@@ -192,14 +192,14 @@ describe('RoutingConfigRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#status IN (:status0)) AND (#status <> :notStatus0)',
+          '(#status IN (:status0)) AND NOT(#status IN (:notstatus0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#status': 'status',
         },
         ExpressionAttributeValues: {
           ':owner': clientOwnerKey,
-          ':notStatus0': 'DELETED',
+          ':notstatus0': 'DELETED',
           ':status0': 'DRAFT',
         },
       });

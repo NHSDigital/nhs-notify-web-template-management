@@ -10,7 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $CopyTemplate, copyTemplateAction } from './server-action';
-import { TemplateType, ValidatedTemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto, TemplateType } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
@@ -18,7 +18,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 
 type CopyTemplate = {
-  template: ValidatedTemplateDto & { templateType: ValidCopyType };
+  template: TemplateDto & { templateType: ValidCopyType };
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {

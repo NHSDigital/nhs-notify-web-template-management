@@ -3,7 +3,7 @@ import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatti
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'create-nhs-app-template';
+  static readonly pageUrlSegments = ['create-nhs-app-template'];
 
   public readonly nameInput: Locator;
 

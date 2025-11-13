@@ -7,6 +7,7 @@ import {
 import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
+import { TemplateFilter } from './types/filters';
 
 export const httpClient = createAxiosClient();
 
@@ -120,10 +121,14 @@ export const templateApiClient = {
     };
   },
 
-  async listTemplates(token: string): Promise<Result<TemplateDto[]>> {
+  async listTemplates(
+    token: string,
+    filters?: TemplateFilter
+  ): Promise<Result<TemplateDto[]>> {
     const response = await catchAxiosError(
       httpClient.get<TemplateSuccessList>('/v1/templates', {
         headers: { Authorization: token },
+        params: filters,
       })
     );
 

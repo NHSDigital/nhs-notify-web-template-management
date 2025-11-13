@@ -10,7 +10,6 @@ import {
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
-import { renderEmailMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $FormSchema, previewEmailTemplateAction } from './server-actions';
@@ -36,9 +35,6 @@ export function PreviewEmailTemplate({
 
   const formValidate = validate($FormSchema, setErrorState);
 
-  const templateSubjectLine = initialState.subject;
-  const templateMessage = initialState.message;
-  const html = renderEmailMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
   return (
@@ -66,11 +62,7 @@ export function PreviewEmailTemplate({
               }}
               editPath={`/edit-email-template/${initialState.id}`}
               previewDetailsComponent={
-                <PreviewTemplateDetailsEmail
-                  template={initialState}
-                  subject={templateSubjectLine}
-                  message={html}
-                />
+                <PreviewTemplateDetailsEmail template={initialState} />
               }
             />
             <p>

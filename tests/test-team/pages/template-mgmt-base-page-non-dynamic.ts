@@ -9,14 +9,14 @@ export abstract class TemplateMgmtBasePageNonDynamic extends TemplateMgmtBasePag
   }
 
   async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = this
+    const { appUrlSegment, pageUrlSegments } = this
       .constructor as typeof TemplateMgmtBasePageNonDynamic;
 
-    if (!pageUrlSegment) {
-      throw new Error('pageUrlSegment is not defined');
+    if (!pageUrlSegments || pageUrlSegments.length !== 1) {
+      throw new Error('Invalid pageUrlSegments');
     }
 
-    let url = `/${appUrlSegment}/${pageUrlSegment}`;
+    let url = `/${appUrlSegment}/${pageUrlSegments[0]}`;
 
     if (this.queryParameters) {
       url += `?${this.queryParameters.toString()}`;

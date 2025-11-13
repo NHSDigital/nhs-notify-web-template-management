@@ -313,6 +313,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -856,6 +858,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -1403,6 +1407,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -2049,6 +2055,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: user1.userId,
+          updatedBy: userSharedClient.userId,
         },
       });
 

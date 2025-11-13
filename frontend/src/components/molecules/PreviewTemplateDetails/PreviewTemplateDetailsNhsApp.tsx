@@ -1,3 +1,5 @@
+'use client';
+
 import {
   NHSAppTemplate,
   templateTypeDisplayMappings,
@@ -10,14 +12,17 @@ import {
 } from './common';
 import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
+import { renderNHSAppMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsNhsApp({
   template,
-  message,
+  hideStatus,
 }: {
   template: NHSAppTemplate;
-  message: string;
+  hideStatus?: boolean;
 }) {
+  const message = renderNHSAppMarkdown(template.message);
+
   return (
     <>
       <DetailsHeader templateName={template.name} />
@@ -30,6 +35,7 @@ export default function PreviewTemplateDetailsNhsApp({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
+            hideStatus={hideStatus}
           />
         </DetailSection>
         <DetailSection>

@@ -146,6 +146,8 @@ test.describe('POST /v1/template', () => {
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: 0,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -355,6 +357,8 @@ test.describe('POST /v1/template', () => {
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: 0,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 
@@ -565,6 +569,8 @@ test.describe('POST /v1/template', () => {
           templateType: template.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: 0,
+          createdBy: user1.userId,
+          updatedBy: user1.userId,
         },
       });
 

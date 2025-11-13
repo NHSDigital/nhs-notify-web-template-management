@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtChoosePage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'choose-a-template-type';
+  static readonly pageUrlSegments = ['choose-a-template-type'];
 
   readonly radioButtons: Locator;
 

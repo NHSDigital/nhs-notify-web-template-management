@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
-  static readonly pageUrlSegment = 'preview-email-template';
+  static readonly pageUrlSegments = ['preview-email-template'];
 
   public readonly editRadioOption: Locator;
 

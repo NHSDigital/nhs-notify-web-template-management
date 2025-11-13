@@ -176,6 +176,14 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
+export const cascadeTemplateTypeToUrlTextMappings = (type: TemplateType) =>
+  ({
+    NHS_APP: 'nhs-app',
+    SMS: 'text-message',
+    EMAIL: 'email',
+    LETTER: 'standard-english-letter',
+  })[type];
+
 const creationAction = (type: TemplateType) =>
   ({
     NHS_APP: 'create',
