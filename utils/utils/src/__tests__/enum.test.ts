@@ -34,6 +34,7 @@ import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
 const mockLetterWithFilesTemplate: TemplateDto = {
   id: '1',
+  lockNumber: 1234,
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'Template 1',
@@ -56,9 +57,9 @@ const mockLetterWithFilesTemplate: TemplateDto = {
     },
   },
 };
-
 const mockLetterTemplate: TemplateDto = {
   id: '1',
+  lockNumber: 1234,
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'Template 1',
@@ -72,6 +73,7 @@ const mockLetterTemplate: TemplateDto = {
 
 const mockNHSAppTemplate: TemplateDto = {
   id: '2',
+  lockNumber: 1234,
   templateType: 'NHS_APP',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'Template 1',
@@ -82,6 +84,7 @@ const mockNHSAppTemplate: TemplateDto = {
 
 const mockSMSTemplate: TemplateDto = {
   id: '3',
+  lockNumber: 1234,
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'Template 1',
@@ -91,6 +94,7 @@ const mockSMSTemplate: TemplateDto = {
 };
 const mockEmailTemplate: TemplateDto = {
   id: '4',
+  lockNumber: 1234,
   templateType: 'EMAIL',
   subject: 'Email Subject',
   templateStatus: 'NOT_YET_SUBMITTED',

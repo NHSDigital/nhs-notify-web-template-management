@@ -88,6 +88,7 @@ exports[`SubmitLetterTemplate component should render with client proofing and r
             name="lockNumber"
             readonly=""
             type="hidden"
+            value="1234"
           />
           <button
             aria-disabled="false"

@@ -45,6 +45,7 @@ describe('SubmitLetterTemplate component', () => {
       <SubmitLetterTemplate
         templateId='template-id'
         templateName='template-name'
+        lockNumber={1234}
       />
     );
 
