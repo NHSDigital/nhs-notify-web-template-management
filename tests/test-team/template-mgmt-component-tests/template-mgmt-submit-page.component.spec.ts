@@ -201,7 +201,7 @@ test.describe('Submit template Page', () => {
       channelName: 'Letter',
       channelIdentifier: 'letter',
       PageModel: TemplateMgmtSubmitLetterPage,
-      expectedHeading: "Approve and submit 'valid-letter-submit-template'",
+      expectedHeading: "Approve 'valid-letter-submit-template'",
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
