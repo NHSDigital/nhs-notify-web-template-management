@@ -233,7 +233,8 @@ export type TemplateStatus =
   | 'VALIDATION_FAILED'
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
-  | 'PROOF_AVAILABLE';
+  | 'PROOF_AVAILABLE'
+  | 'TEMPLATE_PROOF_APPROVED';
 
 export type TemplateSuccess = {
   data: TemplateDto;
