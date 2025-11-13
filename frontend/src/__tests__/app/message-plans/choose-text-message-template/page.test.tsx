@@ -71,7 +71,6 @@ describe('ChooseTextMessageTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getTemplatesMock).toHaveBeenCalledWith({
       templateType: 'SMS',
-      templateStatus: 'SUBMITTED',
     });
 
     expect(await generateMetadata()).toEqual({

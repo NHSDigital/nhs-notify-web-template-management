@@ -40,6 +40,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -211,7 +212,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="letter-template-id-preview-link"
                               href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
                               id="preview-template-link-0"
                             >

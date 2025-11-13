@@ -37,7 +37,6 @@ export default async function ChooseNhsAppTemplate(
 
   const availableTemplateList = await getTemplates({
     templateType: 'NHS_APP',
-    templateStatus: 'SUBMITTED',
   });
 
   return (

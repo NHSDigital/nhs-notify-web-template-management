@@ -99,7 +99,7 @@ export function ChannelTemplates({
                         })}
                         id={`preview-template-link-${index}`}
                         aria-label={`${tableContent.action.preview.text}`}
-                        data-testid='preview-link'
+                        data-testid={`${template.id}-preview-link`}
                       >
                         {tableContent.action.preview.text}
                       </Link>

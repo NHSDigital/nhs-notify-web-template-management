@@ -73,7 +73,6 @@ describe('ChooseNHSAppTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getTemplatesMock).toHaveBeenCalledWith({
       templateType: 'NHS_APP',
-      templateStatus: 'SUBMITTED',
     });
 
     expect(await generateMetadata()).toEqual({

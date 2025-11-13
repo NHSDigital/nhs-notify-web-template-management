@@ -35,7 +35,6 @@ export default async function ChooseEmailTemplate(props: MessagePlanPageProps) {
 
   const availableTemplateList = await getTemplates({
     templateType: 'EMAIL',
-    templateStatus: 'SUBMITTED',
   });
 
   return (

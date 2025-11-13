@@ -234,7 +234,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="app-template-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
@@ -535,7 +535,7 @@ exports[`ChooseChannelTemplate renders correctly when template is unselected 1`]
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="app-template-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
@@ -617,6 +617,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -788,7 +789,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="email-template-id-preview-link"
                               href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
                               id="preview-template-link-0"
                             >
@@ -900,6 +901,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1083,7 +1085,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="app-template-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
@@ -1165,6 +1167,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1336,7 +1339,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="letter-template-id-preview-link"
                               href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
                               id="preview-template-link-0"
                             >
@@ -1418,6 +1421,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1589,7 +1593,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="app-template-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
@@ -1684,7 +1688,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="another-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/another-id"
                               id="preview-template-link-1"
                             >
@@ -1766,6 +1770,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1937,7 +1942,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="app-template-id-preview-link"
                               href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
@@ -2019,6 +2024,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
+            data-testid="previous-selection-summary"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -2190,7 +2196,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                           >
                             <a
                               aria-label="Preview"
-                              data-testid="preview-link"
+                              data-testid="sms-template-id-preview-link"
                               href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
                               id="preview-template-link-0"
                             >

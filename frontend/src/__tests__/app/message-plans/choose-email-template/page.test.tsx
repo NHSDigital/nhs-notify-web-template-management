@@ -70,7 +70,6 @@ describe('ChooseEmailTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getTemplatesMock).toHaveBeenCalledWith({
       templateType: 'EMAIL',
-      templateStatus: 'SUBMITTED',
     });
 
     expect(await generateMetadata()).toEqual({

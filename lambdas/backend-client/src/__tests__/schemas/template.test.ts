@@ -2,6 +2,7 @@ import {
   $UploadLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
+  $TemplateFilter,
 } from '../../schemas';
 import type { CreateUpdateTemplate } from '../../types/generated';
 
@@ -247,6 +248,54 @@ describe('Template schemas', () => {
       const result = $CreateUpdateTemplate.safeParse(template);
 
       expect(result.data).toEqual(template);
+    });
+  });
+
+  describe('$TemplateFilter', () => {
+    test.each(['templateStatus', 'templateType', 'language', 'letterType'])(
+      '$TemplateFilter should fail when unknown $filter field is provided',
+      (filterField) => {
+        const filter = {
+          [filterField]: 'UNKNOWN',
+        };
+
+        const result = $TemplateFilter.safeParse(filter);
+
+        expect(result.error?.flatten()).toEqual(
+          expect.objectContaining({
+            fieldErrors: {
+              [filterField]: [
+                expect.stringContaining('Invalid option: expected one of'),
+              ],
+            },
+          })
+        );
+      }
+    );
+
+    test.each([
+      {
+        templateStatus: 'SUBMITTED',
+      },
+      {
+        templateType: 'LETTER',
+      },
+      {
+        language: 'en',
+      },
+      {
+        letterType: 'x0',
+      },
+      {
+        templateStatus: 'SUBMITTED',
+        templateType: 'LETTER',
+        language: 'en',
+        letterType: 'x0',
+      },
+    ])('should pass template filter validation %p', async (filter) => {
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.data).toEqual(filter);
     });
   });
 });

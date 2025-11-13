@@ -27,6 +27,7 @@ describe('PreviewSubmittedTemplate component', () => {
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsNhsApp}
       />
@@ -47,6 +48,7 @@ describe('PreviewSubmittedTemplate component', () => {
           templateType: 'EMAIL',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsEmail}
       />
@@ -66,6 +68,7 @@ describe('PreviewSubmittedTemplate component', () => {
           templateType: 'SMS',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsSms}
       />
@@ -116,6 +119,7 @@ describe('PreviewSubmittedTemplate component', () => {
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsLetter}
       />
@@ -141,6 +145,7 @@ describe('PreviewSubmittedTemplate component', () => {
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsNhsApp}
       />
@@ -167,6 +172,7 @@ describe('PreviewSubmittedTemplate component', () => {
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
         }}
         previewComponent={PreviewTemplateDetailsNhsApp}
       />
