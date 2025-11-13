@@ -4,7 +4,6 @@
 import PreviewSubmittedSMSTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-text-message-template/[templateId]/page';
-import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -15,6 +14,8 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 
 const { pageTitle } = content.components.previewSMSTemplate;
 
@@ -57,7 +58,10 @@ describe('PreviewSubmittedSMSTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <ViewSMSTemplate initialState={submittedSMSTemplate} />
+      <PreviewSubmittedTemplate
+        initialState={submittedSMSTemplate}
+        previewElement={PreviewTemplateDetailsSms}
+      />
     );
   });
 

@@ -17,7 +17,7 @@ const interpolationPattern = /{{([^|}]+)(?:\|([^|}]+)\|([^}]+))?}}/g;
 
 export function interpolate(
   template: string,
-  variables: Record<string, string | number> = {}
+  variables: Record<string, string | number | null> = {}
 ): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all
   return template.replace(interpolationPattern, (_, key, singular, plural) => {

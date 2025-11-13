@@ -470,7 +470,10 @@ describe('form-actions', () => {
 
     const response = await getTemplates();
 
-    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token');
+    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith(
+      'token',
+      undefined
+    );
 
     expect(response).toEqual([responseData]);
   });

@@ -665,7 +665,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-NHSAPP"
                 >
-                  name
+                  app template name
                 </p>
                 <ul
                   class="channel-template-actions"
@@ -836,7 +836,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-EMAIL"
                 >
-                  name
+                  email template name
                 </p>
                 <ul
                   class="channel-template-actions"
@@ -1007,7 +1007,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-LETTER"
                 >
-                  name
+                  letter template name
                 </p>
                 <ul
                   class="channel-template-actions"

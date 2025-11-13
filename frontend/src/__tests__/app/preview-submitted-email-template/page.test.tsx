@@ -4,7 +4,6 @@
 import PreviewSubmittedEmailTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-email-template/[templateId]/page';
-import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -15,6 +14,8 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -59,7 +60,10 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <ViewEmailTemplate initialState={submittedEmailTemplate} />
+      <PreviewSubmittedTemplate
+        initialState={submittedEmailTemplate}
+        previewElement={PreviewTemplateDetailsEmail}
+      />
     );
   });
 

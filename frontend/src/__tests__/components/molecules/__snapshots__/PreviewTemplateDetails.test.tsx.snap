@@ -120,7 +120,11 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
             data-testid="preview__content-1"
             id="preview-content-message"
           >
-            email content
+            <p>
+              email content
+            </p>
+            
+
           </div>
         </dd>
       </div>
@@ -946,7 +950,11 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
             data-testid="preview__content-0"
             id="preview-content-message"
           >
-            app content
+            <p>
+              app content
+            </p>
+            
+
           </div>
         </dd>
       </div>
@@ -1050,7 +1058,11 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
             data-testid="preview__content-0"
             id="preview-content-message"
           >
-            SMS content
+            <p>
+              SMS content
+            </p>
+            
+
           </div>
         </dd>
       </div>

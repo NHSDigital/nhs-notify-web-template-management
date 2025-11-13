@@ -6,9 +6,10 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import { Metadata } from 'next';
 import content from '@content/content';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -29,7 +30,12 @@ const PreviewSubmittedEmailTemplatePage = async (props: TemplatePageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ViewEmailTemplate initialState={validatedTemplate} />;
+  return (
+    <PreviewSubmittedTemplate
+      initialState={validatedTemplate}
+      previewElement={PreviewTemplateDetailsEmail}
+    />
+  );
 };
 
 export default PreviewSubmittedEmailTemplatePage;

@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <span
+          class="nhsuk-caption-l"
+        >
+          Autumn Campaign Plan
+        </span>
+        <h1
+          class="nhsuk-heading-l"
+        >
+          Choose a text message (SMS) template
+        </h1>
+        <form
+          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <dl
+            class="nhsuk-summary-list"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Previously selected template
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                sms template name
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              checked=""
+                              class="nhsuk-radios__input"
+                              data-testid="sms-template-id-radio"
+                              id="channelTemplate-sms-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="sms-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-sms-template-id"
+                              id="channelTemplate-sms-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          sms template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Text message (SMS)
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <div
+                            class="actionLinksWrapper"
+                          >
+                            <a
+                              aria-label="Preview"
+                              data-testid="preview-link"
+                              href="/preview-submitted-text-message-template/sms-template-id?sourcePage=message-plans%2Fchoose-text-message-template%2Ftestid"
+                              id="preview-template-link-0"
+                            >
+                              Preview
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

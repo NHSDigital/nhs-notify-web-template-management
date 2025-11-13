@@ -8,7 +8,8 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -29,7 +30,12 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ViewLetterTemplate initialState={validatedTemplate} />;
+  return (
+    <PreviewSubmittedTemplate
+      initialState={validatedTemplate}
+      previewElement={PreviewTemplateDetailsLetter}
+    />
+  );
 };
 
 export default PreviewSubmittedLetterTemplatePage;

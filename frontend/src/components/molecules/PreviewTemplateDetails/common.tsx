@@ -60,10 +60,12 @@ export function StandardDetailRows({
   template,
   templateTypeText,
   campaignId,
+  excludeStatus,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
   campaignId?: string;
+  excludeStatus?: boolean;
 }>): JSX.Element {
   return (
     <>
@@ -81,29 +83,31 @@ export function StandardDetailRows({
         <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
       </SummaryList.Row>
-      <SummaryList.Row>
-        <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
-        <SummaryList.Value>
-          <Tag
-            data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
-            color={statusToColourMapping(template)}
-          >
-            {statusToDisplayMapping(template)}
-          </Tag>
-          {previewTemplateStatusFootnote[template.templateStatus] && (
-            <small
-              className={classNames(
-                styles.preview__statusnote,
-                'nhsuk-body-s',
-                'nhsuk-u-margin-top-2',
-                'nhsuk-u-secondary-text-color'
-              )}
+      {!excludeStatus && (
+        <SummaryList.Row>
+          <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
+          <SummaryList.Value>
+            <Tag
+              data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
+              color={statusToColourMapping(template)}
             >
-              {previewTemplateStatusFootnote[template.templateStatus]}
-            </small>
-          )}
-        </SummaryList.Value>
-      </SummaryList.Row>
+              {statusToDisplayMapping(template)}
+            </Tag>
+            {previewTemplateStatusFootnote[template.templateStatus] && (
+              <small
+                className={classNames(
+                  styles.preview__statusnote,
+                  'nhsuk-body-s',
+                  'nhsuk-u-margin-top-2',
+                  'nhsuk-u-secondary-text-color'
+                )}
+              >
+                {previewTemplateStatusFootnote[template.templateStatus]}
+              </small>
+            )}
+          </SummaryList.Value>
+        </SummaryList.Row>
+      )}
     </>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   type SMSTemplate,
   templateTypeDisplayMappings,
@@ -10,14 +12,17 @@ import {
 } from './common';
 import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
+import { renderSMSMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsSms({
   template,
-  message,
+  excludeStatus,
 }: {
   template: SMSTemplate;
-  message: string;
+  excludeStatus?: boolean;
 }) {
+  const message = renderSMSMarkdown(template.message);
+
   return (
     <>
       <DetailsHeader templateName={template.name} />
@@ -30,6 +35,7 @@ export default function PreviewTemplateDetailsSms({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
+            excludeStatus={excludeStatus}
           />
         </DetailSection>
         <DetailSection>

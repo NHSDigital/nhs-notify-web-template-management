@@ -1,4 +1,4 @@
-import { ErrorSummary } from 'nhsuk-react-components';
+import { ErrorSummary, HintText } from 'nhsuk-react-components';
 import { ErrorState } from 'nhs-notify-web-template-management-utils';
 import { FC, HTMLProps, useEffect, useRef } from 'react';
 import content from '@content/content';
@@ -10,10 +10,12 @@ const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
 );
 
 export type NhsNotifyErrorSummaryProps = {
+  hint?: string;
   errorState?: ErrorState;
 };
 
 export const NhsNotifyErrorSummary = ({
+  hint,
   errorState,
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ export const NhsNotifyErrorSummary = ({
       <ErrorSummary.Title data-testid='error-summary'>
         {content.components.errorSummary.heading}
       </ErrorSummary.Title>
+      {hint && <HintText>{hint}</HintText>}
       <ErrorSummary.List>
         {fieldErrors &&
           Object.entries(fieldErrors).map(([id, errors]) => (
