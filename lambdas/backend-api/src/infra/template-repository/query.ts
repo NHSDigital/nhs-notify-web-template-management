@@ -25,30 +25,30 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
   }
 
   /** Include items with any of the given template statuses. */
-  templateStatus(statuses: TemplateStatus[]) {
+  templateStatus(...statuses: TemplateStatus[]) {
     this.includeStatuses.push(...statuses);
     return this;
   }
 
   /** Exclude items with any of the given template statuses. */
-  excludeTemplateStatus(statuses: TemplateStatus[]) {
+  excludeTemplateStatus(...statuses: TemplateStatus[]) {
     this.excludeStatuses.push(...statuses);
     return this;
   }
 
   /** Include items with any of the given template types. */
-  templateType(templateTypes: TemplateType[]) {
+  templateType(...templateTypes: TemplateType[]) {
     this.includeTemplateTypes.push(...templateTypes);
     return this;
   }
 
   /** Include items with any of the given languages. */
-  language(languages: Language[]) {
+  language(...languages: Language[]) {
     this.includeLanguages.push(...languages);
     return this;
   }
 
-  letterType(letterTypes: LetterType[]) {
+  letterType(...letterTypes: LetterType[]) {
     this.includeLetterTypes.push(...letterTypes);
     return this;
   }

@@ -110,8 +110,8 @@ describe('TemplateRepo#query', () => {
 
       await repo
         .query(clientId)
-        .templateStatus(['SUBMITTED', 'DELETED'])
-        .templateStatus(['NOT_YET_SUBMITTED'])
+        .templateStatus('SUBMITTED', 'DELETED')
+        .templateStatus('NOT_YET_SUBMITTED')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -142,8 +142,8 @@ describe('TemplateRepo#query', () => {
 
       await repo
         .query(clientId)
-        .excludeTemplateStatus(['SUBMITTED', 'DELETED'])
-        .excludeTemplateStatus(['NOT_YET_SUBMITTED'])
+        .excludeTemplateStatus('SUBMITTED', 'DELETED')
+        .excludeTemplateStatus('NOT_YET_SUBMITTED')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -174,8 +174,8 @@ describe('TemplateRepo#query', () => {
 
       await repo
         .query(clientId)
-        .templateType(['SMS', 'NHS_APP'])
-        .templateType(['EMAIL'])
+        .templateType('SMS', 'NHS_APP')
+        .templateType('EMAIL')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -204,7 +204,7 @@ describe('TemplateRepo#query', () => {
         Items: [],
       });
 
-      await repo.query(clientId).language(['en', 'fr']).language(['es']).list();
+      await repo.query(clientId).language('en', 'fr').language('es').list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
       expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
@@ -231,11 +231,7 @@ describe('TemplateRepo#query', () => {
         Items: [],
       });
 
-      await repo
-        .query(clientId)
-        .letterType(['x0', 'x1'])
-        .letterType(['q4'])
-        .list();
+      await repo.query(clientId).letterType('x0', 'x1').letterType('q4').list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
       expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
@@ -265,11 +261,11 @@ describe('TemplateRepo#query', () => {
 
       await repo
         .query(clientId)
-        .templateStatus(['SUBMITTED'])
-        .excludeTemplateStatus(['DELETED'])
-        .templateType(['LETTER'])
-        .language(['en'])
-        .letterType(['x0'])
+        .templateStatus('SUBMITTED')
+        .excludeTemplateStatus('DELETED')
+        .templateType('LETTER')
+        .language('en')
+        .letterType('x0')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -305,16 +301,16 @@ describe('TemplateRepo#query', () => {
 
       await repo
         .query(clientId)
-        .templateStatus(['SUBMITTED'])
-        .templateStatus(['SUBMITTED'])
-        .excludeTemplateStatus(['DELETED'])
-        .excludeTemplateStatus(['DELETED'])
-        .templateType(['LETTER'])
-        .templateType(['LETTER'])
-        .language(['en'])
-        .language(['en'])
-        .letterType(['x0'])
-        .letterType(['x0'])
+        .templateStatus('SUBMITTED')
+        .templateStatus('SUBMITTED')
+        .excludeTemplateStatus('DELETED')
+        .excludeTemplateStatus('DELETED')
+        .templateType('LETTER')
+        .templateType('LETTER')
+        .language('en')
+        .language('en')
+        .letterType('x0')
+        .letterType('x0')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);

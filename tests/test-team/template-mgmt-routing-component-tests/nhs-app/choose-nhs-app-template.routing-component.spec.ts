@@ -23,7 +23,7 @@ const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidMessagePlanId = 'invalid-id';
-const notFoundMessagePlanId = randomUUID();
+const notFoundMessagePlanId = '67027ba8-00e4-49e7-8e3c-6501a0ee6884';
 
 function createMessagePlans(user: TestUser) {
   return {

@@ -1637,11 +1637,11 @@ describe('templateClient', () => {
       const result = await templateClient.listTemplates(user, null);
 
       expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
-      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith(['DELETED']);
-      expect(queryMock.templateStatus).toHaveBeenCalledWith([]);
-      expect(queryMock.templateType).toHaveBeenCalledWith([]);
-      expect(queryMock.language).toHaveBeenCalledWith([]);
-      expect(queryMock.letterType).toHaveBeenCalledWith([]);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith('DELETED');
+      expect(queryMock.templateStatus).not.toHaveBeenCalled();
+      expect(queryMock.templateType).not.toHaveBeenCalled();
+      expect(queryMock.language).not.toHaveBeenCalled();
+      expect(queryMock.letterType).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: [template],
@@ -1705,11 +1705,11 @@ describe('templateClient', () => {
       const result = await templateClient.listTemplates(user, filter);
 
       expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
-      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith(['DELETED']);
-      expect(queryMock.templateStatus).toHaveBeenCalledWith(['SUBMITTED']);
-      expect(queryMock.templateType).toHaveBeenCalledWith(['NHS_APP']);
-      expect(queryMock.language).toHaveBeenCalledWith(['en']);
-      expect(queryMock.letterType).toHaveBeenCalledWith(['x0']);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith('DELETED');
+      expect(queryMock.templateStatus).toHaveBeenCalledWith('SUBMITTED');
+      expect(queryMock.templateType).toHaveBeenCalledWith('NHS_APP');
+      expect(queryMock.language).toHaveBeenCalledWith('en');
+      expect(queryMock.letterType).toHaveBeenCalledWith('x0');
 
       expect(result).toEqual({
         data: [template],

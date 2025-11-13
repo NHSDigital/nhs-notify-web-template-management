@@ -17,6 +17,7 @@ import {
 } from './server-action';
 import { validate } from '@utils/client-validate-form';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import classNames from 'classnames';
 
 const content = baseContent.components.chooseChannelTemplate;
 
@@ -106,7 +107,11 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 href={interpolate(content.actions.backLink.href, {
                   routingConfigId: messagePlan.id,
                 })}
-                className={`nhsuk-u-font-size-19 ${templateList.length > 0 && 'inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'}`}
+                className={classNames(
+                  'nhsuk-u-font-size-19',
+                  templateList.length > 0 &&
+                    'inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'
+                )}
               >
                 {content.actions.backLink.text}
               </Link>

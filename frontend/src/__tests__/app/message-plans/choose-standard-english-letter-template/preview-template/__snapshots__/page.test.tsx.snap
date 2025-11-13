@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders Email template preview 1`] = `
+exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter template preview 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"

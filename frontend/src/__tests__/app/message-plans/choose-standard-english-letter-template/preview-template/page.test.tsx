@@ -28,7 +28,7 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('renders Email template preview', async () => {
+  it('renders letter template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
