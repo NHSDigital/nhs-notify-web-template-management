@@ -31,7 +31,7 @@ module "backend_api" {
 
   send_to_firehose = false
 
-  enable_event_stream = true
+  enable_routing_config_event_stream = true
 
   email_domain                            = local.email_domain
   template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_template_submitted_sender

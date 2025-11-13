@@ -52,9 +52,16 @@ export default async function CreateMessagePlanPage({
           <div className='nhsuk-grid-column-two-thirds'>
             <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
             <MessagePlanForm
-              messageOrder={params.messageOrder}
+              backLink={pageContent.backLink}
               campaignIds={campaignIds}
-            />
+            >
+              <input
+                type='hidden'
+                name='messageOrder'
+                value={params.messageOrder}
+                readOnly
+              />
+            </MessagePlanForm>
           </div>
         </div>
       </NHSNotifyFormProvider>

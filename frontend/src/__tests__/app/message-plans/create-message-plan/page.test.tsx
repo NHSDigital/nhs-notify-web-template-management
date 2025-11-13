@@ -68,8 +68,6 @@ describe('CreateMessagePlanPage', () => {
 
     await user.click(screen.getByTestId('submit-button'));
 
-    expect(container.asFragment()).toMatchSnapshot();
-
     expect(createMessagePlanServerAction).toHaveBeenCalledTimes(1);
     expect(createMessagePlanServerAction).toHaveBeenCalledWith(
       {},
@@ -86,13 +84,14 @@ describe('CreateMessagePlanPage', () => {
       name: 'My Message Plan',
     });
 
-    const errorSummaryHeading = await screen.getByTestId('error-summary');
-
-    // "error-summary" test id targets the nested heading rather than the top level of the error summary
+    //  error-summary" test id targets the nested heading rather than the top level of the error summary
     // so we need to assert against the parent element
-    await waitFor(() => {
+    await waitFor(async () => {
+      const errorSummaryHeading = await screen.getByTestId('error-summary');
       expect(errorSummaryHeading.parentElement).toHaveFocus();
     });
+
+    expect(container.asFragment()).toMatchSnapshot();
   });
 
   test('redirects when there are no campaignIds', async () => {

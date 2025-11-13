@@ -1,0 +1,561 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanBlock for channel EMAIL with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-EMAIL"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Email
+        </h3>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-EMAIL"
+              href="/message-plans/choose-email-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Email
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-EMAIL"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Email
+        </h3>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-EMAIL"
+        >
+          Test email template
+        </p>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-EMAIL"
+              href="/message-plans/choose-email-template/test-routing-config-id"
+            >
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Email
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <form>
+              <input
+                name="channel"
+                type="hidden"
+                value="EMAIL"
+              />
+              <input
+                name="routingConfigId"
+                type="hidden"
+                value="test-routing-config-id"
+              />
+              <button
+                class="channel-template-link--remove nhsuk-link"
+                data-testid="remove-template-link-EMAIL"
+                formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                type="submit"
+              >
+                Remove
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Email
+                </span>
+                 template
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel LETTER with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-LETTER"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Letter
+        </h3>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-LETTER"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Letter
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel LETTER with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-LETTER"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Letter
+        </h3>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-LETTER"
+        >
+          Test email template
+        </p>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-LETTER"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+            >
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Letter
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <form>
+              <input
+                name="channel"
+                type="hidden"
+                value="LETTER"
+              />
+              <input
+                name="routingConfigId"
+                type="hidden"
+                value="test-routing-config-id"
+              />
+              <button
+                class="channel-template-link--remove nhsuk-link"
+                data-testid="remove-template-link-LETTER"
+                formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                type="submit"
+              >
+                Remove
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Letter
+                </span>
+                 template
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel NHSAPP with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-NHSAPP"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          NHS App
+        </h3>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-NHSAPP"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                NHS App
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-NHSAPP"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          NHS App
+        </h3>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-NHSAPP"
+        >
+          Test email template
+        </p>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-NHSAPP"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+            >
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                NHS App
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <form>
+              <input
+                name="channel"
+                type="hidden"
+                value="NHSAPP"
+              />
+              <input
+                name="routingConfigId"
+                type="hidden"
+                value="test-routing-config-id"
+              />
+              <button
+                class="channel-template-link--remove nhsuk-link"
+                data-testid="remove-template-link-NHSAPP"
+                formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                type="submit"
+              >
+                Remove
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  NHS App
+                </span>
+                 template
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel SMS with no template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-SMS"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Text message (SMS)
+        </h3>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="choose-template-link-SMS"
+              href="/message-plans/choose-text-message-template/test-routing-config-id"
+            >
+              Choose
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="message-plan-block"
+    data-testid="message-plan-block-SMS"
+  >
+    <div
+      aria-hidden="true"
+      class="message-plan-block-number"
+    >
+      1
+    </div>
+    <h2
+      class="nhsuk-heading-m nhsuk-u-padding-top-1"
+    >
+      First message
+    </h2>
+    <div
+      class="channel-template-outer"
+    >
+      <div
+        class="channel-template-inner"
+      >
+        <h3
+          class="nhsuk-heading-s"
+        >
+          Text message (SMS)
+        </h3>
+        <p
+          class="nhsuk-u-margin-bottom-2"
+          data-testid="template-name-SMS"
+        >
+          Test email template
+        </p>
+        <ul
+          class="channel-template-actions"
+        >
+          <li>
+            <a
+              class="nhsuk-link nhsuk-link--no-visited-state"
+              data-testid="change-template-link-SMS"
+              href="/message-plans/choose-text-message-template/test-routing-config-id"
+            >
+              Change
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Text message (SMS)
+              </span>
+               template
+            </a>
+          </li>
+          <li>
+            <form>
+              <input
+                name="channel"
+                type="hidden"
+                value="SMS"
+              />
+              <input
+                name="routingConfigId"
+                type="hidden"
+                value="test-routing-config-id"
+              />
+              <button
+                class="channel-template-link--remove nhsuk-link"
+                data-testid="remove-template-link-SMS"
+                formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                type="submit"
+              >
+                Remove
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Text message (SMS)
+                </span>
+                 template
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;

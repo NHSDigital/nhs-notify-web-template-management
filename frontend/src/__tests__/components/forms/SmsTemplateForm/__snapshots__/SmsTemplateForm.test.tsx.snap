@@ -195,9 +195,9 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               >
                 0 characters
                 <br />
-                This template will be sent as 0 text messages.
+                This template will be charged as 0 text messages.
                 <br />
-                If you're using personalisation fields, it could send as more.
+                If you're using personalisation fields, it could be charged as more.
               </p>
               <p
                 data-testid="sms-pricing-info-0"
@@ -648,9 +648,9 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               >
                 16 characters
                 <br />
-                This template will be sent as 1 text message.
+                This template will be charged as 1 text message.
                 <br />
-                If you're using personalisation fields, it could send as more.
+                If you're using personalisation fields, it could be charged as more.
               </p>
               <p
                 data-testid="sms-pricing-info-0"
@@ -1065,9 +1065,9 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               >
                 16 characters
                 <br />
-                This template will be sent as 1 text message.
+                This template will be charged as 1 text message.
                 <br />
-                If you're using personalisation fields, it could send as more.
+                If you're using personalisation fields, it could be charged as more.
               </p>
               <p
                 data-testid="sms-pricing-info-0"
@@ -1532,9 +1532,9 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               >
                 16 characters
                 <br />
-                This template will be sent as 1 text message.
+                This template will be charged as 1 text message.
                 <br />
-                If you're using personalisation fields, it could send as more.
+                If you're using personalisation fields, it could be charged as more.
               </p>
               <p
                 data-testid="sms-pricing-info-0"
@@ -1943,9 +1943,9 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               >
                 16 characters
                 <br />
-                This template will be sent as 1 text message.
+                This template will be charged as 1 text message.
                 <br />
-                If you're using personalisation fields, it could send as more.
+                If you're using personalisation fields, it could be charged as more.
               </p>
               <p
                 data-testid="sms-pricing-info-0"

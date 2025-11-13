@@ -26,6 +26,7 @@ test('submit form - validation error', async () => {
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
+    lockNumber: 1,
   };
 
   const response = await copyTemplateAction(
@@ -58,6 +59,7 @@ test('submit form - create email template from non-email template', async () => 
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
+    lockNumber: 1,
   };
 
   await copyTemplateAction(
@@ -97,6 +99,7 @@ test('submit form - create email template from email template', async () => {
     subject: 'template-subject',
     createdAt: 'today',
     updatedAt: 'today',
+    lockNumber: 1,
   };
 
   await copyTemplateAction(
@@ -135,6 +138,7 @@ test('submit form - create non-email template', async () => {
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
+    lockNumber: 1,
   };
 
   await copyTemplateAction(

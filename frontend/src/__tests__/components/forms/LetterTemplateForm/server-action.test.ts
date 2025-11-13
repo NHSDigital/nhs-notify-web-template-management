@@ -66,6 +66,7 @@ describe('UploadLetterTemplate server actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     });
 
     const letterTemplatePdf = new File(['file contents'], 'template.pdf', {
@@ -127,6 +128,7 @@ describe('UploadLetterTemplate server actions', () => {
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
     });
 
     const letterTemplatePdf = new File(['file contents'], 'template.pdf', {

@@ -1,5 +1,35 @@
 @use 'nhsuk-frontend/dist/nhsuk';
 
+// CCM-9916 - Override @font-face rules from nhsuk-frontend to reference self-hosted fonts
+@font-face {
+  font-display: swap;
+  font-family: Frutiger W01;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.eot);
+  src:
+    url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.eot) format('eot'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.woff2) format('woff2'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.woff) format('woff'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.ttf)
+      format('truetype'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-55Roman.svg) format('svg');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Frutiger W01;
+  font-style: normal;
+  font-weight: 600;
+  src: url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.eot);
+  src:
+    url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.eot) format('eot'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.woff2) format('woff2'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.woff) format('woff'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.ttf) format('truetype'),
+    url(/templates/lib/assets/fonts/FrutigerLTW01-65Bold.svg) format('svg');
+}
+
 body {
   // This is here because amplify applies a min height which overwrites nhsuk causing a white space
   min-height: auto !important;
@@ -41,6 +71,30 @@ pre {
   align-items: center;
 }
 
+.nhsuk-summary-list {
+  background-color: nhsuk.$nhsuk-card-background-colour;
+  border: solid 1px nhsuk.$nhsuk-border-colour;
+
+    &__key {
+    color: nhsuk.$nhsuk-secondary-text-colour;
+    width: 20%;
+    padding: 1rem;
+
+    @media screen and (max-width: 768px) {
+      width: auto;
+    }
+  }
+
+  &__value {
+    width: 80%;
+    padding: 1rem;
+
+    @media screen and (max-width: 768px) {
+      width: auto;
+    }
+  }
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -51,4 +105,14 @@ pre {
 
 .nhsuk-button-background-button:hover {
   background-color: nhsuk.$nhsuk-text-colour;
+}
+
+a.nhsuk-link--no-visited-state {
+  &:hover {
+    color: nhsuk.$nhsuk-link-colour;
+
+    &:visited {
+      color: nhsuk.$nhsuk-link-colour;
+    }
+  }
 }

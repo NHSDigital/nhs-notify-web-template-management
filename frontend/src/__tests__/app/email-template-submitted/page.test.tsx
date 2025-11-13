@@ -32,6 +32,7 @@ describe('EmailTemplateSubmittedPage', () => {
       subject: 'subject',
       createdAt: 'today',
       updatedAt: 'today',
+      lockNumber: 1,
     } satisfies TemplateDto;
 
     getTemplateMock.mockResolvedValueOnce(template);

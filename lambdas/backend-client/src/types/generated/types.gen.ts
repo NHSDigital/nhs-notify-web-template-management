@@ -6,6 +6,7 @@ export type BaseCreatedTemplate = BaseTemplate & {
   createdAt: string;
   createdBy?: string;
   id: string;
+  lockNumber: number;
   templateStatus: TemplateStatus;
   updatedAt: string;
   updatedBy?: string;
@@ -47,22 +48,26 @@ export type CascadeGroupTranslations = CascadeGroupBase & {
   name?: 'translations';
 };
 
-export type CascadeItem = CascadeItemWithDefault | CascadeItemWithConditional;
+export type CascadeItem = CascadeItemBase &
+  (
+    | {
+        conditionalTemplates?: Array<
+          ConditionalTemplateLanguage | ConditionalTemplateAccessible
+        >;
+        defaultTemplateId: string | null;
+      }
+    | {
+        conditionalTemplates: Array<
+          ConditionalTemplateLanguage | ConditionalTemplateAccessible
+        >;
+        defaultTemplateId?: string | null;
+      }
+  );
 
 export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
-};
-
-export type CascadeItemWithConditional = CascadeItemBase & {
-  conditionalTemplates: Array<
-    ConditionalTemplateLanguage | ConditionalTemplateAccessible
-  >;
-};
-
-export type CascadeItemWithDefault = CascadeItemBase & {
-  defaultTemplateId: string | null;
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -101,7 +106,7 @@ export type CountSuccess = {
   statusCode: number;
 };
 
-export type CreateUpdateRoutingConfig = {
+export type CreateRoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
   cascadeGroupOverrides: Array<CascadeGroup>;
@@ -243,8 +248,21 @@ export type TemplateSuccessList = {
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
+export type UpdateRoutingConfig = unknown & {
+  campaignId?: string;
+  cascade?: Array<CascadeItem>;
+  cascadeGroupOverrides?: Array<CascadeGroup>;
+  name?: string;
+};
+
 export type UploadLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
+};
+
+export type UploadLetterTemplate = {
+  letterPdf?: Blob | File;
+  template?: CreateUpdateTemplate;
+  testCsv?: string;
 };
 
 export type VersionedFileDetails = {
@@ -286,7 +304,7 @@ export type PostV1LetterTemplateData = {
   /**
    * Letter template to create
    */
-  body: unknown;
+  body: UploadLetterTemplate;
   path?: never;
   query?: never;
   url: '/v1/letter-template';
@@ -316,7 +334,7 @@ export type PostV1RoutingConfigurationData = {
   /**
    * Routing configuration to create
    */
-  body: CreateUpdateRoutingConfig;
+  body: CreateRoutingConfig;
   path?: never;
   query?: never;
   url: '/v1/routing-configuration';
@@ -410,7 +428,7 @@ export type PutV1RoutingConfigurationByRoutingConfigIdData = {
   /**
    * Routing configuration update to apply
    */
-  body: CreateUpdateRoutingConfig;
+  body: UpdateRoutingConfig;
   path: {
     /**
      * ID of routing configuration to update
@@ -569,6 +587,12 @@ export type PostV1TemplateResponse =
 
 export type DeleteV1TemplateByTemplateIdData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to update
@@ -636,6 +660,12 @@ export type PutV1TemplateByTemplateIdData = {
    * Template to update
    */
   body: CreateUpdateTemplate;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to update
@@ -668,6 +698,12 @@ export type PutV1TemplateByTemplateIdResponse =
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of the template to request a proof of
@@ -700,6 +736,12 @@ export type PostV1TemplateByTemplateIdProofResponse =
 
 export type PatchV1TemplateByTemplateIdSubmitData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of template to submit

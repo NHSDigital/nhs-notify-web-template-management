@@ -1,86 +1,138 @@
 import { Prop, PropType } from '../types/generics';
 import {
   ConditionFnOperator,
+  ConditionGroup,
   ConditionJoiner,
   ConditionModel,
   ConditionOperator,
   ConditionSpecialOperator,
+  FnCondition,
+  RegularCondition,
+  SpecialCondition,
 } from '../types/builders';
 
 export class ConditionBuilder<Entity> {
   private readonly conditions: ConditionModel[] = [];
 
-  or<T extends Prop<Entity>, K extends PropType<Entity, T>>(
-    attribute: T,
-    value: K,
-    operator: ConditionOperator,
-    negate?: boolean
-  ) {
-    if (this.isEmpty()) {
-      this.addCondition(attribute, value, operator, negate);
-      return this;
-    }
-    this.addCondition(attribute, value, operator, negate, 'OR');
-    return this;
-  }
-
   and<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attribute: T,
-    value: K,
     operator: ConditionOperator,
+    value: K,
     negate?: boolean
   ) {
-    if (this.isEmpty()) {
-      this.addCondition(attribute, value, operator, negate);
-      return this;
-    }
-    this.addCondition(attribute, value, operator, negate, 'AND');
+    this.addRegularCondition(attribute, operator, value, negate, 'AND');
     return this;
   }
 
-  fn<T extends Prop<Entity>>(
+  or<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attribute: T,
-    operator: ConditionFnOperator,
-    secondArgument?: string,
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
+    operator: ConditionOperator,
+    value: K,
+    negate?: boolean
   ) {
-    if (this.isEmpty()) {
-      this.addFnCondition(attribute, operator, secondArgument, negate);
-      return this;
-    }
-    this.addFnCondition(
-      attribute,
-      operator,
-      secondArgument,
-      negate,
-      conditionJoiner ?? 'AND'
-    );
+    this.addRegularCondition(attribute, operator, value, negate, 'OR');
     return this;
   }
 
-  in<T extends Prop<Entity>, K extends PropType<Entity, T>>(
+  andFn<T extends Prop<Entity>>(
+    operator: ConditionFnOperator,
+    attribute: T,
+    value?: string,
+    negate?: boolean
+  ) {
+    this.addFnCondition(operator, attribute, value, negate, 'AND');
+    return this;
+  }
+
+  orFn<T extends Prop<Entity>>(
+    operator: ConditionFnOperator,
+    attribute: T,
+    value?: string,
+    negate?: boolean
+  ) {
+    this.addFnCondition(operator, attribute, value, negate, 'OR');
+    return this;
+  }
+
+  andIn<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attribute: T,
     value: K | K[],
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
+    negate?: boolean
   ) {
-    if (this.isEmpty()) {
-      this.addSpecialCondition(attribute, value, 'IN', negate);
-      return this;
-    }
-    this.addSpecialCondition(
-      attribute,
-      value,
-      'IN',
-      negate,
-      conditionJoiner ?? 'AND'
-    );
+    this.addSpecialCondition(attribute, value, 'IN', negate, 'AND');
+    return this;
+  }
+
+  orIn<T extends Prop<Entity>, K extends PropType<Entity, T>>(
+    attribute: T,
+    value: K | K[],
+    negate?: boolean
+  ) {
+    this.addSpecialCondition(attribute, value, 'IN', negate, 'OR');
+    return this;
+  }
+
+  andGroup(callback: (group: ConditionBuilder<Entity>) => void) {
+    const group = new ConditionBuilder<Entity>();
+
+    callback(group);
+
+    this.addConditionGroup(group, 'AND');
+
+    return this;
+  }
+
+  orGroup(callback: (group: ConditionBuilder<Entity>) => void) {
+    const group = new ConditionBuilder<Entity>();
+
+    callback(group);
+
+    this.addConditionGroup(group, 'OR');
+
     return this;
   }
 
   private isEmpty() {
     return this.conditions.length === 0;
+  }
+
+  private addRegularCondition<
+    T extends Prop<Entity>,
+    K extends PropType<Entity, T>,
+  >(
+    attribute: T,
+    operator: ConditionOperator,
+    value: K,
+    negated = false,
+    conditionJoiner?: ConditionJoiner
+  ) {
+    const condition: RegularCondition = {
+      attribute,
+      value,
+      operator,
+      negated,
+      conditionJoiner,
+    };
+
+    this.addCondition(condition);
+  }
+
+  private addFnCondition<T extends Prop<Entity>>(
+    fnOperator: ConditionFnOperator,
+    attribute: T,
+    value?: string,
+    negated = false,
+    conditionJoiner?: ConditionJoiner
+  ) {
+    const condition: FnCondition = {
+      fnOperator,
+      attribute,
+      value,
+      negated,
+      conditionJoiner,
+    };
+
+    this.addCondition(condition);
   }
 
   private addSpecialCondition<
@@ -90,48 +142,38 @@ export class ConditionBuilder<Entity> {
     attribute: T,
     value: K | K[],
     specialOperator: ConditionSpecialOperator,
-    negate?: boolean,
+    negated = false,
     conditionJoiner?: ConditionJoiner
   ) {
-    this.conditions.push({
+    const condition: SpecialCondition = {
       attribute,
       value,
       specialOperator,
       conditionJoiner,
-      negated: negate || false,
-    });
+      negated,
+    };
+
+    this.addCondition(condition);
   }
 
-  private addFnCondition<T extends Prop<Entity>>(
-    attribute: T,
-    fnOperator: ConditionFnOperator,
-    secondArgument?: string,
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
+  private addConditionGroup(
+    group: ConditionBuilder<Entity>,
+    conditionJoiner: ConditionJoiner
   ) {
-    this.conditions.push({
-      attribute,
-      secondArgument,
-      fnOperator,
+    const condition: ConditionGroup = {
+      conditions: group.build(),
       conditionJoiner,
-      negated: negate || false,
-    });
+    };
+
+    this.addCondition(condition);
   }
 
-  private addCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
-    attribute: T,
-    value: K,
-    operator: ConditionOperator,
-    negate?: boolean,
-    conditionJoiner?: ConditionJoiner
-  ) {
-    this.conditions.push({
-      attribute,
-      value,
-      operator,
-      conditionJoiner,
-      negated: negate || false,
-    });
+  private addCondition(condition: ConditionModel) {
+    if (this.isEmpty()) {
+      condition.conditionJoiner = undefined;
+    }
+
+    this.conditions.push(condition);
   }
 
   build() {

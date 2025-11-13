@@ -6,7 +6,12 @@ import { EventBuilder } from './domain/event-builder';
 import { SNSRepository } from './infra/sns-repository';
 
 export const createContainer = () => {
-  const { EVENT_SOURCE, SNS_TOPIC_ARN, TEMPLATES_TABLE_NAME } = loadConfig();
+  const {
+    EVENT_SOURCE,
+    ROUTING_CONFIG_TABLE_NAME,
+    SNS_TOPIC_ARN,
+    TEMPLATES_TABLE_NAME,
+  } = loadConfig();
 
   const snsClient = new SNSClient({ region: 'eu-west-2' });
 
@@ -14,6 +19,7 @@ export const createContainer = () => {
 
   const eventBuilder = new EventBuilder(
     TEMPLATES_TABLE_NAME,
+    ROUTING_CONFIG_TABLE_NAME,
     EVENT_SOURCE,
     logger
   );

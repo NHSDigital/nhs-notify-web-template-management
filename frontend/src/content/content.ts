@@ -484,9 +484,15 @@ const previewLetterFooter: Partial<Record<TemplateStatus, string[]>> = {
 const previewLetterPreSubmissionText = {
   ifDoesNotMatch: {
     summary: 'If this proof does not match the template',
-    paragraphs: [
+    paragraphsSubmit: [
       "If the content or formatting of your proof does not match the template you originally provided, contact NHS Notify to describe what's wrong with the proof.",
       'NHS Notify will make the relevant changes and reproof your template.',
+      'It can take 5 to 10 working days to get another proof of your template.',
+      "If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.",
+    ],
+    paragraphsApproval: [
+      "If the content or formatting of your template proof does not match the template you originally provided, contact us to describe what's wrong with the template proof.",
+      "We'll update the template proof and email it to you.",
       'It can take 5 to 10 working days to get another proof of your template.',
       "If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.",
     ],
@@ -496,14 +502,17 @@ const previewLetterPreSubmissionText = {
     paragraph:
       'Edit your original template on your computer, convert it to PDF and then upload as a new template.',
   },
-  ifYouAreHappyParagraph:
+  ifYouAreHappyParagraphSubmit:
     "If you're happy with this proof, submit the template and NHS Notify will use it to set up the messages you want to send.",
+  ifYouAreHappyParagraphApproval:
+    "If you're happy with this template proof, approve it. Then your template will be ready to add to a message plan.",
 };
 
 const previewLetterTemplate = {
   pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
+  approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
   virusScanError: 'The file(s) you uploaded may contain a virus.',
@@ -704,7 +713,7 @@ const copyTemplate = {
   },
 };
 
-const chooseTemplate = {
+const chooseTemplateType = {
   pageTitle: generatePageTitle('Choose a template type'),
   pageHeading: 'Choose a template type to create',
   buttonText: 'Continue',
@@ -930,7 +939,7 @@ const smsTemplateFooter: ContentBlock[] = [
   {
     type: 'text',
     testId: 'character-message-count',
-    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`,
+    text: `{{characters}} {{characters|character|characters}}  \nThis template will be charged as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could be charged as more.`,
   },
   {
     type: 'text',
@@ -947,8 +956,6 @@ const templateFormSms = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   templateMessageFooterText: smsTemplateFooter,
-  smsCountText1: 'This template will be sent as ',
-  smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
@@ -1044,6 +1051,103 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
+};
+
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove',
+    template: 'template',
+  },
+  optional: '(optional)',
+};
+
+const messagePlanFallbackConditions: Record<
+  TemplateType,
+  FallbackConditionBlock
+> = {
+  NHS_APP: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message read within 24 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not read within 24 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  SMS: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message delivered within 72 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not delivered within 72 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  EMAIL: {
+    title: 'Fallback conditions',
+    content: {
+      stop: 'If {{ordinal}} message delivered within 72 hours, no further messages sent.',
+      continue:
+        'If {{ordinal}} message not delivered within 72 hours, {{nextOrdinal}} message sent.',
+    },
+  },
+  LETTER: {
+    title: 'Conditions for accessible and language letters',
+    content: {
+      continue: [
+        {
+          type: 'inline-text',
+          text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
+        },
+        {
+          type: 'list',
+          items: [
+            'the recipient has requested an accessible or language letter in PDS',
+            `you've included the relevant template in this message plan`,
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
+};
+
+const createEditMessagePlan = {
+  headerCaption: 'Message plan',
+  changeNameLink: {
+    href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
+    text: 'Change name',
+  },
+  rowHeadings: {
+    routingPlanId: 'Routing Plan ID',
+    status: 'Status',
+  },
+  ctas: {
+    primary: {
+      href: '/message-plans/move-to-production/{{routingConfigId}}',
+      text: 'Move to production',
+    },
+    secondary: {
+      href: '/message-plans',
+      text: 'Save and close',
+    },
+  },
+  messagePlanFallbackConditions,
+};
+
 const messagePlanDraftAndProdInfo: {
   title: string;
   content: ContentBlock[];
@@ -1089,7 +1193,7 @@ const messagePlansPage = {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  previewLink: (id: string) => `/message-plan/${id}`,
+  messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
 };
 
 const chooseMessageOrder = {
@@ -1106,6 +1210,16 @@ const chooseMessageOrder = {
 const createMessagePlan = {
   pageTitle: generatePageTitle('Create message plan'),
   pageHeading: 'Create a message plan',
+  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
+};
+
+const editMessagePlanSettings = {
+  pageTitle: generatePageTitle('Edit message plan settings'),
+  pageHeading: 'Edit message plan settings',
+  backLink: (id: string) => ({
+    href: `/message-plans/choose-templates/${id}`,
+    text: 'Go back',
+  }),
 };
 
 const messagePlanForm = {
@@ -1138,7 +1252,6 @@ const messagePlanForm = {
     },
   },
   submitButton: 'Save and continue',
-  backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
 const content = {
@@ -1146,14 +1259,18 @@ const content = {
   components: {
     channelGuidance,
     chooseMessageOrder,
-    chooseTemplate,
+    chooseTemplateType,
     copyTemplate,
+    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,
     header,
     logoutWarning,
     messageFormatting,
+    messagePlanBlock,
+    messagePlanChannelTemplate,
+    messagePlanFallbackConditions,
     messagePlanForm,
     messagePlansListComponent,
     nameYourTemplate,
@@ -1176,11 +1293,13 @@ const content = {
   },
   pages: {
     createMessagePlan,
+    editMessagePlanSettings,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,
     messagePlanInvalidConfiguration,
     messageTemplates,
+    chooseTemplatesForMessagePlan,
     messagePlansPage,
   },
 };

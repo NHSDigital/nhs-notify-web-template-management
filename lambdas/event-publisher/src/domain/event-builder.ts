@@ -11,6 +11,7 @@ import { shouldPublish } from './should-publish';
 export class EventBuilder {
   constructor(
     private readonly templatesTableName: string,
+    private readonly routingConfigTableName: string,
     private readonly eventSource: string,
     private readonly logger: Logger
   ) {}
@@ -110,15 +111,21 @@ export class EventBuilder {
   buildEvent(
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
-    if (publishableEventRecord.tableName === this.templatesTableName) {
-      return this.buildTemplateDatabaseEvent(publishableEventRecord);
+    switch (publishableEventRecord.tableName) {
+      case this.templatesTableName: {
+        return this.buildTemplateDatabaseEvent(publishableEventRecord);
+      }
+      case this.routingConfigTableName: {
+        return undefined;
+      }
+      default: {
+        this.logger.error({
+          description: 'Unrecognised event type',
+          publishableEventRecord,
+        });
+
+        throw new Error('Unrecognised event type');
+      }
     }
-
-    this.logger.error({
-      description: 'Unrecognised event type',
-      publishableEventRecord,
-    });
-
-    throw new Error('Unrecognised event type');
   }
 }

@@ -24,6 +24,7 @@ const mockNhsAppTemplate = (id: string) =>
     id,
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
+    lockNumber: 1,
   }) satisfies TemplateDto;
 
 describe('submitTemplate', () => {
@@ -32,7 +33,23 @@ describe('submitTemplate', () => {
   });
 
   it('should redirect when templateId from form is invalid', async () => {
-    const formData = getMockFormData({ templateId: 'non-uuid' });
+    const formData = getMockFormData({
+      templateId: 'non-uuid',
+      lockNumber: '2',
+    });
+
+    await submitTemplate('NHS_APP', formData);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+
+    expect(getTemplateMock).not.toHaveBeenCalled();
+  });
+
+  it('should redirect when lockNumber from form is invalid', async () => {
+    const formData = getMockFormData({
+      templateId: '7bc9fac0-ad5e-4559-b614-ad10a59295aa',
+      lockNumber: 'not a number',
+    });
 
     await submitTemplate('NHS_APP', formData);
 
@@ -46,6 +63,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({
       templateId: '7bc9fac0-ad5e-4559-b614-ad10a59295aa',
+      lockNumber: '2',
     });
 
     await submitTemplate('EMAIL', formData);
@@ -60,6 +78,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({
       templateId: 'ff32550d-6832-4837-ada0-b6dd5c09e7b8',
+      lockNumber: '2',
     });
 
     await submitTemplate('EMAIL', formData);
@@ -78,6 +97,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({
       templateId,
+      lockNumber: '2',
     });
 
     await expect(submitTemplate('SMS', formData)).rejects.toThrow(
@@ -88,15 +108,18 @@ describe('submitTemplate', () => {
   it('should redirect when successfully submitted', async () => {
     const templateId = '7bc9fac0-ad5e-4559-b614-ad10a59295aa';
 
-    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate(templateId));
+    const template = mockNhsAppTemplate(templateId);
+
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const formData = getMockFormData({
       templateId,
+      lockNumber: '2',
     });
 
     await submitTemplate('SMS', formData);
 
-    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId);
+    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId, 2);
 
     expect(redirectMock).toHaveBeenCalledWith(
       `/text-message-template-submitted/${templateId}`,

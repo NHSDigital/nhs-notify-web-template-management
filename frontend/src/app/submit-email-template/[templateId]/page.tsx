@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
-  PageProps,
+  TemplatePageProps,
   validateEmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const SubmitEmailTemplatePage = async (props: PageProps) => {
+const SubmitEmailTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
@@ -33,6 +33,7 @@ const SubmitEmailTemplatePage = async (props: PageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      lockNumber={validatedTemplate.lockNumber}
       channel='EMAIL'
     />
   );

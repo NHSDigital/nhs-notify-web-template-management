@@ -9,12 +9,15 @@ import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-he
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertGoBackLink,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
+
+const chooseTemplatesRegexp =
+  /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 
@@ -58,9 +61,6 @@ test.describe('Create Message Plan Page', () => {
         await expect(createMessagePlanPage.campaignIdSelector).toHaveCount(0);
 
         await createMessagePlanPage.clickSubmit();
-
-        const chooseTemplatesRegexp =
-          /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
 
         await expect(page).toHaveURL(chooseTemplatesRegexp);
 
@@ -132,9 +132,6 @@ test.describe('Create Message Plan Page', () => {
 
       await createMessagePlanPage.clickSubmit();
 
-      const chooseTemplatesRegexp =
-        /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
-
       await expect(page).toHaveURL(chooseTemplatesRegexp);
 
       const urlParts = page.url().match(chooseTemplatesRegexp);
@@ -202,7 +199,7 @@ test.describe('Create Message Plan Page', () => {
           page: createMessagePlanPage,
           id: '',
           baseURL,
-          expectedUrl: 'templates/message-plans/choose-message-order', // expected backlink url
+          expectedUrl: 'templates/message-plans/choose-message-order',
         };
 
         await assertSkipToMainContent(props);

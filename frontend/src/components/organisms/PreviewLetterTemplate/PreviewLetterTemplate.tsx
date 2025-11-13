@@ -13,6 +13,7 @@ import { TemplateStatus } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 type ButtonDetails = { text: string; href: string };
 
@@ -20,6 +21,7 @@ export function PreviewLetterTemplate({
   template,
 }: Readonly<{ template: LetterTemplate }>) {
   const {
+    approveProofText,
     backLinkText,
     footer,
     preSubmissionText,
@@ -33,6 +35,7 @@ export function PreviewLetterTemplate({
   } = content.components.previewLetterTemplate;
 
   const basePath = getBasePath();
+  const { routing } = useFeatureFlags();
 
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
@@ -40,7 +43,7 @@ export function PreviewLetterTemplate({
       href: `${basePath}/submit-letter-template/${template.id}`,
     },
     PROOF_AVAILABLE: {
-      text: submitText,
+      text: routing ? approveProofText : submitText,
       href: `${basePath}/submit-letter-template/${template.id}`,
     },
     PENDING_PROOF_REQUEST: {
@@ -86,11 +89,12 @@ export function PreviewLetterTemplate({
                     {preSubmissionText.ifDoesNotMatch.summary}
                   </Details.Summary>
                   <Details.Text>
-                    {preSubmissionText.ifDoesNotMatch.paragraphs.map(
-                      (text, i) => (
-                        <p key={i}>{text}</p>
-                      )
-                    )}
+                    {(routing
+                      ? preSubmissionText.ifDoesNotMatch.paragraphsApproval
+                      : preSubmissionText.ifDoesNotMatch.paragraphsSubmit
+                    ).map((text, i) => (
+                      <p key={i}>{text}</p>
+                    ))}
                   </Details.Text>
                 </Details>
                 <Details>
@@ -101,7 +105,11 @@ export function PreviewLetterTemplate({
                     <p>{preSubmissionText.ifNeedsEdit.paragraph}</p>
                   </Details.Text>
                 </Details>
-                <p>{preSubmissionText.ifYouAreHappyParagraph}</p>
+                <p>
+                  {routing
+                    ? preSubmissionText.ifYouAreHappyParagraphApproval
+                    : preSubmissionText.ifYouAreHappyParagraphSubmit}
+                </p>
               </section>
             ) : null}
 

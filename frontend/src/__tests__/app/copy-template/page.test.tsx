@@ -10,7 +10,7 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ChooseTemplate/ChooseTemplate');
+jest.mock('@forms/ChooseTemplateType/ChooseTemplateType');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -27,6 +27,7 @@ describe('CopyTemplatePage', () => {
     message: 'template-message',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
+    lockNumber: 1,
   } satisfies TemplateDto;
 
   const letterTemplate: LetterTemplate = {
@@ -36,6 +37,7 @@ describe('CopyTemplatePage', () => {
     name: 'template-name',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
+    lockNumber: 1,
     letterType: 'q4',
     language: 'fr',
     files: {

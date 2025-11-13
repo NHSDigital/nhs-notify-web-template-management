@@ -34,7 +34,7 @@ export type RegularCondition = BaseConditionAttributes & {
 
 export type FnCondition = BaseConditionAttributes & {
   fnOperator: ConditionFnOperator;
-  secondArgument: string | undefined;
+  value: string | undefined;
 };
 
 export type SpecialCondition = BaseConditionAttributes & {
@@ -42,4 +42,11 @@ export type SpecialCondition = BaseConditionAttributes & {
   value: unknown;
 };
 
-export type ConditionModel = RegularCondition | SpecialCondition | FnCondition;
+export type Condition = RegularCondition | SpecialCondition | FnCondition;
+
+export type ConditionGroup = {
+  conditions: ConditionModel[];
+  conditionJoiner?: ConditionJoiner;
+};
+
+export type ConditionModel = Condition | ConditionGroup;

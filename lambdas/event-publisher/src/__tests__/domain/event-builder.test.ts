@@ -1,7 +1,7 @@
 import { VERSION } from '@nhsdigital/nhs-notify-event-schemas-template-management';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { EventBuilder } from '../../domain/event-builder';
-import { PublishableEventRecord } from '../../domain/input-schemas';
+import type { PublishableEventRecord } from '../../domain/input-schemas';
 import { shouldPublish } from '../../domain/should-publish';
 
 jest.mock('../../domain/should-publish');
@@ -20,9 +20,21 @@ const shouldPublishMock = jest.mocked(shouldPublish);
 
 const { logger: mockLogger } = createMockLogger();
 
-const eventBuilder = new EventBuilder('table-name', 'event-source', mockLogger);
+const tables = {
+  templates: 'templates-table',
+  routing: 'routing-config-table',
+};
 
-const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
+const eventBuilder = new EventBuilder(
+  tables.templates,
+  tables.routing,
+  'event-source',
+  mockLogger
+);
+
+const publishableTemplateEventRecord = (
+  newStatus: string
+): PublishableEventRecord => ({
   dynamodb: {
     SequenceNumber: '4',
     NewImage: {
@@ -191,7 +203,7 @@ const publishableEventRecord = (newStatus: string): PublishableEventRecord => ({
     },
   },
   eventID: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
-  tableName: 'table-name',
+  tableName: tables.templates,
 });
 
 const expectedEvent = (status: string, type: string, dataschema: string) => ({
@@ -229,130 +241,154 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
   },
 });
 
-test('errors on unrecognised event type', () => {
-  const invalidPublishableEventRecord = {
-    ...publishableEventRecord('SUBMITTED'),
-    tableName: 'not-table-name',
-  };
-
-  expect(() => eventBuilder.buildEvent(invalidPublishableEventRecord)).toThrow(
-    'Unrecognised event type'
-  );
-});
-
-test('errors on output schema validation failure', () => {
-  const valid = publishableEventRecord('SUBMITTED');
-
-  const invalidDomainEventRecord = {
-    ...valid,
-    dynamodb: {
-      ...valid.dynamodb,
-      NewImage: {
-        ...valid.dynamodb.NewImage,
-        language: { N: 0 },
-      },
-    },
+test('errors on unrecognised event table source', () => {
+  const invalidpublishableTemplateEventRecord = {
+    ...publishableTemplateEventRecord('SUBMITTED'),
+    tableName: 'unknown-table-name',
   };
 
   expect(() =>
-    eventBuilder.buildEvent(
-      invalidDomainEventRecord as unknown as PublishableEventRecord
-    )
-  ).toThrow(
-    expect.objectContaining({
-      name: 'ZodError',
-      issues: [
-        expect.objectContaining({
-          code: 'invalid_value',
-          path: ['data', 'language'],
-        }),
-      ],
-    })
-  );
+    eventBuilder.buildEvent(invalidpublishableTemplateEventRecord)
+  ).toThrow('Unrecognised event type');
 });
 
-test('builds template completed event', () => {
-  const event = eventBuilder.buildEvent(publishableEventRecord('SUBMITTED'));
+describe('template events', () => {
+  test('errors on output schema validation failure', () => {
+    const valid = publishableTemplateEventRecord('SUBMITTED');
 
-  expect(event).toEqual(
-    expectedEvent(
-      'SUBMITTED',
-      'uk.nhs.notify.template-management.TemplateCompleted.v1',
-      'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
-    )
-  );
+    const invalidDomainEventRecord = {
+      ...valid,
+      dynamodb: {
+        ...valid.dynamodb,
+        NewImage: {
+          ...valid.dynamodb.NewImage,
+          language: { N: 0 },
+        },
+      },
+    };
+
+    expect(() =>
+      eventBuilder.buildEvent(
+        invalidDomainEventRecord as unknown as PublishableEventRecord
+      )
+    ).toThrow(
+      expect.objectContaining({
+        name: 'ZodError',
+        issues: [
+          expect.objectContaining({
+            code: 'invalid_value',
+            path: ['data', 'language'],
+          }),
+        ],
+      })
+    );
+  });
+
+  test('builds template completed event', () => {
+    const event = eventBuilder.buildEvent(
+      publishableTemplateEventRecord('SUBMITTED')
+    );
+
+    expect(event).toEqual(
+      expectedEvent(
+        'SUBMITTED',
+        'uk.nhs.notify.template-management.TemplateCompleted.v1',
+        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+      )
+    );
+  });
+
+  test('builds template drafted event', () => {
+    const event = eventBuilder.buildEvent(
+      publishableTemplateEventRecord('PROOF_AVAILABLE')
+    );
+
+    expect(event).toEqual(
+      expectedEvent(
+        'PROOF_AVAILABLE',
+        'uk.nhs.notify.template-management.TemplateDrafted.v1',
+        'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
+      )
+    );
+  });
+
+  test('builds event when no old image is available', () => {
+    // although not required by this lambda, an old image would be expected here in real usage
+    const mockEvent = publishableTemplateEventRecord('SUBMITTED');
+
+    const noOldImage = {
+      ...mockEvent,
+      dynamodb: {
+        SequenceNumber: mockEvent.dynamodb.SequenceNumber,
+        NewImage: mockEvent.dynamodb.NewImage,
+      },
+    };
+
+    const event = eventBuilder.buildEvent(noOldImage);
+
+    expect(event).toEqual(
+      expectedEvent(
+        'SUBMITTED',
+        'uk.nhs.notify.template-management.TemplateCompleted.v1',
+        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+      )
+    );
+  });
+
+  test('builds template deleted event', () => {
+    const event = eventBuilder.buildEvent(
+      publishableTemplateEventRecord('DELETED')
+    );
+
+    expect(event).toEqual(
+      expectedEvent(
+        'DELETED',
+        'uk.nhs.notify.template-management.TemplateDeleted.v1',
+        'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
+      )
+    );
+  });
+
+  test('should return undefined when not a publishable event', () => {
+    shouldPublishMock.mockReset();
+    shouldPublishMock.mockReturnValueOnce(false);
+
+    const event = eventBuilder.buildEvent(
+      publishableTemplateEventRecord('PROOF_AVAILABLE')
+    );
+
+    expect(event).toEqual(undefined);
+  });
+
+  test('does not build template event on hard delete', () => {
+    const hardDeletepublishableTemplateEventRecord = {
+      ...publishableTemplateEventRecord('SUBMITTED'),
+      dynamodb: {
+        SequenceNumber: '4',
+        NewImage: undefined,
+      },
+    };
+
+    const event = eventBuilder.buildEvent(
+      hardDeletepublishableTemplateEventRecord
+    );
+
+    expect(event).toEqual(undefined);
+  });
 });
 
-test('builds template drafted event', () => {
-  const event = eventBuilder.buildEvent(
-    publishableEventRecord('PROOF_AVAILABLE')
-  );
+describe('routing config events', () => {
+  test('should return undefined when table source is routing config table', () => {
+    const event = eventBuilder.buildEvent({
+      dynamodb: {
+        SequenceNumber: '1',
+        NewImage: {},
+        OldImage: {},
+      },
+      eventID: 'cf1344e0-fd57-426a-860a-3efc9d2b1977',
+      tableName: tables.routing,
+    });
 
-  expect(event).toEqual(
-    expectedEvent(
-      'PROOF_AVAILABLE',
-      'uk.nhs.notify.template-management.TemplateDrafted.v1',
-      'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
-    )
-  );
-});
-
-test('builds event when no old image is available', () => {
-  // although not required by this lambda, an old image would be expected here in real usage
-  const mockEvent = publishableEventRecord('SUBMITTED');
-
-  const noOldImage = {
-    ...mockEvent,
-    dynamodb: {
-      SequenceNumber: mockEvent.dynamodb.SequenceNumber,
-      NewImage: mockEvent.dynamodb.NewImage,
-    },
-  };
-
-  const event = eventBuilder.buildEvent(noOldImage);
-
-  expect(event).toEqual(
-    expectedEvent(
-      'SUBMITTED',
-      'uk.nhs.notify.template-management.TemplateCompleted.v1',
-      'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
-    )
-  );
-});
-
-test('builds template deleted event', () => {
-  const event = eventBuilder.buildEvent(publishableEventRecord('DELETED'));
-
-  expect(event).toEqual(
-    expectedEvent(
-      'DELETED',
-      'uk.nhs.notify.template-management.TemplateDeleted.v1',
-      'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
-    )
-  );
-});
-
-test('should return undefined when not a publishable event', () => {
-  shouldPublishMock.mockReset();
-  shouldPublishMock.mockReturnValueOnce(false);
-
-  const event = eventBuilder.buildEvent(
-    publishableEventRecord('PROOF_AVAILABLE')
-  );
-
-  expect(event).toEqual(undefined);
-});
-
-test('does not build template event on hard delete', () => {
-  const hardDeletePublishableEventRecord = {
-    ...publishableEventRecord('SUBMITTED'),
-    dynamodb: {
-      SequenceNumber: '4',
-      NewImage: undefined,
-    },
-  };
-
-  const event = eventBuilder.buildEvent(hardDeletePublishableEventRecord);
-
-  expect(event).toEqual(undefined);
+    expect(event).toEqual(undefined);
+  });
 });

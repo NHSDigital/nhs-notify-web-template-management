@@ -84,6 +84,11 @@ exports[`SubmitLetterTemplate component should render with client proofing and r
             type="hidden"
             value="template-id"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+          />
           <button
             aria-disabled="false"
             class="nhsuk-button nhsuk-u-margin-right-3"
@@ -199,6 +204,12 @@ exports[`SubmitLetterTemplate component should render with client proofing disab
             type="hidden"
             value="template-id"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="1234"
+          />
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
@@ -307,6 +318,12 @@ exports[`SubmitLetterTemplate component should render with client proofing enabl
             readonly=""
             type="hidden"
             value="template-id"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="1234"
           />
           <button
             aria-disabled="false"

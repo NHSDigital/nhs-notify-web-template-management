@@ -165,7 +165,7 @@ describe('middleware function', () => {
     ]);
   });
 
-  it('when running in development mode, CSP script-src allows unsafe-eval', async () => {
+  it('when running in development mode, CSP script-src allows unsafe-eval and does not upgrade insecure requests', async () => {
     // @ts-expect-error assignment to const
     process.env.NODE_ENV = 'development';
 
@@ -189,7 +189,6 @@ describe('middleware function', () => {
         /^script-src 'self' 'nonce-[\dA-Za-z]+' 'unsafe-eval'$/
       ),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
-      'upgrade-insecure-requests',
       '',
     ]);
   });

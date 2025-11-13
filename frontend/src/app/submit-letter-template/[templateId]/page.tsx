@@ -3,7 +3,7 @@
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  PageProps,
+  TemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const SubmitLetterTemplatePage = async (props: PageProps) => {
+const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
@@ -30,6 +30,7 @@ const SubmitLetterTemplatePage = async (props: PageProps) => {
     <SubmitLetterTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

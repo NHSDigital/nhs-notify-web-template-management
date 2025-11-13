@@ -2,6 +2,7 @@
   "accessibility",
   "api",
   "event",
+  "ui-accessibility",
   "ui-component",
   "ui-routing-component",
   "ui-e2e",

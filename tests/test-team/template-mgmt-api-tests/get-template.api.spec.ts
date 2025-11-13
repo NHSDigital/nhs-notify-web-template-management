@@ -172,6 +172,7 @@ test.describe('GET /v1/template/:templateId', () => {
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
         },
       }
     );

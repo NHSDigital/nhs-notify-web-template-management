@@ -27,7 +27,12 @@ test.describe('POST /v1/template/:templateId/proof', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/some-template/proof`
+      `${process.env.API_BASE_URL}/v1/template/some-template/proof`,
+      {
+        headers: {
+          'X-Lock-Number': '0',
+        },
+      }
     );
 
     const result = await response.json();
@@ -45,6 +50,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': '0',
         },
       }
     );
@@ -60,22 +66,21 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   test('returns 404 if template exists but is owned by a different client', async ({
     request,
   }) => {
-    const userProofingEnabledtemplateId = randomUUID();
+    const template = TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      userProofingEnabled,
+      'userProofingEnabledtemplate',
+      'PENDING_PROOF_REQUEST'
+    );
 
-    await templateStorageHelper.seedTemplateData([
-      TemplateFactory.uploadLetterTemplate(
-        userProofingEnabledtemplateId,
-        userProofingEnabled,
-        'userProofingEnabledtemplate',
-        'PENDING_PROOF_REQUEST'
-      ),
-    ]);
+    await templateStorageHelper.seedTemplateData([template]);
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${userProofingEnabledtemplateId}/proof`,
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/proof`,
       {
         headers: {
           Authorization: await differentClientUser.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -126,6 +131,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -141,6 +147,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
         name: template.name,
         templateStatus: 'WAITING_FOR_PROOF',
         templateType: template.templateType,
+        lockNumber: template.lockNumber + 1,
       }),
     });
 
@@ -176,6 +183,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -209,6 +217,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -257,6 +266,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
       {
         headers: {
           Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
         },
       }
     );
@@ -276,5 +286,102 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     });
 
     expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+  });
+
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        userProofingEnabled,
+        'userProofingEnabledtemplate',
+        'PENDING_PROOF_REQUEST'
+      ),
+      files: {
+        pdfTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion: randomUUID(),
+          fileName: 'template.pdf',
+        },
+        testDataCsv: {
+          virusScanStatus: 'PASSED',
+          currentVersion: randomUUID(),
+          fileName: 'data.csv',
+        },
+      },
+      personalisationParameters: ['nhsNumber'],
+      campaignId: userProofingEnabled.campaignIds?.[0],
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/proof`,
+      {
+        headers: {
+          Authorization: await userProofingEnabled.getAccessToken(),
+        },
+      }
+    );
+
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(response.status(), debug).toBe(409);
+
+    expect(result).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
+  });
+
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const template = {
+      ...TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        userProofingEnabled,
+        'userProofingEnabledtemplate',
+        'PENDING_PROOF_REQUEST'
+      ),
+      files: {
+        pdfTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion: randomUUID(),
+          fileName: 'template.pdf',
+        },
+        testDataCsv: {
+          virusScanStatus: 'PASSED',
+          currentVersion: randomUUID(),
+          fileName: 'data.csv',
+        },
+      },
+      personalisationParameters: ['nhsNumber'],
+      campaignId: userProofingEnabled.campaignIds?.[0],
+    };
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/proof`,
+      {
+        headers: {
+          Authorization: await userProofingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber + 1),
+        },
+      }
+    );
+
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(response.status(), debug).toBe(409);
+
+    expect(result).toEqual({
+      statusCode: 409,
+      technicalMessage: 'Invalid lock number',
+    });
   });
 });

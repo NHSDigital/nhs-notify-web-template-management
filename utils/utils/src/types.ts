@@ -58,9 +58,15 @@ export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 
-export type PageProps = {
+export type TemplatePageProps = {
   params: Promise<{
     templateId: string;
+  }>;
+};
+
+export type MessagePlanPageProps = {
+  params: Promise<{
+    routingConfigId: string;
   }>;
 };
 
@@ -78,6 +84,7 @@ export type ActionPageProps = {
   templateName: string;
   templateId: string;
   channel: TemplateType;
+  lockNumber: number;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
@@ -104,6 +111,7 @@ export type DatabaseTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  lockNumber?: number;
   message?: string;
   name: string;
   proofingEnabled?: boolean;
@@ -120,6 +128,7 @@ export type DatabaseTemplate = {
 type DbOnlyTemplateProperties = {
   owner: string;
   version: number;
+  ttl?: number;
 };
 
 type AssertExtendsMerged<

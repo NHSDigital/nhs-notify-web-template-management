@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { RequestProof } from '@forms/RequestProof/RequestProof';
 import {
-  PageProps,
+  TemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const RequestProofPage = async (props: PageProps) => {
+const RequestProofPage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const proofingEnabled = await serverIsFeatureEnabled('proofing');
@@ -41,6 +41,7 @@ const RequestProofPage = async (props: PageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel={validatedTemplate.templateType}
+      lockNumber={validatedTemplate.lockNumber}
     />
   );
 };

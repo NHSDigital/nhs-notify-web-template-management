@@ -17,11 +17,14 @@ const protectedPaths = [
   /^\/email-template-submitted\/[^/]+$/,
   /^\/invalid-template$/,
   /^\/letter-template-submitted\/[^/]+$/,
+  /^\/message-plans\/choose-templates\/[^/]+$/,
   /^\/message-plans\/campaign-id-required$/,
   /^\/message-plans\/choose-message-order$/,
   /^\/message-plans\/create-message-plan$/,
-  /^\/message-templates$/,
+  /^\/message-plans\/edit-message-plan-settings\/[^/]+$/,
+  /^\/message-plans\/invalid$/,
   /^\/message-plans$/,
+  /^\/message-templates$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,
   /^\/preview-email-template\/[^/]+$/,
   /^\/preview-letter-template\/[^/]+$/,
@@ -51,7 +54,7 @@ const publicPaths = [
 ];
 
 function getContentSecurityPolicy(nonce: string) {
-  const contentSecurityPolicyDirective = {
+  const contentSecurityPolicyDirective: Record<string, string[]> = {
     'base-uri': [`'self'`],
     'default-src': [`'none'`],
     'frame-ancestors': [`'none'`],
@@ -64,16 +67,18 @@ function getContentSecurityPolicy(nonce: string) {
     'object-src': [`'none'`],
     'script-src': [`'self'`, `'nonce-${nonce}'`],
     'style-src': [`'self'`, `'nonce-${nonce}'`],
-    'upgrade-insecure-requests;': [],
   };
 
   if (process.env.NODE_ENV === 'development') {
     contentSecurityPolicyDirective['script-src'].push(`'unsafe-eval'`);
+  } else {
+    contentSecurityPolicyDirective['upgrade-insecure-requests'] = [];
   }
 
   return Object.entries(contentSecurityPolicyDirective)
     .map(([key, value]) => `${key} ${value.join(' ')}`)
-    .join('; ');
+    .join('; ')
+    .concat(';');
 }
 
 export async function middleware(request: NextRequest) {

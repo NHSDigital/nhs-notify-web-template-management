@@ -37,7 +37,6 @@ type TestUserDynamicDetails = {
   campaignId?: string;
   campaignIds?: string[];
   clientId: string;
-  password: string;
   clientName?: string;
   identityAttributes?: Partial<Record<UserIdentityAttributes, string>>;
 };
@@ -47,6 +46,7 @@ export type TestUserContext = TestUserStaticDetails &
     accessToken: string;
     idToken: string;
     refreshToken: string;
+    password: string;
   };
 
 export const testUsers: Record<string, TestUserStaticDetails> = {
@@ -136,17 +136,26 @@ export type TestUser = TestUserStaticDetails &
      * Password auth implicitly resets temp password if not logged in previously
      */
     getAccessToken(): Promise<string>;
+
     /**
      * Gets an ID token for a test user
      * Uses the same fallback logic as getAccessToken
      */
     getIdToken(): Promise<string>;
+
     /**
      * Sets an updated password in local state.
      * The password should already have been updated in Cognito
      * e.g. by using the change password form in the UI
      */
     setUpdatedPassword(password: string): Promise<void>;
+
+    /**
+     * Gets a users password from the state file.
+     * This will be the latest version of a users password
+     * Use this instead of user.password
+     */
+    getPassword(): Promise<string>;
   };
 
 export class CognitoAuthHelper {
@@ -203,11 +212,11 @@ export class CognitoAuthHelper {
       }
 
       if (userCtx.refreshToken) {
-        const refeshedTokens = await this.refreshUserSessionTokens(
+        const refreshedTokens = await this.refreshUserSessionTokens(
           id,
           userCtx.refreshToken
         );
-        return refeshedTokens.accessToken;
+        return refreshedTokens.accessToken;
       }
     }
 
@@ -223,11 +232,11 @@ export class CognitoAuthHelper {
     }
 
     if (userCtx?.refreshToken) {
-      const refeshedTokens = await this.refreshUserSessionTokens(
+      const refreshedTokens = await this.refreshUserSessionTokens(
         id,
         userCtx.refreshToken
       );
-      return refeshedTokens.idToken;
+      return refreshedTokens.idToken;
     }
 
     const authTokens = await this.passwordAuth(id);
@@ -251,7 +260,16 @@ export class CognitoAuthHelper {
         await CognitoAuthHelper.authContextFile.set(runId, id, {
           password,
         });
-        this.password = password;
+      },
+
+      async getPassword() {
+        const u = await CognitoAuthHelper.authContextFile.get(runId, id);
+
+        if (!u) {
+          throw new Error('User not found');
+        }
+
+        return u.password;
       },
     };
 
