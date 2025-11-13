@@ -88,22 +88,31 @@ export const SubmitLetterTemplate: FC<{
   templateName: string;
   templateId: string;
 }> = ({ templateName, templateId }) => {
+  const features = useFeatureFlags();
+
   const {
-    buttonText,
+    routingFlagEnabled,
+    routingFlagDisabled,
     goBackButtonText,
     goBackPath,
-    leadParagraph,
-    pageHeading,
-    submitChecklistHeading,
     submitChecklistIntroduction,
     submitChecklistItems,
-    warningCalloutText,
     warningCalloutLabel,
   } = content.components.submitLetterTemplate;
 
   const [_, action] = useActionState(submitTemplate, 'LETTER');
 
-  const features = useFeatureFlags();
+  const pageContent = features.routing
+    ? routingFlagEnabled
+    : routingFlagDisabled;
+
+  const {
+    pageHeading,
+    leadParagraph,
+    submitChecklistHeading,
+    warningCalloutText,
+    buttonText,
+  } = pageContent;
 
   if (!features.proofing) {
     return (

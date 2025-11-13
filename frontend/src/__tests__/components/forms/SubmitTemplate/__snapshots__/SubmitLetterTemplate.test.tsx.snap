@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubmitLetterTemplate component should render 1`] = `
+exports[`SubmitLetterTemplate component should render with client proofing and routing enabled 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -14,17 +14,17 @@ exports[`SubmitLetterTemplate component should render 1`] = `
         class="nhsuk-grid-column-two-thirds"
       >
         <h1>
-          Approve and submit 'template-name'
+          Approve 'template-name'
         </h1>
         <p
           class="nhsuk-body-l"
         >
-          When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.
+          When you approve your template proof, your template will be ready to add to a message plan.
         </p>
         <h2
           class="nhsuk-heading-s"
         >
-          Before you submit this template
+          Before you approve this template proof
         </h2>
         <p>
           Check that your template proof:
@@ -60,7 +60,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             </span>
           </h2>
           <p>
-            You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.
+            You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.
           </p>
         </div>
         <form
@@ -84,9 +84,17 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             type="hidden"
             value="template-id"
           />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-u-margin-right-3"
+            id="submit-template-button"
+            type="submit"
+          >
+            Approve template proof
+          </button>
           <a
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            class="nhsuk-button nhsuk-button-background-button"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
             id="go-back-button"
@@ -94,14 +102,6 @@ exports[`SubmitLetterTemplate component should render 1`] = `
           >
             Go back
           </a>
-          <button
-            aria-disabled="false"
-            class="nhsuk-button"
-            id="submit-template-button"
-            type="submit"
-          >
-            Approve and submit
-          </button>
         </form>
       </div>
     </div>
@@ -217,6 +217,115 @@ exports[`SubmitLetterTemplate component should render with client proofing disab
           >
             Submit template
           </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`SubmitLetterTemplate component should render with client proofing enabled 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1>
+          Approve and submit 'template-name'
+        </h1>
+        <p
+          class="nhsuk-body-l"
+        >
+          When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.
+        </p>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          Before you submit this template
+        </h2>
+        <p>
+          Check that your template proof:
+        </p>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
+          <li>
+            looks exactly as you expect your recipient to get it
+          </li>
+          <li>
+            uses personalisation as you expect
+          </li>
+          <li>
+            shows QR codes correctly (if used)
+          </li>
+        </ul>
+        <div
+          class="nhsuk-warning-callout"
+        >
+          <h2
+            class="nhsuk-warning-callout__label"
+          >
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h2>
+          <p>
+            You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.
+          </p>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="submit-template-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-u-margin-right-3"
+            id="submit-template-button"
+            type="submit"
+          >
+            Approve and submit
+          </button>
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button-background-button"
+            draggable="false"
+            href="/templates/preview-letter-template/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
         </form>
       </div>
     </div>

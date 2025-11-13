@@ -44,7 +44,10 @@ describe('shouldPublish', () => {
     }
   );
 
-  type LetterStatus = Exclude<TemplateStatus, 'NOT_YET_SUBMITTED'>;
+  type LetterStatus = Exclude<
+    TemplateStatus,
+    'NOT_YET_SUBMITTED' | 'TEMPLATE_PROOF_APPROVED'
+  >;
 
   const letterPublishCases: Record<LetterStatus, boolean> = {
     DELETED: true,
