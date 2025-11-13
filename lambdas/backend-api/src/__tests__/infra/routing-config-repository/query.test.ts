@@ -24,7 +24,7 @@ function setup() {
     // pass an actual doc client - it gets intercepted up by mockClient,
     // but paginateQuery needs the real deal
     DynamoDBDocumentClient.from(new DynamoDBClient({})),
-    TABLE_NAME
+    { routingConfigTableName: TABLE_NAME, templatesTableName: '' }
   );
 
   const mocks = { dynamo };

@@ -56,6 +56,7 @@ describe('shouldPublish', () => {
     PENDING_VALIDATION: false,
     VALIDATION_FAILED: false,
     VIRUS_SCAN_FAILED: false,
+    LOCKED: false,
   };
 
   // not all of these transitions are expected in real usage

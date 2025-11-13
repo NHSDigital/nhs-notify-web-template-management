@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -9,10 +10,13 @@ import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage
 import type { FactoryRoutingConfig } from '../helpers/types';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 
 test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   const authHelper = createAuthHelper();
-  const storageHelper = new RoutingConfigStorageHelper();
+  const routingConfigStorage = new RoutingConfigStorageHelper();
+  const templateStorage = new TemplateStorageHelper();
   let user1: TestUser;
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
@@ -45,7 +49,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
 
     routingConfigSubmitBySharedClientUser = RoutingConfigFactory.create(user1);
 
-    await storageHelper.seed([
+    await routingConfigStorage.seed([
       routingConfigNoUpdates.dbEntry,
       routingConfigSuccessfullySubmit.dbEntry,
       routingConfigAlreadySubmitted.dbEntry,
@@ -55,7 +59,8 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   });
 
   test.afterAll(async () => {
-    await storageHelper.deleteSeeded();
+    await routingConfigStorage.deleteSeeded();
+    await templateStorage.deleteSeededTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -83,7 +88,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(response.status(), dbg).toBe(404);
     expect(responseBody).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
     });
   });
 
@@ -102,10 +107,14 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(updateResponse.status()).toBe(404);
     expect(await updateResponse.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
     });
   });
 
+  // TODO: CCM-12685
+  // at the moment there is no validation on presence of referenced templates
+  // so you can submit a config which doesn't reference any templates
+  // the request in this test will become an error case when CCM-12685 is implemented
   test('returns 200 and the updated routing config data', async ({
     request,
   }) => {
@@ -139,6 +148,169 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     );
   });
 
+  test('returns 200 and the updated routing config data - sets referenced templates to LOCKED', async ({
+    request,
+  }) => {
+    const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      user1
+    );
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user1
+    );
+    const smsTemplate = TemplateFactory.createSmsTemplate(randomUUID(), user1);
+    const letterTemplate = TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user1,
+      'letter-template',
+      'SUBMITTED'
+    );
+    const templates = [
+      nhsAppTemplate,
+      emailTemplate,
+      smsTemplate,
+      letterTemplate,
+    ];
+
+    await templateStorage.seedTemplateData(templates);
+
+    const routingConfig = RoutingConfigFactory.createWithChannels(user1, [
+      'NHSAPP',
+      'EMAIL',
+      'SMS',
+      'LETTER',
+    ])
+      .addTemplate('NHSAPP', nhsAppTemplate.id)
+      .addTemplate('EMAIL', emailTemplate.id)
+      .addTemplate('SMS', smsTemplate.id)
+      .addTemplate('LETTER', letterTemplate.id);
+
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
+
+    const start = new Date();
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(updateResponse.status()).toBe(200);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 200,
+      data: {
+        ...routingConfig.apiResponse,
+        status: 'COMPLETED' satisfies RoutingConfigStatus,
+        updatedAt: expect.stringMatching(isoDateRegExp),
+      },
+    });
+
+    expect(updated.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+
+    for (const template of templates) {
+      const latest = await templateStorage.getTemplate({
+        templateId: template.id,
+        clientId: user1.clientId,
+      });
+
+      expect(latest.templateStatus).toBe('LOCKED');
+      expect(latest.lockNumber).toBe(template.lockNumber + 1);
+      expect(latest.updatedAt).toEqual(updated.data.updatedAt);
+    }
+  });
+
+  test('returns 200 - can reference templates that are already locked', async ({
+    request,
+  }) => {
+    const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      user1
+    );
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user1
+    );
+    const smsTemplate = TemplateFactory.createSmsTemplate(randomUUID(), user1);
+    const letterTemplate = TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user1,
+      'letter-template',
+      'LOCKED'
+    );
+
+    nhsAppTemplate.templateStatus = 'LOCKED';
+    emailTemplate.templateStatus = 'LOCKED';
+    smsTemplate.templateStatus = 'LOCKED';
+
+    const templates = [
+      nhsAppTemplate,
+      emailTemplate,
+      smsTemplate,
+      letterTemplate,
+    ];
+
+    await templateStorage.seedTemplateData(templates);
+
+    const routingConfig = RoutingConfigFactory.createWithChannels(user1, [
+      'NHSAPP',
+      'EMAIL',
+      'SMS',
+      'LETTER',
+    ])
+      .addTemplate('NHSAPP', nhsAppTemplate.id)
+      .addTemplate('EMAIL', emailTemplate.id)
+      .addTemplate('SMS', smsTemplate.id)
+      .addTemplate('LETTER', letterTemplate.id);
+
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
+
+    const start = new Date();
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(updateResponse.status()).toBe(200);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 200,
+      data: {
+        ...routingConfig.apiResponse,
+        status: 'COMPLETED' satisfies RoutingConfigStatus,
+        updatedAt: expect.stringMatching(isoDateRegExp),
+      },
+    });
+
+    expect(updated.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+
+    for (const template of templates) {
+      const latest = await templateStorage.getTemplate({
+        templateId: template.id,
+        clientId: user1.clientId,
+      });
+
+      expect(latest.templateStatus).toBe('LOCKED');
+      expect(latest.lockNumber).toBe(template.lockNumber + 1);
+      expect(latest.updatedAt).toEqual(updated.data.updatedAt);
+    }
+  });
+
   test('returns 400 - cannot submit a COMPLETED routing config', async ({
     request,
   }) => {
@@ -158,7 +330,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(updateResponseBody).toEqual({
       statusCode: 400,
       technicalMessage:
-        'Routing configuration with status COMPLETED cannot be updated',
+        'Routing Config with status COMPLETED cannot be updated',
     });
   });
 
@@ -180,7 +352,72 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
 
     expect(updateResponseBody).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
+    });
+  });
+
+  test("returns 400 - routing config references a template that doesn't exist", async ({
+    request,
+  }) => {
+    const routingConfig = RoutingConfigFactory.createWithChannels(user1, [
+      'NHSAPP',
+    ]).addTemplate('NHSAPP', randomUUID());
+
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'Unable to lock one or more templates referenced in Routing Config',
+    });
+  });
+
+  test('returns 400 - routing config references a template in wrong status', async ({
+    request,
+  }) => {
+    const template = TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user1,
+      'letter-template',
+      'PENDING_PROOF_REQUEST'
+    );
+
+    const templates = [template];
+
+    await templateStorage.seedTemplateData(templates);
+
+    const routingConfig = RoutingConfigFactory.createWithChannels(user1, [
+      'LETTER',
+    ]).addTemplate('LETTER', template.id);
+
+    await routingConfigStorage.seed([routingConfig.dbEntry]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'Unable to lock one or more templates referenced in Routing Config',
     });
   });
 

@@ -54,6 +54,26 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  expectStatusByType(
+    ...typeStatusMappings: [TemplateType, TemplateStatus | TemplateStatus[]][]
+  ) {
+    this.updateBuilder.conditions.andGroup((group) => {
+      for (const [type, status] of typeStatusMappings) {
+        group.orGroup((g) => {
+          g.and('templateType', '=', type);
+
+          if (Array.isArray(status)) {
+            g.andIn('templateStatus', status);
+          } else {
+            g.and('templateStatus', '=', status);
+          }
+        });
+      }
+    });
+
+    return this;
+  }
+
   setLockTime(
     lockField: 'sftpSendLockTime',
     timeMs: number,
@@ -88,9 +108,9 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  setUpdatedByUserAt(userId: string) {
+  setUpdatedByUserAt(userId: string, date = new Date()) {
     this.updateBuilder
-      .setValue('updatedAt', new Date().toISOString())
+      .setValue('updatedAt', date.toISOString())
       .setValue('updatedBy', userId);
     return this;
   }

@@ -5,7 +5,7 @@ repos:
       - id: trailing-whitespace
         exclude: |
           (?x)^(
-            frontend/src/__tests__/.*\.tsx\.snap |
+            frontend/src/.*\.tsx\.snap |
             frontend/src/__tests__/utils/markdownit/fixtures/index\.ts
           )$
       - id: detect-aws-credentials

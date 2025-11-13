@@ -619,4 +619,87 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectTemplateStatusByType', () => {
+    test('adds conditions for single type-status mapping', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .expectStatusByType(['SMS', 'NOT_YET_SUBMITTED'])
+        .build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateType': 'templateType',
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_1_templateType': 'SMS',
+          ':condition_1_1_2_templateStatus': 'NOT_YET_SUBMITTED',
+        },
+        ConditionExpression:
+          '((#templateType = :condition_1_1_1_templateType AND #templateStatus = :condition_1_1_2_templateStatus))',
+      });
+    });
+
+    test('adds conditions for multiple type-status mappings', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .expectStatusByType(
+          ['SMS', 'NOT_YET_SUBMITTED'],
+          ['EMAIL', 'PENDING_VALIDATION']
+        )
+        .build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateType': 'templateType',
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_1_templateType': 'SMS',
+          ':condition_1_1_2_templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_2_1_templateType': 'EMAIL',
+          ':condition_1_2_2_templateStatus': 'PENDING_VALIDATION',
+        },
+        ConditionExpression:
+          '((#templateType = :condition_1_1_1_templateType AND #templateStatus = :condition_1_1_2_templateStatus) OR (#templateType = :condition_1_2_1_templateType AND #templateStatus = :condition_1_2_2_templateStatus))',
+      });
+    });
+
+    test('handles array of statuses', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .expectStatusByType(['EMAIL', ['PENDING_VALIDATION', 'DELETED']])
+        .build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateType': 'templateType',
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_1_templateType': 'EMAIL',
+          ':condition_1_1_2_1_templateStatus': 'PENDING_VALIDATION',
+          ':condition_1_1_2_2_templateStatus': 'DELETED',
+        },
+        ConditionExpression:
+          '((#templateType = :condition_1_1_1_templateType AND #templateStatus IN (:condition_1_1_2_1_templateStatus, :condition_1_1_2_2_templateStatus)))',
+      });
+    });
+  });
 });

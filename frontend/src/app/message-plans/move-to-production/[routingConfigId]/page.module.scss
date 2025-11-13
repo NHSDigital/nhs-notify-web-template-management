@@ -1,0 +1,17 @@
+.table {
+  background-color: var(--nhsuk-card-background-colour);
+  border: 1px solid var(--nhsuk-border-colour);
+
+  th {
+    width: 20%;
+  }
+
+  th,
+  td {
+    padding: 1rem;
+  }
+
+  tr:hover {
+    background-color: inherit;
+  }
+}

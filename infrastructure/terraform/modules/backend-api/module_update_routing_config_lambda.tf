@@ -13,7 +13,7 @@ module "update_routing_config_lambda" {
 
   function_module_name  = "update-routing-config"
   handler_function_name = "handler"
-  description           = "Submit Routing Config API endpoint"
+  description           = "Update Routing Config API endpoint"
 
   memory  = 2048
   timeout = 3

@@ -163,6 +163,7 @@ describe('statusToColourMapping', () => {
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
         PROOF_AVAILABLE: 'orange',
+        LOCKED: 'orange',
       };
 
       expect(
@@ -187,6 +188,7 @@ describe('statusToColourMapping', () => {
             VALIDATION_FAILED: 'red',
             PROOF_AVAILABLE: 'orange',
             NOT_YET_SUBMITTED: 'green',
+            LOCKED: 'orange',
           };
 
           expect(

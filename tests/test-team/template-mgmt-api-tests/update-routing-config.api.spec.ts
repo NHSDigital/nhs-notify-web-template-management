@@ -85,7 +85,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
     });
   });
 
@@ -108,7 +108,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     expect(updateResponse.status()).toBe(404);
     expect(await updateResponse.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
     });
   });
 
@@ -172,7 +172,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage:
-        'Routing configuration with status COMPLETED cannot be updated',
+        'Routing Config with status COMPLETED cannot be updated',
     });
   });
 
@@ -228,7 +228,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
 
     expect(updateResponseBody).toEqual({
       statusCode: 404,
-      technicalMessage: 'Routing configuration not found',
+      technicalMessage: 'Routing Config not found',
     });
   });
 
