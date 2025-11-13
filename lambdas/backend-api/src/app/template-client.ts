@@ -12,8 +12,7 @@ import {
   ClientConfiguration,
   $LockNumber,
   $TemplateDto,
-  $ListTemplateFilters,
-  ListTemplateFilters,
+  $TemplateFilter,
 } from 'nhs-notify-backend-client';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
@@ -29,6 +28,7 @@ import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
 import { TemplateRepository } from '../infra';
+import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -421,10 +421,10 @@ export class TemplateClient {
     user: User,
     filters?: unknown
   ): Promise<Result<TemplateDto[]>> {
-    let parsedFilters: ListTemplateFilters = {};
+    let parsedFilters: TemplateFilter = {};
 
     if (filters) {
-      const validation = await validate($ListTemplateFilters, filters);
+      const validation = await validate($TemplateFilter, filters);
 
       if (validation.error) {
         return validation;

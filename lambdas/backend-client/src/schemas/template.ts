@@ -31,6 +31,7 @@ import {
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
 } from './union-lists';
+import { TemplateFilter } from '../types/filters';
 
 export const $LetterType = schemaFor<LetterType>()(z.enum(LETTER_TYPE_LIST));
 
@@ -177,18 +178,13 @@ export const $TemplateDto = schemaFor<
   ])
 );
 
-export type ListTemplateFilters = {
-  templateStatus?: TemplateStatus;
-  templateType?: TemplateType;
-  language?: Language;
-  letterType?: LetterType;
-};
-
-export const $ListTemplateFilters = schemaFor<ListTemplateFilters>()(
-  z.object({
-    templateStatus: $TemplateStatusActive.optional(),
-    templateType: $TemplateType.optional(),
-    language: $Language.optional(),
-    letterType: $LetterType.optional(),
-  })
+export const $TemplateFilter = schemaFor<TemplateFilter>()(
+  z
+    .object({
+      templateStatus: $TemplateStatusActive,
+      templateType: $TemplateType,
+      language: $Language,
+      letterType: $LetterType,
+    })
+    .partial()
 );

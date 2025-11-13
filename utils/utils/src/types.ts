@@ -125,13 +125,6 @@ export type DatabaseTemplate = {
   supplierReferences?: Record<string, string>;
 } & DbOnlyTemplateProperties;
 
-export type TemplateFilter = Partial<
-  Pick<
-    DatabaseTemplate,
-    'templateStatus' | 'templateType' | 'language' | 'letterType'
-  >
->;
-
 type DbOnlyTemplateProperties = {
   owner: string;
   version: number;

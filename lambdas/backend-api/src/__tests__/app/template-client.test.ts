@@ -10,16 +10,14 @@ import type {
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
 import { LetterUploadRepository } from '../../infra/letter-upload-repository';
-import {
-  DatabaseTemplate,
-  TemplateFilter,
-} from 'nhs-notify-web-template-management-utils';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { ProofingQueue } from '../../infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { TemplateQuery } from '../../infra/template-repository/query';
+import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
