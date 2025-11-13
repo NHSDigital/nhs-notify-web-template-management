@@ -72,6 +72,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
 
             {templateList.length > 0 ? (
               <ChannelTemplates
+                routingConfigId={messagePlan.id}
                 templateList={templateList}
                 errorState={errorState || null}
                 selectedTemplate={selectedTemplateId}

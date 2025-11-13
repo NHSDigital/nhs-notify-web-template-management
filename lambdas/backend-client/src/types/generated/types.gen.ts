@@ -224,7 +224,6 @@ export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
 export type TemplateStatusActive =
-  | 'DELETED'
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'

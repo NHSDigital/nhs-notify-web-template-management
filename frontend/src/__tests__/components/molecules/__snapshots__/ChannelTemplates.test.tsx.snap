@@ -157,7 +157,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -252,7 +252,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-email-template/email-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -347,7 +347,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-text-message-template/sms-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -442,7 +442,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-letter-template/letter-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
                       id="preview-template-link-3"
                     >
                       Preview
@@ -628,7 +628,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -723,7 +723,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-email-template/email-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -818,7 +818,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-text-message-template/sms-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -913,7 +913,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-letter-template/letter-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
                       id="preview-template-link-3"
                     >
                       Preview
@@ -1087,7 +1087,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -1183,7 +1183,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-email-template/email-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -1278,7 +1278,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-text-message-template/sms-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -1373,7 +1373,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     <a
                       aria-label="Preview"
                       data-testid="preview-link"
-                      href="/preview-submitted-letter-template/letter-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
                       id="preview-template-link-3"
                     >
                       Preview

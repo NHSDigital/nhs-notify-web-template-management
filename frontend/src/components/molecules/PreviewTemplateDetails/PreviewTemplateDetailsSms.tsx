@@ -16,10 +16,10 @@ import { renderSMSMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsSms({
   template,
-  excludeStatus,
+  hideStatus,
 }: {
   template: SMSTemplate;
-  excludeStatus?: boolean;
+  hideStatus?: boolean;
 }) {
   const message = renderSMSMarkdown(template.message);
 
@@ -35,7 +35,7 @@ export default function PreviewTemplateDetailsSms({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
-            excludeStatus={excludeStatus}
+            hideStatus={hideStatus}
           />
         </DetailSection>
         <DetailSection>

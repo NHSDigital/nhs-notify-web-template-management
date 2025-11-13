@@ -235,7 +235,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -536,7 +536,7 @@ exports[`ChooseChannelTemplate renders correctly when template is unselected 1`]
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -789,7 +789,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-email-template/email-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -1084,7 +1084,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -1337,7 +1337,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-letter-template/letter-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -1590,7 +1590,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -1685,7 +1685,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/another-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/another-id"
                               id="preview-template-link-1"
                             >
                               Preview
@@ -1938,7 +1938,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-nhs-app-template/app-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
                               id="preview-template-link-0"
                             >
                               Preview
@@ -2191,7 +2191,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-text-message-template/sms-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
                               id="preview-template-link-0"
                             >
                               Preview

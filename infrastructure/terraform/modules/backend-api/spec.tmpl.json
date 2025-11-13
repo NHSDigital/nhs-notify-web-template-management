@@ -768,7 +768,6 @@
       },
       "TemplateStatusActive": {
         "enum": [
-          "DELETED",
           "NOT_YET_SUBMITTED",
           "PENDING_PROOF_REQUEST",
           "PENDING_UPLOAD",

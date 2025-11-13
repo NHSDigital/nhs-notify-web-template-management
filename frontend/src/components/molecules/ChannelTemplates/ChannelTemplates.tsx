@@ -7,21 +7,15 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   templateTypeDisplayMappings,
-  previewSubmittedTemplatePages,
   ErrorState,
+  cascadeTemplateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './ChannelTemplates.module.scss';
-import { usePathname } from 'next/navigation';
+import { interpolate } from '@utils/interpolate';
 
 const { tableHintText, tableContent } =
   baseContent.components.chooseChannelTemplate;
-
-const previewTemplateLink = (
-  template: TemplateDto,
-  currentPage: string
-): string =>
-  `/${previewSubmittedTemplatePages(template.templateType)}/${template.id}?sourcePage=${encodeURIComponent(currentPage)}`;
 
 const typeDisplayMappings = (template: TemplateDto): string =>
   template.templateType === 'LETTER'
@@ -29,16 +23,16 @@ const typeDisplayMappings = (template: TemplateDto): string =>
     : templateTypeDisplayMappings(template.templateType);
 
 export function ChannelTemplates({
+  routingConfigId,
   templateList,
   errorState,
   selectedTemplate,
 }: {
+  routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
 }) {
-  const currentPage = usePathname();
-
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
@@ -96,12 +90,18 @@ export function ChannelTemplates({
                   <Table.Cell>
                     <div className={style.actionLinksWrapper}>
                       <Link
-                        href={previewTemplateLink(template, currentPage)}
+                        href={interpolate(tableContent.action.preview.href, {
+                          templateType: cascadeTemplateTypeToUrlTextMappings(
+                            template.templateType
+                          ),
+                          routingConfigId,
+                          templateId: template.id,
+                        })}
                         id={`preview-template-link-${index}`}
-                        aria-label={`${tableContent.action.preview}`}
+                        aria-label={`${tableContent.action.preview.text}`}
                         data-testid='preview-link'
                       >
-                        {tableContent.action.preview}
+                        {tableContent.action.preview.text}
                       </Link>
                     </div>
                   </Table.Cell>

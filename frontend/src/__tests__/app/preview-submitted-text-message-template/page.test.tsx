@@ -60,7 +60,7 @@ describe('PreviewSubmittedSMSTemplatePage', () => {
     expect(page).toEqual(
       <PreviewSubmittedTemplate
         initialState={submittedSMSTemplate}
-        previewElement={PreviewTemplateDetailsSms}
+        previewComponent={PreviewTemplateDetailsSms}
       />
     );
   });

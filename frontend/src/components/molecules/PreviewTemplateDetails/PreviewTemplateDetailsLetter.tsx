@@ -16,10 +16,10 @@ const { rowHeadings } = content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsLetter({
   template,
-  excludeStatus,
+  hideStatus,
 }: {
   template: LetterTemplate;
-  excludeStatus?: boolean;
+  hideStatus?: boolean;
 }) {
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
@@ -45,7 +45,7 @@ export default function PreviewTemplateDetailsLetter({
               template.language
             )}
             campaignId={template.campaignId}
-            excludeStatus={excludeStatus}
+            hideStatus={hideStatus}
           />
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateFile}</SummaryList.Key>

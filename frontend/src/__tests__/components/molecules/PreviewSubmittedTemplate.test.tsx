@@ -28,7 +28,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsNhsApp}
+        previewComponent={PreviewTemplateDetailsNhsApp}
       />
     );
 
@@ -48,7 +48,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsEmail}
+        previewComponent={PreviewTemplateDetailsEmail}
       />
     );
 
@@ -67,7 +67,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsSms}
+        previewComponent={PreviewTemplateDetailsSms}
       />
     );
 
@@ -117,7 +117,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsLetter}
+        previewComponent={PreviewTemplateDetailsLetter}
       />
     );
 
@@ -142,7 +142,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsNhsApp}
+        previewComponent={PreviewTemplateDetailsNhsApp}
       />
     );
 
@@ -168,7 +168,7 @@ describe('PreviewSubmittedTemplate component', () => {
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}
-        previewElement={PreviewTemplateDetailsNhsApp}
+        previewComponent={PreviewTemplateDetailsNhsApp}
       />
     );
 

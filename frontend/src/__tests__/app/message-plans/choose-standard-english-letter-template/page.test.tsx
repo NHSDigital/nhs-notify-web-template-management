@@ -5,7 +5,7 @@ import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
-import { redirect, usePathname } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 jest.mock('@utils/message-plans');
 jest.mock('@utils/form-actions');
@@ -14,11 +14,6 @@ jest.mock('next/navigation');
 const getRoutingConfigMock = jest.mocked(getRoutingConfig);
 const getTemplatesMock = jest.mocked(getTemplates);
 const redirectMock = jest.mocked(redirect);
-jest
-  .mocked(usePathname)
-  .mockReturnValue(
-    'message-plans/choose-standard-english-letter-template/testid'
-  );
 
 describe('ChooseStandardEnglishLetterTemplate page', () => {
   it('should redirect to invalid page with invalid routing config id', async () => {

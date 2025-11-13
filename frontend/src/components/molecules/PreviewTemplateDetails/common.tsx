@@ -11,6 +11,14 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
 
+export type PreviewTemplateComponent<T extends TemplateDto> = ({
+  template,
+  hideStatus,
+}: {
+  template: T;
+  hideStatus?: boolean;
+}) => JSX.Element;
+
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
   id: string;
@@ -60,12 +68,12 @@ export function StandardDetailRows({
   template,
   templateTypeText,
   campaignId,
-  excludeStatus,
+  hideStatus,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
   campaignId?: string;
-  excludeStatus?: boolean;
+  hideStatus?: boolean;
 }>): JSX.Element {
   return (
     <>
@@ -83,7 +91,7 @@ export function StandardDetailRows({
         <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
       </SummaryList.Row>
-      {!excludeStatus && (
+      {!hideStatus && (
         <SummaryList.Row>
           <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
           <SummaryList.Value>

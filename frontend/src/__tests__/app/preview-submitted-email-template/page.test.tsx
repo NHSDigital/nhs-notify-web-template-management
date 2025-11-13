@@ -62,7 +62,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     expect(page).toEqual(
       <PreviewSubmittedTemplate
         initialState={submittedEmailTemplate}
-        previewElement={PreviewTemplateDetailsEmail}
+        previewComponent={PreviewTemplateDetailsEmail}
       />
     );
   });

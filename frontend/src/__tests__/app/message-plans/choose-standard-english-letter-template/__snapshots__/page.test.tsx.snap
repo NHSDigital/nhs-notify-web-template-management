@@ -212,7 +212,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-letter-template/letter-template-id?sourcePage=message-plans%2Fchoose-standard-english-letter-template%2Ftestid"
+                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
                               id="preview-template-link-0"
                             >
                               Preview

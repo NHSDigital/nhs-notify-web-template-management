@@ -16,10 +16,10 @@ import { renderEmailMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsEmail({
   template,
-  excludeStatus,
+  hideStatus,
 }: {
   template: EmailTemplate;
-  excludeStatus?: boolean;
+  hideStatus?: boolean;
 }) {
   const subject = template.subject;
   const message = renderEmailMarkdown(template.message);
@@ -36,7 +36,7 @@ export default function PreviewTemplateDetailsEmail({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
-            excludeStatus={excludeStatus}
+            hideStatus={hideStatus}
           />
         </DetailSection>
         <DetailSection>

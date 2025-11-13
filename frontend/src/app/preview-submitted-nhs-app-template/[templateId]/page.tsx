@@ -33,7 +33,7 @@ const PreviewSubmittedNHSAppTemplatePage = async (props: TemplatePageProps) => {
   return (
     <PreviewSubmittedTemplate
       initialState={validatedTemplate}
-      previewElement={PreviewTemplateDetailsNhsApp}
+      previewComponent={PreviewTemplateDetailsNhsApp}
     />
   );
 };

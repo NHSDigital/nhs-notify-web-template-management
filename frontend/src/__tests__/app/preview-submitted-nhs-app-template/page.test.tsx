@@ -60,7 +60,7 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
     expect(page).toEqual(
       <PreviewSubmittedTemplate
         initialState={submittedNHSAppTemplate}
-        previewElement={PreviewTemplateDetailsNhsApp}
+        previewComponent={PreviewTemplateDetailsNhsApp}
       />
     );
   });

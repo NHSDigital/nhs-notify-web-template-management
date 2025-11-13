@@ -26,6 +26,7 @@ describe('ChannelTemplates', () => {
         ]}
         errorState={null}
         selectedTemplate={null}
+        routingConfigId='abc'
       />
     );
 
@@ -43,6 +44,7 @@ describe('ChannelTemplates', () => {
         ]}
         errorState={null}
         selectedTemplate={EMAIL_TEMPLATE.id}
+        routingConfigId='abc'
       />
     );
 
@@ -67,6 +69,7 @@ describe('ChannelTemplates', () => {
           },
         }}
         selectedTemplate={null}
+        routingConfigId='abc'
       />
     );
 

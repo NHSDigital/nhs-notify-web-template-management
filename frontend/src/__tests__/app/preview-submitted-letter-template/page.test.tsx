@@ -68,7 +68,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     expect(page).toEqual(
       <PreviewSubmittedTemplate
         initialState={submittedLetterTemplate}
-        previewElement={PreviewTemplateDetailsLetter}
+        previewComponent={PreviewTemplateDetailsLetter}
       />
     );
   });

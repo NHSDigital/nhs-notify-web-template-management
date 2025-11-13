@@ -212,7 +212,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
                             <a
                               aria-label="Preview"
                               data-testid="preview-link"
-                              href="/preview-submitted-email-template/email-template-id?sourcePage=message-plans%2Fchoose-email-template%2Ftestid"
+                              href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
                               id="preview-template-link-0"
                             >
                               Preview

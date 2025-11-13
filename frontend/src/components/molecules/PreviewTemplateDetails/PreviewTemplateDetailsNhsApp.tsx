@@ -16,10 +16,10 @@ import { renderNHSAppMarkdown } from '@utils/markdownit';
 
 export default function PreviewTemplateDetailsNhsApp({
   template,
-  excludeStatus,
+  hideStatus,
 }: {
   template: NHSAppTemplate;
-  excludeStatus?: boolean;
+  hideStatus?: boolean;
 }) {
   const message = renderNHSAppMarkdown(template.message);
 
@@ -35,7 +35,7 @@ export default function PreviewTemplateDetailsNhsApp({
             templateTypeText={templateTypeDisplayMappings(
               template.templateType
             )}
-            excludeStatus={excludeStatus}
+            hideStatus={hideStatus}
           />
         </DetailSection>
         <DetailSection>

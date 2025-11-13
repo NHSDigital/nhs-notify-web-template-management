@@ -1001,9 +1001,10 @@ const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
-  allTemplatesBackLinkHref: '/message-templates',
-  allTemplatesBackLinkText: backToAllTemplates,
-  genericBackLinkText: 'Go back',
+  backLink: {
+    href: '/message-templates',
+    text: backToAllTemplates,
+  },
 };
 
 const deleteTemplate = {
@@ -1170,7 +1171,13 @@ const chooseChannelTemplate = {
     nameHeading: 'Name',
     typeHeading: 'Type',
     lastEditedHeading: 'Last edited',
-    action: { heading: '', preview: 'Preview' },
+    action: {
+      heading: '',
+      preview: {
+        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}',
+        text: 'Preview',
+      },
+    },
   },
   actions: {
     save: {
@@ -1293,6 +1300,13 @@ const messagePlanForm = {
   submitButton: 'Save and continue',
 };
 
+const previewTemplateFromMessagePlan = {
+  backLink: {
+    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}',
+    text: 'Go back',
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1330,6 +1344,7 @@ const content = {
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
+    previewTemplateFromMessagePlan,
   },
   pages: {
     createMessagePlan,

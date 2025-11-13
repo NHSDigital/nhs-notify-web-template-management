@@ -33,7 +33,7 @@ const PreviewSubmittedSMSTemplatePage = async (props: TemplatePageProps) => {
   return (
     <PreviewSubmittedTemplate
       initialState={validatedTemplate}
-      previewElement={PreviewTemplateDetailsSms}
+      previewComponent={PreviewTemplateDetailsSms}
     />
   );
 };
