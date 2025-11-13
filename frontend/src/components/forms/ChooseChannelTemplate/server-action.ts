@@ -31,10 +31,16 @@ export async function chooseChannelTemplateAction(
     };
   }
 
-  messagePlan.cascade[cascadeIndex].defaultTemplateId =
-    parsedForm.data.channelTemplate;
+  const newCascade = messagePlan.cascade.map((item, index) =>
+    index === cascadeIndex
+      ? { ...item, defaultTemplateId: parsedForm.data.channelTemplate }
+      : item
+  );
 
-  await updateRoutingConfig(messagePlan.id, messagePlan);
+  await updateRoutingConfig(messagePlan.id, {
+    cascade: newCascade,
+    cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
+  });
 
   redirect(
     `/message-plans/choose-templates/${messagePlan.id}`,

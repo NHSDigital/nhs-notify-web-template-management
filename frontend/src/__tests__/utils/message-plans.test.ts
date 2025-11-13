@@ -392,19 +392,17 @@ describe('Message plans actions', () => {
         },
       });
 
-      const response = await updateRoutingConfig(
-        validRoutingConfigId,
-        baseConfig
-      );
+      await expect(
+        updateRoutingConfig(validRoutingConfigId, baseConfig)
+      ).rejects.toThrow('Failed to update message plan');
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
         validRoutingConfigId,
         baseConfig
       );
-      expect(response).toBeUndefined();
       expect(loggerMock.error).toHaveBeenCalledWith(
-        'Failed to get routing configuration',
+        'Failed to update message plan',
         expect.objectContaining({
           errorMeta: expect.objectContaining({ code: 400 }),
         })
@@ -428,7 +426,7 @@ describe('Message plans actions', () => {
       );
       expect(response).toBeUndefined();
       expect(loggerMock.error).toHaveBeenCalledWith(
-        'Invalid routing configuration object',
+        'Invalid message plan object',
         expect.any(Object)
       );
     });

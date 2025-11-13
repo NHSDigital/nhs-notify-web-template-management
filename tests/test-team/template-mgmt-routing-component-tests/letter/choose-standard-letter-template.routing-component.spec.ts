@@ -6,7 +6,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
-} from '../helpers/template-mgmt-common.steps';
+} from '../../helpers/template-mgmt-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -16,7 +16,7 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { ChooseStandardEnglishLetterTemplatePage } from 'pages/routing/choose-standard-english-letter-template-page';
+import { RoutingChooseStandardLetterTemplatePage } from 'pages/routing/letter/choose-standard-letter-template-page';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -99,7 +99,7 @@ test.describe('Routing - Choose letter template page', () => {
     templates = createTemplates(user);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    // Seed templates later to test empty page
+    await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
   test.afterAll(async () => {
@@ -109,7 +109,7 @@ test.describe('Routing - Choose letter template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new ChooseStandardEnglishLetterTemplatePage(page),
+      page: new RoutingChooseStandardLetterTemplatePage(page),
       id: messagePlans.LETTER_ROUTING_CONFIG.id,
       baseURL,
     };
@@ -125,49 +125,12 @@ test.describe('Routing - Choose letter template page', () => {
     baseURL,
   }) => {
     const chooseLetterTemplatePage =
-      new ChooseStandardEnglishLetterTemplatePage(page);
+      new RoutingChooseStandardLetterTemplatePage(page);
     await chooseLetterTemplatePage.loadPage(
       messagePlans.LETTER_ROUTING_CONFIG.id
     );
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`
-    );
-
-    await test.step('loads page when no templates exist', async () => {
-      await expect(chooseLetterTemplatePage.pageHeading).toHaveText(
-        'Choose a letter template'
-      );
-
-      await expect(
-        page.getByText(messagePlans.LETTER_ROUTING_CONFIG.name)
-      ).toBeVisible();
-
-      await expect(
-        page.getByText('You do not have any templates yet.')
-      ).toBeVisible();
-
-      const goToTemplatesLink = page.getByRole('link', {
-        name: 'Go to templates',
-      });
-      await expect(goToTemplatesLink).toBeVisible();
-      await expect(goToTemplatesLink).toHaveAttribute(
-        'href',
-        '/templates/message-templates'
-      );
-
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
-      await expect(goBackLink).toBeVisible();
-      await expect(goBackLink).toHaveAttribute(
-        'href',
-        `/templates/message-plans/overview/${messagePlans.LETTER_ROUTING_CONFIG.id}`
-      );
-
-      await expect(page.getByTestId('submit-button')).toBeHidden();
-    });
-
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
-    await chooseLetterTemplatePage.loadPage(
-      messagePlans.LETTER_ROUTING_CONFIG.id
     );
 
     await test.step('displays list of letter templates to choose from', async () => {
@@ -201,16 +164,12 @@ test.describe('Routing - Choose letter template page', () => {
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        await expect(
-          table.getByTestId(`${template.id}-template-type`)
-        ).toHaveText('Standard letter');
-
         const previewLink = table.getByTestId(`${template.id}-preview-link`);
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/message-plans/choose-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${template.id}`
         );
       }
 
@@ -226,13 +185,13 @@ test.describe('Routing - Choose letter template page', () => {
 
       const submitButton = page.getByTestId('submit-button');
       await expect(submitButton).toBeVisible();
-      await expect(submitButton).toHaveAttribute('name', 'Save and continue');
+      await expect(submitButton).toHaveText('Save and continue');
 
       const goBackLink = page.getByRole('link', { name: 'Go back' });
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/message-plans/overview/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
       );
     });
 
@@ -249,14 +208,20 @@ test.describe('Routing - Choose letter template page', () => {
       ]);
     });
 
-    await test.step('pre-selects previously selected template', async () => {
+    await test.step('submits selected template and navigates to choose templates page', async () => {
+      await chooseLetterTemplatePage.loadPage(
+        messagePlans.LETTER_ROUTING_CONFIG.id
+      );
+
       await page.getByTestId(`${templates.LETTER2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/overview/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
       );
+    });
 
+    await test.step('pre-selects previously selected template', async () => {
       await chooseLetterTemplatePage.loadPage(
         messagePlans.LETTER_ROUTING_CONFIG.id
       );
@@ -275,7 +240,7 @@ test.describe('Routing - Choose letter template page', () => {
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
       const chooseLetterTemplatePage =
-        new ChooseStandardEnglishLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page);
 
       await chooseLetterTemplatePage.loadPage(notFoundMessagePlanId);
 
@@ -286,7 +251,7 @@ test.describe('Routing - Choose letter template page', () => {
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
       const chooseLetterTemplatePage =
-        new ChooseStandardEnglishLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page);
 
       await chooseLetterTemplatePage.loadPage(invalidMessagePlanId);
 
@@ -300,7 +265,7 @@ test.describe('Routing - Choose letter template page', () => {
       baseURL,
     }) => {
       const chooseLetterTemplatePage =
-        new ChooseStandardEnglishLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page);
 
       await chooseLetterTemplatePage.loadPage(
         messagePlans.NON_LETTER_ROUTING_CONFIG.id

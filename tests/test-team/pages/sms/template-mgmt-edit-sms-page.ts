@@ -3,7 +3,7 @@ import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatti
 import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
 
 export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'edit-text-message-template';
+  static readonly pageUrlSegments = ['edit-text-message-template'];
 
   public readonly nameInput: Locator;
 
@@ -53,10 +53,6 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     await this.waitForPageToLoad();
   }
 
-  async attemptToLoadPageExpectFailure(templateId: string) {
-    await super.loadPage(templateId);
-  }
-
   async waitForPageToLoad() {
     const characterCountLocator = this.page.locator(
       '[data-testid="character-message-count-0"]'
@@ -66,5 +62,9 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
 
   async clickSaveAndPreviewButton() {
     await this.saveAndPreviewButton.click();
+  }
+
+  async attemptToLoadPageExpectFailure(templateId: string) {
+    await super.loadPage(templateId);
   }
 }

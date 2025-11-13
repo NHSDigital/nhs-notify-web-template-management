@@ -6,7 +6,7 @@ import {
 import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'create-and-submit-templates';
+  static readonly pageUrlSegments = ['create-and-submit-templates'];
 
   public readonly emailInput: Locator;
 

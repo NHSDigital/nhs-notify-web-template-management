@@ -1,8 +1,10 @@
 import { chooseChannelTemplateAction } from '@forms/ChooseChannelTemplate/server-action';
 import {
+  EMAIL_TEMPLATE,
   getMockFormData,
   NHS_APP_TEMPLATE,
   ROUTING_CONFIG,
+  SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
@@ -46,21 +48,32 @@ test('submit form - success updates config and redirects to choose templates', a
             cascadeGroups: ['standard'],
             channel: 'NHSAPP',
             channelType: 'primary',
+            defaultTemplateId: NHS_APP_TEMPLATE.id,
+          },
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'primary',
             defaultTemplateId: null,
+          },
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: SMS_TEMPLATE.id,
           },
         ],
       },
-      pageHeading: 'Choose an NHS App template',
-      templateList: [NHS_APP_TEMPLATE],
-      cascadeIndex: 0,
+      pageHeading: 'Choose an email template',
+      templateList: [EMAIL_TEMPLATE],
+      cascadeIndex: 1,
     },
     getMockFormData({
-      channelTemplate: NHS_APP_TEMPLATE.id,
+      channelTemplate: EMAIL_TEMPLATE.id,
     })
   );
 
   expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(ROUTING_CONFIG.id, {
-    ...ROUTING_CONFIG,
     cascade: [
       {
         cascadeGroups: ['standard'],
@@ -68,7 +81,20 @@ test('submit form - success updates config and redirects to choose templates', a
         channelType: 'primary',
         defaultTemplateId: NHS_APP_TEMPLATE.id,
       },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: EMAIL_TEMPLATE.id,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: SMS_TEMPLATE.id,
+      },
     ],
+    cascadeGroupOverrides: ROUTING_CONFIG.cascadeGroupOverrides,
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(

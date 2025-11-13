@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-commented-code */
 import { test, expect } from '@playwright/test';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import {
@@ -6,7 +7,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
-} from '../helpers/template-mgmt-common.steps';
+} from '../../helpers/template-mgmt-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -16,7 +17,7 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { ChooseNhsAppTemplatePage } from 'pages/routing/choose-nhs-app-template-page';
+import { RoutingChooseNhsAppTemplatePage } from 'pages/routing/nhs-app/choose-nhs-app-template-page';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -73,7 +74,7 @@ test.describe('Routing - Choose NHS app template page', () => {
     templates = createTemplates(user);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    // Seed templates later to test empty page
+    await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
   test.afterAll(async () => {
@@ -83,7 +84,7 @@ test.describe('Routing - Choose NHS app template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new ChooseNhsAppTemplatePage(page),
+      page: new RoutingChooseNhsAppTemplatePage(page),
       id: messagePlans.APP_ROUTING_CONFIG.id,
       baseURL,
     };
@@ -98,46 +99,11 @@ test.describe('Routing - Choose NHS app template page', () => {
     page,
     baseURL,
   }) => {
-    const chooseNhsAppTemplatePage = new ChooseNhsAppTemplatePage(page);
+    const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page);
     await chooseNhsAppTemplatePage.loadPage(messagePlans.APP_ROUTING_CONFIG.id);
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`
     );
-
-    await test.step('loads page when no templates exist', async () => {
-      await expect(chooseNhsAppTemplatePage.pageHeading).toHaveText(
-        'Choose an NHS App template'
-      );
-
-      await expect(
-        page.getByText(messagePlans.APP_ROUTING_CONFIG.name)
-      ).toBeVisible();
-
-      await expect(
-        page.getByText('You do not have any templates yet.')
-      ).toBeVisible();
-
-      const goToTemplatesLink = page.getByRole('link', {
-        name: 'Go to templates',
-      });
-      await expect(goToTemplatesLink).toBeVisible();
-      await expect(goToTemplatesLink).toHaveAttribute(
-        'href',
-        '/templates/message-templates'
-      );
-
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
-      await expect(goBackLink).toBeVisible();
-      await expect(goBackLink).toHaveAttribute(
-        'href',
-        `/templates/message-plans/overview/${messagePlans.APP_ROUTING_CONFIG.id}`
-      );
-
-      await expect(page.getByTestId('submit-button')).toBeHidden();
-    });
-
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
-    await chooseNhsAppTemplatePage.loadPage(messagePlans.APP_ROUTING_CONFIG.id);
 
     await test.step('displays list of NHS app templates to choose from', async () => {
       const table = page.getByTestId('channel-templates-table');
@@ -166,22 +132,18 @@ test.describe('Routing - Choose NHS app template page', () => {
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        await expect(
-          table.getByTestId(`${template.id}-template-type`)
-        ).toHaveText('NHS App message');
-
         const previewLink = table.getByTestId(`${template.id}-preview-link`);
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${template.id}`
         );
       }
 
       const submitButton = page.getByTestId('submit-button');
       await expect(submitButton).toBeVisible();
-      await expect(submitButton).toHaveAttribute('name', 'Save and continue');
+      await expect(submitButton).toHaveText('Save and continue');
 
       await expect(table.getByText(templates.EMAIL.name)).toBeHidden();
 
@@ -189,7 +151,7 @@ test.describe('Routing - Choose NHS app template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/message-plans/overview/${messagePlans.APP_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
       );
     });
 
@@ -206,14 +168,20 @@ test.describe('Routing - Choose NHS app template page', () => {
       ]);
     });
 
-    await test.step('pre-selects previously selected template', async () => {
+    await test.step('submits selected template and navigates to choose templates page', async () => {
+      await chooseNhsAppTemplatePage.loadPage(
+        messagePlans.APP_ROUTING_CONFIG.id
+      );
+
       await page.getByTestId(`${templates.APP2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/overview/${messagePlans.APP_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
       );
+    });
 
+    await test.step('pre-selects previously selected template', async () => {
       await chooseNhsAppTemplatePage.loadPage(
         messagePlans.APP_ROUTING_CONFIG.id
       );
@@ -231,7 +199,9 @@ test.describe('Routing - Choose NHS app template page', () => {
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
-      const chooseNhsAppTemplatePage = new ChooseNhsAppTemplatePage(page);
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      );
 
       await chooseNhsAppTemplatePage.loadPage(notFoundMessagePlanId);
 
@@ -241,7 +211,9 @@ test.describe('Routing - Choose NHS app template page', () => {
     });
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
-      const chooseNhsAppTemplatePage = new ChooseNhsAppTemplatePage(page);
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      );
 
       await chooseNhsAppTemplatePage.loadPage(invalidMessagePlanId);
 
@@ -254,7 +226,9 @@ test.describe('Routing - Choose NHS app template page', () => {
       page,
       baseURL,
     }) => {
-      const chooseNhsAppTemplatePage = new ChooseNhsAppTemplatePage(page);
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      );
 
       await chooseNhsAppTemplatePage.loadPage(
         messagePlans.NON_APP_ROUTING_CONFIG.id

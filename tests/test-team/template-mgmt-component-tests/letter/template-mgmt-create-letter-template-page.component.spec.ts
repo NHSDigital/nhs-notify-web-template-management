@@ -256,7 +256,7 @@ test.describe('Upload letter Template Page', () => {
       await createTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegment}`
+        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegments[0]}`
       );
 
       await assertMissingClientOrCampaignIdErrorPage(

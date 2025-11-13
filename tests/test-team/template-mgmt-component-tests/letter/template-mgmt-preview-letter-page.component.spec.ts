@@ -125,7 +125,7 @@ test.describe('Preview Letter template Page', () => {
     await previewLetterTemplatePage.loadPage(templates.notYetSubmitted.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.notYetSubmitted.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.notYetSubmitted.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -154,7 +154,7 @@ test.describe('Preview Letter template Page', () => {
     await previewLetterTemplatePage.loadPage(templates.proofingDisabled.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.proofingDisabled.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.proofingDisabled.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -175,7 +175,7 @@ test.describe('Preview Letter template Page', () => {
     await previewLetterTemplatePage.loadPage(templates.pendingProofRequest.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pendingProofRequest.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.pendingProofRequest.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -196,7 +196,7 @@ test.describe('Preview Letter template Page', () => {
     await previewLetterTemplatePage.loadPage(templates.pendingUpload.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pendingUpload.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.pendingUpload.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -239,7 +239,7 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage(templates.pending.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pending.id}`
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.pending.id}`
       );
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -261,7 +261,7 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage(templates.virus.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.virus.id}`
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.virus.id}`
       );
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -287,7 +287,7 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage(templates.invalid.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.invalid.id}`
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.invalid.id}`
       );
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -310,7 +310,7 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage(templates.withProofs.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.withProofs.id}`
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegments[0]}/${templates.withProofs.id}`
       );
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(

@@ -41,7 +41,7 @@ test.describe('Request Proof Page', () => {
     await requestProofPage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegment}/${templates.valid.id}`
+      `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegments[0]}/${templates.valid.id}`
     );
 
     await expect(requestProofPage.pageHeading).toContainText(

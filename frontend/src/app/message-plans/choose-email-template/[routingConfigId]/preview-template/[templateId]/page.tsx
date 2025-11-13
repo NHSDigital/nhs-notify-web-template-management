@@ -2,7 +2,7 @@
 
 import {
   MessagePlanAndTemplatePageProps,
-  validateSubmittedEmailTemplate,
+  validateEmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -26,7 +26,7 @@ const PreviewEmailTemplateFromMessagePlan = async (
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateSubmittedEmailTemplate(template);
+  const validatedTemplate = validateEmailTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

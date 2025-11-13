@@ -1,0 +1,150 @@
+import { test, expect } from '@playwright/test';
+import {
+  assertFooterLinks,
+  assertSignOutLink,
+  assertHeaderLogoLink,
+  assertSkipToMainContent,
+  assertGoBackLink,
+} from '../../helpers/template-mgmt-common.steps';
+import {
+  createAuthHelper,
+  TestUser,
+  testUsers,
+} from 'helpers/auth/cognito-auth-helper';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
+import { randomUUID } from 'node:crypto';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
+import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
+import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+
+const routingConfigStorageHelper = new RoutingConfigStorageHelper();
+const templateStorageHelper = new TemplateStorageHelper();
+
+const invalidTemplateId = 'invalid-id';
+const notFoundTemplateId = randomUUID();
+
+function createMessagePlans(user: TestUser) {
+  return {
+    EMAIL_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'NHSAPP,EMAIL'
+    ).dbEntry,
+  };
+}
+
+function createTemplates(user: TestUser) {
+  return {
+    EMAIL: TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user,
+      'Email template name'
+    ),
+    APP: TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      user,
+      'App template name'
+    ),
+  };
+}
+
+test.describe('Routing - Preview email template page', () => {
+  let messagePlans: ReturnType<typeof createMessagePlans>;
+  let templates: ReturnType<typeof createTemplates>;
+
+  test.beforeAll(async () => {
+    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+
+    messagePlans = createMessagePlans(user);
+    templates = createTemplates(user);
+
+    await routingConfigStorageHelper.seed(Object.values(messagePlans));
+    await templateStorageHelper.seedTemplateData(Object.values(templates));
+  });
+
+  test.afterAll(async () => {
+    await routingConfigStorageHelper.deleteSeeded();
+    await templateStorageHelper.deleteSeededTemplates();
+  });
+
+  test('common page tests', async ({ page, baseURL }) => {
+    const props = {
+      page: new RoutingPreviewEmailTemplatePage(page),
+      id: messagePlans.EMAIL_ROUTING_CONFIG.id,
+      additionalIds: [templates.EMAIL.id],
+      baseURL,
+      expectedUrl: `templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
+    };
+    await assertSkipToMainContent(props);
+    await assertHeaderLogoLink(props);
+    await assertFooterLinks(props);
+    await assertSignOutLink(props);
+    await assertGoBackLink(props);
+  });
+
+  test('loads the email template', async ({ page, baseURL }) => {
+    const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page);
+    await previewEmailTemplatePage.loadPage(
+      messagePlans.EMAIL_ROUTING_CONFIG.id,
+      templates.EMAIL.id
+    );
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${templates.EMAIL.id}`
+    );
+
+    await expect(previewEmailTemplatePage.pageHeading).toContainText(
+      templates.EMAIL.name
+    );
+
+    await expect(page.getByText(templates.EMAIL.id)).toBeVisible();
+
+    await expect(page.locator('[id="preview-content-subject"]')).toHaveText(
+      templates.EMAIL.subject || ''
+    );
+
+    await expect(page.locator('[id="preview-content-message"]')).toHaveText(
+      templates.EMAIL.message || ''
+    );
+  });
+
+  test.describe('redirects to invalid template page', () => {
+    test('when template cannot be found', async ({ page, baseURL }) => {
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
+        page
+      );
+
+      await previewEmailTemplatePage.loadPage(
+        messagePlans.EMAIL_ROUTING_CONFIG.id,
+        notFoundTemplateId
+      );
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template ID is invalid', async ({ page, baseURL }) => {
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
+        page
+      );
+
+      await previewEmailTemplatePage.loadPage(
+        messagePlans.EMAIL_ROUTING_CONFIG.id,
+        invalidTemplateId
+      );
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template is not email', async ({ page, baseURL }) => {
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
+        page
+      );
+
+      await previewEmailTemplatePage.loadPage(
+        messagePlans.EMAIL_ROUTING_CONFIG.id,
+        templates.APP.id
+      );
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+  });
+});

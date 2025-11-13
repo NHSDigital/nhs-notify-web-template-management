@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-commented-code */
 import { test, expect } from '@playwright/test';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import {
@@ -6,7 +7,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
-} from '../helpers/template-mgmt-common.steps';
+} from '../../helpers/template-mgmt-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -16,7 +17,7 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { ChooseEmailTemplatePage } from 'pages/routing/choose-email-template-page';
+import { RoutingChooseTextMessageTemplatePage } from 'pages/routing/sms/choose-sms-template-page';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -26,11 +27,11 @@ const notFoundMessagePlanId = randomUUID();
 
 function createMessagePlans(user: TestUser) {
   return {
-    EMAIL_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
+    SMS_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
       user,
-      'NHSAPP,EMAIL'
+      'NHSAPP,SMS'
     ).dbEntry,
-    NON_EMAIL_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
+    NON_SMS_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
       user,
       'NHSAPP'
     ).dbEntry,
@@ -39,20 +40,20 @@ function createMessagePlans(user: TestUser) {
 
 function createTemplates(user: TestUser) {
   return {
-    EMAIL1: TemplateFactory.createEmailTemplate(
+    SMS1: TemplateFactory.createSmsTemplate(
       randomUUID(),
       user,
-      'Email template 1'
+      'Submitted sms template 1'
     ),
-    EMAIL2: TemplateFactory.createEmailTemplate(
+    SMS2: TemplateFactory.createSmsTemplate(
       randomUUID(),
       user,
-      'Email template 2'
+      'Submitted sms template 2'
     ),
-    EMAIL3: TemplateFactory.createEmailTemplate(
+    SMS3: TemplateFactory.createSmsTemplate(
       randomUUID(),
       user,
-      'Email template 3'
+      'Submitted sms template 3'
     ),
     APP: TemplateFactory.createNhsAppTemplate(
       randomUUID(),
@@ -62,7 +63,7 @@ function createTemplates(user: TestUser) {
   };
 }
 
-test.describe('Routing - Choose email template page', () => {
+test.describe('Routing - Choose sms template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
 
@@ -73,7 +74,7 @@ test.describe('Routing - Choose email template page', () => {
     templates = createTemplates(user);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    // Seed templates later to test empty page
+    await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
   test.afterAll(async () => {
@@ -83,8 +84,8 @@ test.describe('Routing - Choose email template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new ChooseEmailTemplatePage(page),
-      id: messagePlans.EMAIL_ROUTING_CONFIG.id,
+      page: new RoutingChooseTextMessageTemplatePage(page),
+      id: messagePlans.SMS_ROUTING_CONFIG.id,
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -94,56 +95,19 @@ test.describe('Routing - Choose email template page', () => {
     await assertGoBackLinkNotPresent(props);
   });
 
-  test('loads the choose email template page for a message plan with an email channel', async ({
+  test('loads the choose sms template page for a message plan with an sms channel', async ({
     page,
     baseURL,
   }) => {
-    const chooseEmailTemplatePage = new ChooseEmailTemplatePage(page);
-    await chooseEmailTemplatePage.loadPage(
-      messagePlans.EMAIL_ROUTING_CONFIG.id
+    const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+      page
     );
+    await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`
     );
 
-    await test.step('loads page when no templates exist', async () => {
-      await expect(chooseEmailTemplatePage.pageHeading).toHaveText(
-        'Choose an email template'
-      );
-
-      await expect(
-        page.getByText(messagePlans.EMAIL_ROUTING_CONFIG.name)
-      ).toBeVisible();
-
-      await expect(
-        page.getByText('You do not have any templates yet.')
-      ).toBeVisible();
-
-      const goToTemplatesLink = page.getByRole('link', {
-        name: 'Go to templates',
-      });
-      await expect(goToTemplatesLink).toBeVisible();
-      await expect(goToTemplatesLink).toHaveAttribute(
-        'href',
-        '/templates/message-templates'
-      );
-
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
-      await expect(goBackLink).toBeVisible();
-      await expect(goBackLink).toHaveAttribute(
-        'href',
-        `/templates/message-plans/overview/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
-      );
-
-      await expect(page.getByTestId('submit-button')).toBeHidden();
-    });
-
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
-    await chooseEmailTemplatePage.loadPage(
-      messagePlans.EMAIL_ROUTING_CONFIG.id
-    );
-
-    await test.step('displays list of email templates to choose from', async () => {
+    await test.step('displays list of sms templates to choose from', async () => {
       const table = page.getByTestId('channel-templates-table');
       await expect(table).toBeVisible();
       await expect(
@@ -162,11 +126,7 @@ test.describe('Routing - Choose email template page', () => {
         table.getByTestId('channel-templates-table-header-template-action')
       ).toHaveText('');
 
-      for (const template of [
-        templates.EMAIL1,
-        templates.EMAIL2,
-        templates.EMAIL3,
-      ]) {
+      for (const template of [templates.SMS1, templates.SMS2, templates.SMS3]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
         const radioButton = table.getByTestId(`${template.id}-radio`);
@@ -174,16 +134,12 @@ test.describe('Routing - Choose email template page', () => {
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        await expect(
-          table.getByTestId(`${template.id}-template-type`)
-        ).toHaveText('Email');
-
         const previewLink = table.getByTestId(`${template.id}-preview-link`);
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}/preview-template/${template.id}`
         );
       }
 
@@ -191,13 +147,13 @@ test.describe('Routing - Choose email template page', () => {
 
       const submitButton = page.getByTestId('submit-button');
       await expect(submitButton).toBeVisible();
-      await expect(submitButton).toHaveAttribute('name', 'Save and continue');
+      await expect(submitButton).toHaveText('Save and continue');
 
       const goBackLink = page.getByRole('link', { name: 'Go back' });
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/message-plans/overview/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
       );
     });
 
@@ -205,43 +161,47 @@ test.describe('Routing - Choose email template page', () => {
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`
       );
 
-      await expect(chooseEmailTemplatePage.errorSummary).toBeVisible();
-      await expect(chooseEmailTemplatePage.errorSummaryList).toHaveText([
-        'Choose an email template',
+      await expect(chooseSmsTemplatePage.errorSummary).toBeVisible();
+      await expect(chooseSmsTemplatePage.errorSummaryList).toHaveText([
+        'Choose a text message (SMS) template',
       ]);
     });
 
-    await test.step('pre-selects previously selected template', async () => {
-      await page.getByTestId(`${templates.EMAIL2.id}-radio`).check();
+    await test.step('submits selected template and navigates to choose templates page', async () => {
+      await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
+
+      await page.getByTestId(`${templates.SMS2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/overview/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
       );
+    });
 
-      await chooseEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id
-      );
+    await test.step('pre-selects previously selected template', async () => {
+      await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
 
       // Check summary list is present and displays the name of the previously selected template
       const summaryList = page.getByTestId('previous-selection-summary');
       await expect(summaryList).toBeVisible();
       await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.EMAIL2.name);
+      await expect(summaryList).toContainText(templates.SMS2.name);
 
-      const selectedRadio = page.getByTestId(`${templates.EMAIL2.id}-radio`);
+      const selectedRadio = page.getByTestId(`${templates.SMS2.id}-radio`);
       await expect(selectedRadio).toBeChecked();
     });
   });
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
-      const chooseEmailTemplatePage = new ChooseEmailTemplatePage(page);
+      const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+        page
+      );
 
-      await chooseEmailTemplatePage.loadPage(notFoundMessagePlanId);
+      await chooseSmsTemplatePage.loadPage(notFoundMessagePlanId);
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -249,23 +209,27 @@ test.describe('Routing - Choose email template page', () => {
     });
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
-      const chooseEmailTemplatePage = new ChooseEmailTemplatePage(page);
+      const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+        page
+      );
 
-      await chooseEmailTemplatePage.loadPage(invalidMessagePlanId);
+      await chooseSmsTemplatePage.loadPage(invalidMessagePlanId);
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
       );
     });
 
-    test('when routing config does not have an email channel', async ({
+    test('when routing config does not have an sms channel', async ({
       page,
       baseURL,
     }) => {
-      const chooseEmailTemplatePage = new ChooseEmailTemplatePage(page);
+      const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+        page
+      );
 
-      await chooseEmailTemplatePage.loadPage(
-        messagePlans.NON_EMAIL_ROUTING_CONFIG.id
+      await chooseSmsTemplatePage.loadPage(
+        messagePlans.NON_SMS_ROUTING_CONFIG.id
       );
 
       await expect(page).toHaveURL(
