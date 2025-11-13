@@ -38,7 +38,6 @@ export default async function ChooseStandardEnglishLetterTemplate(
 
   const availableTemplateList = await getTemplates({
     templateType: 'LETTER',
-    templateStatus: 'SUBMITTED',
     language: 'en',
     letterType: 'x0',
   });

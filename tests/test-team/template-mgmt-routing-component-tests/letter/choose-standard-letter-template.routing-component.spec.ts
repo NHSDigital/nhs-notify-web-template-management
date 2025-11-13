@@ -57,11 +57,6 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 3',
       'SUBMITTED'
     ),
-    UNSUBMITTED_LETTER: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
-      user,
-      'Unsubmitted letter template'
-    ),
     FRENCH_LETTER: {
       ...TemplateFactory.uploadLetterTemplate(
         randomUUID(),
@@ -174,9 +169,6 @@ test.describe('Routing - Choose letter template page', () => {
       }
 
       // template filtering checks
-      await expect(
-        table.getByText(templates.UNSUBMITTED_LETTER.name)
-      ).toBeHidden();
       await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();
       await expect(
         table.getByText(templates.ACCESSIBLE_LETTER.name)

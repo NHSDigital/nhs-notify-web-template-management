@@ -70,7 +70,6 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getTemplatesMock).toHaveBeenCalledWith({
       templateType: 'LETTER',
-      templateStatus: 'SUBMITTED',
       language: 'en',
       letterType: 'x0',
     });
