@@ -273,7 +273,10 @@ export class TemplateClient {
         z.treeifyError(lockNumberValidation.error)
       );
 
-      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Template has been modified since last read'
+      );
     }
 
     const updateResult = await this.templateRepository.update(
@@ -316,7 +319,10 @@ export class TemplateClient {
         z.treeifyError(lockNumberValidation.error)
       );
 
-      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Template has been modified since last read'
+      );
     }
 
     const submitResult = await this.templateRepository.submit(
@@ -360,7 +366,10 @@ export class TemplateClient {
         z.treeifyError(lockNumberValidation.error)
       );
 
-      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Template has been modified since last read'
+      );
     }
 
     const deleteResult = await this.templateRepository.delete(
@@ -448,7 +457,10 @@ export class TemplateClient {
         z.treeifyError(lockNumberValidation.error)
       );
 
-      return failure(ErrorCase.CONFLICT, 'Invalid lock number');
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Template has been modified since last read'
+      );
     }
 
     const clientConfigurationResult = await this.clientConfigRepository.get(

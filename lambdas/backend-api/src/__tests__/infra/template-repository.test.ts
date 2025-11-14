@@ -622,7 +622,8 @@ describe('templateRepository', () => {
           },
           errorCode: 409,
           errorMeta: {
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       ];
@@ -784,7 +785,8 @@ describe('templateRepository', () => {
           lockNumber: 1,
         }),
         code: 409,
-        message: 'Invalid lock number',
+        message:
+          'Lock number mismatch - Template has been modified since last read',
         returnActualError: true,
       },
     ])(
@@ -979,7 +981,10 @@ describe('templateRepository', () => {
             lockNumber: { N: '2' },
           },
           errorCode: 409,
-          errorMeta: { description: 'Invalid lock number' },
+          errorMeta: {
+            description:
+              'Lock number mismatch - Template has been modified since last read',
+          },
         },
       ];
 
@@ -1915,7 +1920,8 @@ describe('templateRepository', () => {
           actualError: err,
           errorMeta: {
             code: 409,
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       });

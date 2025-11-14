@@ -10,6 +10,7 @@ describe('MessagePlanChannelTemplate', () => {
       <MessagePlanChannelTemplate
         channel='EMAIL'
         routingConfigId={routingConfigId}
+        lockNumber={42}
       />
     );
 
@@ -25,6 +26,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='LETTER'
           required={false}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -42,6 +44,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel='NHSAPP'
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -78,6 +81,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='SMS'
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -131,6 +135,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel={channel}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
 
@@ -151,6 +156,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel={channel}
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
       expect(container).toMatchSnapshot();

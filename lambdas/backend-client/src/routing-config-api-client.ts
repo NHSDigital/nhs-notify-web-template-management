@@ -9,7 +9,7 @@ import type {
   RoutingConfigStatusActive,
   RoutingConfigSuccessList,
   PostV1RoutingConfigurationData,
-  PutV1RoutingConfigurationByRoutingConfigIdData,
+  PatchV1RoutingConfigurationByRoutingConfigIdData,
   UpdateRoutingConfig,
 } from './types/generated';
 import { ErrorCase } from './types/error-cases';
@@ -125,7 +125,8 @@ export const routingConfigurationApiClient = {
   async update(
     token: string,
     id: RoutingConfig['id'],
-    routingConfig: UpdateRoutingConfig
+    routingConfig: UpdateRoutingConfig,
+    lockNumber: number
   ): Promise<Result<RoutingConfig>> {
     if (!uuidSchema.safeParse(id).success) {
       return {
@@ -140,12 +141,12 @@ export const routingConfigurationApiClient = {
       };
     }
     const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
-      PutV1RoutingConfigurationByRoutingConfigIdData['url']
+      PatchV1RoutingConfigurationByRoutingConfigIdData['url']
     >;
 
     const { data, error } = await catchAxiosError(
-      httpClient.put<RoutingConfigSuccess>(url, routingConfig, {
-        headers: { Authorization: token },
+      httpClient.patch<RoutingConfigSuccess>(url, routingConfig, {
+        headers: { Authorization: token, 'X-Lock-Number': String(lockNumber) },
       })
     );
 

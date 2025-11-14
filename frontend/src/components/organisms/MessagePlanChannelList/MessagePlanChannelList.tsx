@@ -36,6 +36,7 @@ export function MessagePlanChannelList({
                 messagePlanChannel.defaultTemplateId
               )}
               routingConfigId={messagePlan.id}
+              lockNumber={messagePlan.lockNumber}
             />
             {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
             {/* TODO: CCM-11494 Update this logic for letter formats */}

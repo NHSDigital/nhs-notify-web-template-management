@@ -41,6 +41,7 @@ const baseConfig = {
     },
   ],
   cascadeGroupOverrides: [],
+  lockNumber: 0,
 };
 
 describe('removeTemplateFromMessagePlan', () => {

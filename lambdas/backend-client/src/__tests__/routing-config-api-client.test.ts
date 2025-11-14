@@ -229,6 +229,7 @@ describe('RoutingConfigurationApiClient', () => {
         name: 'name',
         status: 'DRAFT',
         updatedAt: new Date().toISOString(),
+        lockNumber: 0,
       };
 
       axiosMock.onPost('/v1/routing-configuration').reply(201, {
@@ -260,7 +261,7 @@ describe('RoutingConfigurationApiClient', () => {
   describe('update', () => {
     it('should return error when failing to update via API', async () => {
       axiosMock
-        .onPut(`/v1/routing-configuration/${notFoundRoutingConfigId}`)
+        .onPatch(`/v1/routing-configuration/${notFoundRoutingConfigId}`)
         .reply(404, {
           statusCode: 404,
           technicalMessage: 'Not Found',
@@ -289,7 +290,7 @@ describe('RoutingConfigurationApiClient', () => {
         },
       });
       expect(response.data).toBeUndefined();
-      expect(axiosMock.history.put.length).toBe(1);
+      expect(axiosMock.history.patch.length).toBe(1);
     });
 
     it('should return error for invalid routing config ID', async () => {
@@ -316,7 +317,7 @@ describe('RoutingConfigurationApiClient', () => {
         actualError: undefined,
       });
       expect(response.data).toBeUndefined();
-      expect(axiosMock.history.get.length).toBe(0);
+      expect(axiosMock.history.patch.length).toBe(0);
     });
 
     it('should return updated routing configuration on success', async () => {
@@ -329,7 +330,7 @@ describe('RoutingConfigurationApiClient', () => {
       };
 
       axiosMock
-        .onPut(`/v1/routing-configuration/${validRoutingConfigId}`)
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}`)
         .reply(200, {
           data: body,
         });
@@ -342,7 +343,7 @@ describe('RoutingConfigurationApiClient', () => {
 
       expect(response.error).toBeUndefined();
       expect(response.data).toEqual(body);
-      expect(axiosMock.history.put.length).toBe(1);
+      expect(axiosMock.history.patch.length).toBe(1);
     });
   });
 });

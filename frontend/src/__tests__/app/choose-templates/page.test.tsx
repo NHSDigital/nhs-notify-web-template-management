@@ -41,6 +41,7 @@ const routingConfig: RoutingConfig = {
   updatedAt: '2025-01-13T10:19:25.579Z',
   cascadeGroupOverrides: [],
   cascade: [],
+  lockNumber: 0,
 };
 
 describe('ChooseTemplatesPage', () => {

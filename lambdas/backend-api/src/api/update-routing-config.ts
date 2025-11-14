@@ -28,7 +28,8 @@ export function createHandler({
     const { data, error } = await routingConfigClient.updateRoutingConfig(
       routingConfigId,
       payload,
-      { userId, clientId }
+      { userId, clientId },
+      event.headers['X-Lock-Number'] ?? ''
     );
 
     if (error) {

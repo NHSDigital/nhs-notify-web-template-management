@@ -62,6 +62,7 @@ export type TemplatePageProps = {
   params: Promise<{
     templateId: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export type MessagePlanPageProps = {

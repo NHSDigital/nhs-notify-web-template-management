@@ -109,13 +109,21 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
             <form>
               <input
                 name="channel"
+                readonly=""
                 type="hidden"
                 value="EMAIL"
               />
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
+              />
+              <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
               />
               <button
                 class="channel-template-link--remove nhsuk-link"
@@ -249,13 +257,21 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
             <form>
               <input
                 name="channel"
+                readonly=""
                 type="hidden"
                 value="LETTER"
               />
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
+              />
+              <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
               />
               <button
                 class="channel-template-link--remove nhsuk-link"
@@ -389,13 +405,21 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
             <form>
               <input
                 name="channel"
+                readonly=""
                 type="hidden"
                 value="NHSAPP"
               />
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
+              />
+              <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
               />
               <button
                 class="channel-template-link--remove nhsuk-link"
@@ -529,13 +553,21 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
             <form>
               <input
                 name="channel"
+                readonly=""
                 type="hidden"
                 value="SMS"
               />
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
+              />
+              <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
               />
               <button
                 class="channel-template-link--remove nhsuk-link"

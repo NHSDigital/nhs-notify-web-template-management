@@ -152,7 +152,13 @@ describe('Template API - Delete', () => {
     const { handler, mocks } = setup();
 
     mocks.templateClient.deleteTemplate.mockResolvedValueOnce({
-      error: { errorMeta: { code: 409, description: 'Invalid lock number' } },
+      error: {
+        errorMeta: {
+          code: 409,
+          description:
+            'Lock number mismatch - Template has been modified since last read',
+        },
+      },
     });
 
     const event = mock<APIGatewayProxyEvent>({
@@ -168,7 +174,8 @@ describe('Template API - Delete', () => {
       statusCode: 409,
       body: JSON.stringify({
         statusCode: 409,
-        technicalMessage: 'Invalid lock number',
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
       }),
     });
 

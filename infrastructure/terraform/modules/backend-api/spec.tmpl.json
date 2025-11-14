@@ -647,6 +647,9 @@
             "format": "uuid",
             "type": "string"
           },
+          "lockNumber": {
+            "type": "integer"
+          },
           "name": {
             "type": "string"
           },
@@ -665,6 +668,7 @@
           "clientId",
           "createdAt",
           "id",
+          "lockNumber",
           "name",
           "status",
           "updatedAt"
@@ -1151,6 +1155,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1252,7 +1265,7 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
         }
       },
-      "put": {
+      "patch": {
         "description": "Update a routing configuration by Id",
         "parameters": [
           {
@@ -1262,6 +1275,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -1338,6 +1360,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],

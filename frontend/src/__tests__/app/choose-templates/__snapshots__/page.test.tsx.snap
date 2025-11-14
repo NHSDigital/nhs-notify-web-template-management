@@ -127,13 +127,21 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="NHSAPP"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"
@@ -300,13 +308,21 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="SMS"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"
@@ -611,13 +627,21 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="LETTER"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"

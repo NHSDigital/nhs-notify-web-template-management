@@ -22,7 +22,8 @@ export function createHandler({
 
     const { error } = await routingConfigClient.deleteRoutingConfig(
       routingConfigId,
-      user
+      user,
+      event.headers['X-Lock-Number'] ?? ''
     );
 
     if (error) {

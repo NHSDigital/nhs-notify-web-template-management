@@ -20,6 +20,7 @@ export const RoutingConfigFactory = {
       ],
       cascadeGroupOverrides: [{ name: 'standard' }],
       name: 'Test config',
+      lockNumber: 0,
       ...data,
     };
   },

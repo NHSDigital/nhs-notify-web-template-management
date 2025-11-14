@@ -17,10 +17,12 @@ export function MessagePlanChannelTemplate({
   channel,
   template,
   routingConfigId,
+  lockNumber,
   required = true,
 }: {
   channel: Channel;
   routingConfigId: RoutingConfig['id'];
+  lockNumber: number;
   template?: TemplateDto;
   required?: boolean;
 }) {
@@ -75,11 +77,23 @@ export function MessagePlanChannelTemplate({
               </li>
               <li>
                 <form>
-                  <input type='hidden' name='channel' value={channel} />
+                  <input
+                    type='hidden'
+                    name='channel'
+                    value={channel}
+                    readOnly
+                  />
                   <input
                     type='hidden'
                     name='routingConfigId'
                     value={routingConfigId}
+                    readOnly
+                  />
+                  <input
+                    type='hidden'
+                    name='lockNumber'
+                    value={lockNumber}
+                    readOnly
                   />
                   <button
                     data-testid={`remove-template-link-${channel}`}

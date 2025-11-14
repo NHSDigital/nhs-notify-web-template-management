@@ -59,13 +59,21 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="NHSAPP"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
@@ -230,13 +238,21 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="EMAIL"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
@@ -401,13 +417,21 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="SMS"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
@@ -492,13 +516,21 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="NHSAPP"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
@@ -663,13 +695,21 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="EMAIL"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
@@ -834,13 +874,21 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="channel"
+                  readonly=""
                   type="hidden"
                   value="LETTER"
                 />
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"

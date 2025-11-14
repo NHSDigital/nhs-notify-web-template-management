@@ -18,7 +18,7 @@ import type {
   UpdateRoutingConfig,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
-import { $Language, $LetterType } from './template-schema';
+import { $Language, $LetterType, $LockNumber } from './template-schema';
 import {
   CASCADE_GROUP_NAME_LIST,
   CHANNEL_LIST,
@@ -155,7 +155,10 @@ const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
   $RoutingConfigStatus.exclude(['DELETED'])
 );
 
-export const $RoutingConfig = schemaFor<RoutingConfig>()(
+export const $RoutingConfig = schemaFor<
+  RoutingConfig,
+  Omit<RoutingConfig, 'lockNumber'>
+>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
@@ -166,6 +169,7 @@ export const $RoutingConfig = schemaFor<RoutingConfig>()(
     status: $RoutingConfigStatus,
     createdAt: z.string(),
     updatedAt: z.string(),
+    lockNumber: $LockNumber.default(0),
   })
 );
 

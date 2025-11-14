@@ -5,7 +5,6 @@ import {
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
-import type { FactoryRoutingConfig } from '../helpers/types';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 
 test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
@@ -16,12 +15,6 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   let userSharedClient: TestUser;
   let userRoutingDisabled: TestUser;
 
-  let routingConfigNoUpdates: FactoryRoutingConfig;
-  let routingConfigSuccessfullyDelete: FactoryRoutingConfig;
-  let routingConfigSubmitted: FactoryRoutingConfig;
-  let routingConfigAlreadyDeleted: FactoryRoutingConfig;
-  let routingConfigDeleteBySharedClientUser: FactoryRoutingConfig;
-
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userDifferentClient = await authHelper.getTestUser(
@@ -29,27 +22,6 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
     );
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
     userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-
-    routingConfigNoUpdates = RoutingConfigFactory.create(user1);
-    routingConfigSuccessfullyDelete = RoutingConfigFactory.create(user1);
-
-    routingConfigSubmitted = RoutingConfigFactory.create(user1, {
-      status: 'COMPLETED',
-    });
-
-    routingConfigAlreadyDeleted = RoutingConfigFactory.create(user1, {
-      status: 'DELETED',
-    });
-
-    routingConfigDeleteBySharedClientUser = RoutingConfigFactory.create(user1);
-
-    await storageHelper.seed([
-      routingConfigNoUpdates.dbEntry,
-      routingConfigSuccessfullyDelete.dbEntry,
-      routingConfigSubmitted.dbEntry,
-      routingConfigAlreadyDeleted.dbEntry,
-      routingConfigDeleteBySharedClientUser.dbEntry,
-    ]);
   });
 
   test.afterAll(async () => {
@@ -57,8 +29,13 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config`
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      { headers: { 'X-Lock-Number': String(dbEntry.lockNumber) } }
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -68,10 +45,11 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
 
   test('returns 404 if routing config does not exist', async ({ request }) => {
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/noexist`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/no-exist`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': '0',
         },
       }
     );
@@ -85,11 +63,16 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   test('returns 404 if routing config exists but is owned by a different client', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigNoUpdates.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await userDifferentClient.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -102,11 +85,16 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   });
 
   test('returns 204 no content on successful deletion', async ({ request }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigSuccessfullyDelete.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -117,11 +105,18 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   test('returns 400 - cannot delete a COMPLETED routing config', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      status: 'COMPLETED',
+    });
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigSubmitted.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -140,11 +135,18 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   test('returns 404 - cannot delete an already DELETED routing config', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      status: 'DELETED',
+    });
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigAlreadyDeleted.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -162,13 +164,18 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   test('user belonging to the same client as the creator can delete', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     expect(user1.clientId).toBe(userSharedClient.clientId);
 
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigDeleteBySharedClientUser.dbEntry.id}`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await userSharedClient.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -179,11 +186,16 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   test('returns 400 if routing feature is disabled on the client', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(userRoutingDisabled);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.delete(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
           Authorization: await userRoutingDisabled.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -193,6 +205,56 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage: 'Routing feature is disabled',
+    });
+  });
+
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
+    const response = await request.delete(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(409);
+
+    expect(await response.json()).toEqual({
+      statusCode: 409,
+      technicalMessage:
+        'Lock number mismatch - Message Plan has been modified since last read',
+    });
+  });
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
+    const response = await request.delete(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber + 1),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(409);
+
+    expect(await response.json()).toEqual({
+      statusCode: 409,
+      technicalMessage:
+        'Lock number mismatch - Message Plan has been modified since last read',
     });
   });
 });

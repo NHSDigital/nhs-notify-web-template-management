@@ -8,6 +8,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -17,6 +18,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/preview-letter-template/${templateId}`,
+      RedirectType.replace
+    );
+  }
 
   const template = await getTemplate(templateId);
 
@@ -30,7 +42,7 @@ const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
     <SubmitLetterTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      lockNumber={validatedTemplate.lockNumber}
+      lockNumber={lockNumberResult.data}
     />
   );
 };
