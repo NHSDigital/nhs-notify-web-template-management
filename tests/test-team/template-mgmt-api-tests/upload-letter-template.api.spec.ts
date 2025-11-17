@@ -105,6 +105,8 @@ test.describe('POST /v1/letter-template', () => {
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
         lockNumber: 1, // the api endpoint does a create and then an update so this gets incremented to 1 rather than initial 0
+        createdBy: user1.userId,
+        updatedBy: user1.userId,
       },
     });
 
@@ -186,6 +188,8 @@ test.describe('POST /v1/letter-template', () => {
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
         lockNumber: 1,
+        createdBy: user1.userId,
+        updatedBy: user1.userId,
       },
     });
 

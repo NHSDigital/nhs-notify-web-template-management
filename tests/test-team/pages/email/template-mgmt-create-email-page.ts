@@ -3,7 +3,7 @@ import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatti
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'create-email-template';
+  static readonly pageUrlSegments = ['create-email-template'];
 
   public readonly nameInput: Locator;
 

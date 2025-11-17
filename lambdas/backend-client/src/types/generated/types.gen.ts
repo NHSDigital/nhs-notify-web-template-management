@@ -223,8 +223,7 @@ export type SmsProperties = {
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
-export type TemplateStatus =
-  | 'DELETED'
+export type TemplateStatusActive =
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'
@@ -234,6 +233,8 @@ export type TemplateStatus =
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
+
+export type TemplateStatus = TemplateStatusActive | 'DELETED';
 
 export type TemplateSuccess = {
   data: TemplateDto;
@@ -774,7 +775,24 @@ export type PatchV1TemplateByTemplateIdSubmitResponse =
 export type GetV1TemplatesData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    templateStatus?: TemplateStatusActive;
+    /**
+     * Filter by a single template type
+     */
+    templateType?: TemplateType;
+    /**
+     * Filter by a single language
+     */
+    language?: Language;
+    /**
+     * Filter by a single accessible letter type
+     */
+    letterType?: LetterType;
+  };
   url: '/v1/templates';
 };
 

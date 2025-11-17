@@ -4,7 +4,6 @@
 import PreviewSubmittedLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
-import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -16,6 +15,8 @@ import {
   LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -65,7 +66,10 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <ViewLetterTemplate initialState={submittedLetterTemplate} />
+      <PreviewSubmittedTemplate
+        initialState={submittedLetterTemplate}
+        previewComponent={PreviewTemplateDetailsLetter}
+      />
     );
   });
 

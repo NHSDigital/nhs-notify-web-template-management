@@ -766,9 +766,8 @@
         ],
         "type": "object"
       },
-      "TemplateStatus": {
+      "TemplateStatusActive": {
         "enum": [
-          "DELETED",
           "NOT_YET_SUBMITTED",
           "PENDING_PROOF_REQUEST",
           "PENDING_UPLOAD",
@@ -780,6 +779,19 @@
           "PROOF_AVAILABLE"
         ],
         "type": "string"
+      },
+      "TemplateStatus": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/TemplateStatusActive"
+          },
+          {
+            "enum": [
+              "DELETED"
+            ],
+            "type": "string"
+          }
+        ]
       },
       "TemplateSuccess": {
         "properties": {
@@ -1942,6 +1954,40 @@
     "/v1/templates": {
       "get": {
         "description": "List all templates",
+        "parameters": [
+          {
+            "description": "Filter by a single active status",
+            "in": "query",
+            "name": "templateStatus",
+            "schema": {
+              "$ref": "#/components/schemas/TemplateStatusActive"
+            }
+          },
+          {
+            "description": "Filter by a single template type",
+            "in": "query",
+            "name": "templateType",
+            "schema": {
+              "$ref": "#/components/schemas/TemplateType"
+            }
+          },
+          {
+            "description": "Filter by a single language",
+            "in": "query",
+            "name": "language",
+            "schema": {
+              "$ref": "#/components/schemas/Language"
+            }
+          },
+          {
+            "description": "Filter by a single accessible letter type",
+            "in": "query",
+            "name": "letterType",
+            "schema": {
+              "$ref": "#/components/schemas/LetterType"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {

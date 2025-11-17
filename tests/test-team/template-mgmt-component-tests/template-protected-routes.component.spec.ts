@@ -40,6 +40,14 @@ import { RoutingMessagePlansPage } from '../pages/routing/message-plans-page';
 import { RoutingChooseTemplatesPage } from 'pages/routing/choose-templates-page';
 import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 import { RoutingInvalidMessagePlanPage } from 'pages/routing/invalid-message-plan-page';
+import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
+import { RoutingChooseNhsAppTemplatePage } from 'pages/routing/nhs-app/choose-nhs-app-template-page';
+import { RoutingChooseStandardLetterTemplatePage } from 'pages/routing/letter/choose-standard-letter-template-page';
+import { RoutingChooseTextMessageTemplatePage } from 'pages/routing/sms/choose-sms-template-page';
+import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-nhs-app-page';
+import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
+import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
+import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -52,6 +60,14 @@ const protectedPages = [
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingChooseEmailTemplatePage,
+  RoutingChooseNhsAppTemplatePage,
+  RoutingChooseStandardLetterTemplatePage,
+  RoutingChooseTextMessageTemplatePage,
+  RoutingPreviewNhsAppTemplatePage,
+  RoutingPreviewEmailTemplatePage,
+  RoutingPreviewStandardLetterTemplatePage,
+  RoutingPreviewSmsTemplatePage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
@@ -111,13 +127,19 @@ test.describe('Protected Routes Tests', () => {
     });
 
     const nonPublic = routes.filter(
-      (r) => !publicPages.some(({ pageUrlSegment }) => pageUrlSegment === r)
+      (r) =>
+        !publicPages.some(
+          ({ pageUrlSegments }) => `${pageUrlSegments.join('/')}` === r
+        )
     );
 
     expect(nonPublic.length).toBeGreaterThan(0);
 
     const uncovered = nonPublic.filter(
-      (r) => !protectedPages.some(({ pageUrlSegment }) => pageUrlSegment === r)
+      (r) =>
+        !protectedPages.some(
+          ({ pageUrlSegments }) => `${pageUrlSegments.join('/')}` === r
+        )
     );
 
     expect(uncovered).toHaveLength(0);
@@ -126,23 +148,32 @@ test.describe('Protected Routes Tests', () => {
   });
 
   for (const PageModel of protectedPages)
-    test(`should not be able to access ${PageModel.pageUrlSegment} page without auth`, async ({
+    test(`should not be able to access ${PageModel.pageUrlSegments.join('/')} page without auth`, async ({
       page,
       baseURL,
     }) => {
       const appPage = new PageModel(page);
       const isDynamic = appPage instanceof TemplateMgmtBasePageDynamic;
 
-      await (isDynamic
-        ? appPage.attemptToLoadPageExpectFailure('template-id')
-        : appPage.attemptToLoadPageExpectFailure());
+      const ids: string[] = isDynamic
+        ? Array.from(
+            { length: PageModel.pageUrlSegments.length },
+            (_, index) => `id${index}`
+          )
+        : [];
 
-      const redirectPath = encodeURIComponent(
-        isDynamic
-          ? `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}/template-id`
-          : `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}`
+      await appPage.attemptToLoadPageExpectFailure(...ids);
+
+      let redirectPath = `/${PageModel.appUrlSegment}`;
+      for (let i = 0; i < PageModel.pageUrlSegments.length; i++) {
+        redirectPath += `/${PageModel.pageUrlSegments[i]}`;
+        if (isDynamic) {
+          redirectPath += `/${ids[i]}`;
+        }
+      }
+
+      await expect(page).toHaveURL(
+        `${baseURL}/auth?redirect=${encodeURIComponent(redirectPath)}`
       );
-
-      await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);
     });
 });

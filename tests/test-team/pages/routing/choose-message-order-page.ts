@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class RoutingChooseMessageOrderPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-plans/choose-message-order';
+  static readonly pageUrlSegments = ['message-plans/choose-message-order'];
 
   readonly radioButtons: Locator;
 

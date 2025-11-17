@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'upload-letter-template';
+  static readonly pageUrlSegments = ['upload-letter-template'];
 
   public readonly nameInput: Locator;
 

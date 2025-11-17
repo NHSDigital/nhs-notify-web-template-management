@@ -85,7 +85,7 @@ describe('RoutingConfigurationApiClient', () => {
           },
         });
 
-      const response = await client.count('token', 'DRAFT');
+      const response = await client.count('token', { status: 'DRAFT' });
 
       expect(response.error).toEqual({
         errorMeta: {
@@ -108,7 +108,7 @@ describe('RoutingConfigurationApiClient', () => {
         })
         .reply(200, { data: { count: 10 } });
 
-      const response = await client.count('token', 'COMPLETED');
+      const response = await client.count('token', { status: 'COMPLETED' });
 
       expect(response.data).toEqual({ count: 10 });
 
