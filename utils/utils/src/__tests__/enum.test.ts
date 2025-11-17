@@ -216,6 +216,18 @@ describe('statusToDisplayMapping', () => {
     }
   );
 
+  test('statusToDisplay if no files', () => {
+    expect(
+      statusToDisplayMapping(
+        {
+          ...mockLetterTemplate,
+          templateStatus: 'SUBMITTED',
+        },
+        true
+      )
+    ).toEqual('Submitted');
+  });
+
   test('statusToDisplay if routing is enabled', () => {
     expect(
       statusToDisplayMapping(
@@ -226,18 +238,6 @@ describe('statusToDisplayMapping', () => {
         true
       )
     ).toEqual('Template proof approved');
-  });
-
-  test('statusToDisplay if no files', () => {
-    expect(
-      statusToDisplayMapping(
-        {
-          ...mockLetterTemplate,
-          templateStatus: 'SUBMITTED',
-        },
-        false
-      )
-    ).toEqual('Submitted');
   });
 
   test('SUBMITTED', () => {
