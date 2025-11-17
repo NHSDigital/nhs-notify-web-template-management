@@ -55,6 +55,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('channel', 'EMAIL');
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -73,7 +74,8 @@ describe('removeTemplateFromMessagePlan', () => {
             defaultTemplateId: 'template-2',
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -84,6 +86,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('channel', 'EMAIL');
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -98,6 +101,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('channel', 'EMAIL');
+    formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
       /not found/
@@ -116,6 +120,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', 'invalid-id');
     formData.set('channel', 'test');
+    formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
       /Invalid form data/

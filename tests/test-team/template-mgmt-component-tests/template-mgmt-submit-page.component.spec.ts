@@ -212,10 +212,14 @@ test.describe('Submit template Page', () => {
     }) => {
       const submitTemplatePage = new PageModel(page);
 
-      await submitTemplatePage.loadPage(templates[channelIdentifier].valid.id);
+      const template = templates[channelIdentifier].valid;
+
+      await submitTemplatePage.loadPage(template.id, {
+        lockNumber: String(template.lockNumber),
+      });
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`
+        `${baseURL}/templates/submit-${channelIdentifier}-template/${template.id}?lockNumber=${template.lockNumber}`
       );
 
       await expect(submitTemplatePage.pageHeading).toHaveText(expectedHeading);
@@ -224,10 +228,12 @@ test.describe('Submit template Page', () => {
     // eslint-disable-next-line no-loop-func
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
+        const template = templates[channelIdentifier].valid;
         const props = {
           page: new PageModel(page),
-          id: templates[channelIdentifier].valid.id,
+          id: template.id,
           baseURL,
+          search: { lockNumber: String(template.lockNumber) },
         };
 
         await assertSkipToMainContent(props);
@@ -236,18 +242,19 @@ test.describe('Submit template Page', () => {
         await assertFooterLinks(props);
         await assertGoBackButton({
           ...props,
-          expectedUrl: `templates/preview-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`,
+          expectedUrl: `templates/preview-${channelIdentifier}-template/${template.id}`,
         });
       });
 
       test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({
         page,
       }) => {
+        const template = templates[channelIdentifier].submit;
         const submitTemplatePage = new PageModel(page);
 
-        await submitTemplatePage.loadPage(
-          templates[channelIdentifier].submit.id
-        );
+        await submitTemplatePage.loadPage(template.id, {
+          lockNumber: String(template.lockNumber),
+        });
 
         await submitTemplatePage.clickSubmitTemplateButton();
 
@@ -263,11 +270,12 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
+        const template = templates[channelIdentifier].empty;
         const submitTemplatePage = new PageModel(page);
 
-        await submitTemplatePage.loadPage(
-          templates[channelIdentifier].empty.id
-        );
+        await submitTemplatePage.loadPage(template.id, {
+          lockNumber: String(template.lockNumber),
+        });
 
         await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
       });
@@ -278,9 +286,26 @@ test.describe('Submit template Page', () => {
       }) => {
         const submitTemplatePage = new PageModel(page);
 
-        await submitTemplatePage.loadPage('/fake-template-id');
+        await submitTemplatePage.loadPage('/fake-template-id', {
+          lockNumber: '1',
+        });
 
         await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
+
+      test(`when user visits ${channelName} page without a lock number, redirect to the preview page`, async ({
+        baseURL,
+        page,
+      }) => {
+        const template = templates[channelIdentifier].valid;
+
+        const submitTemplatePage = new PageModel(page);
+
+        await submitTemplatePage.loadPage(template.id);
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/preview-${channelIdentifier}-template/${template.id}`
+        );
       });
     });
   }

@@ -142,7 +142,12 @@ test.describe('Preview Letter template Page', () => {
 
     await previewLetterTemplatePage.clickContinueButton();
 
-    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+    await expect(page).toHaveURL(
+      TemplateMgmtSubmitLetterPage.url(
+        templates.notYetSubmitted.id,
+        templates.notYetSubmitted.lockNumber
+      )
+    );
   });
 
   test('when proofingEnabled is false, user can click to go submit page', async ({
@@ -163,7 +168,12 @@ test.describe('Preview Letter template Page', () => {
 
     await previewLetterTemplatePage.clickContinueButton();
 
-    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+    await expect(page).toHaveURL(
+      TemplateMgmtSubmitLetterPage.url(
+        templates.proofingDisabled.id,
+        templates.proofingDisabled.lockNumber
+      )
+    );
   });
 
   test('when template is pending a proof request, user can click to go to request page', async ({
@@ -184,7 +194,12 @@ test.describe('Preview Letter template Page', () => {
 
     await previewLetterTemplatePage.clickContinueButton();
 
-    await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
+    await expect(page).toHaveURL(
+      TemplateMgmtRequestProofPage.url(
+        templates.pendingProofRequest.id,
+        templates.pendingProofRequest.lockNumber
+      )
+    );
   });
 
   test('when status is not actionable, no continue button is displayed', async ({

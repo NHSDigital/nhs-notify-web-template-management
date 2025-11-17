@@ -48,6 +48,9 @@ describe('SubmitNhsAppTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(await generateMetadata()).toEqual({
@@ -58,7 +61,7 @@ describe('SubmitNhsAppTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='NHS_APP'
-        lockNumber={state.lockNumber}
+        lockNumber={42}
       />
     );
   });
@@ -69,6 +72,9 @@ describe('SubmitNhsAppTemplatePage', () => {
     await SubmitNhsAppTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
       }),
     });
 
@@ -101,9 +107,26 @@ describe('SubmitNhsAppTemplatePage', () => {
         params: Promise.resolve({
           templateId: 'template-id',
         }),
+        searchParams: Promise.resolve({
+          lockNumber: '42',
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  test('it should redirect to preview page if lockNumber search param is invalid', async () => {
+    await SubmitNhsAppTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-nhs-app-template/template-id',
+      'replace'
+    );
+  });
 });

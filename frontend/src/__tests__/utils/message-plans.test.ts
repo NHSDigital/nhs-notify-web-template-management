@@ -419,7 +419,7 @@ describe('Message plans actions', () => {
       );
       expect(response).toBeUndefined();
       expect(loggerMock.error).toHaveBeenCalledWith(
-        'Failed to get routing configuration',
+        'Failed to update routing configuration',
         expect.objectContaining({
           errorMeta: expect.objectContaining({ code: 400 }),
         })

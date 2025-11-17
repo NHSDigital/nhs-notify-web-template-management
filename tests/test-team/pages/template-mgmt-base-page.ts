@@ -7,8 +7,6 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly pageUrlSegment: string;
 
-  queryParameters?: URLSearchParams;
-
   readonly header: Locator;
 
   readonly headerLogoLink: Locator;
@@ -67,12 +65,6 @@ export abstract class TemplateMgmtBasePage {
     this.skipLink = page
       .locator('[id="skip-link"]')
       .and(page.getByText('Skip to main content'));
-  }
-
-  abstract loadPage(idParameter?: string): Promise<void>;
-
-  async attemptToLoadPageExpectFailure(idParameter?: string) {
-    await this.loadPage(idParameter);
   }
 
   async navigateTo(url: string) {

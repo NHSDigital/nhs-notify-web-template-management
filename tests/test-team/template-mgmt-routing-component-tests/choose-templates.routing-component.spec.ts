@@ -121,10 +121,10 @@ test.describe('Routing - Choose Templates page', () => {
       test(`shows correct channels for message order: ${label}`, async ({
         page,
       }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page);
+        await createMessagePlanPage.loadPage({
           messageOrder,
         });
-        await createMessagePlanPage.loadPage();
         await createMessagePlanPage.nameField.fill(`Plan for ${label}`);
         await createMessagePlanPage.clickSubmit();
 
@@ -251,11 +251,11 @@ test.describe('Routing - Choose Templates page', () => {
   }) => {
     const messageOrder: MessageOrder = 'NHSAPP,SMS';
 
-    const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
+    const createMessagePlanPage = new RoutingCreateMessagePlanPage(page);
+
+    await createMessagePlanPage.loadPage({
       messageOrder,
     });
-
-    await createMessagePlanPage.loadPage();
     await createMessagePlanPage.nameField.fill('Test message plan');
     await createMessagePlanPage.clickSubmit();
 

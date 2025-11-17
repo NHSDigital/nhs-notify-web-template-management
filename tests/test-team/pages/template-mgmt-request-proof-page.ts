@@ -5,8 +5,12 @@ export class TemplateMgmtRequestProofPage extends TemplateMgmtBasePageDynamic {
   static readonly pageUrlSegment = 'request-proof-of-template';
 
   public static readonly urlRegexp = new RegExp(
-    /\/templates\/request-proof-of-template\/([\dA-Fa-f-]+)$/
+    /\/templates\/request-proof-of-template\/([\dA-Fa-f-]+)\?lockNumber=\d+$/
   );
+
+  public static url(id: string, lockNumber: number) {
+    return `/templates/${this.pageUrlSegment}/${id}?lockNumber=${lockNumber}`;
+  }
 
   readonly requestProofButton: Locator;
 

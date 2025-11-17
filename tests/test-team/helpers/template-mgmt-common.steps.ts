@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../pages/template-mgmt-base-page';
+import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import type { TemplateMgmtBasePageNonDynamic } from 'pages/template-mgmt-base-page-non-dynamic';
 
 type CommonStepsProps = {
-  page: TemplateMgmtBasePage;
+  page: TemplateMgmtBasePageDynamic | TemplateMgmtBasePageNonDynamic;
   id?: string;
   baseURL?: string;
+  search?: Record<string, string>;
 };
 
 type FooterLinkSpec = {
@@ -35,9 +37,15 @@ const expectedFooterLinks: Record<string, FooterLinkSpec> = {
   },
 };
 
-export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
+export function assertSkipToMainContent({
+  page,
+  id,
+  search,
+}: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await page.page.keyboard.press('Tab');
 
@@ -55,9 +63,15 @@ export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
   });
 }
 
-export function assertHeaderWhenSignedOut({ page, id }: CommonStepsProps) {
+export function assertHeaderWhenSignedOut({
+  page,
+  id,
+  search,
+}: CommonStepsProps) {
   return test.step('when user is signed out, then header displays sign in link only', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await expect(page.signInLink).toBeVisible();
     await expect(page.signOutLink).toBeHidden();
@@ -72,12 +86,15 @@ export function assertHeaderWhenSignedIn({
   id,
   expectedDisplayName,
   expectedClientName,
+  search,
 }: CommonStepsProps & {
   expectedDisplayName: string;
   expectedClientName: string;
 }) {
   return test.step('when user is signed in, then header shows display name and client name', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await expect(page.signOutLink).toBeVisible();
     await expect(page.signInLink).toBeHidden();
@@ -96,9 +113,11 @@ export function assertHeaderWhenSignedIn({
   });
 }
 
-export function assertHeaderLogoLink({ page, id }: CommonStepsProps) {
+export function assertHeaderLogoLink({ page, id, search }: CommonStepsProps) {
   return test.step('header logo is visible, correctly labelled and structured', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     const logoLink = page.headerLogoLink;
 
@@ -122,9 +141,10 @@ export function assertClickHeaderLogoRedirectsToStartPage({
   page,
   id,
   baseURL,
+  search,
 }: CommonStepsProps) {
   return test.step('when user clicks header logo, they are redirected to start page', async () => {
-    await assertHeaderLogoLink({ page, id });
+    await assertHeaderLogoLink({ page, id, search });
 
     await page.headerLogoLink.click();
 
@@ -134,9 +154,11 @@ export function assertClickHeaderLogoRedirectsToStartPage({
   });
 }
 
-export function assertSignInLink({ page, id }: CommonStepsProps) {
+export function assertSignInLink({ page, id, search }: CommonStepsProps) {
   return test.step('when user clicks "Sign in", then user is redirected to "sign in page"', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     const link = page.signInLink;
 
@@ -147,9 +169,11 @@ export function assertSignInLink({ page, id }: CommonStepsProps) {
   });
 }
 
-export function assertSignOutLink({ page, id }: CommonStepsProps) {
+export function assertSignOutLink({ page, id, search }: CommonStepsProps) {
   return test.step('"Sign out", should direct user to signout', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     const link = page.signOutLink;
 
@@ -161,13 +185,16 @@ export function assertHeaderNavigationLinksWhenSignedIn({
   page,
   id,
   routingEnabled,
+  search,
 }: CommonStepsProps & { routingEnabled: boolean }) {
   const description = routingEnabled
     ? 'Templates and Message plans links'
     : 'Templates link only';
 
   return test.step(`header shows ${description} when routing is ${routingEnabled ? 'enabled' : 'disabled'}`, async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     const nav = page.headerNavigationLinks;
 
@@ -184,9 +211,12 @@ export function assertHeaderNavigationLinksWhenSignedIn({
 export function assertHeaderNavigationLinksWhenSignedOut({
   page,
   id,
+  search,
 }: CommonStepsProps) {
   return test.step('header does not display navigation links when signed out', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await expect(page.headerNavigationLinks).toHaveCount(0);
   });
@@ -197,9 +227,12 @@ export function assertGoBackLink({
   id,
   baseURL,
   expectedUrl,
+  search,
 }: CommonStepsProps & { expectedUrl: string }) {
   return test.step('when user clicks "Go back", then user is redirected to previous page', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await page.goBackLink.click();
 
@@ -209,17 +242,25 @@ export function assertGoBackLink({
   });
 }
 
-export function assertGoBackLinkNotPresent({ page, id }: CommonStepsProps) {
+export function assertGoBackLinkNotPresent({
+  page,
+  id,
+  search,
+}: CommonStepsProps) {
   return test.step('should not display "Go Back" link on page', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     await expect(page.goBackLink).toBeHidden();
   });
 }
 
-export function assertFooterLinks({ page, id }: CommonStepsProps) {
+export function assertFooterLinks({ page, id, search }: CommonStepsProps) {
   return test.step('when page loads, then Page Footer should have the correct links', async () => {
-    await page.loadPage(id);
+    await (page instanceof TemplateMgmtBasePageDynamic
+      ? page.loadPage(id, search)
+      : page.loadPage(search));
 
     const promises = Object.values(expectedFooterLinks).map((linkSpec) =>
       expect(

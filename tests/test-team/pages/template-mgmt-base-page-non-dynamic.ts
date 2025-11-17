@@ -1,14 +1,7 @@
-import { type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export abstract class TemplateMgmtBasePageNonDynamic extends TemplateMgmtBasePage {
-  static readonly dynamicPage = false;
-
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async loadPage() {
+  async loadPage(searchParameters?: Record<string, string>) {
     const { appUrlSegment, pageUrlSegment } = this
       .constructor as typeof TemplateMgmtBasePageNonDynamic;
 
@@ -18,10 +11,14 @@ export abstract class TemplateMgmtBasePageNonDynamic extends TemplateMgmtBasePag
 
     let url = `/${appUrlSegment}/${pageUrlSegment}`;
 
-    if (this.queryParameters) {
-      url += `?${this.queryParameters.toString()}`;
+    if (searchParameters && Object.keys(searchParameters).length > 0) {
+      url += `?${new URLSearchParams(searchParameters).toString()}`;
     }
 
     await this.navigateTo(url);
+  }
+
+  async attemptToLoadPageExpectFailure() {
+    await this.loadPage();
   }
 }

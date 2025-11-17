@@ -5,6 +5,7 @@ type CommonStepsProps = {
   page: TemplateMgmtSubmitBasePage;
   id: string;
   baseURL?: string;
+  search?: Record<string, string>;
 };
 
 export function assertGoBackButton({
@@ -12,9 +13,10 @@ export function assertGoBackButton({
   id,
   baseURL,
   expectedUrl,
+  search,
 }: CommonStepsProps & { expectedUrl: string }) {
   return test.step('when user clicks "Go back" button, then user is redirected to previous page', async () => {
-    await page.loadPage(id);
+    await page.loadPage(id, search);
 
     await page.clickGoBackButton();
 

@@ -6,6 +6,7 @@ import {
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
+import { TemplateMgmtPreviewLetterPage } from 'pages/letter/template-mgmt-preview-letter-page';
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
@@ -38,10 +39,12 @@ test.describe('Request Proof Page', () => {
   }) => {
     const requestProofPage = new TemplateMgmtRequestProofPage(page);
 
-    await requestProofPage.loadPage(templates.valid.id);
+    await requestProofPage.loadPage(templates.valid.id, {
+      lockNumber: String(templates.valid.lockNumber),
+    });
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegment}/${templates.valid.id}`
+      `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegment}/${templates.valid.id}?lockNumber=${templates.valid.lockNumber}`
     );
 
     await expect(requestProofPage.pageHeading).toContainText(
@@ -49,5 +52,18 @@ test.describe('Request Proof Page', () => {
     );
 
     await expect(requestProofPage.requestProofButton).toBeVisible();
+  });
+
+  test('redirects to the letter template preview page if the lockNumber query parameter is not set', async ({
+    page,
+    baseURL,
+  }) => {
+    const requestProofPage = new TemplateMgmtRequestProofPage(page);
+
+    await requestProofPage.loadPage(templates.valid.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
+    );
   });
 });

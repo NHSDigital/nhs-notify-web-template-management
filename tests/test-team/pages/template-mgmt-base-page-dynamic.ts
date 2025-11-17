@@ -1,14 +1,10 @@
-import { type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
-  static readonly dynamicPage = true;
-
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async loadPage(idParameter: string) {
+  async loadPage(
+    idParameter?: string,
+    searchParameters?: Record<string, string>
+  ) {
     const { appUrlSegment, pageUrlSegment } = this
       .constructor as typeof TemplateMgmtBasePageDynamic;
 
@@ -16,7 +12,13 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
       throw new Error('pageUrlSegment is not defined');
     }
 
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${idParameter}`);
+    let url = `/${appUrlSegment}/${pageUrlSegment}/${idParameter}`;
+
+    if (searchParameters && Object.keys(searchParameters).length > 0) {
+      url += `?${new URLSearchParams(searchParameters).toString()}`;
+    }
+
+    await this.navigateTo(url);
   }
 
   getIdFromUrl(): string | undefined {
@@ -29,5 +31,9 @@ export abstract class TemplateMgmtBasePageDynamic extends TemplateMgmtBasePage {
       .match(new RegExp(`${pageUrlSegment}/([^#/?]+)`));
     const id = match ? match[1] : undefined;
     return id;
+  }
+
+  async attemptToLoadPageExpectFailure(idParameter: string) {
+    await this.loadPage(idParameter);
   }
 }
