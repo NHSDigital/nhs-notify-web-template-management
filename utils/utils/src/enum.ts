@@ -93,50 +93,35 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
-const statusToDisplayMappings: Record<TemplateStatus, string> = {
-  NOT_YET_SUBMITTED: 'Not yet submitted',
-  SUBMITTED: 'Submitted',
-  DELETED: '', // will not be shown in the UI
-  PENDING_PROOF_REQUEST: 'Files uploaded',
-  PENDING_UPLOAD: 'Checking files',
-  PENDING_VALIDATION: 'Checking files',
-  VALIDATION_FAILED: 'Checks failed',
-  VIRUS_SCAN_FAILED: 'Checks failed',
-  WAITING_FOR_PROOF: 'Waiting for proof',
-  PROOF_AVAILABLE: 'Proof available',
-  TEMPLATE_PROOF_APPROVED: 'Template proof approved',
-} as const;
-
-const isProofEmpty = (
+const isProofAvailable = (
   template: Pick<TemplateDto & LetterProperties, 'files'>
 ) => Object.entries(template.files.proofs ?? {}).length > 0;
-
-const templateStatusToDisplayMappingsLetter = (
-  status: TemplateStatus,
-  isRoutingEnabled: boolean,
-  isProofAvailable: boolean
-) =>
-  isRoutingEnabled && isProofAvailable && status === 'SUBMITTED'
-    ? statusToDisplayMappings['TEMPLATE_PROOF_APPROVED']
-    : statusToDisplayMappings[status];
-
-const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
-  ({
-    ...statusToDisplayMappings,
-    NOT_YET_SUBMITTED: 'Draft',
-  })[status];
 
 export const statusToDisplayMapping = (
   template: TemplateDto,
   isRoutingEnabled: boolean = false
-): string =>
-  template.templateType === 'LETTER'
-    ? templateStatusToDisplayMappingsLetter(
-        template.templateStatus,
-        isRoutingEnabled,
-        isProofEmpty(template)
-      )
-    : templateStatusToDisplayMappingsDigital(template.templateStatus);
+): string => {
+  const statusToDisplayMappings: Record<TemplateStatus, string> = {
+    NOT_YET_SUBMITTED:
+      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
+    SUBMITTED:
+      template.templateType === 'LETTER' &&
+      isRoutingEnabled &&
+      isProofAvailable(template)
+        ? 'Template proof approved'
+        : 'Submitted',
+    DELETED: '', // will not be shown in the UI
+    PENDING_PROOF_REQUEST: 'Files uploaded',
+    PENDING_UPLOAD: 'Checking files',
+    PENDING_VALIDATION: 'Checking files',
+    VALIDATION_FAILED: 'Checks failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    WAITING_FOR_PROOF: 'Waiting for proof',
+    PROOF_AVAILABLE: 'Proof available',
+  } as const;
+
+  return statusToDisplayMappings[template.templateStatus];
+};
 
 type Colour =
   | 'white'
@@ -162,7 +147,6 @@ const colourMappings: Record<TemplateStatus, Colour> = {
   VALIDATION_FAILED: 'red',
   WAITING_FOR_PROOF: 'yellow',
   PROOF_AVAILABLE: 'orange',
-  TEMPLATE_PROOF_APPROVED: 'grey',
 } as const;
 
 const templateStatusToColourMappingsLetter = (
@@ -228,7 +212,6 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
-      TEMPLATE_PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -255,7 +238,6 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
-      TEMPLATE_PROOF_APPROVED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 

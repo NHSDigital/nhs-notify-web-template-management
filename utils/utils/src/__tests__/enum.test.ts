@@ -228,6 +228,18 @@ describe('statusToDisplayMapping', () => {
     ).toEqual('Template proof approved');
   });
 
+  test('statusToDisplay if no files', () => {
+    expect(
+      statusToDisplayMapping(
+        {
+          ...mockLetterTemplate,
+          templateStatus: 'SUBMITTED',
+        },
+        false
+      )
+    ).toEqual('Submitted');
+  });
+
   test('SUBMITTED', () => {
     expect(
       statusToDisplayMapping({
@@ -260,7 +272,6 @@ describe('statusToColourMapping', () => {
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
         PROOF_AVAILABLE: 'orange',
-        TEMPLATE_PROOF_APPROVED: 'grey',
       };
 
       expect(
@@ -285,7 +296,6 @@ describe('statusToColourMapping', () => {
             VALIDATION_FAILED: 'red',
             PROOF_AVAILABLE: 'orange',
             NOT_YET_SUBMITTED: 'green',
-            TEMPLATE_PROOF_APPROVED: 'grey',
           };
 
           expect(
@@ -391,7 +401,6 @@ describe('templateDisplayCopyAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', false],
     ['LETTER', 'VALIDATION_FAILED', false],
     ['LETTER', 'PROOF_AVAILABLE', false],
-    ['LETTER', 'TEMPLATE_PROOF_APPROVED', false],
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayCopyAction) => {
@@ -427,7 +436,6 @@ describe('templateDisplayDeleteAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', true],
     ['LETTER', 'VALIDATION_FAILED', true],
     ['LETTER', 'PROOF_AVAILABLE', true],
-    ['LETTER', 'TEMPLATE_PROOF_APPROVED', false],
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayDeleteAction) => {
