@@ -10,7 +10,7 @@ fi
 
 ENVIRONMENT=$1
 COMPONENT="sandbox"
-AWS_ACCOUNT_ID="891377170468"
+AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
 AWS_REGION="eu-west-2"
 PROJECT="nhs-notify"
 GROUP="nhs-notify-template-management-dev"
