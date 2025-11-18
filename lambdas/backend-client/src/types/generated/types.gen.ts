@@ -94,18 +94,18 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
-  templateId: string | null;
   supplierReferences?: {
     [key: string]: string;
   };
+  templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
-  templateId: string | null;
   supplierReferences?: {
     [key: string]: string;
   };
+  templateId: string | null;
 };
 
 export type CountSuccess = {
@@ -202,9 +202,9 @@ export type RoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
   cascadeGroupOverrides: Array<CascadeGroup>;
-  defaultCascadeGroup: string;
   clientId: string;
   createdAt: string;
+  defaultCascadeGroup: string;
   id: string;
   name: string;
   status: RoutingConfigStatus;
@@ -233,6 +233,8 @@ export type SmsProperties = {
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
+export type TemplateStatus = TemplateStatusActive | 'DELETED';
+
 export type TemplateStatusActive =
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
@@ -243,8 +245,6 @@ export type TemplateStatusActive =
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
-
-export type TemplateStatus = TemplateStatusActive | 'DELETED';
 
 export type TemplateSuccess = {
   data: TemplateDto;

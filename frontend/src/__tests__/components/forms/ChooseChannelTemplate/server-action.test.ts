@@ -5,6 +5,7 @@ import {
   NHS_APP_TEMPLATE,
   ROUTING_CONFIG,
   SMS_TEMPLATE,
+  LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
@@ -95,6 +96,58 @@ test('submit form - success updates config and redirects to choose templates', a
       },
     ],
     cascadeGroupOverrides: ROUTING_CONFIG.cascadeGroupOverrides,
+  });
+
+  expect(mockRedirect).toHaveBeenCalledWith(
+    `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+    RedirectType.push
+  );
+});
+
+
+
+test('submit form - success updates config and redirects to choose templates for letter template with supplier references', async () => {
+  const mockRedirect = jest.mocked(redirect);
+  const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
+
+  await chooseChannelTemplateAction(
+    {
+      messagePlan: {
+        ...ROUTING_CONFIG,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'letter-template-id',
+          },
+        ],
+      },
+      pageHeading: 'Choose an email template',
+      templateList: [{
+        ...LETTER_TEMPLATE,
+        supplierReferences: {
+          MBA: 'mba-supplier-reference'
+        }
+      }],
+      cascadeIndex: 0,
+    },
+    getMockFormData({
+      channelTemplate: LETTER_TEMPLATE.id,
+    })
+  );
+
+  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(ROUTING_CONFIG.id, {
+    cascade: [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: LETTER_TEMPLATE.id,
+        supplierReferences: { MBA: 'mba-supplier-reference' }
+      },
+    ],
+    cascadeGroupOverrides: [],
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(
