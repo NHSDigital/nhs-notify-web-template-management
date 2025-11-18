@@ -104,8 +104,6 @@ test('submit form - success updates config and redirects to choose templates', a
   );
 });
 
-
-
 test('submit form - success updates config and redirects to choose templates for letter template with supplier references', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
@@ -124,12 +122,14 @@ test('submit form - success updates config and redirects to choose templates for
         ],
       },
       pageHeading: 'Choose an email template',
-      templateList: [{
-        ...LETTER_TEMPLATE,
-        supplierReferences: {
-          MBA: 'mba-supplier-reference'
-        }
-      }],
+      templateList: [
+        {
+          ...LETTER_TEMPLATE,
+          supplierReferences: {
+            MBA: 'mba-supplier-reference',
+          },
+        },
+      ],
       cascadeIndex: 0,
     },
     getMockFormData({
@@ -144,7 +144,7 @@ test('submit form - success updates config and redirects to choose templates for
         channel: 'LETTER',
         channelType: 'primary',
         defaultTemplateId: LETTER_TEMPLATE.id,
-        supplierReferences: { MBA: 'mba-supplier-reference' }
+        supplierReferences: { MBA: 'mba-supplier-reference' },
       },
     ],
     cascadeGroupOverrides: [],
