@@ -68,6 +68,9 @@ export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -92,11 +95,17 @@ export type ClientFeatures = {
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
   templateId: string | null;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
   templateId: string | null;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type CountSuccess = {
@@ -193,6 +202,7 @@ export type RoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
   cascadeGroupOverrides: Array<CascadeGroup>;
+  defaultCascadeGroup: string;
   clientId: string;
   createdAt: string;
   id: string;

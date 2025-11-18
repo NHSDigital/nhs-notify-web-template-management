@@ -134,7 +134,7 @@ describe('Create Routing Config Handler', () => {
           defaultTemplateId: 'apptemplate',
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
+      cascadeGroupOverrides: [],
       name: 'app RC',
       campaignId: 'campaign',
     };
@@ -146,6 +146,7 @@ describe('Create Routing Config Handler', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       clientId: 'nhs-notify-client-id',
+      defaultCascadeGroup: 'standard',
     };
 
     mocks.routingConfigClient.createRoutingConfig.mockResolvedValueOnce({

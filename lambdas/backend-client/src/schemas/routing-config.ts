@@ -116,7 +116,7 @@ export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup),
     name: z.string(),
   })
 );
@@ -126,7 +126,7 @@ export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
     .object({
       campaignId: z.string().optional(),
       cascade: z.array($CascadeItem).nonempty().optional(),
-      cascadeGroupOverrides: z.array($CascadeGroup).nonempty().optional(),
+      cascadeGroupOverrides: z.array($CascadeGroup).optional(),
       name: z.string().optional(),
     })
     .strict()
@@ -159,7 +159,8 @@ export const $RoutingConfig = schemaFor<RoutingConfig>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup),
+    defaultCascadeGroup: z.string(),
     name: z.string(),
     clientId: z.string(),
     id: z.uuidv4(),

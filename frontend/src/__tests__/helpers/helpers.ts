@@ -105,4 +105,5 @@ export const ROUTING_CONFIG: RoutingConfig = {
       defaultTemplateId: LETTER_TEMPLATE.id,
     },
   ],
+  defaultCascadeGroup: 'standard',
 };

@@ -1,10 +1,6 @@
 import { mock } from 'jest-mock-extended';
 import { redirect, RedirectType } from 'next/navigation';
-import type {
-  CascadeGroup,
-  CascadeItem,
-  RoutingConfig,
-} from 'nhs-notify-backend-client';
+import type { CascadeItem, RoutingConfig } from 'nhs-notify-backend-client';
 import type { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { createMessagePlanServerAction } from '@app/message-plans/create-message-plan/server-action';
 import { NextRedirectError } from '@testhelpers/next-redirect';
@@ -26,175 +22,166 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-const MESSAGE_ORDER_SCENARIOS: [MessageOrder, CascadeItem[], CascadeGroup[]][] =
+const MESSAGE_ORDER_SCENARIOS: [MessageOrder, CascadeItem[]][] = [
   [
+    'NHSAPP',
     [
-      'NHSAPP',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,EMAIL',
     [
-      'NHSAPP,EMAIL',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,SMS',
     [
-      'NHSAPP,SMS',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,EMAIL,SMS',
     [
-      'NHSAPP,EMAIL,SMS',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,SMS,EMAIL',
     [
-      'NHSAPP,SMS,EMAIL',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,SMS,LETTER',
     [
-      'NHSAPP,SMS,LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'NHSAPP,EMAIL,SMS,LETTER',
     [
-      'NHSAPP,EMAIL,SMS,LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'SMS',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'NHSAPP',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
+  ],
+  [
+    'LETTER',
     [
-      'LETTER',
-      [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
-      [{ name: 'standard' }],
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
     ],
-  ];
+  ],
+];
 
 test.each(MESSAGE_ORDER_SCENARIOS)(
   'creates a message plan with correct initial cascade for %s message order and redirects to the choose templates page',
-  async (messageOrder, expectedCascade, expectedCascadeGroups) => {
+  async (messageOrder, expectedCascade) => {
     const form = new FormData();
     form.append('name', 'Message Plan Name');
     form.append('campaignId', 'test-campaign-id');
@@ -212,7 +199,7 @@ test.each(MESSAGE_ORDER_SCENARIOS)(
       name: 'Message Plan Name',
       campaignId: 'test-campaign-id',
       cascade: expectedCascade,
-      cascadeGroupOverrides: expectedCascadeGroups,
+      cascadeGroupOverrides: [],
     });
   }
 );

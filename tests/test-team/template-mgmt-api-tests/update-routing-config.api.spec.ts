@@ -389,7 +389,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       const start = new Date();
@@ -474,7 +474,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
       await storageHelper.seed([routingConfig.dbEntry]);
 
       const update = {
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       const response = await request.put(
