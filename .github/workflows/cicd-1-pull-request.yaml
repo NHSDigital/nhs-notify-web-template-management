@@ -125,7 +125,7 @@ jobs:
 
   pr-create-dynamic-environment:
     name: Create Dynamic Environment
-    needs: [metadata, dependencies, test-stage]
+    needs: [metadata, dependencies, commit-stage]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5.0.0
