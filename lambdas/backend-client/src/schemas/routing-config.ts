@@ -82,6 +82,7 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
     cascadeGroups: z.array($CascadeGroupName),
     channel: $Channel,
     channelType: $ChannelType,
+    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
 
@@ -116,7 +117,7 @@ export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup),
+    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
     name: z.string(),
   })
 );
@@ -126,7 +127,7 @@ export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
     .object({
       campaignId: z.string().optional(),
       cascade: z.array($CascadeItem).nonempty().optional(),
-      cascadeGroupOverrides: z.array($CascadeGroup).optional(),
+      cascadeGroupOverrides: z.array($CascadeGroup).nonempty().optional(),
       name: z.string().optional(),
     })
     .strict()
