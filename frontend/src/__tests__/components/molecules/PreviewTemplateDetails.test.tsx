@@ -11,14 +11,13 @@ describe('PreviewTemplateDetailsNhsApp', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          message: 'app message message',
+          message: 'app content',
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
           lockNumber: 1,
         }}
-        message='app content'
       />
     );
 
@@ -33,16 +32,14 @@ describe('PreviewTemplateDetailsEmail', () => {
         template={{
           id: 'template-id',
           name: 'Example Email template',
-          message: 'email message message',
-          subject: 'subject',
+          message: 'email content',
+          subject: 'email subject',
           templateStatus: 'SUBMITTED',
           templateType: 'EMAIL',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
           lockNumber: 1,
         }}
-        message='email content'
-        subject='email subject'
       />
     );
 
@@ -57,14 +54,13 @@ describe('PreviewTemplateDetailsSms', () => {
         template={{
           id: 'template-id',
           name: 'SMS template',
-          message: 'SMS message',
+          message: 'SMS content',
           templateStatus: 'SUBMITTED',
           templateType: 'SMS',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
           lockNumber: 1,
         }}
-        message='SMS content'
       />
     );
 

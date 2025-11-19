@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export abstract class TemplateMgmtSubmitBasePage extends TemplateMgmtBasePageDynamic {
+export abstract class TemplateMgmtSubmitBasePage extends TemplateMgmtBasePage {
   public readonly submitButton: Locator;
 
   public readonly goBackButton: Locator;

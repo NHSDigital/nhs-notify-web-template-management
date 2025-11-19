@@ -6,7 +6,6 @@ import { expect } from '@playwright/test';
 type Analyze = <T extends TemplateMgmtBasePage>(
   page: T,
   opts?: {
-    id?: string;
     beforeAnalyze?: (page: T) => Promise<void>;
   }
 ) => Promise<void>;
@@ -28,23 +27,17 @@ const makeAxeBuilder = (page: Page) =>
     .disableRules(DISABLED_RULES);
 
 export const test = base.extend<AccessibilityFixture>({
-  analyze: async ({ baseURL, page }, use) => {
+  analyze: async ({ page }, use) => {
     const analyze: Analyze = async (pageUnderTest, opts) => {
-      const { id, beforeAnalyze } = opts ?? {};
+      const { beforeAnalyze } = opts ?? {};
 
-      await pageUnderTest.loadPage(id);
+      await pageUnderTest.loadPage();
 
       if (beforeAnalyze) {
         await beforeAnalyze(pageUnderTest);
       }
 
-      const pageUrlSegment = (
-        pageUnderTest.constructor as typeof TemplateMgmtBasePage
-      ).pageUrlSegment;
-
-      await expect(page).toHaveURL(
-        new RegExp(`${baseURL}/templates/${pageUrlSegment}(.*)`) // eslint-disable-line security/detect-non-literal-regexp
-      );
+      await expect(page).toHaveURL(pageUnderTest.getUrl());
 
       const results = await makeAxeBuilder(page).analyze();
 

@@ -1,8 +1,8 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class RoutingMessagePlansPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-plans';
+export class RoutingMessagePlansPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-plans';
 
   readonly messagePlanStatusInfo: Locator;
 

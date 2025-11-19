@@ -75,9 +75,12 @@ test.describe('Preview SMS message template Page', () => {
     page,
     baseURL,
   }) => {
-    const previewPage = new TemplateMgmtPreviewSmsPage(page);
+    const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await previewPage.loadPage(templates.valid.id);
+    await previewPage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-text-message-template/${templates.valid.id}`
@@ -95,8 +98,10 @@ test.describe('Preview SMS message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewSmsPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewSmsPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -112,9 +117,12 @@ test.describe('Preview SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-      await previewPage.loadPage(templates.valid.id);
+      await previewPage.loadPage();
 
       await previewPage.editButton.click();
 
@@ -129,9 +137,12 @@ test.describe('Preview SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+        'templateId',
+        templates.empty.id
+      );
 
-      await previewPage.loadPage(templates.empty.id);
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -140,9 +151,12 @@ test.describe('Preview SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+        'templateId',
+        'fake-template-id'
+      );
 
-      await previewPage.loadPage('/fake-template-id');
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -158,9 +172,12 @@ test.describe('Preview SMS message template Page', () => {
     }) => {
       await loginAsUser(routingDisabledUser, page);
 
-      const previewPage = new TemplateMgmtPreviewSmsPage(page);
+      const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+        'templateId',
+        templates.routingDisabled.id
+      );
 
-      await previewPage.loadPage(templates.routingDisabled.id);
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-text-message-template/${templates.routingDisabled.id}`
@@ -184,9 +201,12 @@ test.describe('Preview SMS message template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+        const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.editRadioOption.click();
 
@@ -203,9 +223,12 @@ test.describe('Preview SMS message template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+        const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.submitRadioOption.click();
 
@@ -225,9 +248,12 @@ test.describe('Preview SMS message template Page', () => {
 
         const errorMessage = 'Select an option';
 
-        const previewPage = new TemplateMgmtPreviewSmsPage(page);
+        const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.clickContinueButton();
 

@@ -93,9 +93,12 @@ test.describe('Routing - Accessibility', () => {
     analyze(new RoutingChooseMessageOrderPage(page)));
 
   test('Choose template', async ({ page, analyze }) =>
-    analyze(new RoutingChooseTemplatesPage(page), {
-      id: validRoutingConfigId,
-    }));
+    analyze(
+      new RoutingChooseTemplatesPage(page).setPathParam(
+        'messagePlanId',
+        validRoutingConfigId
+      )
+    ));
 
   test('Choose message order - error', async ({ page, analyze }) =>
     analyze(new RoutingChooseMessageOrderPage(page), {

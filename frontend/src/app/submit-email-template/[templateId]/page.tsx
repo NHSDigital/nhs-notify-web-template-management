@@ -24,7 +24,7 @@ const SubmitEmailTemplatePage = async (props: TemplatePageProps) => {
 
   const searchParams = await props.searchParams;
 
-  const lockNumberResult = $LockNumber.safeParse(searchParams.lockNumber);
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
   if (!lockNumberResult.success) {
     return redirect(

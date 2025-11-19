@@ -210,13 +210,13 @@ test.describe('Submit template Page', () => {
       page,
       baseURL,
     }) => {
-      const submitTemplatePage = new PageModel(page);
-
       const template = templates[channelIdentifier].valid;
 
-      await submitTemplatePage.loadPage(template.id, {
-        lockNumber: String(template.lockNumber),
-      });
+      const submitTemplatePage = new PageModel(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
+
+      await submitTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-${channelIdentifier}-template/${template.id}?lockNumber=${template.lockNumber}`
@@ -230,10 +230,10 @@ test.describe('Submit template Page', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const template = templates[channelIdentifier].valid;
         const props = {
-          page: new PageModel(page),
-          id: template.id,
+          page: new PageModel(page)
+            .setPathParam('templateId', template.id)
+            .setSearchParam('lockNumber', String(template.lockNumber)),
           baseURL,
-          search: { lockNumber: String(template.lockNumber) },
         };
 
         await assertSkipToMainContent(props);
@@ -250,11 +250,11 @@ test.describe('Submit template Page', () => {
         page,
       }) => {
         const template = templates[channelIdentifier].submit;
-        const submitTemplatePage = new PageModel(page);
+        const submitTemplatePage = new PageModel(page)
+          .setPathParam('templateId', template.id)
+          .setSearchParam('lockNumber', String(template.lockNumber));
 
-        await submitTemplatePage.loadPage(template.id, {
-          lockNumber: String(template.lockNumber),
-        });
+        await submitTemplatePage.loadPage();
 
         await submitTemplatePage.clickSubmitTemplateButton();
 
@@ -271,11 +271,11 @@ test.describe('Submit template Page', () => {
         page,
       }) => {
         const template = templates[channelIdentifier].empty;
-        const submitTemplatePage = new PageModel(page);
+        const submitTemplatePage = new PageModel(page)
+          .setPathParam('templateId', template.id)
+          .setSearchParam('lockNumber', String(template.lockNumber));
 
-        await submitTemplatePage.loadPage(template.id, {
-          lockNumber: String(template.lockNumber),
-        });
+        await submitTemplatePage.loadPage();
 
         await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
       });
@@ -284,11 +284,11 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
-        const submitTemplatePage = new PageModel(page);
+        const submitTemplatePage = new PageModel(page)
+          .setPathParam('templateId', 'fake-template-id')
+          .setSearchParam('lockNumber', '1');
 
-        await submitTemplatePage.loadPage('/fake-template-id', {
-          lockNumber: '1',
-        });
+        await submitTemplatePage.loadPage();
 
         await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
       });
@@ -299,9 +299,12 @@ test.describe('Submit template Page', () => {
       }) => {
         const template = templates[channelIdentifier].valid;
 
-        const submitTemplatePage = new PageModel(page);
+        const submitTemplatePage = new PageModel(page).setPathParam(
+          'templateId',
+          template.id
+        );
 
-        await submitTemplatePage.loadPage(template.id);
+        await submitTemplatePage.loadPage();
 
         await expect(page).toHaveURL(
           `${baseURL}/templates/preview-${channelIdentifier}-template/${template.id}`

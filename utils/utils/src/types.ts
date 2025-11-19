@@ -58,21 +58,26 @@ export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 
-export type TemplatePageProps = {
+export type NextJsPageProps = {
+  params?: Promise<Record<string, string>>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export type TemplatePageProps = NextJsPageProps & {
   params: Promise<{
     templateId: string;
   }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export type MessagePlanPageProps = {
+export type MessagePlanPageProps = NextJsPageProps & {
   params: Promise<{
     routingConfigId: string;
   }>;
 };
 
-export type TemplateSubmittedPageProps = {
+export type MessagePlanAndTemplatePageProps = NextJsPageProps & {
   params: Promise<{
+    routingConfigId: string;
     templateId: string;
   }>;
 };

@@ -85,7 +85,7 @@ describe('RoutingConfigurationApiClient', () => {
           },
         });
 
-      const response = await client.count('token', 'DRAFT');
+      const response = await client.count('token', { status: 'DRAFT' });
 
       expect(response.error).toEqual({
         errorMeta: {
@@ -108,7 +108,7 @@ describe('RoutingConfigurationApiClient', () => {
         })
         .reply(200, { data: { count: 10 } });
 
-      const response = await client.count('token', 'COMPLETED');
+      const response = await client.count('token', { status: 'COMPLETED' });
 
       expect(response.data).toEqual({ count: 10 });
 
@@ -279,7 +279,8 @@ describe('RoutingConfigurationApiClient', () => {
       const response = await client.update(
         'test-token',
         notFoundRoutingConfigId,
-        body
+        body,
+        42
       );
 
       expect(response.error).toEqual({
@@ -305,7 +306,8 @@ describe('RoutingConfigurationApiClient', () => {
       const response = await client.update(
         'mock-token',
         invalidRoutingConfigId,
-        body
+        body,
+        42
       );
 
       expect(response.error).toEqual({
@@ -338,7 +340,8 @@ describe('RoutingConfigurationApiClient', () => {
       const response = await client.update(
         'test-token',
         validRoutingConfigId,
-        body
+        body,
+        42
       );
 
       expect(response.error).toBeUndefined();

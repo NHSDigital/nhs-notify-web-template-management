@@ -1,9 +1,9 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'create-nhs-app-template';
+export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/create-nhs-app-template';
 
   public readonly nameInput: Locator;
 

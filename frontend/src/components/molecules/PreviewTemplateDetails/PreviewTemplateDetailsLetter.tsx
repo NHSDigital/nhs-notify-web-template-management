@@ -1,3 +1,5 @@
+'use client';
+
 import { Container, SummaryList } from 'nhsuk-react-components';
 import {
   letterTypeDisplayMappings,
@@ -14,8 +16,10 @@ const { rowHeadings } = content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsLetter({
   template,
+  hideStatus,
 }: {
   template: LetterTemplate;
+  hideStatus?: boolean;
 }) {
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
@@ -41,6 +45,7 @@ export default function PreviewTemplateDetailsLetter({
               template.language
             )}
             campaignId={template.campaignId}
+            hideStatus={hideStatus}
           />
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateFile}</SummaryList.Key>

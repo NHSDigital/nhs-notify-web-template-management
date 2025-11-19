@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'upload-letter-template';
+export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/upload-letter-template';
 
   public readonly nameInput: Locator;
 

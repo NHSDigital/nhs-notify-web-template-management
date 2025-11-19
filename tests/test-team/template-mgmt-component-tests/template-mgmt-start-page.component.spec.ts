@@ -70,7 +70,6 @@ test.describe('Start Page', () => {
 
     await assertSignOutLink({
       page: startPage,
-      id: '/templates/create-and-submit-templates',
     });
   });
 

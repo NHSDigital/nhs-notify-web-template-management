@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-templates';
+export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-templates';
 
   readonly createTemplateButton: Locator;
 

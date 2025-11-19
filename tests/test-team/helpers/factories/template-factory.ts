@@ -6,7 +6,8 @@ export const TemplateFactory = {
   createEmailTemplate: (
     id: string,
     user: TestUser,
-    name: string = 'test'
+    name: string = 'test',
+    templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
       campaignId: user.campaignId,
@@ -17,6 +18,7 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       subject: 'test-subject',
       templateType: 'EMAIL',
+      templateStatus,
     });
   },
 

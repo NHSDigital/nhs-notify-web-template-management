@@ -35,7 +35,7 @@ exports[`MessagePlanBlock for channel EMAIL with no template should match snapsh
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-EMAIL"
-              href="/message-plans/choose-email-template/test-routing-config-id"
+              href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -94,7 +94,7 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-EMAIL"
-              href="/message-plans/choose-email-template/test-routing-config-id"
+              href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -183,7 +183,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-LETTER"
-              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -242,7 +242,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-LETTER"
-              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -331,7 +331,7 @@ exports[`MessagePlanBlock for channel NHSAPP with no template should match snaps
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-NHSAPP"
-              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -390,7 +390,7 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-NHSAPP"
-              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -479,7 +479,7 @@ exports[`MessagePlanBlock for channel SMS with no template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-SMS"
-              href="/message-plans/choose-text-message-template/test-routing-config-id"
+              href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -538,7 +538,7 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-SMS"
-              href="/message-plans/choose-text-message-template/test-routing-config-id"
+              href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span

@@ -49,7 +49,7 @@ export function MessagePlanChannelTemplate({
               <Link
                 data-testid={`choose-template-link-${channel}`}
                 className='nhsuk-link nhsuk-link--no-visited-state'
-                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
+                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}?lockNumber=${lockNumber}`}
               >
                 {content.templateLinks.choose}
                 <span className='nhsuk-u-visually-hidden'>
@@ -66,7 +66,7 @@ export function MessagePlanChannelTemplate({
                 <Link
                   data-testid={`change-template-link-${channel}`}
                   className='nhsuk-link nhsuk-link--no-visited-state'
-                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
+                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}?lockNumber=${lockNumber}`}
                 >
                   {content.templateLinks.change}
                   <span className='nhsuk-u-visually-hidden'>

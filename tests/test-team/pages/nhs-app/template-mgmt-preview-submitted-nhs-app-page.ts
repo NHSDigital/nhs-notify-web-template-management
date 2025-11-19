@@ -1,8 +1,9 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtPreviewSubmitedBasePage } from '../template-mgmt-preview-submitted-base-page';
+import { TemplateMgmtPreviewSubmittedBasePage } from '../template-mgmt-preview-submitted-base-page';
 
-export class TemplateMgmtPreviewSubmittedNhsAppPage extends TemplateMgmtPreviewSubmitedBasePage {
-  static readonly pageUrlSegment = 'preview-submitted-nhs-app-template';
+export class TemplateMgmtPreviewSubmittedNhsAppPage extends TemplateMgmtPreviewSubmittedBasePage {
+  static readonly pathTemplate =
+    '/preview-submitted-nhs-app-template/:templateId';
 
   public readonly messageText: Locator;
 

@@ -102,7 +102,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-NHSAPP"
                 >
-                  name
+                  app template name
                 </p>
                 <ul
                   class="channel-template-actions"
@@ -111,7 +111,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span
@@ -283,7 +283,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-SMS"
                 >
-                  name
+                  sms template name
                 </p>
                 <ul
                   class="channel-template-actions"
@@ -292,7 +292,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-SMS"
-                      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span
@@ -467,7 +467,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Choose
                       <span
@@ -602,7 +602,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                   class="nhsuk-u-margin-bottom-2"
                   data-testid="template-name-LETTER"
                 >
-                  name
+                  letter template name
                 </p>
                 <ul
                   class="channel-template-actions"
@@ -611,7 +611,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span

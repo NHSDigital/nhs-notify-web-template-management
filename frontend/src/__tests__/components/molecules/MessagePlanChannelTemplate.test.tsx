@@ -55,7 +55,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-nhs-app-template/${routingConfigId}`
+        `/message-plans/choose-nhs-app-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -96,7 +96,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-text-message-template/${routingConfigId}`
+        `/message-plans/choose-text-message-template/${routingConfigId}?lockNumber=42`
       );
     });
 

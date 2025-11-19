@@ -1,5 +1,5 @@
-import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtInvalidTemplatePage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'invalid-template';
+export class TemplateMgmtInvalidTemplatePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/invalid-template';
 }

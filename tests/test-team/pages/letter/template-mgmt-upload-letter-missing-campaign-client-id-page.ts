@@ -1,9 +1,9 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtUploadLetterMissingCampaignClientIdPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment =
-    'upload-letter-template/client-id-and-campaign-id-required';
+export class TemplateMgmtUploadLetterMissingCampaignClientIdPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate =
+    '/upload-letter-template/client-id-and-campaign-id-required';
 
   public readonly errorDetailsInsetText: Locator;
   public readonly goBackLink: Locator;
