@@ -224,6 +224,8 @@ export type SmsProperties = {
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
+export type TemplateStatus = TemplateStatusActive | 'DELETED';
+
 export type TemplateStatusActive =
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
@@ -234,8 +236,6 @@ export type TemplateStatusActive =
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
-
-export type TemplateStatus = TemplateStatusActive | 'DELETED';
 
 export type TemplateSuccess = {
   data: TemplateDto;
