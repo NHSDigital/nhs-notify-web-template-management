@@ -4,11 +4,9 @@ import {
   httpClient,
 } from '../routing-config-api-client';
 import { RoutingConfig, RoutingConfigStatus } from '../types/generated';
-import { ErrorCase } from '../types/error-cases';
 
 const validRoutingConfigId = '2a4b6c8d-0e1f-4a2b-9c3d-5e6f7a8b9c0d';
 const notFoundRoutingConfigId = '3b5d7f9a-1c2e-4b3d-8f0a-6e7d8c9b0a1f';
-const invalidRoutingConfigId = 'not-a-uuid';
 
 describe('RoutingConfigurationApiClient', () => {
   const axiosMock = new MockAdapter(httpClient);
@@ -139,21 +137,6 @@ describe('RoutingConfigurationApiClient', () => {
       });
       expect(response.data).toBeUndefined();
       expect(axiosMock.history.get.length).toBe(1);
-    });
-
-    it('should return error for invalid routing config ID', async () => {
-      const response = await client.get('mock-token', invalidRoutingConfigId);
-
-      expect(response.error).toEqual({
-        errorMeta: {
-          code: ErrorCase.VALIDATION_FAILED,
-          description: 'Invalid routing configuration ID format',
-          details: { id: invalidRoutingConfigId },
-        },
-        actualError: undefined,
-      });
-      expect(response.data).toBeUndefined();
-      expect(axiosMock.history.get.length).toBe(0);
     });
 
     it('should return routing configuration on success', async () => {
@@ -292,34 +275,6 @@ describe('RoutingConfigurationApiClient', () => {
       });
       expect(response.data).toBeUndefined();
       expect(axiosMock.history.patch.length).toBe(1);
-    });
-
-    it('should return error for invalid routing config ID', async () => {
-      const body = {
-        id: invalidRoutingConfigId,
-        name: 'Test plan',
-        campaignId: 'campaign-1',
-        cascade: [],
-        cascadeGroupOverrides: [],
-      };
-
-      const response = await client.update(
-        'mock-token',
-        invalidRoutingConfigId,
-        body,
-        42
-      );
-
-      expect(response.error).toEqual({
-        errorMeta: {
-          code: ErrorCase.VALIDATION_FAILED,
-          description: 'Invalid routing configuration ID format',
-          details: { id: invalidRoutingConfigId },
-        },
-        actualError: undefined,
-      });
-      expect(response.data).toBeUndefined();
-      expect(axiosMock.history.patch.length).toBe(0);
     });
 
     it('should return updated routing configuration on success', async () => {

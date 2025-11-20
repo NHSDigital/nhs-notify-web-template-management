@@ -11,14 +11,10 @@ import type {
   PatchV1RoutingConfigurationByRoutingConfigIdData,
   UpdateRoutingConfig,
 } from './types/generated';
-import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';
-import { z } from 'zod';
 import { RoutingConfigFilter } from './types/filters';
-
-const uuidSchema = z.uuidv4();
 
 export const httpClient = createAxiosClient();
 
@@ -75,22 +71,10 @@ export const routingConfigurationApiClient = {
     token: string,
     id: RoutingConfig['id']
   ): Promise<Result<RoutingConfig>> {
-    if (!uuidSchema.safeParse(id).success) {
-      return {
-        error: {
-          errorMeta: {
-            code: ErrorCase.VALIDATION_FAILED,
-            description: 'Invalid routing configuration ID format',
-            details: { id },
-          },
-          actualError: undefined,
-        },
-      };
-    }
-
-    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
-      GetV1RoutingConfigurationByRoutingConfigIdData['url']
-    >;
+    const url =
+      `/v1/routing-configuration/${encodeURIComponent(id)}` satisfies OpenApiToTemplate<
+        GetV1RoutingConfigurationByRoutingConfigIdData['url']
+      >;
 
     const { data, error } = await catchAxiosError(
       httpClient.get<RoutingConfigSuccess>(url, {
