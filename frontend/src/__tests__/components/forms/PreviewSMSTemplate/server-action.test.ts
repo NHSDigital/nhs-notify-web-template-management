@@ -64,7 +64,7 @@ describe('previewSmsTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-text-message-template/template-id',
+      '/submit-text-message-template/template-id?lockNumber=0',
       'push'
     );
   });

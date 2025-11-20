@@ -235,7 +235,7 @@ test.describe('Preview SMS message template Page', () => {
         await previewPage.clickContinueButton();
 
         await expect(page).toHaveURL(
-          `${baseURL}/templates/submit-text-message-template/${templates.routingDisabled.id}`
+          `${baseURL}/templates/submit-text-message-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
         );
       });
     });

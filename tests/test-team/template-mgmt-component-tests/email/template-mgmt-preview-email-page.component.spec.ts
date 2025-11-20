@@ -236,7 +236,7 @@ test.describe('Preview Email message template Page', () => {
         await previewPage.clickContinueButton();
 
         await expect(page).toHaveURL(
-          `${baseURL}/templates/submit-email-template/${templates.routingDisabled.id}`
+          `${baseURL}/templates/submit-email-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
         );
       });
     });

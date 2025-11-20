@@ -237,7 +237,7 @@ test.describe('Preview NHS App template Page', () => {
         await previewPage.clickContinueButton();
 
         await expect(page).toHaveURL(
-          `${baseURL}/templates/submit-nhs-app-template/${templates.routingDisabled.id}`
+          `${baseURL}/templates/submit-nhs-app-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
         );
       });
     });
