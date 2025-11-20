@@ -3,6 +3,7 @@ output "amplify" {
     id          = aws_amplify_app.main.id
     domain_name = local.root_domain_name
     branch_name = var.branch_name
+    gateway_url = local.gateway_url
   }
 }
 

@@ -1,11 +1,20 @@
+function getBasePath(): string {
+  return process.env.NODE_ENV === 'development'
+    ? (process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates')
+    : '';
+}
+
 export function getAuthUrl(path: string): string {
-  const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
-  const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
+  const basePath = getBasePath();
 
-  const basePath =
-    process.env.NODE_ENV === 'development'
-      ? (process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates')
-      : '';
+  if (typeof window !== 'undefined') {
+    return `${window.location.protocol}//${window.location.host}${basePath}${path}`;
+  }
 
-  return `${protocol}//${domain}${basePath}${path}`;
+  const gatewayUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
+  if (gatewayUrl) {
+    return `${gatewayUrl}${basePath}${path}`;
+  }
+
+  return `http://localhost:3000${basePath}${path}`;
 }

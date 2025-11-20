@@ -32,6 +32,7 @@ resource "aws_amplify_app" "main" {
     AMPLIFY_MONOREPO_APP_ROOT                = "frontend"
     API_BASE_URL                             = module.backend_api.api_base_url
     CSRF_SECRET                              = aws_ssm_parameter.csrf_secret.value
+    NEXT_PUBLIC_GATEWAY_URL                  = local.gateway_url
     NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT = 120
     NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS     = 900
     NOTIFY_DOMAIN_NAME                       = local.root_domain_name
