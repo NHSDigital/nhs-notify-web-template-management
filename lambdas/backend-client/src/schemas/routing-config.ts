@@ -66,6 +66,7 @@ const $ConditionalTemplateLanguage = schemaFor<ConditionalTemplateLanguage>()(
   z.object({
     language: $Language,
     templateId: z.string().nonempty().nullable(),
+    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
 
@@ -74,6 +75,7 @@ const $ConditionalTemplateAccessible =
     z.object({
       accessibleFormat: $LetterType,
       templateId: z.string().nonempty().nullable(),
+      supplierReferences: z.record(z.string(), z.string()).optional(),
     })
   );
 
@@ -117,7 +119,7 @@ export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup),
     name: z.string(),
   })
 );
@@ -127,7 +129,7 @@ export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
     .object({
       campaignId: z.string().optional(),
       cascade: z.array($CascadeItem).nonempty().optional(),
-      cascadeGroupOverrides: z.array($CascadeGroup).nonempty().optional(),
+      cascadeGroupOverrides: z.array($CascadeGroup).optional(),
       name: z.string().optional(),
     })
     .strict()
