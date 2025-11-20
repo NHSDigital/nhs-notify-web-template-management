@@ -113,11 +113,22 @@ test.describe('Routing - Accessibility', () => {
     });
 
     test('Create message plan', async ({ page, analyze }) =>
-      analyze(new RoutingCreateMessagePlanPage(page)));
+      analyze(
+        new RoutingCreateMessagePlanPage(page).setSearchParam(
+          'messageOrder',
+          messageOrder
+        )
+      ));
 
     test('Create message plan - error', async ({ page, analyze }) =>
-      analyze(new RoutingCreateMessagePlanPage(page), {
-        beforeAnalyze: (p) => p.clickSubmit(),
-      }));
+      analyze(
+        new RoutingCreateMessagePlanPage(page).setSearchParam(
+          'messageOrder',
+          messageOrder
+        ),
+        {
+          beforeAnalyze: (p) => p.clickSubmit(),
+        }
+      ));
   });
 });

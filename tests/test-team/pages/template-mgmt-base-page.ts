@@ -205,7 +205,7 @@ export abstract class TemplateMgmtBasePage {
       : this.pathTemplate;
 
     const regexPattern = normalizedPathTemplate.replaceAll(
-      /:([A-Za-z][\dA-z]*)/g,
+      /:([A-Za-z][\dA-Za-z]*)/g,
       '([^/]+)'
     );
 

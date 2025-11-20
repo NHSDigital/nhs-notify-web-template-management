@@ -132,21 +132,10 @@ export const routingConfigurationApiClient = {
     routingConfig: UpdateRoutingConfig,
     lockNumber: number
   ): Promise<Result<RoutingConfig>> {
-    if (!uuidSchema.safeParse(id).success) {
-      return {
-        error: {
-          errorMeta: {
-            code: ErrorCase.VALIDATION_FAILED,
-            description: 'Invalid routing configuration ID format',
-            details: { id },
-          },
-          actualError: undefined,
-        },
-      };
-    }
-    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
-      PatchV1RoutingConfigurationByRoutingConfigIdData['url']
-    >;
+    const url =
+      `/v1/routing-configuration/${encodeURIComponent(id)}` satisfies OpenApiToTemplate<
+        PatchV1RoutingConfigurationByRoutingConfigIdData['url']
+      >;
 
     const { data, error } = await catchAxiosError(
       httpClient.patch<RoutingConfigSuccess>(url, routingConfig, {
