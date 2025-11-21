@@ -1,12 +1,6 @@
-import { type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export class RoutingChooseStandardLetterTemplatePage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = [
-    'message-plans/choose-standard-english-letter-template',
-  ];
-
-  constructor(page: Page) {
-    super(page);
-  }
+export class RoutingChooseStandardLetterTemplatePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate =
+    '/message-plans/choose-standard-english-letter-template/:messagePlanId';
 }

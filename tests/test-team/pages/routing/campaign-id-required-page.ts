@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class RoutingMessagePlanCampaignIdRequiredPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegments = ['message-plans/campaign-id-required'];
+export class RoutingMessagePlanCampaignIdRequiredPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-plans/campaign-id-required';
 
   public readonly errorDetailsInsetText: Locator;
   public readonly goBackLink: Locator;

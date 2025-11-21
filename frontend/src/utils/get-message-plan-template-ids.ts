@@ -4,7 +4,7 @@ import { RoutingConfig } from 'nhs-notify-backend-client';
  * Extracts all template IDs from a RoutingConfig
  */
 export function getMessagePlanTemplateIds(
-  messagePlan: RoutingConfig
+  messagePlan: Pick<RoutingConfig, 'cascade'>
 ): Set<string> {
   const templateIds = new Set<string>();
 

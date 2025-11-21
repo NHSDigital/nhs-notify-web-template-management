@@ -46,9 +46,9 @@ test.describe('Create Message Plan Page', () => {
       test('creates a message plan and redirects to the template selection page for the created message plan', async ({
         page,
       }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        });
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -73,9 +73,9 @@ test.describe('Create Message Plan Page', () => {
       });
 
       test('displays error if name is empty', async ({ page }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        });
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -87,9 +87,9 @@ test.describe('Create Message Plan Page', () => {
       });
 
       test('displays error if name is too long', async ({ page }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        });
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -114,9 +114,9 @@ test.describe('Create Message Plan Page', () => {
     test('creates a message plan and redirects to the template selection page for the created template', async ({
       page,
     }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-        messageOrder: 'NHSAPP',
-      });
+      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+        page
+      ).setSearchParam('messageOrder', 'NHSAPP');
 
       await createMessagePlanPage.loadPage();
 
@@ -143,9 +143,9 @@ test.describe('Create Message Plan Page', () => {
     });
 
     test('displays error if campaign id is not selected', async ({ page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-        messageOrder: 'NHSAPP',
-      });
+      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+        page
+      ).setSearchParam('messageOrder', 'NHSAPP');
 
       await createMessagePlanPage.loadPage();
 
@@ -167,9 +167,9 @@ test.describe('Create Message Plan Page', () => {
     });
 
     test('redirects to invalid config page', async ({ baseURL, page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-        messageOrder: 'NHSAPP',
-      });
+      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+        page
+      ).setSearchParam('messageOrder', 'NHSAPP');
 
       await createMessagePlanPage.loadPage();
 
@@ -182,9 +182,9 @@ test.describe('Create Message Plan Page', () => {
   for (const { messageOrder } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
     test.describe(`with the messageOrder query parameter set to ${messageOrder}`, () => {
       test('common page tests', async ({ page, baseURL }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        });
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -197,7 +197,6 @@ test.describe('Create Message Plan Page', () => {
 
         const props = {
           page: createMessagePlanPage,
-          id: '',
           baseURL,
           expectedUrl: 'templates/message-plans/choose-message-order',
         };
@@ -224,9 +223,9 @@ test.describe('Create Message Plan Page', () => {
 
   test.describe('with invalid messageOrder query parameter set', () => {
     test('redirects to message order page', async ({ page, baseURL }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(page, {
-        messageOrder: 'INVALID',
-      });
+      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+        page
+      ).setSearchParam('messageOrder', 'INVALID');
 
       await createMessagePlanPage.loadPage();
 

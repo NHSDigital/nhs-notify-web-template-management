@@ -48,6 +48,7 @@ describe('SubmitEmailTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(await generateMetadata()).toEqual({
@@ -58,7 +59,7 @@ describe('SubmitEmailTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='EMAIL'
-        lockNumber={state.lockNumber}
+        lockNumber={42}
       />
     );
   });
@@ -70,6 +71,7 @@ describe('SubmitEmailTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -103,9 +105,24 @@ describe('SubmitEmailTemplatePage', () => {
         params: Promise.resolve({
           templateId: 'template-id',
         }),
+        searchParams: Promise.resolve({ lockNumber: '42' }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  test('it should redirect to preview page if lockNumber search param is invalid', async () => {
+    await SubmitEmailTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-email-template/template-id',
+      'replace'
+    );
+  });
 });

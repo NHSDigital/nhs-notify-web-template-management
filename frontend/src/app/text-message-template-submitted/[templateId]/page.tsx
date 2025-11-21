@@ -3,7 +3,7 @@
 import { Metadata } from 'next';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import {
-  TemplateSubmittedPageProps,
+  TemplatePageProps,
   validateSubmittedSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const SmsTemplateSubmittedPage = async (props: TemplateSubmittedPageProps) => {
+const SmsTemplateSubmittedPage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);

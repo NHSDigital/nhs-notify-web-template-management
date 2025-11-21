@@ -75,9 +75,12 @@ test.describe('Edit SMS message template Page', () => {
     page,
     baseURL,
   }) => {
-    const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+    const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editSmsTemplatePage.loadPage(templates.valid.id);
+    await editSmsTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
@@ -96,8 +99,10 @@ test.describe('Edit SMS message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtEditSmsPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtEditSmsPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -111,9 +116,11 @@ test.describe('Edit SMS message template Page', () => {
     test('when user visits page with previous data, then form fields retain previous data', async ({
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.previousData.id);
 
-      await editSmsTemplatePage.loadPage(templates.previousData.id);
+      await editSmsTemplatePage.loadPage();
 
       await expect(editSmsTemplatePage.nameInput).toHaveValue(
         templates.previousData.name
@@ -124,9 +131,11 @@ test.describe('Edit SMS message template Page', () => {
     });
 
     test('character count', async ({ page }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.submit.id);
 
-      await editSmsTemplatePage.loadPage(templates.submit.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.nameInput.fill('template-name');
 
@@ -146,9 +155,11 @@ test.describe('Edit SMS message template Page', () => {
     test('when user clicks "Personalisation" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.goBackAndReturn.id);
 
-      await editSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.customPersonalisationFields.click();
       await expect(
@@ -164,9 +175,11 @@ test.describe('Edit SMS message template Page', () => {
     test('when user clicks "Message formatting" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editSmsTemplatePage.loadPage(templates.valid.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.messageFormatting.assertDetailsOpen([
         editSmsTemplatePage.messageFormatting.linksAndUrls,
@@ -176,9 +189,11 @@ test.describe('Edit SMS message template Page', () => {
     test('when user clicks "Naming your templates" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editSmsTemplatePage.loadPage(templates.valid.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -209,8 +224,11 @@ test.describe('Edit SMS message template Page', () => {
         page,
         baseURL,
       }) => {
-        const editTemplatePage = new TemplateMgmtEditSmsPage(page);
-        await editTemplatePage.loadPage(templates.valid.id);
+        const editTemplatePage = new TemplateMgmtEditSmsPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        );
+        await editTemplatePage.loadPage();
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;
@@ -238,9 +256,11 @@ test.describe('Edit SMS message template Page', () => {
         page,
         baseURL,
       }) => {
-        const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+        const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+          page
+        ).setPathParam('templateId', templates.goBackAndReturn.id);
 
-        await editSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
+        await editSmsTemplatePage.loadPage();
 
         const newTabPromise = page.waitForEvent('popup');
 
@@ -265,9 +285,11 @@ test.describe('Edit SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.submit.id);
 
-      await editSmsTemplatePage.loadPage(templates.submit.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.nameInput.fill('This is an SMS template name');
 
@@ -286,11 +308,11 @@ test.describe('Edit SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.noSmsTemplateType.id);
 
-      await editSmsTemplatePage.attemptToLoadPageExpectFailure(
-        templates.noSmsTemplateType.id
-      );
+      await editSmsTemplatePage.attemptToLoadPageExpectFailure();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -299,11 +321,11 @@ test.describe('Edit SMS message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', 'fake-template-id');
 
-      await editSmsTemplatePage.attemptToLoadPageExpectFailure(
-        '/fake-template-id'
-      );
+      await editSmsTemplatePage.attemptToLoadPageExpectFailure();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -311,9 +333,11 @@ test.describe('Edit SMS message template Page', () => {
     test('when user submits form with no data, then errors are displayed', async ({
       page,
     }) => {
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editSmsTemplatePage.loadPage(templates.valid.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.nameInput.fill('');
 
@@ -341,9 +365,11 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const errorMessage = 'Enter a template name';
 
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editSmsTemplatePage.loadPage(templates.valid.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.nameInput.fill('');
 
@@ -367,9 +393,11 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const errorMessage = 'Enter a template message';
 
-      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const editSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editSmsTemplatePage.loadPage(templates.valid.id);
+      await editSmsTemplatePage.loadPage();
 
       await editSmsTemplatePage.nameInput.fill('template-name');
 
@@ -393,9 +421,11 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const errorMessage = 'URLs must start with https://';
 
-      const createSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
+      const createSmsTemplatePage = new TemplateMgmtEditSmsPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await createSmsTemplatePage.loadPage(templates.valid.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.nameInput.fill('template-name');
       await createSmsTemplatePage.messageTextArea.fill(

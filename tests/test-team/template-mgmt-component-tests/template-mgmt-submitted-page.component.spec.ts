@@ -101,9 +101,12 @@ test.describe('Template Submitted Page', () => {
       page,
       baseURL,
     }) => {
-      const templateSubmittedPage = new PageModel(page);
+      const templateSubmittedPage = new PageModel(page).setPathParam(
+        'templateId',
+        templates[channelIdentifier].id
+      );
 
-      await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
+      await templateSubmittedPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/${channelIdentifier}-template-submitted/${templates[channelIdentifier].id}`
@@ -126,8 +129,10 @@ test.describe('Template Submitted Page', () => {
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
-          page: new PageModel(page),
-          id: templates[channelIdentifier].id,
+          page: new PageModel(page).setPathParam(
+            'templateId',
+            templates[channelIdentifier].id
+          ),
           baseURL,
         };
 
@@ -147,9 +152,12 @@ test.describe('Template Submitted Page', () => {
         baseURL,
         page,
       }) => {
-        const templateSubmittedPage = new PageModel(page);
+        const templateSubmittedPage = new PageModel(page).setPathParam(
+          'templateId',
+          'fake-template-id'
+        );
 
-        await templateSubmittedPage.loadPage('/fake-template-id');
+        await templateSubmittedPage.loadPage();
 
         await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
       });

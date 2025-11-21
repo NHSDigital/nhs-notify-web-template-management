@@ -17,11 +17,13 @@ export function MessagePlanBlock({
   channelItem,
   template,
   routingConfigId,
+  lockNumber,
 }: {
   index: number;
   channelItem: CascadeItem;
   template?: TemplateDto;
   routingConfigId: RoutingConfig['id'];
+  lockNumber: number;
 }) {
   return (
     <li
@@ -40,6 +42,7 @@ export function MessagePlanBlock({
         template={template}
         required={true}
         routingConfigId={routingConfigId}
+        lockNumber={lockNumber}
       />
     </li>
   );

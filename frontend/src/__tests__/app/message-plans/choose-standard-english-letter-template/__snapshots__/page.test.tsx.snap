@@ -38,6 +38,12 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <dl
             class="nhsuk-summary-list"
             data-testid="previous-selection-summary"

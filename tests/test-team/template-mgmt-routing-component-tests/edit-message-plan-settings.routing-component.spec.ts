@@ -41,9 +41,12 @@ test('common page tests', async ({ page, baseURL }) => {
 
   await storageHelper.seed([plan.dbEntry]);
 
-  const editPage = new RoutingEditMessagePlanSettingsPage(page);
+  const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+    'messagePlanId',
+    plan.dbEntry.id
+  );
 
-  await editPage.loadPage(plan.dbEntry.id);
+  await editPage.loadPage();
 
   await expect(page).toHaveURL(
     `${baseURL}/templates/message-plans/edit-message-plan-settings/${plan.dbEntry.id}`
@@ -53,7 +56,6 @@ test('common page tests', async ({ page, baseURL }) => {
 
   const props = {
     page: editPage,
-    id: plan.dbEntry.id,
     baseURL,
     expectedUrl: `templates/message-plans/choose-templates/${plan.dbEntry.id}`,
   };
@@ -66,9 +68,12 @@ test('common page tests', async ({ page, baseURL }) => {
 });
 
 test("message plan doesn't exist", async ({ page, baseURL }) => {
-  const editPage = new RoutingEditMessagePlanSettingsPage(page);
+  const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+    'messagePlanId',
+    randomUUID()
+  );
 
-  await editPage.loadPage(randomUUID());
+  await editPage.loadPage();
 
   await expect(page).toHaveURL(`${baseURL}/templates/message-plans/invalid`);
 });
@@ -82,9 +87,12 @@ test.describe('single campaign client', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await expect(editPage.nameField).toHaveValue(plan.dbEntry.name);
 
@@ -102,7 +110,7 @@ test.describe('single campaign client', () => {
     );
 
     // reload the edit page - should display the latest data
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await expect(editPage.nameField).toHaveValue('New name!');
 
@@ -116,9 +124,12 @@ test.describe('single campaign client', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await editPage.nameField.clear();
 
@@ -134,9 +145,12 @@ test.describe('single campaign client', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await editPage.nameField.fill('x'.repeat(201));
 
@@ -163,9 +177,12 @@ test.describe('client has multiple campaigns', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await expect(editPage.nameField).toHaveValue(plan.dbEntry.name);
 
@@ -187,7 +204,7 @@ test.describe('client has multiple campaigns', () => {
     );
 
     // reload the edit page - should display the latest data
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await expect(editPage.nameField).toHaveValue('Updated name');
 
@@ -201,9 +218,12 @@ test.describe('client has multiple campaigns', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await editPage.campaignIdSelector.selectOption('');
 
@@ -227,9 +247,12 @@ test.describe('client has no campaign id', () => {
 
     await storageHelper.seed([plan.dbEntry]);
 
-    const editPage = new RoutingEditMessagePlanSettingsPage(page);
+    const editPage = new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+      'messagePlanId',
+      plan.dbEntry.id
+    );
 
-    await editPage.loadPage(plan.dbEntry.id);
+    await editPage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/campaign-id-required`

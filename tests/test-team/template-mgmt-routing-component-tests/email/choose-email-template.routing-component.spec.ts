@@ -83,8 +83,13 @@ test.describe('Routing - Choose email template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseEmailTemplatePage(page),
-      id: messagePlans.EMAIL_ROUTING_CONFIG.id,
+      page: new RoutingChooseEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.EMAIL_ROUTING_CONFIG.lockNumber)
+        ),
+
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -98,12 +103,15 @@ test.describe('Routing - Choose email template page', () => {
     page,
     baseURL,
   }) => {
-    const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
-    await chooseEmailTemplatePage.loadPage(
-      messagePlans.EMAIL_ROUTING_CONFIG.id
-    );
+    const plan = messagePlans.EMAIL_ROUTING_CONFIG;
+    const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page)
+      .setPathParam('messagePlanId', plan.id)
+      .setSearchParam('lockNumber', String(plan.lockNumber));
+
+    await chooseEmailTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/choose-email-template/${plan.id}?lockNumber=${plan.lockNumber}`
     );
 
     await test.step('displays list of email templates to choose from', async () => {
@@ -142,7 +150,7 @@ test.describe('Routing - Choose email template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-email-template/${plan.id}/preview-template/${template.id}`
         );
       }
 
@@ -156,7 +164,7 @@ test.describe('Routing - Choose email template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
@@ -164,7 +172,7 @@ test.describe('Routing - Choose email template page', () => {
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-email-template/${plan.id}?lockNumber=${plan.lockNumber}`
       );
 
       await expect(chooseEmailTemplatePage.errorSummary).toBeVisible();
@@ -174,22 +182,18 @@ test.describe('Routing - Choose email template page', () => {
     });
 
     await test.step('submits selected template and navigates to choose templates page', async () => {
-      await chooseEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id
-      );
+      await chooseEmailTemplatePage.loadPage();
 
       await page.getByTestId(`${templates.EMAIL2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
     await test.step('pre-selects previously selected template', async () => {
-      await chooseEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id
-      );
+      await chooseEmailTemplatePage.loadPage();
 
       // Check summary list is present and displays the name of the previously selected template
       const summaryList = page.getByTestId('previous-selection-summary');
@@ -204,9 +208,11 @@ test.describe('Routing - Choose email template page', () => {
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
-      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
+      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page)
+        .setPathParam('messagePlanId', notFoundMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseEmailTemplatePage.loadPage(notFoundMessagePlanId);
+      await chooseEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -214,9 +220,11 @@ test.describe('Routing - Choose email template page', () => {
     });
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
-      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
+      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page)
+        .setPathParam('messagePlanId', invalidMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseEmailTemplatePage.loadPage(invalidMessagePlanId);
+      await chooseEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -227,14 +235,31 @@ test.describe('Routing - Choose email template page', () => {
       page,
       baseURL,
     }) => {
-      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
+      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.NON_EMAIL_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.NON_EMAIL_ROUTING_CONFIG.lockNumber)
+        );
 
-      await chooseEmailTemplatePage.loadPage(
-        messagePlans.NON_EMAIL_ROUTING_CONFIG.id
-      );
+      await chooseEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
+      );
+    });
+  });
+
+  test.describe('redirects to choose templates page', () => {
+    test('when no lockNumber in url', async ({ page, baseURL }) => {
+      const chooseTemplatePage = new RoutingChooseEmailTemplatePage(
+        page
+      ).setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id);
+
+      await chooseTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
       );
     });
   });

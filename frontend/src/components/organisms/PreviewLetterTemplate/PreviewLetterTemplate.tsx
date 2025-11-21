@@ -40,15 +40,15 @@ export function PreviewLetterTemplate({
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
       text: submitText,
-      href: `${basePath}/submit-letter-template/${template.id}`,
+      href: `${basePath}/submit-letter-template/${template.id}?lockNumber=${template.lockNumber}`,
     },
     PROOF_AVAILABLE: {
       text: routing ? approveProofText : submitText,
-      href: `${basePath}/submit-letter-template/${template.id}`,
+      href: `${basePath}/submit-letter-template/${template.id}?lockNumber=${template.lockNumber}`,
     },
     PENDING_PROOF_REQUEST: {
       text: requestProofText,
-      href: `${basePath}/request-proof-of-template/${template.id}`,
+      href: `${basePath}/request-proof-of-template/${template.id}?lockNumber=${template.lockNumber}`,
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 

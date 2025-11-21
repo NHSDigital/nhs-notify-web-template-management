@@ -19,7 +19,6 @@ test('submit form - validation error', async () => {
     {
       messagePlan: ROUTING_CONFIG,
       pageHeading: 'Choose an NHS App template',
-      templateList: [NHS_APP_TEMPLATE],
       cascadeIndex: 0,
     },
     getMockFormData({})
@@ -28,7 +27,9 @@ test('submit form - validation error', async () => {
   expect(response).toEqual(
     expect.objectContaining({
       errorState: {
-        fieldErrors: { channelTemplate: ['Choose an NHS App template'] },
+        fieldErrors: expect.objectContaining({
+          channelTemplate: ['Choose an NHS App template'],
+        }),
         formErrors: [],
       },
     })
@@ -65,37 +66,41 @@ test('submit form - success updates config and redirects to choose templates', a
         ],
       },
       pageHeading: 'Choose an email template',
-      templateList: [EMAIL_TEMPLATE],
       cascadeIndex: 1,
     },
     getMockFormData({
       channelTemplate: EMAIL_TEMPLATE.id,
+      lockNumber: String(EMAIL_TEMPLATE.lockNumber),
     })
   );
 
-  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(ROUTING_CONFIG.id, {
-    cascade: [
-      {
-        cascadeGroups: ['standard'],
-        channel: 'NHSAPP',
-        channelType: 'primary',
-        defaultTemplateId: NHS_APP_TEMPLATE.id,
-      },
-      {
-        cascadeGroups: ['standard'],
-        channel: 'EMAIL',
-        channelType: 'primary',
-        defaultTemplateId: EMAIL_TEMPLATE.id,
-      },
-      {
-        cascadeGroups: ['standard'],
-        channel: 'SMS',
-        channelType: 'primary',
-        defaultTemplateId: SMS_TEMPLATE.id,
-      },
-    ],
-    cascadeGroupOverrides: ROUTING_CONFIG.cascadeGroupOverrides,
-  });
+  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+    ROUTING_CONFIG.id,
+    {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: NHS_APP_TEMPLATE.id,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: EMAIL_TEMPLATE.id,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'SMS',
+          channelType: 'primary',
+          defaultTemplateId: SMS_TEMPLATE.id,
+        },
+      ],
+      cascadeGroupOverrides: ROUTING_CONFIG.cascadeGroupOverrides,
+    },
+    EMAIL_TEMPLATE.lockNumber
+  );
 
   expect(mockRedirect).toHaveBeenCalledWith(
     `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,

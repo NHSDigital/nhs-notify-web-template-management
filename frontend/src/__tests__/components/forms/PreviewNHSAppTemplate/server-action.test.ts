@@ -49,7 +49,7 @@ describe('previewNhsAppTemplateAction', () => {
     previewNhsAppTemplateAction(currentState, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-nhs-app-template/template-id',
+      '/submit-nhs-app-template/template-id?lockNumber=1',
       'push'
     );
   });

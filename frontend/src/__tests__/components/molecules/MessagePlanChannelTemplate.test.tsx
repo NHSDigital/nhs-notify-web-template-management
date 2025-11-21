@@ -10,6 +10,7 @@ describe('MessagePlanChannelTemplate', () => {
       <MessagePlanChannelTemplate
         channel='EMAIL'
         routingConfigId={routingConfigId}
+        lockNumber={42}
       />
     );
 
@@ -25,6 +26,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='LETTER'
           required={false}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -42,6 +44,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel='NHSAPP'
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -52,7 +55,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-nhs-app-template/${routingConfigId}`
+        `/message-plans/choose-nhs-app-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -78,6 +81,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='SMS'
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -92,7 +96,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-text-message-template/${routingConfigId}`
+        `/message-plans/choose-text-message-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -131,6 +135,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel={channel}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
 
@@ -151,6 +156,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel={channel}
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
       expect(container).toMatchSnapshot();

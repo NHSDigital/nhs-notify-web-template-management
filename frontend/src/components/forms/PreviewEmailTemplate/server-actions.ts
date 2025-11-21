@@ -39,7 +39,7 @@ export async function previewEmailTemplateAction(
 
   if (data.previewEmailTemplateAction === 'email-submit') {
     return redirect(
-      `/submit-email-template/${formState.id}`,
+      `/submit-email-template/${formState.id}?lockNumber=${formState.lockNumber}`,
       RedirectType.push
     );
   }

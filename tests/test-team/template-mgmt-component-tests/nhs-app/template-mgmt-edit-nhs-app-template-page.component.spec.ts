@@ -54,9 +54,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -68,8 +71,10 @@ test.describe('Edit NHS App Template Page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtEditNhsAppPage(page),
-      id: templates.valid.id,
+      page: new TemplateMgmtEditNhsAppPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      ),
       baseURL,
     };
 
@@ -84,9 +89,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -107,9 +115,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.submit.id
+    );
 
-    await editTemplatePage.loadPage(templates.submit.id);
+    await editTemplatePage.loadPage();
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.submit.id}`
     );
@@ -129,9 +140,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -153,9 +167,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -178,9 +195,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -196,9 +216,12 @@ test.describe('Edit NHS App Template Page', () => {
     page,
     baseURL,
   }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await editTemplatePage.loadPage(templates.valid.id);
+    await editTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -220,9 +243,11 @@ test.describe('Edit NHS App Template Page', () => {
   test('Validate error messages on the edit NHS App message template page with http url in message', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const createTemplatePage = new TemplateMgmtEditNhsAppPage(
+      page
+    ).setPathParam('templateId', templates.valid.id);
 
-    await createTemplatePage.loadPage(templates.valid.id);
+    await createTemplatePage.loadPage();
     await expect(createTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
@@ -241,9 +266,11 @@ test.describe('Edit NHS App Template Page', () => {
   test('Validate error messages on the edit NHS App message template page with angle brackets in linked url', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+    const createTemplatePage = new TemplateMgmtEditNhsAppPage(
+      page
+    ).setPathParam('templateId', templates.valid.id);
 
-    await createTemplatePage.loadPage(templates.valid.id);
+    await createTemplatePage.loadPage();
     await expect(createTemplatePage.pageHeading).toHaveText(
       'Edit NHS App message template'
     );
@@ -277,8 +304,10 @@ test.describe('Edit NHS App Template Page', () => {
       page,
       baseURL,
     }) => {
-      const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-      await editTemplatePage.loadPage(templates.valid.id);
+      const editTemplatePage = new TemplateMgmtEditNhsAppPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
+      await editTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -319,8 +348,10 @@ test.describe('Edit NHS App Template Page', () => {
       page,
       baseURL,
     }) => {
-      const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-      await editTemplatePage.loadPage(templates.valid.id);
+      const editTemplatePage = new TemplateMgmtEditNhsAppPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
+      await editTemplatePage.loadPage();
       const newTabPromise = page.waitForEvent('popup');
       await page.getByRole('link', { name }).click();
       const newTab = await newTabPromise;
@@ -348,8 +379,11 @@ test.describe('Edit NHS App Template Page', () => {
       page,
       baseURL,
     }) => {
-      const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-      await editTemplatePage.loadPage(templates.valid.id);
+      const editTemplatePage = new TemplateMgmtEditNhsAppPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
+
+      await editTemplatePage.loadPage();
 
       const newTabPromise = page.waitForEvent('popup');
 
@@ -369,9 +403,12 @@ test.describe('Edit NHS App Template Page', () => {
   }
 
   test('Invalid template ID test', async ({ page, baseURL }) => {
-    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-    const invalidTemplateId = 'invalid-template-id';
-    await editTemplatePage.attemptToLoadPageExpectFailure(invalidTemplateId);
+    const editTemplatePage = new TemplateMgmtEditNhsAppPage(page).setPathParam(
+      'templateId',
+      'invalid-template-id'
+    );
+
+    await editTemplatePage.attemptToLoadPageExpectFailure();
     const errorMessage = page.locator('.nhsuk-heading-xl');
     await Promise.all([
       expect(errorMessage).toBeVisible(),

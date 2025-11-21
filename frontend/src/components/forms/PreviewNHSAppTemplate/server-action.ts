@@ -12,11 +12,17 @@ const {
   },
 } = content;
 
-const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
-  {
-    'nhsapp-edit': 'edit-nhs-app-template',
-    'nhsapp-submit': 'submit-nhs-app-template',
-  };
+function radioSelectionToRedirectUrl(
+  selection: 'nhsapp-edit' | 'nhsapp-submit',
+  id: string,
+  lockNumber: number
+) {
+  if (selection === 'nhsapp-edit') {
+    return `/edit-nhs-app-template/${id}`;
+  }
+
+  return `/submit-nhs-app-template/${id}?lockNumber=${lockNumber}`;
+}
 
 export const schema = z.object({
   previewNHSAppTemplateAction: z.enum(['nhsapp-edit', 'nhsapp-submit'], {
@@ -38,10 +44,12 @@ export function previewNhsAppTemplateAction(
     };
   }
 
-  const page =
-    radioSelectionToPageMap[
-      validationResponse.data.previewNHSAppTemplateAction
-    ];
-
-  return redirect(`/${page}/${formState.id}`, RedirectType.push);
+  return redirect(
+    radioSelectionToRedirectUrl(
+      validationResponse.data.previewNHSAppTemplateAction,
+      formState.id,
+      formState.lockNumber
+    ),
+    RedirectType.push
+  );
 }

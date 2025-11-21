@@ -332,4 +332,62 @@ describe('RoutingConfigUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectLockNumber', () => {
+    test('adds condition for existing lock number', () => {
+      const builder = new RoutingConfigUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.setStatus('COMPLETED').expectLockNumber(5).build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#status': 'status',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_lockNumber': 5,
+          ':status': 'COMPLETED',
+        },
+        ConditionExpression:
+          '(#lockNumber = :condition_1_1_lockNumber OR attribute_not_exists (#lockNumber))',
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+  });
+
+  describe('incrementLockNumber', () => {
+    test('increments lock number by 1', () => {
+      const builder = new RoutingConfigUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.incrementLockNumber().build();
+
+      expect(res).toEqual({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+        },
+        Key: {
+          id: mockId,
+          owner: mockOwnerKey,
+        },
+        TableName: 'TABLE_NAME',
+        UpdateExpression: 'ADD #lockNumber :lockNumber',
+      });
+    });
+  });
 });
