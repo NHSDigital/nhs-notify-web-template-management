@@ -675,10 +675,22 @@ const submitLetterTemplate = {
     warningCalloutLabel: 'Important',
     warningCalloutText: `You cannot edit a template after you've submitted it. You can only replace it with a new template.`,
   },
-  pageHeading: 'Approve and submit',
-  leadParagraph:
-    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
-  submitChecklistHeading: 'Before you submit this template',
+  routingFlagEnabled: {
+    pageHeading: 'Approve',
+    leadParagraph:
+      'When you approve your template proof, your template will be ready to add to a message plan.',
+    submitChecklistHeading: 'Before you approve this template proof',
+    warningCalloutText: `You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.`,
+    buttonText: 'Approve template proof',
+  },
+  routingFlagDisabled: {
+    pageHeading: 'Approve and submit',
+    leadParagraph:
+      'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
+    submitChecklistHeading: 'Before you submit this template',
+    warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
+    buttonText: 'Approve and submit',
+  },
   submitChecklistIntroduction: 'Check that your template proof:',
   submitChecklistItems: [
     'looks exactly as you expect your recipient to get it',
@@ -686,10 +698,8 @@ const submitLetterTemplate = {
     'shows QR codes correctly (if used)',
   ],
   warningCalloutLabel: 'Important',
-  warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
-  buttonText: 'Approve and submit',
 };
 
 const copyTemplate = {
