@@ -260,8 +260,6 @@ export class RoutingConfigRepository {
         );
       }
 
-      console.log(item, expectedLockNumber);
-
       if (item.lockNumber !== expectedLockNumber) {
         return failure(
           ErrorCase.CONFLICT,
