@@ -18,7 +18,7 @@ export async function chooseChannelTemplateAction(
   formState: ChooseChannelTemplateFormState,
   formData: FormData
 ): Promise<ChooseChannelTemplateFormState> {
-  const { messagePlan, cascadeIndex, pageHeading } = formState;
+  const { messagePlan, cascadeIndex, templateList, pageHeading } = formState;
 
   const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse(
     Object.fromEntries(formData.entries())
@@ -31,9 +31,22 @@ export async function chooseChannelTemplateAction(
     };
   }
 
+  const selectedTemplateId = parsedForm.data.channelTemplate;
+
+  const selectedTemplate = templateList.find(
+    ({ id }) => id === selectedTemplateId
+  );
+
   const newCascade = messagePlan.cascade.map((item, index) =>
     index === cascadeIndex
-      ? { ...item, defaultTemplateId: parsedForm.data.channelTemplate }
+      ? {
+          ...item,
+          defaultTemplateId: selectedTemplateId,
+          ...(selectedTemplate?.templateType === 'LETTER' &&
+          selectedTemplate.supplierReferences
+            ? { supplierReferences: selectedTemplate.supplierReferences }
+            : {}),
+        }
       : item
   );
 

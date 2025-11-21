@@ -147,13 +147,14 @@ describe('RoutingConfigRepository', () => {
           defaultTemplateId: 'sms',
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
+      cascadeGroupOverrides: [],
     };
 
     const rc: RoutingConfig = {
       ...input,
       clientId: user.clientId,
       createdAt: date.toISOString(),
+      defaultCascadeGroup: 'standard',
       id: generatedId,
       status: 'DRAFT',
       updatedAt: date.toISOString(),

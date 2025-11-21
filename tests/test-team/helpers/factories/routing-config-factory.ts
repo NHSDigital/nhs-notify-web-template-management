@@ -41,6 +41,7 @@ export const RoutingConfigFactory = {
       status: 'DRAFT',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      defaultCascadeGroup: 'standard',
       ...routingConfig,
       ...apiPayload,
     };

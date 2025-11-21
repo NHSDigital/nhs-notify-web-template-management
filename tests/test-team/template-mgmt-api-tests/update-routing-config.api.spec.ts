@@ -389,7 +389,70 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
+      };
+
+      const start = new Date();
+
+      const updateResponse = await request.put(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: update,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: {
+          ...routingConfig.apiResponse,
+          ...update,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+    });
+
+    test('cascade and cascadeGroupOverrides with supplierReferences - returns 200 and the updated routing config data', async ({
+      request,
+    }) => {
+      const routingConfig = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'template-id',
+            supplierReferences: {
+              MBA: 'supplier-template-id',
+            },
+          },
+        ],
+      });
+
+      await storageHelper.seed([routingConfig.dbEntry]);
+
+      const update = {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'primary',
+            defaultTemplateId: null,
+          },
+        ],
+        cascadeGroupOverrides: [],
       };
 
       const start = new Date();
@@ -474,7 +537,7 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
       await storageHelper.seed([routingConfig.dbEntry]);
 
       const update = {
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       const response = await request.put(
