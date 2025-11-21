@@ -1,7 +1,8 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, apiSuccess } from './responses';
-import { RoutingConfigClient } from '../app/routing-config-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { apiFailure, apiSuccess } from '@backend-api/api/responses';
+import type { RoutingConfigClient } from '@backend-api/app/routing-config-client';
+import { toHeaders } from '@backend-api/utils/headers';
 
 export function createHandler({
   routingConfigClient,
@@ -29,7 +30,7 @@ export function createHandler({
       routingConfigId,
       payload,
       { userId, clientId },
-      event.headers['X-Lock-Number'] ?? ''
+      toHeaders(event.headers).get('X-Lock-Number') ?? ''
     );
 
     if (error) {

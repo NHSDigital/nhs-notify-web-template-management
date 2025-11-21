@@ -123,6 +123,7 @@ describe('Template API - request proof', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: 'template-id' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());

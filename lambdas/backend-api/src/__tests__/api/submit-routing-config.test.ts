@@ -174,6 +174,7 @@ describe('Submit Routing Config Handler', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { routingConfigId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());

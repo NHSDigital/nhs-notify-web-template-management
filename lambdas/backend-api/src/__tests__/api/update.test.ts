@@ -261,6 +261,7 @@ describe('Template API - Update', () => {
       },
       body: JSON.stringify(update),
       pathParameters: { templateId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());

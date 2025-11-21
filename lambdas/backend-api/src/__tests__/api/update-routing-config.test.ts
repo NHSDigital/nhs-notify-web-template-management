@@ -258,6 +258,7 @@ describe('Update Routing Config Handler', () => {
       },
       body: JSON.stringify(update),
       pathParameters: { routingConfigId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
