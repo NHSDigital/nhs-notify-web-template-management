@@ -82,7 +82,7 @@ exports[`NhsNotifyHeader when authenticated matches snapshot (authenticated) 1`]
             <a
               class="auth-link nhsuk-header__account-link"
               data-testid="sign-out-link"
-              href="/auth/signout"
+              href="http://localhost:3000/auth/signout"
               id="sign-out-link"
             >
               Sign out
@@ -176,7 +176,7 @@ exports[`NhsNotifyHeader when unauthenticated matches snapshot (unauthenticated)
             <a
               class="auth-link nhsuk-header__account-link"
               data-testid="sign-in-link"
-              href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+              href="http://localhost:3000/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
               id="sign-in-link"
             >
               Sign in
