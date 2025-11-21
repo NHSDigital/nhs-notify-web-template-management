@@ -428,15 +428,17 @@ test.describe('PUT /v1/routing-configuration/:routingConfigId', () => {
       request,
     }) => {
       const routingConfig = RoutingConfigFactory.create(user1, {
-        cascade: [{
-          cascadeGroups: ['standard'],
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: 'template-id',
-          supplierReferences: {
-            MBA: 'supplier-template-id'
-          }
-        }]
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'template-id',
+            supplierReferences: {
+              MBA: 'supplier-template-id',
+            },
+          },
+        ],
       });
 
       await storageHelper.seed([routingConfig.dbEntry]);
