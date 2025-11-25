@@ -1056,14 +1056,24 @@ export type FallbackConditionBlock = {
   };
 };
 
+const messagePlanConditionalLetterTemplates = {
+  accessibleFormats: {
+    q4: 'Large print letter',
+    x0: 'Audio CD letter',
+    x1: 'Braille letter',
+  } satisfies Record<LetterType, string>,
+  languageFormats: 'Other language letters',
+};
+
 const messagePlanChannelTemplate = {
   templateLinks: {
     choose: 'Choose',
     change: 'Change',
-    remove: 'Remove',
-    template: 'template',
+    remove: 'Remove{{templateCount|| all}}',
+    templateWord: '{{templateCount|template|templates}}',
   },
   optional: '(optional)',
+  messagePlanConditionalLetterTemplates,
 };
 
 const messagePlanFallbackConditions: Record<
