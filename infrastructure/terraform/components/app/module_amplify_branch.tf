@@ -16,7 +16,8 @@ module "amplify_branch" {
   enable_auto_build = false
 
   environment_variables = {
-    NOTIFY_SUBDOMAIN      = var.environment
-    NEXT_PUBLIC_BASE_PATH = "/templates"
+    NOTIFY_SUBDOMAIN        = var.environment
+    NEXT_PUBLIC_BASE_PATH   = "/templates"
+    NEXT_PUBLIC_GATEWAY_URL = local.gateway_url
   }
 }

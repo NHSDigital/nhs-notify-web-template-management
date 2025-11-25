@@ -5,7 +5,7 @@ exports[`AuthLink renders Sign in link when authStatus changes to unauthenticate
   <a
     class="auth-link"
     data-testid="sign-in-link"
-    href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+    href="http://localhost:3000/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
     id="sign-in-link"
   >
     Sign in
@@ -18,7 +18,7 @@ exports[`AuthLink renders Sign in link when authStatus is configuring 1`] = `
   <a
     class="auth-link"
     data-testid="sign-in-link"
-    href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+    href="http://localhost:3000/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
     id="sign-in-link"
   >
     Sign in
@@ -31,7 +31,7 @@ exports[`AuthLink renders Sign out link when authStatus changes to authenticated
   <a
     class="auth-link"
     data-testid="sign-out-link"
-    href="/auth/signout"
+    href="http://localhost:3000/auth/signout"
     id="sign-out-link"
   >
     Sign out

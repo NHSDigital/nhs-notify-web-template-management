@@ -213,3 +213,15 @@ variable "external_email_domain" {
   default     = null
   description = "Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider."
 }
+
+variable "gateway_domain" {
+  type        = string
+  description = "The web gateway domain (e.g., notify.nhs.uk or web-gateway.nhsnotify.national.nhs.uk)"
+  default     = ""
+}
+
+variable "use_environment_specific_gateway_domain" {
+  type        = bool
+  description = "Whether to prefix the gateway domain with the environment name"
+  default     = false
+}
