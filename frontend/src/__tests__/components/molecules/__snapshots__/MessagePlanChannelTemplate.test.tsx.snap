@@ -1,5 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for empty state for letter type (q4) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Large print letter (optional)
+      </h3>
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-q4"
+            href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Large print letter
+            </span>
+             
+            template
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for template selected state for letter type (q4) 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Large print letter (optional)
+      </h3>
+      <div
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-names"
+      >
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-q4"
+        >
+          Large print letter template
+        </p>
+      </div>
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-q4"
+            href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Large print letter
+            </span>
+             
+            template
+          </a>
+        </li>
+        <li>
+          <form>
+            <input
+              name="routingConfigId"
+              type="hidden"
+              value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="test-large-print-id"
+            />
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-q4"
+              formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+              type="submit"
+            >
+              Remove
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Large print letter
+              </span>
+               
+              template
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL) 1`] = `
 <div>
   <div
@@ -49,7 +165,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
       <h3
         class="nhsuk-heading-s"
       >
-        Letter
+        Standard English letter
       </h3>
       <ul
         class="channel-template-actions"
@@ -64,7 +180,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Letter
+              Standard English letter
             </span>
              
             template
@@ -165,12 +281,17 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         Email
       </h3>
-      <p
+      <div
         class="nhsuk-u-margin-bottom-2"
-        data-testid="template-name-EMAIL"
+        data-testid="template-names"
       >
-        Covid 65+ reminder v1
-      </p>
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-EMAIL"
+        >
+          Covid 65+ reminder v1
+        </p>
+      </div>
       <ul
         class="channel-template-actions"
       >
@@ -193,14 +314,14 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <li>
           <form>
             <input
-              name="channel"
-              type="hidden"
-              value="EMAIL"
-            />
-            <input
               name="routingConfigId"
               type="hidden"
               value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="test-id"
             />
             <button
               class="channel-template-link--remove nhsuk-link"
@@ -236,14 +357,19 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       <h3
         class="nhsuk-heading-s"
       >
-        Letter
+        Standard English letter
       </h3>
-      <p
+      <div
         class="nhsuk-u-margin-bottom-2"
-        data-testid="template-name-LETTER"
+        data-testid="template-names"
       >
-        Covid 65+ reminder v1
-      </p>
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-LETTER"
+        >
+          Covid 65+ reminder v1
+        </p>
+      </div>
       <ul
         class="channel-template-actions"
       >
@@ -257,7 +383,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Letter
+              Standard English letter
             </span>
              
             template
@@ -266,14 +392,14 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <li>
           <form>
             <input
-              name="channel"
-              type="hidden"
-              value="LETTER"
-            />
-            <input
               name="routingConfigId"
               type="hidden"
               value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="test-id"
             />
             <button
               class="channel-template-link--remove nhsuk-link"
@@ -285,7 +411,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
               <span
                 class="nhsuk-u-visually-hidden"
               >
-                Letter
+                Standard English letter
               </span>
                
               template
@@ -311,12 +437,17 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         NHS App
       </h3>
-      <p
+      <div
         class="nhsuk-u-margin-bottom-2"
-        data-testid="template-name-NHSAPP"
+        data-testid="template-names"
       >
-        Covid 65+ reminder v1
-      </p>
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-NHSAPP"
+        >
+          Covid 65+ reminder v1
+        </p>
+      </div>
       <ul
         class="channel-template-actions"
       >
@@ -339,14 +470,14 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <li>
           <form>
             <input
-              name="channel"
-              type="hidden"
-              value="NHSAPP"
-            />
-            <input
               name="routingConfigId"
               type="hidden"
               value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="test-id"
             />
             <button
               class="channel-template-link--remove nhsuk-link"
@@ -384,12 +515,17 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
       >
         Text message (SMS)
       </h3>
-      <p
+      <div
         class="nhsuk-u-margin-bottom-2"
-        data-testid="template-name-SMS"
+        data-testid="template-names"
       >
-        Covid 65+ reminder v1
-      </p>
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-SMS"
+        >
+          Covid 65+ reminder v1
+        </p>
+      </div>
       <ul
         class="channel-template-actions"
       >
@@ -412,14 +548,14 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
         <li>
           <form>
             <input
-              name="channel"
-              type="hidden"
-              value="SMS"
-            />
-            <input
               name="routingConfigId"
               type="hidden"
               value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="test-id"
             />
             <button
               class="channel-template-link--remove nhsuk-link"
@@ -435,6 +571,133 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
               </span>
                
               template
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanLanguageTemplate when multiple templates are selected should match snapshot for empty state 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Other language letters (optional)
+      </h3>
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="choose-template-link-foreign-language"
+            href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+          >
+            Choose
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Other language letters
+            </span>
+             
+            templates
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessagePlanLanguageTemplate when multiple templates are selected should match snapshot with multiple templates selected 1`] = `
+<div>
+  <div
+    class="channel-template-outer"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Other language letters (optional)
+      </h3>
+      <div
+        class="nhsuk-u-margin-bottom-2"
+        data-testid="template-names"
+      >
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-foreign-language"
+        >
+          Welsh letter template
+        </p>
+        <p
+          class="nhsuk-u-margin-bottom-1"
+          data-testid="template-name-foreign-language"
+        >
+          Polish letter template
+        </p>
+      </div>
+      <ul
+        class="channel-template-actions"
+      >
+        <li>
+          <a
+            class="nhsuk-link nhsuk-link--no-visited-state"
+            data-testid="change-template-link-foreign-language"
+            href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+          >
+            Change
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Other language letters
+            </span>
+             
+            templates
+          </a>
+        </li>
+        <li>
+          <form>
+            <input
+              name="routingConfigId"
+              type="hidden"
+              value="test-routing-config-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="welsh-template-id"
+            />
+            <input
+              name="templateId"
+              type="hidden"
+              value="polish-template-id"
+            />
+            <button
+              class="channel-template-link--remove nhsuk-link"
+              data-testid="remove-template-link-foreign-language"
+              formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+              type="submit"
+            >
+              Remove all
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Other language letters
+              </span>
+               
+              templates
             </button>
           </form>
         </li>
