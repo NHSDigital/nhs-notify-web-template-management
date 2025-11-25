@@ -127,6 +127,7 @@ jobs:
     name: Create Dynamic Environment
     needs: [metadata, dependencies, commit-stage]
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
     steps:
       - uses: actions/checkout@v5.0.0
       - name: Trigger dynamic environment creation
