@@ -6,13 +6,17 @@ import {
   getRemainingAccessibleFormats,
   getRemainingLanguages,
   updateCascadeGroupOverrides,
+  buildCascadeGroupsForItem,
+  getConditionalTemplatesForItem,
   type ConditionalTemplate,
+  type MessagePlanTemplates,
 } from '@utils/routing-utils';
 import type {
   CascadeItem,
   Language,
   LetterType,
   RoutingConfig,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 
 const baseConfig: RoutingConfig = {
@@ -257,9 +261,40 @@ describe('removeTemplatesFromCascadeItem', () => {
     removeTemplatesFromCascadeItem(cascadeItem, ['template-1', 'template-2']);
 
     expect(cascadeItem.defaultTemplateId).toBe(originalDefaultId);
-    expect(cascadeItem.conditionalTemplates?.length).toBe(
-      originalConditionalLength
+    expect(cascadeItem.conditionalTemplates).toHaveLength(
+      originalConditionalLength!
     );
+  });
+
+  it('should update cascadeGroups when removing all conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [{ templateId: 'template-1', language: 'fr' }],
+    };
+
+    const result = removeTemplatesFromCascadeItem(cascadeItem, ['template-1']);
+
+    expect(result.cascadeGroups).toEqual(['standard']);
+  });
+
+  it('should update cascadeGroups when removing some but not all conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'template-1', language: 'fr' },
+        { templateId: 'template-2', accessibleFormat: 'q4' },
+      ],
+    };
+
+    const result = removeTemplatesFromCascadeItem(cascadeItem, ['template-1']);
+
+    expect(result.cascadeGroups).toEqual(['standard', 'accessible']);
   });
 });
 
@@ -374,6 +409,100 @@ describe('getConditionalTemplatesForItem', () => {
       'template-2': templates['template-2'],
       'template-3': templates['template-3'],
     });
+  });
+});
+
+describe('buildCascadeGroupsForItem', () => {
+  it('should return only standard group when no conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'EMAIL',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual(['standard']);
+  });
+
+  it('should return standard and accessible groups when accessible format present', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', accessibleFormat: 'q4' },
+      ],
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual([
+      'standard',
+      'accessible',
+    ]);
+  });
+
+  it('should return standard and translations groups when language present', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [{ templateId: 'template-2', language: 'fr' }],
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual([
+      'standard',
+      'translations',
+    ]);
+  });
+
+  it('should return all groups when both accessible format and language present', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', accessibleFormat: 'q4' },
+        { templateId: 'template-3', language: 'fr' },
+      ],
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual([
+      'standard',
+      'accessible',
+      'translations',
+    ]);
+  });
+
+  it('should return only standard group when conditional templates have missing templateIds', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: null, accessibleFormat: 'q4' },
+        { templateId: 'template-2', language: 'fr' },
+      ],
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual([
+      'standard',
+      'translations',
+    ]);
+  });
+
+  it('should return only standard when conditional templates array is empty', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [],
+    };
+
+    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual(['standard']);
   });
 });
 

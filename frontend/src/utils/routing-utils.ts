@@ -1,5 +1,6 @@
 import {
   CascadeGroup,
+  CascadeGroupName,
   CascadeItem,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
@@ -78,6 +79,36 @@ export function removeTemplatesFromConditionalTemplates(
 }
 
 /**
+ * Determines which cascade groups should be present based on conditional templates
+ */
+export function buildCascadeGroupsForItem(
+  cascadeItem: CascadeItem
+): CascadeGroupName[] {
+  const groups: CascadeGroupName[] = ['standard'];
+
+  if (
+    cascadeItem.conditionalTemplates &&
+    cascadeItem.conditionalTemplates.length > 0
+  ) {
+    const hasAccessibleFormat = cascadeItem.conditionalTemplates.some(
+      (template) => 'accessibleFormat' in template && template.templateId
+    );
+    const hasLanguage = cascadeItem.conditionalTemplates.some(
+      (template) => 'language' in template && template.templateId
+    );
+
+    if (hasAccessibleFormat) {
+      groups.push('accessible');
+    }
+    if (hasLanguage) {
+      groups.push('translations');
+    }
+  }
+
+  return groups;
+}
+
+/**
  * Removes templates from a cascade item by ID, updating both default and conditional templates
  */
 export function removeTemplatesFromCascadeItem(
@@ -102,6 +133,9 @@ export function removeTemplatesFromCascadeItem(
         templateIdsToRemove
       );
   }
+
+  updatedCascadeItem.cascadeGroups =
+    buildCascadeGroupsForItem(updatedCascadeItem);
 
   return updatedCascadeItem;
 }
