@@ -263,6 +263,120 @@ describe('removeTemplatesFromCascadeItem', () => {
   });
 });
 
+describe('getConditionalTemplatesForItem', () => {
+  const templates: MessagePlanTemplates = {
+    'template-1': { id: 'template-1', name: 'Template 1' } as TemplateDto,
+    'template-2': { id: 'template-2', name: 'Template 2' } as TemplateDto,
+    'template-3': { id: 'template-3', name: 'Template 3' } as TemplateDto,
+  };
+
+  it('should return empty object when no conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'EMAIL',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({});
+  });
+
+  it('should return empty object when conditionalTemplates is empty array', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [],
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({});
+  });
+
+  it('should return templates that exist in templates object', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', language: 'fr' },
+        { templateId: 'template-3', language: 'es' },
+      ],
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({
+      'template-2': templates['template-2'],
+      'template-3': templates['template-3'],
+    });
+  });
+
+  it('should filter out templates with a missing/invalid templateId', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', language: 'fr' },
+        { templateId: null, language: 'es' },
+        { accessibleFormat: 'x1' } as ConditionalTemplate,
+      ],
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({
+      'template-2': templates['template-2'],
+    });
+  });
+
+  it('should not include templates that are missing from templates object', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', language: 'fr' },
+        { templateId: 'template-999', language: 'es' },
+      ],
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({
+      'template-2': templates['template-2'],
+    });
+  });
+
+  it('should handle mix of accessible and language templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'template-1',
+      conditionalTemplates: [
+        { templateId: 'template-2', accessibleFormat: 'q4' },
+        { templateId: 'template-3', language: 'fr' },
+      ],
+    };
+
+    const result = getConditionalTemplatesForItem(cascadeItem, templates);
+
+    expect(result).toEqual({
+      'template-2': templates['template-2'],
+      'template-3': templates['template-3'],
+    });
+  });
+});
+
 describe('getRemainingAccessibleFormats', () => {
   it('should collect all unique accessible format types', () => {
     const cascade: CascadeItem[] = [

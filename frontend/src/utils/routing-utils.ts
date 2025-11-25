@@ -16,6 +16,23 @@ export type ConditionalTemplate =
 export type MessagePlanTemplates = Record<string, TemplateDto>;
 
 /**
+ * Gets the conditional templates for a cascade item, from the provided templates object
+ */
+export function getConditionalTemplatesForItem(
+  channelItem: CascadeItem,
+  templates: MessagePlanTemplates
+): MessagePlanTemplates {
+  const conditionalTemplateIds =
+    channelItem.conditionalTemplates?.map(({ templateId }) => templateId) || [];
+
+  return Object.fromEntries(
+    conditionalTemplateIds
+      .filter((id): id is string => id != null && id in templates)
+      .map((id) => [id, templates[id]])
+  );
+}
+
+/**
  * Extracts all template IDs from a RoutingConfig
  */
 export function getMessagePlanTemplateIds(
