@@ -10,7 +10,7 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanTemplates } from '@utils/message-plans';
+import { MessagePlanTemplates } from '@utils/routing-utils';
 
 import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
 

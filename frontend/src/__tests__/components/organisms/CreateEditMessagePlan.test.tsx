@@ -6,7 +6,7 @@ import type {
   Channel,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
-import type { MessagePlanTemplates } from '@utils/message-plans';
+import type { MessagePlanTemplates } from '@utils/routing-utils';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
