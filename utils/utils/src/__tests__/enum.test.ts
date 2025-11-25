@@ -241,6 +241,22 @@ describe('messagePlanChooseTemplateUrl', () => {
   ] as const)('should map %s to "%s"', (type, expected) => {
     expect(messagePlanChooseTemplateUrl(type)).toBe(expected);
   });
+
+  describe('conditional letter templates', () => {
+    test.each([
+      ['q4', 'choose-large-print-letter-template'],
+      ['x0', 'choose-audio-cd-letter-template'],
+      ['x1', 'choose-braille-letter-template'],
+      ['language', 'choose-other-language-letter-template'],
+    ] as const)(
+      'should map LETTER with conditionalType %s to "%s"',
+      (conditionalType, expected) => {
+        expect(messagePlanChooseTemplateUrl('LETTER', conditionalType)).toBe(
+          expected
+        );
+      }
+    );
+  });
 });
 
 describe('previewTemplatePages', () => {
