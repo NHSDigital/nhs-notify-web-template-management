@@ -13,7 +13,7 @@
  */
 
 // eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
-const interpolationPattern = /{{([^|}]+)(?:\|([^|}]+)\|([^}]+))?}}/g;
+const interpolationPattern = /{{([^|}]+)(?:\|([^|}]*)\|([^}]*))?}}/g;
 
 export function interpolate(
   template: string,
