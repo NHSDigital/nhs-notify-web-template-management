@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import type { CascadeItem, Channel } from 'nhs-notify-backend-client';
 import type { TemplateDto } from 'nhs-notify-backend-client';
-import { EMAIL_TEMPLATE } from '@testhelpers/helpers';
+import { EMAIL_TEMPLATE, LETTER_TEMPLATE } from '@testhelpers/helpers';
+import { MessagePlanTemplates } from '@utils/routing-utils';
 
 function buildCascadeItem(channel: Channel): CascadeItem {
   return {
@@ -19,6 +20,8 @@ const mockTemplate: TemplateDto = {
   name: 'Test email template',
 };
 
+const emptyConditionalTemplates: MessagePlanTemplates = {};
+
 describe('MessagePlanBlock', () => {
   it('should render the step number and the heading for the first cascade item', () => {
     const channelItem = buildCascadeItem('EMAIL');
@@ -28,6 +31,7 @@ describe('MessagePlanBlock', () => {
         index={0}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        conditionalTemplates={emptyConditionalTemplates}
       />
     );
 
@@ -47,6 +51,7 @@ describe('MessagePlanBlock', () => {
         index={2}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        conditionalTemplates={emptyConditionalTemplates}
       />
     );
 
@@ -65,6 +70,7 @@ describe('MessagePlanBlock', () => {
         index={0}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        conditionalTemplates={emptyConditionalTemplates}
       />
     );
 
@@ -81,8 +87,9 @@ describe('MessagePlanBlock', () => {
         <MessagePlanBlock
           index={0}
           channelItem={channelItem}
-          template={mockTemplate}
+          defaultTemplate={mockTemplate}
           routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
         />
       );
       expect(screen.getByText('Test email template')).toBeInTheDocument();
@@ -95,8 +102,9 @@ describe('MessagePlanBlock', () => {
         <MessagePlanBlock
           index={0}
           channelItem={channelItem}
-          template={mockTemplate}
+          defaultTemplate={mockTemplate}
           routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
         />
       );
 
@@ -121,6 +129,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
         />
       );
 
@@ -133,10 +142,102 @@ describe('MessagePlanBlock', () => {
         })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole('link', {
+        screen.queryByRole('button', {
           name: 'Remove Text message (SMS) template',
         })
       ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('when channel is LETTER', () => {
+    it('should render conditional templates section', () => {
+      const channelItem = buildCascadeItem('LETTER');
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
+        />
+      );
+
+      expect(
+        screen.getByTestId('message-plan-conditional-templates')
+      ).toBeInTheDocument();
+    });
+
+    it('should render accessible format templates', () => {
+      const channelItem = buildCascadeItem('LETTER');
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
+        />
+      );
+
+      expect(
+        screen.getByRole('heading', {
+          level: 3,
+          name: 'Large print letter (optional)',
+        })
+      ).toBeInTheDocument();
+    });
+
+    it('should render language templates section', () => {
+      const channelItem = buildCascadeItem('LETTER');
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          routingConfigId='test-routing-config-id'
+          conditionalTemplates={emptyConditionalTemplates}
+        />
+      );
+
+      expect(
+        screen.getByRole('heading', {
+          level: 3,
+          name: 'Other language letters (optional)',
+        })
+      ).toBeInTheDocument();
+    });
+
+    it('should display conditional template names when provided', () => {
+      const largePrintTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'large-print-id',
+        name: 'Large print template',
+      };
+
+      const channelItem: CascadeItem = {
+        ...buildCascadeItem('LETTER'),
+        conditionalTemplates: [
+          {
+            accessibleFormat: 'q4',
+            templateId: 'large-print-id',
+          },
+        ],
+      };
+
+      const conditionalTemplates: MessagePlanTemplates = {
+        'large-print-id': largePrintTemplate,
+      };
+
+      render(
+        <MessagePlanBlock
+          index={0}
+          channelItem={channelItem}
+          routingConfigId='test-routing-config-id'
+          conditionalTemplates={conditionalTemplates}
+        />
+      );
+
+      expect(screen.getByText('Large print template')).toBeInTheDocument();
     });
   });
 
@@ -149,8 +250,9 @@ describe('MessagePlanBlock', () => {
           <MessagePlanBlock
             index={0}
             channelItem={channelItem}
-            template={mockTemplate}
+            defaultTemplate={mockTemplate}
             routingConfigId='test-routing-config-id'
+            conditionalTemplates={emptyConditionalTemplates}
           />
         );
         expect(asFragment()).toMatchSnapshot();
@@ -168,6 +270,7 @@ describe('MessagePlanBlock', () => {
             index={0}
             channelItem={channelItem}
             routingConfigId='test-routing-config-id'
+            conditionalTemplates={emptyConditionalTemplates}
           />
         );
         expect(asFragment()).toMatchSnapshot();
