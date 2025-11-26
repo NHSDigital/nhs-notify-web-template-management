@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for empty state for letter type (q4) 1`] = `
+exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for empty state for letter type (x1) 1`] = `
 <div>
   <div
     class="channel-template-outer"
@@ -19,7 +19,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
         <li>
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="choose-template-link-q4"
+            data-testid="choose-template-link-x1"
             href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
           >
             Choose
@@ -38,7 +38,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
 </div>
 `;
 
-exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for template selected state for letter type (q4) 1`] = `
+exports[`MessagePlanAccessibleFormatTemplate when a template has been selected should match snapshot for template selected state for letter type (x1) 1`] = `
 <div>
   <div
     class="channel-template-outer"
@@ -57,7 +57,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
       >
         <p
           class="nhsuk-u-margin-bottom-1"
-          data-testid="template-name-q4"
+          data-testid="template-name-x1"
         >
           Large print letter template
         </p>
@@ -68,7 +68,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
         <li>
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
-            data-testid="change-template-link-q4"
+            data-testid="change-template-link-x1"
             href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
           >
             Change
@@ -95,7 +95,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
             />
             <button
               class="channel-template-link--remove nhsuk-link"
-              data-testid="remove-template-link-q4"
+              data-testid="remove-template-link-x1"
               formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
               type="submit"
             >

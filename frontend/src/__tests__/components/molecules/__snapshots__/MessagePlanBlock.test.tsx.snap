@@ -300,7 +300,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
               <li>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-q4"
+                  data-testid="choose-template-link-x1"
                   href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
                 >
                   Choose
@@ -551,7 +551,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
               <li>
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
-                  data-testid="choose-template-link-q4"
+                  data-testid="choose-template-link-x1"
                   href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
                 >
                   Choose

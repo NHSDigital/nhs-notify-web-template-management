@@ -228,7 +228,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
       beforeEach(() => {
         cascadeItem = buildLetterCascadeItem([
           {
-            accessibleFormat: 'q4',
+            accessibleFormat: 'x1',
             templateId: 'large-print-id',
           },
         ]);
@@ -248,7 +248,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           />
         );
 
-        const templateName = screen.getByTestId('template-name-q4');
+        const templateName = screen.getByTestId('template-name-x1');
         expect(templateName).toHaveTextContent('Large print covid reminder');
       });
 
@@ -359,7 +359,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
     it('should match snapshot with all conditional template types selected', () => {
       const cascadeItem = buildLetterCascadeItem([
         {
-          accessibleFormat: 'q4',
+          accessibleFormat: 'x1',
           templateId: 'large-print-id',
         },
         {

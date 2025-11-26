@@ -108,7 +108,7 @@ exports[`MessagePlanConditionalLetterTemplates with no templates selected should
             <li>
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
-                data-testid="choose-template-link-q4"
+                data-testid="choose-template-link-x1"
                 href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
               >
                 Choose
@@ -274,7 +274,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
           >
             <p
               class="nhsuk-u-margin-bottom-1"
-              data-testid="template-name-q4"
+              data-testid="template-name-x1"
             >
               Large print template
             </p>
@@ -285,7 +285,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
             <li>
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
-                data-testid="change-template-link-q4"
+                data-testid="change-template-link-x1"
                 href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
               >
                 Change
@@ -312,7 +312,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
                 />
                 <button
                   class="channel-template-link--remove nhsuk-link"
-                  data-testid="remove-template-link-q4"
+                  data-testid="remove-template-link-x1"
                   formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
                   type="submit"
                 >

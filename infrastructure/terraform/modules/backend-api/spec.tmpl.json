@@ -766,6 +766,19 @@
         ],
         "type": "object"
       },
+      "TemplateStatus": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/TemplateStatusActive"
+          },
+          {
+            "enum": [
+              "DELETED"
+            ],
+            "type": "string"
+          }
+        ]
+      },
       "TemplateStatusActive": {
         "enum": [
           "NOT_YET_SUBMITTED",
@@ -779,19 +792,6 @@
           "PROOF_AVAILABLE"
         ],
         "type": "string"
-      },
-      "TemplateStatus": {
-        "anyOf": [
-          {
-            "$ref": "#/components/schemas/TemplateStatusActive"
-          },
-          {
-            "enum": [
-              "DELETED"
-            ],
-            "type": "string"
-          }
-        ]
       },
       "TemplateSuccess": {
         "properties": {

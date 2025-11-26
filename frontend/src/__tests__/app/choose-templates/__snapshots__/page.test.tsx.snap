@@ -760,7 +760,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       <li>
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
-                          data-testid="choose-template-link-q4"
+                          data-testid="choose-template-link-x1"
                           href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
                         >
                           Choose

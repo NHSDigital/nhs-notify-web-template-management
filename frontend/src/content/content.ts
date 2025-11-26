@@ -1058,9 +1058,9 @@ export type FallbackConditionBlock = {
 
 const messagePlanConditionalLetterTemplates = {
   accessibleFormats: {
-    q4: 'Large print letter',
-    x0: 'Audio CD letter',
-    x1: 'Braille letter',
+    q4: 'British Sign Language letter',
+    x0: 'Standard letter',
+    x1: 'Large print letter',
   } satisfies Record<LetterType, string>,
   languageFormats: 'Other language letters',
 };

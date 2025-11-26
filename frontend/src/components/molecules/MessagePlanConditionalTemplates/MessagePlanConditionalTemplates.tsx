@@ -15,7 +15,7 @@ import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackCon
 
 import styles from './MessagePlanConditionalTemplates.module.scss';
 
-const ACCESSIBLE_FORMATS: LetterType[] = ['q4']; // Large print only
+const ACCESSIBLE_FORMATS: LetterType[] = ['x1']; // Large print only
 
 export function MessagePlanConditionalLetterTemplates({
   cascadeItem,

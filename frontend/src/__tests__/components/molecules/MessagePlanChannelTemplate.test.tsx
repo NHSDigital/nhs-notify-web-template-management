@@ -172,7 +172,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
   it('should display the accessible format heading', () => {
     render(
       <MessagePlanAccessibleFormatTemplate
-        accessibleFormat='q4'
+        accessibleFormat='x1'
         routingConfigId={routingConfigId}
       />
     );
@@ -189,7 +189,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
     beforeEach(() => {
       render(
         <MessagePlanAccessibleFormatTemplate
-          accessibleFormat='q4'
+          accessibleFormat='x1'
           routingConfigId={routingConfigId}
         />
       );
@@ -219,7 +219,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
     beforeEach(() => {
       render(
         <MessagePlanAccessibleFormatTemplate
-          accessibleFormat='q4'
+          accessibleFormat='x1'
           template={testTemplate}
           routingConfigId={routingConfigId}
         />
@@ -247,7 +247,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
       expect(removeButton).toBeInTheDocument();
     });
 
-    it.each(['q4'] as const)(
+    it.each(['x1'] as const)(
       'should match snapshot for empty state for letter type (%s)',
       (accessibleFormat) => {
         const { container } = render(
@@ -261,7 +261,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
       }
     );
 
-    it.each(['q4'] as const)(
+    it.each(['x1'] as const)(
       'should match snapshot for template selected state for letter type (%s)',
       (accessibleFormat) => {
         const { container } = render(

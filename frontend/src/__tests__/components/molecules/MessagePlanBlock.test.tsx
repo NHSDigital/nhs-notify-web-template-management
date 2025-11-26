@@ -218,7 +218,7 @@ describe('MessagePlanBlock', () => {
         ...buildCascadeItem('LETTER'),
         conditionalTemplates: [
           {
-            accessibleFormat: 'q4',
+            accessibleFormat: 'x1',
             templateId: 'large-print-id',
           },
         ],

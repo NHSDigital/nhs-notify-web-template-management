@@ -636,7 +636,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       <li>
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
-                          data-testid="choose-template-link-q4"
+                          data-testid="choose-template-link-x1"
                           href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                         >
                           Choose
@@ -1338,7 +1338,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                       <li>
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
-                          data-testid="choose-template-link-q4"
+                          data-testid="choose-template-link-x1"
                           href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
                         >
                           Choose
