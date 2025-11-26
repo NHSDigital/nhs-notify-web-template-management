@@ -7,10 +7,7 @@ import {
   getRoutingConfig,
   getMessagePlanTemplates,
 } from '@utils/message-plans';
-import type {
-  RoutingConfig,
-  RoutingConfigStatus,
-} from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
@@ -34,13 +31,14 @@ const validRoutingConfigId = 'fbb81055-79b9-4759-ac07-d191ae57be34';
 const routingConfig: RoutingConfig = {
   id: validRoutingConfigId,
   name: 'Autumn Campaign Plan',
-  status: 'DRAFT' as RoutingConfigStatus,
+  status: 'DRAFT',
   clientId: 'client-1',
   campaignId: 'campaign-2',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   cascadeGroupOverrides: [],
   cascade: [],
+  defaultCascadeGroup: 'standard',
 };
 
 describe('ChooseTemplatesPage', () => {

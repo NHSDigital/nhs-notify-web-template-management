@@ -28,7 +28,8 @@ const baseConfig: RoutingConfig = {
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
   cascade: [],
-  cascadeGroupOverrides: [{ name: 'standard' }],
+  cascadeGroupOverrides: [],
+  defaultCascadeGroup: 'standard',
 };
 
 describe('getMessagePlanTemplateIds', () => {

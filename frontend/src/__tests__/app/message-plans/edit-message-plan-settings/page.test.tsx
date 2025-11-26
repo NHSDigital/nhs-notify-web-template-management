@@ -132,7 +132,7 @@ describe('single campaign', () => {
   });
 
   it('updates the message plan and redirects to the choose templates page', async () => {
-    const user = await userEvent.setup();
+    const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
@@ -142,7 +142,7 @@ describe('single campaign', () => {
 
     await user.clear(await screen.findByTestId('name-field'));
 
-    await user.click(await screen.getByTestId('name-field'));
+    await user.click(screen.getByTestId('name-field'));
 
     await user.keyboard('New Name');
 
@@ -230,7 +230,7 @@ describe('multiple campaigns', () => {
   });
 
   it('updates the message plan and redirects to the choose templates page', async () => {
-    const user = await userEvent.setup();
+    const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
@@ -240,7 +240,7 @@ describe('multiple campaigns', () => {
 
     await user.clear(await screen.findByTestId('name-field'));
 
-    await user.click(await screen.getByTestId('name-field'));
+    await user.click(screen.getByTestId('name-field'));
 
     await user.keyboard('New Name');
 

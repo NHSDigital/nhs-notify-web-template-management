@@ -25,6 +25,7 @@ function buildRoutingConfig(channels: Channel[]): RoutingConfig {
       channelType: 'primary',
       defaultTemplateId: `test-template-${i}`,
     })),
+    defaultCascadeGroup: 'standard',
   };
 }
 

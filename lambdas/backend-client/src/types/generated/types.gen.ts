@@ -68,6 +68,9 @@ export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -91,11 +94,17 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
@@ -195,6 +204,7 @@ export type RoutingConfig = {
   cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
+  defaultCascadeGroup: string;
   id: string;
   name: string;
   status: RoutingConfigStatus;
@@ -223,6 +233,8 @@ export type SmsProperties = {
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
+export type TemplateStatus = TemplateStatusActive | 'DELETED';
+
 export type TemplateStatusActive =
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
@@ -233,8 +245,6 @@ export type TemplateStatusActive =
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE';
-
-export type TemplateStatus = TemplateStatusActive | 'DELETED';
 
 export type TemplateSuccess = {
   data: TemplateDto;

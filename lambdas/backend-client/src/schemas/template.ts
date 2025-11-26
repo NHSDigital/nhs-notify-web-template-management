@@ -102,6 +102,7 @@ export const $LetterProperties = schemaFor<LetterProperties>()(
     files: $LetterFiles,
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
+    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
 
