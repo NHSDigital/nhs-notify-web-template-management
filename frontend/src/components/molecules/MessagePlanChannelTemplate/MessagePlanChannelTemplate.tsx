@@ -42,7 +42,10 @@ function MessagePlanChannelTemplateBase({
   const hasTemplates = templateCount > 0;
 
   return (
-    <div className={styles['channel-template-outer']}>
+    <div
+      className={styles['channel-template-outer']}
+      data-testid={`channel-template-${testIdSuffix}`}
+    >
       <div className={styles['channel-template-inner']}>
         <h3 className='nhsuk-heading-s'>{`${channelTemplateType}${required ? '' : ' (optional)'}`}</h3>
 

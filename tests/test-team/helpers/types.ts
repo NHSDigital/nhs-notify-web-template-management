@@ -24,7 +24,7 @@ export const expectedChannelLabels: Record<Channel, string> = {
   NHSAPP: 'NHS App',
   SMS: 'Text message (SMS)',
   EMAIL: 'Email',
-  LETTER: 'Letter',
+  LETTER: 'Standard English letter',
 };
 
 export const allChannels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS', 'LETTER'];

@@ -31,9 +31,7 @@ export const RoutingConfigFactory = {
           defaultTemplateId: null,
         },
       ],
-      cascadeGroupOverrides: routingConfig.cascadeGroupOverrides ?? [
-        { name: 'standard' },
-      ],
+      cascadeGroupOverrides: routingConfig.cascadeGroupOverrides ?? [],
       name: routingConfig.name ?? 'Test config',
     };
 

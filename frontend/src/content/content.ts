@@ -1,6 +1,10 @@
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import {
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
