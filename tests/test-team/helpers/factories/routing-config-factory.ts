@@ -5,6 +5,8 @@ import {
   ChannelType,
   CreateRoutingConfig,
   RoutingConfig,
+  Language,
+  LetterType,
 } from 'nhs-notify-backend-client';
 import type {
   FactoryRoutingConfigWithModifiers,
@@ -71,6 +73,45 @@ export const RoutingConfigFactory = {
       withTemplates(...channels: Channel[]) {
         for (const channel of channels) {
           this.addTemplate(channel);
+        }
+        return this;
+      },
+
+      addLanguageTemplate(language: Language, templateId?: string) {
+        const id = templateId ?? randomUUID();
+        for (const key of ['apiPayload', 'apiResponse', 'dbEntry'] as const) {
+          for (const cascadeItem of this[key].cascade) {
+            if (cascadeItem.channel === 'LETTER') {
+              if (!cascadeItem.conditionalTemplates) {
+                cascadeItem.conditionalTemplates = [];
+              }
+              cascadeItem.conditionalTemplates.push({
+                language: language as Language,
+                templateId: id,
+              });
+            }
+          }
+        }
+        return this;
+      },
+
+      addAccessibleFormatTemplate(
+        accessibleFormat: LetterType,
+        templateId?: string
+      ) {
+        const id = templateId ?? randomUUID();
+        for (const key of ['apiPayload', 'apiResponse', 'dbEntry'] as const) {
+          for (const cascadeItem of this[key].cascade) {
+            if (cascadeItem.channel === 'LETTER') {
+              if (!cascadeItem.conditionalTemplates) {
+                cascadeItem.conditionalTemplates = [];
+              }
+              cascadeItem.conditionalTemplates.push({
+                accessibleFormat: accessibleFormat as LetterType,
+                templateId: id,
+              });
+            }
+          }
         }
         return this;
       },
