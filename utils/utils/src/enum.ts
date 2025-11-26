@@ -176,12 +176,20 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
-export const cascadeTemplateTypeToUrlTextMappings = (type: TemplateType) =>
+export const cascadeTemplateTypeToUrlTextMappings = (
+  type: TemplateType,
+  conditionalType?: LetterType | 'language'
+) =>
   ({
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
     EMAIL: 'email',
-    LETTER: 'standard-english-letter',
+    LETTER: {
+      q4: 'british-sign-language-letter',
+      x0: 'standard-english-letter',
+      x1: 'large-print-letter',
+      language: 'other-language-letter',
+    }[conditionalType || 'x0'],
   })[type];
 
 const creationAction = (type: TemplateType) =>
@@ -200,27 +208,11 @@ export const previewTemplatePages = (type: TemplateType) =>
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
 
-const conditionalLetterTemplateUrlSegments: Record<
-  LetterType | 'language',
-  string
-> = {
-  q4: 'large-print-letter',
-  x0: 'audio-cd-letter',
-  x1: 'braille-letter',
-  language: 'other-language-letter',
-};
-
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,
   conditionalType?: LetterType | 'language'
-) => {
-  const urlSegment =
-    type === 'LETTER' && conditionalType
-      ? conditionalLetterTemplateUrlSegments[conditionalType]
-      : cascadeTemplateTypeToUrlTextMappings(type);
-
-  return `choose-${urlSegment}-template`;
-};
+) =>
+  `choose-${cascadeTemplateTypeToUrlTextMappings(type, conditionalType)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (

@@ -244,9 +244,9 @@ describe('messagePlanChooseTemplateUrl', () => {
 
   describe('conditional letter templates', () => {
     test.each([
-      ['q4', 'choose-large-print-letter-template'],
-      ['x0', 'choose-audio-cd-letter-template'],
-      ['x1', 'choose-braille-letter-template'],
+      ['q4', 'choose-british-sign-language-letter-template'],
+      ['x0', 'choose-standard-english-letter-template'],
+      ['x1', 'choose-large-print-letter-template'],
       ['language', 'choose-other-language-letter-template'],
     ] as const)(
       'should map LETTER with conditionalType %s to "%s"',
@@ -417,7 +417,7 @@ describe('channelDisplayMappings', () => {
     ['NHSAPP', 'NHS App'],
     ['SMS', 'Text message (SMS)'],
     ['EMAIL', 'Email'],
-    ['LETTER', 'Letter'],
+    ['LETTER', 'Standard English letter'],
   ] as const)('should map %s to "%s"', (channel, expected) => {
     expect(channelDisplayMappings(channel)).toBe(expected);
   });
