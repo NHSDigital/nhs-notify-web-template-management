@@ -12,22 +12,18 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   const parseResult = z
     .object({
       routingConfigId: z.uuidv4(),
-      templateId: z.union([
-        z.string().nonempty(),
-        z.array(z.string().nonempty()),
-      ]),
+      templateIds: z.array(z.uuidv4()).min(1),
     })
     .safeParse({
       routingConfigId: formData.get('routingConfigId'),
-      templateId: formData.getAll('templateId'),
+      templateIds: formData.getAll('templateId'),
     });
 
   if (!parseResult.success) {
     throw new Error('Invalid form data');
   }
 
-  const { routingConfigId, templateId } = parseResult.data;
-  const templateIds = Array.isArray(templateId) ? templateId : [templateId];
+  const { routingConfigId, templateIds } = parseResult.data;
 
   const routingConfig = await getRoutingConfig(routingConfigId);
 

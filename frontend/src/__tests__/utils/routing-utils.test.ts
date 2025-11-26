@@ -277,6 +277,7 @@ describe('removeTemplatesFromCascadeItem', () => {
 
     const result = removeTemplatesFromCascadeItem(cascadeItem, ['template-1']);
 
+    expect(result.conditionalTemplates).toBeUndefined();
     expect(result.cascadeGroups).toEqual(['standard']);
   });
 

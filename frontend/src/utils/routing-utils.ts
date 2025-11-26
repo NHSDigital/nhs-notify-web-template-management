@@ -127,11 +127,16 @@ export function removeTemplatesFromCascadeItem(
   updatedCascadeItem.defaultTemplateId = defaultTemplateId ?? null;
 
   if (cascadeItem.conditionalTemplates) {
-    updatedCascadeItem.conditionalTemplates =
-      removeTemplatesFromConditionalTemplates(
-        cascadeItem.conditionalTemplates,
-        templateIdsToRemove
-      );
+    const remainingTemplates = removeTemplatesFromConditionalTemplates(
+      cascadeItem.conditionalTemplates,
+      templateIdsToRemove
+    );
+
+    if (remainingTemplates.length > 0) {
+      updatedCascadeItem.conditionalTemplates = remainingTemplates;
+    } else {
+      delete updatedCascadeItem.conditionalTemplates;
+    }
   }
 
   updatedCascadeItem.cascadeGroups =
