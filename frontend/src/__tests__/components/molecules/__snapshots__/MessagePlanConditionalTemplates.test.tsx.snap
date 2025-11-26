@@ -93,6 +93,7 @@ exports[`MessagePlanConditionalLetterTemplates with no templates selected should
     >
       <div
         class="channel-template-outer"
+        data-testid="channel-template-x1"
       >
         <div
           class="channel-template-inner"
@@ -130,6 +131,7 @@ exports[`MessagePlanConditionalLetterTemplates with no templates selected should
     >
       <div
         class="channel-template-outer"
+        data-testid="channel-template-foreign-language"
       >
         <div
           class="channel-template-inner"
@@ -259,6 +261,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
     >
       <div
         class="channel-template-outer"
+        data-testid="channel-template-x1"
       >
         <div
           class="channel-template-inner"
@@ -336,6 +339,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
     >
       <div
         class="channel-template-outer"
+        data-testid="channel-template-foreign-language"
       >
         <div
           class="channel-template-inner"

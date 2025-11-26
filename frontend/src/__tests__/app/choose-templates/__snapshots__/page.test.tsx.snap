@@ -89,6 +89,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-NHSAPP"
             >
               <div
                 class="channel-template-inner"
@@ -267,6 +268,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-SMS"
             >
               <div
                 class="channel-template-inner"
@@ -445,6 +447,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-EMAIL"
             >
               <div
                 class="channel-template-inner"
@@ -583,6 +586,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-LETTER"
             >
               <div
                 class="channel-template-inner"
@@ -745,6 +749,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-x1"
                 >
                   <div
                     class="channel-template-inner"
@@ -782,6 +787,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-foreign-language"
                 >
                   <div
                     class="channel-template-inner"
@@ -791,16 +797,33 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     >
                       Other language letters (optional)
                     </h3>
+                    <div
+                      class="nhsuk-u-margin-bottom-2"
+                      data-testid="template-names"
+                    >
+                      <p
+                        class="nhsuk-u-margin-bottom-1"
+                        data-testid="template-name-foreign-language"
+                      >
+                        French Letter Template
+                      </p>
+                      <p
+                        class="nhsuk-u-margin-bottom-1"
+                        data-testid="template-name-foreign-language"
+                      >
+                        Spanish Letter Template
+                      </p>
+                    </div>
                     <ul
                       class="channel-template-actions"
                     >
                       <li>
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
-                          data-testid="choose-template-link-foreign-language"
+                          data-testid="change-template-link-foreign-language"
                           href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
                         >
-                          Choose
+                          Change
                           <span
                             class="nhsuk-u-visually-hidden"
                           >
@@ -809,6 +832,40 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                            
                           templates
                         </a>
+                      </li>
+                      <li>
+                        <form>
+                          <input
+                            name="routingConfigId"
+                            type="hidden"
+                            value="fbb81055-79b9-4759-ac07-d191ae57be34"
+                          />
+                          <input
+                            name="templateId"
+                            type="hidden"
+                            value="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+                          />
+                          <input
+                            name="templateId"
+                            type="hidden"
+                            value="6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a"
+                          />
+                          <button
+                            class="channel-template-link--remove nhsuk-link"
+                            data-testid="remove-template-link-foreign-language"
+                            formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                            type="submit"
+                          >
+                            Remove all
+                            <span
+                              class="nhsuk-u-visually-hidden"
+                            >
+                              Other language letters
+                            </span>
+                             
+                            templates
+                          </button>
+                        </form>
                       </li>
                     </ul>
                   </div>

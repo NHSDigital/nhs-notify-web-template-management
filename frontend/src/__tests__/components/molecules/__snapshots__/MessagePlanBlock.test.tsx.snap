@@ -19,6 +19,7 @@ exports[`MessagePlanBlock for channel EMAIL with no template should match snapsh
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-EMAIL"
     >
       <div
         class="channel-template-inner"
@@ -72,6 +73,7 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-EMAIL"
     >
       <div
         class="channel-template-inner"
@@ -164,6 +166,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-LETTER"
     >
       <div
         class="channel-template-inner"
@@ -285,6 +288,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
       >
         <div
           class="channel-template-outer"
+          data-testid="channel-template-x1"
         >
           <div
             class="channel-template-inner"
@@ -321,6 +325,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
       >
         <div
           class="channel-template-outer"
+          data-testid="channel-template-foreign-language"
         >
           <div
             class="channel-template-inner"
@@ -376,6 +381,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-LETTER"
     >
       <div
         class="channel-template-inner"
@@ -536,6 +542,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
       >
         <div
           class="channel-template-outer"
+          data-testid="channel-template-x1"
         >
           <div
             class="channel-template-inner"
@@ -572,6 +579,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
       >
         <div
           class="channel-template-outer"
+          data-testid="channel-template-foreign-language"
         >
           <div
             class="channel-template-inner"
@@ -627,6 +635,7 @@ exports[`MessagePlanBlock for channel NHSAPP with no template should match snaps
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-NHSAPP"
     >
       <div
         class="channel-template-inner"
@@ -680,6 +689,7 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-NHSAPP"
     >
       <div
         class="channel-template-inner"
@@ -772,6 +782,7 @@ exports[`MessagePlanBlock for channel SMS with no template should match snapshot
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-SMS"
     >
       <div
         class="channel-template-inner"
@@ -825,6 +836,7 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
     </h2>
     <div
       class="channel-template-outer"
+      data-testid="channel-template-SMS"
     >
       <div
         class="channel-template-inner"

@@ -4,6 +4,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-x1"
   >
     <div
       class="channel-template-inner"
@@ -42,6 +43,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-x1"
   >
     <div
       class="channel-template-inner"
@@ -120,6 +122,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-EMAIL"
   >
     <div
       class="channel-template-inner"
@@ -158,6 +161,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-LETTER"
   >
     <div
       class="channel-template-inner"
@@ -196,6 +200,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAP
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-NHSAPP"
   >
     <div
       class="channel-template-inner"
@@ -234,6 +239,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-SMS"
   >
     <div
       class="channel-template-inner"
@@ -272,6 +278,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-EMAIL"
   >
     <div
       class="channel-template-inner"
@@ -350,6 +357,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-LETTER"
   >
     <div
       class="channel-template-inner"
@@ -428,6 +436,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-NHSAPP"
   >
     <div
       class="channel-template-inner"
@@ -506,6 +515,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-SMS"
   >
     <div
       class="channel-template-inner"
@@ -584,6 +594,7 @@ exports[`MessagePlanLanguageTemplate when multiple templates are selected should
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-foreign-language"
   >
     <div
       class="channel-template-inner"
@@ -622,6 +633,7 @@ exports[`MessagePlanLanguageTemplate when multiple templates are selected should
 <div>
   <div
     class="channel-template-outer"
+    data-testid="channel-template-foreign-language"
   >
     <div
       class="channel-template-inner"

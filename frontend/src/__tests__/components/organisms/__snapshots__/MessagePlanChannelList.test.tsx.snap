@@ -22,6 +22,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-NHSAPP"
       >
         <div
           class="channel-template-inner"
@@ -198,6 +199,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-EMAIL"
       >
         <div
           class="channel-template-inner"
@@ -374,6 +376,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-SMS"
       >
         <div
           class="channel-template-inner"
@@ -470,6 +473,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-NHSAPP"
       >
         <div
           class="channel-template-inner"
@@ -646,6 +650,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-EMAIL"
       >
         <div
           class="channel-template-inner"
@@ -822,6 +827,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
       </h2>
       <div
         class="channel-template-outer"
+        data-testid="channel-template-LETTER"
       >
         <div
           class="channel-template-inner"
@@ -982,6 +988,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
         >
           <div
             class="channel-template-outer"
+            data-testid="channel-template-x1"
           >
             <div
               class="channel-template-inner"
@@ -1018,6 +1025,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
         >
           <div
             class="channel-template-outer"
+            data-testid="channel-template-foreign-language"
           >
             <div
               class="channel-template-inner"

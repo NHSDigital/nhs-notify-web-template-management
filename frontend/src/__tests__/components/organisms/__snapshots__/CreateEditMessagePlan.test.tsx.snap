@@ -89,6 +89,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-NHSAPP"
             >
               <div
                 class="channel-template-inner"
@@ -226,6 +227,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-SMS"
             >
               <div
                 class="channel-template-inner"
@@ -363,6 +365,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-EMAIL"
             >
               <div
                 class="channel-template-inner"
@@ -500,6 +503,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-LETTER"
             >
               <div
                 class="channel-template-inner"
@@ -621,6 +625,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-x1"
                 >
                   <div
                     class="channel-template-inner"
@@ -657,6 +662,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-foreign-language"
                 >
                   <div
                     class="channel-template-inner"
@@ -811,6 +817,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-NHSAPP"
             >
               <div
                 class="channel-template-inner"
@@ -987,6 +994,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-EMAIL"
             >
               <div
                 class="channel-template-inner"
@@ -1163,6 +1171,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             </h2>
             <div
               class="channel-template-outer"
+              data-testid="channel-template-LETTER"
             >
               <div
                 class="channel-template-inner"
@@ -1323,6 +1332,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-x1"
                 >
                   <div
                     class="channel-template-inner"
@@ -1359,6 +1369,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               >
                 <div
                   class="channel-template-outer"
+                  data-testid="channel-template-foreign-language"
                 >
                   <div
                     class="channel-template-inner"

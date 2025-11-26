@@ -184,6 +184,8 @@ describe('ChooseTemplatesPage', () => {
     const appTemplateId = 'd3a2c6ba-438a-4bf4-b94a-7c64c6528e7f';
     const smsTemplateId = '5f7c3e1d-9b1a-4d3a-8f3e-2c6b8e9f1a2b';
     const letterTemplateId = '9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d';
+    const frenchLetterTemplateId = '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d';
+    const spanishLetterTemplateId = '6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a';
 
     const planWithMultiple: RoutingConfig = {
       ...routingConfig,
@@ -211,6 +213,16 @@ describe('ChooseTemplatesPage', () => {
           channel: 'LETTER',
           channelType: 'primary',
           defaultTemplateId: letterTemplateId,
+          conditionalTemplates: [
+            {
+              language: 'fr',
+              templateId: frenchLetterTemplateId,
+            },
+            {
+              language: 'es',
+              templateId: spanishLetterTemplateId,
+            },
+          ],
         },
       ],
     };
@@ -221,6 +233,16 @@ describe('ChooseTemplatesPage', () => {
       [letterTemplateId]: {
         ...LETTER_TEMPLATE,
         id: letterTemplateId,
+      },
+      [frenchLetterTemplateId]: {
+        ...LETTER_TEMPLATE,
+        name: 'French Letter Template',
+        id: frenchLetterTemplateId,
+      },
+      [spanishLetterTemplateId]: {
+        ...LETTER_TEMPLATE,
+        name: 'Spanish Letter Template',
+        id: spanishLetterTemplateId,
       },
     };
 
