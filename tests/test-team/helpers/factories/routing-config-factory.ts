@@ -79,17 +79,15 @@ export const RoutingConfigFactory = {
 
       addLanguageTemplate(language: Language, templateId?: string) {
         const id = templateId ?? randomUUID();
-        for (const key of ['apiPayload', 'apiResponse', 'dbEntry'] as const) {
-          for (const cascadeItem of this[key].cascade) {
-            if (cascadeItem.channel === 'LETTER') {
-              if (!cascadeItem.conditionalTemplates) {
-                cascadeItem.conditionalTemplates = [];
-              }
-              cascadeItem.conditionalTemplates.push({
-                language: language as Language,
-                templateId: id,
-              });
+        for (const cascadeItem of this.dbEntry.cascade) {
+          if (cascadeItem.channel === 'LETTER') {
+            if (!cascadeItem.conditionalTemplates) {
+              cascadeItem.conditionalTemplates = [];
             }
+            cascadeItem.conditionalTemplates.push({
+              language: language as Language,
+              templateId: id,
+            });
           }
         }
         return this;
@@ -100,17 +98,15 @@ export const RoutingConfigFactory = {
         templateId?: string
       ) {
         const id = templateId ?? randomUUID();
-        for (const key of ['apiPayload', 'apiResponse', 'dbEntry'] as const) {
-          for (const cascadeItem of this[key].cascade) {
-            if (cascadeItem.channel === 'LETTER') {
-              if (!cascadeItem.conditionalTemplates) {
-                cascadeItem.conditionalTemplates = [];
-              }
-              cascadeItem.conditionalTemplates.push({
-                accessibleFormat: accessibleFormat as LetterType,
-                templateId: id,
-              });
+        for (const cascadeItem of this.dbEntry.cascade) {
+          if (cascadeItem.channel === 'LETTER') {
+            if (!cascadeItem.conditionalTemplates) {
+              cascadeItem.conditionalTemplates = [];
             }
+            cascadeItem.conditionalTemplates.push({
+              accessibleFormat: accessibleFormat as LetterType,
+              templateId: id,
+            });
           }
         }
         return this;
