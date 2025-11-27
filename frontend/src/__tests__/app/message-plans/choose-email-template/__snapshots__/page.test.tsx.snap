@@ -13,16 +13,20 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an email template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an email template
+          </h1>
+        </div>
         <form
           action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
         >
@@ -241,7 +245,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back

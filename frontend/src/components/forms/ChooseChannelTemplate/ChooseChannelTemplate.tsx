@@ -47,8 +47,10 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
       />
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
-          <span className='nhsuk-caption-l'>{messagePlan.name}</span>
-          <h1 className='nhsuk-heading-l'>{pageHeading}</h1>
+          <div className='nhsuk-u-reading-width'>
+            <span className='nhsuk-caption-l'>{messagePlan.name}</span>
+            <h1 className='nhsuk-heading-xl'>{pageHeading}</h1>
+          </div>
           <NHSNotifyFormWrapper
             action={action}
             formId={'choose-channel-template'}
@@ -110,7 +112,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 className={classNames(
                   'nhsuk-u-font-size-19',
                   templateList.length > 0 &&
-                    'inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'
+                    'inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3'
                 )}
               >
                 {content.actions.backLink.text}

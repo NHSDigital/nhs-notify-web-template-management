@@ -43,16 +43,20 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -263,7 +267,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -289,16 +293,20 @@ exports[`ChooseChannelTemplate renders correctly when no templates are available
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -356,16 +364,20 @@ exports[`ChooseChannelTemplate renders correctly when template is unselected 1`]
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -564,7 +576,7 @@ exports[`ChooseChannelTemplate renders correctly when template is unselected 1`]
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -590,16 +602,20 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an email template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an email template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -818,7 +834,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -874,16 +890,20 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1114,7 +1134,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1140,16 +1160,20 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose a letter template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a letter template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1368,7 +1392,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1394,16 +1418,20 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1717,7 +1745,7 @@ exports[`ChooseChannelTemplate renders multiple options 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1743,16 +1771,20 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1971,7 +2003,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1997,16 +2029,20 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose a text message (SMS) template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a text message (SMS) template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -2225,7 +2261,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
