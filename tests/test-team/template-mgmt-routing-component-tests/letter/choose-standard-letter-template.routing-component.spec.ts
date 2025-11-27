@@ -57,24 +57,22 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 3',
       'SUBMITTED'
     ),
-    FRENCH_LETTER: {
-      ...TemplateFactory.uploadLetterTemplate(
-        randomUUID(),
-        user,
-        'French letter template',
-        'SUBMITTED'
-      ),
-      language: 'fr',
-    },
-    ACCESSIBLE_LETTER: {
-      ...TemplateFactory.uploadLetterTemplate(
-        randomUUID(),
-        user,
-        'Accessible letter template',
-        'SUBMITTED'
-      ),
-      letterType: 'x1',
-    },
+    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'French letter template',
+      'SUBMITTED',
+      'PASSED',
+      { language: 'fr' }
+    ),
+    ACCESSIBLE_LETTER: TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'Accessible letter template',
+      'SUBMITTED',
+      'PASSED',
+      { letterType: 'x1' }
+    ),
     APP: TemplateFactory.createNhsAppTemplate(
       randomUUID(),
       user,

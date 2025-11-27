@@ -118,17 +118,26 @@ function createTemplates(user: TestUser) {
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
-      'Test Large Print Letter template'
+      'Test Large Print Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { letterType: 'x1' }
     ),
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
-      'Test French Letter template'
+      'Test French Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { language: 'fr' }
     ),
     SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
-      'Test Spanish Letter template'
+      'Test Spanish Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { language: 'es' }
     ),
   };
 }

@@ -59,7 +59,11 @@ export const TemplateFactory = {
     user: TestUser,
     name: string,
     templateStatus = 'NOT_YET_SUBMITTED',
-    virusScanStatus = 'PASSED'
+    virusScanStatus = 'PASSED',
+    options?: {
+      letterType?: string;
+      language?: string;
+    }
   ): Template => {
     return TemplateFactory.create({
       campaignId: 'campaign-id',
@@ -79,8 +83,8 @@ export const TemplateFactory = {
       },
       personalisationParameters: [],
       id,
-      language: 'en',
-      letterType: 'x0',
+      language: options?.language || 'en',
+      letterType: options?.letterType || 'x0',
       name,
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
