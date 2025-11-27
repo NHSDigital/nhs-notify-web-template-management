@@ -410,11 +410,12 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
 
       const start = new Date();
 
-      const updateResponse = await request.put(
+      const updateResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
           },
           data: update,
         }
@@ -430,6 +431,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
           ...apiResponse,
           ...update,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: dbEntry.lockNumber + 1,
         },
       });
 
