@@ -1,3 +1,4 @@
+import { Language, LetterType } from 'nhs-notify-backend-client';
 import { TestUser } from '../auth/cognito-auth-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
@@ -61,8 +62,8 @@ export const TemplateFactory = {
     templateStatus = 'NOT_YET_SUBMITTED',
     virusScanStatus = 'PASSED',
     options?: {
-      letterType?: string;
-      language?: string;
+      letterType?: LetterType;
+      language?: Language;
     }
   ): Template => {
     return TemplateFactory.create({
