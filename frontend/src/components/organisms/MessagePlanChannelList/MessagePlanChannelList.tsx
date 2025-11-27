@@ -6,7 +6,10 @@ import {
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { MessagePlanTemplates } from '@utils/message-plans';
+import {
+  getConditionalTemplatesForItem,
+  MessagePlanTemplates,
+} from '@utils/routing-utils';
 
 import styles from '@organisms/MessagePlanChannelList/MessagePlanChannelList.module.scss';
 
@@ -32,13 +35,16 @@ export function MessagePlanChannelList({
             <MessagePlanBlock
               index={index}
               channelItem={messagePlanChannel}
-              template={getMessagePlanTemplateById(
+              defaultTemplate={getMessagePlanTemplateById(
                 messagePlanChannel.defaultTemplateId
               )}
               routingConfigId={messagePlan.id}
+              conditionalTemplates={getConditionalTemplatesForItem(
+                messagePlanChannel,
+                templates
+              )}
             />
             {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
-            {/* TODO: CCM-11494 Update this logic for letter formats */}
             {messagePlan.cascade.length > 1 &&
               index < messagePlan.cascade.length - 1 && (
                 <MessagePlanFallbackConditions

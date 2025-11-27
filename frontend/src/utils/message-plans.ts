@@ -5,10 +5,12 @@ import {
   CreateRoutingConfig,
   RoutingConfig,
   RoutingConfigStatusActive,
-  TemplateDto,
   UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
-import { getMessagePlanTemplateIds } from './get-message-plan-template-ids';
+import {
+  getMessagePlanTemplateIds,
+  type MessagePlanTemplates,
+} from './routing-utils';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
@@ -149,8 +151,9 @@ export async function updateRoutingConfig(
   return result.data;
 }
 
-export type MessagePlanTemplates = Record<string, TemplateDto>;
-
+/**
+ * Fetches all templates referenced in a message plan
+ */
 export async function getMessagePlanTemplates(
   messagePlan: RoutingConfig
 ): Promise<MessagePlanTemplates> {
@@ -161,6 +164,9 @@ export async function getMessagePlanTemplates(
   return getTemplatesByIds([...templateIds]);
 }
 
+/**
+ * Fetches templates by their IDs and returns a map of template ID to template object
+ */
 export async function getTemplatesByIds(
   templateIds: string[]
 ): Promise<MessagePlanTemplates> {

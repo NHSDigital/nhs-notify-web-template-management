@@ -3,7 +3,7 @@
 exports[`MessagePlanFallbackConditions should match snapshot for EMAIL at index 1 1`] = `
 <DocumentFragment>
   <li
-    class="fallback-conditions"
+    class="fallback-conditions fallback-conditions"
     data-testid="message-plan-fallback-conditions-EMAIL"
   >
     <div
@@ -97,7 +97,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for EMAIL at index 
 exports[`MessagePlanFallbackConditions should match snapshot for LETTER at index 3 1`] = `
 <DocumentFragment>
   <li
-    class="fallback-conditions"
+    class="fallback-conditions fallback-conditions"
     data-testid="message-plan-fallback-conditions-LETTER"
   >
     <div
@@ -184,7 +184,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for LETTER at index
 exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP at index 0 1`] = `
 <DocumentFragment>
   <li
-    class="fallback-conditions"
+    class="fallback-conditions fallback-conditions"
     data-testid="message-plan-fallback-conditions-NHSAPP"
   >
     <div
@@ -278,7 +278,7 @@ exports[`MessagePlanFallbackConditions should match snapshot for NHSAPP at index
 exports[`MessagePlanFallbackConditions should match snapshot for SMS at index 2 1`] = `
 <DocumentFragment>
   <li
-    class="fallback-conditions"
+    class="fallback-conditions fallback-conditions"
     data-testid="message-plan-fallback-conditions-SMS"
   >
     <div

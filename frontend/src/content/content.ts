@@ -1,6 +1,10 @@
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import {
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -1056,14 +1060,24 @@ export type FallbackConditionBlock = {
   };
 };
 
+const messagePlanConditionalLetterTemplates = {
+  accessibleFormats: {
+    q4: 'British Sign Language letter',
+    x0: 'Standard letter',
+    x1: 'Large print letter',
+  } satisfies Record<LetterType, string>,
+  languageFormats: 'Other language letters',
+};
+
 const messagePlanChannelTemplate = {
   templateLinks: {
     choose: 'Choose',
     change: 'Change',
-    remove: 'Remove',
-    template: 'template',
+    remove: 'Remove{{templateCount|| all}}',
+    templateWord: '{{templateCount|template|templates}}',
   },
   optional: '(optional)',
+  messagePlanConditionalLetterTemplates,
 };
 
 const messagePlanFallbackConditions: Record<

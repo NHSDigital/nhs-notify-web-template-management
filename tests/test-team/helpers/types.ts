@@ -2,6 +2,8 @@ import type {
   Channel,
   CreateRoutingConfig,
   RoutingConfig,
+  Language,
+  LetterType,
 } from 'nhs-notify-backend-client';
 
 export const templateTypeDisplayMappings: Record<string, string> = {
@@ -22,7 +24,7 @@ export const expectedChannelLabels: Record<Channel, string> = {
   NHSAPP: 'NHS App',
   SMS: 'Text message (SMS)',
   EMAIL: 'Email',
-  LETTER: 'Letter',
+  LETTER: 'Standard English letter',
 };
 
 export const allChannels: Channel[] = ['NHSAPP', 'EMAIL', 'SMS', 'LETTER'];
@@ -101,4 +103,12 @@ export type FactoryRoutingConfigWithModifiers = FactoryRoutingConfig & {
     templateId?: string
   ) => FactoryRoutingConfigWithModifiers;
   withTemplates: (...channels: Channel[]) => FactoryRoutingConfigWithModifiers;
+  addLanguageTemplate: (
+    language: Language,
+    templateId?: string
+  ) => FactoryRoutingConfigWithModifiers;
+  addAccessibleFormatTemplate: (
+    accessibleFormat: LetterType,
+    templateId?: string
+  ) => FactoryRoutingConfigWithModifiers;
 };

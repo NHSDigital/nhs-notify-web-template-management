@@ -6,6 +6,8 @@ import {
 import { interpolate } from '@utils/interpolate';
 import { ORDINALS } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanChannelTemplate } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
+import { MessagePlanConditionalLetterTemplates } from '@molecules/MessagePlanConditionalTemplates/MessagePlanConditionalTemplates';
+import { MessagePlanTemplates } from '@utils/routing-utils';
 
 import styles from '@molecules/MessagePlanBlock/MessagePlanBlock.module.scss';
 
@@ -15,13 +17,15 @@ const { messagePlanBlock: content } = copy.components;
 export function MessagePlanBlock({
   index,
   channelItem,
-  template,
+  defaultTemplate,
   routingConfigId,
+  conditionalTemplates,
 }: {
   index: number;
   channelItem: CascadeItem;
-  template?: TemplateDto;
+  defaultTemplate?: TemplateDto;
   routingConfigId: RoutingConfig['id'];
+  conditionalTemplates: MessagePlanTemplates;
 }) {
   return (
     <li
@@ -37,9 +41,16 @@ export function MessagePlanBlock({
 
       <MessagePlanChannelTemplate
         channel={channelItem.channel}
-        template={template}
+        template={defaultTemplate}
         required={true}
         routingConfigId={routingConfigId}
+      />
+
+      <MessagePlanConditionalLetterTemplates
+        cascadeItem={channelItem}
+        cascadeIndex={index}
+        routingConfigId={routingConfigId}
+        conditionalTemplates={conditionalTemplates}
       />
     </li>
   );

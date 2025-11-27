@@ -2,25 +2,28 @@
 
 import { z } from 'zod';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
-import { $Channel } from 'nhs-notify-backend-client';
+import {
+  removeTemplatesFromCascadeItem,
+  updateCascadeGroupOverrides,
+} from '@utils/routing-utils';
 import { redirect } from 'next/navigation';
 
 export async function removeTemplateFromMessagePlan(formData: FormData) {
   const parseResult = z
     .object({
       routingConfigId: z.uuidv4(),
-      channel: $Channel,
+      templateIds: z.array(z.uuidv4()).min(1),
     })
     .safeParse({
       routingConfigId: formData.get('routingConfigId'),
-      channel: formData.get('channel'),
+      templateIds: formData.getAll('templateId'),
     });
 
   if (!parseResult.success) {
     throw new Error('Invalid form data');
   }
 
-  const { routingConfigId, channel } = parseResult.data;
+  const { routingConfigId, templateIds } = parseResult.data;
 
   const routingConfig = await getRoutingConfig(routingConfigId);
 
@@ -30,13 +33,16 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   const { cascade, cascadeGroupOverrides } = routingConfig;
 
   const updatedCascade = cascade.map((cascadeItem) =>
-    cascadeItem.channel === channel
-      ? { ...cascadeItem, defaultTemplateId: null }
-      : cascadeItem
+    removeTemplatesFromCascadeItem(cascadeItem, templateIds)
+  );
+
+  const updatedCascadeGroupOverrides = updateCascadeGroupOverrides(
+    cascadeGroupOverrides,
+    updatedCascade
   );
 
   const updatedConfig = {
-    cascadeGroupOverrides,
+    cascadeGroupOverrides: updatedCascadeGroupOverrides,
     cascade: updatedCascade,
   };
 
