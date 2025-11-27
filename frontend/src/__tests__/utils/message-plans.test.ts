@@ -66,8 +66,9 @@ const baseConfig: RoutingConfig = {
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
   cascade: [validCascadeItem],
-  cascadeGroupOverrides: [{ name: 'standard' }],
   lockNumber: 0,
+  cascadeGroupOverrides: [],
+  defaultCascadeGroup: 'standard',
 };
 
 describe('Message plans actions', () => {
@@ -117,8 +118,9 @@ describe('Message plans actions', () => {
             cascadeGroups: ['standard'],
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
         lockNumber: 0,
+        cascadeGroupOverrides: [],
+        defaultCascadeGroup: 'standard',
       } satisfies Omit<RoutingConfig, 'id' | 'updatedAt'>;
 
       const routingConfigs = [
@@ -195,10 +197,11 @@ describe('Message plans actions', () => {
             campaignId: 'campaignId',
             clientId: 'clientId',
             cascade: [],
-            cascadeGroupOverrides: [{ name: 'standard' }],
+            cascadeGroupOverrides: [],
             id: 'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',
             createdAt: '2022-01-01T00:00:00.000Z',
             lockNumber: 0,
+            defaultCascadeGroup: 'standard',
           },
         ],
       });
@@ -572,6 +575,7 @@ describe('Message plans actions', () => {
           id,
           clientId: 'client1',
           createdAt: now.toISOString(),
+          defaultCascadeGroup: 'standard',
           status: 'DRAFT',
           updatedAt: now.toISOString(),
           lockNumber: 0,
@@ -589,7 +593,7 @@ describe('Message plans actions', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       });
 
       expect(routingConfigApiMock.create).toHaveBeenCalledWith(
@@ -604,7 +608,7 @@ describe('Message plans actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         },
         'mock-token'
       );
@@ -625,8 +629,9 @@ describe('Message plans actions', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
         lockNumber: 0,
+        cascadeGroupOverrides: [],
+        defaultCascadeGroup: 'standard',
       });
     });
 
@@ -649,7 +654,7 @@ describe('Message plans actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         })
       ).rejects.toThrow('Failed to get access token');
 
@@ -678,7 +683,7 @@ describe('Message plans actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         })
       ).rejects.toThrow('Failed to create message plan');
     });

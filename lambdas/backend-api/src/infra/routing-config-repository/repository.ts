@@ -47,6 +47,7 @@ export class RoutingConfigRepository {
         ...routingConfigInput,
         clientId: user.clientId,
         createdAt: date,
+        defaultCascadeGroup: 'standard',
         id: randomUUID(),
         status: 'DRAFT',
         updatedAt: date,

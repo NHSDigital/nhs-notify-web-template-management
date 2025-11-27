@@ -773,6 +773,7 @@ describe('form-actions', () => {
             status: 'DRAFT',
             updatedAt: now.toISOString(),
             lockNumber: 1,
+            defaultCascadeGroup: 'standard',
           },
         })
       );
@@ -788,7 +789,7 @@ describe('form-actions', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       });
 
       expect(mockedRoutingConfigClient.create).toHaveBeenCalledWith(
@@ -803,7 +804,7 @@ describe('form-actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         },
         'token'
       );
@@ -825,7 +826,8 @@ describe('form-actions', () => {
             defaultTemplateId: null,
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
+        defaultCascadeGroup: 'standard',
       });
     });
 
@@ -848,7 +850,7 @@ describe('form-actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         })
       ).rejects.toThrow('Failed to get access token');
 
@@ -877,7 +879,7 @@ describe('form-actions', () => {
               defaultTemplateId: null,
             },
           ],
-          cascadeGroupOverrides: [{ name: 'standard' }],
+          cascadeGroupOverrides: [],
         })
       ).rejects.toThrow('Failed to create message plan');
     });

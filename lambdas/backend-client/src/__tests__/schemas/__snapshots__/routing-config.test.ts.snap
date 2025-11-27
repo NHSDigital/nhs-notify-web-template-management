@@ -77,6 +77,14 @@ exports[`RoutingConfig schema snapshot full error 1`] = `
     "expected": "string",
     "code": "invalid_type",
     "path": [
+      "defaultCascadeGroup"
+    ],
+    "message": "Invalid input: expected string, received undefined"
+  },
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
       "name"
     ],
     "message": "Invalid input: expected string, received undefined"

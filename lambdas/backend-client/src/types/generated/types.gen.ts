@@ -68,6 +68,9 @@ export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -91,11 +94,17 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
@@ -195,6 +204,7 @@ export type RoutingConfig = {
   cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
+  defaultCascadeGroup: string;
   id: string;
   lockNumber: number;
   name: string;

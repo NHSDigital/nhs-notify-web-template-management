@@ -180,7 +180,7 @@ curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
       "channelType": "primary",
       "defaultTemplateId": "email_id"
    }],
-  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "cascadeGroupOverrides": [],
   "name": "RC name"
 }'
 ```
@@ -201,7 +201,7 @@ curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFI
       "channelType": "primary",
       "defaultTemplateId": "email_id"
    }],
-  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "cascadeGroupOverrides": [],
   "name": "New name"
 }'
 ```

@@ -54,6 +54,7 @@ const baseCreated = {
   createdBy: 'user-1',
   updatedAt: '2025-09-18T15:26:04.338Z',
   updatedBy: 'user-1',
+  defaultCascadeGroup: 'standard',
 };
 
 describe.each([
@@ -172,14 +173,6 @@ describe.each([
           ],
         },
       ],
-    });
-    expect(res.success).toBe(false);
-  });
-
-  test('cascadeGroupOverrides must be nonempty', () => {
-    const res = $Schema.safeParse({
-      ...baseInput,
-      cascadeGroupOverrides: [],
     });
     expect(res.success).toBe(false);
   });

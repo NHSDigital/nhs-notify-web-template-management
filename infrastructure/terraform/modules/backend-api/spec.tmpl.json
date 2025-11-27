@@ -269,6 +269,12 @@
           },
           "channelType": {
             "$ref": "#/components/schemas/ChannelType"
+          },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           }
         },
         "required": [
@@ -343,6 +349,12 @@
           "accessibleFormat": {
             "$ref": "#/components/schemas/LetterType"
           },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
           "templateId": {
             "format": "uuid",
             "nullable": true,
@@ -360,6 +372,12 @@
         "properties": {
           "language": {
             "$ref": "#/components/schemas/Language"
+          },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           },
           "templateId": {
             "format": "uuid",
@@ -643,6 +661,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "defaultCascadeGroup": {
+            "type": "string"
+          },
           "id": {
             "format": "uuid",
             "type": "string"
@@ -666,6 +687,7 @@
           "cascadeGroupOverrides",
           "cascade",
           "clientId",
+          "defaultCascadeGroup",
           "createdAt",
           "id",
           "lockNumber",

@@ -263,13 +263,14 @@ describe('RoutingConfigClient', () => {
             defaultTemplateId: 'sms',
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       const rc: RoutingConfig = {
         ...input,
         clientId: user.clientId,
         createdAt: date.toISOString(),
+        defaultCascadeGroup: 'standard',
         id: 'id',
         status: 'DRAFT',
         updatedAt: date.toISOString(),
@@ -361,7 +362,7 @@ describe('RoutingConfigClient', () => {
             defaultTemplateId: 'sms',
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -403,7 +404,7 @@ describe('RoutingConfigClient', () => {
             defaultTemplateId: 'sms',
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -443,7 +444,7 @@ describe('RoutingConfigClient', () => {
             defaultTemplateId: 'sms',
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -478,7 +479,7 @@ describe('RoutingConfigClient', () => {
             defaultTemplateId: 'sms',
           },
         ],
-        cascadeGroupOverrides: [{ name: 'standard' }],
+        cascadeGroupOverrides: [],
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({

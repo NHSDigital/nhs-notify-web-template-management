@@ -137,7 +137,7 @@ describe('Update Routing Config Handler', () => {
           channelType: 'primary',
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
+      cascadeGroupOverrides: [],
       campaignId: 'campaign',
       name: 'new name',
     };
@@ -195,7 +195,7 @@ describe('Update Routing Config Handler', () => {
           channelType: 'primary',
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
+      cascadeGroupOverrides: [],
       campaignId: 'campaign',
       name: 'new name',
     };

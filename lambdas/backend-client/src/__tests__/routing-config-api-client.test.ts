@@ -206,6 +206,7 @@ describe('RoutingConfigurationApiClient', () => {
         campaignId: 'campaign-id',
         cascade: [],
         cascadeGroupOverrides: [],
+        defaultCascadeGroup: 'standard',
         clientId: 'client-id',
         createdAt: new Date().toISOString(),
         id: 'id',

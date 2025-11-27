@@ -38,6 +38,7 @@ function buildRoutingConfig({
       defaultTemplateId: `template-${index}`,
     })),
     lockNumber: 0,
+    defaultCascadeGroup: 'standard',
   };
 }
 
