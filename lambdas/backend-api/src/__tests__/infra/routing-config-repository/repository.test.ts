@@ -247,7 +247,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -256,7 +256,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':status': 'COMPLETED',
           ':updatedAt': date.toISOString(),
@@ -441,7 +441,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
           '#status': 'status',
@@ -451,7 +451,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':status': 'DELETED',
           ':updatedAt': date.toISOString(),
@@ -644,7 +644,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
@@ -660,7 +660,7 @@ describe('RoutingConfigRepository', () => {
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
@@ -697,7 +697,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
           '#name': 'name',
@@ -707,7 +707,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
@@ -744,7 +744,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
           '#campaignId': 'campaignId',
@@ -754,7 +754,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':campaignId': update.campaignId,
           ':updatedAt': date.toISOString(),
@@ -799,7 +799,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
@@ -810,7 +810,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
@@ -856,7 +856,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
           '#name': 'name',
@@ -866,7 +866,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
@@ -904,7 +904,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#lockNumber': 'lockNumber',
           '#name': 'name',
@@ -914,7 +914,7 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
@@ -950,7 +950,7 @@ describe('RoutingConfigRepository', () => {
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#status = :condition_1_status AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
@@ -966,7 +966,7 @@ describe('RoutingConfigRepository', () => {
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':condition_1_status': 'DRAFT',
-          ':condition_2_1_lockNumber': 2,
+          ':condition_2_lockNumber': 2,
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),

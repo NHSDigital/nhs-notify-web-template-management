@@ -21,6 +21,7 @@ test('submit form - validation error', async () => {
       messagePlan: ROUTING_CONFIG,
       pageHeading: 'Choose an NHS App template',
       cascadeIndex: 0,
+      templateList: [NHS_APP_TEMPLATE],
     },
     getMockFormData({})
   );
@@ -38,9 +39,6 @@ test('submit form - validation error', async () => {
 });
 
 test('submit form - success updates config and redirects to choose templates', async () => {
-  const mockRedirect = jest.mocked(redirect);
-  const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
-
   await chooseChannelTemplateAction(
     {
       messagePlan: {
@@ -68,6 +66,7 @@ test('submit form - success updates config and redirects to choose templates', a
       },
       pageHeading: 'Choose an email template',
       cascadeIndex: 1,
+      templateList: [EMAIL_TEMPLATE],
     },
     getMockFormData({
       channelTemplate: EMAIL_TEMPLATE.id,
@@ -75,7 +74,7 @@ test('submit form - success updates config and redirects to choose templates', a
     })
   );
 
-  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+  expect(updateRoutingConfig).toHaveBeenCalledWith(
     ROUTING_CONFIG.id,
     {
       cascade: [
@@ -103,16 +102,13 @@ test('submit form - success updates config and redirects to choose templates', a
     EMAIL_TEMPLATE.lockNumber
   );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
+  expect(redirect).toHaveBeenCalledWith(
     `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
     RedirectType.push
   );
 });
 
 test('submit form - success updates config and redirects to choose templates for letter template with supplier references', async () => {
-  const mockRedirect = jest.mocked(redirect);
-  const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
-
   await chooseChannelTemplateAction(
     {
       messagePlan: {
@@ -139,23 +135,28 @@ test('submit form - success updates config and redirects to choose templates for
     },
     getMockFormData({
       channelTemplate: LETTER_TEMPLATE.id,
+      lockNumber: String(LETTER_TEMPLATE.lockNumber),
     })
   );
 
-  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(ROUTING_CONFIG.id, {
-    cascade: [
-      {
-        cascadeGroups: ['standard'],
-        channel: 'LETTER',
-        channelType: 'primary',
-        defaultTemplateId: LETTER_TEMPLATE.id,
-        supplierReferences: { MBA: 'mba-supplier-reference' },
-      },
-    ],
-    cascadeGroupOverrides: [],
-  });
+  expect(updateRoutingConfig).toHaveBeenCalledWith(
+    ROUTING_CONFIG.id,
+    {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: LETTER_TEMPLATE.id,
+          supplierReferences: { MBA: 'mba-supplier-reference' },
+        },
+      ],
+      cascadeGroupOverrides: [],
+    },
+    LETTER_TEMPLATE.lockNumber
+  );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
+  expect(redirect).toHaveBeenCalledWith(
     `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
     RedirectType.push
   );

@@ -80,11 +80,7 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
   }
 
   expectLockNumber(lockNumber: number) {
-    this.updateBuilder.conditions.andGroup((group) => {
-      group
-        .and('lockNumber', '=', lockNumber)
-        .orFn('attribute_not_exists', 'lockNumber');
-    });
+    this.updateBuilder.conditions.and('lockNumber', '=', lockNumber);
 
     return this;
   }

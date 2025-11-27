@@ -349,11 +349,10 @@ describe('RoutingConfigUpdateBuilder', () => {
           '#status': 'status',
         },
         ExpressionAttributeValues: {
-          ':condition_1_1_lockNumber': 5,
+          ':condition_1_lockNumber': 5,
           ':status': 'COMPLETED',
         },
-        ConditionExpression:
-          '(#lockNumber = :condition_1_1_lockNumber OR attribute_not_exists (#lockNumber))',
+        ConditionExpression: '#lockNumber = :condition_1_lockNumber',
         Key: {
           id: mockId,
           owner: mockOwnerKey,

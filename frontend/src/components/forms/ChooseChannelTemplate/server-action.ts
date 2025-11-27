@@ -8,7 +8,7 @@ import { $LockNumber } from 'nhs-notify-backend-client';
 export type ChooseChannelTemplateFormState = FormState &
   Pick<
     ChooseChannelTemplateProps,
-    'cascadeIndex' | 'messagePlan' | 'pageHeading'
+    'cascadeIndex' | 'messagePlan' | 'pageHeading' | 'templateList'
   >;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>

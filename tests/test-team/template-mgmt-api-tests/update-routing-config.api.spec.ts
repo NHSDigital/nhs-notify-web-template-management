@@ -411,7 +411,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       const start = new Date();
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfig.dbEntry.id}`,
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -427,7 +427,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          ...routingConfig.apiResponse,
+          ...apiResponse,
           ...update,
           updatedAt: expect.stringMatching(isoDateRegExp),
         },
@@ -437,13 +437,13 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
         start,
         new Date(),
       ]);
-      expect(updated.data.createdAt).toEqual(routingConfig.dbEntry.createdAt);
+      expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
     });
 
     test('cascade and cascadeGroupOverrides with supplierReferences - returns 200 and the updated routing config data', async ({
       request,
     }) => {
-      const routingConfig = RoutingConfigFactory.create(user1, {
+      const { dbEntry, apiResponse } = RoutingConfigFactory.create(user1, {
         cascade: [
           {
             cascadeGroups: ['standard'],
@@ -457,7 +457,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
         ],
       });
 
-      await storageHelper.seed([routingConfig.dbEntry]);
+      await storageHelper.seed([dbEntry]);
 
       const update = {
         cascade: [
