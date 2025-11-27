@@ -10,7 +10,10 @@ import {
   MessagePlanAccessibleFormatTemplate,
   MessagePlanLanguageTemplate,
 } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
-import { MessagePlanTemplates } from '@utils/routing-utils';
+import {
+  ConditionalTemplate,
+  MessagePlanTemplates,
+} from '@utils/routing-utils';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 
 import styles from './MessagePlanConditionalTemplates.module.scss';
@@ -38,10 +41,14 @@ export function MessagePlanConditionalLetterTemplates({
     cascadeItem.conditionalTemplates || []
   )
     .filter(
-      (template): template is ConditionalTemplateLanguage =>
+      (
+        template: ConditionalTemplate
+      ): template is ConditionalTemplateLanguage =>
         'language' in template && !!template.templateId
     )
-    .map(({ templateId }) => templates[templateId!])
+    .map(
+      (template: ConditionalTemplateLanguage) => templates[template.templateId!]
+    )
     .filter(Boolean);
 
   return (
@@ -87,7 +94,9 @@ const getTemplateForAccessibleFormat = (
   templates: MessagePlanTemplates
 ): TemplateDto | undefined => {
   const conditionalTemplate = (cascadeItem.conditionalTemplates || []).find(
-    (template): template is ConditionalTemplateAccessible =>
+    (
+      template: ConditionalTemplate
+    ): template is ConditionalTemplateAccessible =>
       'accessibleFormat' in template && template.accessibleFormat === format
   );
   return conditionalTemplate?.templateId
