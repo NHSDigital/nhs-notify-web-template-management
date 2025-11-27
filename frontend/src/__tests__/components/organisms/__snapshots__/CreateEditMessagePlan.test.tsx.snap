@@ -45,7 +45,8 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               Routing Plan ID
             </dt>
             <dd
-              class="nhsuk-summary-list__value create-edit-message-plan-routing-config-id"
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="routing-config-id"
             >
               30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
             </dd>
@@ -773,7 +774,8 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               Routing Plan ID
             </dt>
             <dd
-              class="nhsuk-summary-list__value create-edit-message-plan-routing-config-id"
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="routing-config-id"
             >
               30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
             </dd>

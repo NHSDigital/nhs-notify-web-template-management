@@ -49,7 +49,7 @@ exports[`PreviewNhsAppTemplateFromMessagePlan page renders NHS App template prev
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 app-template-id
               </dd>

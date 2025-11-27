@@ -76,7 +76,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -330,7 +330,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -564,7 +564,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -786,7 +786,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -927,7 +927,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -1144,7 +1144,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>

@@ -76,7 +76,7 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -329,7 +329,7 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -562,7 +562,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -783,7 +783,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -923,7 +923,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -1139,7 +1139,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>

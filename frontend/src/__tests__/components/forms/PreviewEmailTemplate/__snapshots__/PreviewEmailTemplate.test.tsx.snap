@@ -76,7 +76,7 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -354,7 +354,7 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -612,7 +612,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -858,7 +858,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -1023,7 +1023,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -1264,7 +1264,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>

@@ -32,7 +32,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -165,7 +165,7 @@ exports[`PreviewTemplateDetailsLetter if status is NOT_YET_SUBMITTED, then Not y
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -276,7 +276,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -387,7 +387,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -619,7 +619,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -735,7 +735,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -887,7 +887,7 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>
@@ -995,7 +995,7 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
           Template ID
         </dt>
         <dd
-          class="nhsuk-summary-list__value"
+          class="nhsuk-summary-list__value monospace-font"
         >
           template-id
         </dd>

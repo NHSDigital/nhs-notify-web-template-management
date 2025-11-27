@@ -49,7 +49,7 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 email-template-id
               </dd>

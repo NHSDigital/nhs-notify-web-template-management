@@ -49,7 +49,7 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 sms-template-id
               </dd>

@@ -45,7 +45,8 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
               Routing Plan ID
             </dt>
             <dd
-              class="nhsuk-summary-list__value create-edit-message-plan-routing-config-id"
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="routing-config-id"
             >
               fbb81055-79b9-4759-ac07-d191ae57be34
             </dd>

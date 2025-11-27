@@ -49,7 +49,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 letter-template-id
               </dd>

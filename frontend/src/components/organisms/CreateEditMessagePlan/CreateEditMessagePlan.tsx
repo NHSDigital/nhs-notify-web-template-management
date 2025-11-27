@@ -49,7 +49,8 @@ export function CreateEditMessagePlan({
                 {content.rowHeadings.routingPlanId}
               </SummaryList.Key>
               <SummaryList.Value
-                className={styles['create-edit-message-plan-routing-config-id']}
+                data-testid='routing-config-id'
+                className='monospace-font'
               >
                 {messagePlan.id}
               </SummaryList.Value>

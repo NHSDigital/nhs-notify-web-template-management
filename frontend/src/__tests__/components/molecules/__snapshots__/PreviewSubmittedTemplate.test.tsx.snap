@@ -49,7 +49,7 @@ exports[`PreviewSubmittedTemplate component should omit status when coming from 
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -190,7 +190,7 @@ exports[`PreviewSubmittedTemplate component should provide back buttons based on
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -331,7 +331,7 @@ exports[`PreviewSubmittedTemplate component should render app message 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -472,7 +472,7 @@ exports[`PreviewSubmittedTemplate component should render email 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -638,7 +638,7 @@ exports[`PreviewSubmittedTemplate component should render letter 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
@@ -900,7 +900,7 @@ exports[`PreviewSubmittedTemplate component should render sms 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
               >
                 template-id
               </dd>
