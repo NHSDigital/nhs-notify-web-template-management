@@ -152,7 +152,13 @@ describe('Template API - Delete', () => {
     const { handler, mocks } = setup();
 
     mocks.templateClient.deleteTemplate.mockResolvedValueOnce({
-      error: { errorMeta: { code: 409, description: 'Invalid lock number' } },
+      error: {
+        errorMeta: {
+          code: 409,
+          description:
+            'Lock number mismatch - Template has been modified since last read',
+        },
+      },
     });
 
     const event = mock<APIGatewayProxyEvent>({
@@ -160,6 +166,7 @@ describe('Template API - Delete', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -168,7 +175,8 @@ describe('Template API - Delete', () => {
       statusCode: 409,
       body: JSON.stringify({
         statusCode: 409,
-        technicalMessage: 'Invalid lock number',
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
       }),
     });
 

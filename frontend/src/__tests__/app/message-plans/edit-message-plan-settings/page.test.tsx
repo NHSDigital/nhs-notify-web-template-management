@@ -148,10 +148,14 @@ describe('single campaign', () => {
 
     await user.click(await screen.findByTestId('submit-button'));
 
-    expect(updateRoutingConfig).toHaveBeenCalledWith(routingConfig.id, {
-      name: 'New Name',
-      campaignId: routingConfig.campaignId,
-    });
+    expect(updateRoutingConfig).toHaveBeenCalledWith(
+      routingConfig.id,
+      {
+        name: 'New Name',
+        campaignId: routingConfig.campaignId,
+      },
+      routingConfig.lockNumber
+    );
 
     expect(redirect).toHaveBeenCalledWith(
       `/message-plans/choose-templates/${routingConfig.id}`,
@@ -251,10 +255,14 @@ describe('multiple campaigns', () => {
 
     await user.click(await screen.findByTestId('submit-button'));
 
-    expect(updateRoutingConfig).toHaveBeenCalledWith(routingConfig.id, {
-      name: 'New Name',
-      campaignId: alternateCampaignId,
-    });
+    expect(updateRoutingConfig).toHaveBeenCalledWith(
+      routingConfig.id,
+      {
+        name: 'New Name',
+        campaignId: alternateCampaignId,
+      },
+      routingConfig.lockNumber
+    );
 
     expect(redirect).toHaveBeenCalledWith(
       `/message-plans/choose-templates/${routingConfig.id}`,

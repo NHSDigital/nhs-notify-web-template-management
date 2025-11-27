@@ -105,7 +105,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Choose
                       <span
@@ -242,7 +242,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-SMS"
-                      href="/message-plans/choose-text-message-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-text-message-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Choose
                       <span
@@ -379,7 +379,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Choose
                       <span
@@ -516,7 +516,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Choose
                       <span
@@ -674,7 +674,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-nhs-app-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Change
                       <span
@@ -689,13 +689,21 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="NHSAPP"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"
@@ -845,7 +853,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-email-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Change
                       <span
@@ -860,13 +868,21 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="EMAIL"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"
@@ -1016,7 +1032,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      href="/message-plans/choose-standard-english-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                     >
                       Change
                       <span
@@ -1031,13 +1047,21 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                     <form>
                       <input
                         name="channel"
+                        readonly=""
                         type="hidden"
                         value="LETTER"
                       />
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+                      />
+                      <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
                       />
                       <button
                         class="channel-template-link--remove nhsuk-link"

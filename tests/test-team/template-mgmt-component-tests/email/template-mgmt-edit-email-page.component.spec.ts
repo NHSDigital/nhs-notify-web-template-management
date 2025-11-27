@@ -75,9 +75,11 @@ test.describe('Edit Email message template Page', () => {
     page,
     baseURL,
   }) => {
-    const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+    const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+      page
+    ).setPathParam('templateId', templates.valid.id);
 
-    await editEmailTemplatePage.loadPage(templates.valid.id);
+    await editEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-email-template/${templates.valid.id}`
@@ -91,8 +93,10 @@ test.describe('Edit Email message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtEditEmailPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtEditEmailPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -106,9 +110,11 @@ test.describe('Edit Email message template Page', () => {
     test('when user visits page with previous data, then form fields retain previous data', async ({
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.previousData.id);
 
-      await editEmailTemplatePage.loadPage(templates.previousData.id);
+      await editEmailTemplatePage.loadPage();
 
       await expect(editEmailTemplatePage.nameInput).toHaveValue(
         templates.previousData.name
@@ -124,9 +130,11 @@ test.describe('Edit Email message template Page', () => {
     test('when user clicks "Personalisation" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.goBackAndReturn.id);
 
-      await editEmailTemplatePage.loadPage(templates.goBackAndReturn.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.customPersonalisationFields.click();
       await expect(
@@ -142,9 +150,11 @@ test.describe('Edit Email message template Page', () => {
     test('when user clicks "Message formatting" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.messageFormatting.assertDetailsOpen([
         editEmailTemplatePage.messageFormatting.lineBreaksAndParagraphs,
@@ -173,8 +183,11 @@ test.describe('Edit Email message template Page', () => {
         page,
         baseURL,
       }) => {
-        const editTemplatePage = new TemplateMgmtEditEmailPage(page);
-        await editTemplatePage.loadPage(templates.valid.id);
+        const editTemplatePage = new TemplateMgmtEditEmailPage(
+          page
+        ).setPathParam('templateId', templates.valid.id);
+
+        await editTemplatePage.loadPage();
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;
@@ -202,9 +215,11 @@ test.describe('Edit Email message template Page', () => {
         page,
         baseURL,
       }) => {
-        const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+        const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+          page
+        ).setPathParam('templateId', templates.goBackAndReturn.id);
 
-        await editEmailTemplatePage.loadPage(templates.goBackAndReturn.id);
+        await editEmailTemplatePage.loadPage();
 
         const newTabPromise = page.waitForEvent('popup');
 
@@ -228,9 +243,11 @@ test.describe('Edit Email message template Page', () => {
     test('when user clicks "Naming your templates" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -244,9 +261,11 @@ test.describe('Edit Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.submit.id);
 
-      await editEmailTemplatePage.loadPage(templates.submit.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.nameInput.fill(
         'This is an email template name'
@@ -273,9 +292,11 @@ test.describe('Edit Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.noEmailTemplateType.id);
 
-      await editEmailTemplatePage.loadPage(templates.noEmailTemplateType.id);
+      await editEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -284,9 +305,11 @@ test.describe('Edit Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', 'fake-template-id');
 
-      await editEmailTemplatePage.loadPage('/fake-template-id');
+      await editEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -294,9 +317,11 @@ test.describe('Edit Email message template Page', () => {
     test('when user submits form with no data, then errors are displayed', async ({
       page,
     }) => {
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.nameInput.fill('');
 
@@ -336,9 +361,11 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const errorMessage = 'Enter a template name';
 
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.nameInput.fill('');
 
@@ -366,9 +393,11 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const errorMessage = 'Enter a template subject line';
 
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.nameInput.fill('template-name');
 
@@ -395,9 +424,11 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const errorMessage = 'Enter a template message';
 
-      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const editEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await editEmailTemplatePage.loadPage(templates.valid.id);
+      await editEmailTemplatePage.loadPage();
 
       await editEmailTemplatePage.nameInput.fill('template-name');
 
@@ -425,9 +456,11 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const errorMessage = 'URLs must start with https://';
 
-      const createEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
+      const createEmailTemplatePage = new TemplateMgmtEditEmailPage(
+        page
+      ).setPathParam('templateId', templates.valid.id);
 
-      await createEmailTemplatePage.loadPage(templates.valid.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.nameInput.fill('template-name');
 

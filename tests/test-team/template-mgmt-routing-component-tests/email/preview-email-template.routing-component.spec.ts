@@ -69,9 +69,9 @@ test.describe('Routing - Preview email template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewEmailTemplatePage(page),
-      id: messagePlans.EMAIL_ROUTING_CONFIG.id,
-      additionalIds: [templates.EMAIL.id],
+      page: new RoutingPreviewEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.EMAIL.id),
       baseURL,
       expectedUrl: `templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
     };
@@ -83,11 +83,12 @@ test.describe('Routing - Preview email template page', () => {
   });
 
   test('loads the email template', async ({ page, baseURL }) => {
-    const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page);
-    await previewEmailTemplatePage.loadPage(
-      messagePlans.EMAIL_ROUTING_CONFIG.id,
-      templates.EMAIL.id
-    );
+    const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.EMAIL.id);
+
+    await previewEmailTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${templates.EMAIL.id}`
     );
@@ -109,40 +110,31 @@ test.describe('Routing - Preview email template page', () => {
 
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
-      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
-        page
-      );
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+        .setPathParam('templateId', notFoundTemplateId);
 
-      await previewEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
-      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
-        page
-      );
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+        .setPathParam('templateId', invalidTemplateId);
 
-      await previewEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template is not email', async ({ page, baseURL }) => {
-      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(
-        page
-      );
+      const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.APP.id);
 
-      await previewEmailTemplatePage.loadPage(
-        messagePlans.EMAIL_ROUTING_CONFIG.id,
-        templates.APP.id
-      );
+      await previewEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

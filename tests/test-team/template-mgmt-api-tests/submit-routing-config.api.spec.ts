@@ -6,7 +6,6 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
-import type { FactoryRoutingConfig } from '../helpers/types';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { RoutingConfigStatus } from 'nhs-notify-backend-client';
 
@@ -18,12 +17,6 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   let userSharedClient: TestUser;
   let userRoutingDisabled: TestUser;
 
-  let routingConfigNoUpdates: FactoryRoutingConfig;
-  let routingConfigSuccessfullySubmit: FactoryRoutingConfig;
-  let routingConfigAlreadySubmitted: FactoryRoutingConfig;
-  let routingConfigDeleted: FactoryRoutingConfig;
-  let routingConfigSubmitBySharedClientUser: FactoryRoutingConfig;
-
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userDifferentClient = await authHelper.getTestUser(
@@ -31,27 +24,6 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     );
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
     userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-
-    routingConfigNoUpdates = RoutingConfigFactory.create(user1);
-    routingConfigSuccessfullySubmit = RoutingConfigFactory.create(user1);
-
-    routingConfigAlreadySubmitted = RoutingConfigFactory.create(user1, {
-      status: 'COMPLETED',
-    });
-
-    routingConfigDeleted = RoutingConfigFactory.create(user1, {
-      status: 'DELETED',
-    });
-
-    routingConfigSubmitBySharedClientUser = RoutingConfigFactory.create(user1);
-
-    await storageHelper.seed([
-      routingConfigNoUpdates.dbEntry,
-      routingConfigSuccessfullySubmit.dbEntry,
-      routingConfigAlreadySubmitted.dbEntry,
-      routingConfigDeleted.dbEntry,
-      routingConfigSubmitBySharedClientUser.dbEntry,
-    ]);
   });
 
   test.afterAll(async () => {
@@ -59,9 +31,19 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config/submit`
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+      {
+        headers: {
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+      }
     );
+
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
       message: 'Unauthorized',
@@ -70,10 +52,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
 
   test('returns 404 if routing config does not exist', async ({ request }) => {
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/noexist/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/no-exist/submit`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': '0',
         },
       }
     );
@@ -90,11 +73,16 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   test('returns 404 if routing config exists but is owned by a different client', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const updateResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigNoUpdates.dbEntry.id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await userDifferentClient.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -109,13 +97,18 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   test('returns 200 and the updated routing config data', async ({
     request,
   }) => {
+    const { dbEntry, apiResponse } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const start = new Date();
 
     const updateResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigSuccessfullySubmit.dbEntry.id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -127,26 +120,32 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(updated).toEqual({
       statusCode: 200,
       data: {
-        ...routingConfigSuccessfullySubmit.apiResponse,
+        ...apiResponse,
         status: 'COMPLETED' satisfies RoutingConfigStatus,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        lockNumber: dbEntry.lockNumber + 1,
       },
     });
 
     expect(updated.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
-    expect(updated.data.createdAt).toEqual(
-      routingConfigSuccessfullySubmit.dbEntry.createdAt
-    );
+    expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
   });
 
   test('returns 400 - cannot submit a COMPLETED routing config', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      status: 'COMPLETED',
+    });
+
+    await storageHelper.seed([dbEntry]);
+
     const failedSubmitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigAlreadySubmitted.dbEntry.id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -165,11 +164,18 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   test('returns 404 - cannot submit a DELETED routing config', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      status: 'DELETED',
+    });
+
+    await storageHelper.seed([dbEntry]);
+
     const failedSubmitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigDeleted.dbEntry.id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -187,11 +193,16 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   test('user belonging to the same client as the creator can submit', async ({
     request,
   }) => {
+    const { dbEntry, apiResponse } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const updateResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigSubmitBySharedClientUser.dbEntry.id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await userSharedClient.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -205,9 +216,10 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(updated).toEqual({
       statusCode: 200,
       data: {
-        ...routingConfigSubmitBySharedClientUser.apiResponse,
+        ...apiResponse,
         status: 'COMPLETED' satisfies RoutingConfigStatus,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        lockNumber: dbEntry.lockNumber + 1,
       },
     });
   });
@@ -215,11 +227,16 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   test('returns 400 if routing feature is disabled on the client', async ({
     request,
   }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/some-routing-config/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
       {
         headers: {
           Authorization: await userRoutingDisabled.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
         },
       }
     );
@@ -229,6 +246,57 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage: 'Routing feature is disabled',
+    });
+  });
+
+  test('returns 409 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(409);
+
+    expect(await response.json()).toEqual({
+      statusCode: 409,
+      technicalMessage:
+        'Lock number mismatch - Message Plan has been modified since last read',
+    });
+  });
+
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+
+    await storageHelper.seed([dbEntry]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber + 1),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(409);
+
+    expect(await response.json()).toEqual({
+      statusCode: 409,
+      technicalMessage:
+        'Lock number mismatch - Message Plan has been modified since last read',
     });
   });
 });

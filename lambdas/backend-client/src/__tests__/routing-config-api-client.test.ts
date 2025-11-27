@@ -4,11 +4,9 @@ import {
   httpClient,
 } from '../routing-config-api-client';
 import { RoutingConfig, RoutingConfigStatus } from '../types/generated';
-import { ErrorCase } from '../types/error-cases';
 
 const validRoutingConfigId = '2a4b6c8d-0e1f-4a2b-9c3d-5e6f7a8b9c0d';
 const notFoundRoutingConfigId = '3b5d7f9a-1c2e-4b3d-8f0a-6e7d8c9b0a1f';
-const invalidRoutingConfigId = 'not-a-uuid';
 
 describe('RoutingConfigurationApiClient', () => {
   const axiosMock = new MockAdapter(httpClient);
@@ -141,21 +139,6 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.get.length).toBe(1);
     });
 
-    it('should return error for invalid routing config ID', async () => {
-      const response = await client.get('mock-token', invalidRoutingConfigId);
-
-      expect(response.error).toEqual({
-        errorMeta: {
-          code: ErrorCase.VALIDATION_FAILED,
-          description: 'Invalid routing configuration ID format',
-          details: { id: invalidRoutingConfigId },
-        },
-        actualError: undefined,
-      });
-      expect(response.data).toBeUndefined();
-      expect(axiosMock.history.get.length).toBe(0);
-    });
-
     it('should return routing configuration on success', async () => {
       const data = {
         id: validRoutingConfigId,
@@ -230,6 +213,7 @@ describe('RoutingConfigurationApiClient', () => {
         name: 'name',
         status: 'DRAFT',
         updatedAt: new Date().toISOString(),
+        lockNumber: 0,
       };
 
       axiosMock.onPost('/v1/routing-configuration').reply(201, {
@@ -261,7 +245,7 @@ describe('RoutingConfigurationApiClient', () => {
   describe('update', () => {
     it('should return error when failing to update via API', async () => {
       axiosMock
-        .onPut(`/v1/routing-configuration/${notFoundRoutingConfigId}`)
+        .onPatch(`/v1/routing-configuration/${notFoundRoutingConfigId}`)
         .reply(404, {
           statusCode: 404,
           technicalMessage: 'Not Found',
@@ -279,7 +263,8 @@ describe('RoutingConfigurationApiClient', () => {
       const response = await client.update(
         'test-token',
         notFoundRoutingConfigId,
-        body
+        body,
+        42
       );
 
       expect(response.error).toEqual({
@@ -290,34 +275,7 @@ describe('RoutingConfigurationApiClient', () => {
         },
       });
       expect(response.data).toBeUndefined();
-      expect(axiosMock.history.put.length).toBe(1);
-    });
-
-    it('should return error for invalid routing config ID', async () => {
-      const body = {
-        id: invalidRoutingConfigId,
-        name: 'Test plan',
-        campaignId: 'campaign-1',
-        cascade: [],
-        cascadeGroupOverrides: [],
-      };
-
-      const response = await client.update(
-        'mock-token',
-        invalidRoutingConfigId,
-        body
-      );
-
-      expect(response.error).toEqual({
-        errorMeta: {
-          code: ErrorCase.VALIDATION_FAILED,
-          description: 'Invalid routing configuration ID format',
-          details: { id: invalidRoutingConfigId },
-        },
-        actualError: undefined,
-      });
-      expect(response.data).toBeUndefined();
-      expect(axiosMock.history.get.length).toBe(0);
+      expect(axiosMock.history.patch.length).toBe(1);
     });
 
     it('should return updated routing configuration on success', async () => {
@@ -330,7 +288,7 @@ describe('RoutingConfigurationApiClient', () => {
       };
 
       axiosMock
-        .onPut(`/v1/routing-configuration/${validRoutingConfigId}`)
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}`)
         .reply(200, {
           data: body,
         });
@@ -338,12 +296,13 @@ describe('RoutingConfigurationApiClient', () => {
       const response = await client.update(
         'test-token',
         validRoutingConfigId,
-        body
+        body,
+        42
       );
 
       expect(response.error).toBeUndefined();
       expect(response.data).toEqual(body);
-      expect(axiosMock.history.put.length).toBe(1);
+      expect(axiosMock.history.patch.length).toBe(1);
     });
   });
 });

@@ -3,17 +3,16 @@ import { TemplateMgmtPreviewBasePage } from '../pages/template-mgmt-preview-base
 
 type PreviewStepsProps = {
   page: TemplateMgmtPreviewBasePage;
-  id: string;
   baseURL?: string;
 };
 
 export function assertBackToAllTemplatesTopLink({
   page,
-  id,
+
   baseURL,
 }: PreviewStepsProps) {
   return test.step('when user clicks the top "Back to all templates" link, then user is redirected to manage templates page', async () => {
-    await page.loadPage(id);
+    await page.loadPage();
 
     await page.clickBackToAllTemplatesTopLink();
 
@@ -23,11 +22,11 @@ export function assertBackToAllTemplatesTopLink({
 
 export function assertBackToAllTemplatesBottomLink({
   page,
-  id,
+
   baseURL,
 }: PreviewStepsProps) {
   return test.step('when user clicks the bottom "Back to all templates" link, then user is redirected to manage templates page', async () => {
-    await page.loadPage(id);
+    await page.loadPage();
 
     await page.clickBackToAllTemplatesTopLink();
 

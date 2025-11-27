@@ -237,6 +237,8 @@ function requestProof(
         expect(entry, JSON.stringify(pdfHrefs[i])).not.toBeNull();
       }
 
+      await page.reload();
+
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
 

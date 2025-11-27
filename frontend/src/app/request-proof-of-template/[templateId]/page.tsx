@@ -10,6 +10,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.requestProof;
 
@@ -28,6 +29,17 @@ const RequestProofPage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/preview-letter-template/${templateId}`,
+      RedirectType.replace
+    );
+  }
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateLetterTemplate(template);
@@ -41,7 +53,7 @@ const RequestProofPage = async (props: TemplatePageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel={validatedTemplate.templateType}
-      lockNumber={validatedTemplate.lockNumber}
+      lockNumber={lockNumberResult.data}
     />
   );
 };

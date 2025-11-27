@@ -2,6 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
+import { $LockNumber } from 'nhs-notify-backend-client';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   TemplatePageProps,
@@ -21,6 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
 const SubmitEmailTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/preview-email-template/${templateId}`,
+      RedirectType.replace
+    );
+  }
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateEmailTemplate(template);
@@ -33,7 +45,7 @@ const SubmitEmailTemplatePage = async (props: TemplatePageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      lockNumber={validatedTemplate.lockNumber}
+      lockNumber={lockNumberResult.data}
       channel='EMAIL'
     />
   );

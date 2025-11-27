@@ -2108,7 +2108,8 @@ test.describe('PUT /v1/template/:templateId', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 
@@ -2153,7 +2154,8 @@ test.describe('PUT /v1/template/:templateId', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 });

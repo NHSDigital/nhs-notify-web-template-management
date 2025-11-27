@@ -5,9 +5,11 @@ import { z } from 'zod/v4';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 import { updateRoutingConfig } from '@utils/message-plans';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 const $UpdateMessagePlanFormData = $MessagePlanFormData.extend({
   routingConfigId: z.string({ error: 'Invalid message plan id' }),
+  lockNumber: $LockNumber,
 });
 
 export async function editMessagePlanSettingsServerAction(
@@ -27,10 +29,14 @@ export async function editMessagePlanSettingsServerAction(
 
   delete state.errorState;
 
-  await updateRoutingConfig(parsed.data.routingConfigId, {
-    name: parsed.data.name,
-    campaignId: parsed.data.campaignId,
-  });
+  await updateRoutingConfig(
+    parsed.data.routingConfigId,
+    {
+      name: parsed.data.name,
+      campaignId: parsed.data.campaignId,
+    },
+    parsed.data.lockNumber
+  );
 
   redirect(
     `/message-plans/choose-templates/${parsed.data.routingConfigId}`,

@@ -2,7 +2,7 @@
 
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import {
-  TemplateSubmittedPageProps,
+  TemplatePageProps,
   validateSubmittedLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -18,9 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const LetterTemplateSubmittedPage = async (
-  props: TemplateSubmittedPageProps
-) => {
+const LetterTemplateSubmittedPage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);

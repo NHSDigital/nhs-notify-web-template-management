@@ -65,7 +65,7 @@ describe('previewEmailTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-email-template/template-id',
+      '/submit-email-template/template-id?lockNumber=1',
       'push'
     );
   });

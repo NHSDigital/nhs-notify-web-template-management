@@ -196,7 +196,11 @@ export class TemplateRepository {
         }
 
         if (oldItem.lockNumber !== lockNumber) {
-          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
         }
       }
 
@@ -240,7 +244,11 @@ export class TemplateRepository {
         const oldItem = unmarshall(error.Item);
 
         if (oldItem.lockNumber !== lockNumber) {
-          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
         }
 
         return failure(
@@ -609,7 +617,11 @@ export class TemplateRepository {
         const oldItem = unmarshall(error.Item);
 
         if (oldItem.lockNumber !== lockNumber) {
-          return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
         }
 
         return failure(
@@ -731,7 +743,11 @@ export class TemplateRepository {
       }
 
       if (oldItem.lockNumber !== lockNumber) {
-        return failure(ErrorCase.CONFLICT, 'Invalid lock number', error);
+        return failure(
+          ErrorCase.CONFLICT,
+          'Lock number mismatch - Template has been modified since last read',
+          error
+        );
       }
     }
     return failure(ErrorCase.INTERNAL, 'Failed to update template', error);

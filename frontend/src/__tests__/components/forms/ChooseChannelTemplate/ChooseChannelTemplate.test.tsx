@@ -44,6 +44,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an NHS App template'
         templateList={[NHS_APP_TEMPLATE]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -56,6 +57,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an email template'
         templateList={[EMAIL_TEMPLATE]}
         cascadeIndex={1}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -68,6 +70,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose a text message (SMS) template'
         templateList={[SMS_TEMPLATE]}
         cascadeIndex={2}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -80,6 +83,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose a letter template'
         templateList={[LETTER_TEMPLATE]}
         cascadeIndex={3}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -95,6 +99,7 @@ describe('ChooseChannelTemplate', () => {
           { ...NHS_APP_TEMPLATE, id: 'another-id', name: 'Another template' },
         ]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -117,6 +122,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an NHS App template'
         templateList={[NHS_APP_TEMPLATE]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -139,6 +145,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an NHS App template'
         templateList={[]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -165,6 +172,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an NHS App template'
         templateList={[NHS_APP_TEMPLATE]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -187,6 +195,7 @@ describe('ChooseChannelTemplate', () => {
         pageHeading='Choose an NHS App template'
         templateList={[NHS_APP_TEMPLATE]}
         cascadeIndex={0}
+        lockNumber={42}
       />
     );
     const submitButton = screen.getByTestId('submit-button');

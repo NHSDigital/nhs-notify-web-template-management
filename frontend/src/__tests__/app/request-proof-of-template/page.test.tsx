@@ -50,7 +50,7 @@ describe('RequestProofPage', () => {
           fileName: 'a.pdf',
         },
       },
-      lockNumber: 1,
+      lockNumber: 0,
     } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
@@ -63,6 +63,9 @@ describe('RequestProofPage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(await generateMetadata()).toEqual({
@@ -74,7 +77,7 @@ describe('RequestProofPage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='LETTER'
-        lockNumber={state.lockNumber}
+        lockNumber={42}
       />
     );
   });
@@ -86,6 +89,7 @@ describe('RequestProofPage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -108,6 +112,9 @@ describe('RequestProofPage', () => {
         params: Promise.resolve({
           templateId: 'template-id',
         }),
+        searchParams: Promise.resolve({
+          lockNumber: '42',
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -121,6 +128,9 @@ describe('RequestProofPage', () => {
     await RequestProofPage({
       params: Promise.resolve({
         templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
       }),
     });
 
@@ -156,6 +166,9 @@ describe('RequestProofPage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(await generateMetadata()).toEqual({
@@ -163,5 +176,19 @@ describe('RequestProofPage', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  test('should redirect to template preview page when lockNumber search parameter is missing', async () => {
+    await RequestProofPage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-letter-template/template-id',
+      'replace'
+    );
   });
 });

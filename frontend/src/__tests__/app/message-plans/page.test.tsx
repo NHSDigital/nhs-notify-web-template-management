@@ -29,6 +29,7 @@ const buildRoutingConfig = (rc: Partial<RoutingConfig>): RoutingConfig => ({
   id: '',
   name: '',
   updatedAt: '',
+  lockNumber: 0,
   ...rc,
 });
 

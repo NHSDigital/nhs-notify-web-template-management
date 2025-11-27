@@ -1,23 +1,9 @@
 import { getMessagePlanTemplateIds } from '@utils/get-message-plan-template-ids';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
-const baseConfig: RoutingConfig = {
-  id: 'test-id',
-  name: 'Test message plan',
-  status: 'DRAFT',
-  clientId: 'client-1',
-  campaignId: 'campaign-1',
-  createdAt: '2025-01-01T00:00:00.000Z',
-  updatedAt: '2025-01-01T00:00:00.000Z',
-  cascade: [],
-  cascadeGroupOverrides: [],
-  defaultCascadeGroup: 'standard',
-};
-
 describe('getMessagePlanTemplateIds', () => {
   it('should collect unique template IDs from defaults and conditionals', () => {
-    const plan: RoutingConfig = {
-      ...baseConfig,
+    const plan: Pick<RoutingConfig, 'cascade'> = {
       cascade: [
         {
           cascadeGroups: ['standard'],
@@ -49,8 +35,7 @@ describe('getMessagePlanTemplateIds', () => {
   });
 
   it('should return empty set when there are no templates', () => {
-    const plan: RoutingConfig = {
-      ...baseConfig,
+    const plan: Pick<RoutingConfig, 'cascade'> = {
       cascade: [
         {
           cascadeGroups: ['standard'],

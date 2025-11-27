@@ -26,6 +26,9 @@ describe('ChooseNHSAppTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: 'invalid-id',
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
@@ -48,6 +51,9 @@ describe('ChooseNHSAppTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
@@ -66,6 +72,9 @@ describe('ChooseNHSAppTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     const container = render(page);
@@ -79,5 +88,18 @@ describe('ChooseNHSAppTemplate page', () => {
       title: 'Choose an NHS App template - NHS Notify',
     });
     expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('redirects to choose templates page if the lockNumber is missing', async () => {
+    await ChooseNhsAppTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      'replace'
+    );
   });
 });

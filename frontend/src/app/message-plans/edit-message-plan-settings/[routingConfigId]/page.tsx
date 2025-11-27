@@ -53,6 +53,12 @@ export default async function EditMessagePlanSettingsPage({
                 value={routingConfigId}
                 readOnly
               />
+              <input
+                type='hidden'
+                name='lockNumber'
+                value={routingConfig.lockNumber}
+                readOnly
+              />
             </MessagePlanForm>
           </div>
         </div>
