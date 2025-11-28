@@ -1,24 +1,21 @@
 import classNames from 'classnames';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getRoutingConfig } from '@utils/message-plans';
 import styles from './page.module.scss';
-import { moveRoutingConfigToProduction } from './server-action';
 
-const pageContent = content.pages.moveMessagePlanToProduction;
+const pageContent = content.pages.messagePlanGetReadyToMoveToProduction();
 
 export const metadata: Metadata = {
   title: pageContent.title,
 };
 
-export default async function MoveMessagePlanToProductionPage({
+export default async function MessagePlanGetReadyToMoveToProductionPage({
   params,
 }: MessagePlanPageProps) {
   const { routingConfigId } = await params;
@@ -33,6 +30,7 @@ export default async function MoveMessagePlanToProductionPage({
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-two-thirds'>
+          <span className='nhsuk-caption-xl'>{pageContent.stepCounter}</span>
           <h1 className='nhsuk-heading-xl'>{pageContent.heading}</h1>
           <table
             className={classNames('nhsuk-u-margin-bottom-6', styles.table)}
@@ -41,14 +39,6 @@ export default async function MoveMessagePlanToProductionPage({
               <tr className='nhsuk-table__row'>
                 <th className='nhsuk-table__cell'>Name</th>
                 <td className='nhsuk-table__cell'>{routingConfig.name}</td>
-                <td className='nhsuk-table__cell'>
-                  <Link
-                    href={pageContent.previewLink.href(routingConfigId)}
-                    data-testid='preview-link'
-                  >
-                    {pageContent.previewLink.text}
-                  </Link>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -60,31 +50,23 @@ export default async function MoveMessagePlanToProductionPage({
             </h3>
             <ContentRenderer content={pageContent.callout.content} />
           </div>
-          <NHSNotifyFormWrapper
-            formId='move-message-plan-to-production'
-            action={moveRoutingConfigToProduction}
-          >
-            <input
-              type='hidden'
-              name='routingConfigId'
-              value={routingConfigId}
-              readOnly
-            />
-            <div className='nhsuk-form-group'>
-              <NHSNotifyButton warning data-testid='submit-button'>
-                {pageContent.submit.text}
-              </NHSNotifyButton>
+          <div className='nhsuk-form-group'>
+            <NHSNotifyButton
+              href={pageContent.continue.href(routingConfigId)}
+              data-testid='continue-link'
+            >
+              {pageContent.continue.text}
+            </NHSNotifyButton>
 
-              <NHSNotifyButton
-                secondary
-                href={pageContent.cancel.href}
-                className='nhsuk-u-margin-left-3'
-                data-testid='cancel-link'
-              >
-                {pageContent.cancel.text}
-              </NHSNotifyButton>
-            </div>
-          </NHSNotifyFormWrapper>
+            <NHSNotifyButton
+              secondary
+              href={pageContent.cancel.href}
+              className='nhsuk-u-margin-left-3'
+              data-testid='cancel-link'
+            >
+              {pageContent.cancel.text}
+            </NHSNotifyButton>
+          </div>
         </div>
       </div>
     </NHSNotifyMain>

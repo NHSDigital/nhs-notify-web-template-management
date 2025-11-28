@@ -1128,7 +1128,7 @@ const createEditMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '/message-plans/move-to-production/{{routingConfigId}}',
+      href: '/message-plans/get-ready-to-move/{{routingConfigId}}',
       text: 'Move to production',
     },
     secondary: {
@@ -1181,70 +1181,71 @@ const messagePlansPage = {
   },
 };
 
-const moveMessagePlanToProductionContent: ContentBlock[] = [
-  {
-    type: 'text',
-    text: 'Moving message plans from draft to production means that they are ready to send.',
-  },
-  {
-    type: 'text',
-    text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
-  },
-  {
-    type: 'text',
-    text: '## Before you move message plans to production',
-    overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
-  },
-  {
-    type: 'text',
-    text: 'Any templates used in these message plans will be locked.',
-  },
-  {
-    type: 'text',
-    text: 'Make sure:',
-  },
-  {
-    type: 'text',
-    text: markdownList('ul', [
-      'the relevant stakeholders in your team have approved your templates and message plan',
-      'your templates have no errors',
-    ]),
-    overrides: {
-      ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+const messagePlanGetReadyToMoveToProduction = () => {
+  const content: ContentBlock[] = [
+    {
+      type: 'text',
+      text: 'Moving message plans from draft to production means they are ready to send.',
     },
-  },
-];
+    {
+      type: 'text',
+      text: 'Any templates used in these message plans will be locked.',
+    },
+    {
+      type: 'text',
+      text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
+    },
+    {
+      type: 'text',
+      text: '## Before you continue',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: 'Make sure:',
+    },
+    {
+      type: 'text',
+      text: markdownList('ul', [
+        'the relevant stakeholders in your team have approved your templates and message plan',
+        'your templates have no errors',
+      ]),
+      overrides: {
+        ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+      },
+    },
+  ];
 
-const moveMessagePlanToProductionCalloutContent: ContentBlock[] = [
-  {
-    type: 'text',
-    text: 'You cannot edit anything that is in production.',
-  },
-  {
-    type: 'text',
-    text: 'If you need to edit your templates or message plans, you can copy and replace them.',
-  },
-];
+  const calloutContent: ContentBlock[] = [
+    {
+      type: 'text',
+      text: 'You cannot edit anything that is in production.',
+    },
+    {
+      type: 'text',
+      text: 'If you need to edit your templates or message plans, you can copy and replace them.',
+    },
+  ];
 
-const moveMessagePlanToProduction = {
-  title: generatePageTitle('Move message plan to production'),
-  heading: 'Move message plan to production',
-  previewLink: {
-    text: 'Preview',
-    href: (id: string) => `/message-plans/preview-message-plan/${id}`,
-  },
-  content: moveMessagePlanToProductionContent,
-  callout: {
-    label: 'Important',
-    content: moveMessagePlanToProductionCalloutContent,
-  },
-  submit: {
-    text: 'Move to production',
-  },
-  cancel: {
-    text: 'Keep in draft',
-    href: `${getBasePath()}/message-plans`,
-  },
+  return {
+    title: generatePageTitle('Get ready to move message plan to production'),
+    stepCounter: 'Step 1 of 2',
+    heading: 'Get ready to move message plan to production',
+    content,
+    callout: {
+      label: 'Important',
+      content: calloutContent,
+    },
+    continue: {
+      text: 'Continue',
+      href: (id: string) =>
+        `${getBasePath()}/message-plans/review-and-move-to-production/${id}`,
+    },
+    cancel: {
+      text: 'Keep in draft',
+      href: `${getBasePath()}/message-plans`,
+    },
+  };
 };
 
 const messagePlansListComponent = {
@@ -1382,7 +1383,7 @@ const content = {
     messagePlanInvalidConfiguration,
     messageTemplates,
     messagePlansPage,
-    moveMessagePlanToProduction,
+    messagePlanGetReadyToMoveToProduction,
   },
 };
 

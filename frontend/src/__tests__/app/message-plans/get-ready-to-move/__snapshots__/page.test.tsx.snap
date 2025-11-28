@@ -13,10 +13,15 @@ exports[`matches snapshot 1`] = `
       <div
         class="nhsuk-grid-column-two-thirds"
       >
+        <span
+          class="nhsuk-caption-xl"
+        >
+          Step 1 of 2
+        </span>
         <h1
           class="nhsuk-heading-xl"
         >
-          Move message plan to production
+          Get ready to move message plan to production
         </h1>
         <table
           class="nhsuk-u-margin-bottom-6 table"
@@ -37,21 +42,14 @@ exports[`matches snapshot 1`] = `
               >
                 My Routing Config
               </td>
-              <td
-                class="nhsuk-table__cell"
-              >
-                <a
-                  data-testid="preview-link"
-                  href="/message-plans/preview-message-plan/routing-config-id"
-                >
-                  Preview
-                </a>
-              </td>
             </tr>
           </tbody>
         </table>
         <p>
-          Moving message plans from draft to production means that they are ready to send.
+          Moving message plans from draft to production means they are ready to send.
+        </p>
+        <p>
+          Any templates used in these message plans will be locked.
         </p>
         <p>
           Messages will only be sent to recipients when you make a request with 
@@ -74,13 +72,10 @@ exports[`matches snapshot 1`] = `
         </p>
         <h2
           class="nhsuk-heading-m"
-          id="before-you-move-message-plans-to-production"
+          id="before-you-continue"
         >
-          Before you move message plans to production
+          Before you continue
         </h2>
-        <p>
-          Any templates used in these message plans will be locked.
-        </p>
         <p>
           Make sure:
         </p>
@@ -114,50 +109,30 @@ exports[`matches snapshot 1`] = `
             If you need to edit your templates or message plans, you can copy and replace them.
           </p>
         </div>
-        <form
-          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+        <div
+          class="nhsuk-form-group"
         >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="move-message-plan-to-production"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <input
-            name="routingConfigId"
-            readonly=""
-            type="hidden"
-            value="routing-config-id"
-          />
-          <div
-            class="nhsuk-form-group"
+          <a
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="continue-link"
+            draggable="false"
+            href="/templates/message-plans/review-and-move-to-production/routing-config-id"
+            role="button"
           >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button nhsuk-button--warning"
-              data-testid="submit-button"
-              type="submit"
-            >
-              Move to production
-            </button>
-            <a
-              aria-disabled="false"
-              class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
-              data-testid="cancel-link"
-              draggable="false"
-              href="/templates/message-plans"
-              role="button"
-            >
-              Keep in draft
-            </a>
-          </div>
-        </form>
+            Continue
+          </a>
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+            data-testid="cancel-link"
+            draggable="false"
+            href="/templates/message-plans"
+            role="button"
+          >
+            Keep in draft
+          </a>
+        </div>
       </div>
     </div>
   </main>
