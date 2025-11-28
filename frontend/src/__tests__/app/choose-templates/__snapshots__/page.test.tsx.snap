@@ -119,7 +119,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         NHS App
                       </span>
-
+                       
                       template
                     </a>
                   </li>
@@ -147,7 +147,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           NHS App
                         </span>
-
+                         
                         template
                       </button>
                     </form>
@@ -292,7 +292,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Text message (SMS)
                       </span>
-
+                       
                       template
                     </a>
                   </li>
@@ -320,7 +320,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           Text message (SMS)
                         </span>
-
+                         
                         template
                       </button>
                     </form>
@@ -459,7 +459,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Email
                       </span>
-
+                       
                       template
                     </a>
                   </li>
@@ -603,7 +603,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Letter
                       </span>
-
+                       
                       template
                     </a>
                   </li>
@@ -631,7 +631,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           Letter
                         </span>
-
+                         
                         template
                       </button>
                     </form>
