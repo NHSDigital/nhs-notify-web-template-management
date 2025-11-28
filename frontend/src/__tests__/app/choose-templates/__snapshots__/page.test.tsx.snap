@@ -650,7 +650,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production/fbb81055-79b9-4759-ac07-d191ae57be34"
+            href="/message-plans/get-ready-to-move/fbb81055-79b9-4759-ac07-d191ae57be34"
             role="button"
           >
             Move to production

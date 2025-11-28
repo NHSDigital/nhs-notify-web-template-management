@@ -18,4 +18,16 @@ export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePageNonDyn
   async clickCreateTemplateButton() {
     await this.createTemplateButton.click();
   }
+
+  async getRowByTemplateId(id: string) {
+    return this.page.locator(`tbody tr:has(td:nth-child(2):has-text("${id}"))`);
+  }
+
+  async getTemplateStatus(templateId: string) {
+    const row = await this.getRowByTemplateId(templateId);
+
+    const statusCell = row.locator('td:nth-child(4) .nhsuk-tag');
+
+    return statusCell.textContent();
+  }
 }
