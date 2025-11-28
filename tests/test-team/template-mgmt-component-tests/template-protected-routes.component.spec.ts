@@ -48,6 +48,7 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
+import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -57,6 +58,7 @@ const protectedPages = [
   RoutingChooseTemplatesPage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
+  RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
