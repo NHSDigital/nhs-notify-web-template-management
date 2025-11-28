@@ -18,11 +18,18 @@ import {
 import { validate } from '@utils/client-validate-form';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import classNames from 'classnames';
+import { ConditionalTemplate } from '@utils/routing-utils';
 
 const content = baseContent.components.chooseChannelTemplate;
 
 export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
-  const { messagePlan, pageHeading, templateList, cascadeIndex } = props;
+  const {
+    messagePlan,
+    pageHeading,
+    templateList,
+    cascadeIndex,
+    accessibleFormat,
+  } = props;
 
   const [state, action] = useActionState(chooseChannelTemplateAction, {
     ...props,
@@ -36,8 +43,15 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
     setErrorState
   );
 
-  const selectedTemplateId =
-    messagePlan.cascade[cascadeIndex].defaultTemplateId || null;
+  const cascadeItem = messagePlan.cascade[cascadeIndex];
+  const selectedTemplateId = accessibleFormat
+    ? cascadeItem.conditionalTemplates?.find(
+        (template: ConditionalTemplate) =>
+          'accessibleFormat' in template &&
+          template.accessibleFormat === accessibleFormat &&
+          template.templateId !== null
+      )?.templateId || null
+    : cascadeItem.defaultTemplateId || null;
 
   return (
     <NHSNotifyMain>
@@ -96,14 +110,12 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                   {content.actions.save.text}
                 </NHSNotifyButton>
               ) : (
-                <p>
-                  <Link
-                    href={content.actions.goToTemplates.href}
-                    className='nhsuk-u-font-size-19'
-                  >
-                    {content.actions.goToTemplates.text}
-                  </Link>
-                </p>
+                <Link
+                  href={content.actions.goToTemplates.href}
+                  className='nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m'
+                >
+                  {content.actions.goToTemplates.text}
+                </Link>
               )}
               <Link
                 href={interpolate(content.actions.backLink.href, {

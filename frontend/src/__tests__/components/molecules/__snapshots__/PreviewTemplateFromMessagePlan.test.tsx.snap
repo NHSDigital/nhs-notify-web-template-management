@@ -1,0 +1,607 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewTemplateFromMessagePlan renders Email template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            email template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+              >
+                email-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Email
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  subject
+                </div>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-1"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-1"
+                  id="preview-content-message"
+                >
+                  <p>
+                    message
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            large print letter template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+              >
+                large-print-letter-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Large print letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    large-print-template.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateFromMessagePlan renders Letter template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+              >
+                letter-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    template.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            app template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+              >
+                app-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                NHS App message
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-message"
+                >
+                  <p>
+                    message
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateFromMessagePlan renders SMS template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            sms template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+              >
+                sms-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Text message (SMS)
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-message"
+                >
+                  <p>
+                    message
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

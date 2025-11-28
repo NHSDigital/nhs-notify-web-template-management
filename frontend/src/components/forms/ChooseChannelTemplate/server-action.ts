@@ -3,6 +3,12 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
+import {
+  isLetterTemplate,
+  addConditionalTemplateToCascade,
+  addDefaultTemplateToCascade,
+  buildCascadeGroupOverridesFromCascade,
+} from '@utils/routing-utils';
 
 export type ChooseChannelTemplateFormState = FormState &
   ChooseChannelTemplateProps;
@@ -18,11 +24,17 @@ export async function chooseChannelTemplateAction(
   formState: ChooseChannelTemplateFormState,
   formData: FormData
 ): Promise<ChooseChannelTemplateFormState> {
-  const { messagePlan, cascadeIndex, templateList, pageHeading } = formState;
+  const {
+    messagePlan,
+    cascadeIndex,
+    templateList,
+    pageHeading,
+    accessibleFormat,
+  } = formState;
 
-  const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse({
+    channelTemplate: formData.get('channelTemplate'),
+  });
 
   if (!parsedForm.success) {
     return {
@@ -32,27 +44,40 @@ export async function chooseChannelTemplateAction(
   }
 
   const selectedTemplateId = parsedForm.data.channelTemplate;
-
   const selectedTemplate = templateList.find(
     ({ id }) => id === selectedTemplateId
   );
 
-  const newCascade = messagePlan.cascade.map((item, index) =>
-    index === cascadeIndex
-      ? {
-          ...item,
-          defaultTemplateId: selectedTemplateId,
-          ...(selectedTemplate?.templateType === 'LETTER' &&
-          selectedTemplate.supplierReferences
-            ? { supplierReferences: selectedTemplate.supplierReferences }
-            : {}),
-        }
-      : item
-  );
+  const isConditionalTemplate = !!accessibleFormat;
+
+  let updatedCascade;
+  let updatedCascadeGroupOverrides = messagePlan.cascadeGroupOverrides;
+
+  if (
+    isConditionalTemplate &&
+    selectedTemplate &&
+    isLetterTemplate(selectedTemplate)
+  ) {
+    updatedCascade = addConditionalTemplateToCascade(
+      messagePlan.cascade,
+      cascadeIndex,
+      selectedTemplate
+    );
+
+    updatedCascadeGroupOverrides =
+      buildCascadeGroupOverridesFromCascade(updatedCascade);
+  } else {
+    updatedCascade = addDefaultTemplateToCascade(
+      messagePlan.cascade,
+      cascadeIndex,
+      selectedTemplateId,
+      selectedTemplate
+    );
+  }
 
   await updateRoutingConfig(messagePlan.id, {
-    cascade: newCascade,
-    cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
+    cascade: updatedCascade,
+    cascadeGroupOverrides: updatedCascadeGroupOverrides,
   });
 
   redirect(

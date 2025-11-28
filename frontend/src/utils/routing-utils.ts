@@ -9,12 +9,22 @@ import {
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
   | ConditionalTemplateAccessible
   | ConditionalTemplateLanguage;
 
 export type MessagePlanTemplates = Record<string, TemplateDto>;
+
+/**
+ * Type guard to check if a template is a letter template
+ */
+export function isLetterTemplate(
+  template: TemplateDto
+): template is LetterTemplate {
+  return template.templateType === 'LETTER';
+}
 
 /**
  * Gets the conditional templates for a cascade item, from the provided templates object
@@ -182,38 +192,104 @@ export function getRemainingLanguages(cascade: CascadeItem[]): Language[] {
 }
 
 /**
- * Updates cascadeGroupOverrides by removing groups with no templates
- * or updating their arrays to reflect remaining templates
+ * Builds cascadeGroupOverrides by analysing the cascade to determine which conditional
+ * template groups (accessible formats, languages) are present.
+ * Returns overrides with only groups that have templates.
  */
-export function updateCascadeGroupOverrides(
-  cascadeGroupOverrides: CascadeGroup[],
+export function buildCascadeGroupOverridesFromCascade(
   updatedCascade: CascadeItem[]
 ): CascadeGroup[] {
-  return cascadeGroupOverrides
-    .map((group): CascadeGroup => {
-      if ('accessibleFormat' in group) {
-        return {
-          ...group,
-          accessibleFormat: getRemainingAccessibleFormats(updatedCascade),
-        };
-      }
+  const overrides: CascadeGroup[] = [];
 
-      if ('language' in group) {
-        return {
-          ...group,
-          language: getRemainingLanguages(updatedCascade),
-        };
-      }
-
-      return group;
-    })
-    .filter((group) => {
-      if ('accessibleFormat' in group) {
-        return group.accessibleFormat.length > 0;
-      }
-      if ('language' in group) {
-        return group.language.length > 0;
-      }
-      return true;
+  const accessibleFormats = getRemainingAccessibleFormats(updatedCascade);
+  if (accessibleFormats.length > 0) {
+    overrides.push({
+      name: 'accessible',
+      accessibleFormat: accessibleFormats,
     });
+  }
+
+  const languages = getRemainingLanguages(updatedCascade);
+  if (languages.length > 0) {
+    overrides.push({
+      name: 'translations',
+      language: languages,
+    });
+  }
+
+  return overrides;
+}
+
+/**
+ * Add default template to cascade at specific index
+ */
+export function addDefaultTemplateToCascade(
+  cascade: CascadeItem[],
+  cascadeIndex: number,
+  selectedTemplateId: string,
+  selectedTemplate?: TemplateDto
+): CascadeItem[] {
+  const newCascade = [...cascade];
+  const currentItem = newCascade[cascadeIndex];
+
+  newCascade[cascadeIndex] = {
+    ...currentItem,
+    defaultTemplateId: selectedTemplateId,
+    ...(selectedTemplate &&
+      isLetterTemplate(selectedTemplate) &&
+      selectedTemplate.supplierReferences && {
+        supplierReferences: selectedTemplate.supplierReferences,
+      }),
+  };
+
+  return newCascade;
+}
+
+/**
+ * Add conditional accessible format template to existing cascade item
+ */
+export function addConditionalTemplateToCascadeItem(
+  cascadeItem: CascadeItem,
+  selectedTemplate: LetterTemplate
+): CascadeItem {
+  const newConditionalTemplate: ConditionalTemplateAccessible = {
+    accessibleFormat: selectedTemplate.letterType,
+    templateId: selectedTemplate.id,
+    supplierReferences: selectedTemplate.supplierReferences,
+  };
+
+  const conditionalTemplates = [...(cascadeItem.conditionalTemplates ?? [])];
+
+  const existingIndex = conditionalTemplates.findIndex(
+    (template: ConditionalTemplate) =>
+      'accessibleFormat' in template &&
+      template.accessibleFormat === selectedTemplate.letterType
+  );
+
+  if (existingIndex >= 0) {
+    conditionalTemplates[existingIndex] = newConditionalTemplate;
+  } else {
+    conditionalTemplates.push(newConditionalTemplate);
+  }
+
+  return {
+    ...cascadeItem,
+    conditionalTemplates,
+  };
+}
+
+/**
+ * Add conditional template to cascade at specific index
+ */
+export function addConditionalTemplateToCascade(
+  cascade: CascadeItem[],
+  cascadeIndex: number,
+  selectedTemplate: LetterTemplate
+): CascadeItem[] {
+  const updatedCascade = [...cascade];
+  updatedCascade[cascadeIndex] = addConditionalTemplateToCascadeItem(
+    updatedCascade[cascadeIndex],
+    selectedTemplate
+  );
+  return updatedCascade;
 }

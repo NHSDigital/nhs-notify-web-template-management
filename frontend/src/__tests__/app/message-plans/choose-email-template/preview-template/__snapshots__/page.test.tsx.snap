@@ -128,13 +128,12 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
             </div>
           </dl>
         </div>
-        <p>
-          <a
-            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
-          >
-            Go back
-          </a>
-        </p>
+        <a
+          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+        >
+          Go back
+        </a>
       </div>
     </div>
   </main>

@@ -6,6 +6,7 @@ import {
   ROUTING_CONFIG,
   SMS_TEMPLATE,
   LETTER_TEMPLATE,
+  LARGE_PRINT_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
@@ -148,6 +149,67 @@ test('submit form - success updates config and redirects to choose templates for
       },
     ],
     cascadeGroupOverrides: [],
+  });
+
+  expect(mockRedirect).toHaveBeenCalledWith(
+    `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+    RedirectType.push
+  );
+});
+
+test('submit form - success adds conditional template and updates cascade group overrides', async () => {
+  const mockRedirect = jest.mocked(redirect);
+  const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
+
+  const largePrintTemplate = {
+    ...LARGE_PRINT_LETTER_TEMPLATE,
+    id: 'large-print-template-id',
+    name: 'Large print letter',
+    letterType: 'x1' as const,
+    supplierReferences: { MBA: 'large-print-ref' },
+  };
+
+  await chooseChannelTemplateAction(
+    {
+      messagePlan: {
+        ...ROUTING_CONFIG,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: LETTER_TEMPLATE.id,
+          },
+        ],
+        cascadeGroupOverrides: [],
+      },
+      pageHeading: 'Choose a large print letter template',
+      templateList: [largePrintTemplate],
+      cascadeIndex: 0,
+      accessibleFormat: 'x1',
+    },
+    getMockFormData({
+      channelTemplate: largePrintTemplate.id,
+    })
+  );
+
+  expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(ROUTING_CONFIG.id, {
+    cascade: [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: LETTER_TEMPLATE.id,
+        conditionalTemplates: [
+          {
+            accessibleFormat: 'x1',
+            templateId: largePrintTemplate.id,
+            supplierReferences: { MBA: 'large-print-ref' },
+          },
+        ],
+      },
+    ],
+    cascadeGroupOverrides: [{ name: 'accessible', accessibleFormat: ['x1'] }],
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(

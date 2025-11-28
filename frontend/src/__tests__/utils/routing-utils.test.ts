@@ -5,19 +5,24 @@ import {
   removeTemplatesFromCascadeItem,
   getRemainingAccessibleFormats,
   getRemainingLanguages,
-  updateCascadeGroupOverrides,
+  buildCascadeGroupOverridesFromCascade,
   buildCascadeGroupsForItem,
   getConditionalTemplatesForItem,
+  addConditionalTemplateToCascadeItem,
+  addConditionalTemplateToCascade,
+  addDefaultTemplateToCascade,
   type ConditionalTemplate,
   type MessagePlanTemplates,
 } from '@utils/routing-utils';
 import type {
   CascadeItem,
-  Language,
-  LetterType,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
+import {
+  LARGE_PRINT_LETTER_TEMPLATE,
+  LETTER_TEMPLATE,
+} from '@testhelpers/helpers';
 
 const baseConfig: RoutingConfig = {
   id: 'test-id',
@@ -634,16 +639,8 @@ describe('getRemainingLanguages', () => {
   });
 });
 
-describe('updateCascadeGroupOverrides', () => {
-  it('should update accessible group with remaining formats', () => {
-    const cascadeGroupOverrides = [
-      {
-        name: 'accessible' as const,
-        accessibleFormat: ['q4', 'x0', 'x1'] as LetterType[],
-      },
-      { name: 'standard' as const },
-    ];
-
+describe('buildCascadeGroupOverridesFromCascade', () => {
+  it('should build accessible group from cascade with accessible formats', () => {
     const updatedCascade: CascadeItem[] = [
       {
         cascadeGroups: ['accessible'],
@@ -656,26 +653,12 @@ describe('updateCascadeGroupOverrides', () => {
       },
     ];
 
-    const result = updateCascadeGroupOverrides(
-      cascadeGroupOverrides,
-      updatedCascade
-    );
+    const result = buildCascadeGroupOverridesFromCascade(updatedCascade);
 
-    expect(result).toEqual([
-      { name: 'accessible', accessibleFormat: ['q4'] },
-      { name: 'standard' },
-    ]);
+    expect(result).toEqual([{ name: 'accessible', accessibleFormat: ['q4'] }]);
   });
 
-  it('should update translations group with remaining languages', () => {
-    const cascadeGroupOverrides = [
-      {
-        name: 'translations' as const,
-        language: ['fr', 'es', 'de'] as Language[],
-      },
-      { name: 'standard' as const },
-    ];
-
+  it('should build translations group from cascade with languages', () => {
     const updatedCascade: CascadeItem[] = [
       {
         cascadeGroups: ['translations'],
@@ -689,29 +672,16 @@ describe('updateCascadeGroupOverrides', () => {
       },
     ];
 
-    const result = updateCascadeGroupOverrides(
-      cascadeGroupOverrides,
-      updatedCascade
-    );
+    const result = buildCascadeGroupOverridesFromCascade(updatedCascade);
 
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
     expect(result[0]).toMatchObject({
       name: 'translations',
       language: ['fr', 'es'],
     });
-
-    expect(result[1]).toEqual({ name: 'standard' });
   });
 
-  it('should remove accessible group when no formats remain', () => {
-    const cascadeGroupOverrides = [
-      {
-        name: 'accessible' as const,
-        accessibleFormat: ['q4'] as LetterType[],
-      },
-      { name: 'standard' as const },
-    ];
-
+  it('should return empty array when no conditionals exist', () => {
     const updatedCascade: CascadeItem[] = [
       {
         cascadeGroups: ['standard'],
@@ -721,54 +691,406 @@ describe('updateCascadeGroupOverrides', () => {
       },
     ];
 
-    const result = updateCascadeGroupOverrides(
-      cascadeGroupOverrides,
-      updatedCascade
-    );
+    const result = buildCascadeGroupOverridesFromCascade(updatedCascade);
 
-    expect(result).toEqual([{ name: 'standard' }]);
+    expect(result).toEqual([]);
   });
 
-  it('should remove translations group when no languages remain', () => {
-    const cascadeGroupOverrides = [
-      { name: 'translations' as const, language: ['fr'] as Language[] },
-      { name: 'standard' as const },
-    ];
-
+  it('should build complete overrides from complex cascade with mixed template types', () => {
     const updatedCascade: CascadeItem[] = [
       {
         cascadeGroups: ['standard'],
         channel: 'EMAIL',
         channelType: 'primary',
-        defaultTemplateId: 'template-1',
+        defaultTemplateId: 'email-template',
+      },
+      {
+        cascadeGroups: ['standard', 'accessible'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'standard-letter',
+        conditionalTemplates: [
+          { templateId: 'large-print', accessibleFormat: 'x1' },
+          { templateId: 'audio', accessibleFormat: 'q4' },
+        ],
+      },
+      {
+        cascadeGroups: ['standard', 'translations'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: 'sms-template',
+        conditionalTemplates: [
+          { templateId: 'french-sms', language: 'fr' },
+          { templateId: 'spanish-sms', language: 'es' },
+        ],
+      },
+      {
+        cascadeGroups: ['standard', 'accessible', 'translations'],
+        channel: 'LETTER',
+        channelType: 'secondary',
+        defaultTemplateId: 'secondary-letter',
+        conditionalTemplates: [
+          { templateId: 'braille', accessibleFormat: 'x0' },
+          { templateId: 'polish-letter', language: 'pl' },
+        ],
       },
     ];
 
-    const result = updateCascadeGroupOverrides(
-      cascadeGroupOverrides,
-      updatedCascade
-    );
+    const result = buildCascadeGroupOverridesFromCascade(updatedCascade);
 
-    expect(result).toEqual([{ name: 'standard' }]);
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual({
+      name: 'accessible',
+      accessibleFormat: expect.arrayContaining(['x1', 'q4', 'x0']),
+    });
+    expect(result[1]).toEqual({
+      name: 'translations',
+      language: expect.arrayContaining(['fr', 'es', 'pl']),
+    });
   });
+});
 
-  it('should keep standard group unchanged', () => {
-    const cascadeGroupOverrides = [{ name: 'standard' as const }];
-
-    const updatedCascade: CascadeItem[] = [
+describe('addDefaultTemplateToCascade', () => {
+  it('should add default template to cascade at specified index', () => {
+    const cascade: CascadeItem[] = [
       {
         cascadeGroups: ['standard'],
         channel: 'EMAIL',
         channelType: 'primary',
-        defaultTemplateId: 'template-1',
+        defaultTemplateId: null,
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'SMS',
+        channelType: 'primary',
+        defaultTemplateId: null,
       },
     ];
 
-    const result = updateCascadeGroupOverrides(
-      cascadeGroupOverrides,
-      updatedCascade
+    const result = addDefaultTemplateToCascade(cascade, 0, 'new-template-id');
+
+    expect(result[0].defaultTemplateId).toBe('new-template-id');
+  });
+
+  it('should add supplier references when template is a letter with supplier refs', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+    ];
+
+    const letterTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'letter-template-id',
+      supplierReferences: { MBA: 'supplier-ref-123' },
+    };
+
+    const result = addDefaultTemplateToCascade(
+      cascade,
+      0,
+      'letter-template-id',
+      letterTemplate
     );
 
-    expect(result).toEqual([{ name: 'standard' }]);
+    expect(result[0].defaultTemplateId).toBe('letter-template-id');
+    expect(result[0].supplierReferences).toEqual({ MBA: 'supplier-ref-123' });
+  });
+
+  it('should not add supplier references when template is not a letter', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+    ];
+
+    const emailTemplate = {
+      id: 'email-template-id',
+      name: 'Email Template',
+      templateType: 'EMAIL',
+      message: 'Test',
+      subject: 'Test',
+    } as TemplateDto;
+
+    const result = addDefaultTemplateToCascade(
+      cascade,
+      0,
+      'email-template-id',
+      emailTemplate
+    );
+
+    expect(result[0].defaultTemplateId).toBe('email-template-id');
+    expect(result[0].supplierReferences).toBeUndefined();
+  });
+
+  it('should not mutate original cascade', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: 'old-template',
+      },
+    ];
+
+    addDefaultTemplateToCascade(cascade, 0, 'new-template');
+
+    expect(cascade[0].defaultTemplateId).toBe('old-template');
+  });
+
+  it('should preserve existing cascade item properties', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard', 'accessible'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'old-template',
+        conditionalTemplates: [
+          { templateId: 'conditional', accessibleFormat: 'x1' },
+        ],
+        supplierReferences: { MBA: 'existing-ref' },
+      },
+    ];
+
+    const result = addDefaultTemplateToCascade(cascade, 0, 'new-template');
+
+    expect(result[0].cascadeGroups).toEqual(['standard', 'accessible']);
+    expect(result[0].conditionalTemplates).toHaveLength(1);
+    expect(result[0].supplierReferences).toEqual({ MBA: 'existing-ref' });
+  });
+
+  it('should set defaultTemplateId on cascade item with conditionals', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['accessible'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        conditionalTemplates: [
+          { templateId: 'accessible-template', accessibleFormat: 'x1' },
+        ],
+      },
+    ];
+
+    const result = addDefaultTemplateToCascade(cascade, 0, 'default-template');
+
+    expect(result[0].defaultTemplateId).toBe('default-template');
+    expect(result[0].conditionalTemplates).toHaveLength(1);
+  });
+});
+
+describe('addConditionalTemplateToCascadeItem', () => {
+  it('should add conditional template to cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const largePrintLetterTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'accessible-template',
+      letterType: 'x1' as const,
+      supplierReferences: { MBA: 'ref-123' },
+    };
+
+    const result = addConditionalTemplateToCascadeItem(
+      cascadeItem,
+      largePrintLetterTemplate
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates![0]).toEqual({
+      accessibleFormat: 'x1',
+      templateId: 'accessible-template',
+      supplierReferences: { MBA: 'ref-123' },
+    });
+  });
+
+  it('should append to existing conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'existing-template', accessibleFormat: 'q4' },
+      ],
+    };
+
+    const largePrintLetterTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'new-template',
+      letterType: 'x1' as const,
+      supplierReferences: { MBA: 'ref-456' },
+    };
+
+    const result = addConditionalTemplateToCascadeItem(
+      cascadeItem,
+      largePrintLetterTemplate
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(2);
+    expect(result.conditionalTemplates![1]).toEqual({
+      accessibleFormat: 'x1',
+      templateId: 'new-template',
+      supplierReferences: { MBA: 'ref-456' },
+    });
+  });
+
+  it('should not mutate original cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const largePrintLetterTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'accessible-template',
+      letterType: 'x1' as const,
+    };
+
+    addConditionalTemplateToCascadeItem(cascadeItem, largePrintLetterTemplate);
+
+    expect(cascadeItem.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should replace template for existing conditional template of the same type', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        {
+          templateId: 'old-large-print',
+          accessibleFormat: 'x1',
+          supplierReferences: { MBA: 'old-ref' },
+        },
+        { templateId: 'audio-template', accessibleFormat: 'q4' },
+      ],
+    };
+
+    const largePrintLetterTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'new-large-print',
+      letterType: 'x1' as const,
+      supplierReferences: { MBA: 'new-ref' },
+    };
+
+    const result = addConditionalTemplateToCascadeItem(
+      cascadeItem,
+      largePrintLetterTemplate
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(2);
+    expect(result.conditionalTemplates![0]).toEqual({
+      accessibleFormat: 'x1',
+      templateId: 'new-large-print',
+      supplierReferences: { MBA: 'new-ref' },
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      templateId: 'audio-template',
+      accessibleFormat: 'q4',
+    });
+  });
+});
+
+describe('addConditionalTemplateToCascade', () => {
+  it('should add conditional template to cascade at specified index', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: 'email-template',
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+      },
+    ];
+
+    const largePrintLetterTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'accessible-template',
+      letterType: 'x1' as const,
+      supplierReferences: { MBA: 'ref-789' },
+    };
+
+    const result = addConditionalTemplateToCascade(
+      cascade,
+      1,
+      largePrintLetterTemplate
+    );
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(cascade[0]);
+    expect(result[1].conditionalTemplates).toHaveLength(1);
+    expect(result[1].conditionalTemplates![0]).toEqual({
+      accessibleFormat: 'x1',
+      templateId: 'accessible-template',
+      supplierReferences: { MBA: 'ref-789' },
+    });
+  });
+
+  it('should not mutate original cascade', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+      },
+    ];
+
+    const largePrintTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'accessible-template',
+      letterType: 'x1' as const,
+    };
+
+    addConditionalTemplateToCascade(cascade, 0, largePrintTemplate);
+
+    expect(cascade[0].conditionalTemplates).toBeUndefined();
+  });
+
+  it('should work with cascade item that has existing conditionals', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard', 'accessible'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+        conditionalTemplates: [
+          { templateId: 'existing', accessibleFormat: 'q4' },
+        ],
+      },
+    ];
+
+    const largePrintTemplate = {
+      ...LARGE_PRINT_LETTER_TEMPLATE,
+      id: 'new-template',
+      letterType: 'x1' as const,
+    };
+
+    const result = addConditionalTemplateToCascade(
+      cascade,
+      0,
+      largePrintTemplate
+    );
+    expect(result[0].conditionalTemplates).toHaveLength(2);
+    expect(result[0].conditionalTemplates![1].templateId).toEqual(
+      'new-template'
+    );
   });
 });

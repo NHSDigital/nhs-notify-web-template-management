@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
 import {
   removeTemplatesFromCascadeItem,
-  updateCascadeGroupOverrides,
+  buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
 import { redirect } from 'next/navigation';
 
@@ -30,16 +30,14 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   if (!routingConfig)
     throw new Error(`Routing configuration ${routingConfigId} not found`);
 
-  const { cascade, cascadeGroupOverrides } = routingConfig;
+  const { cascade } = routingConfig;
 
   const updatedCascade = cascade.map((cascadeItem) =>
     removeTemplatesFromCascadeItem(cascadeItem, templateIds)
   );
 
-  const updatedCascadeGroupOverrides = updateCascadeGroupOverrides(
-    cascadeGroupOverrides,
-    updatedCascade
-  );
+  const updatedCascadeGroupOverrides =
+    buildCascadeGroupOverridesFromCascade(updatedCascade);
 
   const updatedConfig = {
     cascadeGroupOverrides: updatedCascadeGroupOverrides,

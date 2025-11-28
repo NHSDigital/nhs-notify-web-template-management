@@ -25,8 +25,16 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
+  const conditionalType =
+    template.templateType === 'LETTER' && 'letterType' in template
+      ? template.letterType
+      : undefined;
+
   const backLinkHref = interpolate(content.backLink.href, {
-    templateType: cascadeTemplateTypeToUrlTextMappings(template.templateType),
+    templateType: cascadeTemplateTypeToUrlTextMappings(
+      template.templateType,
+      conditionalType
+    ),
     routingConfigId,
   });
 
@@ -43,10 +51,12 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
               template,
               hideStatus: true,
             })}
-
-            <p>
-              <Link href={backLinkHref}>{content.backLink.text}</Link>
-            </p>
+            <Link
+              className='nhsuk-body-m nhsuk-u-display-inline-block'
+              href={backLinkHref}
+            >
+              {content.backLink.text}
+            </Link>
           </div>
         </div>
       </NHSNotifyMain>

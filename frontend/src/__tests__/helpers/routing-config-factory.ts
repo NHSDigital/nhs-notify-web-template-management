@@ -19,7 +19,7 @@ export const RoutingConfigFactory = {
           defaultTemplateId: null,
         },
       ],
-      cascadeGroupOverrides: [{ name: 'standard' }],
+      cascadeGroupOverrides: [],
       name: 'Test config',
       ...data,
     };

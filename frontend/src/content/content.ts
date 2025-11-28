@@ -1175,6 +1175,15 @@ const chooseStandardEnglishLetterTemplate = {
   pageHeading: 'Choose a letter template',
 };
 
+const chooseLargePrintLetterTemplate = {
+  pageTitle: generatePageTitle('Choose a large print letter template'),
+  pageHeading: 'Choose a large print letter template',
+};
+
+const previewLargePrintLetterTemplate = {
+  pageTitle: generatePageTitle('Preview large print letter template'),
+};
+
 const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
@@ -1374,6 +1383,8 @@ const content = {
     chooseEmailTemplate,
     chooseTextMessageTemplate,
     chooseStandardEnglishLetterTemplate,
+    chooseLargePrintLetterTemplate,
+    previewLargePrintLetterTemplate,
   },
 };
 
