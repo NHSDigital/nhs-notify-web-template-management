@@ -3,7 +3,6 @@
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
 import { SummaryList } from 'nhsuk-react-components';
-import baseContent from '@content/content';
 import { ChannelTemplates } from '@molecules/ChannelTemplates/ChannelTemplates';
 import Link from 'next/link';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -19,6 +18,7 @@ import { validate } from '@utils/client-validate-form';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import classNames from 'classnames';
 import { ConditionalTemplate } from '@utils/routing-utils';
+import baseContent from '@content/content';
 
 const content = baseContent.components.chooseChannelTemplate;
 
