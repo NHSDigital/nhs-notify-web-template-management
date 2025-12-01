@@ -11,6 +11,7 @@ import {
   saveTemplate,
   getTemplate,
   getTemplates,
+  getForeignLanguageTemplates,
   uploadLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
@@ -22,6 +23,7 @@ import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { randomUUID } from 'node:crypto';
+import { LETTER_TEMPLATE, SMS_TEMPLATE } from '@testhelpers/helpers';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
@@ -573,6 +575,70 @@ describe('form-actions', () => {
     const response = await getTemplates();
 
     expect(response).toEqual([validTemplate]);
+  });
+
+  describe('getForeignLanguageTemplates', () => {
+    test('returns only non-English letter templates', async () => {
+      const polishTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'polish-1',
+        name: 'Polish Template',
+        language: 'pl',
+      };
+
+      const frenchTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'french-1',
+        name: 'French Template',
+        language: 'fr',
+      };
+
+      const englishTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'english-1',
+        name: 'English Template',
+        language: 'en',
+      };
+
+      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
+        data: [polishTemplate, frenchTemplate, englishTemplate],
+      });
+
+      const response = await getForeignLanguageTemplates();
+
+      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
+        templateType: 'LETTER',
+      });
+      expect(response).toEqual([frenchTemplate, polishTemplate]);
+      expect(response).not.toContainEqual(englishTemplate);
+    });
+
+    test('returns empty array when no foreign language templates exist', async () => {
+      const englishTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'english-1',
+        name: 'English Template',
+        language: 'en',
+      };
+
+      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
+        data: [englishTemplate],
+      });
+
+      const response = await getForeignLanguageTemplates();
+
+      expect(response).toEqual([]);
+    });
+
+    test('returns empty array when no templates exist', async () => {
+      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
+        data: [],
+      });
+
+      const response = await getForeignLanguageTemplates();
+
+      expect(response).toEqual([]);
+    });
   });
 
   describe('setTemplateToSubmitted', () => {

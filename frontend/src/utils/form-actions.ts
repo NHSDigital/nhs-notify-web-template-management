@@ -209,6 +209,21 @@ export async function getTemplates(
   return sortAscByUpdatedAt(valid);
 }
 
+/**
+ * Gets all foreign language (non-English) letter templates
+ * This currently fetches all LETTER templates and filters to non-English
+ * Will need updating once pagination is implemented in the backend
+ */
+export async function getForeignLanguageTemplates(): Promise<TemplateDto[]> {
+  const allLetterTemplates = await getTemplates({
+    templateType: 'LETTER',
+  });
+
+  return allLetterTemplates.filter(
+    (t) => 'language' in t && t.language !== 'en'
+  );
+}
+
 export async function createRoutingConfig(
   routingConfig: Pick<
     RoutingConfig,
