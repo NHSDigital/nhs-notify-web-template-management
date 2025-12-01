@@ -35,8 +35,10 @@ test.describe('Get Ready To Move Page', () => {
     await routingConfigStorage.seed([routingConfig.dbEntry]);
 
     const props = {
-      page: new RoutingGetReadyToMovePage(page),
-      id: routingConfig.dbEntry.id,
+      page: new RoutingGetReadyToMovePage(page).setPathParam(
+        'messagePlanId',
+        routingConfig.dbEntry.id
+      ),
       baseURL,
     };
 
@@ -54,9 +56,12 @@ test.describe('Get Ready To Move Page', () => {
 
     await routingConfigStorage.seed([routingConfig.dbEntry]);
 
-    const getReadyToMovePage = new RoutingGetReadyToMovePage(page);
+    const getReadyToMovePage = new RoutingGetReadyToMovePage(page).setPathParam(
+      'messagePlanId',
+      routingConfig.dbEntry.id
+    );
 
-    await getReadyToMovePage.loadPage(routingConfig.dbEntry.id);
+    await getReadyToMovePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/get-ready-to-move/${routingConfig.dbEntry.id}`
@@ -77,9 +82,12 @@ test.describe('Get Ready To Move Page', () => {
 
     await routingConfigStorage.seed([routingConfig.dbEntry]);
 
-    const getReadyToMovePage = new RoutingGetReadyToMovePage(page);
+    const getReadyToMovePage = new RoutingGetReadyToMovePage(page).setPathParam(
+      'messagePlanId',
+      routingConfig.dbEntry.id
+    );
 
-    await getReadyToMovePage.loadPage(routingConfig.dbEntry.id);
+    await getReadyToMovePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/get-ready-to-move/${routingConfig.dbEntry.id}`

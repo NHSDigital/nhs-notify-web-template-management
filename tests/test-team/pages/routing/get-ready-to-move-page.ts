@@ -1,8 +1,9 @@
 import type { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export class RoutingGetReadyToMovePage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = ['message-plans/get-ready-to-move'];
+export class RoutingGetReadyToMovePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate =
+    '/message-plans/get-ready-to-move/:messagePlanId';
 
   public readonly continueLink: Locator;
 
