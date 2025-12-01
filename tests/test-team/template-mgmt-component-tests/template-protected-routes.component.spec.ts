@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { glob } from 'glob';
 import { execSync } from 'node:child_process';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
-import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
@@ -131,7 +130,7 @@ test.describe('Protected Routes Tests', () => {
     const nonPublic = routes.filter(
       (r) =>
         !publicPages.some(
-          ({ pageUrlSegments }) => `${pageUrlSegments.join('/')}` === r
+          ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
         )
     );
 
@@ -140,7 +139,7 @@ test.describe('Protected Routes Tests', () => {
     const uncovered = nonPublic.filter(
       (r) =>
         !protectedPages.some(
-          ({ pageUrlSegments }) => `${pageUrlSegments.join('/')}` === r
+          ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
         )
     );
 
@@ -150,32 +149,20 @@ test.describe('Protected Routes Tests', () => {
   });
 
   for (const PageModel of protectedPages)
-    test(`should not be able to access ${PageModel.pageUrlSegments.join('/')} page without auth`, async ({
+    test(`should not be able to access ${PageModel.staticPathSegments.join('/')} page without auth`, async ({
       page,
       baseURL,
     }) => {
       const appPage = new PageModel(page);
-      const isDynamic = appPage instanceof TemplateMgmtBasePageDynamic;
 
-      const ids: string[] = isDynamic
-        ? Array.from(
-            { length: PageModel.pageUrlSegments.length },
-            (_, index) => `id${index}`
-          )
-        : [];
-
-      await appPage.attemptToLoadPageExpectFailure(...ids);
-
-      let redirectPath = `/${PageModel.appUrlSegment}`;
-      for (let i = 0; i < PageModel.pageUrlSegments.length; i++) {
-        redirectPath += `/${PageModel.pageUrlSegments[i]}`;
-        if (isDynamic) {
-          redirectPath += `/${ids[i]}`;
-        }
+      for (const [index, name] of PageModel.pathParameterNames.entries()) {
+        appPage.setPathParam(name, `id${index}`);
       }
 
+      await appPage.attemptToLoadPageExpectFailure();
+
       await expect(page).toHaveURL(
-        `${baseURL}/auth?redirect=${encodeURIComponent(redirectPath)}`
+        `${baseURL}/auth?redirect=${encodeURIComponent(appPage.getUrl())}`
       );
     });
 });

@@ -274,6 +274,7 @@ describe('RoutingConfigClient', () => {
         id: 'id',
         status: 'DRAFT',
         updatedAt: date.toISOString(),
+        lockNumber: 0,
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -522,11 +523,12 @@ describe('RoutingConfigClient', () => {
         data: completed,
       });
 
-      const result = await client.submitRoutingConfig(id, user);
+      const result = await client.submitRoutingConfig(id, user, '42');
 
       expect(mocks.routingConfigRepository.submit).toHaveBeenCalledWith(
         id,
-        user
+        user,
+        42
       );
 
       expect(result).toEqual({
@@ -546,7 +548,7 @@ describe('RoutingConfigClient', () => {
         },
       });
 
-      const result = await client.submitRoutingConfig('some-id', user);
+      const result = await client.submitRoutingConfig('some-id', user, '42');
 
       expect(mocks.routingConfigRepository.submit).not.toHaveBeenCalled();
 
@@ -567,7 +569,7 @@ describe('RoutingConfigClient', () => {
         data: { features: { routing: false } },
       });
 
-      const result = await client.submitRoutingConfig('some-id', user);
+      const result = await client.submitRoutingConfig('some-id', user, '42');
 
       expect(mocks.routingConfigRepository.submit).not.toHaveBeenCalled();
 
@@ -576,6 +578,28 @@ describe('RoutingConfigClient', () => {
           errorMeta: {
             code: 400,
             description: 'Routing feature is disabled',
+          },
+        },
+      });
+    });
+
+    test('returns conflict error when lock number is invalid', async () => {
+      const { client, mocks } = setup();
+
+      const result = await client.submitRoutingConfig(
+        'some-id',
+        user,
+        'invalid-lock-number'
+      );
+
+      expect(mocks.routingConfigRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
           },
         },
       });
@@ -601,11 +625,12 @@ describe('RoutingConfigClient', () => {
         data: deleted,
       });
 
-      const result = await client.deleteRoutingConfig(id, user);
+      const result = await client.deleteRoutingConfig(id, user, '42');
 
       expect(mocks.routingConfigRepository.delete).toHaveBeenCalledWith(
         id,
-        user
+        user,
+        42
       );
 
       expect(result).toEqual({
@@ -628,11 +653,12 @@ describe('RoutingConfigClient', () => {
 
       mocks.routingConfigRepository.delete.mockResolvedValueOnce(errorResponse);
 
-      const result = await client.deleteRoutingConfig(id, user);
+      const result = await client.deleteRoutingConfig(id, user, '42');
 
       expect(mocks.routingConfigRepository.delete).toHaveBeenCalledWith(
         id,
-        user
+        user,
+        42
       );
 
       expect(result).toEqual(errorResponse);
@@ -650,7 +676,7 @@ describe('RoutingConfigClient', () => {
         },
       });
 
-      const result = await client.deleteRoutingConfig('some-id', user);
+      const result = await client.deleteRoutingConfig('some-id', user, '42');
 
       expect(mocks.routingConfigRepository.delete).not.toHaveBeenCalled();
 
@@ -671,7 +697,7 @@ describe('RoutingConfigClient', () => {
         data: { features: { routing: false }, campaignIds: ['campaign'] },
       });
 
-      const result = await client.deleteRoutingConfig('some-id', user);
+      const result = await client.deleteRoutingConfig('some-id', user, '42');
 
       expect(mocks.routingConfigRepository.delete).not.toHaveBeenCalled();
 
@@ -680,6 +706,28 @@ describe('RoutingConfigClient', () => {
           errorMeta: {
             code: 400,
             description: 'Routing feature is disabled',
+          },
+        },
+      });
+    });
+
+    test('returns conflict error when lock number is invalid', async () => {
+      const { client, mocks } = setup();
+
+      const result = await client.deleteRoutingConfig(
+        'some-id',
+        user,
+        'invalid-lock-number'
+      );
+
+      expect(mocks.routingConfigRepository.delete).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
           },
         },
       });
@@ -716,13 +764,15 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
         routingConfig.id,
         update,
-        user
+        user,
+        42
       );
 
       expect(result).toEqual({
@@ -749,7 +799,8 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
@@ -795,7 +846,8 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
@@ -830,7 +882,8 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
@@ -865,7 +918,8 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
@@ -908,17 +962,50 @@ describe('RoutingConfigClient', () => {
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
-        user
+        user,
+        '42'
       );
 
       expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
         routingConfig.id,
         update,
-        user
+        user,
+        42
       );
 
       expect(result).toEqual({
         data: updated,
+      });
+    });
+
+    test('returns conflict error when lock number is invalid', async () => {
+      const { client, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        campaignId: routingConfig.campaignId,
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: 'new name',
+      };
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user,
+        'invalid-lock-number'
+      );
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
+          },
+        },
       });
     });
   });

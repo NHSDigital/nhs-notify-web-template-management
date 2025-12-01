@@ -84,8 +84,12 @@ test.describe('Routing - Choose sms template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseTextMessageTemplatePage(page),
-      id: messagePlans.SMS_ROUTING_CONFIG.id,
+      page: new RoutingChooseTextMessageTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.SMS_ROUTING_CONFIG.lockNumber)
+        ),
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -99,12 +103,15 @@ test.describe('Routing - Choose sms template page', () => {
     page,
     baseURL,
   }) => {
-    const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
-      page
-    );
-    await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
+    const plan = messagePlans.SMS_ROUTING_CONFIG;
+    const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(page)
+      .setPathParam('messagePlanId', plan.id)
+      .setSearchParam('lockNumber', String(plan.lockNumber));
+
+    await chooseSmsTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/choose-text-message-template/${plan.id}?lockNumber=${plan.lockNumber}`
     );
 
     await test.step('displays list of sms templates to choose from', async () => {
@@ -139,7 +146,7 @@ test.describe('Routing - Choose sms template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-text-message-template/${plan.id}/preview-template/${template.id}`
         );
       }
 
@@ -153,7 +160,7 @@ test.describe('Routing - Choose sms template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
@@ -161,7 +168,7 @@ test.describe('Routing - Choose sms template page', () => {
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-text-message-template/${plan.id}?lockNumber=${plan.lockNumber}`
       );
 
       await expect(chooseSmsTemplatePage.errorSummary).toBeVisible();
@@ -171,18 +178,18 @@ test.describe('Routing - Choose sms template page', () => {
     });
 
     await test.step('submits selected template and navigates to choose templates page', async () => {
-      await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
+      await chooseSmsTemplatePage.loadPage();
 
       await page.getByTestId(`${templates.SMS2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
     await test.step('pre-selects previously selected template', async () => {
-      await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
+      await chooseSmsTemplatePage.loadPage();
 
       // Check summary list is present and displays the name of the previously selected template
       const summaryList = page.getByTestId('previous-selection-summary');
@@ -199,9 +206,11 @@ test.describe('Routing - Choose sms template page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
       const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', notFoundMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseSmsTemplatePage.loadPage(notFoundMessagePlanId);
+      await chooseSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -211,9 +220,11 @@ test.describe('Routing - Choose sms template page', () => {
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
       const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', invalidMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseSmsTemplatePage.loadPage(invalidMessagePlanId);
+      await chooseSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -226,15 +237,32 @@ test.describe('Routing - Choose sms template page', () => {
     }) => {
       const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', messagePlans.NON_SMS_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.NON_SMS_ROUTING_CONFIG.lockNumber)
+        );
 
-      await chooseSmsTemplatePage.loadPage(
-        messagePlans.NON_SMS_ROUTING_CONFIG.id
-      );
+      await chooseSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
       );
+    });
+
+    test.describe('redirects to choose templates page', () => {
+      test('when no lockNumber in url', async ({ page, baseURL }) => {
+        const chooseTemplatePage = new RoutingChooseTextMessageTemplatePage(
+          page
+        ).setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id);
+
+        await chooseTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
+        );
+      });
     });
   });
 });

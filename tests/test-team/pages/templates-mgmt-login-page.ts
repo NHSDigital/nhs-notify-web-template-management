@@ -3,10 +3,10 @@ import {
   CognitoAuthHelper,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
-import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegments = ['create-and-submit-templates'];
+export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/create-and-submit-templates';
 
   public readonly emailInput: Locator;
 

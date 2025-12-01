@@ -146,6 +146,7 @@ describe('Create Routing Config Handler', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       clientId: 'nhs-notify-client-id',
+      lockNumber: 0,
       defaultCascadeGroup: 'standard',
     };
 

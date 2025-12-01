@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
-  static readonly pageUrlSegments = ['preview-letter-template'];
+  static readonly pathTemplate = '/preview-letter-template/:templateId';
 
   public static readonly urlRegexp = new RegExp(
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/

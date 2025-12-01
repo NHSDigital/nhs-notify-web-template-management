@@ -135,9 +135,9 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
 export const $LockNumber = z.coerce
   .string()
   .trim()
-  .min(1)
+  .min(1) // min string length is 1
   .transform(Number)
-  .pipe(z.number().int().min(0));
+  .pipe(z.number().int().min(0)); // min integer value is 0
 
 const $TemplateStatus = schemaFor<TemplateStatus>()(
   z.enum(TEMPLATE_STATUS_LIST)

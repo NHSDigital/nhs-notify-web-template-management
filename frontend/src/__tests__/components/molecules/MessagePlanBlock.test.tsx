@@ -28,6 +28,7 @@ describe('MessagePlanBlock', () => {
         index={0}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        lockNumber={42}
       />
     );
 
@@ -47,6 +48,7 @@ describe('MessagePlanBlock', () => {
         index={2}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        lockNumber={42}
       />
     );
 
@@ -65,6 +67,7 @@ describe('MessagePlanBlock', () => {
         index={0}
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
+        lockNumber={42}
       />
     );
 
@@ -83,6 +86,7 @@ describe('MessagePlanBlock', () => {
           channelItem={channelItem}
           template={mockTemplate}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
         />
       );
       expect(screen.getByText('Test email template')).toBeInTheDocument();
@@ -97,6 +101,7 @@ describe('MessagePlanBlock', () => {
           channelItem={channelItem}
           template={mockTemplate}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
         />
       );
 
@@ -121,6 +126,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
         />
       );
 
@@ -151,6 +157,7 @@ describe('MessagePlanBlock', () => {
             channelItem={channelItem}
             template={mockTemplate}
             routingConfigId='test-routing-config-id'
+            lockNumber={42}
           />
         );
         expect(asFragment()).toMatchSnapshot();
@@ -168,6 +175,7 @@ describe('MessagePlanBlock', () => {
             index={0}
             channelItem={channelItem}
             routingConfigId='test-routing-config-id'
+            lockNumber={42}
           />
         );
         expect(asFragment()).toMatchSnapshot();

@@ -2,6 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
+import { $LockNumber } from 'nhs-notify-backend-client';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   TemplatePageProps,
@@ -21,6 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
 const SubmitNhsAppTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/preview-nhs-app-template/${templateId}`,
+      RedirectType.replace
+    );
+  }
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateNHSAppTemplate(template);
@@ -34,7 +46,7 @@ const SubmitNhsAppTemplatePage = async (props: TemplatePageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       channel='NHS_APP'
-      lockNumber={validatedTemplate.lockNumber}
+      lockNumber={lockNumberResult.data}
     />
   );
 };

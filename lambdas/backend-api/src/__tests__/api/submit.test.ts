@@ -118,7 +118,8 @@ describe('Template API - Submit', () => {
       error: {
         errorMeta: {
           code: 409,
-          description: 'Invalid lock number',
+          description:
+            'Lock number mismatch - Template has been modified since last read',
         },
       },
     });
@@ -128,6 +129,7 @@ describe('Template API - Submit', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -136,7 +138,8 @@ describe('Template API - Submit', () => {
       statusCode: 409,
       body: JSON.stringify({
         statusCode: 409,
-        technicalMessage: 'Invalid lock number',
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
       }),
     });
 

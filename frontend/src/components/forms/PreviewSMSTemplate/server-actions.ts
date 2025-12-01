@@ -42,7 +42,7 @@ export async function previewSmsTemplateAction(
 
   if (data.previewSMSTemplateAction === 'sms-submit') {
     return redirect(
-      `/submit-text-message-template/${formState.id}`,
+      `/submit-text-message-template/${formState.id}?lockNumber=${formState.lockNumber}`,
       RedirectType.push
     );
   }

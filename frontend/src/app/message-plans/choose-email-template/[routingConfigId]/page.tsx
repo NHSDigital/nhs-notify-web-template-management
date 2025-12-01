@@ -8,6 +8,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import content from '@content/content';
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { getTemplates } from '@utils/form-actions';
+import { $LockNumber } from 'nhs-notify-backend-client';
 const { pageTitle, pageHeading } = content.pages.chooseEmailTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,6 +19,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ChooseEmailTemplate(props: MessagePlanPageProps) {
   const { routingConfigId } = await props.params;
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const messagePlan = await getRoutingConfig(routingConfigId);
 
@@ -43,6 +55,7 @@ export default async function ChooseEmailTemplate(props: MessagePlanPageProps) {
       pageHeading={pageHeading}
       templateList={availableTemplateList}
       cascadeIndex={cascadeIndex}
+      lockNumber={lockNumberResult.data}
     />
   );
 }

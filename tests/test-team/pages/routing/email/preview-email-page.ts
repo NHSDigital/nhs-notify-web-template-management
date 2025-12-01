@@ -1,13 +1,6 @@
-import { type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export class RoutingPreviewEmailTemplatePage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = [
-    'message-plans/choose-email-template',
-    'preview-template',
-  ];
-
-  constructor(page: Page) {
-    super(page);
-  }
+export class RoutingPreviewEmailTemplatePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate =
+    '/message-plans/choose-email-template/:messagePlanId/preview-template/:templateId';
 }
