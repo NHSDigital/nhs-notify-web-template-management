@@ -214,7 +214,9 @@ export async function getTemplates(
  * This currently fetches all LETTER templates and filters to non-English
  * Will need updating once pagination is implemented in the backend
  */
-export async function getForeignLanguageTemplates(): Promise<TemplateDto[]> {
+export async function getForeignLanguageLetterTemplates(): Promise<
+  TemplateDto[]
+> {
   const allLetterTemplates = await getTemplates({
     templateType: 'LETTER',
   });

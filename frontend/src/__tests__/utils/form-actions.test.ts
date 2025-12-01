@@ -11,7 +11,7 @@ import {
   saveTemplate,
   getTemplate,
   getTemplates,
-  getForeignLanguageTemplates,
+  getForeignLanguageLetterTemplates,
   uploadLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
@@ -23,7 +23,7 @@ import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { randomUUID } from 'node:crypto';
-import { LETTER_TEMPLATE, SMS_TEMPLATE } from '@testhelpers/helpers';
+import { LETTER_TEMPLATE } from '@testhelpers/helpers';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
@@ -577,7 +577,7 @@ describe('form-actions', () => {
     expect(response).toEqual([validTemplate]);
   });
 
-  describe('getForeignLanguageTemplates', () => {
+  describe('getForeignLanguageLetterTemplates', () => {
     test('returns only non-English letter templates', async () => {
       const polishTemplate: TemplateDto = {
         ...LETTER_TEMPLATE,
@@ -604,7 +604,7 @@ describe('form-actions', () => {
         data: [polishTemplate, frenchTemplate, englishTemplate],
       });
 
-      const response = await getForeignLanguageTemplates();
+      const response = await getForeignLanguageLetterTemplates();
 
       expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
         templateType: 'LETTER',
@@ -625,7 +625,7 @@ describe('form-actions', () => {
         data: [englishTemplate],
       });
 
-      const response = await getForeignLanguageTemplates();
+      const response = await getForeignLanguageLetterTemplates();
 
       expect(response).toEqual([]);
     });
@@ -635,7 +635,7 @@ describe('form-actions', () => {
         data: [],
       });
 
-      const response = await getForeignLanguageTemplates();
+      const response = await getForeignLanguageLetterTemplates();
 
       expect(response).toEqual([]);
     });
