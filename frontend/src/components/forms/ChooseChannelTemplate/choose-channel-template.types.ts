@@ -5,4 +5,5 @@ export type ChooseChannelTemplateProps = {
   pageHeading: string;
   templateList: TemplateDto[];
   cascadeIndex: number;
+  lockNumber: number;
 };

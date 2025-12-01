@@ -1,8 +1,9 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtPreviewSubmitedBasePage } from '../template-mgmt-preview-submitted-base-page';
+import { TemplateMgmtPreviewSubmittedBasePage } from '../template-mgmt-preview-submitted-base-page';
 
-export class TemplateMgmtPreviewSubmittedSmsPage extends TemplateMgmtPreviewSubmitedBasePage {
-  static readonly pageUrlSegments = ['preview-submitted-text-message-template'];
+export class TemplateMgmtPreviewSubmittedSmsPage extends TemplateMgmtPreviewSubmittedBasePage {
+  static readonly pathTemplate =
+    '/preview-submitted-text-message-template/:templateId';
 
   public readonly messageText: Locator;
 

@@ -3,15 +3,20 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 export type ChooseChannelTemplateFormState = FormState &
-  ChooseChannelTemplateProps;
+  Pick<
+    ChooseChannelTemplateProps,
+    'cascadeIndex' | 'messagePlan' | 'pageHeading' | 'templateList'
+  >;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>
   z.object({
     channelTemplate: z.string({
       message: errorMessage,
     }),
+    lockNumber: $LockNumber,
   });
 
 export async function chooseChannelTemplateAction(
@@ -50,10 +55,14 @@ export async function chooseChannelTemplateAction(
       : item
   );
 
-  await updateRoutingConfig(messagePlan.id, {
-    cascade: newCascade,
-    cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
-  });
+  await updateRoutingConfig(
+    messagePlan.id,
+    {
+      cascade: newCascade,
+      cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
+    },
+    parsedForm.data.lockNumber
+  );
 
   redirect(
     `/message-plans/choose-templates/${messagePlan.id}`,

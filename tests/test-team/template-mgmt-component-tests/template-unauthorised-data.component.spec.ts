@@ -81,9 +81,11 @@ test.describe('Unauthorised data access Tests', () => {
     page,
     baseURL,
   }) => {
-    const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+    const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(
+      page
+    ).setPathParam('templateId', templates.submit.id);
 
-    await previewEmailTemplatePage.loadPage(templates.submit.id);
+    await previewEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
@@ -93,9 +95,9 @@ test.describe('Unauthorised data access Tests', () => {
   }) => {
     const previewEmailTemplatePage = new TemplateMgmtPreviewSubmittedEmailPage(
       page
-    );
+    ).setPathParam('templateId', templates.submit.id);
 
-    await previewEmailTemplatePage.loadPage(templates.submit.id);
+    await previewEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });

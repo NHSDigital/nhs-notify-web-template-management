@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
-import { $Channel } from 'nhs-notify-backend-client';
+import { $Channel, $LockNumber } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
 
 export async function removeTemplateFromMessagePlan(formData: FormData) {
@@ -10,17 +10,19 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
     .object({
       routingConfigId: z.uuidv4(),
       channel: $Channel,
+      lockNumber: $LockNumber,
     })
     .safeParse({
       routingConfigId: formData.get('routingConfigId'),
       channel: formData.get('channel'),
+      lockNumber: formData.get('lockNumber'),
     });
 
   if (!parseResult.success) {
     throw new Error('Invalid form data');
   }
 
-  const { routingConfigId, channel } = parseResult.data;
+  const { routingConfigId, channel, lockNumber } = parseResult.data;
 
   const routingConfig = await getRoutingConfig(routingConfigId);
 
@@ -40,7 +42,7 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
     cascade: updatedCascade,
   };
 
-  await updateRoutingConfig(routingConfigId, updatedConfig);
+  await updateRoutingConfig(routingConfigId, updatedConfig, lockNumber);
 
   redirect(`/message-plans/choose-templates/${routingConfigId}`);
 }

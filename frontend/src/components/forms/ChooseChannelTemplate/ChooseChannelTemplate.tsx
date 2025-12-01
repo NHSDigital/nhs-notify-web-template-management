@@ -22,7 +22,8 @@ import classNames from 'classnames';
 const content = baseContent.components.chooseChannelTemplate;
 
 export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
-  const { messagePlan, pageHeading, templateList, cascadeIndex } = props;
+  const { messagePlan, pageHeading, templateList, cascadeIndex, lockNumber } =
+    props;
 
   const [state, action] = useActionState(chooseChannelTemplateAction, {
     ...props,
@@ -54,6 +55,12 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
             formId={'choose-channel-template'}
             formAttributes={{ onSubmit: formValidate }}
           >
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
+              readOnly
+            />
             {selectedTemplateId && (
               <SummaryList data-testid='previous-selection-summary'>
                 <SummaryList.Row>

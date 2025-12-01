@@ -206,6 +206,7 @@ export type RoutingConfig = {
   createdAt: string;
   defaultCascadeGroup: string;
   id: string;
+  lockNumber: number;
   name: string;
   status: RoutingConfigStatus;
   updatedAt: string;
@@ -372,6 +373,12 @@ export type PostV1RoutingConfigurationResponse =
 
 export type DeleteV1RoutingConfigurationByRoutingConfigIdData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to delete
@@ -434,11 +441,17 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
-export type PutV1RoutingConfigurationByRoutingConfigIdData = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdData = {
   /**
    * Routing configuration update to apply
    */
   body: UpdateRoutingConfig;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to update
@@ -449,28 +462,34 @@ export type PutV1RoutingConfigurationByRoutingConfigIdData = {
   url: '/v1/routing-configuration/{routingConfigId}';
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdErrors = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdErrors = {
   /**
    * Error
    */
   default: Failure;
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdError =
-  PutV1RoutingConfigurationByRoutingConfigIdErrors[keyof PutV1RoutingConfigurationByRoutingConfigIdErrors];
+export type PatchV1RoutingConfigurationByRoutingConfigIdError =
+  PatchV1RoutingConfigurationByRoutingConfigIdErrors[keyof PatchV1RoutingConfigurationByRoutingConfigIdErrors];
 
-export type PutV1RoutingConfigurationByRoutingConfigIdResponses = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdResponses = {
   /**
    * 200 response
    */
   200: RoutingConfigSuccess;
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdResponse =
-  PutV1RoutingConfigurationByRoutingConfigIdResponses[keyof PutV1RoutingConfigurationByRoutingConfigIdResponses];
+export type PatchV1RoutingConfigurationByRoutingConfigIdResponse =
+  PatchV1RoutingConfigurationByRoutingConfigIdResponses[keyof PatchV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to finalise

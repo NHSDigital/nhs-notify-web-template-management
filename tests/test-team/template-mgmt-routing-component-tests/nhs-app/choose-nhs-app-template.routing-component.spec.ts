@@ -84,8 +84,12 @@ test.describe('Routing - Choose NHS app template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseNhsAppTemplatePage(page),
-      id: messagePlans.APP_ROUTING_CONFIG.id,
+      page: new RoutingChooseNhsAppTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.APP_ROUTING_CONFIG.lockNumber)
+        ),
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -99,10 +103,15 @@ test.describe('Routing - Choose NHS app template page', () => {
     page,
     baseURL,
   }) => {
-    const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page);
-    await chooseNhsAppTemplatePage.loadPage(messagePlans.APP_ROUTING_CONFIG.id);
+    const plan = messagePlans.APP_ROUTING_CONFIG;
+    const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page)
+      .setPathParam('messagePlanId', plan.id)
+      .setSearchParam('lockNumber', String(plan.lockNumber));
+
+    await chooseNhsAppTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/choose-nhs-app-template/${plan.id}?lockNumber=${plan.lockNumber}`
     );
 
     await test.step('displays list of NHS app templates to choose from', async () => {
@@ -137,7 +146,7 @@ test.describe('Routing - Choose NHS app template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-nhs-app-template/${plan.id}/preview-template/${template.id}`
         );
       }
 
@@ -151,7 +160,7 @@ test.describe('Routing - Choose NHS app template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
@@ -159,7 +168,7 @@ test.describe('Routing - Choose NHS app template page', () => {
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-nhs-app-template/${plan.id}?lockNumber=${plan.lockNumber}`
       );
 
       await expect(chooseNhsAppTemplatePage.errorSummary).toBeVisible();
@@ -169,22 +178,18 @@ test.describe('Routing - Choose NHS app template page', () => {
     });
 
     await test.step('submits selected template and navigates to choose templates page', async () => {
-      await chooseNhsAppTemplatePage.loadPage(
-        messagePlans.APP_ROUTING_CONFIG.id
-      );
+      await chooseNhsAppTemplatePage.loadPage();
 
       await page.getByTestId(`${templates.APP2.id}-radio`).check();
       await page.getByTestId('submit-button').click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
     await test.step('pre-selects previously selected template', async () => {
-      await chooseNhsAppTemplatePage.loadPage(
-        messagePlans.APP_ROUTING_CONFIG.id
-      );
+      await chooseNhsAppTemplatePage.loadPage();
 
       // Check summary list is present and displays the name of the previously selected template
       const summaryList = page.getByTestId('previous-selection-summary');
@@ -199,11 +204,11 @@ test.describe('Routing - Choose NHS app template page', () => {
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
-      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
-        page
-      );
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page)
+        .setPathParam('messagePlanId', notFoundMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseNhsAppTemplatePage.loadPage(notFoundMessagePlanId);
+      await chooseNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -211,11 +216,11 @@ test.describe('Routing - Choose NHS app template page', () => {
     });
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
-      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
-        page
-      );
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page)
+        .setPathParam('messagePlanId', invalidMessagePlanId)
+        .setSearchParam('lockNumber', '42');
 
-      await chooseNhsAppTemplatePage.loadPage(invalidMessagePlanId);
+      await chooseNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -226,16 +231,31 @@ test.describe('Routing - Choose NHS app template page', () => {
       page,
       baseURL,
     }) => {
-      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
-        page
-      );
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.NON_APP_ROUTING_CONFIG.id)
+        .setSearchParam(
+          'lockNumber',
+          String(messagePlans.NON_APP_ROUTING_CONFIG.lockNumber)
+        );
 
-      await chooseNhsAppTemplatePage.loadPage(
-        messagePlans.NON_APP_ROUTING_CONFIG.id
-      );
+      await chooseNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
+      );
+    });
+  });
+
+  test.describe('redirects to choose templates page', () => {
+    test('when no lockNumber in url', async ({ page, baseURL }) => {
+      const chooseTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      ).setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id);
+
+      await chooseTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
       );
     });
   });
