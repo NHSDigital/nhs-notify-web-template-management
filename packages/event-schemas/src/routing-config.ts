@@ -78,7 +78,7 @@ const $CascadeGroupOverride = z.object({
 })
   .meta({
     id: 'CascadeGroupOverride',
-  });;
+  });
 export type CascadeGroupOverride = z.infer<typeof $CascadeGroupOverride>;
 
 export const $RoutingConfigEventV1Data = z.object({
