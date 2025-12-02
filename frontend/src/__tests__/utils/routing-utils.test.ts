@@ -1,6 +1,7 @@
 import {
   getMessagePlanTemplateIds,
   getSelectedLanguageTemplateIds,
+  isLetterTemplate,
   shouldRemoveTemplate,
   removeTemplatesFromConditionalTemplates,
   removeTemplatesFromCascadeItem,
@@ -40,6 +41,40 @@ const baseConfig: RoutingConfig = {
   cascadeGroupOverrides: [],
   defaultCascadeGroup: 'standard',
 };
+
+describe('isLetterTemplate', () => {
+  it('should return true for letter templates', () => {
+    const letterTemplate: TemplateDto = {
+      ...LETTER_TEMPLATE,
+      templateType: 'LETTER',
+    };
+
+    expect(isLetterTemplate(letterTemplate)).toBe(true);
+  });
+
+  it('should return false for email templates', () => {
+    const emailTemplate: TemplateDto = {
+      id: 'email-1',
+      name: 'Email Template',
+      templateType: 'EMAIL',
+      message: 'Test message',
+      subject: 'Test subject',
+    } as TemplateDto;
+
+    expect(isLetterTemplate(emailTemplate)).toBe(false);
+  });
+
+  it('should return false for SMS templates', () => {
+    const smsTemplate: TemplateDto = {
+      id: 'sms-1',
+      name: 'SMS Template',
+      templateType: 'SMS',
+      message: 'Test message',
+    } as TemplateDto;
+
+    expect(isLetterTemplate(smsTemplate)).toBe(false);
+  });
+});
 
 describe('getMessagePlanTemplateIds', () => {
   it('should collect unique template IDs from defaults and conditionals', () => {
