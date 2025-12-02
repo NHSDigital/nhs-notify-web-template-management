@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { languages } from './common';
 
 export const $RoutingConfigEventChannel = z.enum([
-  'NHS_APP',
+  'NHSAPP',
   'EMAIL',
   'SMS',
   'LETTER',
