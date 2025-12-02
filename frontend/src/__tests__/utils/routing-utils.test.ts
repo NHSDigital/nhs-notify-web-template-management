@@ -1,5 +1,6 @@
 import {
   getMessagePlanTemplateIds,
+  getSelectedLanguageTemplateIds,
   shouldRemoveTemplate,
   removeTemplatesFromConditionalTemplates,
   removeTemplatesFromCascadeItem,
@@ -85,6 +86,113 @@ describe('getMessagePlanTemplateIds', () => {
     };
     const ids = getMessagePlanTemplateIds(plan);
     expect(ids.size).toBe(0);
+  });
+});
+
+describe('getSelectedLanguageTemplateIds', () => {
+  it('should return language templates with templateId', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+      conditionalTemplates: [
+        { templateId: 'template-1', language: 'fr' },
+        { templateId: 'template-2', language: 'es' },
+      ],
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([
+      { language: 'fr', templateId: 'template-1' },
+      { language: 'es', templateId: 'template-2' },
+    ]);
+  });
+
+  it('should not include accessible format templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['translations', 'accessible'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+      conditionalTemplates: [
+        { templateId: 'template-1', language: 'fr' },
+        { templateId: 'template-2', accessibleFormat: 'q4' },
+        { templateId: 'template-3', language: 'es' },
+      ],
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([
+      { language: 'fr', templateId: 'template-1' },
+      { language: 'es', templateId: 'template-3' },
+    ]);
+  });
+
+  it('should filter out language templates with null templateId', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+      conditionalTemplates: [
+        { templateId: 'template-1', language: 'fr' },
+        { templateId: null, language: 'pl' },
+        { templateId: 'template-3', language: 'es' },
+      ],
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([
+      { language: 'fr', templateId: 'template-1' },
+      { language: 'es', templateId: 'template-3' },
+    ]);
+  });
+
+  it('should return empty array when no conditional templates exist', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty array when conditionalTemplates is undefined', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty array when only accessible format templates exist', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['accessible'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'default-template',
+      conditionalTemplates: [
+        { templateId: 'template-1', accessibleFormat: 'q4' },
+        { templateId: 'template-2', accessibleFormat: 'x0' },
+      ],
+    };
+
+    const result = getSelectedLanguageTemplateIds(cascadeItem);
+
+    expect(result).toEqual([]);
   });
 });
 

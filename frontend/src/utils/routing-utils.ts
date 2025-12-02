@@ -66,6 +66,28 @@ export function getMessagePlanTemplateIds(
 }
 
 /**
+ * Gets selected language template IDs from a cascade item
+ * Returns array of { language, templateId } for language-based conditional templates
+ */
+export function getSelectedLanguageTemplateIds(
+  cascadeItem: CascadeItem
+): Array<{ language: Language; templateId: string }> {
+  if (!cascadeItem.conditionalTemplates) return [];
+
+  return cascadeItem.conditionalTemplates
+    .filter(
+      (
+        template
+      ): template is ConditionalTemplateLanguage & { templateId: string } =>
+        'language' in template && template.templateId !== null
+    )
+    .map(({ language, templateId }) => ({
+      language,
+      templateId,
+    }));
+}
+
+/**
  * Checks if a template ID should be removed based on the removal list
  */
 export function shouldRemoveTemplate(
