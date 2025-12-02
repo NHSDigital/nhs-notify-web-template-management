@@ -92,6 +92,11 @@ pre {
     @media screen and (max-width: 768px) {
       width: auto;
     }
+
+    ul {
+      list-style: none;
+      margin: 0;
+    }
   }
 }
 
