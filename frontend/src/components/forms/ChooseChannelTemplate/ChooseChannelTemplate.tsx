@@ -97,6 +97,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
             ) : (
               <p>{content.noTemplatesText}</p>
             )}
+
             <div
               className='nhsuk-form-group'
               data-testid='channel-template-actions'
