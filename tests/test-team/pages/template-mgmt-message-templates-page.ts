@@ -19,12 +19,12 @@ export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePage {
     await this.createTemplateButton.click();
   }
 
-  async getRowByTemplateId(id: string) {
+  async getTemplatesTableRowByTemplateId(id: string) {
     return this.page.locator(`tbody tr:has(td:nth-child(2):has-text("${id}"))`);
   }
 
   async getTemplateStatus(templateId: string) {
-    const row = await this.getRowByTemplateId(templateId);
+    const row = await this.getTemplatesTableRowByTemplateId(templateId);
 
     const statusCell = row.locator('td:nth-child(4) .nhsuk-tag');
 
