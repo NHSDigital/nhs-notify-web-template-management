@@ -5,7 +5,7 @@ import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
 import {
   isLetterTemplate,
-  addConditionalTemplateToCascade,
+  addAccessibleFormatLetterTemplateToCascade,
   addDefaultTemplateToCascade,
   buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
@@ -48,17 +48,17 @@ export async function chooseChannelTemplateAction(
     ({ id }) => id === selectedTemplateId
   );
 
-  const isConditionalTemplate = !!accessibleFormat;
+  const isAccessibleFormatTemplate = !!accessibleFormat;
 
   let updatedCascade;
   let updatedCascadeGroupOverrides = messagePlan.cascadeGroupOverrides;
 
   if (
-    isConditionalTemplate &&
+    isAccessibleFormatTemplate &&
     selectedTemplate &&
     isLetterTemplate(selectedTemplate)
   ) {
-    updatedCascade = addConditionalTemplateToCascade(
+    updatedCascade = addAccessibleFormatLetterTemplateToCascade(
       messagePlan.cascade,
       cascadeIndex,
       selectedTemplate
