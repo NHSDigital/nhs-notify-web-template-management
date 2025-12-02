@@ -12,6 +12,7 @@ import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-cl
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { sortAscByUpdatedAt } from './sort';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -215,12 +216,12 @@ export async function getTemplates(
  * Will need updating once pagination is implemented in the backend
  */
 export async function getForeignLanguageLetterTemplates(): Promise<
-  TemplateDto[]
+  LetterTemplate[]
 > {
-  const allLetterTemplates = await getTemplates({
+  const allLetterTemplates = (await getTemplates({
     templateType: 'LETTER',
     letterType: 'x0',
-  });
+  })) as LetterTemplate[];
 
   return allLetterTemplates.filter(
     (template) => 'language' in template && template.language !== 'en'
