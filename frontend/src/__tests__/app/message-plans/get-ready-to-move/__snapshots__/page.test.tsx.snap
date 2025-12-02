@@ -23,28 +23,24 @@ exports[`matches snapshot 1`] = `
         >
           Get ready to move message plan to production
         </h1>
-        <table
-          class="nhsuk-u-margin-bottom-6 table"
+        <dl
+          class="nhsuk-summary-list"
         >
-          <tbody
-            class="nhsuk-table__body"
+          <div
+            class="nhsuk-summary-list__row"
           >
-            <tr
-              class="nhsuk-table__row"
+            <dt
+              class="nhsuk-summary-list__key"
             >
-              <th
-                class="nhsuk-table__cell"
-              >
-                Name
-              </th>
-              <td
-                class="nhsuk-table__cell"
-              >
-                My Routing Config
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              Name
+            </dt>
+            <dd
+              class="nhsuk-summary-list__value"
+            >
+              My Routing Config
+            </dd>
+          </div>
+        </dl>
         <p>
           Moving message plans from draft to production means they are ready to send.
         </p>

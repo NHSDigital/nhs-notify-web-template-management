@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import type { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
@@ -7,7 +6,6 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { getRoutingConfig } from '@utils/message-plans';
-import styles from './page.module.scss';
 
 const pageContent = content.pages.messagePlanGetReadyToMoveToProduction();
 
@@ -32,17 +30,18 @@ export default async function MessagePlanGetReadyToMoveToProductionPage({
         <div className='nhsuk-grid-column-two-thirds'>
           <span className='nhsuk-caption-xl'>{pageContent.stepCounter}</span>
           <h1 className='nhsuk-heading-xl'>{pageContent.heading}</h1>
-          <table
-            className={classNames('nhsuk-u-margin-bottom-6', styles.table)}
-          >
-            <tbody className='nhsuk-table__body'>
-              <tr className='nhsuk-table__row'>
-                <th className='nhsuk-table__cell'>Name</th>
-                <td className='nhsuk-table__cell'>{routingConfig.name}</td>
-              </tr>
-            </tbody>
-          </table>
+
+          <dl className='nhsuk-summary-list'>
+            <div className='nhsuk-summary-list__row'>
+              <dt className='nhsuk-summary-list__key'>Name</dt>
+              <dd className='nhsuk-summary-list__value'>
+                {routingConfig.name}
+              </dd>
+            </div>
+          </dl>
+
           <ContentRenderer content={pageContent.content} />
+
           <div className='nhsuk-warning-callout'>
             <h3 className='nhsuk-warning-callout__label'>
               {pageContent.callout.label}
