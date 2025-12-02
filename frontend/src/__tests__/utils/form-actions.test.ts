@@ -608,6 +608,7 @@ describe('form-actions', () => {
 
       expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
         templateType: 'LETTER',
+        letterType: 'x0',
       });
       expect(response).toEqual([frenchTemplate, polishTemplate]);
       expect(response).not.toContainEqual(englishTemplate);

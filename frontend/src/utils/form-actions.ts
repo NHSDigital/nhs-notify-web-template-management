@@ -219,10 +219,11 @@ export async function getForeignLanguageLetterTemplates(): Promise<
 > {
   const allLetterTemplates = await getTemplates({
     templateType: 'LETTER',
+    letterType: 'x0',
   });
 
   return allLetterTemplates.filter(
-    (t) => 'language' in t && t.language !== 'en'
+    (template) => 'language' in template && template.language !== 'en'
   );
 }
 
