@@ -15,6 +15,8 @@ import {
   addLanguageLetterTemplatesToCascadeItem,
   addLanguageLetterTemplatesToCascade,
   addDefaultTemplateToCascade,
+  removeLanguageTemplatesFromCascadeItem,
+  replaceLanguageTemplatesInCascadeItem,
   type ConditionalTemplate,
   type MessagePlanTemplates,
 } from '@utils/routing-utils';
@@ -1296,7 +1298,6 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     expect(result.conditionalTemplates![0]).toEqual({
       language: 'fr',
       templateId: 'french-template',
-      supplierReferences: { MBA: 'ref-fr-123' },
     });
     expect(result.conditionalTemplates![1]).toEqual({
       language: 'es',
@@ -1518,6 +1519,320 @@ describe('addLanguageLetterTemplatesToCascade', () => {
       language: 'es',
       templateId: 'spanish-template',
       supplierReferences: LETTER_TEMPLATE.supplierReferences,
+    });
+  });
+});
+
+describe('removeLanguageTemplatesFromCascadeItem', () => {
+  it('should remove all language templates from cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'french-template', language: 'fr' },
+        { templateId: 'spanish-template', language: 'es' },
+      ],
+    };
+
+    const result = removeLanguageTemplatesFromCascadeItem(cascadeItem);
+
+    expect(result.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should preserve accessible format templates when removing language templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'large-print', accessibleFormat: 'x1' },
+        { templateId: 'french-template', language: 'fr' },
+        { templateId: 'spanish-template', language: 'es' },
+      ],
+    };
+
+    const result = removeLanguageTemplatesFromCascadeItem(cascadeItem);
+
+    expect(result.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates![0]).toEqual({
+      templateId: 'large-print',
+      accessibleFormat: 'x1',
+    });
+  });
+
+  it('should handle cascade item with no conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const result = removeLanguageTemplatesFromCascadeItem(cascadeItem);
+
+    expect(result.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should not mutate original cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [{ templateId: 'french-template', language: 'fr' }],
+    };
+
+    const result = removeLanguageTemplatesFromCascadeItem(cascadeItem);
+
+    expect(cascadeItem.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should handle mixed conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'french-template', language: 'fr' },
+        { templateId: 'large-print', accessibleFormat: 'x1' },
+        { templateId: 'spanish-template', language: 'es' },
+        { templateId: 'bsl', accessibleFormat: 'q4' },
+      ],
+    };
+
+    const result = removeLanguageTemplatesFromCascadeItem(cascadeItem);
+
+    expect(result.conditionalTemplates).toHaveLength(2);
+    expect(result.conditionalTemplates![0]).toEqual({
+      templateId: 'large-print',
+      accessibleFormat: 'x1',
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      templateId: 'bsl',
+      accessibleFormat: 'q4',
+    });
+  });
+});
+
+describe('replaceLanguageTemplatesInCascadeItem', () => {
+  it('should replace language templates with new ones', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'french-template', language: 'fr' },
+        { templateId: 'spanish-template', language: 'es' },
+      ],
+    };
+
+    const newTemplates = [
+      {
+        ...LETTER_TEMPLATE,
+        id: 'polish-template',
+        language: 'pl' as Language,
+        supplierReferences: { MBA: 'ref-pl-789' },
+      },
+    ];
+
+    const result = replaceLanguageTemplatesInCascadeItem(
+      cascadeItem,
+      newTemplates
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'pl',
+      templateId: 'polish-template',
+      supplierReferences: { MBA: 'ref-pl-789' },
+    });
+  });
+
+  it('should preserve accessible format templates when replacing language templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'large-print', accessibleFormat: 'x1' },
+        { templateId: 'french-template', language: 'fr' },
+      ],
+    };
+
+    const newTemplates = [
+      {
+        ...LETTER_TEMPLATE,
+        id: 'spanish-template',
+        language: 'es' as Language,
+        supplierReferences: { MBA: 'ref-es-456' },
+      },
+      {
+        ...LETTER_TEMPLATE,
+        id: 'polish-template',
+        language: 'pl' as Language,
+        supplierReferences: { MBA: 'ref-pl-789' },
+      },
+    ];
+
+    const result = replaceLanguageTemplatesInCascadeItem(
+      cascadeItem,
+      newTemplates
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(3);
+    expect(result.conditionalTemplates![0]).toEqual({
+      templateId: 'large-print',
+      accessibleFormat: 'x1',
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: { MBA: 'ref-es-456' },
+    });
+    expect(result.conditionalTemplates![2]).toEqual({
+      language: 'pl',
+      templateId: 'polish-template',
+      supplierReferences: { MBA: 'ref-pl-789' },
+    });
+  });
+
+  it('should handle replacing with empty array', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [{ templateId: 'french-template', language: 'fr' }],
+    };
+
+    const result = replaceLanguageTemplatesInCascadeItem(cascadeItem, []);
+
+    expect(result.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should add language templates when none existed', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const newTemplates = [
+      {
+        ...LETTER_TEMPLATE,
+        id: 'french-template',
+        language: 'fr' as Language,
+        supplierReferences: { MBA: 'ref-fr-123' },
+      },
+    ];
+
+    const result = replaceLanguageTemplatesInCascadeItem(
+      cascadeItem,
+      newTemplates
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'fr',
+      templateId: 'french-template',
+      supplierReferences: { MBA: 'ref-fr-123' },
+    });
+  });
+
+  it('should not mutate original cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [{ templateId: 'french-template', language: 'fr' }],
+    };
+
+    const newTemplates = [
+      {
+        ...LETTER_TEMPLATE,
+        id: 'spanish-template',
+        language: 'es' as Language,
+      },
+    ];
+
+    const result = replaceLanguageTemplatesInCascadeItem(
+      cascadeItem,
+      newTemplates
+    );
+
+    expect(cascadeItem.conditionalTemplates).toHaveLength(1);
+    expect(cascadeItem.conditionalTemplates![0]).toEqual({
+      templateId: 'french-template',
+      language: 'fr',
+    });
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+    });
+  });
+
+  it('should handle complex scenario with multiple template types', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'accessible', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [
+        { templateId: 'large-print', accessibleFormat: 'x1' },
+        { templateId: 'french-template', language: 'fr' },
+        { templateId: 'bsl', accessibleFormat: 'q4' },
+        { templateId: 'spanish-template', language: 'es' },
+      ],
+    };
+
+    const newTemplates = [
+      {
+        ...LETTER_TEMPLATE,
+        id: 'polish-template',
+        language: 'pl' as Language,
+        supplierReferences: { MBA: 'ref-pl-789' },
+      },
+      {
+        ...LETTER_TEMPLATE,
+        id: 'german-template',
+        language: 'de' as Language,
+        supplierReferences: { MBA: 'ref-de-101' },
+      },
+    ];
+
+    const result = replaceLanguageTemplatesInCascadeItem(
+      cascadeItem,
+      newTemplates
+    );
+
+    expect(result.conditionalTemplates).toHaveLength(4);
+    expect(result.conditionalTemplates![0]).toEqual({
+      templateId: 'large-print',
+      accessibleFormat: 'x1',
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      templateId: 'bsl',
+      accessibleFormat: 'q4',
+    });
+    expect(result.conditionalTemplates![2]).toEqual({
+      language: 'pl',
+      templateId: 'polish-template',
+      supplierReferences: { MBA: 'ref-pl-789' },
+    });
+    expect(result.conditionalTemplates![3]).toEqual({
+      language: 'de',
+      templateId: 'german-template',
+      supplierReferences: { MBA: 'ref-de-101' },
     });
   });
 });

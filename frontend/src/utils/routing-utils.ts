@@ -318,12 +318,15 @@ export function addAccessibleFormatLetterTemplateToCascade(
 
 /**
  * Add language letter templates to a cascade item
- * Note: Caller should remove existing language templates first.
  */
 export function addLanguageLetterTemplatesToCascadeItem(
   cascadeItem: CascadeItem,
   selectedTemplates: LetterTemplate[]
 ): CascadeItem {
+  if (selectedTemplates.length === 0) {
+    return cascadeItem;
+  }
+
   const newConditionalTemplates: ConditionalTemplateLanguage[] =
     selectedTemplates.map((template) => {
       if (!template.language) {
@@ -361,4 +364,44 @@ export function addLanguageLetterTemplatesToCascade(
     selectedTemplates
   );
   return updatedCascade;
+}
+
+/**
+ * Remove all language templates from a cascade item
+ * Keeps other conditional templates like accessible format templates (e.g. large print)
+ */
+export function removeLanguageTemplatesFromCascadeItem(
+  cascadeItem: CascadeItem
+): CascadeItem {
+  const existingConditionalTemplates = cascadeItem.conditionalTemplates ?? [];
+
+  const nonLanguageTemplates = existingConditionalTemplates.filter(
+    (template) => !('language' in template)
+  );
+
+  const updatedItem = { ...cascadeItem };
+
+  if (nonLanguageTemplates.length > 0) {
+    updatedItem.conditionalTemplates = nonLanguageTemplates;
+  } else {
+    delete updatedItem.conditionalTemplates;
+  }
+
+  return updatedItem;
+}
+
+/**
+ * Replace all language templates in a cascade item with new ones
+ * Removes existing language templates but preserves other conditional templates
+ */
+export function replaceLanguageTemplatesInCascadeItem(
+  cascadeItem: CascadeItem,
+  selectedTemplates: LetterTemplate[]
+): CascadeItem {
+  const cascadeItemWithoutLanguages =
+    removeLanguageTemplatesFromCascadeItem(cascadeItem);
+  return addLanguageLetterTemplatesToCascadeItem(
+    cascadeItemWithoutLanguages,
+    selectedTemplates
+  );
 }
