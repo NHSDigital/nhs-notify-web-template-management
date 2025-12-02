@@ -9,14 +9,17 @@ import {
   buildCascadeGroupOverridesFromCascade,
   buildCascadeGroupsForItem,
   getConditionalTemplatesForItem,
-  addConditionalTemplateToCascadeItem,
-  addConditionalTemplateToCascade,
+  addAccessibleFormatLetterTemplateToCascadeItem,
+  addAccessibleFormatLetterTemplateToCascade,
+  addLanguageLetterTemplatesToCascadeItem,
+  addLanguageLetterTemplatesToCascade,
   addDefaultTemplateToCascade,
   type ConditionalTemplate,
   type MessagePlanTemplates,
 } from '@utils/routing-utils';
 import type {
   CascadeItem,
+  Language,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
@@ -991,7 +994,7 @@ describe('addDefaultTemplateToCascade', () => {
   });
 });
 
-describe('addConditionalTemplateToCascadeItem', () => {
+describe('addAccessibleFormatLetterTemplateToCascadeItem', () => {
   it('should add conditional template to cascade item', () => {
     const cascadeItem: CascadeItem = {
       cascadeGroups: ['standard'],
@@ -1007,7 +1010,7 @@ describe('addConditionalTemplateToCascadeItem', () => {
       supplierReferences: { MBA: 'ref-123' },
     };
 
-    const result = addConditionalTemplateToCascadeItem(
+    const result = addAccessibleFormatLetterTemplateToCascadeItem(
       cascadeItem,
       largePrintLetterTemplate
     );
@@ -1038,7 +1041,7 @@ describe('addConditionalTemplateToCascadeItem', () => {
       supplierReferences: { MBA: 'ref-456' },
     };
 
-    const result = addConditionalTemplateToCascadeItem(
+    const result = addAccessibleFormatLetterTemplateToCascadeItem(
       cascadeItem,
       largePrintLetterTemplate
     );
@@ -1065,7 +1068,10 @@ describe('addConditionalTemplateToCascadeItem', () => {
       letterType: 'x1' as const,
     };
 
-    addConditionalTemplateToCascadeItem(cascadeItem, largePrintLetterTemplate);
+    addAccessibleFormatLetterTemplateToCascadeItem(
+      cascadeItem,
+      largePrintLetterTemplate
+    );
 
     expect(cascadeItem.conditionalTemplates).toBeUndefined();
   });
@@ -1093,7 +1099,7 @@ describe('addConditionalTemplateToCascadeItem', () => {
       supplierReferences: { MBA: 'new-ref' },
     };
 
-    const result = addConditionalTemplateToCascadeItem(
+    const result = addAccessibleFormatLetterTemplateToCascadeItem(
       cascadeItem,
       largePrintLetterTemplate
     );
@@ -1111,7 +1117,7 @@ describe('addConditionalTemplateToCascadeItem', () => {
   });
 });
 
-describe('addConditionalTemplateToCascade', () => {
+describe('addAccessibleFormatLetterTemplateToCascade', () => {
   it('should add conditional template to cascade at specified index', () => {
     const cascade: CascadeItem[] = [
       {
@@ -1135,7 +1141,7 @@ describe('addConditionalTemplateToCascade', () => {
       supplierReferences: { MBA: 'ref-789' },
     };
 
-    const result = addConditionalTemplateToCascade(
+    const result = addAccessibleFormatLetterTemplateToCascade(
       cascade,
       1,
       largePrintLetterTemplate
@@ -1167,7 +1173,7 @@ describe('addConditionalTemplateToCascade', () => {
       letterType: 'x1' as const,
     };
 
-    addConditionalTemplateToCascade(cascade, 0, largePrintTemplate);
+    addAccessibleFormatLetterTemplateToCascade(cascade, 0, largePrintTemplate);
 
     expect(cascade[0].conditionalTemplates).toBeUndefined();
   });
@@ -1191,7 +1197,7 @@ describe('addConditionalTemplateToCascade', () => {
       letterType: 'x1' as const,
     };
 
-    const result = addConditionalTemplateToCascade(
+    const result = addAccessibleFormatLetterTemplateToCascade(
       cascade,
       0,
       largePrintTemplate
@@ -1200,5 +1206,283 @@ describe('addConditionalTemplateToCascade', () => {
     expect(result[0].conditionalTemplates![1].templateId).toEqual(
       'new-template'
     );
+  });
+});
+
+describe('addLanguageLetterTemplatesToCascadeItem', () => {
+  it('should add language conditional templates to cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const frenchLetterTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'french-template',
+      language: 'fr' as Language,
+      supplierReferences: { MBA: 'ref-fr-123' },
+    };
+
+    const result = addLanguageLetterTemplatesToCascadeItem(cascadeItem, [
+      frenchLetterTemplate,
+    ]);
+
+    expect(result.conditionalTemplates).toHaveLength(1);
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'fr',
+      templateId: 'french-template',
+      supplierReferences: { MBA: 'ref-fr-123' },
+    });
+  });
+
+  it('should append to existing language conditional templates', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+      conditionalTemplates: [{ templateId: 'french-template', language: 'fr' }],
+    };
+
+    const spanishLetterTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'spanish-template',
+      language: 'es' as Language,
+      supplierReferences: { MBA: 'ref-es-456' },
+    };
+
+    const result = addLanguageLetterTemplatesToCascadeItem(cascadeItem, [
+      spanishLetterTemplate,
+    ]);
+
+    expect(result.conditionalTemplates).toHaveLength(2);
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'fr',
+      templateId: 'french-template',
+      supplierReferences: { MBA: 'ref-fr-123' },
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: { MBA: 'ref-es-456' },
+    });
+  });
+
+  it('should not mutate original cascade item', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const frenchTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'french-template',
+      language: 'fr' as const,
+    };
+
+    addLanguageLetterTemplatesToCascadeItem(cascadeItem, [frenchTemplate]);
+
+    expect(cascadeItem.conditionalTemplates).toBeUndefined();
+  });
+
+  it('should throw error when template has no language property', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const templateWithoutLanguage = {
+      ...LETTER_TEMPLATE,
+      id: 'no-language-template',
+      language: undefined,
+    };
+
+    expect(() =>
+      addLanguageLetterTemplatesToCascadeItem(
+        cascadeItem,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [templateWithoutLanguage as any]
+      )
+    ).toThrow('Selected template must have a language property');
+  });
+
+  it('should add multiple language templates at once', () => {
+    const cascadeItem: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: 'standard-template',
+    };
+
+    const frenchTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'french-template',
+      language: 'fr' as Language,
+      supplierReferences: { MBA: 'ref-fr-123' },
+    };
+
+    const spanishTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'spanish-template',
+      language: 'es' as Language,
+      supplierReferences: { MBA: 'ref-es-456' },
+    };
+
+    const result = addLanguageLetterTemplatesToCascadeItem(cascadeItem, [
+      frenchTemplate,
+      spanishTemplate,
+    ]);
+
+    expect(result.conditionalTemplates).toHaveLength(2);
+    expect(result.conditionalTemplates![0]).toEqual({
+      language: 'fr',
+      templateId: 'french-template',
+      supplierReferences: { MBA: 'ref-fr-123' },
+    });
+    expect(result.conditionalTemplates![1]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: { MBA: 'ref-es-456' },
+    });
+  });
+});
+
+describe('addLanguageLetterTemplatesToCascade', () => {
+  it('should add language conditional templates to cascade at specified index', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: 'email-template',
+      },
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+      },
+    ];
+
+    const frenchLetterTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'french-template',
+      language: 'fr' as Language,
+      supplierReferences: { MBA: 'ref-789' },
+    };
+
+    const result = addLanguageLetterTemplatesToCascade(cascade, 1, [
+      frenchLetterTemplate,
+    ]);
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(cascade[0]);
+    expect(result[1].conditionalTemplates).toHaveLength(1);
+    expect(result[1].conditionalTemplates![0]).toEqual({
+      language: 'fr',
+      templateId: 'french-template',
+      supplierReferences: { MBA: 'ref-789' },
+    });
+  });
+
+  it('should not mutate original cascade', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+      },
+    ];
+
+    const frenchTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'french-template',
+      language: 'fr' as Language,
+    };
+
+    addLanguageLetterTemplatesToCascade(cascade, 0, [frenchTemplate]);
+
+    expect(cascade[0].conditionalTemplates).toBeUndefined();
+  });
+
+  it('should work with cascade item that has existing language templates', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard', 'translations'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+        conditionalTemplates: [
+          { templateId: 'french-template', language: 'fr' },
+        ],
+      },
+    ];
+
+    const spanishTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'spanish-template',
+      language: 'es' as Language,
+    };
+
+    const result = addLanguageLetterTemplatesToCascade(cascade, 0, [
+      spanishTemplate,
+    ]);
+
+    expect(result[0].conditionalTemplates).toHaveLength(2);
+    expect(result[0].conditionalTemplates![1].templateId).toEqual(
+      'spanish-template'
+    );
+    expect(result[0].conditionalTemplates![1]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+    });
+  });
+
+  it('should work with cascade item that has mixed conditional templates', () => {
+    const cascade: CascadeItem[] = [
+      {
+        cascadeGroups: ['standard', 'accessible', 'translations'],
+        channel: 'LETTER',
+        channelType: 'primary',
+        defaultTemplateId: 'letter-template',
+        conditionalTemplates: [
+          { templateId: 'large-print', accessibleFormat: 'x1' },
+          { templateId: 'french-template', language: 'fr' },
+        ],
+      },
+    ];
+
+    const spanishTemplate = {
+      ...LETTER_TEMPLATE,
+      id: 'spanish-template',
+      language: 'es' as Language,
+    };
+
+    const result = addLanguageLetterTemplatesToCascade(cascade, 0, [
+      spanishTemplate,
+    ]);
+
+    expect(result[0].conditionalTemplates).toHaveLength(3);
+    expect(result[0].conditionalTemplates![0]).toEqual({
+      templateId: 'large-print',
+      accessibleFormat: 'x1',
+    });
+    expect(result[0].conditionalTemplates![1]).toEqual({
+      templateId: 'french-template',
+      language: 'fr',
+    });
+    expect(result[0].conditionalTemplates![2]).toEqual({
+      language: 'es',
+      templateId: 'spanish-template',
+      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+    });
   });
 });

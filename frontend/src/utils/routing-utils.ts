@@ -268,9 +268,9 @@ export function addDefaultTemplateToCascade(
 }
 
 /**
- * Add conditional accessible format template to existing cascade item
+ * Add accessible format letter template to existing cascade item
  */
-export function addConditionalTemplateToCascadeItem(
+export function addAccessibleFormatLetterTemplateToCascadeItem(
   cascadeItem: CascadeItem,
   selectedTemplate: LetterTemplate
 ): CascadeItem {
@@ -301,17 +301,64 @@ export function addConditionalTemplateToCascadeItem(
 }
 
 /**
- * Add conditional template to cascade at specific index
+ * Add accessible format letter template to cascade at specific index
  */
-export function addConditionalTemplateToCascade(
+export function addAccessibleFormatLetterTemplateToCascade(
   cascade: CascadeItem[],
   cascadeIndex: number,
   selectedTemplate: LetterTemplate
 ): CascadeItem[] {
   const updatedCascade = [...cascade];
-  updatedCascade[cascadeIndex] = addConditionalTemplateToCascadeItem(
+  updatedCascade[cascadeIndex] = addAccessibleFormatLetterTemplateToCascadeItem(
     updatedCascade[cascadeIndex],
     selectedTemplate
+  );
+  return updatedCascade;
+}
+
+/**
+ * Add language letter templates to a cascade item
+ * Note: Caller should remove existing language templates first.
+ */
+export function addLanguageLetterTemplatesToCascadeItem(
+  cascadeItem: CascadeItem,
+  selectedTemplates: LetterTemplate[]
+): CascadeItem {
+  const newConditionalTemplates: ConditionalTemplateLanguage[] =
+    selectedTemplates.map((template) => {
+      if (!template.language) {
+        throw new Error('Selected template must have a language property');
+      }
+      return {
+        language: template.language,
+        templateId: template.id,
+        supplierReferences: template.supplierReferences,
+      };
+    });
+
+  const conditionalTemplates = [
+    ...(cascadeItem.conditionalTemplates ?? []),
+    ...newConditionalTemplates,
+  ];
+
+  return {
+    ...cascadeItem,
+    conditionalTemplates,
+  };
+}
+
+/**
+ * Add language letter templates to cascade at specific index
+ */
+export function addLanguageLetterTemplatesToCascade(
+  cascade: CascadeItem[],
+  cascadeIndex: number,
+  selectedTemplates: LetterTemplate[]
+): CascadeItem[] {
+  const updatedCascade = [...cascade];
+  updatedCascade[cascadeIndex] = addLanguageLetterTemplatesToCascadeItem(
+    updatedCascade[cascadeIndex],
+    selectedTemplates
   );
   return updatedCascade;
 }
