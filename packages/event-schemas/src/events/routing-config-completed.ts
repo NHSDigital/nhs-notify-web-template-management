@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
-import { $RoutingConfigEventV1Data, $RoutingConfigStatus } from '../routing-config';
+import {
+  $RoutingConfigEventV1Data,
+  $RoutingConfigStatus,
+} from '../routing-config';
 
 const $RoutingConfigCompletedEventV1Data = z
   .intersection(
@@ -14,7 +17,9 @@ const $RoutingConfigCompletedEventV1Data = z
   });
 
 export const $RoutingConfigCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
-  type: z.literal('uk.nhs.notify.template-management.RoutingConfigCompleted.v1'),
+  type: z.literal(
+    'uk.nhs.notify.template-management.RoutingConfigCompleted.v1'
+  ),
   dataschema: z.literal(
     'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json'
   ),

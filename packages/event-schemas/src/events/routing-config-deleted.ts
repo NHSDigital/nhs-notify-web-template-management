@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
-import { $RoutingConfigEventV1Data, $RoutingConfigStatus } from '../routing-config';
+import {
+  $RoutingConfigEventV1Data,
+  $RoutingConfigStatus,
+} from '../routing-config';
 
 const $RoutingConfigDeletedEventV1Data = z
   .intersection(
