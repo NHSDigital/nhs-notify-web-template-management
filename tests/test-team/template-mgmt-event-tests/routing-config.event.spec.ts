@@ -30,7 +30,7 @@ test.describe('Event publishing - Routing Config', () => {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
           channelType: 'primary',
-          defaultTemplateId: 'template-id',
+          defaultTemplateId: 'b1854a33-fc1b-4e7d-99d0-6f7b92b8c530',
         },
       ],
     }).apiPayload;
@@ -73,8 +73,6 @@ test.describe('Event publishing - Routing Config', () => {
     await expect(async () => {
       const events = await eventCacheHelper.findEvents(start, [id]);
 
-      expect(events).toHaveLength(2);
-
       expect(events).toContainEqual(
         expect.objectContaining({
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
@@ -94,6 +92,8 @@ test.describe('Event publishing - Routing Config', () => {
           }),
         })
       );
+
+      expect(events).toHaveLength(2);
     }).toPass({ timeout: 60_000 });
   });
 
@@ -104,7 +104,7 @@ test.describe('Event publishing - Routing Config', () => {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
           channelType: 'primary',
-          defaultTemplateId: 'template-id',
+          defaultTemplateId: 'b1854a33-fc1b-4e7d-99d0-6f7b92b8c530',
         },
       ],
     }).apiPayload;
@@ -147,8 +147,6 @@ test.describe('Event publishing - Routing Config', () => {
     await expect(async () => {
       const events = await eventCacheHelper.findEvents(start, [id]);
 
-      expect(events).toHaveLength(2);
-
       expect(events).toContainEqual(
         expect.objectContaining({
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
@@ -168,6 +166,8 @@ test.describe('Event publishing - Routing Config', () => {
           }),
         })
       );
+
+      expect(events).toHaveLength(2);
     }).toPass({ timeout: 60_000 });
   });
 });
