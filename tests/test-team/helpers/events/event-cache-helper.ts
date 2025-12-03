@@ -26,9 +26,9 @@ export class EventCacheHelper {
 
   async findEvents(
     from: Date,
-    templateIds: string[]
+    ids: string[]
   ): Promise<NHSNotifyTemplateEvent[]> {
-    if (templateIds.length === 0) {
+    if (ids.length === 0) {
       return [];
     }
 
@@ -41,7 +41,7 @@ export class EventCacheHelper {
     const filteredFiles = S3Helper.filterAndSort(files.flat(), from);
 
     const eventPromises = filteredFiles.map((file) =>
-      this.queryFileForEvents(file.Key!, templateIds)
+      this.queryFileForEvents(file.Key!, ids)
     );
 
     const results = await Promise.all(eventPromises);
@@ -51,9 +51,9 @@ export class EventCacheHelper {
 
   private async queryFileForEvents(
     fileName: string,
-    templateIds: string[]
+    ids: string[]
   ): Promise<NHSNotifyTemplateEvent[]> {
-    const formattedIds = templateIds.map((r) => `'${r}'`);
+    const formattedIds = ids.map((r) => `'${r}'`);
 
     const response = await S3Helper.queryJSONLFile(
       this.bucketName,
