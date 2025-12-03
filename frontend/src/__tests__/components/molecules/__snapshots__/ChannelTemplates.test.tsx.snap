@@ -9,7 +9,7 @@ exports[`ChannelTemplates renders templates 1`] = `
       class="nhsuk-grid-column-full"
     >
       <div
-        class="nhsuk-hint"
+        class="nhsuk-hint nhsuk-u-reading-width"
       >
         Choose one option
       </div>
@@ -151,18 +151,15 @@ exports[`ChannelTemplates renders templates 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="app-template-id-preview-link"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    id="preview-template-link-0"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="app-template-id-preview-link"
-                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
-                      id="preview-template-link-0"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -246,18 +243,15 @@ exports[`ChannelTemplates renders templates 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="email-template-id-preview-link"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    id="preview-template-link-1"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="email-template-id-preview-link"
-                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
-                      id="preview-template-link-1"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -341,18 +335,15 @@ exports[`ChannelTemplates renders templates 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="sms-template-id-preview-link"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    id="preview-template-link-2"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="sms-template-id-preview-link"
-                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
-                      id="preview-template-link-2"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -436,18 +427,15 @@ exports[`ChannelTemplates renders templates 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="letter-template-id-preview-link"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    id="preview-template-link-3"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="letter-template-id-preview-link"
-                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
-                      id="preview-template-link-3"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
             </tbody>
@@ -468,7 +456,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
       class="nhsuk-grid-column-full"
     >
       <div
-        class="nhsuk-hint"
+        class="nhsuk-hint nhsuk-u-reading-width"
       >
         Choose one option
       </div>
@@ -622,18 +610,15 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="app-template-id-preview-link"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    id="preview-template-link-0"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="app-template-id-preview-link"
-                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
-                      id="preview-template-link-0"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -717,18 +702,15 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="email-template-id-preview-link"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    id="preview-template-link-1"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="email-template-id-preview-link"
-                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
-                      id="preview-template-link-1"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -812,18 +794,15 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="sms-template-id-preview-link"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    id="preview-template-link-2"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="sms-template-id-preview-link"
-                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
-                      id="preview-template-link-2"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -907,18 +886,15 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="letter-template-id-preview-link"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    id="preview-template-link-3"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="letter-template-id-preview-link"
-                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
-                      id="preview-template-link-3"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
             </tbody>
@@ -939,7 +915,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
       class="nhsuk-grid-column-full"
     >
       <div
-        class="nhsuk-hint"
+        class="nhsuk-hint nhsuk-u-reading-width"
       >
         Choose one option
       </div>
@@ -1081,18 +1057,15 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="app-template-id-preview-link"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    id="preview-template-link-0"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="app-template-id-preview-link"
-                      href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
-                      id="preview-template-link-0"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -1177,18 +1150,15 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="email-template-id-preview-link"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    id="preview-template-link-1"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="email-template-id-preview-link"
-                      href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
-                      id="preview-template-link-1"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -1272,18 +1242,15 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="sms-template-id-preview-link"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    id="preview-template-link-2"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="sms-template-id-preview-link"
-                      href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
-                      id="preview-template-link-2"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
               <tr
@@ -1367,18 +1334,15 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                   >
                      
                   </span>
-                  <div
-                    class="actionLinksWrapper"
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="letter-template-id-preview-link"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    id="preview-template-link-3"
                   >
-                    <a
-                      aria-label="Preview"
-                      data-testid="letter-template-id-preview-link"
-                      href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
-                      id="preview-template-link-3"
-                    >
-                      Preview
-                    </a>
-                  </div>
+                    Preview
+                  </a>
                 </td>
               </tr>
             </tbody>

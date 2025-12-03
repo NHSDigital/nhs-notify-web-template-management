@@ -68,7 +68,7 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -211,18 +211,15 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>

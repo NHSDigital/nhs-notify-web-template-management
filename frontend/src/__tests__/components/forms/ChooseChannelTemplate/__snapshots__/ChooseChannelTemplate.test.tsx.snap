@@ -79,7 +79,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -233,18 +233,15 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -348,7 +345,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -491,18 +488,15 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="email-template-id-preview-link"
+                            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="email-template-id-preview-link"
-                              href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -617,7 +611,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -771,18 +765,15 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -867,7 +858,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -1009,18 +1000,15 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="large-print-letter-template-id-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1124,7 +1112,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -1267,18 +1255,15 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="letter-template-id-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1382,7 +1367,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -1525,18 +1510,15 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1640,7 +1622,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -1783,18 +1765,15 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="sms-template-id-preview-link"
+                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="sms-template-id-preview-link"
-                              href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1898,7 +1877,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -2041,18 +2020,15 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -2136,18 +2112,15 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-2-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
+                            id="preview-template-link-1"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="template-2-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
-                              id="preview-template-link-1"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -2231,18 +2204,15 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-3-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
+                            id="preview-template-link-2"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="template-3-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
-                              id="preview-template-link-2"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2415,7 +2385,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -2557,18 +2527,15 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-template-2-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-2"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="large-print-template-2-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-2"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -2653,18 +2620,15 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            id="preview-template-link-1"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="large-print-letter-template-id-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
-                              id="preview-template-link-1"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -2748,18 +2712,15 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-template-3-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-3"
+                            id="preview-template-link-2"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="large-print-template-3-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-3"
-                              id="preview-template-link-2"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2863,7 +2824,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -3006,18 +2967,15 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -3101,18 +3059,15 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-2-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
+                            id="preview-template-link-1"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="template-2-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
-                              id="preview-template-link-1"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                       <tr
@@ -3196,18 +3151,15 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-3-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
+                            id="preview-template-link-2"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="template-3-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
-                              id="preview-template-link-2"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -3292,7 +3244,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -3434,18 +3386,15 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>

@@ -11,7 +11,6 @@ import {
   cascadeTemplateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import style from './ChannelTemplates.module.scss';
 import { interpolate } from '@utils/interpolate';
 
 const { tableHintText, tableContent } =
@@ -89,22 +88,21 @@ export function ChannelTemplates({
                     {format(`${template.updatedAt}`, 'HH:mm')}
                   </Table.Cell>
                   <Table.Cell>
-                    <div className={style.actionLinksWrapper}>
-                      <Link
-                        href={interpolate(tableContent.action.preview.href, {
-                          templateType: cascadeTemplateTypeToUrlTextMappings(
-                            template.templateType
-                          ),
-                          routingConfigId,
-                          templateId: template.id,
-                        })}
-                        id={`preview-template-link-${index}`}
-                        aria-label={`${tableContent.action.preview.text}`}
-                        data-testid={`${template.id}-preview-link`}
-                      >
-                        {tableContent.action.preview.text}
-                      </Link>
-                    </div>
+                    <Link
+                      className='nhsuk-u-margin-bottom-2 nhsuk-link'
+                      href={interpolate(tableContent.action.preview.href, {
+                        templateType: cascadeTemplateTypeToUrlTextMappings(
+                          template.templateType
+                        ),
+                        routingConfigId,
+                        templateId: template.id,
+                      })}
+                      id={`preview-template-link-${index}`}
+                      aria-label={`${tableContent.action.preview.text}`}
+                      data-testid={`${template.id}-preview-link`}
+                    >
+                      {tableContent.action.preview.text}
+                    </Link>
                   </Table.Cell>
                 </Table.Row>
               ))}

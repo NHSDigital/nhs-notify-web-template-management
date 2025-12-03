@@ -49,7 +49,7 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
               >
                 Choose one option
               </div>
@@ -191,18 +191,15 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="large-print-letter-template-id-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
