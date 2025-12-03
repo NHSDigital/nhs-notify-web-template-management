@@ -234,12 +234,11 @@ describe('ChooseChannelTemplate', () => {
       });
 
       const goToTemplatesLink = screen.getByRole('link', {
-        name: /go to templates/i,
+        name: 'Go to templates',
       });
-      expect(goToTemplatesLink).toBeInTheDocument();
       expect(goToTemplatesLink).toHaveAttribute('href', '/message-templates');
       expect(
-        screen.queryByRole('button', { name: /save/i })
+        screen.queryByRole('button', { name: 'Save and continue' })
       ).not.toBeInTheDocument();
     });
 

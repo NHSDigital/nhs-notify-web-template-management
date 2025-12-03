@@ -25,6 +25,8 @@ const protectedPaths = [
   /^\/message-plans\/choose-message-order$/,
   /^\/message-plans\/choose-nhs-app-template\/[^/]+$/,
   /^\/message-plans\/choose-nhs-app-template\/[^/]+\/preview-template\/[^/]+$/,
+  /^\/message-plans\/choose-other-language-letter-template\/[^/]+$/,
+  /^\/message-plans\/choose-other-language-letter-template\/[^/]+\/preview-template\/[^/]+$/,
   /^\/message-plans\/choose-standard-english-letter-template\/[^/]+$/,
   /^\/message-plans\/choose-standard-english-letter-template\/[^/]+\/preview-template\/[^/]+$/,
   /^\/message-plans\/choose-templates\/[^/]+$/,

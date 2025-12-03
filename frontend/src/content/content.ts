@@ -1184,6 +1184,15 @@ const previewLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Preview large print letter template'),
 };
 
+const previewOtherLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Preview other language letter template'),
+};
+
+const chooseOtherLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Choose other language letter templates'),
+  pageHeading: 'Choose other language letter templates',
+};
+
 const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
@@ -1215,6 +1224,25 @@ const chooseChannelTemplate = {
       href: '/message-plans/choose-templates/{{routingConfigId}}',
     },
   },
+};
+
+const chooseLanguageLetterTemplates = {
+  error: {
+    missing: {
+      hintText: 'You have not chosen any templates',
+      linkText: 'Choose one or more templates',
+    },
+    duplicate: {
+      hintText: 'You can only choose one template for each language',
+      linkText: 'Choose only one template for each language',
+    },
+  },
+  previousSelectionLabel: 'Previously selected templates',
+  noTemplatesText: 'You do not have any foreign language letter templates yet.',
+  tableHintText:
+    'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.',
+  tableContent: chooseChannelTemplate.tableContent,
+  actions: chooseChannelTemplate.actions,
 };
 
 const messagePlanDraftAndProdInfo: {
@@ -1335,6 +1363,7 @@ const content = {
   components: {
     channelGuidance,
     chooseChannelTemplate,
+    chooseLanguageLetterTemplates,
     chooseMessageOrder,
     chooseTemplateType,
     copyTemplate,
@@ -1384,7 +1413,9 @@ const content = {
     chooseTextMessageTemplate,
     chooseStandardEnglishLetterTemplate,
     chooseLargePrintLetterTemplate,
+    chooseOtherLanguageLetterTemplate,
     previewLargePrintLetterTemplate,
+    previewOtherLanguageLetterTemplate,
   },
 };
 
