@@ -24,7 +24,16 @@ test.describe('Event publishing - Routing Config', () => {
   });
 
   test('Expect a draft event and a deleted event', async ({ request }) => {
-    const payload = RoutingConfigFactory.create(user).apiPayload;
+    const payload = RoutingConfigFactory.create(user, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: 'template-id',
+        },
+      ],
+    }).apiPayload;
 
     const start = new Date();
 
@@ -89,7 +98,16 @@ test.describe('Event publishing - Routing Config', () => {
   });
 
   test('Expect a draft event and a completed event', async ({ request }) => {
-    const payload = RoutingConfigFactory.create(user).apiPayload;
+    const payload = RoutingConfigFactory.create(user, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: 'template-id',
+        },
+      ],
+    }).apiPayload;
 
     const start = new Date();
 
