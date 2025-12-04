@@ -5,7 +5,7 @@ resource "aws_pipes_pipe" "routing_config_table_events" {
   role_arn           = aws_iam_role.pipe_routing_config_table_events.arn
   source             = aws_dynamodb_table.routing_configuration.stream_arn
   target             = module.sqs_template_mgmt_events.sqs_queue_arn
-  desired_state      = var.enable_routing_config_event_stream ? "RUNNING" : "STOPPED"
+  desired_state      = "RUNNING"
   kms_key_identifier = var.kms_key_arn
 
   source_parameters {

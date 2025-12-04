@@ -4,7 +4,11 @@ import {
   VERSION,
 } from '@nhsdigital/nhs-notify-event-schemas-template-management';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { $DynamoDBTemplate, PublishableEventRecord } from './input-schemas';
+import {
+  $DynamoDBRoutingConfig,
+  $DynamoDBTemplate,
+  PublishableEventRecord,
+} from './input-schemas';
 import { Event, $Event } from './output-schemas';
 import { shouldPublish } from './should-publish';
 
@@ -32,13 +36,23 @@ export class EventBuilder {
     }
   }
 
-  private buildTemplateSavedEventMetadata(
-    id: string,
-    templateStatus: string,
-    subject: string
-  ) {
-    const type = this.classifyTemplateSavedEventType(templateStatus);
+  private classifyRoutingConfigSavedEventType(status: string) {
+    switch (status) {
+      case 'DELETED': {
+        return 'RoutingConfigDeleted';
+      }
 
+      case 'COMPLETED': {
+        return 'RoutingConfigCompleted';
+      }
+
+      default: {
+        return 'RoutingConfigDrafted';
+      }
+    }
+  }
+
+  private buildEventMetadata(id: string, type: string, subject: string) {
     return {
       id,
       datacontenttype: 'application/json',
@@ -89,9 +103,11 @@ export class EventBuilder {
 
     try {
       return $Event.parse({
-        ...this.buildTemplateSavedEventMetadata(
+        ...this.buildEventMetadata(
           publishableEventRecord.eventID,
-          databaseTemplateNew.templateStatus,
+          this.classifyTemplateSavedEventType(
+            databaseTemplateNew.templateStatus
+          ),
           databaseTemplateNew.id
         ),
         data: dynamoRecordNew,
@@ -108,6 +124,47 @@ export class EventBuilder {
     }
   }
 
+  private buildRoutingConfigDatabaseEvent(
+    publishableEventRecord: PublishableEventRecord
+  ): Event | undefined {
+    if (!publishableEventRecord.dynamodb.NewImage) {
+      // if this is a hard delete do not publish an event - we will publish events
+      // when the status is set to deleted
+      this.logger.debug({
+        description: 'No new image found',
+        publishableEventRecord,
+      });
+
+      return undefined;
+    }
+    const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
+
+    const databaseRoutingConfig = $DynamoDBRoutingConfig.parse(dynamoRecord);
+
+    const event = $Event.safeParse({
+      ...this.buildEventMetadata(
+        publishableEventRecord.eventID,
+        this.classifyRoutingConfigSavedEventType(databaseRoutingConfig.status),
+        databaseRoutingConfig.id
+      ),
+      data: dynamoRecord,
+    });
+
+    // Do not error if the event is not valid because routing config database entries may be
+    // in a state where we do not yet want to publish them (such as having null template values)
+    if (!event.success) {
+      this.logger.info({
+        description: 'Routing config event is not in a valid state',
+        publishableEventRecord,
+        errors: event.error,
+      });
+
+      return undefined;
+    }
+
+    return event.data;
+  }
+
   buildEvent(
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
@@ -116,7 +173,7 @@ export class EventBuilder {
         return this.buildTemplateDatabaseEvent(publishableEventRecord);
       }
       case this.routingConfigTableName: {
-        return undefined;
+        return this.buildRoutingConfigDatabaseEvent(publishableEventRecord);
       }
       default: {
         this.logger.error({

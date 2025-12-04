@@ -6,6 +6,9 @@ import {
   $TemplateCompletedEventV1,
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
+  $RoutingConfigCompletedEventV1,
+  $RoutingConfigDeletedEventV1,
+  $RoutingConfigDraftedEventV1,
 } from '../src';
 import { toJSONSchema, type ZodType } from 'zod';
 import { JSONSchema } from 'zod/v4/core';
@@ -70,4 +73,23 @@ writeSchema(
   $TemplateDraftedEventV1,
   '1',
   'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
+);
+
+writeSchema(
+  'RoutingConfigCompleted',
+  $RoutingConfigCompletedEventV1,
+  '1',
+  'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json'
+);
+writeSchema(
+  'RoutingConfigDeleted',
+  $RoutingConfigDeletedEventV1,
+  '1',
+  'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json'
+);
+writeSchema(
+  'RoutingConfigDrafted',
+  $RoutingConfigDraftedEventV1,
+  '1',
+  'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json'
 );

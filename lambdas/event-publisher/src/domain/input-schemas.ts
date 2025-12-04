@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import {
+  RoutingConfig,
   schemaFor,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
+  ROUTING_CONFIG_STATUS_LIST,
 } from 'nhs-notify-backend-client';
 import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
@@ -41,8 +43,15 @@ export const $DynamoDBTemplate = schemaFor<Partial<DatabaseTemplate>>()(
     proofingEnabled: z.boolean().optional(),
   })
 );
-
 export type DynamoDBTemplate = z.infer<typeof $DynamoDBTemplate>;
+
+export const $DynamoDBRoutingConfig = schemaFor<Partial<RoutingConfig>>()(
+  z.object({
+    id: z.string(),
+    status: z.enum(ROUTING_CONFIG_STATUS_LIST),
+  })
+);
+export type DynamoDBRoutingConfig = z.infer<typeof $DynamoDBRoutingConfig>;
 
 // the lambda doesn't necessarily have to only accept inputs from a dynamodb stream via an
 // eventbridge pipe, but that's all it is doing at the moment
