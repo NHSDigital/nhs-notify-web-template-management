@@ -30,6 +30,7 @@ const authIdTokenServerMock = jest.mocked(getSessionServer);
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
 jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 describe('form-actions', () => {
   beforeEach(() => {

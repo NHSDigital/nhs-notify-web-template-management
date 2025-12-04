@@ -2,7 +2,7 @@
   "data": {
     "clientId": "d9159bb1-ac8c-467b-a990-b4e559ecdad3",
     "createdAt": "2025-07-29T10:04:32.738Z",
-    "createdBy": "f2590ba5-6856-4207-b2dd-cd43821adf8b",
+    "createdBy": "INTERNAL_USER#f2590ba5-6856-4207-b2dd-cd43821adf8b",
     "id": "3a58a370-75ab-4788-a75e-cd2572a68523",
     "message": "# Your GP Appointment\n\nDear ((firstName))\n\nYour appointment to visit the doctor is at **((appointmentTime))** on **((appointmentDate))**.\n\nIf you are unable to make your appointment, please click [this link](https://example.com) to cancel.\n\nThank you\n\n((surgeryName))\n",
     "name": "Example NHS App Template",
@@ -10,11 +10,11 @@
     "templateStatus": "NOT_YET_SUBMITTED",
     "templateType": "NHS_APP",
     "updatedAt": "2025-07-29T10:04:32.738Z",
-    "updatedBy": "f2590ba5-6856-4207-b2dd-cd43821adf8b"
+    "updatedBy": "INTERNAL_USER#f2590ba5-6856-4207-b2dd-cd43821adf8b"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json",
-  "dataschemaversion": "1.0.0",
+  "dataschemaversion": "1.1.3",
   "id": "c958dab9-1cb2-4fb8-9990-c48ba1dc5518",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
