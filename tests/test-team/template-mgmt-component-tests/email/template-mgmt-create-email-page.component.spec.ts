@@ -371,5 +371,38 @@ test.describe('Create Email message template Page', () => {
 
       await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with unsupported personalisation, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage = 'Template message contains invalid personalisation fields';
+
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage();
+
+      await createEmailTemplatePage.nameInput.fill('template-name');
+
+      await createEmailTemplatePage.subjectLineInput.fill(
+        'template-subject-line'
+      );
+
+      await createEmailTemplatePage.messageTextArea.fill(
+        'a template message containing ((date))'
+      );
+
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
+
+      const emailMessageErrorLink =
+        createEmailTemplatePage.errorSummary.locator(
+          '[href="#emailTemplateMessage"]'
+        );
+
+      await expect(emailMessageErrorLink).toHaveText(errorMessage);
+
+      await emailMessageErrorLink.click();
+
+      await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });

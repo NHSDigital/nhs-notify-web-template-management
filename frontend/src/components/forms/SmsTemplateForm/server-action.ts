@@ -6,7 +6,7 @@ import {
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
+import { MAX_SMS_CHARACTER_LENGTH, INVALID_PERSONALISATION_FIELDS } from '@utils/constants';
 import content from '@content/content';
 
 const {
@@ -27,6 +27,11 @@ export const $CreateSmsTemplateSchema = z.object({
     })
     .refine((templateMessage) => !templateMessage.includes('http://'), {
       message: form.smsTemplateMessage.error.insecureLink,
+    })
+    .refine((templateMessage) => INVALID_PERSONALISATION_FIELDS.some(
+      (field) => !templateMessage.includes(`((${field}))`)
+    ), {
+      message: form.smsTemplateMessage.error.invalidPersonalisation,
     }),
 });
 

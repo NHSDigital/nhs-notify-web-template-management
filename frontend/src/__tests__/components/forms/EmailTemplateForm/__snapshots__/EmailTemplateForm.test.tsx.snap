@@ -237,9 +237,6 @@ exports[`Client-side validation triggers 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -984,9 +981,6 @@ exports[`renders page one error 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -1761,9 +1755,6 @@ exports[`renders page with multiple errors 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -2464,9 +2455,6 @@ exports[`renders page with preloaded field values 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -3159,9 +3147,6 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>

@@ -290,9 +290,6 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -743,9 +740,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -1159,9 +1153,6 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -1627,9 +1618,6 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -2037,9 +2025,6 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>

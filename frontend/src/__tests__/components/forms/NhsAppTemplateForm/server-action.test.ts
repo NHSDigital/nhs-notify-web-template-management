@@ -94,6 +94,28 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
   });
 
+  it('create-nhs-app-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-nhs-app-template',
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage:
+          'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          nhsAppTemplateMessage: ['Template message contains invalid personalisation fields'],
+        },
+      },
+    });
+  });
+
   it('create-nhs-app-template - should return response when when template message contains link with angle brackets', async () => {
     const response = await processFormActions(
       initialState,

@@ -91,6 +91,28 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
+  it('create-email-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-email-template',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          emailTemplateMessage: ['Template message contains invalid personalisation fields'],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,
