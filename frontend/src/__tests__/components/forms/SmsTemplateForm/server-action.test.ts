@@ -88,6 +88,28 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
+  it('create-sms-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-sms-template',
+        smsTemplateName: 'template-name',
+        smsTemplateMessage:
+          'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          smsTemplateMessage: ['Template message contains invalid personalisation fields'],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,

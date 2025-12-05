@@ -6,7 +6,7 @@ import {
 import { z } from 'zod';
 import { createTemplate, saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
+import { MAX_EMAIL_CHARACTER_LENGTH, INVALID_PERSONALISATION_FIELDS } from '@utils/constants';
 import content from '@content/content';
 
 const {
@@ -30,6 +30,11 @@ export const $EmailTemplateFormSchema = z.object({
     })
     .refine((templateMessage) => !templateMessage.includes('http://'), {
       message: form.emailTemplateMessage.error.insecureLink,
+    })
+    .refine((templateMessage) => INVALID_PERSONALISATION_FIELDS.some(
+      (field) => !templateMessage.includes(`((${field}))`)
+    ), {
+      message: form.emailTemplateMessage.error.invalidPersonalisation,
     }),
 });
 
