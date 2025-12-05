@@ -31,8 +31,8 @@ export const $EmailTemplateFormSchema = z.object({
     .refine((templateMessage) => !templateMessage.includes('http://'), {
       message: form.emailTemplateMessage.error.insecureLink,
     })
-    .refine((templateMessage) => INVALID_PERSONALISATION_FIELDS.some(
-      (field) => !templateMessage.includes(`((${field}))`)
+    .refine((templateMessage) => !INVALID_PERSONALISATION_FIELDS.some(
+      (personalisationFieldName) => templateMessage.includes(`((${personalisationFieldName}))`)
     ), {
       message: form.emailTemplateMessage.error.invalidPersonalisation,
     }),
