@@ -541,7 +541,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+            href="/message-plans/get-ready-to-move/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
             role="button"
           >
             Move to production
@@ -1093,7 +1093,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
             class="nhsuk-button"
             data-testid="move-to-production-cta"
             draggable="false"
-            href="/message-plans/move-to-production/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
+            href="/message-plans/get-ready-to-move/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
             role="button"
           >
             Move to production

@@ -30,6 +30,7 @@ const protectedPaths = [
   /^\/message-plans\/choose-text-message-template\/[^/]+\/preview-template\/[^/]+$/,
   /^\/message-plans\/create-message-plan$/,
   /^\/message-plans\/edit-message-plan-settings\/[^/]+$/,
+  /^\/message-plans\/get-ready-to-move\/[^/]+$/,
   /^\/message-plans\/invalid$/,
   /^\/message-plans$/,
   /^\/message-templates$/,

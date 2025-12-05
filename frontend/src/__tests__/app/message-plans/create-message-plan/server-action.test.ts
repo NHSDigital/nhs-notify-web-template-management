@@ -4,14 +4,14 @@ import type { CascadeItem, RoutingConfig } from 'nhs-notify-backend-client';
 import type { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { createMessagePlanServerAction } from '@app/message-plans/create-message-plan/server-action';
 import { NextRedirectError } from '@testhelpers/next-redirect';
-import { createRoutingConfig } from '@utils/form-actions';
+import { createRoutingConfig } from '@utils/message-plans';
 
 jest.mock('next/navigation');
 jest.mocked(redirect).mockImplementation((url, type) => {
   throw new NextRedirectError(url, type);
 });
 
-jest.mock('@utils/form-actions');
+jest.mock('@utils/message-plans');
 jest.mocked(createRoutingConfig).mockResolvedValue(
   mock<RoutingConfig>({
     id: 'mock-routing-config-id',
