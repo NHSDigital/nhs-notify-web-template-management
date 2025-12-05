@@ -375,7 +375,8 @@ test.describe('Create Email message template Page', () => {
     test('when user submits form with unsupported personalisation, then an error is displayed', async ({
       page,
     }) => {
-      const errorMessage = 'Template message contains invalid personalisation fields';
+      const errorMessage =
+        'Template message contains invalid personalisation fields';
 
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
