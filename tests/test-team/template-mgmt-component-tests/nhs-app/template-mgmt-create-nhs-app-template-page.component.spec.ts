@@ -177,6 +177,27 @@ test.describe('Create NHS App Template Page', () => {
     ).toHaveText(['URLs must start with https://']);
   });
 
+  test('Validate error messages on the create NHS App message template page with unsupported personalisation in message', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
+
+    await createTemplatePage.loadPage();
+    await expect(createTemplatePage.pageHeading).toHaveText(
+      'Create NHS App message template'
+    );
+    await page.locator('[id="nhsAppTemplateName"]').fill('template-name');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('a template message containing ((date))');
+    await createTemplatePage.clickSaveAndPreviewButton();
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText(['Template message contains invalid personalisation fields']);
+  });
+
   test('Validate error messages on the create NHS App message template page with angle brackets in linked url', async ({
     page,
   }) => {
