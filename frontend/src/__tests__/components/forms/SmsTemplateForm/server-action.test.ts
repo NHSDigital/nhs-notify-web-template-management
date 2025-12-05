@@ -94,8 +94,7 @@ describe('CreateSmsTemplate server actions', () => {
       getMockFormData({
         'form-id': 'create-sms-template',
         smsTemplateName: 'template-name',
-        smsTemplateMessage:
-          'a template message containing ((date))',
+        smsTemplateMessage: 'a template message containing ((date))',
       })
     );
 
@@ -104,7 +103,9 @@ describe('CreateSmsTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          smsTemplateMessage: ['Template message contains invalid personalisation fields'],
+          smsTemplateMessage: [
+            'Template message contains invalid personalisation fields',
+          ],
         },
       },
     });

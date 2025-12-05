@@ -100,8 +100,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       getMockFormData({
         'form-id': 'create-nhs-app-template',
         nhsAppTemplateName: 'template-name',
-        nhsAppTemplateMessage:
-          'a template message containing ((date))',
+        nhsAppTemplateMessage: 'a template message containing ((date))',
       })
     );
 
@@ -110,7 +109,9 @@ describe('CreateNHSAppTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          nhsAppTemplateMessage: ['Template message contains invalid personalisation fields'],
+          nhsAppTemplateMessage: [
+            'Template message contains invalid personalisation fields',
+          ],
         },
       },
     });

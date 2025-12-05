@@ -12,7 +12,8 @@ const enterATemplateName = 'Enter a template name';
 const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
 const templateMessageHasInsecureLink = 'URLs must start with https://';
-const templateMessageContainsInvalidPersonalisation = 'Template message contains invalid personalisation fields';
+const templateMessageContainsInvalidPersonalisation =
+  'Template message contains invalid personalisation fields';
 const selectAnOption = 'Select an option';
 
 const header = {

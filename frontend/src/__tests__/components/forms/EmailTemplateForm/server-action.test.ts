@@ -107,7 +107,9 @@ describe('CreateEmailTemplate server actions', () => {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          emailTemplateMessage: ['Template message contains invalid personalisation fields'],
+          emailTemplateMessage: [
+            'Template message contains invalid personalisation fields',
+          ],
         },
       },
     });

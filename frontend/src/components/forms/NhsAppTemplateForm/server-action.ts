@@ -51,11 +51,15 @@ export const $CreateNhsAppTemplateSchema = z.object({
       (templateMessage) => !hasInvalidCharactersInLinks(templateMessage),
       { message: form.nhsAppTemplateMessage.error.invalidUrlCharacter }
     )
-    .refine((templateMessage) => INVALID_PERSONALISATION_FIELDS.some(
-      (field) => !templateMessage.includes(`((${field}))`)
-    ), {
-      message: form.nhsAppTemplateMessage.error.invalidPersonalisation,
-    }),
+    .refine(
+      (templateMessage) =>
+        !INVALID_PERSONALISATION_FIELDS.some((personalisationFieldName) =>
+          templateMessage.includes(`((${personalisationFieldName}))`)
+        ),
+      {
+        message: form.nhsAppTemplateMessage.error.invalidPersonalisation,
+      }
+    ),
 });
 
 export async function processFormActions(
