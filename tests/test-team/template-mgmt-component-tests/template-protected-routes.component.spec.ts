@@ -48,6 +48,10 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
+import { RoutingChooseLargePrintLetterTemplatePage } from 'pages/routing/letter/choose-large-print-letter-template-page';
+import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/letter/choose-other-language-letter-template-page';
+import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter/preview-large-print-letter-template-page';
+import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -63,10 +67,14 @@ const protectedPages = [
   RoutingChooseEmailTemplatePage,
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
+  RoutingChooseLargePrintLetterTemplatePage,
+  RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseTextMessageTemplatePage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
