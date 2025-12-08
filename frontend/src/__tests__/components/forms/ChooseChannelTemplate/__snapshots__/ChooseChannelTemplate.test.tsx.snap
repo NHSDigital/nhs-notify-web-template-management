@@ -323,7 +323,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1096,7 +1096,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1353,7 +1353,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1610,7 +1610,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1867,7 +1867,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -2381,7 +2381,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -2822,7 +2822,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"

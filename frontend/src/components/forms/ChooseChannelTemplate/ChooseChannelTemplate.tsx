@@ -71,7 +71,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
             formAttributes={{ onSubmit: formValidate }}
           >
             {selectedTemplateId && (
-              <SummaryList data-testid='previous-selection-summary'>
+              <SummaryList data-testid='previous-selection-details'>
                 <SummaryList.Row>
                   <SummaryList.Key>
                     {content.previousSelectionLabel}

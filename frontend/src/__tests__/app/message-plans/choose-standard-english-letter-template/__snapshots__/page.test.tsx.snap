@@ -44,7 +44,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"

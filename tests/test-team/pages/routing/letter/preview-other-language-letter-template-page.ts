@@ -1,9 +1,9 @@
 import { type Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
-export class RoutingPreviewNhsAppTemplatePage extends TemplateMgmtPreviewBasePage {
+export class RoutingPreviewOtherLanguageLetterTemplatePage extends TemplateMgmtPreviewBasePage {
   static readonly pageUrlSegments = [
-    'message-plans/choose-nhs-app-template',
+    'message-plans/choose-other-language-letter-template',
     'preview-template',
   ];
 

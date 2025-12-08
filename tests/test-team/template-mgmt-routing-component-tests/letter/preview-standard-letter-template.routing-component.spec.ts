@@ -105,7 +105,7 @@ test.describe('Routing - Preview Letter template page', () => {
       throw new Error('Test data misconfiguration');
     }
 
-    await expect(page.locator('[id="campaign-id"]')).toContainText(
+    await expect(previewLetterTemplatePage.campaignId).toContainText(
       templates.LETTER.campaignId
     );
 

@@ -259,7 +259,7 @@ describe('ChooseChannelTemplate', () => {
       });
 
       expect(
-        screen.queryByTestId('previous-selection-summary')
+        screen.queryByTestId('previous-selection-details')
       ).not.toBeInTheDocument();
     });
 
@@ -285,7 +285,7 @@ describe('ChooseChannelTemplate', () => {
     it('displays previously selected template', () => {
       renderComponent();
 
-      const summary = screen.getByTestId('previous-selection-summary');
+      const summary = screen.getByTestId('previous-selection-details');
       expect(summary).toBeInTheDocument();
       expect(
         screen.getByText('Previously selected template')
@@ -341,7 +341,7 @@ describe('ChooseChannelTemplate', () => {
         ),
       });
 
-      const summary = screen.getByTestId('previous-selection-summary');
+      const summary = screen.getByTestId('previous-selection-details');
 
       expect(summary).toBeInTheDocument();
       expect(

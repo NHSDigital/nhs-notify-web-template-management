@@ -1,7 +1,7 @@
 import { type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
-export class RoutingPreviewStandardLetterTemplatePage extends TemplateMgmtBasePageDynamic {
+export class RoutingPreviewStandardLetterTemplatePage extends TemplateMgmtPreviewBasePage {
   static readonly pageUrlSegments = [
     'message-plans/choose-standard-english-letter-template',
     'preview-template',

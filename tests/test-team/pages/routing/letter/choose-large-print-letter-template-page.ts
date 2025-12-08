@@ -1,8 +1,10 @@
 import { type Page } from '@playwright/test';
 import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from 'pages/template-mgmt-choose-template-base-page';
 
-export class RoutingChooseEmailTemplatePage extends TemplateMgmtChooseTemplateForMessagePlanBasePage {
-  static readonly pageUrlSegments = ['message-plans/choose-email-template'];
+export class RoutingChooseLargePrintLetterTemplatePage extends TemplateMgmtChooseTemplateForMessagePlanBasePage {
+  static readonly pageUrlSegments = [
+    'message-plans/choose-large-print-letter-template',
+  ];
 
   constructor(page: Page) {
     super(page);

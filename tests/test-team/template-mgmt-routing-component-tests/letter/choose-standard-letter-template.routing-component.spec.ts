@@ -7,6 +7,10 @@ import {
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
+import {
+  assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithTemplatesAvailable,
+} from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -127,6 +131,14 @@ test.describe('Routing - Choose letter template page', () => {
     );
 
     await test.step('displays list of letter templates to choose from', async () => {
+      await assertChooseTemplatePageWithTemplatesAvailable({
+        page: chooseLetterTemplatePage,
+      });
+
+      await expect(chooseLetterTemplatePage.messagePlanName).toHaveText(
+        messagePlans.LETTER_ROUTING_CONFIG.name
+      );
+
       const table = page.getByTestId('channel-templates-table');
       await expect(table).toBeVisible();
       await expect(
@@ -152,12 +164,16 @@ test.describe('Routing - Choose letter template page', () => {
       ]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
-        const radioButton = table.getByTestId(`${template.id}-radio`);
+        const radioButton = chooseLetterTemplatePage.getRadioButton(
+          template.id
+        );
         await expect(radioButton).toBeVisible();
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        const previewLink = table.getByTestId(`${template.id}-preview-link`);
+        const previewLink = chooseLetterTemplatePage.getPreviewLink(
+          template.id
+        );
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
@@ -173,7 +189,7 @@ test.describe('Routing - Choose letter template page', () => {
       ).toBeHidden();
       await expect(table.getByText(templates.APP.name)).toBeHidden();
 
-      const submitButton = page.getByTestId('submit-button');
+      const submitButton = chooseLetterTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
@@ -186,7 +202,7 @@ test.describe('Routing - Choose letter template page', () => {
     });
 
     await test.step('errors on no selection', async () => {
-      await page.getByTestId('submit-button').click();
+      await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`
@@ -203,8 +219,10 @@ test.describe('Routing - Choose letter template page', () => {
         messagePlans.LETTER_ROUTING_CONFIG.id
       );
 
-      await page.getByTestId(`${templates.LETTER2.id}-radio`).check();
-      await page.getByTestId('submit-button').click();
+      await chooseLetterTemplatePage
+        .getRadioButton(templates.LETTER2.id)
+        .check();
+      await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
@@ -216,13 +234,24 @@ test.describe('Routing - Choose letter template page', () => {
         messagePlans.LETTER_ROUTING_CONFIG.id
       );
 
-      // Check summary list is present and displays the name of the previously selected template
-      const summaryList = page.getByTestId('previous-selection-summary');
-      await expect(summaryList).toBeVisible();
-      await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.LETTER2.name);
+      await assertChooseTemplatePageWithPreviousSelection({
+        page: chooseLetterTemplatePage,
+      });
 
-      const selectedRadio = page.getByTestId(`${templates.LETTER2.id}-radio`);
+      await expect(chooseLetterTemplatePage.messagePlanName).toHaveText(
+        messagePlans.LETTER_ROUTING_CONFIG.name
+      );
+
+      await expect(
+        chooseLetterTemplatePage.previousSelectionDetails
+      ).toContainText('Previously selected template');
+      await expect(
+        chooseLetterTemplatePage.previousSelectionDetails
+      ).toContainText(templates.LETTER2.name);
+
+      const selectedRadio = chooseLetterTemplatePage.getRadioButton(
+        templates.LETTER2.id
+      );
       await expect(selectedRadio).toBeChecked();
     });
   });

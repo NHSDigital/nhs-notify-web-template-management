@@ -8,6 +8,10 @@ import {
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
+import {
+  assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithTemplatesAvailable,
+} from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -106,6 +110,14 @@ test.describe('Routing - Choose NHS app template page', () => {
     );
 
     await test.step('displays list of NHS app templates to choose from', async () => {
+      await assertChooseTemplatePageWithTemplatesAvailable({
+        page: chooseNhsAppTemplatePage,
+      });
+
+      await expect(chooseNhsAppTemplatePage.messagePlanName).toHaveText(
+        messagePlans.APP_ROUTING_CONFIG.name
+      );
+
       const table = page.getByTestId('channel-templates-table');
       await expect(table).toBeVisible();
       await expect(
@@ -127,12 +139,16 @@ test.describe('Routing - Choose NHS app template page', () => {
       for (const template of [templates.APP1, templates.APP2, templates.APP3]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
-        const radioButton = table.getByTestId(`${template.id}-radio`);
+        const radioButton = chooseNhsAppTemplatePage.getRadioButton(
+          template.id
+        );
         await expect(radioButton).toBeVisible();
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        const previewLink = table.getByTestId(`${template.id}-preview-link`);
+        const previewLink = chooseNhsAppTemplatePage.getPreviewLink(
+          template.id
+        );
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
@@ -141,7 +157,7 @@ test.describe('Routing - Choose NHS app template page', () => {
         );
       }
 
-      const submitButton = page.getByTestId('submit-button');
+      const submitButton = chooseNhsAppTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
@@ -156,7 +172,7 @@ test.describe('Routing - Choose NHS app template page', () => {
     });
 
     await test.step('errors on no selection', async () => {
-      await page.getByTestId('submit-button').click();
+      await chooseNhsAppTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`
@@ -173,8 +189,8 @@ test.describe('Routing - Choose NHS app template page', () => {
         messagePlans.APP_ROUTING_CONFIG.id
       );
 
-      await page.getByTestId(`${templates.APP2.id}-radio`).check();
-      await page.getByTestId('submit-button').click();
+      await chooseNhsAppTemplatePage.getRadioButton(templates.APP2.id).check();
+      await chooseNhsAppTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
@@ -186,13 +202,24 @@ test.describe('Routing - Choose NHS app template page', () => {
         messagePlans.APP_ROUTING_CONFIG.id
       );
 
-      // Check summary list is present and displays the name of the previously selected template
-      const summaryList = page.getByTestId('previous-selection-summary');
-      await expect(summaryList).toBeVisible();
-      await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.APP2.name);
+      await assertChooseTemplatePageWithPreviousSelection({
+        page: chooseNhsAppTemplatePage,
+      });
 
-      const selectedRadio = page.getByTestId(`${templates.APP2.id}-radio`);
+      await expect(chooseNhsAppTemplatePage.messagePlanName).toHaveText(
+        messagePlans.APP_ROUTING_CONFIG.name
+      );
+
+      await expect(
+        chooseNhsAppTemplatePage.previousSelectionDetails
+      ).toContainText('Previously selected template');
+      await expect(
+        chooseNhsAppTemplatePage.previousSelectionDetails
+      ).toContainText(templates.APP2.name);
+
+      const selectedRadio = chooseNhsAppTemplatePage.getRadioButton(
+        templates.APP2.id
+      );
       await expect(selectedRadio).toBeChecked();
     });
   });

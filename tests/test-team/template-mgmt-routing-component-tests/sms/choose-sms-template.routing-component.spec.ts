@@ -8,6 +8,10 @@ import {
   assertSkipToMainContent,
   assertGoBackLinkNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
+import {
+  assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithTemplatesAvailable,
+} from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -108,6 +112,14 @@ test.describe('Routing - Choose sms template page', () => {
     );
 
     await test.step('displays list of sms templates to choose from', async () => {
+      await assertChooseTemplatePageWithTemplatesAvailable({
+        page: chooseSmsTemplatePage,
+      });
+
+      await expect(chooseSmsTemplatePage.messagePlanName).toHaveText(
+        messagePlans.SMS_ROUTING_CONFIG.name
+      );
+
       const table = page.getByTestId('channel-templates-table');
       await expect(table).toBeVisible();
       await expect(
@@ -129,12 +141,12 @@ test.describe('Routing - Choose sms template page', () => {
       for (const template of [templates.SMS1, templates.SMS2, templates.SMS3]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
-        const radioButton = table.getByTestId(`${template.id}-radio`);
+        const radioButton = chooseSmsTemplatePage.getRadioButton(template.id);
         await expect(radioButton).toBeVisible();
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        const previewLink = table.getByTestId(`${template.id}-preview-link`);
+        const previewLink = chooseSmsTemplatePage.getPreviewLink(template.id);
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
@@ -145,7 +157,7 @@ test.describe('Routing - Choose sms template page', () => {
 
       await expect(table.getByText(templates.APP.name)).toBeHidden();
 
-      const submitButton = page.getByTestId('submit-button');
+      const submitButton = chooseSmsTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
@@ -158,7 +170,7 @@ test.describe('Routing - Choose sms template page', () => {
     });
 
     await test.step('errors on no selection', async () => {
-      await page.getByTestId('submit-button').click();
+      await chooseSmsTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`
@@ -173,8 +185,8 @@ test.describe('Routing - Choose sms template page', () => {
     await test.step('submits selected template and navigates to choose templates page', async () => {
       await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
 
-      await page.getByTestId(`${templates.SMS2.id}-radio`).check();
-      await page.getByTestId('submit-button').click();
+      await chooseSmsTemplatePage.getRadioButton(templates.SMS2.id).check();
+      await chooseSmsTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
@@ -184,13 +196,24 @@ test.describe('Routing - Choose sms template page', () => {
     await test.step('pre-selects previously selected template', async () => {
       await chooseSmsTemplatePage.loadPage(messagePlans.SMS_ROUTING_CONFIG.id);
 
-      // Check summary list is present and displays the name of the previously selected template
-      const summaryList = page.getByTestId('previous-selection-summary');
-      await expect(summaryList).toBeVisible();
-      await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.SMS2.name);
+      await assertChooseTemplatePageWithPreviousSelection({
+        page: chooseSmsTemplatePage,
+      });
 
-      const selectedRadio = page.getByTestId(`${templates.SMS2.id}-radio`);
+      await expect(chooseSmsTemplatePage.messagePlanName).toHaveText(
+        messagePlans.SMS_ROUTING_CONFIG.name
+      );
+
+      await expect(
+        chooseSmsTemplatePage.previousSelectionDetails
+      ).toContainText('Previously selected template');
+      await expect(
+        chooseSmsTemplatePage.previousSelectionDetails
+      ).toContainText(templates.SMS2.name);
+
+      const selectedRadio = chooseSmsTemplatePage.getRadioButton(
+        templates.SMS2.id
+      );
       await expect(selectedRadio).toBeChecked();
     });
   });
