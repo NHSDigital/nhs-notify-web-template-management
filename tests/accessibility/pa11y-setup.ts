@@ -93,7 +93,7 @@ const setup = async () => {
   const familyName = 'Bergstrom';
   const userName = ['Dr', givenName, familyName];
 
-  const { userId } = await testUserClient.createTestUser(
+  const { internalUserId } = await testUserClient.createTestUser(
     testEmail,
     testPassword,
     clientId,
@@ -168,7 +168,7 @@ const setup = async () => {
     email: testEmail,
     password: testPassword,
     templateIds,
-    userId,
+    internalUserId,
     clientId,
     clientName,
     userName,
