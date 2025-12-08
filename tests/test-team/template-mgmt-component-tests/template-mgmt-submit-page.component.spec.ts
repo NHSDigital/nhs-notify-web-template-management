@@ -7,8 +7,9 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottom,
+  assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
-import { assertGoBackButton } from './template-mgmt-submit-common.steps';
 import {
   createAuthHelper,
   testUsers,
@@ -234,10 +235,11 @@ test.describe('Submit template Page', () => {
         await assertHeaderLogoLink(props);
         await assertSignOutLink(props);
         await assertFooterLinks(props);
-        await assertGoBackButton({
+        await assertBackLinkBottom({
           ...props,
           expectedUrl: `templates/preview-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`,
         });
+        await assertBackLinkTopNotPresent(props);
       });
 
       test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({

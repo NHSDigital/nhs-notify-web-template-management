@@ -5,8 +5,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkTopNotPresent,
-  assertBackLinkBottomOfPage,
+  assertBackLinkTopNotPresent,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithTemplatesAvailable,
@@ -159,8 +159,8 @@ test.describe('Routing - Choose large print letter template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkTopNotPresent(props);
-    await assertBackLinkBottomOfPage({
+    await assertBackLinkTopNotPresent(props);
+    await assertBackLinkBottom({
       ...props,
       expectedUrl: `templates/message-plans/choose-templates/${routingConfigIds.valid}`,
     });

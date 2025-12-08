@@ -17,8 +17,6 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic
 
   public readonly characterCountText: Locator;
 
-  public readonly goBackLink: Locator;
-
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   public readonly saveAndPreviewButton: Locator;
@@ -35,9 +33,6 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic
       '[data-testid="how-to-name-your-template-details"]'
     );
     this.characterCountText = page.getByTestId('character-message-count-0');
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Back to choose a template type'));
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(
       '[id="create-nhs-app-template-submit-button"]'

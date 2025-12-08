@@ -3,10 +3,11 @@ import { TemplateMgmtCreateNhsAppPage } from '../../pages/nhs-app/template-mgmt-
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -36,7 +37,8 @@ test.describe('Create NHS App Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLink({
+    await assertBackLinkBottomNotPresent(props);
+    await assertAndClickBackLinkTop({
       ...props,
       expectedUrl: 'templates/choose-a-template-type',
     });

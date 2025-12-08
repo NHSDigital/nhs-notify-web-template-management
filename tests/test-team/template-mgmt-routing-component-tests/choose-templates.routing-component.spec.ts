@@ -12,7 +12,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
 } from '../helpers/template-mgmt-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
@@ -252,7 +252,7 @@ test.describe('Routing - Choose Templates page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('loads the choose templates page for a message plan', async ({

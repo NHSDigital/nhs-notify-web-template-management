@@ -6,7 +6,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithPreviousSelection,
@@ -96,7 +97,11 @@ test.describe('Routing - Choose NHS app template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkBottom({
+      ...props,
+      expectedUrl: `/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`,
+    });
+    await assertBackLinkTopNotPresent(props);
   });
 
   test('loads the choose NHS app template page for a message plan with an NHS app channel', async ({
@@ -163,9 +168,8 @@ test.describe('Routing - Choose NHS app template page', () => {
 
       await expect(table.getByText(templates.EMAIL.name)).toBeHidden();
 
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
-      await expect(goBackLink).toBeVisible();
-      await expect(goBackLink).toHaveAttribute(
+      await expect(chooseNhsAppTemplatePage.backLinkBottom).toBeVisible();
+      await expect(chooseNhsAppTemplatePage.backLinkBottom).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
       );

@@ -5,7 +5,7 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
   assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../../helpers/template-mgmt-common.steps';
@@ -105,7 +105,7 @@ test.describe('Edit SMS message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLinkNotPresent(props);
+      await assertBackLinkTopNotPresent(props);
     });
 
     test('when user visits page with previous data, then form fields retain previous data', async ({

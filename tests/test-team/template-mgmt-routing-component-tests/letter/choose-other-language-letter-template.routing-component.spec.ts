@@ -5,7 +5,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertBackLinkBottomOfPage,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithTemplatesAvailable,
@@ -217,7 +217,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertBackLinkBottomOfPage({
+    await assertBackLinkBottom({
       ...props,
       expectedUrl: `/message-plans/choose-templates/${routingConfigIds.valid}`,
     });

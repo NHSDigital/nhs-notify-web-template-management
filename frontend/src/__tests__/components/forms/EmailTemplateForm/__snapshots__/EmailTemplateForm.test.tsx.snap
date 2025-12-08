@@ -700,7 +700,7 @@ exports[`renders page one error 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -1448,7 +1448,7 @@ exports[`renders page with multiple errors 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -2224,7 +2224,7 @@ exports[`renders page with preloaded field values 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type

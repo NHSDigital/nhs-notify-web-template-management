@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -48,10 +49,11 @@ test.describe('Upload letter Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLink({
+    await assertAndClickBackLinkTop({
       ...props,
       expectedUrl: 'templates/choose-a-template-type',
     });
+    await assertBackLinkBottomNotPresent(props);
   });
 
   test('Validate error messages on the upload letter template page with no template name or pdf', async ({
@@ -275,8 +277,8 @@ test.describe('Upload letter Template Page', () => {
       'Account needs a client ID and campaign ID'
     );
 
-    await expect(page.goBackLink).toHaveText('Go back');
-    await expect(page.goBackLink).toHaveAttribute(
+    await expect(page.backLinkBottom).toHaveText('Go back');
+    await expect(page.backLinkBottom).toHaveAttribute(
       'href',
       '/templates/choose-a-template-type'
     );

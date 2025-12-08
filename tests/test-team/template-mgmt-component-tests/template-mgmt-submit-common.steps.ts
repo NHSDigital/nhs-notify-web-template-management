@@ -16,7 +16,7 @@ export function assertGoBackButton({
   return test.step('when user clicks "Go back" button, then user is redirected to previous page', async () => {
     await page.loadPage(id);
 
-    await page.clickGoBackButton();
+    await page.backLinkBottom.click();
 
     await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
   });

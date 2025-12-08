@@ -5,7 +5,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithPreviousSelection,
@@ -95,7 +96,11 @@ test.describe('Routing - Choose email template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkTopNotPresent(props);
+    await assertBackLinkBottom({
+      ...props,
+      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
+    });
   });
 
   test('loads the choose email template page for a message plan with an email channel', async ({
@@ -164,7 +169,7 @@ test.describe('Routing - Choose email template page', () => {
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
+      const goBackLink = chooseEmailTemplatePage.backLinkBottom;
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',

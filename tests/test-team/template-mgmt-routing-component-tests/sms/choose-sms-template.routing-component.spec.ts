@@ -6,7 +6,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithPreviousSelection,
@@ -96,7 +97,11 @@ test.describe('Routing - Choose sms template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkTopNotPresent(props);
+    await assertBackLinkBottom({
+      ...props,
+      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`,
+    });
   });
 
   test('loads the choose sms template page for a message plan with an sms channel', async ({
@@ -161,9 +166,8 @@ test.describe('Routing - Choose sms template page', () => {
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
-      await expect(goBackLink).toBeVisible();
-      await expect(goBackLink).toHaveAttribute(
+      await expect(chooseSmsTemplatePage.backLinkBottom).toBeVisible();
+      await expect(chooseSmsTemplatePage.backLinkBottom).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
       );

@@ -8,11 +8,9 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  assertBackToAllTemplatesBottomLink,
-  assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-preview-submitted-common.steps';
+import { assertBackToAllTemplatesTopLink } from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
   TestUser,
@@ -107,7 +105,10 @@ test.describe('Preview submitted Letter message template Page', () => {
       await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
+      await assertBackLinkBottom({
+        ...props,
+        expectedUrl: `templates/message-templates`,
+      });
     });
   });
 

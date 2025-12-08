@@ -158,7 +158,7 @@ export function ChooseLanguageLetterTemplates(
                   templateList.length > 0 &&
                     'inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3'
                 )}
-                data-testid='back-link'
+                data-testid='back-link-bottom'
               >
                 {content.actions.backLink.text}
               </Link>

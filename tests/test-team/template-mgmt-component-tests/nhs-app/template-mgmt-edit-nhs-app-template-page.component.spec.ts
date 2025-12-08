@@ -5,7 +5,7 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import {
   assertFooterLinks,
   assertSignOutLink,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
   assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../../helpers/template-mgmt-common.steps';
@@ -77,7 +77,7 @@ test.describe('Edit NHS App Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkTopNotPresent(props);
   });
 
   test('Validate error messages on the edit NHS App message template page with no template name or body', async ({

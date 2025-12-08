@@ -4,9 +4,8 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -243,7 +242,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -259,9 +258,8 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -498,7 +496,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -514,9 +512,8 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -721,7 +718,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -737,9 +734,8 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -868,7 +864,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -884,9 +880,8 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -1086,7 +1081,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -1102,9 +1097,8 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -1228,7 +1222,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
          
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates

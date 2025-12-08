@@ -4,6 +4,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -187,6 +188,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -333,6 +335,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -479,6 +482,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -619,6 +623,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -759,6 +764,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1014,6 +1020,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1269,6 +1276,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1472,6 +1480,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1639,6 +1648,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates

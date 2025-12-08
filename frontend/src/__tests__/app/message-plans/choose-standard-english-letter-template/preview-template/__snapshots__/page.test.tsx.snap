@@ -4,6 +4,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
   >
     Go back
@@ -109,7 +110,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
         </div>
         <a
           class="nhsuk-body-m nhsuk-u-display-inline-block"
-          data-testid="back-link"
+          data-testid="back-link-bottom"
           href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
         >
           Go back

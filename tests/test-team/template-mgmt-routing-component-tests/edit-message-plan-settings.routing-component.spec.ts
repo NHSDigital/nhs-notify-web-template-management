@@ -13,7 +13,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLink,
+  assertBackLinkTopNotPresent,
+  assertBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 
@@ -62,7 +63,8 @@ test('common page tests', async ({ page, baseURL }) => {
   await assertHeaderLogoLink(props);
   await assertFooterLinks(props);
   await assertSignOutLink(props);
-  await assertGoBackLink(props);
+  await assertBackLinkTopNotPresent(props);
+  await assertBackLinkBottom(props);
 });
 
 test("message plan doesn't exist", async ({ page, baseURL }) => {

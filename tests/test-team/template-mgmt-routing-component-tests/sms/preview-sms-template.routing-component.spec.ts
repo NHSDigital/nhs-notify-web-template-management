@@ -4,7 +4,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -79,7 +80,8 @@ test.describe('Routing - Preview SMS template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
+    await assertBackLinkBottom(props);
+    await assertAndClickBackLinkTop(props);
   });
 
   test('loads the SMS template', async ({ page, baseURL }) => {

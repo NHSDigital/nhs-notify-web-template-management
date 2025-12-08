@@ -4,8 +4,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertAndClickGoBackLinkTop,
-  assertBackLinkBottomOfPage,
+  assertAndClickBackLinkTop,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -88,8 +88,8 @@ test.describe('Routing - Preview large print letter template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertBackLinkBottomOfPage(props);
-    await assertAndClickGoBackLinkTop(props);
+    await assertBackLinkBottom(props);
+    await assertAndClickBackLinkTop(props);
   });
 
   test('loads the large print letter template', async ({ page, baseURL }) => {

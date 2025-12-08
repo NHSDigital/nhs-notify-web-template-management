@@ -8,8 +8,6 @@ export class RoutingEditMessagePlanSettingsPage extends TemplateMgmtBasePageDyna
 
   readonly submitButton: Locator;
 
-  readonly goBackLink: Locator;
-
   readonly nameField: Locator;
 
   readonly nameFieldError: Locator;
@@ -23,7 +21,6 @@ export class RoutingEditMessagePlanSettingsPage extends TemplateMgmtBasePageDyna
   constructor(page: Page) {
     super(page);
     this.submitButton = page.getByTestId('submit-button');
-    this.goBackLink = page.getByTestId('go-back-link');
     this.nameField = page.getByTestId('name-field');
     this.campaignIdSelector = page.getByTestId('campaign-id-field');
     this.singleCampaignIdElement = page.getByTestId('single-campaign-id');

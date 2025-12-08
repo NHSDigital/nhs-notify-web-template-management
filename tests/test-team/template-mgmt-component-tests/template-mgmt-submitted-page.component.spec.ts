@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottom,
+  assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
@@ -135,10 +136,11 @@ test.describe('Template Submitted Page', () => {
         await assertHeaderLogoLink(props);
         await assertFooterLinks(props);
         await assertSignOutLink(props);
-        await assertGoBackLink({
+        await assertBackLinkBottom({
           ...props,
           expectedUrl: 'templates/message-templates',
         });
+        await assertBackLinkTopNotPresent(props);
       });
     });
 

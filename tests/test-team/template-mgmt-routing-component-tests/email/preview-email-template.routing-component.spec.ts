@@ -4,7 +4,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -79,7 +79,7 @@ test.describe('Routing - Preview email template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
+    await assertAndClickBackLinkTop(props);
   });
 
   test('loads the email template', async ({ page, baseURL }) => {

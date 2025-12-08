@@ -212,7 +212,7 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
             </button>
             <a
               class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="go-back-link"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-message-order"
             >
               Go back
@@ -388,7 +388,7 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="go-back-link"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-message-order"
             >
               Go back

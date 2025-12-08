@@ -8,8 +8,6 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
 
   readonly learnMoreLink: Locator;
 
-  readonly goBackLink: Locator;
-
   readonly continueButton: Locator;
 
   constructor(page: Page) {
@@ -18,10 +16,6 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
     this.learnMoreLink = page.getByText(
       'Learn more about message channels (opens in a new tab)'
     );
-
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Back to all templates'));
 
     this.continueButton = page.locator(
       '[id="choose-a-template-type-submit-button"]'
