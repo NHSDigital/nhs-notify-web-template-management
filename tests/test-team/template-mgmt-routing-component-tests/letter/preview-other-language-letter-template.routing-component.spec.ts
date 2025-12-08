@@ -83,10 +83,14 @@ test.describe('Routing - Preview foreign language letter template page', () => {
   });
 
   test('common page tests', async ({ page, baseURL }) => {
+    const previewForeignLanguageLetterTemplatePage =
+      new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.FRENCH_LETTER.id);
+    await previewForeignLanguageLetterTemplatePage.loadPage();
+
     const props = {
-      page: new RoutingPreviewOtherLanguageLetterTemplatePage(page),
-      id: messagePlans.LETTER_ROUTING_CONFIG.id,
-      additionalIds: [templates.FRENCH_LETTER.id],
+      page: previewForeignLanguageLetterTemplatePage,
       baseURL,
       expectedUrl: `templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
     };
@@ -103,11 +107,10 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     baseURL,
   }) => {
     const previewForeignLanguageLetterTemplatePage =
-      new RoutingPreviewOtherLanguageLetterTemplatePage(page);
-    await previewForeignLanguageLetterTemplatePage.loadPage(
-      messagePlans.LETTER_ROUTING_CONFIG.id,
-      templates.FRENCH_LETTER.id
-    );
+      new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.FRENCH_LETTER.id);
+    await previewForeignLanguageLetterTemplatePage.loadPage();
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.FRENCH_LETTER.id}`
     );
@@ -158,36 +161,33 @@ test.describe('Routing - Preview foreign language letter template page', () => {
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewForeignLanguageLetterTemplatePage =
-        new RoutingPreviewOtherLanguageLetterTemplatePage(page);
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', notFoundTemplateId);
 
-      await previewForeignLanguageLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewForeignLanguageLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewForeignLanguageLetterTemplatePage =
-        new RoutingPreviewOtherLanguageLetterTemplatePage(page);
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', invalidTemplateId);
 
-      await previewForeignLanguageLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewForeignLanguageLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template is not a letter', async ({ page, baseURL }) => {
       const previewForeignLanguageLetterTemplatePage =
-        new RoutingPreviewOtherLanguageLetterTemplatePage(page);
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.EMAIL.id);
 
-      await previewForeignLanguageLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        templates.EMAIL.id
-      );
+      await previewForeignLanguageLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -197,12 +197,11 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       baseURL,
     }) => {
       const previewForeignLanguageLetterTemplatePage =
-        new RoutingPreviewOtherLanguageLetterTemplatePage(page);
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.STANDARD_LETTER.id);
 
-      await previewForeignLanguageLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        templates.STANDARD_LETTER.id
-      );
+      await previewForeignLanguageLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

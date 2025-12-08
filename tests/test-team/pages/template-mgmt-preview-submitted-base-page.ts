@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export abstract class TemplateMgmtPreviewSubmitedBasePage extends TemplateMgmtBasePage {
+export abstract class TemplateMgmtPreviewSubmittedBasePage extends TemplateMgmtBasePage {
   readonly campaignId: Locator;
 
   constructor(page: Page) {

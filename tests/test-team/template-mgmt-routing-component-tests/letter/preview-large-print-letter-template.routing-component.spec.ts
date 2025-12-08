@@ -95,10 +95,11 @@ test.describe('Routing - Preview large print letter template page', () => {
   test('loads the large print letter template', async ({ page, baseURL }) => {
     const previewLargePrintLetterTemplatePage =
       new RoutingPreviewLargePrintLetterTemplatePage(page);
-    await previewLargePrintLetterTemplatePage.loadPage(
-      messagePlans.LETTER_ROUTING_CONFIG.id,
-      templates.LARGE_PRINT_LETTER.id
-    );
+    await previewLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id)
+      .loadPage();
+
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LARGE_PRINT_LETTER.id}`
     );
@@ -144,10 +145,10 @@ test.describe('Routing - Preview large print letter template page', () => {
       const previewLargePrintLetterTemplatePage =
         new RoutingPreviewLargePrintLetterTemplatePage(page);
 
-      await previewLargePrintLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', notFoundTemplateId)
+        .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -156,10 +157,10 @@ test.describe('Routing - Preview large print letter template page', () => {
       const previewLargePrintLetterTemplatePage =
         new RoutingPreviewLargePrintLetterTemplatePage(page);
 
-      await previewLargePrintLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', invalidTemplateId)
+        .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -168,10 +169,10 @@ test.describe('Routing - Preview large print letter template page', () => {
       const previewLargePrintLetterTemplatePage =
         new RoutingPreviewLargePrintLetterTemplatePage(page);
 
-      await previewLargePrintLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        templates.EMAIL.id
-      );
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.EMAIL.id)
+        .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -183,10 +184,10 @@ test.describe('Routing - Preview large print letter template page', () => {
       const previewLargePrintLetterTemplatePage =
         new RoutingPreviewLargePrintLetterTemplatePage(page);
 
-      await previewLargePrintLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        templates.STANDARD_LETTER.id
-      );
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.STANDARD_LETTER.id)
+        .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

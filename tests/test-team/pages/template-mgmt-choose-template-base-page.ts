@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export abstract class TemplateMgmtChooseTemplateForMessagePlanBasePage extends TemplateMgmtBasePageDynamic {
+export abstract class TemplateMgmtChooseTemplateForMessagePlanBasePage extends TemplateMgmtBasePage {
   readonly messagePlanName: Locator;
 
   readonly tableHintText: Locator;

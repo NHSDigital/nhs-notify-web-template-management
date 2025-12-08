@@ -11,11 +11,9 @@ import {
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
 import { MessagePlanTemplates } from '@utils/routing-utils';
-
-import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
+import { interpolate } from '@utils/interpolate';
 
 import copy from '@content/content';
-import { interpolate } from '@utils/interpolate';
 const { createEditMessagePlan: content } = copy.components;
 
 export function CreateEditMessagePlan({

@@ -172,7 +172,9 @@ test.describe('Routing - Choose large print letter template page', () => {
   }) => {
     const chooseLargePrintLetterTemplatePage =
       new RoutingChooseLargePrintLetterTemplatePage(page);
-    await chooseLargePrintLetterTemplatePage.loadPage(routingConfigs.valid.id);
+    await chooseLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .loadPage();
 
     await assertChooseTemplatePageWithTemplatesAvailable({
       page: chooseLargePrintLetterTemplatePage,
@@ -229,7 +231,9 @@ test.describe('Routing - Choose large print letter template page', () => {
   }) => {
     const chooseLargePrintLetterTemplatePage =
       new RoutingChooseLargePrintLetterTemplatePage(page);
-    await chooseLargePrintLetterTemplatePage.loadPage(routingConfigs.valid.id);
+    await chooseLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .loadPage();
 
     await chooseLargePrintLetterTemplatePage
       .getRadioButton(templates.LARGE_PRINT_LETTER1.id)
@@ -241,7 +245,9 @@ test.describe('Routing - Choose large print letter template page', () => {
     );
 
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
-    await chooseTemplatesPage.loadPage(routingConfigs.valid.id);
+    await chooseTemplatesPage
+      .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .loadPage();
 
     await expect(
       chooseTemplatesPage.alternativeLetterFormats().largePrint.templateName
@@ -254,7 +260,9 @@ test.describe('Routing - Choose large print letter template page', () => {
   }) => {
     const chooseLargePrintLetterTemplatePage =
       new RoutingChooseLargePrintLetterTemplatePage(page);
-    await chooseLargePrintLetterTemplatePage.loadPage(routingConfigs.valid.id);
+    await chooseLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
@@ -293,9 +301,9 @@ test.describe('Routing - Choose large print letter template page', () => {
   }) => {
     const chooseLargePrintLetterTemplatePage =
       new RoutingChooseLargePrintLetterTemplatePage(page);
-    await chooseLargePrintLetterTemplatePage.loadPage(
-      routingConfigs.withLargePrintSelected.id
-    );
+    await chooseLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.withLargePrintSelected.id)
+      .loadPage();
 
     await assertChooseTemplatePageWithPreviousSelection({
       page: chooseLargePrintLetterTemplatePage,
@@ -346,9 +354,9 @@ test.describe('Routing - Choose large print letter template page', () => {
       const chooseLargePrintLetterTemplatePage =
         new RoutingChooseLargePrintLetterTemplatePage(page);
 
-      await chooseLargePrintLetterTemplatePage.loadPage(
-        routingConfigIds.notFound
-      );
+      await chooseLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', routingConfigIds.notFound)
+        .loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -359,25 +367,25 @@ test.describe('Routing - Choose large print letter template page', () => {
       const chooseLargePrintLetterTemplatePage =
         new RoutingChooseLargePrintLetterTemplatePage(page);
 
-      await chooseLargePrintLetterTemplatePage.loadPage(
-        routingConfigIds.invalid
-      );
+      await chooseLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', routingConfigIds.invalid)
+        .loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
       );
     });
 
-    test('when routing config does not have a letter channel', async ({
+    test('when routing config is not for a LETTER channel', async ({
       page,
       baseURL,
     }) => {
       const chooseLargePrintLetterTemplatePage =
         new RoutingChooseLargePrintLetterTemplatePage(page);
 
-      await chooseLargePrintLetterTemplatePage.loadPage(
-        routingConfigs.nonLetter.id
-      );
+      await chooseLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', routingConfigs.nonLetter.id)
+        .loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
