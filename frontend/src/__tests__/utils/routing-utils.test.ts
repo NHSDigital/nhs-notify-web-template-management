@@ -6,7 +6,7 @@ import {
   removeTemplatesFromConditionalTemplates,
   removeTemplatesFromCascadeItem,
   getRemainingAccessibleFormats,
-  getRemainingLanguages,
+  getCascadeLanguages,
   buildCascadeGroupOverridesFromCascade,
   buildCascadeGroupsForItem,
   getConditionalTemplatesForItem,
@@ -725,7 +725,7 @@ describe('getRemainingAccessibleFormats', () => {
   });
 });
 
-describe('getRemainingLanguages', () => {
+describe('getCascadeLanguages', () => {
   it('should collect all unique language types', () => {
     const cascade: CascadeItem[] = [
       {
@@ -747,7 +747,7 @@ describe('getRemainingLanguages', () => {
       },
     ];
 
-    const result = getRemainingLanguages(cascade);
+    const result = getCascadeLanguages(cascade);
 
     expect(result.sort()).toEqual(['es', 'fr']);
   });
@@ -766,7 +766,7 @@ describe('getRemainingLanguages', () => {
       },
     ];
 
-    const result = getRemainingLanguages(cascade);
+    const result = getCascadeLanguages(cascade);
 
     expect(result).toEqual(['fr']);
   });
@@ -781,7 +781,7 @@ describe('getRemainingLanguages', () => {
       },
     ];
 
-    const result = getRemainingLanguages(cascade);
+    const result = getCascadeLanguages(cascade);
 
     expect(result).toEqual([]);
   });

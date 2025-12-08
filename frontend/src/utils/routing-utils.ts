@@ -197,9 +197,9 @@ export function getRemainingAccessibleFormats(
 }
 
 /**
- * Collects all remaining language types from the cascade
+ * Collects all language types from the cascade
  */
-export function getRemainingLanguages(cascade: CascadeItem[]): Language[] {
+export function getCascadeLanguages(cascade: CascadeItem[]): Language[] {
   const languages = new Set<Language>();
 
   for (const item of cascade) {
@@ -231,7 +231,7 @@ export function buildCascadeGroupOverridesFromCascade(
     });
   }
 
-  const languages = getRemainingLanguages(updatedCascade);
+  const languages = getCascadeLanguages(updatedCascade);
   if (languages.length > 0) {
     overrides.push({
       name: 'translations',
