@@ -54,6 +54,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
             <Link
               className='nhsuk-body-m nhsuk-u-display-inline-block'
               href={backLinkHref}
+              data-testid='back-link'
             >
               {content.backLink.text}
             </Link>

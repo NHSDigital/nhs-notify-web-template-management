@@ -79,7 +79,10 @@ export function StandardDetailRows({
     <>
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
-        <SummaryList.Value className='monospace-font'>
+        <SummaryList.Value
+          data-testid='preview-template-id'
+          className='monospace-font'
+        >
           {template.id}
         </SummaryList.Value>
       </SummaryList.Row>

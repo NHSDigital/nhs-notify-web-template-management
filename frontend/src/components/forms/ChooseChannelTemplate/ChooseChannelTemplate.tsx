@@ -95,7 +95,9 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 selectedTemplate={selectedTemplateId}
               />
             ) : (
-              <p>{content.noTemplatesText}</p>
+              <p data-testid='no-templates-message'>
+                {content.noTemplatesText}
+              </p>
             )}
 
             <div
@@ -114,6 +116,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 <Link
                   href={content.actions.goToTemplates.href}
                   className='nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m'
+                  data-testid='go-to-templates-link'
                 >
                   {content.actions.goToTemplates.text}
                 </Link>
@@ -127,6 +130,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                   templateList.length > 0 &&
                     'inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3'
                 )}
+                data-testid='back-link'
               >
                 {content.actions.backLink.text}
               </Link>

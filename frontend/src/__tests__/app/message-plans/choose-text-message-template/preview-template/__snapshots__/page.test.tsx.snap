@@ -50,6 +50,7 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 sms-template-id
               </dd>
@@ -105,6 +106,7 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
         </div>
         <a
           class="nhsuk-body-m nhsuk-u-display-inline-block"
+          data-testid="back-link"
           href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
         >
           Go back

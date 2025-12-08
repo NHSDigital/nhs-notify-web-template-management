@@ -122,7 +122,9 @@ export function ChooseLanguageLetterTemplates(
                 selectedTemplates={initialSelectedTemplates}
               />
             ) : (
-              <p className='nhsuk-body'>{content.noTemplatesText}</p>
+              <p className='nhsuk-body' data-testid='no-templates-message'>
+                {content.noTemplatesText}
+              </p>
             )}
 
             <div
@@ -141,6 +143,7 @@ export function ChooseLanguageLetterTemplates(
                 <Link
                   href={content.actions.goToTemplates.href}
                   className='nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m'
+                  data-testid='go-to-templates-link'
                 >
                   {content.actions.goToTemplates.text}
                 </Link>
@@ -155,6 +158,7 @@ export function ChooseLanguageLetterTemplates(
                   templateList.length > 0 &&
                     'inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3'
                 )}
+                data-testid='back-link'
               >
                 {content.actions.backLink.text}
               </Link>

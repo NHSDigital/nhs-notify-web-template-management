@@ -11,6 +11,7 @@ exports[`LanguageLetterTemplates renders list of foreign language letter templat
       >
         <div
           class="nhsuk-hint nhsuk-u-reading-width"
+          data-testid="table-hint"
         >
           Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
         </div>
@@ -386,6 +387,7 @@ exports[`LanguageLetterTemplates renders templates list with pre-selected templa
       >
         <div
           class="nhsuk-hint nhsuk-u-reading-width"
+          data-testid="table-hint"
         >
           Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
         </div>
@@ -763,6 +765,7 @@ exports[`LanguageLetterTemplates renders templates with duplicate language error
       >
         <div
           class="nhsuk-hint nhsuk-u-reading-width"
+          data-testid="table-hint"
         >
           Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
         </div>
@@ -1150,6 +1153,7 @@ exports[`LanguageLetterTemplates renders templates with error state 1`] = `
       >
         <div
           class="nhsuk-hint nhsuk-u-reading-width"
+          data-testid="table-hint"
         >
           Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
         </div>

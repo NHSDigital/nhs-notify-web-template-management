@@ -10,6 +10,7 @@ exports[`ChannelTemplates renders templates 1`] = `
     >
       <div
         class="nhsuk-hint nhsuk-u-reading-width"
+        data-testid="table-hint"
       >
         Choose one option
       </div>
@@ -457,6 +458,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
     >
       <div
         class="nhsuk-hint nhsuk-u-reading-width"
+        data-testid="table-hint"
       >
         Choose one option
       </div>
@@ -916,6 +918,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
     >
       <div
         class="nhsuk-hint nhsuk-u-reading-width"
+        data-testid="table-hint"
       >
         Choose one option
       </div>

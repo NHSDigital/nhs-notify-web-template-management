@@ -80,6 +80,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -265,6 +266,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -346,6 +348,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -520,6 +523,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -612,6 +616,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -797,6 +802,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -859,6 +865,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1032,6 +1039,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1113,6 +1121,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1287,6 +1296,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1368,6 +1378,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1542,6 +1553,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1623,6 +1635,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1797,6 +1810,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1878,6 +1892,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -2236,6 +2251,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -2290,7 +2306,9 @@ exports[`ChooseChannelTemplate when there are no templates renders correctly 1`]
             type="hidden"
             value="no_token"
           />
-          <p>
+          <p
+            data-testid="no-templates-message"
+          >
             You do not have any templates yet.
           </p>
           <div
@@ -2299,12 +2317,14 @@ exports[`ChooseChannelTemplate when there are no templates renders correctly 1`]
           >
             <a
               class="nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m"
+              data-testid="go-to-templates-link"
               href="/message-templates"
             >
               Go to templates
             </a>
             <a
               class="nhsuk-u-font-size-19"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -2386,6 +2406,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -2744,6 +2765,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -2825,6 +2847,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -3183,6 +3206,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -3245,6 +3269,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -3418,6 +3443,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back

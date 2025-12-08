@@ -80,6 +80,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
               </div>
@@ -467,6 +468,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -559,6 +561,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
               </div>
@@ -946,6 +949,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1008,6 +1012,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
               </div>
@@ -1383,6 +1388,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1485,6 +1491,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
               </div>
@@ -1861,6 +1868,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1923,6 +1931,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
             >
               <div
                 class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
               </div>
@@ -2298,6 +2307,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
             </button>
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -2354,6 +2364,7 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
           />
           <p
             class="nhsuk-body"
+            data-testid="no-templates-message"
           >
             You do not have any foreign language letter templates yet.
           </p>
@@ -2363,12 +2374,14 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
           >
             <a
               class="nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m"
+              data-testid="go-to-templates-link"
               href="/message-templates"
             >
               Go to templates
             </a>
             <a
               class="nhsuk-u-font-size-19"
+              data-testid="back-link"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back

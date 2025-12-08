@@ -50,6 +50,7 @@ exports[`PreviewLargePrintLetterTemplateFromMessagePlan page renders large print
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 large-print-letter-template-id
               </dd>
@@ -108,6 +109,7 @@ exports[`PreviewLargePrintLetterTemplateFromMessagePlan page renders large print
         </div>
         <a
           class="nhsuk-body-m nhsuk-u-display-inline-block"
+          data-testid="back-link"
           href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
         >
           Go back

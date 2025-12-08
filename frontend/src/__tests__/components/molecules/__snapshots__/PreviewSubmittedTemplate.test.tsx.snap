@@ -50,6 +50,7 @@ exports[`PreviewSubmittedTemplate component should omit status when coming from 
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -191,6 +192,7 @@ exports[`PreviewSubmittedTemplate component should provide back buttons based on
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -332,6 +334,7 @@ exports[`PreviewSubmittedTemplate component should render app message 1`] = `
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -473,6 +476,7 @@ exports[`PreviewSubmittedTemplate component should render email 1`] = `
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -639,6 +643,7 @@ exports[`PreviewSubmittedTemplate component should render letter 1`] = `
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -901,6 +906,7 @@ exports[`PreviewSubmittedTemplate component should render sms 1`] = `
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>

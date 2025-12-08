@@ -50,6 +50,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 0A097DCD-35F9-4DAD-A37E-AC358B71B74D
               </dd>
@@ -232,6 +233,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 0A097DCD-35F9-4DAD-A37E-AC358B71B74D
               </dd>
@@ -377,6 +379,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 53525D03-1BC1-4563-ABF9-A74FF04142AF
               </dd>
@@ -522,6 +525,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -661,6 +665,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -800,6 +805,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE
               </dd>
@@ -1054,6 +1060,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE
               </dd>
@@ -1340,6 +1347,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1542,6 +1550,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1676,6 +1685,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 53525D03-1BC1-4563-ABF9-A74FF04142AF
               </dd>

@@ -35,7 +35,9 @@ export function ChannelTemplates({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
-        <HintText className='nhsuk-u-reading-width'>{tableHintText}</HintText>
+        <HintText className='nhsuk-u-reading-width' data-testid='table-hint'>
+          {tableHintText}
+        </HintText>
         <Radios
           id={'channelTemplate'}
           error={errorState?.fieldErrors?.['channelTemplate']?.join(', ')}
