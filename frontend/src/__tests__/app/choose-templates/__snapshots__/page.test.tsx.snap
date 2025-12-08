@@ -118,7 +118,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-NHSAPP"
-                      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span
@@ -134,11 +134,19 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
                       />
                       <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
+                      />
+                      <input
                         name="templateId"
+                        readonly=""
                         type="hidden"
                         value="d3a2c6ba-438a-4bf4-b94a-7c64c6528e7f"
                       />
@@ -297,7 +305,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-SMS"
-                      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span
@@ -313,11 +321,19 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
                       />
                       <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
+                      />
+                      <input
                         name="templateId"
+                        readonly=""
                         type="hidden"
                         value="5f7c3e1d-9b1a-4d3a-8f3e-2c6b8e9f1a2b"
                       />
@@ -465,7 +481,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="choose-template-link-EMAIL"
-                      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Choose
                       <span
@@ -615,7 +631,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <a
                       class="nhsuk-link nhsuk-link--no-visited-state"
                       data-testid="change-template-link-LETTER"
-                      href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                      href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                     >
                       Change
                       <span
@@ -631,11 +647,19 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                     <form>
                       <input
                         name="routingConfigId"
+                        readonly=""
                         type="hidden"
                         value="fbb81055-79b9-4759-ac07-d191ae57be34"
                       />
                       <input
+                        name="lockNumber"
+                        readonly=""
+                        type="hidden"
+                        value="0"
+                      />
+                      <input
                         name="templateId"
+                        readonly=""
                         type="hidden"
                         value="9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d"
                       />
@@ -767,7 +791,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-x1"
-                          href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                          href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=undefined"
                         >
                           Choose
                           <span
@@ -822,7 +846,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="change-template-link-foreign-language"
-                          href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+                          href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=undefined"
                         >
                           Change
                           <span
@@ -838,16 +862,24 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         <form>
                           <input
                             name="routingConfigId"
+                            readonly=""
                             type="hidden"
                             value="fbb81055-79b9-4759-ac07-d191ae57be34"
                           />
                           <input
+                            name="lockNumber"
+                            readonly=""
+                            type="hidden"
+                          />
+                          <input
                             name="templateId"
+                            readonly=""
                             type="hidden"
                             value="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
                           />
                           <input
                             name="templateId"
+                            readonly=""
                             type="hidden"
                             value="6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a"
                           />

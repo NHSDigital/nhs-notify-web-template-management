@@ -32,6 +32,7 @@ describe('MessagePlanBlock', () => {
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
         conditionalTemplates={emptyConditionalTemplates}
+        lockNumber={42}
       />
     );
 
@@ -52,6 +53,7 @@ describe('MessagePlanBlock', () => {
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
         conditionalTemplates={emptyConditionalTemplates}
+        lockNumber={42}
       />
     );
 
@@ -71,6 +73,7 @@ describe('MessagePlanBlock', () => {
         channelItem={channelItem}
         routingConfigId='test-routing-config-id'
         conditionalTemplates={emptyConditionalTemplates}
+        lockNumber={42}
       />
     );
 
@@ -90,6 +93,7 @@ describe('MessagePlanBlock', () => {
           defaultTemplate={mockTemplate}
           routingConfigId='test-routing-config-id'
           conditionalTemplates={emptyConditionalTemplates}
+          lockNumber={42}
         />
       );
       expect(screen.getByText('Test email template')).toBeInTheDocument();
@@ -105,6 +109,7 @@ describe('MessagePlanBlock', () => {
           defaultTemplate={mockTemplate}
           routingConfigId='test-routing-config-id'
           conditionalTemplates={emptyConditionalTemplates}
+          lockNumber={42}
         />
       );
 
@@ -130,6 +135,7 @@ describe('MessagePlanBlock', () => {
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
           conditionalTemplates={emptyConditionalTemplates}
+          lockNumber={42}
         />
       );
 
@@ -253,6 +259,7 @@ describe('MessagePlanBlock', () => {
             defaultTemplate={mockTemplate}
             routingConfigId='test-routing-config-id'
             conditionalTemplates={emptyConditionalTemplates}
+            lockNumber={42}
           />
         );
         expect(asFragment()).toMatchSnapshot();
@@ -271,6 +278,7 @@ describe('MessagePlanBlock', () => {
             channelItem={channelItem}
             routingConfigId='test-routing-config-id'
             conditionalTemplates={emptyConditionalTemplates}
+            lockNumber={42}
           />
         );
         expect(asFragment()).toMatchSnapshot();

@@ -66,6 +66,7 @@ const baseConfig: RoutingConfig = {
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
   cascade: [validCascadeItem],
+  lockNumber: 0,
   cascadeGroupOverrides: [],
   defaultCascadeGroup: 'standard',
 };
@@ -117,6 +118,7 @@ describe('Message plans actions', () => {
             cascadeGroups: ['standard'],
           },
         ],
+        lockNumber: 0,
         cascadeGroupOverrides: [],
         defaultCascadeGroup: 'standard',
       } satisfies Omit<RoutingConfig, 'id' | 'updatedAt'>;
@@ -198,6 +200,7 @@ describe('Message plans actions', () => {
             cascadeGroupOverrides: [],
             id: 'a487ed49-e2f7-4871-ac8d-0c6c682c71f5',
             createdAt: '2022-01-01T00:00:00.000Z',
+            lockNumber: 0,
             defaultCascadeGroup: 'standard',
           },
         ],
@@ -349,7 +352,7 @@ describe('Message plans actions', () => {
       });
 
       await expect(
-        updateRoutingConfig(validRoutingConfigId, baseConfig)
+        updateRoutingConfig(validRoutingConfigId, baseConfig, 42)
       ).rejects.toThrow('Failed to get access token');
 
       expect(routingConfigApiMock.update).not.toHaveBeenCalled();
@@ -364,12 +367,17 @@ describe('Message plans actions', () => {
 
       routingConfigApiMock.update.mockResolvedValueOnce({ data: updated });
 
-      const response = await updateRoutingConfig(validRoutingConfigId, updated);
+      const response = await updateRoutingConfig(
+        validRoutingConfigId,
+        updated,
+        42
+      );
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
         validRoutingConfigId,
-        updated
+        updated,
+        42
       );
       expect(response).toEqual(updated);
       expect(loggerMock.error).not.toHaveBeenCalled();
@@ -382,7 +390,8 @@ describe('Message plans actions', () => {
 
       const response = await updateRoutingConfig(
         validRoutingConfigId,
-        baseConfig
+        baseConfig,
+        42
       );
 
       expect(response).toBeUndefined();
@@ -396,13 +405,14 @@ describe('Message plans actions', () => {
       });
 
       await expect(
-        updateRoutingConfig(validRoutingConfigId, baseConfig)
+        updateRoutingConfig(validRoutingConfigId, baseConfig, 42)
       ).rejects.toThrow('Failed to update message plan');
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
         validRoutingConfigId,
-        baseConfig
+        baseConfig,
+        42
       );
       expect(loggerMock.error).toHaveBeenCalledWith(
         'Failed to update message plan',
@@ -419,13 +429,15 @@ describe('Message plans actions', () => {
 
       const response = await updateRoutingConfig(
         invalidRoutingConfigId,
-        baseConfig
+        baseConfig,
+        42
       );
 
       expect(routingConfigApiMock.update).toHaveBeenCalledWith(
         'mock-token',
         invalidRoutingConfigId,
-        baseConfig
+        baseConfig,
+        42
       );
       expect(response).toBeUndefined();
       expect(loggerMock.error).toHaveBeenCalledWith(
@@ -566,6 +578,7 @@ describe('Message plans actions', () => {
           defaultCascadeGroup: 'standard',
           status: 'DRAFT',
           updatedAt: now.toISOString(),
+          lockNumber: 0,
         },
       }));
 
@@ -616,6 +629,7 @@ describe('Message plans actions', () => {
             defaultTemplateId: null,
           },
         ],
+        lockNumber: 0,
         cascadeGroupOverrides: [],
         defaultCascadeGroup: 'standard',
       });

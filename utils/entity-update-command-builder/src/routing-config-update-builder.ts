@@ -79,6 +79,17 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
+  expectLockNumber(lockNumber: number) {
+    this.updateBuilder.conditions.and('lockNumber', '=', lockNumber);
+
+    return this;
+  }
+
+  incrementLockNumber() {
+    this.updateBuilder.addToValue('lockNumber', 1);
+    return this;
+  }
+
   build() {
     return this.updateBuilder.finalise();
   }

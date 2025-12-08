@@ -70,9 +70,9 @@ test.describe('Routing - Preview SMS template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewSmsTemplatePage(page),
-      id: messagePlans.SMS_ROUTING_CONFIG.id,
-      additionalIds: [templates.SMS.id],
+      page: new RoutingPreviewSmsTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.SMS.id),
       baseURL,
       expectedUrl: `templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`,
     };
@@ -85,11 +85,12 @@ test.describe('Routing - Preview SMS template page', () => {
   });
 
   test('loads the SMS template', async ({ page, baseURL }) => {
-    const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page);
-    await previewSmsTemplatePage.loadPage(
-      messagePlans.SMS_ROUTING_CONFIG.id,
-      templates.SMS.id
-    );
+    const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.SMS.id);
+
+    await previewSmsTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}/preview-template/${templates.SMS.id}`
     );
@@ -107,34 +108,31 @@ test.describe('Routing - Preview SMS template page', () => {
 
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
-      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page);
+      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+        .setPathParam('templateId', notFoundTemplateId);
 
-      await previewSmsTemplatePage.loadPage(
-        messagePlans.SMS_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
-      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page);
+      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+        .setPathParam('templateId', invalidTemplateId);
 
-      await previewSmsTemplatePage.loadPage(
-        messagePlans.SMS_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template is not SMS', async ({ page, baseURL }) => {
-      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page);
+      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.EMAIL.id);
 
-      await previewSmsTemplatePage.loadPage(
-        messagePlans.SMS_ROUTING_CONFIG.id,
-        templates.EMAIL.id
-      );
+      await previewSmsTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

@@ -158,6 +158,7 @@ describe('RoutingConfigRepository', () => {
       id: generatedId,
       status: 'DRAFT',
       updatedAt: date.toISOString(),
+      lockNumber: 0,
     };
 
     const putPayload = {
@@ -240,19 +241,23 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completed });
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({ data: completed });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#status': 'status',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
+          '#lockNumber': 'lockNumber',
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':status': 'COMPLETED',
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -264,7 +269,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -275,7 +280,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -299,7 +304,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -331,7 +336,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -354,7 +359,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -377,7 +382,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -385,6 +390,34 @@ describe('RoutingConfigRepository', () => {
             code: 400,
             description:
               'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+
+    test("returns 409 failure if lock number doesn't match", async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: {
+          status: { S: 'DRAFT' satisfies RoutingConfigStatus },
+          lockNumber: { N: '3' },
+        },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
           },
         },
       });
@@ -402,13 +435,15 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: deleted });
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({ data: deleted });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
@@ -416,6 +451,8 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':status': 'DELETED',
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -428,7 +465,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #status = :status, #ttl = :ttl, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #status = :status, #ttl = :ttl, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -439,7 +476,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -463,7 +500,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -495,7 +532,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -518,7 +555,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -541,7 +578,7 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.delete(routingConfig.id, user);
+      const result = await repo.delete(routingConfig.id, user, 2);
 
       expect(result).toEqual({
         error: {
@@ -549,6 +586,34 @@ describe('RoutingConfigRepository', () => {
             code: 400,
             description:
               'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+
+    test("returns 409 failure if routing config lock number doesn't match", async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: {
+          status: { S: 'DRAFT' satisfies RoutingConfigStatus },
+          lockNumber: { N: '3' },
+        },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.delete(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
           },
         },
       });
@@ -573,16 +638,18 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -593,6 +660,8 @@ describe('RoutingConfigRepository', () => {
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -604,7 +673,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -622,13 +691,15 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -636,6 +707,8 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -647,7 +720,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -665,13 +738,15 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
           '#campaignId': 'campaignId',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -679,6 +754,8 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':campaignId': update.campaignId,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -690,7 +767,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -716,21 +793,25 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#lockNumber': 'lockNumber',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':updatedAt': date.toISOString(),
@@ -743,7 +824,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -769,13 +850,15 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -783,6 +866,8 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -794,7 +879,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -813,13 +898,15 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -827,6 +914,8 @@ describe('RoutingConfigRepository', () => {
         },
         ExpressionAttributeValues: {
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -838,7 +927,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -855,16 +944,18 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).resolves({ Attributes: routingConfig });
 
-      const result = await repo.update(routingConfig.id, update, user);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: routingConfig });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression: '#status = :condition_1_status',
+        ConditionExpression:
+          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
         ExpressionAttributeNames: {
           '#campaignId': 'campaignId',
           '#cascade': 'cascade',
           '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+          '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#status': 'status',
           '#updatedAt': 'updatedAt',
@@ -875,6 +966,8 @@ describe('RoutingConfigRepository', () => {
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':condition_1_status': 'DRAFT',
+          ':condition_2_lockNumber': 2,
+          ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
           ':updatedBy': user.userId,
@@ -886,7 +979,7 @@ describe('RoutingConfigRepository', () => {
         ReturnValues: 'ALL_NEW',
         TableName: TABLE_NAME,
         UpdateExpression:
-          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy',
+          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -905,7 +998,8 @@ describe('RoutingConfigRepository', () => {
           name: routingConfig.name,
           campaignId: routingConfig.campaignId,
         },
-        user
+        user,
+        2
       );
 
       expect(result).toEqual({
@@ -937,7 +1031,8 @@ describe('RoutingConfigRepository', () => {
           name: routingConfig.name,
           campaignId: routingConfig.campaignId,
         },
-        user
+        user,
+        2
       );
 
       expect(result).toEqual({
@@ -971,7 +1066,12 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new-name' },
+        user,
+        2
+      );
 
       expect(result).toEqual({
         error: {
@@ -994,7 +1094,12 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new-name' },
+        user,
+        2
+      );
 
       expect(result).toEqual({
         error: {
@@ -1017,7 +1122,12 @@ describe('RoutingConfigRepository', () => {
 
       mocks.dynamo.on(UpdateCommand).rejects(err);
 
-      const result = await repo.submit(routingConfig.id, user);
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new name' },
+        user,
+        2
+      );
 
       expect(result).toEqual({
         error: {
@@ -1025,6 +1135,39 @@ describe('RoutingConfigRepository', () => {
             code: 400,
             description:
               'Routing configuration with status COMPLETED cannot be updated',
+          },
+        },
+      });
+    });
+
+    test("returns 409 failure if routing config lock number doesn't match", async () => {
+      const { repo, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        Item: {
+          status: { S: 'DRAFT' satisfies RoutingConfigStatus },
+          lockNumber: { N: '3' },
+        },
+        $metadata: {},
+        message: 'msg',
+      });
+
+      mocks.dynamo.on(UpdateCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new-name' },
+        user,
+        2
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
           },
         },
       });

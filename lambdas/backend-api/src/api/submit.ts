@@ -1,7 +1,8 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, apiSuccess } from './responses';
-import { TemplateClient } from '../app/template-client';
-import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
+import type { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
+import { apiFailure, apiSuccess } from '@backend-api/api/responses';
+import type { TemplateClient } from '@backend-api/app/template-client';
+import { toHeaders } from '@backend-api/utils/headers';
 
 export function createHandler({
   templateClient,
@@ -25,7 +26,7 @@ export function createHandler({
         userId,
         clientId,
       },
-      event.headers['X-Lock-Number'] ?? ''
+      toHeaders(event.headers).get('X-Lock-Number') ?? ''
     );
 
     if (error) {

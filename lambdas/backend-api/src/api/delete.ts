@@ -1,6 +1,7 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, noContent } from './responses';
-import { TemplateClient } from '../app/template-client';
+import { apiFailure, noContent } from '@backend-api/api/responses';
+import type { TemplateClient } from '@backend-api/app/template-client';
+import { toHeaders } from '@backend-api/utils/headers';
 
 export function createHandler({
   templateClient,
@@ -22,7 +23,7 @@ export function createHandler({
         userId,
         clientId,
       },
-      event.headers['X-Lock-Number'] ?? ''
+      toHeaders(event.headers).get('X-Lock-Number') ?? ''
     );
 
     if (error) {

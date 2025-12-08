@@ -110,6 +110,7 @@ const propsByChannel = {
 const renderComponent = (overrides = {}) => {
   const defaultProps = {
     messagePlan: ROUTING_CONFIG,
+    lockNumber: 42,
     ...propsByChannel.NHSAPP,
   };
 

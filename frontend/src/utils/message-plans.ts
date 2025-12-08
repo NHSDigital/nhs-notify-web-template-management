@@ -120,7 +120,8 @@ export async function createRoutingConfig(
 
 export async function updateRoutingConfig(
   routingConfigId: string,
-  updatedRoutingConfig: UpdateRoutingConfig
+  updatedRoutingConfig: UpdateRoutingConfig,
+  lockNumber: number
 ): Promise<RoutingConfig | undefined> {
   const { accessToken } = await getSessionServer();
 
@@ -131,7 +132,8 @@ export async function updateRoutingConfig(
   const { data, error } = await routingConfigurationApiClient.update(
     accessToken,
     routingConfigId,
-    updatedRoutingConfig
+    updatedRoutingConfig,
+    lockNumber
   );
 
   if (error) {

@@ -247,7 +247,6 @@ test.describe('Upload letter Template Page', () => {
 
     test('redirects to error page when campaign ID is missing', async ({
       page,
-      baseURL,
     }) => {
       await loginAsUser(userWithoutCampaignId, page);
 
@@ -257,9 +256,7 @@ test.describe('Upload letter Template Page', () => {
 
       await createTemplatePage.loadPage();
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegments[0]}`
-      );
+      await expect(page).toHaveURL(missingClientOrCampaignIdErrorPage.getUrl());
 
       await assertMissingClientOrCampaignIdErrorPage(
         missingClientOrCampaignIdErrorPage

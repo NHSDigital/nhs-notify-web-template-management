@@ -10,4 +10,5 @@ export type ChooseChannelTemplateProps = {
   templateList: TemplateDto[];
   cascadeIndex: number;
   accessibleFormat?: Exclude<LetterType, 'x0'>;
+  lockNumber: number;
 };

@@ -21,7 +21,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-x1"
-            href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+            href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -71,7 +71,7 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-x1"
-            href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+            href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -87,11 +87,19 @@ exports[`MessagePlanAccessibleFormatTemplate when a template has been selected s
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="test-large-print-id"
             />
@@ -139,7 +147,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (EMAIL
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-EMAIL"
-            href="/message-plans/choose-email-template/test-routing-config-id"
+            href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -178,7 +186,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (LETTE
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-LETTER"
-            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -217,7 +225,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (NHSAP
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-NHSAPP"
-            href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+            href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -256,7 +264,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for empty state (SMS) 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-SMS"
-            href="/message-plans/choose-text-message-template/test-routing-config-id"
+            href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -306,7 +314,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-EMAIL"
-            href="/message-plans/choose-email-template/test-routing-config-id"
+            href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -322,11 +330,19 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="test-id"
             />
@@ -385,7 +401,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-LETTER"
-            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+            href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -401,11 +417,19 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="test-id"
             />
@@ -464,7 +488,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-NHSAPP"
-            href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+            href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -480,11 +504,19 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="test-id"
             />
@@ -543,7 +575,7 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-SMS"
-            href="/message-plans/choose-text-message-template/test-routing-config-id"
+            href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -559,11 +591,19 @@ exports[`MessagePlanChannelTemplate should match snapshot for selected template 
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="test-id"
             />
@@ -611,7 +651,7 @@ exports[`MessagePlanLanguageTemplate when multiple templates are selected should
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="choose-template-link-foreign-language"
-            href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+            href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
           >
             Choose
             <span
@@ -667,7 +707,7 @@ exports[`MessagePlanLanguageTemplate when multiple templates are selected should
           <a
             class="nhsuk-link nhsuk-link--no-visited-state"
             data-testid="change-template-link-foreign-language"
-            href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+            href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
           >
             Change
             <span
@@ -683,16 +723,25 @@ exports[`MessagePlanLanguageTemplate when multiple templates are selected should
           <form>
             <input
               name="routingConfigId"
+              readonly=""
               type="hidden"
               value="test-routing-config-id"
             />
             <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="welsh-template-id"
             />
             <input
               name="templateId"
+              readonly=""
               type="hidden"
               value="polish-template-id"
             />

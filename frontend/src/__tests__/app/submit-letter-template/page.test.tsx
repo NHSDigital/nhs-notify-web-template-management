@@ -39,13 +39,14 @@ describe('SubmitLetterTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(page).toEqual(
       <SubmitLetterTemplate
         templateName={LETTER_TEMPLATE.name}
         templateId={LETTER_TEMPLATE.id}
-        lockNumber={LETTER_TEMPLATE.lockNumber}
+        lockNumber={42}
       />
     );
   });
@@ -57,6 +58,7 @@ describe('SubmitLetterTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'invalid-template',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -89,11 +91,26 @@ describe('SubmitLetterTemplatePage', () => {
         params: Promise.resolve({
           templateId: 'template-id',
         }),
+        searchParams: Promise.resolve({ lockNumber: '42' }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  test('should redirect to template preview when lock number search parameter is invalid', async () => {
+    await SubmitLetterTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-letter-template/template-id',
+      'replace'
+    );
+  });
 
   test('should generate metadata', async () => {
     const metadata = await generateMetadata();

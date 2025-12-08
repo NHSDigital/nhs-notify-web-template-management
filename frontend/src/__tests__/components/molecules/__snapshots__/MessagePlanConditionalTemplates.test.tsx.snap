@@ -110,7 +110,7 @@ exports[`MessagePlanConditionalLetterTemplates with no templates selected should
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="choose-template-link-x1"
-                href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+                href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
               >
                 Choose
                 <span
@@ -148,7 +148,7 @@ exports[`MessagePlanConditionalLetterTemplates with no templates selected should
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="choose-template-link-foreign-language"
-                href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+                href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
               >
                 Choose
                 <span
@@ -289,7 +289,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-x1"
-                href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+                href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
               >
                 Change
                 <span
@@ -305,11 +305,19 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="test-routing-config-id"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="42"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="large-print-id"
                 />
@@ -373,7 +381,7 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-foreign-language"
-                href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+                href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
               >
                 Change
                 <span
@@ -389,16 +397,25 @@ exports[`MessagePlanConditionalLetterTemplates with templates selected should ma
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="test-routing-config-id"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="42"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="polish-id"
                 />
                 <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="french-id"
                 />

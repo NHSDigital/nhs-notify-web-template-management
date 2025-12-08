@@ -70,9 +70,9 @@ test.describe('Routing - Preview Letter template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewStandardLetterTemplatePage(page),
-      id: messagePlans.LETTER_ROUTING_CONFIG.id,
-      additionalIds: [templates.LETTER.id],
+      page: new RoutingPreviewStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.LETTER.id),
       baseURL,
       expectedUrl: `templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
     };
@@ -86,11 +86,12 @@ test.describe('Routing - Preview Letter template page', () => {
 
   test('loads the Letter template', async ({ page, baseURL }) => {
     const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page);
-    await previewLetterTemplatePage.loadPage(
-      messagePlans.LETTER_ROUTING_CONFIG.id,
-      templates.LETTER.id
-    );
+      new RoutingPreviewStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.LETTER.id);
+
+    await previewLetterTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LETTER.id}`
     );
@@ -123,36 +124,33 @@ test.describe('Routing - Preview Letter template page', () => {
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page);
+        new RoutingPreviewStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', notFoundTemplateId);
 
-      await previewLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page);
+        new RoutingPreviewStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', invalidTemplateId);
 
-      await previewLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when template is not letter', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page);
+        new RoutingPreviewStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.EMAIL.id);
 
-      await previewLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id,
-        templates.EMAIL.id
-      );
+      await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

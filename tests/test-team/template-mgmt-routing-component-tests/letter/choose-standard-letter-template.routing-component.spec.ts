@@ -106,9 +106,11 @@ test.describe('Routing - Choose letter template page', () => {
   });
 
   test('common page tests', async ({ page, baseURL }) => {
+    const plan = messagePlans.LETTER_ROUTING_CONFIG;
     const props = {
-      page: new RoutingChooseStandardLetterTemplatePage(page),
-      id: messagePlans.LETTER_ROUTING_CONFIG.id,
+      page: new RoutingChooseStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', plan.id)
+        .setSearchParam('lockNumber', String(plan.lockNumber)),
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -126,13 +128,14 @@ test.describe('Routing - Choose letter template page', () => {
     page,
     baseURL,
   }) => {
+    const plan = messagePlans.LETTER_ROUTING_CONFIG;
     const chooseLetterTemplatePage =
-      new RoutingChooseStandardLetterTemplatePage(page);
-    await chooseLetterTemplatePage.loadPage(
-      messagePlans.LETTER_ROUTING_CONFIG.id
-    );
+      new RoutingChooseStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', plan.id)
+        .setSearchParam('lockNumber', String(plan.lockNumber));
+    await chooseLetterTemplatePage.loadPage();
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${plan.id}?lockNumber=${plan.lockNumber}`
     );
 
     await test.step('displays list of letter templates to choose from', async () => {
@@ -183,7 +186,7 @@ test.describe('Routing - Choose letter template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-standard-english-letter-template/${plan.id}/preview-template/${template.id}`
         );
       }
 
@@ -202,7 +205,7 @@ test.describe('Routing - Choose letter template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+        `/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
@@ -210,7 +213,7 @@ test.describe('Routing - Choose letter template page', () => {
       await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${plan.id}?lockNumber=${plan.lockNumber}`
       );
 
       await expect(chooseLetterTemplatePage.errorSummary).toBeVisible();
@@ -220,9 +223,7 @@ test.describe('Routing - Choose letter template page', () => {
     });
 
     await test.step('submits selected template and navigates to choose templates page', async () => {
-      await chooseLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id
-      );
+      await chooseLetterTemplatePage.loadPage();
 
       await chooseLetterTemplatePage
         .getRadioButton(templates.LETTER2.id)
@@ -230,14 +231,12 @@ test.describe('Routing - Choose letter template page', () => {
       await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
       );
     });
 
     await test.step('pre-selects previously selected template', async () => {
-      await chooseLetterTemplatePage.loadPage(
-        messagePlans.LETTER_ROUTING_CONFIG.id
-      );
+      await chooseLetterTemplatePage.loadPage();
 
       await assertChooseTemplatePageWithPreviousSelection({
         page: chooseLetterTemplatePage,
@@ -264,9 +263,11 @@ test.describe('Routing - Choose letter template page', () => {
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
       const chooseLetterTemplatePage =
-        new RoutingChooseStandardLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', notFoundMessagePlanId)
+          .setSearchParam('lockNumber', '42');
 
-      await chooseLetterTemplatePage.loadPage(notFoundMessagePlanId);
+      await chooseLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -275,9 +276,11 @@ test.describe('Routing - Choose letter template page', () => {
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
       const chooseLetterTemplatePage =
-        new RoutingChooseStandardLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', invalidMessagePlanId)
+          .setSearchParam('lockNumber', '42');
 
-      await chooseLetterTemplatePage.loadPage(invalidMessagePlanId);
+      await chooseLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -289,14 +292,34 @@ test.describe('Routing - Choose letter template page', () => {
       baseURL,
     }) => {
       const chooseLetterTemplatePage =
-        new RoutingChooseStandardLetterTemplatePage(page);
+        new RoutingChooseStandardLetterTemplatePage(page)
+          .setPathParam(
+            'messagePlanId',
+            messagePlans.NON_LETTER_ROUTING_CONFIG.id
+          )
+          .setSearchParam(
+            'lockNumber',
+            String(messagePlans.NON_LETTER_ROUTING_CONFIG.lockNumber)
+          );
 
-      await chooseLetterTemplatePage.loadPage(
-        messagePlans.NON_LETTER_ROUTING_CONFIG.id
-      );
+      await chooseLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
+      );
+    });
+  });
+
+  test.describe('redirects to choose templates page', () => {
+    test('when no lockNumber in url', async ({ page, baseURL }) => {
+      const chooseTemplatePage = new RoutingChooseStandardLetterTemplatePage(
+        page
+      ).setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id);
+
+      await chooseTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
       );
     });
   });

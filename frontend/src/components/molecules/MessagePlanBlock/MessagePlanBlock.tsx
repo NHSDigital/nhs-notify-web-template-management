@@ -20,12 +20,14 @@ export function MessagePlanBlock({
   defaultTemplate,
   routingConfigId,
   conditionalTemplates,
+  lockNumber,
 }: {
   index: number;
   channelItem: CascadeItem;
   defaultTemplate?: TemplateDto;
   routingConfigId: RoutingConfig['id'];
   conditionalTemplates: MessagePlanTemplates;
+  lockNumber: number;
 }) {
   return (
     <li
@@ -44,6 +46,7 @@ export function MessagePlanBlock({
         template={defaultTemplate}
         required={true}
         routingConfigId={routingConfigId}
+        lockNumber={lockNumber}
       />
 
       <MessagePlanConditionalLetterTemplates

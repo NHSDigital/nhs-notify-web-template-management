@@ -9,15 +9,17 @@ import {
   addDefaultTemplateToCascade,
   buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 export type ChooseChannelTemplateFormState = FormState &
-  ChooseChannelTemplateProps;
+  Omit<ChooseChannelTemplateProps, 'lockNumber'>;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>
   z.object({
     channelTemplate: z.string({
       message: errorMessage,
     }),
+    lockNumber: $LockNumber,
   });
 
 export async function chooseChannelTemplateAction(
@@ -34,6 +36,7 @@ export async function chooseChannelTemplateAction(
 
   const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse({
     channelTemplate: formData.get('channelTemplate'),
+    lockNumber: formData.get('lockNumber'),
   });
 
   if (!parsedForm.success) {
@@ -75,10 +78,14 @@ export async function chooseChannelTemplateAction(
     );
   }
 
-  await updateRoutingConfig(messagePlan.id, {
-    cascade: updatedCascade,
-    cascadeGroupOverrides: updatedCascadeGroupOverrides,
-  });
+  await updateRoutingConfig(
+    messagePlan.id,
+    {
+      cascade: updatedCascade,
+      cascadeGroupOverrides: updatedCascadeGroupOverrides,
+    },
+    parsedForm.data.lockNumber
+  );
 
   redirect(
     `/message-plans/choose-templates/${messagePlan.id}`,

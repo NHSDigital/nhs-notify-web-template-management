@@ -125,5 +125,6 @@ export const ROUTING_CONFIG: RoutingConfig = {
       defaultTemplateId: LETTER_TEMPLATE.id,
     },
   ],
+  lockNumber: 0,
   defaultCascadeGroup: 'standard',
 };

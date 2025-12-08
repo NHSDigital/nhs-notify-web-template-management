@@ -78,9 +78,12 @@ test.describe('Preview Email message template Page', () => {
     page,
     baseURL,
   }) => {
-    const previewPage = new TemplateMgmtPreviewEmailPage(page);
+    const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await previewPage.loadPage(templates.valid.id);
+    await previewPage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-email-template/${templates.valid.id}`
@@ -98,8 +101,10 @@ test.describe('Preview Email message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewEmailPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewEmailPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -115,9 +120,12 @@ test.describe('Preview Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewEmailPage(page);
+      const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-      await previewPage.loadPage(templates.valid.id);
+      await previewPage.loadPage();
 
       await previewPage.editButton.click();
 
@@ -132,9 +140,11 @@ test.describe('Preview Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(
+        page
+      ).setPathParam('templateId', templates.empty.id);
 
-      await previewEmailTemplatePage.loadPage(templates.empty.id);
+      await previewEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -143,9 +153,11 @@ test.describe('Preview Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(
+        page
+      ).setPathParam('templateId', 'fake-template-id');
 
-      await previewEmailTemplatePage.loadPage('/fake-template-id');
+      await previewEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -161,9 +173,12 @@ test.describe('Preview Email message template Page', () => {
     }) => {
       await loginAsUser(routingDisabledUser, page);
 
-      const previewPage = new TemplateMgmtPreviewEmailPage(page);
+      const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+        'templateId',
+        templates.routingDisabled.id
+      );
 
-      await previewPage.loadPage(templates.routingDisabled.id);
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-email-template/${templates.routingDisabled.id}`
@@ -187,9 +202,12 @@ test.describe('Preview Email message template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+        const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.editRadioOption.click();
 
@@ -206,16 +224,19 @@ test.describe('Preview Email message template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+        const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.submitRadioOption.click();
 
         await previewPage.clickContinueButton();
 
         await expect(page).toHaveURL(
-          `${baseURL}/templates/submit-email-template/${templates.routingDisabled.id}`
+          `${baseURL}/templates/submit-email-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
         );
       });
     });
@@ -228,9 +249,12 @@ test.describe('Preview Email message template Page', () => {
 
         const errorMessage = 'Select an option';
 
-        const previewPage = new TemplateMgmtPreviewEmailPage(page);
+        const previewPage = new TemplateMgmtPreviewEmailPage(page).setPathParam(
+          'templateId',
+          templates.routingDisabled.id
+        );
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.clickContinueButton();
 

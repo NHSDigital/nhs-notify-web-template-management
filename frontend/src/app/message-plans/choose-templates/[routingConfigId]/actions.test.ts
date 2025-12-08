@@ -52,6 +52,7 @@ const baseConfig = {
     },
   ],
   cascadeGroupOverrides: [],
+  lockNumber: 0,
   defaultCascadeGroup: 'standard',
 };
 
@@ -66,6 +67,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('templateId', emailTemplateId);
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -84,7 +86,8 @@ describe('removeTemplateFromMessagePlan', () => {
             defaultTemplateId: smsTemplateId,
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -113,6 +116,7 @@ describe('removeTemplateFromMessagePlan', () => {
     formData.set('routingConfigId', routingConfigId);
     formData.append('templateId', polishTemplateId);
     formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -134,7 +138,8 @@ describe('removeTemplateFromMessagePlan', () => {
             channel: 'SMS',
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -157,6 +162,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('templateId', largePrintId);
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -168,7 +174,8 @@ describe('removeTemplateFromMessagePlan', () => {
             channel: 'LETTER',
           }),
         ],
-      })
+      }),
+      42
     );
 
     // Verify conditionalTemplates was removed
@@ -222,6 +229,7 @@ describe('removeTemplateFromMessagePlan', () => {
     formData.append('templateId', accessibleFormatId);
     formData.append('templateId', polishTemplateId);
     formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -234,7 +242,8 @@ describe('removeTemplateFromMessagePlan', () => {
             accessibleFormat: ['x1'],
           },
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -270,6 +279,7 @@ describe('removeTemplateFromMessagePlan', () => {
     formData.set('routingConfigId', routingConfigId);
     formData.append('templateId', polishTemplateId);
     formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -288,7 +298,8 @@ describe('removeTemplateFromMessagePlan', () => {
             ],
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -320,6 +331,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('templateId', largePrintId);
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -332,7 +344,8 @@ describe('removeTemplateFromMessagePlan', () => {
             cascadeGroups: ['standard'],
           }),
         ],
-      })
+      }),
+      42
     );
 
     // Verify conditionalTemplates was removed
@@ -347,6 +360,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('templateId', emailTemplateId);
+    formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
 
@@ -361,6 +375,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
     formData.set('templateId', emailTemplateId);
+    formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
       /not found/
@@ -379,6 +394,7 @@ describe('removeTemplateFromMessagePlan', () => {
     const formData = new FormData();
     formData.set('routingConfigId', 'invalid-id');
     formData.set('templateId', '');
+    formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
       /Invalid form data/

@@ -33,6 +33,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         cascadeIndex={0}
         routingConfigId={routingConfigId}
         conditionalTemplates={{}}
+        lockNumber={42}
       />
     );
 
@@ -49,6 +50,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         cascadeIndex={0}
         routingConfigId={routingConfigId}
         conditionalTemplates={{}}
+        lockNumber={42}
       />
     );
 
@@ -66,6 +68,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         cascadeIndex={0}
         routingConfigId={routingConfigId}
         conditionalTemplates={{}}
+        lockNumber={42}
       />
     );
 
@@ -86,6 +89,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         cascadeIndex={0}
         routingConfigId={routingConfigId}
         conditionalTemplates={{}}
+        lockNumber={42}
       />
     );
 
@@ -107,6 +111,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={{}}
+          lockNumber={42}
         />
       );
 
@@ -122,6 +127,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={{}}
+          lockNumber={42}
         />
       );
 
@@ -130,7 +136,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
       });
       expect(largePrintChooseLink).toHaveAttribute(
         'href',
-        `/message-plans/choose-large-print-letter-template/${routingConfigId}`
+        `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=42`
       );
 
       const languageChooseLink = screen.getByRole('link', {
@@ -138,7 +144,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
       });
       expect(languageChooseLink).toHaveAttribute(
         'href',
-        `/message-plans/choose-other-language-letter-template/${routingConfigId}`
+        `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -151,6 +157,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={{}}
+          lockNumber={42}
         />
       );
 
@@ -185,6 +192,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={{}}
+          lockNumber={42}
         />
       );
 
@@ -200,6 +208,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={{}}
+          lockNumber={42}
         />
       );
 
@@ -245,6 +254,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
             cascadeIndex={0}
             routingConfigId={routingConfigId}
             conditionalTemplates={templates}
+            lockNumber={42}
           />
         );
 
@@ -259,6 +269,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
             cascadeIndex={0}
             routingConfigId={routingConfigId}
             conditionalTemplates={templates}
+            lockNumber={42}
           />
         );
 
@@ -268,7 +279,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         expect(changeLink).toBeInTheDocument();
         expect(changeLink).toHaveAttribute(
           'href',
-          `/message-plans/choose-large-print-letter-template/${routingConfigId}`
+          `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=42`
         );
 
         expect(
@@ -318,6 +329,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
             cascadeIndex={0}
             routingConfigId={routingConfigId}
             conditionalTemplates={templates}
+            lockNumber={42}
           />
         );
 
@@ -336,6 +348,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
             cascadeIndex={0}
             routingConfigId={routingConfigId}
             conditionalTemplates={templates}
+            lockNumber={42}
           />
         );
 
@@ -345,7 +358,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
         expect(changeLink).toBeInTheDocument();
         expect(changeLink).toHaveAttribute(
           'href',
-          `/message-plans/choose-other-language-letter-template/${routingConfigId}`
+          `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=42`
         );
 
         expect(
@@ -393,6 +406,7 @@ describe('MessagePlanConditionalLetterTemplates', () => {
           cascadeIndex={0}
           routingConfigId={routingConfigId}
           conditionalTemplates={templates}
+          lockNumber={42}
         />
       );
 

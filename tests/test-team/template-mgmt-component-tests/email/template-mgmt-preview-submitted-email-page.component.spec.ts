@@ -61,9 +61,12 @@ test.describe('Preview submitted Email message template Page', () => {
     baseURL,
   }) => {
     const previewSubmittedEmailTemplatePage =
-      new TemplateMgmtPreviewSubmittedEmailPage(page);
+      new TemplateMgmtPreviewSubmittedEmailPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-    await previewSubmittedEmailTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-submitted-email-template/${templates.valid.id}`
@@ -85,8 +88,10 @@ test.describe('Preview submitted Email message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewSubmittedEmailPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewSubmittedEmailPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -108,9 +113,12 @@ test.describe('Preview submitted Email message template Page', () => {
       page,
     }) => {
       const previewSubmittedEmailTemplatePage =
-        new TemplateMgmtPreviewSubmittedEmailPage(page);
+        new TemplateMgmtPreviewSubmittedEmailPage(page).setPathParam(
+          'templateId',
+          templates.invalid.id
+        );
 
-      await previewSubmittedEmailTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -120,9 +128,12 @@ test.describe('Preview submitted Email message template Page', () => {
       page,
     }) => {
       const previewSubmittedEmailTemplatePage =
-        new TemplateMgmtPreviewSubmittedEmailPage(page);
+        new TemplateMgmtPreviewSubmittedEmailPage(page).setPathParam(
+          'templateId',
+          'fake-template-id'
+        );
 
-      await previewSubmittedEmailTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedEmailTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

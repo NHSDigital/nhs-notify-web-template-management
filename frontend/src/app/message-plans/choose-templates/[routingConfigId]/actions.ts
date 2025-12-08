@@ -6,6 +6,7 @@ import {
   removeTemplatesFromCascadeItem,
   buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
+import { $LockNumber } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
 
 export async function removeTemplateFromMessagePlan(formData: FormData) {
@@ -13,17 +14,19 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
     .object({
       routingConfigId: z.uuidv4(),
       templateIds: z.array(z.uuidv4()).min(1),
+      lockNumber: $LockNumber,
     })
     .safeParse({
       routingConfigId: formData.get('routingConfigId'),
       templateIds: formData.getAll('templateId'),
+      lockNumber: formData.get('lockNumber'),
     });
 
   if (!parseResult.success) {
     throw new Error('Invalid form data');
   }
 
-  const { routingConfigId, templateIds } = parseResult.data;
+  const { routingConfigId, templateIds, lockNumber } = parseResult.data;
 
   const routingConfig = await getRoutingConfig(routingConfigId);
 
@@ -44,7 +47,7 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
     cascade: updatedCascade,
   };
 
-  await updateRoutingConfig(routingConfigId, updatedConfig);
+  await updateRoutingConfig(routingConfigId, updatedConfig, lockNumber);
 
   redirect(`/message-plans/choose-templates/${routingConfigId}`);
 }

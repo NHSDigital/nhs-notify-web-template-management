@@ -28,17 +28,18 @@ test.describe('Event publishing - Routing Config', () => {
   test('Expect no events', async ({ request }) => {
     const id = randomUUID();
 
+    const messagePlan = RoutingConfigFactory.create(user, { id }).dbEntry;
+
     const start = new Date();
 
-    await storageHelper.seed([
-      RoutingConfigFactory.create(user, { id }).dbEntry,
-    ]);
+    await storageHelper.seed([messagePlan]);
 
     const submittedResponse = await request.patch(
       `${process.env.API_BASE_URL}/v1/routing-configuration/${id}/submit`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(messagePlan.lockNumber),
         },
       }
     );

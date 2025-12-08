@@ -70,9 +70,9 @@ test.describe('Routing - Preview app template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewNhsAppTemplatePage(page),
-      id: messagePlans.APP_ROUTING_CONFIG.id,
-      additionalIds: [templates.APP.id],
+      page: new RoutingPreviewNhsAppTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.APP.id),
       baseURL,
       expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`,
     };
@@ -85,13 +85,12 @@ test.describe('Routing - Preview app template page', () => {
   });
 
   test('loads the NHS app template', async ({ page, baseURL }) => {
-    const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(
-      page
-    );
-    await previewNhsAppTemplatePage.loadPage(
-      messagePlans.APP_ROUTING_CONFIG.id,
-      templates.APP.id
-    );
+    const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.APP.id);
+
+    await previewNhsAppTemplatePage.loadPage();
+
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${templates.APP.id}`
     );
@@ -111,12 +110,11 @@ test.describe('Routing - Preview app template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+        .setPathParam('templateId', notFoundTemplateId);
 
-      await previewNhsAppTemplatePage.loadPage(
-        messagePlans.APP_ROUTING_CONFIG.id,
-        notFoundTemplateId
-      );
+      await previewNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -124,12 +122,11 @@ test.describe('Routing - Preview app template page', () => {
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+        .setPathParam('templateId', invalidTemplateId);
 
-      await previewNhsAppTemplatePage.loadPage(
-        messagePlans.APP_ROUTING_CONFIG.id,
-        invalidTemplateId
-      );
+      await previewNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -137,12 +134,11 @@ test.describe('Routing - Preview app template page', () => {
     test('when template is not NHS app', async ({ page, baseURL }) => {
       const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(
         page
-      );
+      )
+        .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.EMAIL.id);
 
-      await previewNhsAppTemplatePage.loadPage(
-        messagePlans.APP_ROUTING_CONFIG.id,
-        templates.EMAIL.id
-      );
+      await previewNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

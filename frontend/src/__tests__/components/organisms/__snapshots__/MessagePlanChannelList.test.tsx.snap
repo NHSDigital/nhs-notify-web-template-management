@@ -50,7 +50,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-NHSAPP"
-                href="/message-plans/choose-nhs-app-template/routingconfig-1"
+                href="/message-plans/choose-nhs-app-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -65,11 +65,19 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-0"
                 />
@@ -227,7 +235,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-EMAIL"
-                href="/message-plans/choose-email-template/routingconfig-1"
+                href="/message-plans/choose-email-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -242,11 +250,19 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-1"
                 />
@@ -404,7 +420,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-SMS"
-                href="/message-plans/choose-text-message-template/routingconfig-1"
+                href="/message-plans/choose-text-message-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -419,11 +435,19 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-2"
                 />
@@ -501,7 +525,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-NHSAPP"
-                href="/message-plans/choose-nhs-app-template/routingconfig-1"
+                href="/message-plans/choose-nhs-app-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -516,11 +540,19 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-0"
                 />
@@ -678,7 +710,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-EMAIL"
-                href="/message-plans/choose-email-template/routingconfig-1"
+                href="/message-plans/choose-email-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -693,11 +725,19 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-1"
                 />
@@ -855,7 +895,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <a
                 class="nhsuk-link nhsuk-link--no-visited-state"
                 data-testid="change-template-link-LETTER"
-                href="/message-plans/choose-standard-english-letter-template/routingconfig-1"
+                href="/message-plans/choose-standard-english-letter-template/routingconfig-1?lockNumber=0"
               >
                 Change
                 <span
@@ -870,11 +910,19 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
               <form>
                 <input
                   name="routingConfigId"
+                  readonly=""
                   type="hidden"
                   value="routingconfig-1"
                 />
                 <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="0"
+                />
+                <input
                   name="templateId"
+                  readonly=""
                   type="hidden"
                   value="test-template-2"
                 />
@@ -1005,7 +1053,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
                     data-testid="choose-template-link-x1"
-                    href="/message-plans/choose-large-print-letter-template/routingconfig-1"
+                    href="/message-plans/choose-large-print-letter-template/routingconfig-1?lockNumber=undefined"
                   >
                     Choose
                     <span
@@ -1042,7 +1090,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
                     data-testid="choose-template-link-foreign-language"
-                    href="/message-plans/choose-other-language-letter-template/routingconfig-1"
+                    href="/message-plans/choose-other-language-letter-template/routingconfig-1?lockNumber=undefined"
                   >
                     Choose
                     <span

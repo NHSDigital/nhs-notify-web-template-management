@@ -62,9 +62,12 @@ test.describe('Delete Template Page', () => {
     page,
     baseURL,
   }) => {
-    const deleteTemplatePage = new TemplateMgmtDeletePage(page);
+    const deleteTemplatePage = new TemplateMgmtDeletePage(page).setPathParam(
+      'templateId',
+      templates.goBack.id
+    );
 
-    await deleteTemplatePage.loadPage(templates.goBack.id);
+    await deleteTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/delete-template/${templates.goBack.id}`
@@ -76,8 +79,10 @@ test.describe('Delete Template Page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtDeletePage(page),
-      id: templates.goBack.id,
+      page: new TemplateMgmtDeletePage(page).setPathParam(
+        'templateId',
+        templates.goBack.id
+      ),
       baseURL,
     };
 
@@ -91,9 +96,12 @@ test.describe('Delete Template Page', () => {
   test('should go back to message-templates page with template still visible when "no" button selected', async ({
     page,
   }) => {
-    const deleteTemplatePage = new TemplateMgmtDeletePage(page);
+    const deleteTemplatePage = new TemplateMgmtDeletePage(page).setPathParam(
+      'templateId',
+      templates.goBack.id
+    );
 
-    await deleteTemplatePage.loadPage(templates.goBack.id);
+    await deleteTemplatePage.loadPage();
 
     await deleteTemplatePage.goBackButton.click();
 
@@ -106,9 +114,12 @@ test.describe('Delete Template Page', () => {
     test(`should go back to message-templates page with template "${templateKey}" no longer visible when "yes" button selected`, async ({
       page,
     }) => {
-      const deleteTemplatePage = new TemplateMgmtDeletePage(page);
+      const deleteTemplatePage = new TemplateMgmtDeletePage(page).setPathParam(
+        'templateId',
+        templates[templateKey].id
+      );
 
-      await deleteTemplatePage.loadPage(templates[templateKey].id);
+      await deleteTemplatePage.loadPage();
 
       await deleteTemplatePage.confirmButton.click();
 

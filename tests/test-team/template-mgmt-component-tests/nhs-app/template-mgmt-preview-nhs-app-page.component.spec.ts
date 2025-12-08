@@ -79,9 +79,12 @@ test.describe('Preview NHS App template Page', () => {
     baseURL,
     page,
   }) => {
-    const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+    const previewPage = new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
 
-    await previewPage.loadPage(templates.valid.id);
+    await previewPage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-nhs-app-template/${templates.valid.id}`
@@ -99,8 +102,10 @@ test.describe('Preview NHS App template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewNhsAppPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -116,9 +121,12 @@ test.describe('Preview NHS App template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+      const previewPage = new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-      await previewPage.loadPage(templates.valid.id);
+      await previewPage.loadPage();
 
       await previewPage.editButton.click();
 
@@ -133,9 +141,12 @@ test.describe('Preview NHS App template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+      const previewPage = new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+        'templateId',
+        templates.empty.id
+      );
 
-      await previewPage.loadPage(templates.empty.id);
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -144,9 +155,12 @@ test.describe('Preview NHS App template Page', () => {
       baseURL,
       page,
     }) => {
-      const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+      const previewPage = new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+        'templateId',
+        'fake-template-id'
+      );
 
-      await previewPage.loadPage('/fake-template-id');
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -162,9 +176,12 @@ test.describe('Preview NHS App template Page', () => {
     }) => {
       await loginAsUser(routingDisabledUser, page);
 
-      const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+      const previewPage = new TemplateMgmtPreviewNhsAppPage(page).setPathParam(
+        'templateId',
+        templates.routingDisabled.id
+      );
 
-      await previewPage.loadPage(templates.routingDisabled.id);
+      await previewPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-nhs-app-template/${templates.routingDisabled.id}`
@@ -188,9 +205,11 @@ test.describe('Preview NHS App template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+        const previewPage = new TemplateMgmtPreviewNhsAppPage(
+          page
+        ).setPathParam('templateId', templates.routingDisabled.id);
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.editRadioOption.click();
 
@@ -207,16 +226,18 @@ test.describe('Preview NHS App template Page', () => {
       }) => {
         await loginAsUser(routingDisabledUser, page);
 
-        const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+        const previewPage = new TemplateMgmtPreviewNhsAppPage(
+          page
+        ).setPathParam('templateId', templates.routingDisabled.id);
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.submitRadioOption.click();
 
         await previewPage.clickContinueButton();
 
         await expect(page).toHaveURL(
-          `${baseURL}/templates/submit-nhs-app-template/${templates.routingDisabled.id}`
+          `${baseURL}/templates/submit-nhs-app-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
         );
       });
     });
@@ -229,9 +250,11 @@ test.describe('Preview NHS App template Page', () => {
 
         const errorMessage = 'Select an option';
 
-        const previewPage = new TemplateMgmtPreviewNhsAppPage(page);
+        const previewPage = new TemplateMgmtPreviewNhsAppPage(
+          page
+        ).setPathParam('templateId', templates.routingDisabled.id);
 
-        await previewPage.loadPage(templates.routingDisabled.id);
+        await previewPage.loadPage();
 
         await previewPage.clickContinueButton();
 

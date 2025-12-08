@@ -2,6 +2,7 @@ import { failure } from '@backend-api/utils/result';
 import {
   $CreateRoutingConfig,
   $ListRoutingConfigFilters,
+  $LockNumber,
   $UpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
@@ -57,8 +58,18 @@ export class RoutingConfigClient {
   async updateRoutingConfig(
     routingConfigId: string,
     payload: unknown,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<RoutingConfig>> {
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Message Plan has been modified since last read'
+      );
+    }
+
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -93,14 +104,25 @@ export class RoutingConfigClient {
     return this.routingConfigRepository.update(
       routingConfigId,
       validated,
-      user
+      user,
+      lockNumberValidation.data
     );
   }
 
   async submitRoutingConfig(
     routingConfigId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<RoutingConfig>> {
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Message Plan has been modified since last read'
+      );
+    }
+
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -114,13 +136,27 @@ export class RoutingConfigClient {
       );
     }
 
-    return this.routingConfigRepository.submit(routingConfigId, user);
+    return this.routingConfigRepository.submit(
+      routingConfigId,
+      user,
+      lockNumberValidation.data
+    );
   }
 
   async deleteRoutingConfig(
     routingConfigId: string,
-    user: User
+    user: User,
+    lockNumber: number | string
   ): Promise<Result<undefined>> {
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      return failure(
+        ErrorCase.CONFLICT,
+        'Lock number mismatch - Message Plan has been modified since last read'
+      );
+    }
+
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
@@ -136,7 +172,8 @@ export class RoutingConfigClient {
 
     const result = await this.routingConfigRepository.delete(
       routingConfigId,
-      user
+      user,
+      lockNumberValidation.data
     );
 
     if (result.error) return result;

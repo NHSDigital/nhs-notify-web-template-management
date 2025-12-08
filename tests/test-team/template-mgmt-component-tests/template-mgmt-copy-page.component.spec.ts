@@ -76,9 +76,12 @@ test.describe('Copy Template Page', () => {
     page,
     baseURL,
   }) => {
-    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+    const copyTemplatePage = new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templates.email.id
+    );
 
-    await copyTemplatePage.loadPage(templates.email.id);
+    await copyTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/copy-template/${templates.email.id}`
@@ -90,8 +93,10 @@ test.describe('Copy Template Page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtCopyPage(page),
-      id: templates.email.id,
+      page: new TemplateMgmtCopyPage(page).setPathParam(
+        'templateId',
+        templates.email.id
+      ),
       baseURL,
       expectedUrl: 'templates/message-templates',
     };
@@ -107,9 +112,12 @@ test.describe('Copy Template Page', () => {
   test('should display correct number of radio button options', async ({
     page,
   }) => {
-    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+    const copyTemplatePage = new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templates.email.id
+    );
 
-    await copyTemplatePage.loadPage(templates.email.id);
+    await copyTemplatePage.loadPage();
 
     await expect(copyTemplatePage.radioButtons).toHaveCount(3);
   });
@@ -118,9 +126,12 @@ test.describe('Copy Template Page', () => {
     page,
     baseURL,
   }) => {
-    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+    const copyTemplatePage = new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templates.email.id
+    );
 
-    await copyTemplatePage.loadPage(templates.email.id);
+    await copyTemplatePage.loadPage();
     await copyTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
@@ -140,10 +151,14 @@ test.describe('Copy Template Page', () => {
         page,
         baseURL,
       }) => {
-        const copyTemplatePage = new TemplateMgmtCopyPage(page);
-
         const template = templates[sourceTemplateType];
-        await copyTemplatePage.loadPage(template.id);
+
+        const copyTemplatePage = new TemplateMgmtCopyPage(page).setPathParam(
+          'templateId',
+          template.id
+        );
+
+        await copyTemplatePage.loadPage();
         await copyTemplatePage.checkRadioButton(
           templateTypeDisplayMappings[targetTemplateType]
         );
@@ -204,9 +219,12 @@ test.describe('Copy Template Page', () => {
     baseURL,
     page,
   }) => {
-    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+    const copyTemplatePage = new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templates.letter.id
+    );
 
-    await copyTemplatePage.loadPage(templates.letter.id);
+    await copyTemplatePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });

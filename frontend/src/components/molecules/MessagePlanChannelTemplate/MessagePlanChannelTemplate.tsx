@@ -25,6 +25,7 @@ function MessagePlanChannelTemplateBase({
   templates,
   routingConfigId,
   chooseTemplateUrl,
+  lockNumber,
   removeTemplateAction,
   testIdSuffix,
   multipleTemplates = false,
@@ -34,6 +35,7 @@ function MessagePlanChannelTemplateBase({
   templates: TemplateDto[];
   routingConfigId: string;
   chooseTemplateUrl: string;
+  lockNumber: number;
   removeTemplateAction: (formData: FormData) => Promise<void>;
   testIdSuffix: string;
   multipleTemplates?: boolean;
@@ -106,6 +108,13 @@ function MessagePlanChannelTemplateBase({
                     type='hidden'
                     name='routingConfigId'
                     value={routingConfigId}
+                    readOnly
+                  />
+                  <input
+                    type='hidden'
+                    name='lockNumber'
+                    value={lockNumber}
+                    readOnly
                   />
                   {templates.map((template) => (
                     <input
@@ -113,6 +122,7 @@ function MessagePlanChannelTemplateBase({
                       type='hidden'
                       name='templateId'
                       value={template.id}
+                      readOnly
                     />
                   ))}
                   <button
@@ -148,14 +158,16 @@ export function MessagePlanChannelTemplate({
   channel,
   template,
   routingConfigId,
+  lockNumber,
   required = true,
 }: {
   channel: Channel;
   routingConfigId: RoutingConfig['id'];
+  lockNumber: number;
   template?: TemplateDto;
   required?: boolean;
 }) {
-  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`;
+  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}?lockNumber=${lockNumber}`;
 
   return (
     <MessagePlanChannelTemplateBase
@@ -163,6 +175,7 @@ export function MessagePlanChannelTemplate({
       required={required}
       templates={template ? [template] : []}
       routingConfigId={routingConfigId}
+      lockNumber={lockNumber}
       chooseTemplateUrl={chooseTemplateUrl}
       removeTemplateAction={removeTemplateFromMessagePlan}
       testIdSuffix={channel}
@@ -173,13 +186,15 @@ export function MessagePlanChannelTemplate({
 export function MessagePlanAccessibleFormatTemplate({
   accessibleFormat,
   template,
+  lockNumber,
   routingConfigId,
 }: {
   accessibleFormat: LetterType;
   template?: TemplateDto;
+  lockNumber: number;
   routingConfigId: string;
 }) {
-  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl('LETTER', accessibleFormat)}/${routingConfigId}`;
+  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl('LETTER', accessibleFormat)}/${routingConfigId}?lockNumber=${lockNumber}`;
 
   return (
     <MessagePlanChannelTemplateBase
@@ -192,6 +207,7 @@ export function MessagePlanAccessibleFormatTemplate({
       templates={template ? [template] : []}
       routingConfigId={routingConfigId}
       chooseTemplateUrl={chooseTemplateUrl}
+      lockNumber={lockNumber}
       removeTemplateAction={removeTemplateFromMessagePlan}
       testIdSuffix={accessibleFormat}
     />
@@ -201,11 +217,13 @@ export function MessagePlanAccessibleFormatTemplate({
 export function MessagePlanLanguageTemplate({
   selectedTemplates,
   routingConfigId,
+  lockNumber,
 }: {
   selectedTemplates: TemplateDto[];
   routingConfigId: string;
+  lockNumber: number;
 }) {
-  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl('LETTER', 'language')}/${routingConfigId}`;
+  const chooseTemplateUrl = `/message-plans/${messagePlanChooseTemplateUrl('LETTER', 'language')}/${routingConfigId}?lockNumber=${lockNumber}`;
 
   return (
     <MessagePlanChannelTemplateBase
@@ -215,6 +233,7 @@ export function MessagePlanLanguageTemplate({
       required={false}
       templates={selectedTemplates}
       routingConfigId={routingConfigId}
+      lockNumber={lockNumber}
       chooseTemplateUrl={chooseTemplateUrl}
       removeTemplateAction={removeTemplateFromMessagePlan}
       testIdSuffix='foreign-language'

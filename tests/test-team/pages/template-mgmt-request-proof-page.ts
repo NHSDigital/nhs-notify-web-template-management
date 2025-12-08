@@ -1,11 +1,11 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtRequestProofPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = ['request-proof-of-template'];
+export class TemplateMgmtRequestProofPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/request-proof-of-template/:templateId';
 
   public static readonly urlRegexp = new RegExp(
-    /\/templates\/request-proof-of-template\/([\dA-Fa-f-]+)$/
+    /\/templates\/request-proof-of-template\/([\dA-Fa-f-]+)\?lockNumber=\d+$/
   );
 
   readonly requestProofButton: Locator;

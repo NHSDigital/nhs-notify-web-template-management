@@ -24,11 +24,13 @@ export function MessagePlanConditionalLetterTemplates({
   cascadeItem,
   cascadeIndex,
   routingConfigId,
+  lockNumber,
   conditionalTemplates: templates,
 }: {
   cascadeItem: CascadeItem;
   cascadeIndex: number;
   routingConfigId: RoutingConfig['id'];
+  lockNumber: number;
   conditionalTemplates: MessagePlanTemplates;
 }) {
   if (cascadeItem.channel !== 'LETTER') {
@@ -73,6 +75,7 @@ export function MessagePlanConditionalLetterTemplates({
               cascadeItem,
               templates
             )}
+            lockNumber={lockNumber}
             routingConfigId={routingConfigId}
           />
         </li>
@@ -81,6 +84,7 @@ export function MessagePlanConditionalLetterTemplates({
       <li className={styles['message-plan-conditional-templates__list-item']}>
         <MessagePlanLanguageTemplate
           selectedTemplates={languageTemplates}
+          lockNumber={lockNumber}
           routingConfigId={routingConfigId}
         />
       </li>

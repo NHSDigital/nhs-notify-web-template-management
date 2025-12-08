@@ -1,8 +1,9 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from 'pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export class RoutingChooseTemplatesPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = ['message-plans/choose-templates'];
+export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate =
+    '/message-plans/choose-templates/:messagePlanId';
 
   public readonly errorSummary: Locator;
 

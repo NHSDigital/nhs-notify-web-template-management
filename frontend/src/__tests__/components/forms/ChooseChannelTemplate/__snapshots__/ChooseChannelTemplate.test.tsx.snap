@@ -72,6 +72,12 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -320,6 +326,12 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <dl
             class="nhsuk-summary-list"
@@ -608,6 +620,12 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -857,6 +875,12 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -1093,6 +1117,12 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <dl
             class="nhsuk-summary-list"
@@ -1351,6 +1381,12 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <dl
             class="nhsuk-summary-list"
             data-testid="previous-selection-details"
@@ -1608,6 +1644,12 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <dl
             class="nhsuk-summary-list"
             data-testid="previous-selection-details"
@@ -1864,6 +1906,12 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <dl
             class="nhsuk-summary-list"
@@ -2306,6 +2354,12 @@ exports[`ChooseChannelTemplate when there are no templates renders correctly 1`]
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <p
             data-testid="no-templates-message"
           >
@@ -2378,6 +2432,12 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <dl
             class="nhsuk-summary-list"
@@ -2820,6 +2880,12 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <dl
             class="nhsuk-summary-list"
             data-testid="previous-selection-details"
@@ -3260,6 +3326,12 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <div
             class="nhsuk-grid-row"

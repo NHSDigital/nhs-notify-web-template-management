@@ -28,6 +28,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
     pageHeading,
     templateList,
     cascadeIndex,
+    lockNumber,
     accessibleFormat,
   } = props;
 
@@ -70,6 +71,12 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
             formId={'choose-channel-template'}
             formAttributes={{ onSubmit: formValidate }}
           >
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
+              readOnly
+            />
             {selectedTemplateId && (
               <SummaryList data-testid='previous-selection-details'>
                 <SummaryList.Row>

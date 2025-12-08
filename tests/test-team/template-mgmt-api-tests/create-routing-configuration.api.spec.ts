@@ -65,6 +65,7 @@ test.describe('POST /v1/routing-configuration', () => {
         id: expect.stringMatching(uuidRegExp),
         status: 'DRAFT',
         updatedAt: expect.stringMatching(isoDateRegExp),
+        lockNumber: 0,
       },
     });
 
@@ -136,6 +137,7 @@ test.describe('POST /v1/routing-configuration', () => {
         id: expect.stringMatching(uuidRegExp),
         status: 'DRAFT',
         updatedAt: expect.stringMatching(isoDateRegExp),
+        lockNumber: 0,
       },
     });
 

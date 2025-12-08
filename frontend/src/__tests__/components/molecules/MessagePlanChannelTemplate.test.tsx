@@ -14,6 +14,7 @@ describe('MessagePlanChannelTemplate', () => {
       <MessagePlanChannelTemplate
         channel='EMAIL'
         routingConfigId={routingConfigId}
+        lockNumber={42}
       />
     );
 
@@ -29,6 +30,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='LETTER'
           required={false}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -49,6 +51,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel='NHSAPP'
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -59,7 +62,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-nhs-app-template/${routingConfigId}`
+        `/message-plans/choose-nhs-app-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -85,6 +88,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel='SMS'
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -99,7 +103,7 @@ describe('MessagePlanChannelTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-text-message-template/${routingConfigId}`
+        `/message-plans/choose-text-message-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -139,6 +143,7 @@ describe('MessagePlanChannelTemplate', () => {
         <MessagePlanChannelTemplate
           channel={channel}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
 
@@ -159,6 +164,7 @@ describe('MessagePlanChannelTemplate', () => {
           channel={channel}
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
       expect(container).toMatchSnapshot();
@@ -174,6 +180,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
       <MessagePlanAccessibleFormatTemplate
         accessibleFormat='x1'
         routingConfigId={routingConfigId}
+        lockNumber={42}
       />
     );
 
@@ -191,6 +198,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
         <MessagePlanAccessibleFormatTemplate
           accessibleFormat='x1'
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -205,7 +213,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-large-print-letter-template/${routingConfigId}`
+        `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=42`
       );
     });
   });
@@ -222,6 +230,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
           accessibleFormat='x1'
           template={testTemplate}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -236,7 +245,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-large-print-letter-template/${routingConfigId}`
+        `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -254,6 +263,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
           <MessagePlanAccessibleFormatTemplate
             accessibleFormat={accessibleFormat}
             routingConfigId={routingConfigId}
+            lockNumber={42}
           />
         );
 
@@ -269,6 +279,7 @@ describe('MessagePlanAccessibleFormatTemplate', () => {
             accessibleFormat={accessibleFormat}
             routingConfigId={routingConfigId}
             template={testTemplate}
+            lockNumber={42}
           />
         );
 
@@ -286,6 +297,7 @@ describe('MessagePlanLanguageTemplate', () => {
       <MessagePlanLanguageTemplate
         selectedTemplates={[]}
         routingConfigId={routingConfigId}
+        lockNumber={42}
       />
     );
 
@@ -303,6 +315,7 @@ describe('MessagePlanLanguageTemplate', () => {
         <MessagePlanLanguageTemplate
           selectedTemplates={[]}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -313,7 +326,7 @@ describe('MessagePlanLanguageTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-other-language-letter-template/${routingConfigId}`
+        `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=42`
       );
     });
   });
@@ -335,6 +348,7 @@ describe('MessagePlanLanguageTemplate', () => {
         <MessagePlanLanguageTemplate
           selectedTemplates={testTemplates}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
     });
@@ -350,7 +364,7 @@ describe('MessagePlanLanguageTemplate', () => {
       });
       expect(link).toHaveAttribute(
         'href',
-        `/message-plans/choose-other-language-letter-template/${routingConfigId}`
+        `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=42`
       );
     });
 
@@ -381,6 +395,7 @@ describe('MessagePlanLanguageTemplate', () => {
         <MessagePlanLanguageTemplate
           selectedTemplates={[]}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
 
@@ -392,6 +407,7 @@ describe('MessagePlanLanguageTemplate', () => {
         <MessagePlanLanguageTemplate
           selectedTemplates={testTemplates}
           routingConfigId={routingConfigId}
+          lockNumber={42}
         />
       );
 

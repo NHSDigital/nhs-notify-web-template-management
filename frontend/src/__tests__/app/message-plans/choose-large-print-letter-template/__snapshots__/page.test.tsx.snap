@@ -42,6 +42,11 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+          />
           <div
             class="nhsuk-grid-row"
           >

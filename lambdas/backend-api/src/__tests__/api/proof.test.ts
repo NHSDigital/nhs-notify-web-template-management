@@ -112,7 +112,8 @@ describe('Template API - request proof', () => {
       error: {
         errorMeta: {
           code: 409,
-          description: 'Invalid lock number',
+          description:
+            'Lock number mismatch - Template has been modified since last read',
         },
       },
     });
@@ -122,6 +123,7 @@ describe('Template API - request proof', () => {
         authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: 'template-id' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -130,7 +132,8 @@ describe('Template API - request proof', () => {
       statusCode: 409,
       body: JSON.stringify({
         statusCode: 409,
-        technicalMessage: 'Invalid lock number',
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
       }),
     });
 

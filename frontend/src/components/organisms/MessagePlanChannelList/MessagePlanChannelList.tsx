@@ -43,6 +43,7 @@ export function MessagePlanChannelList({
                 messagePlanChannel,
                 templates
               )}
+              lockNumber={messagePlan.lockNumber}
             />
             {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
             {messagePlan.cascade.length > 1 &&

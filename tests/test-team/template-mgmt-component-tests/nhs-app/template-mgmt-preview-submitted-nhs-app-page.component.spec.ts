@@ -60,9 +60,12 @@ test.describe('Preview submitted NHS App message template Page', () => {
     baseURL,
   }) => {
     const previewSubmittedNHSAppTemplatePage =
-      new TemplateMgmtPreviewSubmittedNhsAppPage(page);
+      new TemplateMgmtPreviewSubmittedNhsAppPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-    await previewSubmittedNHSAppTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedNHSAppTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-submitted-nhs-app-template/${templates.valid.id}`
@@ -80,8 +83,10 @@ test.describe('Preview submitted NHS App message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewSubmittedNhsAppPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewSubmittedNhsAppPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -103,9 +108,12 @@ test.describe('Preview submitted NHS App message template Page', () => {
       page,
     }) => {
       const previewSubmittedNHSAppTemplatePage =
-        new TemplateMgmtPreviewSubmittedNhsAppPage(page);
+        new TemplateMgmtPreviewSubmittedNhsAppPage(page).setPathParam(
+          'templateId',
+          templates.invalid.id
+        );
 
-      await previewSubmittedNHSAppTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedNHSAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -115,9 +123,12 @@ test.describe('Preview submitted NHS App message template Page', () => {
       page,
     }) => {
       const previewSubmittedNHSAppTemplatePage =
-        new TemplateMgmtPreviewSubmittedNhsAppPage(page);
+        new TemplateMgmtPreviewSubmittedNhsAppPage(page).setPathParam(
+          'templateId',
+          'fake-template-id'
+        );
 
-      await previewSubmittedNHSAppTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedNHSAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

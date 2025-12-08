@@ -36,7 +36,7 @@ exports[`MessagePlanBlock for channel EMAIL with no template should match snapsh
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-EMAIL"
-              href="/message-plans/choose-email-template/test-routing-config-id"
+              href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -101,7 +101,7 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-EMAIL"
-              href="/message-plans/choose-email-template/test-routing-config-id"
+              href="/message-plans/choose-email-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -116,11 +116,19 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
             <form>
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
               />
               <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
+              />
+              <input
                 name="templateId"
+                readonly=""
                 type="hidden"
                 value="email-template-id"
               />
@@ -183,7 +191,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-LETTER"
-              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -305,7 +313,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-x1"
-                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=undefined"
                 >
                   Choose
                   <span
@@ -342,7 +350,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-foreign-language"
-                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=undefined"
                 >
                   Choose
                   <span
@@ -409,7 +417,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-LETTER"
-              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id"
+              href="/message-plans/choose-standard-english-letter-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -424,11 +432,19 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
             <form>
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
               />
               <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
+              />
+              <input
                 name="templateId"
+                readonly=""
                 type="hidden"
                 value="email-template-id"
               />
@@ -559,7 +575,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-x1"
-                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id"
+                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=undefined"
                 >
                   Choose
                   <span
@@ -596,7 +612,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-foreign-language"
-                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id"
+                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=undefined"
                 >
                   Choose
                   <span
@@ -652,7 +668,7 @@ exports[`MessagePlanBlock for channel NHSAPP with no template should match snaps
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-NHSAPP"
-              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -717,7 +733,7 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-NHSAPP"
-              href="/message-plans/choose-nhs-app-template/test-routing-config-id"
+              href="/message-plans/choose-nhs-app-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -732,11 +748,19 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
             <form>
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
               />
               <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
+              />
+              <input
                 name="templateId"
+                readonly=""
                 type="hidden"
                 value="email-template-id"
               />
@@ -799,7 +823,7 @@ exports[`MessagePlanBlock for channel SMS with no template should match snapshot
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="choose-template-link-SMS"
-              href="/message-plans/choose-text-message-template/test-routing-config-id"
+              href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
             >
               Choose
               <span
@@ -864,7 +888,7 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
             <a
               class="nhsuk-link nhsuk-link--no-visited-state"
               data-testid="change-template-link-SMS"
-              href="/message-plans/choose-text-message-template/test-routing-config-id"
+              href="/message-plans/choose-text-message-template/test-routing-config-id?lockNumber=42"
             >
               Change
               <span
@@ -879,11 +903,19 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
             <form>
               <input
                 name="routingConfigId"
+                readonly=""
                 type="hidden"
                 value="test-routing-config-id"
               />
               <input
+                name="lockNumber"
+                readonly=""
+                type="hidden"
+                value="42"
+              />
+              <input
                 name="templateId"
+                readonly=""
                 type="hidden"
                 value="email-template-id"
               />

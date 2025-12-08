@@ -1,10 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../pages/template-mgmt-base-page';
+import type { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
-  id?: string;
-  additionalIds?: string[];
   baseURL?: string;
 };
 
@@ -36,24 +34,11 @@ const expectedFooterLinks: Record<string, FooterLinkSpec> = {
   },
 };
 
-const loadPageFromIds = async (
-  page: TemplateMgmtBasePage,
-  id?: string,
-  additionalIds?: string[]
-) => {
-  if (id) {
-    return await page.loadPage(id, ...(additionalIds ?? []));
-  }
-  return await page.loadPage();
-};
-
-export function assertSkipToMainContent({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertSkipToMainContent(props: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await page.page.keyboard.press('Tab');
 
@@ -71,13 +56,11 @@ export function assertSkipToMainContent({
   });
 }
 
-export function assertHeaderWhenSignedOut({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertHeaderWhenSignedOut(props: CommonStepsProps) {
   return test.step('when user is signed out, then header displays sign in link only', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await expect(page.signInLink).toBeVisible();
     await expect(page.signOutLink).toBeHidden();
@@ -87,18 +70,16 @@ export function assertHeaderWhenSignedOut({
   });
 }
 
-export function assertHeaderWhenSignedIn({
-  page,
-  id,
-  additionalIds,
-  expectedDisplayName,
-  expectedClientName,
-}: CommonStepsProps & {
-  expectedDisplayName: string;
-  expectedClientName: string;
-}) {
+export function assertHeaderWhenSignedIn(
+  props: CommonStepsProps & {
+    expectedDisplayName: string;
+    expectedClientName: string;
+  }
+) {
   return test.step('when user is signed in, then header shows display name and client name', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page, expectedClientName, expectedDisplayName } = props;
+
+    await page.loadPage();
 
     await expect(page.signOutLink).toBeVisible();
     await expect(page.signInLink).toBeHidden();
@@ -117,13 +98,11 @@ export function assertHeaderWhenSignedIn({
   });
 }
 
-export function assertHeaderLogoLink({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps & { additionalIds?: string[] }) {
+export function assertHeaderLogoLink(props: CommonStepsProps) {
   return test.step('header logo is visible, correctly labelled and structured', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     const logoLink = page.headerLogoLink;
 
@@ -143,13 +122,13 @@ export function assertHeaderLogoLink({
   });
 }
 
-export function assertClickHeaderLogoRedirectsToStartPage({
-  page,
-  id,
-  baseURL,
-}: CommonStepsProps) {
+export function assertClickHeaderLogoRedirectsToStartPage(
+  props: CommonStepsProps
+) {
   return test.step('when user clicks header logo, they are redirected to start page', async () => {
-    await assertHeaderLogoLink({ page, id });
+    await assertHeaderLogoLink(props);
+
+    const { page, baseURL } = props;
 
     await page.headerLogoLink.click();
 
@@ -159,13 +138,11 @@ export function assertClickHeaderLogoRedirectsToStartPage({
   });
 }
 
-export function assertSignInLink({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps & { additionalIds?: string[] }) {
+export function assertSignInLink(props: CommonStepsProps) {
   return test.step('when user clicks "Sign in", then user is redirected to "sign in page"', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     const link = page.signInLink;
 
@@ -176,13 +153,11 @@ export function assertSignInLink({
   });
 }
 
-export function assertSignOutLink({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps & { additionalIds?: string[] }) {
+export function assertSignOutLink(props: CommonStepsProps) {
   return test.step('"Sign out", should direct user to signout', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     const link = page.signOutLink;
 
@@ -190,18 +165,17 @@ export function assertSignOutLink({
   });
 }
 
-export function assertHeaderNavigationLinksWhenSignedIn({
-  page,
-  id,
-  additionalIds,
-  routingEnabled,
-}: CommonStepsProps & { routingEnabled: boolean }) {
+export function assertHeaderNavigationLinksWhenSignedIn(
+  props: CommonStepsProps & { routingEnabled: boolean }
+) {
+  const { page, routingEnabled } = props;
+
   const description = routingEnabled
     ? 'Templates and Message plans links'
     : 'Templates link only';
 
   return test.step(`header shows ${description} when routing is ${routingEnabled ? 'enabled' : 'disabled'}`, async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    await page.loadPage();
 
     const nav = page.headerNavigationLinks;
 
@@ -215,27 +189,25 @@ export function assertHeaderNavigationLinksWhenSignedIn({
   });
 }
 
-export function assertHeaderNavigationLinksWhenSignedOut({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertHeaderNavigationLinksWhenSignedOut(
+  props: CommonStepsProps
+) {
   return test.step('header does not display navigation links when signed out', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await expect(page.headerNavigationLinks).toHaveCount(0);
   });
 }
 
-export function assertBackLinkTop({
-  page,
-  id,
-  baseURL,
-  expectedUrl,
-  additionalIds,
-}: CommonStepsProps & { expectedUrl: string }) {
+export function assertBackLinkTop(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
   return test.step('displays "Go back" link at top of page with correct url', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page, baseURL, expectedUrl } = props;
+
+    await page.loadPage();
 
     await expect(page.backLinkTop).toBeVisible();
     await expect(page.backLinkTop).toHaveAttribute(
@@ -245,15 +217,13 @@ export function assertBackLinkTop({
   });
 }
 
-export function assertAndClickBackLinkTop({
-  page,
-  id,
-  baseURL,
-  expectedUrl,
-  additionalIds,
-}: CommonStepsProps & { expectedUrl: string }) {
+export function assertAndClickBackLinkTop(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
   return test.step('when user clicks "Go back", then user is redirected to previous page', async () => {
-    await assertBackLinkTop({ page, id, baseURL, expectedUrl, additionalIds });
+    await assertBackLinkTop(props);
+
+    const { page, baseURL, expectedUrl } = props;
 
     await page.backLinkTop.click();
 
@@ -263,14 +233,13 @@ export function assertAndClickBackLinkTop({
   });
 }
 
-export function assertBackLinkBottom({
-  page,
-  id,
-  expectedUrl,
-  additionalIds,
-}: CommonStepsProps & { expectedUrl: string }) {
+export function assertBackLinkBottom(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
   return test.step('displays additional "Go back" link at bottom of the page with correct url', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page, expectedUrl } = props;
+
+    await page.loadPage();
 
     await expect(page.backLinkBottom).toBeVisible();
     await expect(page.backLinkBottom).toHaveAttribute(
@@ -280,50 +249,42 @@ export function assertBackLinkBottom({
   });
 }
 
-export function assertBackLinkTopNotPresent({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertBackLinkTopNotPresent(props: CommonStepsProps) {
   return test.step('should not display "Go Back" link on page', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await expect(page.backLinkTop).toBeHidden();
   });
 }
 
-export function assertBackLinkBottomNotPresent({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertBackLinkBottomNotPresent(props: CommonStepsProps) {
   return test.step('should not display "Go Back" link at bottom of page', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await expect(page.backLinkBottom).toBeHidden();
   });
 }
 
-export function assertNoBackLinks({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertNoBackLinks(props: CommonStepsProps) {
   return test.step('should not display any back links on page', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     await expect(page.backLinkTop).toBeHidden();
     await expect(page.backLinkBottom).toBeHidden();
   });
 }
 
-export function assertFooterLinks({
-  page,
-  id,
-  additionalIds,
-}: CommonStepsProps) {
+export function assertFooterLinks(props: CommonStepsProps) {
   return test.step('when page loads, then Page Footer should have the correct links', async () => {
-    await loadPageFromIds(page, id, additionalIds);
+    const { page } = props;
+
+    await page.loadPage();
 
     const promises = Object.values(expectedFooterLinks).map((linkSpec) =>
       expect(

@@ -1329,7 +1329,8 @@ describe('templateClient', () => {
             error: expect.objectContaining({
               errorMeta: {
                 code: 409,
-                description: 'Invalid lock number',
+                description:
+                  'Lock number mismatch - Template has been modified since last read',
               },
             }),
           });
@@ -1729,7 +1730,8 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 409,
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       });
@@ -1853,7 +1855,8 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 409,
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       });
@@ -2268,7 +2271,8 @@ describe('templateClient', () => {
             error: expect.objectContaining({
               errorMeta: {
                 code: 409,
-                description: 'Invalid lock number',
+                description:
+                  'Lock number mismatch - Template has been modified since last read',
               },
             }),
           });

@@ -1,9 +1,9 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
-import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegments = ['edit-email-template'];
+export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/edit-email-template/:templateId';
 
   public readonly nameInput: Locator;
 
