@@ -6,6 +6,7 @@ import { getRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { getTemplates } from '@utils/form-actions';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 import content from '@content/content';
 const { pageTitle, pageHeading } = content.pages.chooseLargePrintLetterTemplate;
@@ -20,6 +21,17 @@ export default async function ChooseLargePrintLetterTemplate(
   props: MessagePlanPageProps
 ) {
   const { routingConfigId } = await props.params;
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const [messagePlan, availableTemplateList] = await Promise.all([
     getRoutingConfig(routingConfigId),
@@ -49,7 +61,7 @@ export default async function ChooseLargePrintLetterTemplate(
       templateList={availableTemplateList}
       cascadeIndex={cascadeIndex}
       accessibleFormat='x1'
-      lockNumber={42}
+      lockNumber={lockNumberResult.data}
     />
   );
 }

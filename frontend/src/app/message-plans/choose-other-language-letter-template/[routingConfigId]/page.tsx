@@ -6,6 +6,7 @@ import { getRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
 import { ChooseLanguageLetterTemplates } from '@forms/ChooseLanguageLetterTemplates/ChooseLanguageLetterTemplates';
 import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 import content from '@content/content';
 const { pageTitle, pageHeading } =
@@ -21,6 +22,17 @@ export default async function ChooseOtherLanguageLetterTemplate(
   props: MessagePlanPageProps
 ) {
   const { routingConfigId } = await props.params;
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const [messagePlan, foreignLanguageTemplates] = await Promise.all([
     getRoutingConfig(routingConfigId),
@@ -45,6 +57,7 @@ export default async function ChooseOtherLanguageLetterTemplate(
       pageHeading={pageHeading}
       templateList={foreignLanguageTemplates}
       cascadeIndex={cascadeIndex}
+      lockNumber={lockNumberResult.data}
     />
   );
 }

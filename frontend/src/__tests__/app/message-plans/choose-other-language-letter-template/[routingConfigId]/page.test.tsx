@@ -44,6 +44,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: 'invalid-id',
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
@@ -71,6 +74,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
@@ -92,6 +98,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
@@ -109,6 +118,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
     const container = render(page);
@@ -120,5 +132,18 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       title: 'Choose other language letter templates - NHS Notify',
     });
     expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('redirects to choose templates page if the lockNumber is missing', async () => {
+    await ChooseOtherLanguageLetterTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      'replace'
+    );
   });
 });

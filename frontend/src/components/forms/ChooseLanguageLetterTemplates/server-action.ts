@@ -6,14 +6,14 @@ import {
   replaceLanguageTemplatesInCascadeItem,
   buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
-import { Language } from 'nhs-notify-backend-client';
+import { Language, $LockNumber } from 'nhs-notify-backend-client';
 import { ChooseLanguageLetterTemplatesProps } from './ChooseLanguageLetterTemplates';
 import baseContent from '@content/content';
 
 const content = baseContent.components.chooseLanguageLetterTemplates;
 
 export type ChooseLanguageLetterTemplatesFormState = FormState &
-  ChooseLanguageLetterTemplatesProps & {
+  Omit<ChooseLanguageLetterTemplatesProps, 'lockNumber'> & {
     selectedTemplateIds?: string[];
     errorType?: 'missing' | 'duplicate';
   };
@@ -21,13 +21,20 @@ export type ChooseLanguageLetterTemplatesFormState = FormState &
 const formDataSchema = z.record(z.string(), z.string());
 
 export const $ChooseLanguageLetterTemplates = (errorMessage: string) =>
-  formDataSchema.refine(
-    (data) =>
-      Object.keys(data).some((key) => key.startsWith('template_') && data[key]),
-    {
-      message: errorMessage,
-    }
-  );
+  z
+    .object({
+      lockNumber: $LockNumber,
+    })
+    .and(formDataSchema)
+    .refine(
+      (data) =>
+        Object.keys(data).some(
+          (key) => key.startsWith('template_') && data[key]
+        ),
+      {
+        message: errorMessage,
+      }
+    );
 
 export async function chooseLanguageLetterTemplatesAction(
   formState: ChooseLanguageLetterTemplatesFormState,
@@ -35,10 +42,24 @@ export async function chooseLanguageLetterTemplatesAction(
 ): Promise<ChooseLanguageLetterTemplatesFormState> {
   const { messagePlan, cascadeIndex, templateList } = formState;
 
+  const parsedForm = $ChooseLanguageLetterTemplates(
+    content.error.missing.hintText
+  ).safeParse({
+    ...Object.fromEntries(formData.entries()),
+    lockNumber: formData.get('lockNumber'),
+  });
+
+  if (!parsedForm.success) {
+    return {
+      ...formState,
+      errorState: z.flattenError(parsedForm.error) as FormState['errorState'],
+    };
+  }
+
   const selectedLanguages: Language[] = [];
   const selectedTemplateIds: string[] = [];
 
-  for (const [key, value] of formData.entries()) {
+  for (const [key, value] of Object.entries(parsedForm.data)) {
     if (key.startsWith('template_') && typeof value === 'string') {
       const [templateId, language] = value.split(':');
 
@@ -78,10 +99,14 @@ export async function chooseLanguageLetterTemplatesAction(
   const updatedCascadeGroupOverrides =
     buildCascadeGroupOverridesFromCascade(updatedCascade);
 
-  await updateRoutingConfig(messagePlan.id, {
-    cascade: updatedCascade,
-    cascadeGroupOverrides: updatedCascadeGroupOverrides,
-  });
+  await updateRoutingConfig(
+    messagePlan.id,
+    {
+      cascade: updatedCascade,
+      cascadeGroupOverrides: updatedCascadeGroupOverrides,
+    },
+    parsedForm.data.lockNumber
+  );
 
   redirect(
     `/message-plans/choose-templates/${messagePlan.id}`,

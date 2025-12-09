@@ -76,6 +76,7 @@ const renderComponent = (overrides = {}) => {
     pageHeading: 'Choose language letter templates',
     templateList: languageLetterTemplates,
     cascadeIndex: 3,
+    lockNumber: 42,
   };
 
   return render(

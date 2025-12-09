@@ -30,12 +30,14 @@ export type ChooseLanguageLetterTemplatesProps = {
   pageHeading: string;
   templateList: LetterTemplate[];
   cascadeIndex: number;
+  lockNumber: number;
 };
 
 export function ChooseLanguageLetterTemplates(
   props: ChooseLanguageLetterTemplatesProps
 ) {
-  const { messagePlan, pageHeading, templateList, cascadeIndex } = props;
+  const { messagePlan, pageHeading, templateList, cascadeIndex, lockNumber } =
+    props;
 
   const [state, action] = useActionState(chooseLanguageLetterTemplatesAction, {
     ...props,
@@ -80,6 +82,12 @@ export function ChooseLanguageLetterTemplates(
             formId={'choose-language-letter-templates'}
             formAttributes={{ onSubmit: formValidate }}
           >
+            <input
+              type='hidden'
+              name='lockNumber'
+              value={lockNumber}
+              readOnly
+            />
             {selectedLanguageTemplateIds.length > 0 && (
               <Details data-testid='previous-selection-details'>
                 <Details.Summary>

@@ -60,6 +60,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       },
       getMockFormData({
         [`template_${FRENCH_LETTER.id}`]: `${FRENCH_LETTER.id}:fr`,
+        lockNumber: '42',
       })
     );
 
@@ -77,7 +78,8 @@ describe('chooseLanguageLetterTemplatesAction', () => {
             ],
           }),
         ],
-      })
+      }),
+      42
     );
 
     expect(mockRedirect).toHaveBeenCalledWith(
@@ -104,6 +106,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       getMockFormData({
         [`template_${FRENCH_LETTER.id}`]: `${FRENCH_LETTER.id}:fr`,
         [`template_${POLISH_LETTER.id}`]: `${POLISH_LETTER.id}:pl`,
+        lockNumber: '42',
       })
     );
 
@@ -124,7 +127,8 @@ describe('chooseLanguageLetterTemplatesAction', () => {
             ]),
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -157,6 +161,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       },
       getMockFormData({
         [`template_${SPANISH_LETTER.id}`]: `${SPANISH_LETTER.id}:fr`,
+        lockNumber: '42',
       })
     );
 
@@ -173,7 +178,8 @@ describe('chooseLanguageLetterTemplatesAction', () => {
             ],
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -206,6 +212,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       },
       getMockFormData({
         [`template_${POLISH_LETTER.id}`]: `${POLISH_LETTER.id}:pl`,
+        lockNumber: '42',
       })
     );
 
@@ -226,7 +233,8 @@ describe('chooseLanguageLetterTemplatesAction', () => {
             ]),
           }),
         ],
-      })
+      }),
+      42
     );
   });
 
@@ -248,6 +256,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       getMockFormData({
         [`template_${FRENCH_LETTER.id}`]: `${FRENCH_LETTER.id}:fr`,
         [`template_${FRENCH_LETTER_2.id}`]: `${FRENCH_LETTER_2.id}:fr`,
+        lockNumber: '42',
       })
     );
 
@@ -266,6 +275,7 @@ describe('$ChooseLanguageLetterTemplates Zod schema', () => {
   test('should pass validation when at least one template checkbox is selected', () => {
     const validData = {
       'template_abc-123': 'abc-123:fr',
+      lockNumber: '42',
     };
 
     const result = schema.safeParse(validData);
@@ -277,6 +287,7 @@ describe('$ChooseLanguageLetterTemplates Zod schema', () => {
     const validData = {
       'template_abc-123': 'abc-123:fr',
       'template_def-456': 'def-456:pl',
+      lockNumber: '42',
     };
 
     const result = schema.safeParse(validData);
@@ -285,7 +296,9 @@ describe('$ChooseLanguageLetterTemplates Zod schema', () => {
   });
 
   test('should fail validation when no template checkboxes are selected', () => {
-    const invalidData = {};
+    const invalidData = {
+      lockNumber: '42',
+    };
 
     const result = schema.safeParse(invalidData);
 
@@ -296,6 +309,7 @@ describe('$ChooseLanguageLetterTemplates Zod schema', () => {
   test('should fail validation when only non-template fields are present', () => {
     const invalidData = {
       otherField: 'some-value',
+      lockNumber: '42',
     };
 
     const result = schema.safeParse(invalidData);
