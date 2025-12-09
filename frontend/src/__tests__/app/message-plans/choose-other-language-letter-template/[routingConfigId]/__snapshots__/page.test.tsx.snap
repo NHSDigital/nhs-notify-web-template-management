@@ -42,6 +42,12 @@ exports[`ChooseOtherLanguageLetterTemplate page renders foreign language letter 
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >

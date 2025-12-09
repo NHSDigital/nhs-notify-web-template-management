@@ -1053,7 +1053,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
                     data-testid="choose-template-link-x1"
-                    href="/message-plans/choose-large-print-letter-template/routingconfig-1?lockNumber=undefined"
+                    href="/message-plans/choose-large-print-letter-template/routingconfig-1?lockNumber=0"
                   >
                     Choose
                     <span
@@ -1090,7 +1090,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
                   <a
                     class="nhsuk-link nhsuk-link--no-visited-state"
                     data-testid="choose-template-link-foreign-language"
-                    href="/message-plans/choose-other-language-letter-template/routingconfig-1?lockNumber=undefined"
+                    href="/message-plans/choose-other-language-letter-template/routingconfig-1?lockNumber=0"
                   >
                     Choose
                     <span

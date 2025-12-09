@@ -72,6 +72,12 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -553,6 +559,12 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -1004,6 +1016,12 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -1442,6 +1460,12 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <details
             class="nhsuk-details"
@@ -1923,6 +1947,12 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
             type="hidden"
             value="no_token"
           />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
           <div
             class="nhsuk-grid-row"
           >
@@ -2361,6 +2391,12 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
             readonly=""
             type="hidden"
             value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
           />
           <p
             class="nhsuk-body"

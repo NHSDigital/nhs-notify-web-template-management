@@ -643,7 +643,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-x1"
-                          href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=undefined"
+                          href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                         >
                           Choose
                           <span
@@ -680,7 +680,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-foreign-language"
-                          href="/message-plans/choose-other-language-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=undefined"
+                          href="/message-plans/choose-other-language-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                         >
                           Choose
                           <span
@@ -1375,7 +1375,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-x1"
-                          href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=undefined"
+                          href="/message-plans/choose-large-print-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                         >
                           Choose
                           <span
@@ -1412,7 +1412,7 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-foreign-language"
-                          href="/message-plans/choose-other-language-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=undefined"
+                          href="/message-plans/choose-other-language-letter-template/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca?lockNumber=0"
                         >
                           Choose
                           <span

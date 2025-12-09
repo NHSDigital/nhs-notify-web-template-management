@@ -313,7 +313,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-x1"
-                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=undefined"
+                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
                 >
                   Choose
                   <span
@@ -350,7 +350,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-foreign-language"
-                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=undefined"
+                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
                 >
                   Choose
                   <span
@@ -575,7 +575,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-x1"
-                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=undefined"
+                  href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
                 >
                   Choose
                   <span
@@ -612,7 +612,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
                 <a
                   class="nhsuk-link nhsuk-link--no-visited-state"
                   data-testid="choose-template-link-foreign-language"
-                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=undefined"
+                  href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
                 >
                   Choose
                   <span

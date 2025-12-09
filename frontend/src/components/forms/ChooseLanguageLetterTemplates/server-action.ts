@@ -18,14 +18,12 @@ export type ChooseLanguageLetterTemplatesFormState = FormState &
     errorType?: 'missing' | 'duplicate';
   };
 
-const formDataSchema = z.record(z.string(), z.string());
-
 export const $ChooseLanguageLetterTemplates = (errorMessage: string) =>
   z
     .object({
       lockNumber: $LockNumber,
     })
-    .and(formDataSchema)
+    .catchall(z.string())
     .refine(
       (data) =>
         Object.keys(data).some(
@@ -44,10 +42,7 @@ export async function chooseLanguageLetterTemplatesAction(
 
   const parsedForm = $ChooseLanguageLetterTemplates(
     content.error.missing.hintText
-  ).safeParse({
-    ...Object.fromEntries(formData.entries()),
-    lockNumber: formData.get('lockNumber'),
-  });
+  ).safeParse(Object.fromEntries(formData.entries()));
 
   if (!parsedForm.success) {
     return {
@@ -56,10 +51,12 @@ export async function chooseLanguageLetterTemplatesAction(
     };
   }
 
+  const { lockNumber, ...templateSelections } = parsedForm.data;
+
   const selectedLanguages: Language[] = [];
   const selectedTemplateIds: string[] = [];
 
-  for (const [key, value] of Object.entries(parsedForm.data)) {
+  for (const [key, value] of Object.entries(templateSelections)) {
     if (key.startsWith('template_') && typeof value === 'string') {
       const [templateId, language] = value.split(':');
 
@@ -105,7 +102,7 @@ export async function chooseLanguageLetterTemplatesAction(
       cascade: updatedCascade,
       cascadeGroupOverrides: updatedCascadeGroupOverrides,
     },
-    parsedForm.data.lockNumber
+    lockNumber
   );
 
   redirect(

@@ -791,7 +791,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="choose-template-link-x1"
-                          href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=undefined"
+                          href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                         >
                           Choose
                           <span
@@ -846,7 +846,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         <a
                           class="nhsuk-link nhsuk-link--no-visited-state"
                           data-testid="change-template-link-foreign-language"
-                          href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=undefined"
+                          href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
                         >
                           Change
                           <span
@@ -870,6 +870,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                             name="lockNumber"
                             readonly=""
                             type="hidden"
+                            value="0"
                           />
                           <input
                             name="templateId"
