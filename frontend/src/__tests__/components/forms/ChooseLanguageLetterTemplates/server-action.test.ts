@@ -266,6 +266,43 @@ describe('chooseLanguageLetterTemplatesAction', () => {
       'You can only choose one template for each language'
     );
   });
+
+  test('should return error when lockNumber is missing', async () => {
+    const result = await chooseLanguageLetterTemplatesAction(
+      {
+        messagePlan: ROUTING_CONFIG,
+        cascadeIndex: 0,
+        templateList: [FRENCH_LETTER],
+        pageHeading: 'Choose language templates',
+      },
+      getMockFormData({
+        [`template_${FRENCH_LETTER.id}`]: `${FRENCH_LETTER.id}:fr`,
+      })
+    );
+
+    expect(result.errorState).toBeDefined();
+    expect(mockUpdateRoutingConfig).not.toHaveBeenCalled();
+    expect(mockRedirect).not.toHaveBeenCalled();
+  });
+
+  test('should return error when lockNumber is invalid', async () => {
+    const result = await chooseLanguageLetterTemplatesAction(
+      {
+        messagePlan: ROUTING_CONFIG,
+        cascadeIndex: 0,
+        templateList: [FRENCH_LETTER],
+        pageHeading: 'Choose language templates',
+      },
+      getMockFormData({
+        [`template_${FRENCH_LETTER.id}`]: `${FRENCH_LETTER.id}:fr`,
+        lockNumber: 'invalid',
+      })
+    );
+
+    expect(result.errorState).toBeDefined();
+    expect(mockUpdateRoutingConfig).not.toHaveBeenCalled();
+    expect(mockRedirect).not.toHaveBeenCalled();
+  });
 });
 
 describe('$ChooseLanguageLetterTemplates Zod schema', () => {
