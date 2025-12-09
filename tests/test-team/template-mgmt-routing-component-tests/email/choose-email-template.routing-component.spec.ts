@@ -6,7 +6,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
   assertBackLinkTopNotPresent,
-  assertBackLinkBottom,
+  assertAndClickBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertChooseTemplatePageWithPreviousSelection,
@@ -102,7 +102,7 @@ test.describe('Routing - Choose email template page', () => {
     await assertFooterLinks(props);
     await assertSignOutLink(props);
     await assertBackLinkTopNotPresent(props);
-    await assertBackLinkBottom({
+    await assertAndClickBackLinkBottom({
       ...props,
       expectedUrl: `templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
     });

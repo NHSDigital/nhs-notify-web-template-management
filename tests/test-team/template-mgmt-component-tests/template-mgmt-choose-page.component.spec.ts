@@ -40,11 +40,11 @@ test.describe('Choose Template Type Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
+    await assertBackLinkBottomNotPresent(props);
     await assertAndClickBackLinkTop({
       ...props,
       expectedUrl: 'templates/message-templates',
     });
-    await assertBackLinkBottomNotPresent(props);
   });
 
   test('should display correct number of radio button options', async ({

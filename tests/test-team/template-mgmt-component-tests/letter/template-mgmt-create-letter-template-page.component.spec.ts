@@ -49,11 +49,11 @@ test.describe('Upload letter Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
+    await assertBackLinkBottomNotPresent(props);
     await assertAndClickBackLinkTop({
       ...props,
       expectedUrl: 'templates/choose-a-template-type',
     });
-    await assertBackLinkBottomNotPresent(props);
   });
 
   test('Validate error messages on the upload letter template page with no template name or pdf', async ({

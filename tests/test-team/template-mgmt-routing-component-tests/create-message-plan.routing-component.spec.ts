@@ -13,7 +13,7 @@ import {
   assertHeaderLogoLink,
   assertSkipToMainContent,
   assertBackLinkTopNotPresent,
-  assertBackLinkBottom,
+  assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 
@@ -207,7 +207,7 @@ test.describe('Create Message Plan Page', () => {
         await assertFooterLinks(props);
         await assertSignOutLink(props);
         await assertBackLinkTopNotPresent(props);
-        await assertBackLinkBottom(props);
+        await assertAndClickBackLinkBottom(props);
       });
     });
 

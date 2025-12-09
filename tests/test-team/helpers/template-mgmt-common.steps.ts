@@ -204,7 +204,7 @@ export function assertHeaderNavigationLinksWhenSignedOut(
 export function assertBackLinkTop(
   props: CommonStepsProps & { expectedUrl: string }
 ) {
-  return test.step('displays "Go back" link at top of page with correct url', async () => {
+  return test.step('displays back link at the top of the page with correct url', async () => {
     const { page, baseURL, expectedUrl } = props;
 
     await page.loadPage();
@@ -220,7 +220,7 @@ export function assertBackLinkTop(
 export function assertAndClickBackLinkTop(
   props: CommonStepsProps & { expectedUrl: string }
 ) {
-  return test.step('when user clicks "Go back", then user is redirected to previous page', async () => {
+  return test.step('when user clicks the top back link, then user is redirected to previous page', async () => {
     await assertBackLinkTop(props);
 
     const { page, baseURL, expectedUrl } = props;
@@ -236,7 +236,7 @@ export function assertAndClickBackLinkTop(
 export function assertBackLinkBottom(
   props: CommonStepsProps & { expectedUrl: string }
 ) {
-  return test.step('displays additional "Go back" link at bottom of the page with correct url', async () => {
+  return test.step('displays back link at the bottom of the page with correct url', async () => {
     const { page, expectedUrl } = props;
 
     await page.loadPage();
@@ -249,8 +249,24 @@ export function assertBackLinkBottom(
   });
 }
 
+export function assertAndClickBackLinkBottom(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
+  return test.step('when user clicks the bottom back link, then user is redirected to previous page', async () => {
+    await assertBackLinkBottom(props);
+
+    const { page, baseURL, expectedUrl } = props;
+
+    await page.backLinkBottom.click();
+
+    await page.page.waitForURL(`${baseURL}/${expectedUrl}`);
+
+    await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
+  });
+}
+
 export function assertBackLinkTopNotPresent(props: CommonStepsProps) {
-  return test.step('should not display "Go Back" link on page', async () => {
+  return test.step('should not display a back link at the top of the page', async () => {
     const { page } = props;
 
     await page.loadPage();
