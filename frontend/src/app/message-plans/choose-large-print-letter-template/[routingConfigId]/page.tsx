@@ -49,6 +49,7 @@ export default async function ChooseLargePrintLetterTemplate(
       templateList={availableTemplateList}
       cascadeIndex={cascadeIndex}
       accessibleFormat='x1'
+      lockNumber={42}
     />
   );
 }

@@ -42,6 +42,7 @@ const baseConfig: RoutingConfig = {
   cascade: [],
   cascadeGroupOverrides: [],
   defaultCascadeGroup: 'standard',
+  lockNumber: 42,
 };
 
 describe('isLetterTemplate', () => {

@@ -54,6 +54,7 @@ export function MessagePlanBlock({
         cascadeIndex={index}
         routingConfigId={routingConfigId}
         conditionalTemplates={conditionalTemplates}
+        lockNumber={lockNumber}
       />
     </li>
   );

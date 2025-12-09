@@ -164,6 +164,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
           conditionalTemplates={emptyConditionalTemplates}
         />
       );
@@ -181,6 +182,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
           conditionalTemplates={emptyConditionalTemplates}
         />
       );
@@ -201,6 +203,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
           conditionalTemplates={emptyConditionalTemplates}
         />
       );
@@ -239,6 +242,7 @@ describe('MessagePlanBlock', () => {
           index={0}
           channelItem={channelItem}
           routingConfigId='test-routing-config-id'
+          lockNumber={42}
           conditionalTemplates={conditionalTemplates}
         />
       );
