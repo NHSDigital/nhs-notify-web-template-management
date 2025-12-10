@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContentRenderer renders a plain string as MarkdownContent in inline mode 1`] = `
+<DocumentFragment>
+  Just a string block
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders an inline-text block without a paragraph wrapper 1`] = `
+<DocumentFragment>
+  <ul>
+    <li
+      data-testid="list-item"
+    >
+      Inline content
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders code blocks with accessible description 1`] = `
+<DocumentFragment>
+  <span
+    class="nhsuk-u-visually-hidden"
+    id="heading-markdown-description"
+  >
+    An example of heading markdown
+  </span>
+  <pre
+    class="nhsuk-code-block"
+  >
+    <code
+      aria-describedby="heading-markdown-description"
+    >
+      # This is a heading
+    </code>
+  </pre>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders ordered list blocks 1`] = `
+<DocumentFragment>
+  <ol
+    start="1"
+  >
+    <li>
+      Item 1
+    </li>
+    <li>
+      Item 2
+    </li>
+    <li>
+      Item 3
+    </li>
+  </ol>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders text blocks using MarkdownContent 1`] = `
+<DocumentFragment>
+  <p>
+    This is a paragraph.
+  </p>
+  <p>
+    Another paragraph.
+  </p>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders unordered list blocks 1`] = `
+<DocumentFragment>
+  <ul>
+    <li>
+      Item 1
+    </li>
+    <li>
+      Item 2
+    </li>
+    <li>
+      Item 3
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders with overrides on inline-text blocks 1`] = `
+<DocumentFragment>
+  This is a 
+  <a
+    class="foo"
+    href="https://example.com"
+  >
+    link
+  </a>
+  .
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer renders with overrides on text blocks 1`] = `
+<DocumentFragment>
+  <p
+    class="foo"
+  >
+    This is a paragraph.
+  </p>
+  <p
+    class="bar"
+  >
+    Another paragraph.
+  </p>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer treats a string array as inline text (no paragraph wrapper) 1`] = `
+<DocumentFragment>
+  <ul>
+    <li
+      data-testid="list-item"
+    >
+      Inline via string
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`ContentRenderer treats a string as inline text (no paragraph wrapper) 1`] = `
+<DocumentFragment>
+  <ul>
+    <li
+      data-testid="list-item"
+    >
+      Inline via string
+    </li>
+  </ul>
+</DocumentFragment>
+`;

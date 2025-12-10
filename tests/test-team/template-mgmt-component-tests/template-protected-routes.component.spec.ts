@@ -51,6 +51,7 @@ import { RoutingChooseLargePrintLetterTemplatePage } from 'pages/routing/letter/
 import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/letter/choose-other-language-letter-template-page';
 import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter/preview-large-print-letter-template-page';
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
+import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -60,6 +61,7 @@ const protectedPages = [
   RoutingChooseTemplatesPage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
+  RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,

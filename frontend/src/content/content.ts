@@ -1,10 +1,11 @@
-import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
-import { getBasePath } from '@utils/get-base-path';
-import {
+import type {
   LetterType,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
+import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
+import { getBasePath } from '@utils/get-base-path';
+import { markdownList } from '@utils/markdown-list';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -120,14 +121,14 @@ const personalisation: {
           text: 'You can use the following PDS personalisation fields:',
         },
         {
-          type: 'list',
-          items: [
+          type: 'text',
+          text: markdownList('ul', [
             '((fullName))',
             '((firstName))',
             '((lastName))',
             '((nhsNumber))',
             '((date))',
-          ],
+          ]),
         },
         {
           type: 'text',
@@ -1117,11 +1118,11 @@ const messagePlanFallbackConditions: Record<
           text: 'The relevant accessible or language letter will be sent instead of the standard English letter if, both: ',
         },
         {
-          type: 'list',
-          items: [
+          type: 'text',
+          text: markdownList('ul', [
             'the recipient has requested an accessible or language letter in PDS',
             `you've included the relevant template in this message plan`,
-          ],
+          ]),
         },
       ],
     },
@@ -1144,7 +1145,7 @@ const createEditMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '/message-plans/move-to-production/{{routingConfigId}}',
+      href: '/message-plans/get-ready-to-move/{{routingConfigId}}',
       text: 'Move to production',
     },
     secondary: {
@@ -1257,11 +1258,11 @@ const messagePlanDraftAndProdInfo: {
         text: "Message plans that you're working on and are not ready to be sent. You can test these, using our:",
       },
       {
-        type: 'list',
-        items: [
+        type: 'text',
+        text: markdownList('ul', [
           '[API integration environment (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify#overview--environments-and-testing)',
           '[Integration MESH mailbox (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh/sending-a-message#sending-your-request)',
-        ],
+        ]),
       },
     ],
   },
@@ -1285,6 +1286,73 @@ const messagePlansPage = {
     text: 'New message plan',
     link: '/message-plans/choose-message-order',
   },
+};
+
+const messagePlanGetReadyToMoveToProduction = () => {
+  const content: ContentBlock[] = [
+    {
+      type: 'text',
+      text: 'Moving message plans from draft to production means they are ready to send.',
+    },
+    {
+      type: 'text',
+      text: 'Any templates used in these message plans will be locked.',
+    },
+    {
+      type: 'text',
+      text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
+    },
+    {
+      type: 'text',
+      text: '## Before you continue',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: 'Make sure:',
+    },
+    {
+      type: 'text',
+      text: markdownList('ul', [
+        'the relevant stakeholders in your team have approved your templates and message plan',
+        'your templates have no errors',
+      ]),
+      overrides: {
+        ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+      },
+    },
+  ];
+
+  const calloutContent: ContentBlock[] = [
+    {
+      type: 'text',
+      text: 'You cannot edit anything that is in production.',
+    },
+    {
+      type: 'text',
+      text: 'If you need to edit your templates or message plans, you can copy and replace them.',
+    },
+  ];
+
+  return {
+    title: generatePageTitle('Get ready to move message plan to production'),
+    stepCounter: 'Step 1 of 2',
+    heading: 'Get ready to move message plan to production',
+    content,
+    callout: {
+      label: 'Important',
+      content: calloutContent,
+    },
+    continue: {
+      text: 'Continue',
+      href: (id: string) =>
+        `${getBasePath()}/message-plans/review-and-move-to-production/${id}`,
+    },
+    cancel: {
+      text: 'Keep in draft',
+      href: `${getBasePath()}/message-plans`,
+    },
+  };
 };
 
 const messagePlansListComponent = {
@@ -1326,20 +1394,32 @@ const messagePlanForm = {
       hint: 'This will not be visible to recipients.',
       details: {
         summary: 'Naming your message plans',
-        text: {
-          main: 'You should name your message plans in a way that works best for your service or organisation.',
-          commonNames: {
-            main: 'Common message plan names include the:',
-            list: [
+        text: [
+          {
+            type: 'text',
+            text: 'You should name your message plans in a way that works best for your service or organisation.',
+          },
+          {
+            type: 'text',
+            text: 'Common message plan names include the:',
+          },
+          {
+            type: 'text',
+            text: markdownList('ul', [
               'channels it uses',
               'subject or reason for the message',
               'intended audience for the message',
               'version number',
-            ],
-            example:
-              "For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'",
+            ]),
+            overrides: {
+              ul: { props: { className: 'nhsuk-list nhsuk-list--bullet' } },
+            },
           },
-        },
+          {
+            type: 'text',
+            text: "For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'",
+          },
+        ] satisfies ContentBlock[],
       },
     },
     campaignId: {
@@ -1399,6 +1479,7 @@ const content = {
     previewTemplateFromMessagePlan,
   },
   pages: {
+    chooseTemplatesForMessagePlan,
     createMessagePlan,
     editMessagePlanSettings,
     error404,
@@ -1406,8 +1487,8 @@ const content = {
     letterTemplateInvalidConfiguration,
     messagePlanInvalidConfiguration,
     messageTemplates,
-    chooseTemplatesForMessagePlan,
     messagePlansPage,
+    messagePlanGetReadyToMoveToProduction,
     chooseNhsAppTemplate,
     chooseEmailTemplate,
     chooseTextMessageTemplate,

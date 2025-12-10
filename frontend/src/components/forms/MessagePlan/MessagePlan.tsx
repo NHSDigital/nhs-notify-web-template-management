@@ -16,6 +16,7 @@ import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { useNHSNotifyForm } from '@providers/form-provider';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const formContent = content.components.messagePlanForm;
 
@@ -59,16 +60,7 @@ export function MessagePlanForm({
             {formContent.fields.name.details.summary}
           </Details.Summary>
           <Details.Text>
-            <p>{formContent.fields.name.details.text.main}</p>
-            <p>{formContent.fields.name.details.text.commonNames.main}</p>
-            <ul className='nhsuk-list nhsuk-list--bullet'>
-              {formContent.fields.name.details.text.commonNames.list.map(
-                (item) => (
-                  <li key={item}>{item}</li>
-                )
-              )}
-            </ul>
-            <p>{formContent.fields.name.details.text.commonNames.example}</p>
+            <ContentRenderer content={formContent.fields.name.details.text} />
           </Details.Text>
         </Details>
         <TextInput

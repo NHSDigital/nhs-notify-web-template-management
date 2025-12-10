@@ -312,7 +312,7 @@ test.describe('Routing - Choose Templates page', () => {
     );
     await expect(chooseTemplatesPage.moveToProductionButton).toHaveAttribute(
       'href',
-      `/templates/message-plans/move-to-production/${routingConfigIds.valid}`
+      `/templates/message-plans/get-ready-to-move/${routingConfigIds.valid}`
     );
     await expect(chooseTemplatesPage.saveAndCloseButton).toHaveText(
       'Save and close'

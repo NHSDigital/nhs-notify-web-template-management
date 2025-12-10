@@ -5,8 +5,6 @@ import {
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { EventCacheHelper } from '../helpers/events/event-cache-helper';
-import { randomUUID } from 'node:crypto';
-import { setTimeout } from 'node:timers/promises';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 
@@ -25,34 +23,151 @@ test.describe('Event publishing - Routing Config', () => {
     await storageHelper.deleteSeeded();
   });
 
-  test('Expect no events', async ({ request }) => {
-    const id = randomUUID();
-
-    const messagePlan = RoutingConfigFactory.create(user, { id }).dbEntry;
+  test('Expect a draft event and a deleted event', async ({ request }) => {
+    const payload = RoutingConfigFactory.create(user, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: 'b1854a33-fc1b-4e7d-99d0-6f7b92b8c530',
+        },
+      ],
+    }).apiPayload;
 
     const start = new Date();
 
-    await storageHelper.seed([messagePlan]);
-
-    const submittedResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${id}/submit`,
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
-          'X-Lock-Number': String(messagePlan.lockNumber),
+        },
+        data: payload,
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+
+    const {
+      data: { id, lockNumber },
+    } = await createResponse.json();
+
+    storageHelper.addAdHocKey({
+      id,
+      clientId: user.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${id}`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
         },
       }
     );
 
-    expect(submittedResponse.status()).toBe(200);
+    expect(deleteResponse.status()).toBe(204);
 
-    // 5s is longest observed delivery delay
-    await setTimeout(5000);
+    await expect(async () => {
+      const events = await eventCacheHelper.findEvents(start, [id]);
 
-    // This would throw if a routing config event was present,
-    // EventCacheHelper doesn't yet know how to handle routing config events
-    const events = await eventCacheHelper.findEvents(start, [id]);
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'DRAFT',
+          }),
+        })
+      );
 
-    expect(events).toHaveLength(0);
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'DELETED',
+          }),
+        })
+      );
+
+      expect(events).toHaveLength(2);
+    }).toPass({ timeout: 60_000 });
+  });
+
+  test('Expect a draft event and a completed event', async ({ request }) => {
+    const payload = RoutingConfigFactory.create(user, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: 'b1854a33-fc1b-4e7d-99d0-6f7b92b8c530',
+        },
+      ],
+    }).apiPayload;
+
+    const start = new Date();
+
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+        },
+        data: payload,
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+
+    const {
+      data: { id, lockNumber },
+    } = await createResponse.json();
+
+    storageHelper.addAdHocKey({
+      id,
+      clientId: user.clientId,
+    });
+
+    const submitResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${id}/submit`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    expect(submitResponse.status()).toBe(200);
+
+    await expect(async () => {
+      const events = await eventCacheHelper.findEvents(start, [id]);
+
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'DRAFT',
+          }),
+        })
+      );
+
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'COMPLETED',
+          }),
+        })
+      );
+
+      expect(events).toHaveLength(2);
+    }).toPass({ timeout: 60_000 });
   });
 });
