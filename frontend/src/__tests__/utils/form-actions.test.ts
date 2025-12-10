@@ -15,16 +15,12 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
-  createRoutingConfig,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
-import { randomUUID } from 'node:crypto';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
-const mockedRoutingConfigClient = jest.mocked(routingConfigurationApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
@@ -34,7 +30,7 @@ jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
 describe('form-actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    authIdTokenServerMock.mockResolvedValueOnce({
+    authIdTokenServerMock.mockResolvedValue({
       accessToken: 'token',
       clientId: 'client1',
     });
@@ -99,11 +95,7 @@ describe('form-actions', () => {
   });
 
   test('createTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce({
-      accessToken: undefined,
-      clientId: undefined,
-    });
+    authIdTokenServerMock.mockResolvedValueOnce({});
 
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
@@ -269,11 +261,7 @@ describe('form-actions', () => {
   });
 
   test('uploadLetterTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce({
-      accessToken: undefined,
-      clientId: undefined,
-    });
+    authIdTokenServerMock.mockResolvedValueOnce({});
 
     const uploadLetterTemplateInput: UploadLetterTemplate = {
       templateType: 'LETTER',
@@ -371,11 +359,7 @@ describe('form-actions', () => {
   });
 
   test('saveTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce({
-      accessToken: undefined,
-      clientId: undefined,
-    });
+    authIdTokenServerMock.mockResolvedValueOnce({});
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'bde7301a-e8c0-404a-8d19-c0b8ef7817f9',
@@ -441,11 +425,7 @@ describe('form-actions', () => {
   });
 
   test('getTemplate - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce({
-      accessToken: undefined,
-      clientId: undefined,
-    });
+    authIdTokenServerMock.mockResolvedValueOnce({});
 
     await expect(getTemplate('id')).rejects.toThrow(
       'Failed to get access token'
@@ -495,11 +475,7 @@ describe('form-actions', () => {
   });
 
   test('getTemplates - should throw error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce({
-      accessToken: undefined,
-      clientId: undefined,
-    });
+    authIdTokenServerMock.mockResolvedValueOnce({});
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
   });
@@ -625,7 +601,6 @@ describe('form-actions', () => {
     });
 
     test('submitTemplate - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
@@ -676,7 +651,6 @@ describe('form-actions', () => {
     });
 
     test('deleteTemplate - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
@@ -746,7 +720,6 @@ describe('form-actions', () => {
     });
 
     test('requestTemplateProof - should throw error when no token', async () => {
-      authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
@@ -755,133 +728,6 @@ describe('form-actions', () => {
       await expect(requestTemplateProof('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
-    });
-  });
-
-  describe('createRoutingConfig', () => {
-    test('creates a routing config', async () => {
-      const now = new Date();
-      const id = randomUUID();
-
-      mockedRoutingConfigClient.create.mockImplementationOnce(
-        async (input) => ({
-          data: {
-            ...input,
-            id,
-            clientId: 'client1',
-            createdAt: now.toISOString(),
-            status: 'DRAFT',
-            updatedAt: now.toISOString(),
-            lockNumber: 1,
-            defaultCascadeGroup: 'standard',
-          },
-        })
-      );
-
-      const result = await createRoutingConfig({
-        name: 'My Routing Config',
-        campaignId: 'my-campaign-id',
-        cascade: [
-          {
-            channelType: 'primary',
-            channel: 'NHSAPP',
-            cascadeGroups: ['standard'],
-            defaultTemplateId: null,
-          },
-        ],
-        cascadeGroupOverrides: [],
-      });
-
-      expect(mockedRoutingConfigClient.create).toHaveBeenCalledWith(
-        {
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [],
-        },
-        'token'
-      );
-
-      expect(result).toEqual({
-        id,
-        clientId: 'client1',
-        createdAt: now.toISOString(),
-        status: 'DRAFT',
-        updatedAt: now.toISOString(),
-        lockNumber: 1,
-        name: 'My Routing Config',
-        campaignId: 'my-campaign-id',
-        cascade: [
-          {
-            channelType: 'primary',
-            channel: 'NHSAPP',
-            cascadeGroups: ['standard'],
-            defaultTemplateId: null,
-          },
-        ],
-        cascadeGroupOverrides: [],
-        defaultCascadeGroup: 'standard',
-      });
-    });
-
-    test('errors when no token', async () => {
-      authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce({
-        accessToken: undefined,
-        clientId: undefined,
-      });
-
-      await expect(
-        createRoutingConfig({
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [],
-        })
-      ).rejects.toThrow('Failed to get access token');
-
-      expect(mockedRoutingConfigClient.create).not.toHaveBeenCalled();
-    });
-
-    test('errors when request fails', async () => {
-      mockedRoutingConfigClient.create.mockResolvedValueOnce({
-        error: {
-          errorMeta: {
-            code: 400,
-            description: 'Bad request',
-          },
-        },
-      });
-
-      await expect(
-        createRoutingConfig({
-          name: 'My Routing Config',
-          campaignId: 'my-campaign-id',
-          cascade: [
-            {
-              channelType: 'primary',
-              channel: 'NHSAPP',
-              cascadeGroups: ['standard'],
-              defaultTemplateId: null,
-            },
-          ],
-          cascadeGroupOverrides: [],
-        })
-      ).rejects.toThrow('Failed to create message plan');
     });
   });
 });

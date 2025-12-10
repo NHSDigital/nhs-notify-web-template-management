@@ -8,7 +8,7 @@ import {
   type FormState,
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
-import { createRoutingConfig } from '@utils/form-actions';
+import { createRoutingConfig } from '@utils/message-plans';
 import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 
 const $CreateMessagePlanFormData = $MessagePlanFormData.extend({
