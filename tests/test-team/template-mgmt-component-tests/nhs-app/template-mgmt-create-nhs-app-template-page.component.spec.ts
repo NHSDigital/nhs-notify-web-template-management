@@ -195,7 +195,9 @@ test.describe('Create NHS App Template Page', () => {
 
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
-    ).toHaveText(['Template message contains invalid personalisation fields']);
+    ).toHaveText([
+      'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7',
+    ]);
   });
 
   test('Validate error messages on the create NHS App message template page with angle brackets in linked url', async ({

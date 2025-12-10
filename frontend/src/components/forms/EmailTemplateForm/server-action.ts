@@ -40,7 +40,7 @@ export const $EmailTemplateFormSchema = z.object({
           templateMessage.includes(`((${personalisationFieldName}))`)
         ),
       {
-        message: form.emailTemplateMessage.error.invalidPersonalisation,
+        message: `${form.emailTemplateMessage.error.invalidPersonalisation} ${INVALID_PERSONALISATION_FIELDS.join(', ')}`,
       }
     ),
 });
