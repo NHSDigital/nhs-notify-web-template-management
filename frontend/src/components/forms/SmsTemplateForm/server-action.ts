@@ -37,7 +37,7 @@ export const $CreateSmsTemplateSchema = z.object({
           templateMessage.includes(`((${personalisationFieldName}))`)
         ),
       {
-        message: form.smsTemplateMessage.error.invalidPersonalisation,
+        message: `${form.smsTemplateMessage.error.invalidPersonalisation} ${INVALID_PERSONALISATION_FIELDS.join(', ')}`,
       }
     ),
 });

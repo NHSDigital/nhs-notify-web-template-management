@@ -13,7 +13,7 @@ const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
 const templateMessageHasInsecureLink = 'URLs must start with https://';
 const templateMessageContainsInvalidPersonalisation =
-  'Template message contains invalid personalisation fields';
+  'You cannot use the following custom personalisation fields in your message:';
 const selectAnOption = 'Select an option';
 
 const header = {

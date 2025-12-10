@@ -57,7 +57,7 @@ export const $CreateNhsAppTemplateSchema = z.object({
           templateMessage.includes(`((${personalisationFieldName}))`)
         ),
       {
-        message: form.nhsAppTemplateMessage.error.invalidPersonalisation,
+        message: `${form.nhsAppTemplateMessage.error.invalidPersonalisation} ${INVALID_PERSONALISATION_FIELDS.join(', ')}`,
       }
     ),
 });

@@ -108,7 +108,7 @@ describe('CreateEmailTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           emailTemplateMessage: [
-            'Template message contains invalid personalisation fields',
+            'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7',
           ],
         },
       },
