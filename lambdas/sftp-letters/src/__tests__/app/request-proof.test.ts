@@ -18,7 +18,7 @@ const clientId = 'thisclient';
 const language = 'fr';
 const letterType = 'x0';
 const messageId = 'message-id';
-const userId = 'owner-id';
+const internalUserId = 'owner-id';
 const pdfVersionId = 'pdf-version-id';
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
 const supplier = 'LETTER_SUPPLIER';
@@ -68,7 +68,7 @@ function mockEvent(
   personalisationParameters: string[]
 ): ProofingRequest {
   return {
-    user: { userId, clientId },
+    user: { internalUserId, clientId },
     templateId,
     templateName,
     pdfVersionId,
@@ -567,7 +567,7 @@ describe('App', () => {
         message: error.message,
         messageId,
         pdfVersionId,
-        user: { userId, clientId },
+        user: { internalUserId, clientId },
       })
     );
   });
@@ -625,7 +625,7 @@ describe('App', () => {
         message: err.message,
         messageId,
         pdfVersionId,
-        user: { userId, clientId },
+        user: { internalUserId, clientId },
       })
     );
   });

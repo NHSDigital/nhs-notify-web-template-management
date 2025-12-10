@@ -9,13 +9,13 @@ export function createHandler({
   routingConfigClient: RoutingConfigClient;
 }): APIGatewayProxyHandler {
   return async function handler(event) {
-    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+    const { internalUserId, clientId } = event.requestContext.authorizer ?? {};
 
-    if (!clientId || !userId) {
+    if (!clientId || !internalUserId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const user = { userId, clientId };
+    const user = { internalUserId, clientId };
 
     const log = logger.child(user);
 

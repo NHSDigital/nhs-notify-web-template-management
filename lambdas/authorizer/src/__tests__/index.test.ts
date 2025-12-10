@@ -42,7 +42,7 @@ const allowPolicy = {
     ],
   },
   context: {
-    user: 'sub',
+    internalUserId: 'user-1234',
     clientId: 'client-123',
   },
 };
@@ -76,7 +76,7 @@ afterEach(() => {
 test('returns Allow policy on valid token with clientId', async () => {
   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
     success: true,
-    subject: 'sub',
+    internalUserId: 'user-1234',
     clientId: 'client-123',
   });
 

@@ -16,8 +16,8 @@ describe('Delete Routing Config Handler', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -52,7 +52,7 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { routingConfigId: undefined },
@@ -90,7 +90,7 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -111,7 +111,7 @@ describe('Delete Routing Config Handler', () => {
     expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'
@@ -127,7 +127,7 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -145,7 +145,7 @@ describe('Delete Routing Config Handler', () => {
     expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'
@@ -167,7 +167,7 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {},
@@ -186,7 +186,7 @@ describe('Delete Routing Config Handler', () => {
 
     expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       ''
     );
   });

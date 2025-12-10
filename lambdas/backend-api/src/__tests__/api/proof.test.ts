@@ -17,8 +17,8 @@ describe('Template API - request proof', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing clientId', { userId: 'user-id', clientId: undefined }],
-    ['missing user', { clientId: 'client-id', user: undefined }],
+    ['missing clientId', { internalUserId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -49,7 +49,7 @@ describe('Template API - request proof', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: undefined },
       headers: { 'X-Lock-Number': '0' },
@@ -82,7 +82,7 @@ describe('Template API - request proof', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: 'template-id' },
       headers: { 'X-Lock-Number': '0' },
@@ -100,7 +100,7 @@ describe('Template API - request proof', () => {
 
     expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
       'template-id',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '0'
     );
   });
@@ -120,7 +120,7 @@ describe('Template API - request proof', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       },
       pathParameters: { templateId: 'template-id' },
       headers: {},
@@ -139,7 +139,7 @@ describe('Template API - request proof', () => {
 
     expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
       'template-id',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       ''
     );
   });
@@ -177,7 +177,7 @@ describe('Template API - request proof', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'notify-client-id' },
+        authorizer: { internalUserId: 'user-1234', clientId: 'notify-client-id' },
       },
       pathParameters: { templateId: 'id' },
       headers: { 'X-Lock-Number': '0' },
@@ -193,7 +193,7 @@ describe('Template API - request proof', () => {
     expect(mocks.templateClient.requestProof).toHaveBeenCalledWith(
       'id',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'notify-client-id',
       },
       '0'

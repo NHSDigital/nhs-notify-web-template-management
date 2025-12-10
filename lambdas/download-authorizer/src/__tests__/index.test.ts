@@ -62,10 +62,11 @@ describe('download authorizer handler', () => {
   test('returns request, when request is valid', async () => {
     const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
     const userName = 'CIS2_555555555555';
+    const internalUserId = 'user-1234';
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: true,
-      subject,
+      internalUserId,
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
@@ -93,10 +94,11 @@ describe('download authorizer handler', () => {
   test('returns denial if no access token is available for the LastAuthUser', async () => {
     const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
     const userName = 'CIS2_555555555555';
+    const internalUserId = 'user-1234';
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: true,
-      subject,
+      internalUserId,
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
