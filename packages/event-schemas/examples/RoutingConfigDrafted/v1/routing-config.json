@@ -1,0 +1,100 @@
+{
+  "data": {
+    "campaignId": "campaign-id",
+    "cascade": [
+      {
+        "cascadeGroups": [
+          "standard"
+        ],
+        "channel": "NHS_APP",
+        "channelType": "primary",
+        "defaultTemplateId": "nhs-app-template-id"
+      },
+      {
+        "cascadeGroups": [
+          "standard"
+        ],
+        "channel": "EMAIL",
+        "channelType": "primary",
+        "defaultTemplateId": "email-template-id"
+      },
+      {
+        "cascadeGroups": [
+          "standard"
+        ],
+        "channel": "SMS",
+        "channelType": "primary",
+        "defaultTemplateId": "sms-template-id"
+      },
+      {
+        "cascadeGroups": [
+          "standard"
+        ],
+        "channel": "LETTER",
+        "channelType": "primary",
+        "defaultTemplateId": "letter-template-id"
+      },
+      {
+        "cascadeGroups": [
+          "other-language"
+        ],
+        "channel": "LETTER",
+        "channelType": "primary",
+        "conditionalTemplates": [
+          {
+            "language": "fr",
+            "templateId": "fr-template-id"
+          },
+          {
+            "language": "ar",
+            "templateId": "ar-template-id"
+          }
+        ]
+      },
+      {
+        "cascadeGroups": [
+          "other-format"
+        ],
+        "channe": "LETTER",
+        "channelType": "primary",
+        "conditionalTemplates": [
+          {
+            "accessibleFormat": "x1",
+            "templateId": "x1-template-id"
+          }
+        ]
+      }
+    ],
+    "cascadeGroupOverrides": [
+      {
+        "language": [
+          "fr",
+          "ar"
+        ],
+        "name": "other-language"
+      },
+      {
+        "accessibleFormat": [
+          "x1"
+        ],
+        "name": "other-format"
+      }
+    ],
+    "clientId": "client-id",
+    "createdAt": "2025-07-29T08:45:00.000Z",
+    "defaultCascadeGroup": "standard",
+    "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
+    "name": "routing-config-name",
+    "status": "DRAFT"
+  },
+  "datacontenttype": "application/json",
+  "dataschema": "https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json",
+  "dataschemaversion": "1.0.0",
+  "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
+  "plane": "control",
+  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
+  "specversion": "1.0",
+  "subject": "871b0f4e-0b32-474e-a49a-23fc554bc5a6",
+  "time": "2025-07-29T08:45:00.000Z",
+  "type": "uk.nhs.notify.template-management.RoutingConfigDrafted.v1"
+}
