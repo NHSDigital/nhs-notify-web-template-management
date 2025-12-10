@@ -97,8 +97,11 @@ describe('LanguageLetterTemplates', () => {
             GERMAN_LETTER_TEMPLATE,
           ]}
           errorState={{
-            fieldErrors: {},
-            formErrors: ['Please select at least one language template'],
+            fieldErrors: {
+              'language-templates': [
+                'Please select at least one language template',
+              ],
+            },
           }}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'
@@ -122,8 +125,11 @@ describe('LanguageLetterTemplates', () => {
             GERMAN_LETTER_TEMPLATE,
           ]}
           errorState={{
-            fieldErrors: {},
-            formErrors: ['Choose only one template for each language'],
+            fieldErrors: {
+              'language-templates': [
+                'Choose only one template for each language',
+              ],
+            },
           }}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'

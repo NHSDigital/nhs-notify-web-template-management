@@ -24,15 +24,19 @@ export const $ChooseLanguageLetterTemplates = (errorMessage: string) =>
       lockNumber: $LockNumber,
     })
     .catchall(z.string())
-    .refine(
-      (data) =>
-        Object.keys(data).some(
-          (key) => key.startsWith('template_') && data[key]
-        ),
-      {
-        message: errorMessage,
+    .superRefine((data, ctx) => {
+      const hasTemplates = Object.keys(data).some(
+        (key) => key.startsWith('template_') && data[key]
+      );
+
+      if (!hasTemplates) {
+        ctx.addIssue({
+          code: 'custom',
+          message: errorMessage,
+          path: ['language-templates'],
+        });
       }
-    );
+    });
 
 export async function chooseLanguageLetterTemplatesAction(
   formState: ChooseLanguageLetterTemplatesFormState,
@@ -41,12 +45,14 @@ export async function chooseLanguageLetterTemplatesAction(
   const { messagePlan, cascadeIndex, templateList } = formState;
 
   const parsedForm = $ChooseLanguageLetterTemplates(
-    content.error.missing.hintText
+    content.error.missing.linkText
   ).safeParse(Object.fromEntries(formData.entries()));
 
   if (!parsedForm.success) {
     return {
       ...formState,
+      selectedTemplateIds: [],
+      errorType: 'missing',
       errorState: z.flattenError(parsedForm.error) as FormState['errorState'],
     };
   }
@@ -74,7 +80,9 @@ export async function chooseLanguageLetterTemplatesAction(
       selectedTemplateIds,
       errorType: 'duplicate',
       errorState: {
-        formErrors: [content.error.duplicate.hintText],
+        fieldErrors: {
+          'language-templates': [content.error.duplicate.linkText],
+        },
       },
     };
   }

@@ -47,7 +47,7 @@ export function ChooseLanguageLetterTemplates(
   );
 
   const formValidate = validate(
-    $ChooseLanguageLetterTemplates(content.error.missing.hintText),
+    $ChooseLanguageLetterTemplates(content.error.missing.linkText),
     setErrorState
   );
 
@@ -56,20 +56,24 @@ export function ChooseLanguageLetterTemplates(
   const selectedLanguageTemplateIds =
     getSelectedLanguageTemplateIds(cascadeItem);
 
-  const errorHintText =
-    state.errorType === 'duplicate'
-      ? content.error.duplicate.hintText
-      : content.error.missing.hintText;
-
   const initialSelectedTemplates =
     state.selectedTemplateIds ??
     selectedLanguageTemplateIds.map((item) => item.templateId);
+
+  const errorMessage = (errorState || state.errorState)?.fieldErrors?.[
+    'language-templates'
+  ]?.[0];
+  const isDuplicateError = errorMessage === content.error.duplicate.linkText;
+
+  const errorHintText = isDuplicateError
+    ? content.error.duplicate.hintText
+    : content.error.missing.hintText;
 
   return (
     <NHSNotifyMain>
       <NhsNotifyErrorSummary
         hint={errorHintText}
-        errorState={state.errorState || errorState}
+        errorState={errorState || state.errorState}
       />
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
@@ -126,7 +130,7 @@ export function ChooseLanguageLetterTemplates(
               <LanguageLetterTemplates
                 routingConfigId={messagePlan.id}
                 templateList={templateList}
-                errorState={state.errorState || errorState || null}
+                errorState={errorState || state.errorState || null}
                 selectedTemplates={initialSelectedTemplates}
               />
             ) : (

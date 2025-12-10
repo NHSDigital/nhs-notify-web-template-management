@@ -340,7 +340,9 @@ describe('ChooseLanguageLetterTemplates', () => {
             templateList: languageLetterTemplates,
             cascadeIndex: 3,
             errorState: {
-              formErrors: ['You have not chosen any templates'],
+              fieldErrors: {
+                'language-templates': ['Choose one or more templates'],
+              },
             },
             errorType: 'missing',
           },
@@ -358,7 +360,7 @@ describe('ChooseLanguageLetterTemplates', () => {
         );
         expect(formErrorMessage).toHaveClass('nhsuk-error-message');
         expect(formErrorMessage).toHaveTextContent(
-          'You have not chosen any templates'
+          'Choose one or more templates'
         );
       });
 
@@ -371,7 +373,9 @@ describe('ChooseLanguageLetterTemplates', () => {
             templateList: languageLetterTemplates,
             cascadeIndex: 3,
             errorState: {
-              formErrors: ['You have not chosen any templates'],
+              fieldErrors: {
+                'language-templates': ['Choose one or more templates'],
+              },
             },
             errorType: 'missing',
           },
@@ -394,9 +398,11 @@ describe('ChooseLanguageLetterTemplates', () => {
             templateList: languageLetterTemplates,
             cascadeIndex: 3,
             errorState: {
-              formErrors: [
-                'You can only choose one template for each language',
-              ],
+              fieldErrors: {
+                'language-templates': [
+                  'Choose only one template for each language',
+                ],
+              },
             },
             errorType: 'duplicate',
           },
@@ -423,7 +429,7 @@ describe('ChooseLanguageLetterTemplates', () => {
         const errorListItem = within(errorSummary).getByRole('listitem');
         expect(
           within(errorListItem).getByText(
-            'You can only choose one template for each language'
+            'Choose only one template for each language'
           )
         ).toBeInTheDocument();
       });
@@ -437,9 +443,11 @@ describe('ChooseLanguageLetterTemplates', () => {
             templateList: languageLetterTemplates,
             cascadeIndex: 3,
             errorState: {
-              formErrors: [
-                'You can only choose one template for each language',
-              ],
+              fieldErrors: {
+                'language-templates': [
+                  'Choose only one template for each language',
+                ],
+              },
             },
             errorType: 'duplicate',
           },
@@ -457,7 +465,7 @@ describe('ChooseLanguageLetterTemplates', () => {
         );
         expect(formErrorMessage).toHaveClass('nhsuk-error-message');
         expect(formErrorMessage).toHaveTextContent(
-          'You can only choose one template for each language'
+          'Choose only one template for each language'
         );
       });
 
@@ -470,9 +478,11 @@ describe('ChooseLanguageLetterTemplates', () => {
             templateList: languageLetterTemplates,
             cascadeIndex: 3,
             errorState: {
-              formErrors: [
-                'You can only choose one template for each language',
-              ],
+              fieldErrors: {
+                'language-templates': [
+                  'Choose only one template for each language',
+                ],
+              },
             },
             errorType: 'duplicate',
           },

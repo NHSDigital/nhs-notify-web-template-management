@@ -209,7 +209,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseOtherLanguageLetterTemplatePage(page),
+      page: new RoutingChooseOtherLanguageLetterTemplatePage(page).setPathParam(
+        'messagePlanId',
+        routingConfigIds.valid
+      ),
       id: routingConfigIds.valid,
       baseURL,
     };
@@ -507,7 +510,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     );
   });
 
-  test('user sees an error when trying to save without selecting any templates', async ({
+  test('user must select at least one template, without duplicate languages - errors update correctly when switching between states', async ({
     page,
     baseURL,
   }) => {
@@ -530,31 +533,13 @@ test.describe('Routing - Choose other language letter templates page', () => {
       chooseOtherLanguageLetterTemplatePage.errorSummary.locator('.nhsuk-hint')
     ).toHaveText('You have not chosen any templates');
 
-    const errorLink =
+    let errorLink =
       chooseOtherLanguageLetterTemplatePage.errorSummaryList.first();
     await expect(errorLink).toHaveText('Choose one or more templates');
 
     await expect(chooseOtherLanguageLetterTemplatePage.formError).toHaveText(
       'Error: Choose one or more templates'
     );
-
-    await chooseOtherLanguageLetterTemplatePage
-      .getCheckbox(templates.FRENCH_LETTER.id)
-      .check();
-
-    await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
-    );
-  });
-
-  test('user cannot select duplicate languages', async ({ page, baseURL }) => {
-    const chooseOtherLanguageLetterTemplatePage =
-      new RoutingChooseOtherLanguageLetterTemplatePage(page);
-    await chooseOtherLanguageLetterTemplatePage
-      .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .loadPage();
 
     await chooseOtherLanguageLetterTemplatePage
       .getCheckbox(templates.FRENCH_LETTER.id)
@@ -572,8 +557,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
 
-    const errorLink =
-      chooseOtherLanguageLetterTemplatePage.errorSummaryList.first();
+    errorLink = chooseOtherLanguageLetterTemplatePage.errorSummaryList.first();
     await expect(errorLink).toHaveText(
       'Choose only one template for each language'
     );
@@ -587,12 +571,35 @@ test.describe('Routing - Choose other language letter templates page', () => {
     );
 
     await chooseOtherLanguageLetterTemplatePage
+      .getCheckbox(templates.FRENCH_LETTER.id)
+      .uncheck();
+    await chooseOtherLanguageLetterTemplatePage
       .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
       .uncheck();
 
+    await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}`
+    );
+
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummary
-    ).toBeHidden();
+    ).toBeVisible();
+    await expect(
+      chooseOtherLanguageLetterTemplatePage.errorSummary.locator('.nhsuk-hint')
+    ).toHaveText('You have not chosen any templates');
+
+    errorLink = chooseOtherLanguageLetterTemplatePage.errorSummaryList.first();
+    await expect(errorLink).toHaveText('Choose one or more templates');
+
+    await expect(chooseOtherLanguageLetterTemplatePage.formError).toHaveText(
+      'Error: Choose one or more templates'
+    );
+
+    await chooseOtherLanguageLetterTemplatePage
+      .getCheckbox(templates.FRENCH_LETTER.id)
+      .check();
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 

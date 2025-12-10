@@ -261,9 +261,11 @@ describe('chooseLanguageLetterTemplatesAction', () => {
     );
 
     expect(result.errorType).toBe('duplicate');
-    expect(result.errorState?.formErrors).toHaveLength(1);
-    expect(result.errorState?.formErrors?.[0]).toBe(
-      'You can only choose one template for each language'
+    expect(result.errorState?.fieldErrors?.['language-templates']).toHaveLength(
+      1
+    );
+    expect(result.errorState?.fieldErrors?.['language-templates']?.[0]).toBe(
+      'Choose only one template for each language'
     );
   });
 

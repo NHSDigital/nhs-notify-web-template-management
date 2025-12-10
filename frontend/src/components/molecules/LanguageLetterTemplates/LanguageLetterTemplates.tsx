@@ -34,7 +34,9 @@ export function LanguageLetterTemplates({
         </HintText>
         <Checkboxes
           id='language-templates'
-          error={errorState?.formErrors?.[0] || ''}
+          error={
+            errorState?.fieldErrors?.['language-templates']?.join(', ') || ''
+          }
           errorProps={{ id: 'language-templates--error-message' }}
         >
           <Table

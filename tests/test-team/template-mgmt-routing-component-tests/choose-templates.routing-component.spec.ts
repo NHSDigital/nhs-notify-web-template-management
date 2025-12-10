@@ -181,6 +181,17 @@ test.describe('Routing - Choose Templates page', () => {
 
         const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
 
+        await expect(page).toHaveURL(
+          /\/templates\/message-plans\/choose-templates\//
+        );
+
+        const { messagePlanId } =
+          chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
+
+        expect(messagePlanId).not.toBeUndefined();
+
+        chooseTemplatesPage.setPathParam('messagePlanId', messagePlanId!);
+
         const messagePlanChannels = messageOrder.split(',');
 
         for (const channel of allChannels) {

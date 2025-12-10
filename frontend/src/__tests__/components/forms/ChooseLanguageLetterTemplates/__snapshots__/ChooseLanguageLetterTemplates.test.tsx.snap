@@ -29,11 +29,11 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
         class="nhsuk-list nhsuk-error-summary__list"
       >
         <li>
-          <span
-            class="nhsuk-error-message"
+          <a
+            href="#language-templates"
           >
-            You can only choose one template for each language
-          </span>
+            Choose only one template for each language
+          </a>
         </li>
       </ul>
     </div>
@@ -102,7 +102,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
                   >
                     Error: 
                   </span>
-                  You can only choose one template for each language
+                  Choose only one template for each language
                 </span>
                 <div
                   aria-describedby="language-templates--error-message"
@@ -516,11 +516,11 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
         class="nhsuk-list nhsuk-error-summary__list"
       >
         <li>
-          <span
-            class="nhsuk-error-message"
+          <a
+            href="#language-templates"
           >
-            You have not chosen any templates
-          </span>
+            Choose one or more templates
+          </a>
         </li>
       </ul>
     </div>
@@ -589,7 +589,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
                   >
                     Error: 
                   </span>
-                  You have not chosen any templates
+                  Choose one or more templates
                 </span>
                 <div
                   aria-describedby="language-templates--error-message"

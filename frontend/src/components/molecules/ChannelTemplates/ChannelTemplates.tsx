@@ -39,7 +39,7 @@ export function ChannelTemplates({
           {tableHintText}
         </HintText>
         <Radios
-          id={'channelTemplate'}
+          id='channelTemplate'
           error={errorState?.fieldErrors?.['channelTemplate']?.join(', ')}
           errorProps={{ id: 'channelTemplate--error-message' }}
         >
