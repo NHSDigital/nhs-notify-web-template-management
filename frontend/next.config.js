@@ -4,7 +4,6 @@ const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const amplifyConfig = require('./amplify_outputs.json');
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
-const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
 
 const nextConfig = (phase) => {
   const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
@@ -37,42 +36,10 @@ const nextConfig = (phase) => {
           basePath: false,
           permanent: false,
         },
-        {
-          source: `${basePath}/auth/inactive`,
-          destination: '/auth/inactive',
-          permanent: false,
-          basePath: false,
-        },
-        {
-          source: `${basePath}/auth/signout`,
-          destination: '/auth/signout',
-          basePath: false,
-          permanent: false,
-        },
       ];
     },
 
     async rewrites() {
-      if (includeAuthPages) {
-        return [
-          {
-            source: '/auth/inactive',
-            destination: `http://${domain}${basePath}/auth/idle`,
-            basePath: false,
-          },
-          {
-            source: '/auth/signout',
-            destination: `http://${domain}${basePath}/auth/signout`,
-            basePath: false,
-          },
-          {
-            source: '/auth',
-            destination: `http://${domain}${basePath}/auth`,
-            basePath: false,
-          },
-        ];
-      }
-
       return [];
     },
 

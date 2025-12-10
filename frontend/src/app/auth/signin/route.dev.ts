@@ -33,10 +33,5 @@ export const GET = async (request: NextRequest) => {
     }
   }
 
-  return NextResponse.json(null, {
-    status: 307,
-    headers: {
-      Location: redirectPath,
-    },
-  });
+  return NextResponse.redirect(redirectPath, { status: 307 });
 };

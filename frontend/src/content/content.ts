@@ -1,5 +1,6 @@
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
+import { getAuthUrl } from '@utils/get-auth-url';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
@@ -25,13 +26,15 @@ const header = {
     links: {
       signIn: {
         text: 'Sign in',
-        href: `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/create-and-submit-templates`
-        )}`,
+        href: getAuthUrl(
+          `/auth?redirect=${encodeURIComponent(
+            `${getBasePath()}/create-and-submit-templates`
+          )}`
+        ),
       },
       signOut: {
         text: 'Sign out',
-        href: '/auth/signout',
+        href: getAuthUrl('/auth/signout'),
       },
     },
   },
