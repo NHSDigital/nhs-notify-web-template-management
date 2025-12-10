@@ -338,5 +338,33 @@ test.describe('Create SMS message template Page', () => {
 
       await expect(createSmsTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with unsupported personalisation, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage =
+        'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7';
+
+      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+      await createSmsTemplatePage.loadPage();
+
+      await createSmsTemplatePage.nameInput.fill('template-name');
+      await createSmsTemplatePage.messageTextArea.fill(
+        'a template message containing ((date))'
+      );
+
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
+
+      const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
+        '[href="#smsTemplateMessage"]'
+      );
+
+      await expect(smsMessageErrorLink).toHaveText(errorMessage);
+
+      await smsMessageErrorLink.click();
+
+      await expect(createSmsTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });

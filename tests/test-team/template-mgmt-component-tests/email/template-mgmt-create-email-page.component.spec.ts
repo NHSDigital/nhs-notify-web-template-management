@@ -371,5 +371,39 @@ test.describe('Create Email message template Page', () => {
 
       await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
     });
+
+    test('when user submits form with unsupported personalisation, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage =
+        'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7';
+
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage();
+
+      await createEmailTemplatePage.nameInput.fill('template-name');
+
+      await createEmailTemplatePage.subjectLineInput.fill(
+        'template-subject-line'
+      );
+
+      await createEmailTemplatePage.messageTextArea.fill(
+        'a template message containing ((date))'
+      );
+
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
+
+      const emailMessageErrorLink =
+        createEmailTemplatePage.errorSummary.locator(
+          '[href="#emailTemplateMessage"]'
+        );
+
+      await expect(emailMessageErrorLink).toHaveText(errorMessage);
+
+      await emailMessageErrorLink.click();
+
+      await expect(createEmailTemplatePage.messageTextArea).toBeFocused();
+    });
   });
 });

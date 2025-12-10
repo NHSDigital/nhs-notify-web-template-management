@@ -88,6 +88,29 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
+  it('create-sms-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-sms-template',
+        smsTemplateName: 'template-name',
+        smsTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          smsTemplateMessage: [
+            'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7',
+          ],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,

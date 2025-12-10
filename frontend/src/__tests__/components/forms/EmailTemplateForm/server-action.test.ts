@@ -91,6 +91,30 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
+  it('create-email-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-email-template',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          emailTemplateMessage: [
+            'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7',
+          ],
+        },
+      },
+    });
+  });
+
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,

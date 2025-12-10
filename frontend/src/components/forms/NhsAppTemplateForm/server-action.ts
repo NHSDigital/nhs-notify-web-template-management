@@ -7,6 +7,7 @@ import {
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import { INVALID_PERSONALISATION_FIELDS } from '@utils/constants';
 import content from '@content/content';
 
 const {
@@ -49,6 +50,15 @@ export const $CreateNhsAppTemplateSchema = z.object({
     .refine(
       (templateMessage) => !hasInvalidCharactersInLinks(templateMessage),
       { message: form.nhsAppTemplateMessage.error.invalidUrlCharacter }
+    )
+    .refine(
+      (templateMessage) =>
+        !INVALID_PERSONALISATION_FIELDS.some((personalisationFieldName) =>
+          templateMessage.includes(`((${personalisationFieldName}))`)
+        ),
+      {
+        message: `${form.nhsAppTemplateMessage.error.invalidPersonalisation} ${INVALID_PERSONALISATION_FIELDS.join(', ')}`,
+      }
     ),
 });
 
