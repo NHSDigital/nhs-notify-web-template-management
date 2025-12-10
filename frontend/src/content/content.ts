@@ -1249,7 +1249,7 @@ const messagePlanGetReadyToMoveToProduction = () => {
     },
     {
       type: 'text',
-      text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
+      text: 'Messages will only be sent to recipients when you make a request with [NHS Notify API (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify) or [NHS Notify MESH (opens in a new tab)](https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh).',
     },
     {
       type: 'text',

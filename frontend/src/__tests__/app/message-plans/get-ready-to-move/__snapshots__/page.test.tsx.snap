@@ -54,7 +54,7 @@ exports[`matches snapshot 1`] = `
             rel="noopener noreferrer"
             target="_blank"
           >
-            NHS Notify API
+            NHS Notify API (opens in a new tab)
           </a>
            or 
           <a
@@ -62,7 +62,7 @@ exports[`matches snapshot 1`] = `
             rel="noopener noreferrer"
             target="_blank"
           >
-            NHS Notify MESH
+            NHS Notify MESH (opens in a new tab)
           </a>
           .
         </p>
