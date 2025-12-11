@@ -310,35 +310,39 @@ test.describe('Routing - Choose other language letter templates page', () => {
     );
   });
 
-  test('user sees a message when no foreign language templates are available and can go to create templates', async ({
-    page,
-    baseURL,
-  }) => {
+  test.describe('user with no templates', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
-    await loginAsUser(userWithNoTemplates, page);
+    test('user sees a message when no foreign language templates are available and can go to create templates', async ({
+      page,
+      baseURL,
+    }) => {
+      await loginAsUser(userWithNoTemplates, page);
 
-    const chooseOtherLanguageLetterTemplatePage =
-      new RoutingChooseOtherLanguageLetterTemplatePage(page);
-    await chooseOtherLanguageLetterTemplatePage
-      .setPathParam('messagePlanId', routingConfigForUserWithNoTemplates.id)
-      .loadPage();
+      const chooseOtherLanguageLetterTemplatePage =
+        new RoutingChooseOtherLanguageLetterTemplatePage(page);
+      await chooseOtherLanguageLetterTemplatePage
+        .setPathParam('messagePlanId', routingConfigForUserWithNoTemplates.id)
+        .loadPage();
 
-    await assertChooseTemplatePageWithNoTemplates({
-      page: chooseOtherLanguageLetterTemplatePage,
+      await assertChooseTemplatePageWithNoTemplates({
+        page: chooseOtherLanguageLetterTemplatePage,
+      });
+
+      await expect(
+        chooseOtherLanguageLetterTemplatePage.messagePlanName
+      ).toHaveText(routingConfigForUserWithNoTemplates.name);
+
+      await expect(
+        chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
+      ).toHaveText(
+        'You do not have any foreign language letter templates yet.'
+      );
+
+      await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
     });
-
-    await expect(
-      chooseOtherLanguageLetterTemplatePage.messagePlanName
-    ).toHaveText(routingConfigForUserWithNoTemplates.name);
-
-    await expect(
-      chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-    ).toHaveText('You do not have any foreign language letter templates yet.');
-
-    await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
-
-    await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
   });
 
   test('user can choose multiple templates for a message plan that has no language templates', async ({

@@ -205,15 +205,12 @@ export function assertBackLinkTop(
   props: CommonStepsProps & { expectedUrl: string }
 ) {
   return test.step('displays back link at the top of the page with correct url', async () => {
-    const { page, baseURL, expectedUrl } = props;
+    const { page, expectedUrl } = props;
 
     await page.loadPage();
 
     await expect(page.backLinkTop).toBeVisible();
-    await expect(page.backLinkTop).toHaveAttribute(
-      'href',
-      `${baseURL}/${expectedUrl}`
-    );
+    await expect(page.backLinkTop).toHaveAttribute('href', `/${expectedUrl}`);
   });
 }
 
