@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CloudFrontRequest, CloudFrontRequestEvent } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';

@@ -34,7 +34,7 @@
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json",
-  "dataschemaversion": "1.1.3",
+  "dataschemaversion": "1.2.1",
   "id": "20f471d0-367d-4914-bee3-2fa5322d67f1",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",

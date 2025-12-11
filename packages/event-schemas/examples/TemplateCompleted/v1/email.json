@@ -15,7 +15,7 @@
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json",
-  "dataschemaversion": "1.1.3",
+  "dataschemaversion": "1.2.1",
   "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
