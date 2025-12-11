@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <span
+          class="nhsuk-caption-xl"
+        >
+          Step 1 of 2
+        </span>
+        <h1
+          class="nhsuk-heading-xl"
+        >
+          Get ready to move message plan to production
+        </h1>
+        <dl
+          class="nhsuk-summary-list"
+        >
+          <div
+            class="nhsuk-summary-list__row"
+          >
+            <dt
+              class="nhsuk-summary-list__key"
+            >
+              Name
+            </dt>
+            <dd
+              class="nhsuk-summary-list__value"
+            >
+              My Routing Config
+            </dd>
+          </div>
+        </dl>
+        <p>
+          Moving message plans from draft to production means they are ready to send.
+        </p>
+        <p>
+          Any templates used in these message plans will be locked.
+        </p>
+        <p>
+          Messages will only be sent to recipients when you make a request with 
+          <a
+            href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS Notify API (opens in a new tab)
+          </a>
+           or 
+          <a
+            href="https://digital.nhs.uk/developer/api-catalogue/nhs-notify-mesh"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS Notify MESH (opens in a new tab)
+          </a>
+          .
+        </p>
+        <h2
+          class="nhsuk-heading-m"
+          id="before-you-continue"
+        >
+          Before you continue
+        </h2>
+        <p>
+          Make sure:
+        </p>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
+          <li>
+            the relevant stakeholders in your team have approved your templates and message plan
+          </li>
+          <li>
+            your templates have no errors
+          </li>
+        </ul>
+        <div
+          class="nhsuk-warning-callout"
+        >
+          <h3
+            class="nhsuk-warning-callout__label"
+          >
+            Important
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              :
+            </span>
+          </h3>
+          <p>
+            You cannot edit anything that is in production.
+          </p>
+          <p>
+            If you need to edit your templates or message plans, you can copy and replace them.
+          </p>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <a
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="continue-link"
+            draggable="false"
+            href="/templates/message-plans/review-and-move-to-production/routing-config-id"
+            role="button"
+          >
+            Continue
+          </a>
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+            data-testid="cancel-link"
+            draggable="false"
+            href="/templates/message-plans"
+            role="button"
+          >
+            Keep in draft
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
