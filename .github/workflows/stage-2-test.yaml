@@ -86,7 +86,7 @@ jobs:
       - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
-          node_version: "${{ inputs.nodejs_version }}"
+          node_version: "22.21.1"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
