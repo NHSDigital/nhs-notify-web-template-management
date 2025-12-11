@@ -1,7 +1,9 @@
 /* eslint-disable unicorn/no-array-callback-reference */
 import {
   Language,
+  LetterFiles,
   LetterType,
+  TemplateDto,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -30,6 +32,78 @@ import {
   cascadeTemplateTypeToUrlTextMappings,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
+
+const mockLetterWithFilesTemplate: TemplateDto = {
+  id: '1',
+  lockNumber: 1234,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  name: 'Template 1',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  language: 'en',
+  letterType: 'x0',
+  files: {
+    pdfTemplate: {
+      currentVersion: 'current-version',
+      fileName: 'letter-template-nhs-notify',
+      virusScanStatus: 'PASSED',
+    },
+    proofs: {
+      'file-name': {
+        fileName: 'file-name',
+        supplier: 'WTMMOCK',
+        virusScanStatus: 'PASSED',
+      },
+    },
+  },
+};
+const mockLetterTemplate: TemplateDto = {
+  id: '1',
+  lockNumber: 1234,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  name: 'Template 1',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  language: 'en',
+  letterType: 'x0',
+  // minimal files property to satisfy LetterFiles requirement in TemplateDto
+  files: {} as LetterFiles,
+};
+
+const mockNHSAppTemplate: TemplateDto = {
+  id: '2',
+  lockNumber: 1234,
+  templateType: 'NHS_APP',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  name: 'Template 1',
+  message: 'Message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+};
+
+const mockSMSTemplate: TemplateDto = {
+  id: '3',
+  lockNumber: 1234,
+  templateType: 'SMS',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  name: 'Template 1',
+  message: 'Message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+};
+const mockEmailTemplate: TemplateDto = {
+  id: '4',
+  lockNumber: 1234,
+  templateType: 'EMAIL',
+  subject: 'Email Subject',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  name: 'Template 1',
+  message: 'Message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+};
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -116,26 +190,61 @@ describe('alphabeticalLanguageList', () => {
 
 describe('statusToDisplayMapping', () => {
   test.each([
-    { type: 'LETTER' as TemplateType, expected: 'Not yet submitted' },
-    { type: 'NHS_APP' as TemplateType, expected: 'Draft' },
-    { type: 'SMS' as TemplateType, expected: 'Draft' },
-    { type: 'EMAIl' as TemplateType, expected: 'Draft' },
+    {
+      template: mockLetterTemplate,
+      type: 'LETTER' as TemplateType,
+      expected: 'Not yet submitted',
+    },
+    {
+      template: mockNHSAppTemplate,
+      type: 'NHS_APP' as TemplateType,
+      expected: 'Draft',
+    },
+    {
+      template: mockSMSTemplate,
+      type: 'SMS' as TemplateType,
+      expected: 'Draft',
+    },
+    {
+      template: mockEmailTemplate,
+      type: 'EMAIL' as TemplateType,
+      expected: 'Draft',
+    },
   ])(
     'When templateType is %type NOT_YET_SUBMITTED should be %expected',
-    ({ type, expected }) => {
-      expect(
-        statusToDisplayMapping({
-          templateType: type,
-          templateStatus: 'NOT_YET_SUBMITTED',
-        })
-      ).toEqual(expected);
+    ({ template, expected }) => {
+      expect(statusToDisplayMapping(template)).toEqual(expected);
     }
   );
+
+  test('statusToDisplay if no files', () => {
+    expect(
+      statusToDisplayMapping(
+        {
+          ...mockLetterTemplate,
+          templateStatus: 'SUBMITTED',
+        },
+        true
+      )
+    ).toEqual('Submitted');
+  });
+
+  test('statusToDisplay if routing is enabled', () => {
+    expect(
+      statusToDisplayMapping(
+        {
+          ...mockLetterWithFilesTemplate,
+          templateStatus: 'SUBMITTED',
+        },
+        true
+      )
+    ).toEqual('Template proof approved');
+  });
 
   test('SUBMITTED', () => {
     expect(
       statusToDisplayMapping({
-        templateType: 'SMS',
+        ...mockSMSTemplate,
         templateStatus: 'SUBMITTED',
       })
     ).toEqual('Submitted');
@@ -144,7 +253,7 @@ describe('statusToDisplayMapping', () => {
   test('DELETED', () => {
     expect(
       statusToDisplayMapping({
-        templateType: 'SMS',
+        ...mockSMSTemplate,
         templateStatus: 'DELETED',
       })
     ).toEqual('');
