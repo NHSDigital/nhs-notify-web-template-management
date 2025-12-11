@@ -50,7 +50,10 @@ describe('Template API - Get', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: undefined },
     });
@@ -82,7 +85,10 @@ describe('Template API - Get', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1' },
     });
@@ -124,7 +130,10 @@ describe('Template API - Get', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1' },
     });

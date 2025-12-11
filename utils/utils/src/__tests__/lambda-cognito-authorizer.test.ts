@@ -6,8 +6,6 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { LambdaCognitoAuthorizer } from '../lambda-cognito-authorizer';
-import { cli } from 'winston/lib/winston/config';
-import { int } from 'zod';
 
 const userPoolId = 'user-pool-id';
 const userPoolClientId = 'user-pool-client-id';

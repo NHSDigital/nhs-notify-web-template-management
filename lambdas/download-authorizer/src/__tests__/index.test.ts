@@ -189,4 +189,31 @@ describe('parseRequest', () => {
 
     expect(parseRequest(request).accessToken).toBe(undefined);
   });
+
+  test('handles missing s3 origin', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event as any).origin['s3'];
+    const request = mock<CloudFrontRequest>(event);
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
+
+  test('handles missing origin', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event as any)['origin'];
+    const request = mock<CloudFrontRequest>(event);
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
+
+  test('handles missing cookie', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event.headers as any)['cookie'];
+    const request = mock<CloudFrontRequest>(event);
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
 });

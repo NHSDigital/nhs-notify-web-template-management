@@ -52,7 +52,10 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { routingConfigId: undefined },
@@ -90,7 +93,10 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -127,7 +133,10 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -167,7 +176,10 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {},

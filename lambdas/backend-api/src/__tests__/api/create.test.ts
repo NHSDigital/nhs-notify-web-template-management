@@ -61,7 +61,10 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: undefined,
     });
@@ -99,7 +102,10 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ id: 1 }),
     });
@@ -143,7 +149,10 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'notify-client-id',
+        },
       },
       body: JSON.stringify(create),
     });

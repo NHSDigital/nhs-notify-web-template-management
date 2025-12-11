@@ -28,7 +28,8 @@ export class LambdaCognitoAuthorizer {
     jwt: string,
     resourceOwnerClientId?: string
   ): Promise<
-    { success: true; internalUserId: string; clientId?: string } | { success: false }
+    | { success: true; internalUserId: string; clientId?: string }
+    | { success: false }
   > {
     const issuer = `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`;
 

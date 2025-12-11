@@ -51,7 +51,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
@@ -85,7 +88,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       headers: { 'X-Lock-Number': '0' },
@@ -126,7 +132,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       headers: {},
@@ -173,7 +182,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       headers: { 'X-Lock-Number': '0' },

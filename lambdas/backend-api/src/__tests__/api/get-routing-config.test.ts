@@ -55,7 +55,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: undefined },
     });
@@ -87,7 +90,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: {
         routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
@@ -119,7 +125,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: {
         routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
