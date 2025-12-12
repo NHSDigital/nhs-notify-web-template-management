@@ -3,13 +3,16 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
+import {
+  isLetterTemplate,
+  addAccessibleFormatLetterTemplateToCascade,
+  addDefaultTemplateToCascade,
+  buildCascadeGroupOverridesFromCascade,
+} from '@utils/routing-utils';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 export type ChooseChannelTemplateFormState = FormState &
-  Pick<
-    ChooseChannelTemplateProps,
-    'cascadeIndex' | 'messagePlan' | 'pageHeading' | 'templateList'
-  >;
+  Omit<ChooseChannelTemplateProps, 'lockNumber'>;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>
   z.object({
@@ -23,11 +26,18 @@ export async function chooseChannelTemplateAction(
   formState: ChooseChannelTemplateFormState,
   formData: FormData
 ): Promise<ChooseChannelTemplateFormState> {
-  const { messagePlan, cascadeIndex, templateList, pageHeading } = formState;
+  const {
+    messagePlan,
+    cascadeIndex,
+    templateList,
+    pageHeading,
+    accessibleFormat,
+  } = formState;
 
-  const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsedForm = $ChooseChannelTemplate(pageHeading).safeParse({
+    channelTemplate: formData.get('channelTemplate'),
+    lockNumber: formData.get('lockNumber'),
+  });
 
   if (!parsedForm.success) {
     return {
@@ -37,29 +47,42 @@ export async function chooseChannelTemplateAction(
   }
 
   const selectedTemplateId = parsedForm.data.channelTemplate;
-
   const selectedTemplate = templateList.find(
     ({ id }) => id === selectedTemplateId
   );
 
-  const newCascade = messagePlan.cascade.map((item, index) =>
-    index === cascadeIndex
-      ? {
-          ...item,
-          defaultTemplateId: selectedTemplateId,
-          ...(selectedTemplate?.templateType === 'LETTER' &&
-          selectedTemplate.supplierReferences
-            ? { supplierReferences: selectedTemplate.supplierReferences }
-            : {}),
-        }
-      : item
-  );
+  const isAccessibleFormatTemplate = !!accessibleFormat;
+
+  let updatedCascade;
+  let updatedCascadeGroupOverrides = messagePlan.cascadeGroupOverrides;
+
+  if (
+    isAccessibleFormatTemplate &&
+    selectedTemplate &&
+    isLetterTemplate(selectedTemplate)
+  ) {
+    updatedCascade = addAccessibleFormatLetterTemplateToCascade(
+      messagePlan.cascade,
+      cascadeIndex,
+      selectedTemplate
+    );
+
+    updatedCascadeGroupOverrides =
+      buildCascadeGroupOverridesFromCascade(updatedCascade);
+  } else {
+    updatedCascade = addDefaultTemplateToCascade(
+      messagePlan.cascade,
+      cascadeIndex,
+      selectedTemplateId,
+      selectedTemplate
+    );
+  }
 
   await updateRoutingConfig(
     messagePlan.id,
     {
-      cascade: newCascade,
-      cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
+      cascade: updatedCascade,
+      cascadeGroupOverrides: updatedCascadeGroupOverrides,
     },
     parsedForm.data.lockNumber
   );

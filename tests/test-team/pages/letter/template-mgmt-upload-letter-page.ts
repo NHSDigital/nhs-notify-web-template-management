@@ -12,8 +12,6 @@ export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePage {
 
   public readonly errorSummary: Locator;
 
-  public readonly goBackLink: Locator;
-
   public readonly saveAndPreviewButton: Locator;
 
   public readonly pdfSelector: Locator;
@@ -26,9 +24,6 @@ export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePage {
     this.letterTypeSelect = page.locator('[id="letterTemplateLetterType"]');
     this.languageSelect = page.locator('[id="letterTemplateLetterType"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Back to choose a template type'));
 
     this.saveAndPreviewButton = page.locator(
       '[id="upload-letter-template-submit-button"]'

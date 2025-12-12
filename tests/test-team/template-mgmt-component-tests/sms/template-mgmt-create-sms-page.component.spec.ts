@@ -3,10 +3,11 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateMgmtCreateSmsPage } from '../../pages/sms/template-mgmt-create-sms-page';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -52,7 +53,8 @@ test.describe('Create SMS message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLink({
+      await assertBackLinkBottomNotPresent(props);
+      await assertAndClickBackLinkTop({
         ...props,
         expectedUrl: 'templates/choose-a-template-type',
       });

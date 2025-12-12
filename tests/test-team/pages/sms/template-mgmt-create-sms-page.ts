@@ -21,8 +21,6 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
 
   public readonly characterCountText: Locator;
 
-  public readonly goBackLink: Locator;
-
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   public readonly saveAndPreviewButton: Locator;
@@ -43,9 +41,6 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
     );
     this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
     this.characterCountText = page.getByTestId('character-message-count-0');
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(

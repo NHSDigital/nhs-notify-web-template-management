@@ -4,7 +4,7 @@ exports[`Choose template page Client-side validation triggers 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -202,7 +202,7 @@ exports[`Choose template page renders error component 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -389,7 +389,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates

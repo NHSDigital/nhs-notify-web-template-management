@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
@@ -90,7 +90,7 @@ test.describe('Delete Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('should go back to message-templates page with template still visible when "no" button selected', async ({

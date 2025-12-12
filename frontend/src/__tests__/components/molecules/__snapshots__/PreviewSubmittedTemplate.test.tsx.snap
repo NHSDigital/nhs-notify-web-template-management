@@ -4,6 +4,7 @@ exports[`PreviewSubmittedTemplate component should omit status when coming from 
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -49,7 +50,8 @@ exports[`PreviewSubmittedTemplate component should omit status when coming from 
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -130,6 +132,7 @@ exports[`PreviewSubmittedTemplate component should omit status when coming from 
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -145,6 +148,7 @@ exports[`PreviewSubmittedTemplate component should provide back buttons based on
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -190,7 +194,8 @@ exports[`PreviewSubmittedTemplate component should provide back buttons based on
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -271,6 +276,7 @@ exports[`PreviewSubmittedTemplate component should provide back buttons based on
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -286,6 +292,7 @@ exports[`PreviewSubmittedTemplate component should render app message 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -331,7 +338,8 @@ exports[`PreviewSubmittedTemplate component should render app message 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -412,6 +420,7 @@ exports[`PreviewSubmittedTemplate component should render app message 1`] = `
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -427,6 +436,7 @@ exports[`PreviewSubmittedTemplate component should render email 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -472,7 +482,8 @@ exports[`PreviewSubmittedTemplate component should render email 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -578,6 +589,7 @@ exports[`PreviewSubmittedTemplate component should render email 1`] = `
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -593,6 +605,7 @@ exports[`PreviewSubmittedTemplate component should render letter 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -638,7 +651,8 @@ exports[`PreviewSubmittedTemplate component should render letter 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -840,6 +854,7 @@ exports[`PreviewSubmittedTemplate component should render letter 1`] = `
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -855,6 +870,7 @@ exports[`PreviewSubmittedTemplate component should render sms 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -900,7 +916,8 @@ exports[`PreviewSubmittedTemplate component should render sms 1`] = `
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -981,6 +998,7 @@ exports[`PreviewSubmittedTemplate component should render sms 1`] = `
         </p>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates

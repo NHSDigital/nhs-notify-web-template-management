@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
   assertClickHeaderLogoRedirectsToStartPage,
   assertSignOutLink,
   assertSkipToMainContent,
@@ -35,7 +35,7 @@ test.describe('Start Page', () => {
     await assertClickHeaderLogoRedirectsToStartPage(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('should display correct list of template types', async ({ page }) => {
@@ -78,7 +78,7 @@ test.describe('Start Page', () => {
 
     await startPage.loadPage();
 
-    await expect(startPage.goBackLink).toBeHidden();
+    await expect(startPage.backLinkTop).toBeHidden();
   });
 
   test('should navigate to "manage template" page when start button clicked', async ({

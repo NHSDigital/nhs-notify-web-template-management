@@ -5,6 +5,10 @@ describe('interpolate', () => {
     expect(interpolate('', { name: 'Test' })).toBe('');
   });
 
+  it('uses default empty object when no variables provided', () => {
+    expect(interpolate('Hello {{name}}!')).toBe('Hello !');
+  });
+
   it('returns the same string if no placeholders are present', () => {
     expect(interpolate('No interpolation needed.', {})).toBe(
       'No interpolation needed.'
@@ -24,6 +28,14 @@ describe('interpolate', () => {
   it('replaces plural based on numeric value', () => {
     expect(interpolate('{{count|item|items}}', { count: 1 })).toBe('item');
     expect(interpolate('{{count|item|items}}', { count: 3 })).toBe('items');
+    expect(interpolate('{{count|item|items}}', { count: 0 })).toBe('items');
+  });
+
+  it('uses empty string in singular position', () => {
+    expect(interpolate('Remove{{count|| all}}', { count: 1 })).toBe('Remove');
+    expect(interpolate('Remove{{count|| all}}', { count: 2 })).toBe(
+      'Remove all'
+    );
   });
 
   it('falls back to plural if variable is not a number', () => {

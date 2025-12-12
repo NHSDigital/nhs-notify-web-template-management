@@ -6,7 +6,7 @@ import type {
   Channel,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { MessagePlanTemplates } from '@utils/message-plans';
+import { MessagePlanTemplates } from '@utils/routing-utils';
 
 function buildRoutingConfig(channels: Channel[]): RoutingConfig {
   const now = new Date().toISOString();

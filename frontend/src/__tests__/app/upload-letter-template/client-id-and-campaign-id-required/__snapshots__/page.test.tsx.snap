@@ -32,7 +32,7 @@ exports[`ClientIdAndCampaignIdRequiredPage 1`] = `
         </div>
         <p>
           <a
-            data-testid="back-link"
+            data-testid="back-link-bottom"
             href="/choose-a-template-type"
           >
             Go back

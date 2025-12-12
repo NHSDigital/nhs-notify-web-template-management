@@ -8,8 +8,6 @@ export abstract class TemplateMgmtTemplateSubmittedBasePage extends TemplateMgmt
 
   public readonly createAnotherTemplateLink: Locator;
 
-  public readonly goBackLink: Locator;
-
   constructor(page: Page) {
     super(page);
     this.templateIdText = page.locator('[id="template-id"]');
@@ -17,7 +15,6 @@ export abstract class TemplateMgmtTemplateSubmittedBasePage extends TemplateMgmt
     this.createAnotherTemplateLink = page.locator(
       '[id="create-another-template"]'
     );
-    this.goBackLink = page.locator('#go-back-link');
   }
 
   async clickCreateAnotherTemplateLink() {

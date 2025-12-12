@@ -8,7 +8,7 @@ const pageActions = [
   'set field #nhsAppTemplateMessage to example template message',
   'click element #create-nhs-app-template-submit-button',
   'wait for #previewNHSAppTemplateAction-nhsapp-submit to be visible',
-  'click element #back-link',
+  'click element [data-testid="back-link-top"]',
   'wait for element #create-template-button to be visible',
   'click element #copy-template-link-0',
 ];

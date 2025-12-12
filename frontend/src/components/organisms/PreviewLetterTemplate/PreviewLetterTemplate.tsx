@@ -67,7 +67,7 @@ export function PreviewLetterTemplate({
 
   return (
     <>
-      <Link href='/message-templates' id='back-link' passHref legacyBehavior>
+      <Link href='/message-templates' passHref legacyBehavior>
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>

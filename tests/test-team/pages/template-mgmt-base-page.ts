@@ -22,7 +22,9 @@ export abstract class TemplateMgmtBasePage {
 
   readonly headerNavigationLinks: Locator;
 
-  readonly goBackLink: Locator;
+  readonly backLinkTop: Locator;
+
+  readonly backLinkBottom: Locator;
 
   readonly pageHeading: Locator;
 
@@ -52,9 +54,9 @@ export abstract class TemplateMgmtBasePage {
 
     this.headerNavigationLinks = page.getByTestId('navigation-links');
 
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Go back'));
+    this.backLinkTop = page.getByTestId('back-link-top');
+
+    this.backLinkBottom = page.getByTestId('back-link-bottom');
 
     this.pageHeading = page.getByRole('heading', { level: 1 });
 
@@ -111,8 +113,8 @@ export abstract class TemplateMgmtBasePage {
     await this.signInLink.click();
   }
 
-  async clickBackLink() {
-    await this.goBackLink.click();
+  async clickBackLinkTop() {
+    await this.backLinkTop.click();
   }
 
   /**

@@ -5,6 +5,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertNoBackLinks,
 } from '../helpers/template-mgmt-common.steps';
 import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
@@ -137,5 +138,6 @@ test.describe('Message plans Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
+    await assertNoBackLinks(props);
   });
 });

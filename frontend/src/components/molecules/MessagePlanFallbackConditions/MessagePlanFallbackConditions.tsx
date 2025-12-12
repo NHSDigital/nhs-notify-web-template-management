@@ -7,6 +7,7 @@ import {
   ORDINALS,
 } from 'nhs-notify-web-template-management-utils';
 import Image from 'next/image';
+import classNames from 'classnames';
 
 import styles from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions.module.scss';
 
@@ -30,7 +31,10 @@ export function MessagePlanFallbackConditions({
 
   return (
     <li
-      className={styles['fallback-conditions']}
+      className={classNames(
+        styles['fallback-conditions'],
+        'fallback-conditions'
+      )}
       data-testid={`message-plan-fallback-conditions-${channel}`}
     >
       <div

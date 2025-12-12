@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
@@ -109,7 +109,7 @@ test.describe('Manage templates page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('should navigate to the manage templates page', async ({

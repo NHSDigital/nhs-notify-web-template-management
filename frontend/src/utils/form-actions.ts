@@ -10,6 +10,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { sortAscByUpdatedAt } from './sort';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -205,4 +206,22 @@ export async function getTemplates(
   });
 
   return sortAscByUpdatedAt(valid);
+}
+
+/**
+ * Gets all foreign language (non-English) letter templates
+ * This currently fetches all LETTER templates and filters to non-English
+ * Will need updating once pagination is implemented in the backend
+ */
+export async function getForeignLanguageLetterTemplates(): Promise<
+  LetterTemplate[]
+> {
+  const allLetterTemplates = (await getTemplates({
+    templateType: 'LETTER',
+    letterType: 'x0',
+  })) as LetterTemplate[];
+
+  return allLetterTemplates.filter(
+    (template) => 'language' in template && template.language !== 'en'
+  );
 }

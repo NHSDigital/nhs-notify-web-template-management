@@ -8,11 +8,9 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottom,
+  assertAndClickBackLinkTop,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  assertBackToAllTemplatesBottomLink,
-  assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
   TestUser,
@@ -101,8 +99,14 @@ test.describe('Preview submitted Email message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
+      await assertBackLinkBottom({
+        ...props,
+        expectedUrl: `templates/message-templates`,
+      });
+      await assertAndClickBackLinkTop({
+        ...props,
+        expectedUrl: `templates/message-templates`,
+      });
     });
   });
 

@@ -3,7 +3,6 @@
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
 import { SummaryList } from 'nhsuk-react-components';
-import baseContent from '@content/content';
 import { ChannelTemplates } from '@molecules/ChannelTemplates/ChannelTemplates';
 import Link from 'next/link';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -18,12 +17,20 @@ import {
 import { validate } from '@utils/client-validate-form';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import classNames from 'classnames';
+import { ConditionalTemplate } from '@utils/routing-utils';
+import baseContent from '@content/content';
 
 const content = baseContent.components.chooseChannelTemplate;
 
 export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
-  const { messagePlan, pageHeading, templateList, cascadeIndex, lockNumber } =
-    props;
+  const {
+    messagePlan,
+    pageHeading,
+    templateList,
+    cascadeIndex,
+    lockNumber,
+    accessibleFormat,
+  } = props;
 
   const [state, action] = useActionState(chooseChannelTemplateAction, {
     ...props,
@@ -37,8 +44,15 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
     setErrorState
   );
 
-  const selectedTemplateId =
-    messagePlan.cascade[cascadeIndex].defaultTemplateId || null;
+  const cascadeItem = messagePlan.cascade[cascadeIndex];
+  const selectedTemplateId = accessibleFormat
+    ? cascadeItem.conditionalTemplates?.find(
+        (template: ConditionalTemplate) =>
+          'accessibleFormat' in template &&
+          template.accessibleFormat === accessibleFormat &&
+          template.templateId !== null
+      )?.templateId || null
+    : cascadeItem.defaultTemplateId || null;
 
   return (
     <NHSNotifyMain>
@@ -48,8 +62,10 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
       />
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
-          <span className='nhsuk-caption-l'>{messagePlan.name}</span>
-          <h1 className='nhsuk-heading-l'>{pageHeading}</h1>
+          <div className='nhsuk-u-reading-width'>
+            <span className='nhsuk-caption-l'>{messagePlan.name}</span>
+            <h1 className='nhsuk-heading-xl'>{pageHeading}</h1>
+          </div>
           <NHSNotifyFormWrapper
             action={action}
             formId={'choose-channel-template'}
@@ -62,7 +78,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
               readOnly
             />
             {selectedTemplateId && (
-              <SummaryList data-testid='previous-selection-summary'>
+              <SummaryList data-testid='previous-selection-details'>
                 <SummaryList.Row>
                   <SummaryList.Key>
                     {content.previousSelectionLabel}
@@ -86,8 +102,11 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 selectedTemplate={selectedTemplateId}
               />
             ) : (
-              <p>{content.noTemplatesText}</p>
+              <p data-testid='no-templates-message'>
+                {content.noTemplatesText}
+              </p>
             )}
+
             <div
               className='nhsuk-form-group'
               data-testid='channel-template-actions'
@@ -101,14 +120,13 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                   {content.actions.save.text}
                 </NHSNotifyButton>
               ) : (
-                <p>
-                  <Link
-                    href={content.actions.goToTemplates.href}
-                    className='nhsuk-u-font-size-19'
-                  >
-                    {content.actions.goToTemplates.text}
-                  </Link>
-                </p>
+                <Link
+                  href={content.actions.goToTemplates.href}
+                  className='nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m'
+                  data-testid='go-to-templates-link'
+                >
+                  {content.actions.goToTemplates.text}
+                </Link>
               )}
               <Link
                 href={interpolate(content.actions.backLink.href, {
@@ -117,8 +135,9 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 className={classNames(
                   'nhsuk-u-font-size-19',
                   templateList.length > 0 &&
-                    'inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'
+                    'inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3'
                 )}
+                data-testid='back-link-bottom'
               >
                 {content.actions.backLink.text}
               </Link>

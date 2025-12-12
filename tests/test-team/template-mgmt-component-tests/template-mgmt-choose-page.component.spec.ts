@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
+  assertAndClickBackLinkTop,
 } from '../helpers/template-mgmt-common.steps';
 
 test.describe('Choose Template Type Page', () => {
@@ -39,7 +40,11 @@ test.describe('Choose Template Type Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkBottomNotPresent(props);
+    await assertAndClickBackLinkTop({
+      ...props,
+      expectedUrl: 'templates/message-templates',
+    });
   });
 
   test('should display correct number of radio button options', async ({

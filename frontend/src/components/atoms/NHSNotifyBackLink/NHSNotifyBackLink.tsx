@@ -14,7 +14,11 @@ function NotifyBackLink({
   ...rest
 }: NotifyBackLinkProps) {
   return (
-    <Component className={classNames('nhsuk-back-link', className)} {...rest}>
+    <Component
+      className={classNames('nhsuk-back-link', className)}
+      data-testid='back-link-top'
+      {...rest}
+    >
       {children}
     </Component>
   );

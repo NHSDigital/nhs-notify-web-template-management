@@ -4,7 +4,7 @@ exports[`ChooseATemplateTypePage 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates

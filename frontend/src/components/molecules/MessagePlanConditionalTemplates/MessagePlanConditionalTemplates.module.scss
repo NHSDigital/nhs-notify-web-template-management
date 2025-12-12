@@ -1,0 +1,52 @@
+.message-plan-conditional-templates {
+  position: relative;
+  margin: 70px 0 0 60px;
+  list-style: none;
+  padding: 0;
+
+  :global(.fallback-conditions) {
+    &::before {
+      content: '';
+      height: 70px;
+      top: -70px;
+      display: block;
+      border: dashed 2px var(--nhsuk-brand-colour);
+      position: absolute;
+      left: 18px;
+    }
+
+    &::after {
+      height: calc(100% + 80px);
+    }
+  }
+
+  &__list-item {
+    margin-bottom: 70px;
+    position: relative;
+
+    &::before {
+      content: '';
+      width: 42px;
+      height: 0;
+      display: block;
+      border: dashed 2px var(--nhsuk-brand-colour);
+      position: relative;
+      top: 56px;
+      left: 18px;
+    }
+
+    &::after {
+      content: '';
+      height: calc(100% + 66px);
+      top: 56px;
+      display: block;
+      border: dashed 2px var(--nhsuk-brand-colour);
+      position: absolute;
+      left: 18px;
+    }
+
+    &:last-child::after {
+      content: none;
+    }
+  }
+}

@@ -93,9 +93,9 @@ exports[`SubmitLetterTemplate component should render 1`] = `
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
-            id="go-back-button"
             role="button"
           >
             Go back
@@ -214,9 +214,9 @@ exports[`SubmitLetterTemplate component should render with client proofing disab
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
-            id="go-back-button"
             role="button"
           >
             Go back

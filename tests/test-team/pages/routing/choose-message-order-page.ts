@@ -8,15 +8,12 @@ export class RoutingChooseMessageOrderPage extends TemplateMgmtBasePage {
 
   readonly continueButton: Locator;
 
-  readonly goBackLink: Locator;
-
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
     this.continueButton = page.locator('button.nhsuk-button[type="submit"]', {
       hasText: 'Save and continue',
     });
-    this.goBackLink = page.getByText('Go back');
   }
 
   async checkRadioButton(radioButtonLabel: string) {

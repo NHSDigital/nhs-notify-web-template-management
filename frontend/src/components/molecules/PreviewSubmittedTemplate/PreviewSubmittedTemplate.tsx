@@ -38,7 +38,9 @@ export function PreviewSubmittedTemplate<T extends TemplateDto>({
             <p>{content.createNewTemplate}</p>
 
             <p>
-              <Link href={content.backLink.href}>{content.backLink.text}</Link>
+              <Link href={content.backLink.href} data-testid='back-link-bottom'>
+                {content.backLink.text}
+              </Link>
             </p>
           </div>
         </div>
