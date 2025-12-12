@@ -23,6 +23,8 @@ const routingConfig = RoutingConfigFactory.create({
   campaignId: 'aff79ee0-4481-4fa3-8a1a-0df53c7b41e5',
 });
 
+const errorLogger = console.error;
+
 beforeAll(() => {
   jest.mocked(redirect).mockImplementation((url, type) => {
     throw new NextRedirectError(url, type);
@@ -30,6 +32,12 @@ beforeAll(() => {
   jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
   jest.mocked(fetchClient).mockResolvedValue({ features: {}, campaignIds: [] });
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+  global.console.error = jest.fn(); // suppress error logging in expected error tests
+});
+
+afterAll(() => {
+  jest.resetAllMocks();
+  global.console.error = errorLogger;
 });
 
 beforeEach(() => {

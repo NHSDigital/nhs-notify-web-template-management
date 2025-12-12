@@ -167,4 +167,4 @@ export type ProofingRequest = {
   user: User;
 };
 
-export type User = { userId: string; clientId: string };
+export type User = { internalUserId: string; clientId: string };

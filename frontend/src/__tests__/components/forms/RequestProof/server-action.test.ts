@@ -10,6 +10,7 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
 jest.mock('@utils/amplify-utils');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);

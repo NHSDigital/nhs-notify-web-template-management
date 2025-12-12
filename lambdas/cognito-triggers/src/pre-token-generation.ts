@@ -25,6 +25,7 @@ export class PreTokenGenerationLambda {
 
     const clientId = userAttributes['custom:sbx_client_id'];
     const clientName = userAttributes['custom:sbx_client_name'];
+    const internalUserId = userAttributes['custom:nhs_notify_user_id'];
 
     if (clientId) {
       response = PreTokenGenerationLambda.setTokenClaims(
@@ -70,6 +71,19 @@ export class PreTokenGenerationLambda {
         response,
         'idTokenGeneration',
         { family_name: userAttributes.family_name }
+      );
+    }
+
+    if (internalUserId) {
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'idTokenGeneration',
+        { 'nhs-notify:internal-user-id': internalUserId }
+      );
+      response = PreTokenGenerationLambda.setTokenClaims(
+        response,
+        'accessTokenGeneration',
+        { 'nhs-notify:internal-user-id': internalUserId }
       );
     }
 

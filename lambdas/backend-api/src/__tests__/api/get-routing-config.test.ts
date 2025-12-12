@@ -22,8 +22,8 @@ function setup() {
 describe('GetRoutingConfig handler', () => {
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -55,7 +55,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: undefined },
     });
@@ -87,7 +90,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: {
         routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
@@ -106,7 +112,7 @@ describe('GetRoutingConfig handler', () => {
 
     expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
       '3690d344-731f-4f60-9047-2c63c96623a2',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -119,7 +125,10 @@ describe('GetRoutingConfig handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: {
         routingConfigId: '3690d344-731f-4f60-9047-2c63c96623a2',
@@ -135,7 +144,7 @@ describe('GetRoutingConfig handler', () => {
 
     expect(mocks.routingConfigClient.getRoutingConfig).toHaveBeenCalledWith(
       '3690d344-731f-4f60-9047-2c63c96623a2',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 });

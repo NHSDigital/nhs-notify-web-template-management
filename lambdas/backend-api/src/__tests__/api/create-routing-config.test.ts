@@ -17,8 +17,8 @@ describe('Create Routing Config Handler', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -63,7 +63,10 @@ describe('Create Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: undefined,
     });
@@ -83,7 +86,7 @@ describe('Create Routing Config Handler', () => {
 
     expect(mocks.routingConfigClient.createRoutingConfig).toHaveBeenCalledWith(
       {},
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -101,7 +104,10 @@ describe('Create Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ id: 1 }),
     });
@@ -118,7 +124,7 @@ describe('Create Routing Config Handler', () => {
 
     expect(mocks.routingConfigClient.createRoutingConfig).toHaveBeenCalledWith(
       { id: 1 },
-      { userId: 'sub', clientId: 'nhs-notify-client-id' }
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -156,7 +162,10 @@ describe('Create Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'notify-client-id',
+        },
       },
       body: JSON.stringify(create),
     });
@@ -171,7 +180,7 @@ describe('Create Routing Config Handler', () => {
     expect(mocks.routingConfigClient.createRoutingConfig).toHaveBeenCalledWith(
       create,
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'notify-client-id',
       }
     );

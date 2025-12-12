@@ -2,7 +2,7 @@
   "data": {
     "clientId": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
     "createdAt": "2025-07-29T10:11:13.881Z",
-    "createdBy": "fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2",
+    "createdBy": "INTERNAL_USER#fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2",
     "files": {
       "proofs": {
         "9c7b373b-4b8a-4b14-812b-f2759f6648fe_3f9f6999-55d6-4d84-8042-83f092fba316_91be480d-c667-4741-957a-057b64753762_en_x0-0000000000000_1c039df6e1f445548d0a9719615_proof_1.pdf": {
@@ -30,11 +30,11 @@
     "templateStatus": "PENDING_UPLOAD",
     "templateType": "LETTER",
     "updatedAt": "2025-07-29T10:11:13.881Z",
-    "updatedBy": "fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2"
+    "updatedBy": "INTERNAL_USER#fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json",
-  "dataschemaversion": "1.0.0",
+  "dataschemaversion": "1.2.1",
   "id": "20f471d0-367d-4914-bee3-2fa5322d67f1",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",

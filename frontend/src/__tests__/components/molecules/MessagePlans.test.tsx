@@ -7,6 +7,17 @@ jest.mock('@molecules/MessagePlansList/MessagePlansList');
 const MessagePlansListMock = jest.mocked(MessagePlansList);
 
 describe('MessagePlans', () => {
+  const errorLogger = console.error;
+
+  beforeAll(() => {
+    global.console.error = jest.fn(); // suppress error logging in tests
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+    global.console.error = errorLogger;
+  });
+
   test('matches snapshot', () => {
     const production = {
       count: 2,

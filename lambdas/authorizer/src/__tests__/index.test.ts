@@ -42,7 +42,7 @@ const allowPolicy = {
     ],
   },
   context: {
-    user: 'sub',
+    internalUserId: 'user-1234',
     clientId: 'client-123',
   },
 };
@@ -76,7 +76,7 @@ afterEach(() => {
 test('returns Allow policy on valid token with clientId', async () => {
   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
     success: true,
-    subject: 'sub',
+    internalUserId: 'user-1234',
     clientId: 'client-123',
   });
 
@@ -141,6 +141,24 @@ test('returns Deny policy when authorization fails', async () => {
     mock<APIGatewayRequestAuthorizerEvent>({
       requestContext,
       headers: { Authorization: 'jwt' },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});
+
+test('returns Deny policy when headers missing', async () => {
+  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+    success: false,
+  });
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      requestContext,
+      headers: undefined,
       type: 'REQUEST',
     }),
     mock<Context>(),

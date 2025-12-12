@@ -12,18 +12,18 @@ export function createHandler({
   emailClient: EmailClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+    const { internalUserId, clientId } = event.requestContext.authorizer ?? {};
 
     const templateId = event.pathParameters?.templateId;
 
-    if (!userId || !templateId || !clientId) {
+    if (!internalUserId || !templateId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 
     const { data, error } = await templateClient.submitTemplate(
       templateId,
       {
-        userId,
+        internalUserId,
         clientId,
       },
       toHeaders(event.headers).get('X-Lock-Number') ?? ''

@@ -8,16 +8,16 @@ export function createHandler({
   templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+    const { internalUserId, clientId } = event.requestContext.authorizer ?? {};
 
     const dto = JSON.parse(event.body || '{}');
 
-    if (!userId || !clientId) {
+    if (!internalUserId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 
     const { data, error } = await templateClient.createTemplate(dto, {
-      userId,
+      internalUserId,
       clientId,
     });
 

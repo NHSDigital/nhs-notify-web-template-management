@@ -28,7 +28,7 @@ const setup = () => {
 
 describe('LetterUploadRepository', () => {
   const templateId = 'B9B7756DDDA9';
-  const userId = '3A1F94D78582';
+  const internalUserId = '3A1F94D78582';
   const clientId = '796894D41AAC';
   const versionId = 'A6C177531604';
 
@@ -50,7 +50,7 @@ describe('LetterUploadRepository', () => {
 
       await letterUploadRepository.upload(
         templateId,
-        { userId, clientId },
+        { internalUserId, clientId },
         versionId,
         pdf,
         csv
@@ -87,7 +87,7 @@ describe('LetterUploadRepository', () => {
       const { letterUploadRepository, mocks } = setup();
       await letterUploadRepository.upload(
         templateId,
-        { userId, clientId },
+        { internalUserId, clientId },
         versionId,
         pdf
       );
@@ -116,7 +116,7 @@ describe('LetterUploadRepository', () => {
 
       const result = await letterUploadRepository.upload(
         templateId,
-        { userId, clientId },
+        { internalUserId, clientId },
         versionId,
         pdf,
         csv

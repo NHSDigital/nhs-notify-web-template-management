@@ -49,10 +49,10 @@ const setup = () => {
   return { templateRepository, mocks: { ddbDocClient } };
 };
 
-const userId = 'user-id';
+const internalUserId = 'user-id';
 const clientId = 'client-id';
 const ownerWithClientPrefix = `CLIENT#${clientId}`;
-const user = { userId, clientId };
+const user = { internalUserId, clientId };
 
 describe('templateRepository', () => {
   beforeAll(() => {
@@ -281,7 +281,7 @@ describe('templateRepository', () => {
           ':name': 'updated-name',
           ':subject': 'pickles',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
           'SET #name = :name, #message = :message, #updatedAt = :updatedAt, #updatedBy = :updatedBy, #subject = :subject ADD #lockNumber :lockNumber',
@@ -350,7 +350,7 @@ describe('templateRepository', () => {
           ':message': 'message',
           ':name': 'updated-name',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
           'SET #name = :name, #message = :message, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
@@ -419,7 +419,7 @@ describe('templateRepository', () => {
           ':message': 'message',
           ':name': 'updated-name',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
           'SET #name = :name, #message = :message, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
@@ -761,7 +761,7 @@ describe('templateRepository', () => {
           ':passed': 'PASSED',
           ':submitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
 
         UpdateExpression:
@@ -800,7 +800,7 @@ describe('templateRepository', () => {
           ':templateStatus': 'DELETED',
           ':ttl': 1000,
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
           'SET #templateStatus = :templateStatus, #ttl = :ttl, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
@@ -1045,7 +1045,7 @@ describe('templateRepository', () => {
           ':newStatus': 'PENDING_VALIDATION',
           ':submitted': 'SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': 'user-id',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
           ':lockNumberIncrement': 1,
         },
         UpdateExpression:
@@ -1723,7 +1723,7 @@ describe('templateRepository', () => {
           ':lockNumber': 1,
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
-          ':updatedBy': userId,
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
           ':supplierReferences': {},
         },
         Key: { id: 'template-id', owner: ownerWithClientPrefix },

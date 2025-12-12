@@ -37,7 +37,7 @@ beforeAll(() => {
 });
 
 const TABLE_NAME = 'routing-config-table-name';
-const user = { userId: 'user', clientId: 'nhs-notify-client-id' };
+const user = { internalUserId: 'user', clientId: 'nhs-notify-client-id' };
 const clientOwnerKey = `CLIENT#${user.clientId}`;
 
 function setup() {
@@ -164,8 +164,8 @@ describe('RoutingConfigRepository', () => {
     const putPayload = {
       ...rc,
       owner: clientOwnerKey,
-      createdBY: user.userId,
-      updatedBy: user.userId,
+      createdBy: `INTERNAL_USER#${user.internalUserId}`,
+      updatedBy: `INTERNAL_USER#${user.internalUserId}`,
     };
 
     test('should create routing config', async () => {
@@ -260,7 +260,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':status': 'COMPLETED',
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -455,7 +455,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':status': 'DELETED',
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
           ':ttl': mockTtl,
         },
         Key: {
@@ -664,7 +664,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -711,7 +711,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -758,7 +758,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':campaignId': update.campaignId,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -815,7 +815,7 @@ describe('RoutingConfigRepository', () => {
           ':cascade': update.cascade,
           ':cascadeGroupOverrides': update.cascadeGroupOverrides,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -870,7 +870,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -918,7 +918,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,
@@ -970,7 +970,7 @@ describe('RoutingConfigRepository', () => {
           ':lockNumber': 1,
           ':name': update.name,
           ':updatedAt': date.toISOString(),
-          ':updatedBy': user.userId,
+          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
         },
         Key: {
           id: routingConfig.id,

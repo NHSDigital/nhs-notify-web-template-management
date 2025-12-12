@@ -46,6 +46,8 @@ export class TestUserClient {
       })
     );
 
+    const internalUserId = crypto.randomUUID();
+
     const res = await this.cognitoClient.send(
       new AdminCreateUserCommand({
         UserPoolId: this.userPoolId,
@@ -55,6 +57,7 @@ export class TestUserClient {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'custom:sbx_client_id', Value: clientId },
           { Name: 'custom:sbx_client_name', Value: clientName },
+          { Name: 'custom:nhs_notify_user_id', Value: internalUserId },
           { Name: 'given_name', Value: displayUsernameParts.at(-2) },
           { Name: 'family_name', Value: displayUsernameParts.at(-1) },
           { Name: 'preferred_username', Value: displayUsernameParts.join(' ') },
@@ -73,16 +76,11 @@ export class TestUserClient {
     );
 
     const username = res.User?.Username;
-
-    const userId = res.User?.Attributes?.find(
-      (attr) => attr.Name === 'sub'
-    )?.Value;
-
-    if (!username || !userId) {
+    if (!username) {
       throw new Error('Error during user creation');
     }
 
-    return { username, userId };
+    return { username, internalUserId };
   }
 
   async deleteTestUser(email: string, clientId: string) {

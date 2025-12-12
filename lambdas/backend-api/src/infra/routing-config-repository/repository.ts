@@ -59,8 +59,8 @@ export class RoutingConfigRepository {
           Item: {
             ...routingConfig,
             owner: this.clientOwnerKey(user.clientId),
-            updatedBy: user.userId,
-            createdBy: user.userId,
+            updatedBy: this.internalUserKey(user),
+            createdBy: this.internalUserKey(user),
           },
           ConditionExpression: 'attribute_not_exists(id)',
         })
@@ -105,7 +105,7 @@ export class RoutingConfigRepository {
         .setCascadeGroupOverrides(cascadeGroupOverrides);
     }
     update
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
       .expectStatus('DRAFT')
       .expectLockNumber(lockNumber)
       .incrementLockNumber();
@@ -142,7 +142,7 @@ export class RoutingConfigRepository {
     )
       .setStatus('COMPLETED')
       .expectStatus('DRAFT')
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
       .expectLockNumber(lockNumber)
       .incrementLockNumber()
       .build();
@@ -180,7 +180,7 @@ export class RoutingConfigRepository {
       .setStatus('DELETED')
       .setTtl(calculateTTL())
       .expectStatus('DRAFT')
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
       .expectLockNumber(lockNumber)
       .incrementLockNumber()
       .build();
@@ -275,5 +275,9 @@ export class RoutingConfigRepository {
 
   private clientOwnerKey(clientId: string) {
     return `CLIENT#${clientId}`;
+  }
+
+  private internalUserKey(user: User) {
+    return `INTERNAL_USER#${user.internalUserId}`;
   }
 }

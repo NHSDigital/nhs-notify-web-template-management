@@ -18,8 +18,8 @@ describe('Submit Routing Config Handler', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -54,7 +54,10 @@ describe('Submit Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { routingConfigId: undefined },
@@ -92,7 +95,10 @@ describe('Submit Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -113,7 +119,7 @@ describe('Submit Routing Config Handler', () => {
     expect(mocks.routingConfigClient.submitRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'
@@ -131,7 +137,10 @@ describe('Submit Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {
@@ -149,7 +158,7 @@ describe('Submit Routing Config Handler', () => {
     expect(mocks.routingConfigClient.submitRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'
@@ -171,7 +180,10 @@ describe('Submit Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
       headers: {},
@@ -190,7 +202,7 @@ describe('Submit Routing Config Handler', () => {
 
     expect(mocks.routingConfigClient.submitRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       ''
     );
   });

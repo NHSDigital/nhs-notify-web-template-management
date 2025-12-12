@@ -17,8 +17,8 @@ describe('Template API - Update', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -90,7 +90,10 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       body: undefined,
@@ -115,7 +118,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {},
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '1'
     );
   });
@@ -125,7 +128,10 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
@@ -161,7 +167,10 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'name' }),
       pathParameters: { templateId: '1-2-3' },
@@ -183,7 +192,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       { name: 'name' },
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '1'
     );
   });
@@ -212,7 +221,10 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify(update),
       pathParameters: { templateId: '1-2-3' },
@@ -231,7 +243,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       update,
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '1'
     );
   });
@@ -257,7 +269,10 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify(update),
       pathParameters: { templateId: '1-2-3' },
@@ -278,7 +293,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       update,
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       ''
     );
   });

@@ -13,6 +13,7 @@ const $AccessToken = z.object({
   iss: z.string(),
   token_use: z.string(),
   'nhs-notify:client-id': z.string().trim().nonempty(),
+  'nhs-notify:internal-user-id': z.string().trim().nonempty(),
 });
 
 export class LambdaCognitoAuthorizer {
@@ -23,11 +24,12 @@ export class LambdaCognitoAuthorizer {
 
   async authorize(
     userPoolId: string,
-    userPoolClientId: string,
+    userPoolCognitoClientId: string,
     jwt: string,
-    expectedResourceOwner?: string
+    resourceOwnerClientId?: string
   ): Promise<
-    { success: true; subject: string; clientId?: string } | { success: false }
+    | { success: true; internalUserId: string; clientId?: string }
+    | { success: false }
   > {
     const issuer = `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`;
 
@@ -52,14 +54,15 @@ export class LambdaCognitoAuthorizer {
       });
 
       const {
-        client_id: tokenUserPoolClientId,
+        client_id: tokenUserPoolCognitoClientId,
         token_use: tokenUse,
         'nhs-notify:client-id': notifyClientId,
+        'nhs-notify:internal-user-id': internalUserId,
       } = $AccessToken.parse(verifiedToken);
 
-      if (tokenUserPoolClientId !== userPoolClientId) {
+      if (tokenUserPoolCognitoClientId !== userPoolCognitoClientId) {
         this.logger.warn(
-          `Token has invalid client ID, expected ${userPoolClientId} but received ${tokenUserPoolClientId}`
+          `Token has invalid Cognito client ID, expected ${userPoolCognitoClientId} but received ${tokenUserPoolCognitoClientId}`
         );
         return { success: false };
       }
@@ -83,22 +86,15 @@ export class LambdaCognitoAuthorizer {
         return { success: false };
       }
 
-      const sub = UserAttributes.find(({ Name }) => Name === 'sub')?.Value;
-
-      if (!sub) {
-        this.logger.warn('Missing user subject');
-        return { success: false };
-      }
-
       if (
-        expectedResourceOwner !== undefined &&
-        expectedResourceOwner !== notifyClientId
+        resourceOwnerClientId !== undefined &&
+        resourceOwnerClientId !== notifyClientId
       ) {
         this.logger.warn('clientId does not match expected resource owner');
         return { success: false };
       }
 
-      return { success: true, subject: sub, clientId: notifyClientId };
+      return { success: true, internalUserId, clientId: notifyClientId };
     } catch (error) {
       this.logger
         .child(

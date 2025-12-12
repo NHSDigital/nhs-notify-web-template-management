@@ -9,6 +9,7 @@ import content from '@content/content';
 const { pageTitle } = content.components.templateFormSms;
 
 jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 describe('CreateSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
