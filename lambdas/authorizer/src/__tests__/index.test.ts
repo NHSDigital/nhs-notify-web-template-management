@@ -149,3 +149,21 @@ test('returns Deny policy when authorization fails', async () => {
 
   expect(res).toEqual(denyPolicy);
 });
+
+test('returns Deny policy when headers missing', async () => {
+  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+    success: false,
+  });
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      requestContext,
+      headers: undefined,
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});
