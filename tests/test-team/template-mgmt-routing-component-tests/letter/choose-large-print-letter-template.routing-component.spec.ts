@@ -151,7 +151,9 @@ test.describe('Routing - Choose large print letter template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseLargePrintLetterTemplatePage(page),
+      page: new RoutingChooseLargePrintLetterTemplatePage(page)
+        .setPathParam('messagePlanId', routingConfigIds.valid)
+        .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber)),
       id: routingConfigIds.valid,
       baseURL,
     };
@@ -233,6 +235,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber))
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage
@@ -262,6 +265,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber))
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
@@ -303,6 +307,10 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.withLargePrintSelected.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.withLargePrintSelected.lockNumber)
+      )
       .loadPage();
 
     await assertChooseTemplatePageWithPreviousSelection({
@@ -356,6 +364,7 @@ test.describe('Routing - Choose large print letter template page', () => {
 
       await chooseLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', routingConfigIds.notFound)
+        .setSearchParam('lockNumber', '1')
         .loadPage();
 
       await expect(page).toHaveURL(
@@ -369,6 +378,7 @@ test.describe('Routing - Choose large print letter template page', () => {
 
       await chooseLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', routingConfigIds.invalid)
+        .setSearchParam('lockNumber', '1')
         .loadPage();
 
       await expect(page).toHaveURL(
@@ -385,6 +395,10 @@ test.describe('Routing - Choose large print letter template page', () => {
 
       await chooseLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', routingConfigs.nonLetter.id)
+        .setSearchParam(
+          'lockNumber',
+          String(routingConfigs.nonLetter.lockNumber)
+        )
         .loadPage();
 
       await expect(page).toHaveURL(
