@@ -4,7 +4,7 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import {
   cascadeTemplateTypeToUrlTextMappings,
   PageComponentProps,
@@ -25,10 +25,12 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
-  const conditionalType =
-    template.templateType === 'LETTER' && 'letterType' in template
-      ? template.letterType
-      : undefined;
+  let conditionalType: LetterType | 'language' | undefined;
+  if (template.templateType === 'LETTER' && 'letterType' in template) {
+    const isForeignLanguage =
+      'language' in template && template.language && template.language !== 'en';
+    conditionalType = isForeignLanguage ? 'language' : template.letterType;
+  }
 
   const backLinkHref = interpolate(content.backLink.href, {
     templateType: cascadeTemplateTypeToUrlTextMappings(

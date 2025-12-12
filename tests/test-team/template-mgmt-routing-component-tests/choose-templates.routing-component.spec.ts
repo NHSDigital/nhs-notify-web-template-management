@@ -498,7 +498,7 @@ test.describe('Routing - Choose Templates page', () => {
     await expect(largePrintItem.chooseTemplateLink).toBeVisible();
     await expect(largePrintItem.chooseTemplateLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}`
+      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
     );
     await expect(largePrintItem.changeTemplateLink).toBeHidden();
     await expect(largePrintItem.removeTemplateLink).toBeHidden();
@@ -510,7 +510,7 @@ test.describe('Routing - Choose Templates page', () => {
     await expect(otherLanguagesItem.chooseTemplateLink).toBeVisible();
     await expect(otherLanguagesItem.chooseTemplateLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.valid}`
+      `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
     );
     await expect(otherLanguagesItem.changeTemplateLink).toBeHidden();
     await expect(otherLanguagesItem.removeTemplateLink).toBeHidden();
@@ -518,7 +518,7 @@ test.describe('Routing - Choose Templates page', () => {
     await largePrintItem.clickChooseTemplateLink();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}`
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
     );
   });
 
@@ -541,7 +541,7 @@ test.describe('Routing - Choose Templates page', () => {
         chooseTemplatesPage.letter.changeTemplateLink
       ).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-standard-english-letter-template/${routingConfigIds.validWithLetterTemplates}`
+        `/templates/message-plans/choose-standard-english-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
       await expect(chooseTemplatesPage.letter.removeTemplateLink).toBeVisible();
       await expect(chooseTemplatesPage.letter.chooseTemplateLink).toBeHidden();
@@ -584,7 +584,7 @@ test.describe('Routing - Choose Templates page', () => {
       await expect(otherLanguagesItem.changeTemplateLink).toBeVisible();
       await expect(otherLanguagesItem.changeTemplateLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.validWithLetterTemplates}`
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
       await expect(otherLanguagesItem.removeTemplateLink).toBeVisible();
       await expect(otherLanguagesItem.chooseTemplateLink).toBeHidden();

@@ -271,7 +271,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber}`
     );
 
     await expect(chooseLargePrintLetterTemplatePage.errorSummary).toBeVisible();
@@ -318,7 +318,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     });
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.withLargePrintSelected.id}`
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.withLargePrintSelected.id}?lockNumber=${routingConfigs.withLargePrintSelected.lockNumber}`
     );
 
     await expect(chooseLargePrintLetterTemplatePage.messagePlanName).toHaveText(

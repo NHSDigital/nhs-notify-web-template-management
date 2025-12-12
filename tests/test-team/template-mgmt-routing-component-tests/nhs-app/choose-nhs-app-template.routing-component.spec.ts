@@ -103,7 +103,7 @@ test.describe('Routing - Choose NHS app template page', () => {
     await assertSignOutLink(props);
     await assertBackLinkBottom({
       ...props,
-      expectedUrl: `/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`,
     });
     await assertBackLinkTopNotPresent(props);
   });
