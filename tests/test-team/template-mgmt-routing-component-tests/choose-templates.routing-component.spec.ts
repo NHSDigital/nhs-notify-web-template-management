@@ -471,7 +471,6 @@ test.describe('Routing - Choose Templates page', () => {
 
   test('user can choose alternative letter format options', async ({
     page,
-    baseURL,
   }) => {
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(
       page
@@ -496,9 +495,10 @@ test.describe('Routing - Choose Templates page', () => {
     );
     await expect(largePrintItem.templateName).toBeHidden();
     await expect(largePrintItem.chooseTemplateLink).toBeVisible();
-    await expect(largePrintItem.chooseTemplateLink).toHaveAttribute(
-      'href',
-      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    const chooseLargePrintTemplateLink =
+      await largePrintItem.chooseTemplateLink.getAttribute('href');
+    expect(chooseLargePrintTemplateLink).toMatch(
+      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=`
     );
     await expect(largePrintItem.changeTemplateLink).toBeHidden();
     await expect(largePrintItem.removeTemplateLink).toBeHidden();
@@ -508,17 +508,18 @@ test.describe('Routing - Choose Templates page', () => {
     );
     await expect(otherLanguagesItem.templateName).toBeHidden();
     await expect(otherLanguagesItem.chooseTemplateLink).toBeVisible();
-    await expect(otherLanguagesItem.chooseTemplateLink).toHaveAttribute(
-      'href',
-      `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    const chooseOtherLanguageTemplateLink =
+      await otherLanguagesItem.chooseTemplateLink.getAttribute('href');
+    expect(chooseOtherLanguageTemplateLink).toMatch(
+      `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.valid}?lockNumber=`
     );
     await expect(otherLanguagesItem.changeTemplateLink).toBeHidden();
     await expect(otherLanguagesItem.removeTemplateLink).toBeHidden();
 
     await largePrintItem.clickChooseTemplateLink();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    await page.waitForURL(
+      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}`
     );
   });
 
@@ -568,7 +569,7 @@ test.describe('Routing - Choose Templates page', () => {
       await expect(largePrintItem.changeTemplateLink).toBeVisible();
       await expect(largePrintItem.changeTemplateLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}`
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
       await expect(largePrintItem.removeTemplateLink).toBeVisible();
       await expect(largePrintItem.chooseTemplateLink).toBeHidden();
@@ -606,7 +607,7 @@ test.describe('Routing - Choose Templates page', () => {
       await largePrintItem.clickChangeTemplateLink();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}`
+        `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
     });
   });

@@ -25,9 +25,7 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
     super(page);
     this.errorSummary = page.locator('.nhsuk-error-summary');
     this.changeNameLink = page.getByTestId('change-message-plan-name-link');
-    this.routingConfigId = page.locator(
-      '[class*=create-edit-message-plan-routing-config-id]'
-    );
+    this.routingConfigId = page.getByTestId('routing-config-id');
     this.messagePlanStatus = page.locator('strong.nhsuk-tag');
     this.channelBlocks = page.locator('[data-testid^="message-plan-block-"]');
     this.moveToProductionButton = page.getByTestId('move-to-production-cta');

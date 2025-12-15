@@ -78,9 +78,9 @@ test.describe('Routing - Preview large print letter template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewLargePrintLetterTemplatePage(page),
-      id: messagePlans.LETTER_ROUTING_CONFIG.id,
-      additionalIds: [templates.LARGE_PRINT_LETTER.id],
+      page: new RoutingPreviewLargePrintLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id),
       baseURL,
       expectedUrl: `templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
     };

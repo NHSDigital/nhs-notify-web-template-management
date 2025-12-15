@@ -2,7 +2,7 @@
 
 import {
   MessagePlanAndTemplatePageProps,
-  validateLetterTemplate,
+  validateForeignLanguageLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -26,7 +26,7 @@ const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateLetterTemplate(template);
+  const validatedTemplate = validateForeignLanguageLetterTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

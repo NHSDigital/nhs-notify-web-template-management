@@ -178,9 +178,9 @@ export function removeTemplatesFromCascadeItem(
 }
 
 /**
- * Collects all remaining accessible format types from the cascade
+ * Gets all accessible format types from the cascade
  */
-export function getRemainingAccessibleFormats(
+export function getAccessibleLetterFormatsFromCascade(
   cascade: CascadeItem[]
 ): LetterType[] {
   const formats = new Set<LetterType>();
@@ -223,7 +223,8 @@ export function buildCascadeGroupOverridesFromCascade(
 ): CascadeGroup[] {
   const overrides: CascadeGroup[] = [];
 
-  const accessibleFormats = getRemainingAccessibleFormats(updatedCascade);
+  const accessibleFormats =
+    getAccessibleLetterFormatsFromCascade(updatedCascade);
   if (accessibleFormats.length > 0) {
     overrides.push({
       name: 'accessible',

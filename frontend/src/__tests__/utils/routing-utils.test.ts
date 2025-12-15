@@ -5,7 +5,7 @@ import {
   shouldRemoveTemplate,
   removeTemplatesFromConditionalTemplates,
   removeTemplatesFromCascadeItem,
-  getRemainingAccessibleFormats,
+  getAccessibleLetterFormatsFromCascade,
   getCascadeLanguages,
   buildCascadeGroupOverridesFromCascade,
   buildCascadeGroupsForItem,
@@ -662,7 +662,7 @@ describe('buildCascadeGroupsForItem', () => {
   });
 });
 
-describe('getRemainingAccessibleFormats', () => {
+describe('getAccessibleLetterFormatsFromCascade', () => {
   it('should collect all unique accessible format types', () => {
     const cascade: CascadeItem[] = [
       {
@@ -686,7 +686,7 @@ describe('getRemainingAccessibleFormats', () => {
       },
     ];
 
-    const result = getRemainingAccessibleFormats(cascade);
+    const result = getAccessibleLetterFormatsFromCascade(cascade);
 
     expect(result.sort()).toEqual(['q4', 'x0'].sort());
   });
@@ -705,7 +705,7 @@ describe('getRemainingAccessibleFormats', () => {
       },
     ];
 
-    const result = getRemainingAccessibleFormats(cascade);
+    const result = getAccessibleLetterFormatsFromCascade(cascade);
 
     expect(result).toEqual(['q4']);
   });
@@ -720,7 +720,7 @@ describe('getRemainingAccessibleFormats', () => {
       },
     ];
 
-    const result = getRemainingAccessibleFormats(cascade);
+    const result = getAccessibleLetterFormatsFromCascade(cascade);
 
     expect(result).toEqual([]);
   });

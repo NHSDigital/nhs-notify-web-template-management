@@ -386,7 +386,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       );
     });
 
-    test('when routing config is not for a LETTER channel', async ({
+    test('when routing config does not have a letter channel', async ({
       page,
       baseURL,
     }) => {

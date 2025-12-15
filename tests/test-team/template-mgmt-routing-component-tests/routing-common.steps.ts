@@ -40,6 +40,11 @@ export function assertChooseTemplatePageWithNoTemplates({
       '/templates/message-templates'
     );
 
+    await expect(page.backLinkBottom).toBeVisible();
+    expect(page.backLinkBottom.getAttribute('href')).toContain(
+      '/templates/message-plans/choose-templates'
+    );
+
     await expect(page.templatesTable).toBeHidden();
 
     await expect(page.saveAndContinueButton).toBeHidden();

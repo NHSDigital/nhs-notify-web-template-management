@@ -83,6 +83,22 @@ export const $SubmittedLetterTemplate = z.intersection(
   $LetterTemplate
 );
 
+export const $LargePrintLetterTemplate = z.intersection(
+  $LetterTemplate,
+  z.object({
+    letterType: z.literal('x1'),
+  })
+);
+
+export const $ForeignLanguageLetterTemplate = z.intersection(
+  $LetterTemplate,
+  z.object({
+    language: z.string().refine((lang) => lang !== 'en', {
+      message: 'Template must be a foreign language',
+    }),
+  })
+);
+
 export const validateNHSAppTemplate = (template?: TemplateDto) =>
   zodValidate($NHSAppTemplate, template);
 
@@ -94,6 +110,12 @@ export const validateEmailTemplate = (template?: TemplateDto) =>
 
 export const validateLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LetterTemplate, template);
+
+export const validateLargePrintLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($LargePrintLetterTemplate, template);
+
+export const validateForeignLanguageLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($ForeignLanguageLetterTemplate, template);
 
 export const validateSubmittedEmailTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedEmailTemplate, template);

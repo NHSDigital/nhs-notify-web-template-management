@@ -230,10 +230,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
     baseURL,
   }) => {
     const chooseOtherLanguageLetterTemplatePage =
-      new RoutingChooseOtherLanguageLetterTemplatePage(page);
-    await chooseOtherLanguageLetterTemplatePage
-      .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .loadPage();
+      new RoutingChooseOtherLanguageLetterTemplatePage(page)
+        .setPathParam('messagePlanId', routingConfigs.valid.id)
+        .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber));
+    await chooseOtherLanguageLetterTemplatePage.loadPage();
 
     await assertChooseTemplatePageWithTemplatesAvailable({
       page: chooseOtherLanguageLetterTemplatePage,
@@ -276,8 +276,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
       const languageName = getLanguageDisplayName(
         template.language as Language
       );
+      const templateRow = table.locator('tr', { hasText: template.name });
       await expect(
-        table.getByText(`Standard letter - ${languageName}`)
+        templateRow.getByText(`Standard letter - ${languageName}`)
       ).toBeVisible();
 
       const previewLink = chooseOtherLanguageLetterTemplatePage.getPreviewLink(
@@ -286,7 +287,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       await expect(previewLink).toBeVisible();
       await expect(previewLink).toHaveAttribute(
         'href',
-        `/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}`
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}`
       );
     }
 
@@ -608,6 +609,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage
       .getCheckbox(templates.FRENCH_LETTER.id)
       .check();
+
+    // Wait 5 seconds to avoid debounce blocking the form submission
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await page.waitForTimeout(5000);
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
