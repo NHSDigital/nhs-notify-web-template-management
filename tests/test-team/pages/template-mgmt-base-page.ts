@@ -32,6 +32,8 @@ export abstract class TemplateMgmtBasePage {
 
   readonly errorSummaryHeading: Locator;
 
+  readonly errorSummaryHint: Locator;
+
   readonly errorSummaryList: Locator;
 
   readonly skipLink: Locator;
@@ -66,6 +68,8 @@ export abstract class TemplateMgmtBasePage {
       level: 2,
       name: 'There is a problem',
     });
+
+    this.errorSummaryHint = this.errorSummary.locator('.nhsuk-hint');
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
 

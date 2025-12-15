@@ -519,7 +519,7 @@ test.describe('Routing - Choose Templates page', () => {
     await largePrintItem.clickChooseTemplateLink();
 
     await page.waitForURL(
-      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}`
+      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
     );
   });
 
@@ -607,7 +607,7 @@ test.describe('Routing - Choose Templates page', () => {
       await largePrintItem.clickChangeTemplateLink();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
+        `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber + 1}`
       );
     });
   });

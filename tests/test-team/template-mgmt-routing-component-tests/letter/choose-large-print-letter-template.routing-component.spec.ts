@@ -176,6 +176,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
+      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber))
       .loadPage();
 
     await assertChooseTemplatePageWithTemplatesAvailable({
@@ -183,7 +184,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     });
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber}`
     );
 
     await expect(chooseLargePrintLetterTemplatePage.messagePlanName).toHaveText(
@@ -191,7 +192,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     );
 
     await expect(chooseLargePrintLetterTemplatePage.pageHeading).toHaveText(
-      'Choose large print letter template'
+      'Choose a large print letter template'
     );
 
     const table = chooseLargePrintLetterTemplatePage.templatesTable;
@@ -276,9 +277,9 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     await expect(chooseLargePrintLetterTemplatePage.errorSummary).toBeVisible();
 
-    await expect(chooseLargePrintLetterTemplatePage.errorSummary).toHaveText(
-      'You have not chosen a template'
-    );
+    await expect(
+      chooseLargePrintLetterTemplatePage.errorSummaryHint
+    ).toHaveText('You have not chosen a template');
 
     const errorLink =
       chooseLargePrintLetterTemplatePage.errorSummaryList.first();

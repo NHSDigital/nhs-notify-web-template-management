@@ -41,8 +41,9 @@ export function assertChooseTemplatePageWithNoTemplates({
     );
 
     await expect(page.backLinkBottom).toBeVisible();
-    expect(page.backLinkBottom.getAttribute('href')).toContain(
-      '/templates/message-plans/choose-templates'
+    await expect(page.backLinkBottom).toHaveAttribute(
+      'href',
+      expect.stringContaining('/templates/message-plans/choose-templates')
     );
 
     await expect(page.templatesTable).toBeHidden();
