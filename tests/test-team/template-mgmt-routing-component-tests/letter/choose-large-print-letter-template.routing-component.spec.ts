@@ -214,7 +214,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       await expect(previewLink).toBeVisible();
       await expect(previewLink).toHaveAttribute(
         'href',
-        `/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}`
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}`
       );
     }
 
