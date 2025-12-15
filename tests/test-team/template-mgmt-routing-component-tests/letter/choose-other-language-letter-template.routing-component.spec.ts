@@ -539,7 +539,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
     await expect(
-      chooseOtherLanguageLetterTemplatePage.errorSummary.locator('.nhsuk-hint')
+      chooseOtherLanguageLetterTemplatePage.errorSummaryHint
     ).toHaveText('You have not chosen any templates');
 
     let errorLink =
@@ -556,6 +556,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage
       .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
       .check();
+
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await page.waitForTimeout(5000); // Wait for debounce
+
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
@@ -566,16 +570,15 @@ test.describe('Routing - Choose other language letter templates page', () => {
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
 
-    errorLink = chooseOtherLanguageLetterTemplatePage.errorSummaryList.first();
-    await expect(errorLink).toHaveText(
-      'Choose only one template for each language'
-    );
+    await expect(
+      chooseOtherLanguageLetterTemplatePage.errorSummaryList.first()
+    ).toHaveText('Choose only one template for each language');
 
     await expect(
-      chooseOtherLanguageLetterTemplatePage.errorSummary.locator('.nhsuk-hint')
+      chooseOtherLanguageLetterTemplatePage.errorSummaryHint
     ).toHaveText('You can only choose one template for each language');
 
-    await expect(page.locator('#language-templates--error-message')).toHaveText(
+    await expect(chooseOtherLanguageLetterTemplatePage.formError).toHaveText(
       'Error: Choose only one template for each language'
     );
 
