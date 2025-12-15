@@ -52,12 +52,13 @@ export function getMessagePlanTemplateIds(
   const templateIds = new Set<string>();
 
   for (const cascadeItem of messagePlan.cascade) {
-    if (cascadeItem.defaultTemplateId)
+    if (cascadeItem.defaultTemplateId) {
       templateIds.add(cascadeItem.defaultTemplateId);
-    if (cascadeItem.conditionalTemplates) {
-      for (const conditionalTemplate of cascadeItem.conditionalTemplates) {
-        if (conditionalTemplate.templateId)
-          templateIds.add(conditionalTemplate.templateId);
+    }
+
+    for (const conditionalTemplate of cascadeItem.conditionalTemplates ?? []) {
+      if (conditionalTemplate.templateId) {
+        templateIds.add(conditionalTemplate.templateId);
       }
     }
   }
@@ -186,8 +187,7 @@ export function getAccessibleLetterFormatsFromCascade(
   const formats = new Set<LetterType>();
 
   for (const item of cascade) {
-    if (!item.conditionalTemplates) continue;
-    for (const template of item.conditionalTemplates) {
+    for (const template of item.conditionalTemplates ?? []) {
       if ('accessibleFormat' in template && template.templateId) {
         formats.add(template.accessibleFormat);
       }
@@ -203,8 +203,7 @@ export function getCascadeLanguages(cascade: CascadeItem[]): Language[] {
   const languages = new Set<Language>();
 
   for (const item of cascade) {
-    if (!item.conditionalTemplates) continue;
-    for (const template of item.conditionalTemplates) {
+    for (const template of item.conditionalTemplates ?? []) {
       if ('language' in template && template.templateId) {
         languages.add(template.language);
       }
