@@ -10,7 +10,7 @@ import {
   ErrorState,
   cascadeTemplateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import { interpolate } from '@utils/interpolate';
 
 const { tableHintText, tableContent } =
@@ -26,11 +26,13 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
+  letterType,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
+  letterType?: LetterType;
 }) {
   return (
     <div className='nhsuk-grid-row'>
@@ -94,7 +96,8 @@ export function ChannelTemplates({
                       className='nhsuk-u-margin-bottom-2 nhsuk-link'
                       href={interpolate(tableContent.action.preview.href, {
                         templateType: cascadeTemplateTypeToUrlTextMappings(
-                          template.templateType
+                          template.templateType,
+                          letterType
                         ),
                         routingConfigId,
                         templateId: template.id,

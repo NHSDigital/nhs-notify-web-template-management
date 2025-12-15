@@ -100,6 +100,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 templateList={templateList}
                 errorState={errorState || null}
                 selectedTemplate={selectedTemplateId}
+                letterType={accessibleFormat}
               />
             ) : (
               <p data-testid='no-templates-message'>
