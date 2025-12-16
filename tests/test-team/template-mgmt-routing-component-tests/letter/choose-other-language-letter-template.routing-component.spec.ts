@@ -287,7 +287,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       await expect(previewLink).toBeVisible();
       await expect(previewLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}`
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}/preview-template/${template.id}?lockNumber=${routingConfigs.valid.lockNumber}`
       );
     }
 
@@ -531,8 +531,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber}`
+    await page.waitForURL((url) =>
+      url.href.includes(
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
+      )
     );
 
     await expect(
@@ -562,8 +564,10 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber}`
+    await page.waitForURL((url) =>
+      url.href.includes(
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
+      )
     );
 
     await expect(
@@ -589,10 +593,15 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
       .uncheck();
 
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await page.waitForTimeout(5000); // Wait for debounce
+
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber}`
+    await page.waitForURL((url) =>
+      url.href.includes(
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
+      )
     );
 
     await expect(

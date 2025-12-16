@@ -72,7 +72,8 @@ test.describe('Routing - Preview SMS template page', () => {
     const props = {
       page: new RoutingPreviewSmsTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.SMS.id),
+        .setPathParam('templateId', templates.SMS.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
       expectedUrl: `templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`,
     };
@@ -87,7 +88,8 @@ test.describe('Routing - Preview SMS template page', () => {
   test('loads the SMS template', async ({ page, baseURL }) => {
     const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
       .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.SMS.id);
+      .setPathParam('templateId', templates.SMS.id)
+      .setSearchParam('lockNumber', '0');
 
     await previewSmsTemplatePage.loadPage();
 
@@ -110,7 +112,8 @@ test.describe('Routing - Preview SMS template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
-        .setPathParam('templateId', notFoundTemplateId);
+        .setPathParam('templateId', notFoundTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewSmsTemplatePage.loadPage();
 
@@ -120,7 +123,8 @@ test.describe('Routing - Preview SMS template page', () => {
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
-        .setPathParam('templateId', invalidTemplateId);
+        .setPathParam('templateId', invalidTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewSmsTemplatePage.loadPage();
 
@@ -130,7 +134,8 @@ test.describe('Routing - Preview SMS template page', () => {
     test('when template is not SMS', async ({ page, baseURL }) => {
       const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.EMAIL.id);
+        .setPathParam('templateId', templates.EMAIL.id)
+        .setSearchParam('lockNumber', '0');
 
       await previewSmsTemplatePage.loadPage();
 

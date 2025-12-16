@@ -72,7 +72,8 @@ test.describe('Routing - Preview app template page', () => {
     const props = {
       page: new RoutingPreviewNhsAppTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.APP.id),
+        .setPathParam('templateId', templates.APP.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
       expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`,
     };
@@ -87,7 +88,8 @@ test.describe('Routing - Preview app template page', () => {
   test('loads the NHS app template', async ({ page, baseURL }) => {
     const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(page)
       .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.APP.id);
+      .setPathParam('templateId', templates.APP.id)
+      .setSearchParam('lockNumber', '0');
 
     await previewNhsAppTemplatePage.loadPage();
 
@@ -112,7 +114,8 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', notFoundTemplateId);
+        .setPathParam('templateId', notFoundTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 
@@ -124,7 +127,8 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', invalidTemplateId);
+        .setPathParam('templateId', invalidTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 
@@ -136,7 +140,8 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.EMAIL.id);
+        .setPathParam('templateId', templates.EMAIL.id)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 

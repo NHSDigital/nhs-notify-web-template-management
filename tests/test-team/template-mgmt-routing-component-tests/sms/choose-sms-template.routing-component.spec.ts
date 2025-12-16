@@ -163,7 +163,7 @@ test.describe('Routing - Choose sms template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-text-message-template/${plan.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-text-message-template/${plan.id}/preview-template/${template.id}?lockNumber=${plan.lockNumber}`
         );
       }
 

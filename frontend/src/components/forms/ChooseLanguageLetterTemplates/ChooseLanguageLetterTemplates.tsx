@@ -60,9 +60,11 @@ export function ChooseLanguageLetterTemplates(
     state.selectedTemplateIds ??
     selectedLanguageTemplateIds.map((item) => item.templateId);
 
-  const errorMessage = (errorState || state.errorState)?.fieldErrors?.[
-    'language-templates'
-  ]?.[0];
+  const activeErrorState = errorState?.fieldErrors
+    ? errorState
+    : state.errorState;
+  const errorMessage =
+    activeErrorState?.fieldErrors?.['language-templates']?.[0];
   const isDuplicateError = errorMessage === content.error.duplicate.linkText;
 
   const errorHintText = isDuplicateError
@@ -73,7 +75,7 @@ export function ChooseLanguageLetterTemplates(
     <NHSNotifyMain>
       <NhsNotifyErrorSummary
         hint={errorHintText}
-        errorState={errorState || state.errorState}
+        errorState={activeErrorState}
       />
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
@@ -130,7 +132,7 @@ export function ChooseLanguageLetterTemplates(
               <LanguageLetterTemplates
                 routingConfigId={messagePlan.id}
                 templateList={templateList}
-                errorState={errorState || state.errorState || null}
+                errorState={activeErrorState || null}
                 selectedTemplates={initialSelectedTemplates}
                 lockNumber={lockNumber}
               />

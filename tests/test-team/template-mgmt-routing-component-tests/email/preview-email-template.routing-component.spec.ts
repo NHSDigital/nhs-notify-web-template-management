@@ -72,7 +72,8 @@ test.describe('Routing - Preview email template page', () => {
     const props = {
       page: new RoutingPreviewEmailTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.EMAIL.id),
+        .setPathParam('templateId', templates.EMAIL.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
       expectedUrl: `templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
     };
@@ -87,7 +88,8 @@ test.describe('Routing - Preview email template page', () => {
   test('loads the email template', async ({ page, baseURL }) => {
     const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
       .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.EMAIL.id);
+      .setPathParam('templateId', templates.EMAIL.id)
+      .setSearchParam('lockNumber', '0');
 
     await previewEmailTemplatePage.loadPage();
 
@@ -114,7 +116,8 @@ test.describe('Routing - Preview email template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
-        .setPathParam('templateId', notFoundTemplateId);
+        .setPathParam('templateId', notFoundTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewEmailTemplatePage.loadPage();
 
@@ -124,7 +127,8 @@ test.describe('Routing - Preview email template page', () => {
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
-        .setPathParam('templateId', invalidTemplateId);
+        .setPathParam('templateId', invalidTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewEmailTemplatePage.loadPage();
 
@@ -134,7 +138,8 @@ test.describe('Routing - Preview email template page', () => {
     test('when template is not email', async ({ page, baseURL }) => {
       const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.APP.id);
+        .setPathParam('templateId', templates.APP.id)
+        .setSearchParam('lockNumber', '0');
 
       await previewEmailTemplatePage.loadPage();
 

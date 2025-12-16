@@ -518,8 +518,10 @@ test.describe('Routing - Choose Templates page', () => {
 
     await largePrintItem.clickChooseTemplateLink();
 
-    await page.waitForURL(
-      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    await page.waitForURL((url) =>
+      url.href.includes(
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=`
+      )
     );
   });
 

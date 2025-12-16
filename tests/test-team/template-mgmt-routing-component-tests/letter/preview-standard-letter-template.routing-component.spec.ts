@@ -72,9 +72,10 @@ test.describe('Routing - Preview Letter template page', () => {
     const props = {
       page: new RoutingPreviewStandardLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LETTER.id),
+        .setPathParam('templateId', templates.LETTER.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -88,7 +89,8 @@ test.describe('Routing - Preview Letter template page', () => {
     const previewLetterTemplatePage =
       new RoutingPreviewStandardLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LETTER.id);
+        .setPathParam('templateId', templates.LETTER.id)
+        .setSearchParam('lockNumber', '0');
 
     await previewLetterTemplatePage.loadPage();
 
@@ -126,7 +128,8 @@ test.describe('Routing - Preview Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewStandardLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', notFoundTemplateId);
+          .setPathParam('templateId', notFoundTemplateId)
+          .setSearchParam('lockNumber', '0');
 
       await previewLetterTemplatePage.loadPage();
 
@@ -137,7 +140,8 @@ test.describe('Routing - Preview Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewStandardLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', invalidTemplateId);
+          .setPathParam('templateId', invalidTemplateId)
+          .setSearchParam('lockNumber', '0');
 
       await previewLetterTemplatePage.loadPage();
 
@@ -148,7 +152,8 @@ test.describe('Routing - Preview Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewStandardLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.EMAIL.id);
+          .setPathParam('templateId', templates.EMAIL.id)
+          .setSearchParam('lockNumber', '0');
 
       await previewLetterTemplatePage.loadPage();
 

@@ -167,7 +167,7 @@ test.describe('Routing - Choose email template page', () => {
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-email-template/${plan.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-email-template/${plan.id}/preview-template/${template.id}?lockNumber=${plan.lockNumber}`
         );
       }
 

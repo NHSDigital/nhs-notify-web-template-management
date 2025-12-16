@@ -86,13 +86,14 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     const previewForeignLanguageLetterTemplatePage =
       new RoutingPreviewOtherLanguageLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.FRENCH_LETTER.id);
+        .setPathParam('templateId', templates.FRENCH_LETTER.id)
+        .setSearchParam('lockNumber', '0');
     await previewForeignLanguageLetterTemplatePage.loadPage();
 
     const props = {
       page: previewForeignLanguageLetterTemplatePage,
       baseURL,
-      expectedUrl: `templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -102,6 +103,35 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     await assertAndClickBackLinkTop(props);
   });
 
+  test('back links preserve lockNumber query parameter', async ({
+    page,
+    baseURL,
+  }) => {
+    const lockNumber = 5;
+    const previewPage = new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.FRENCH_LETTER.id)
+      .setSearchParam('lockNumber', String(lockNumber));
+
+    await previewPage.loadPage();
+
+    await expect(previewPage.backLinkTop).toHaveAttribute(
+      'href',
+      `/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+
+    await expect(previewPage.backLinkBottom).toHaveAttribute(
+      'href',
+      `/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+
+    await previewPage.backLinkTop.click();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+  });
+
   test('loads the foreign language letter template', async ({
     page,
     baseURL,
@@ -109,7 +139,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     const previewForeignLanguageLetterTemplatePage =
       new RoutingPreviewOtherLanguageLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.FRENCH_LETTER.id);
+        .setPathParam('templateId', templates.FRENCH_LETTER.id)
+        .setSearchParam('lockNumber', '0');
     await previewForeignLanguageLetterTemplatePage.loadPage();
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.FRENCH_LETTER.id}`
@@ -163,7 +194,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       const previewForeignLanguageLetterTemplatePage =
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', notFoundTemplateId);
+          .setPathParam('templateId', notFoundTemplateId)
+          .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();
 
@@ -174,7 +206,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       const previewForeignLanguageLetterTemplatePage =
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', invalidTemplateId);
+          .setPathParam('templateId', invalidTemplateId)
+          .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();
 
@@ -185,7 +218,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       const previewForeignLanguageLetterTemplatePage =
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.EMAIL.id);
+          .setPathParam('templateId', templates.EMAIL.id)
+          .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();
 
@@ -199,7 +233,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       const previewForeignLanguageLetterTemplatePage =
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.STANDARD_LETTER.id);
+          .setPathParam('templateId', templates.STANDARD_LETTER.id)
+          .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();
 

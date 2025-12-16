@@ -80,9 +80,10 @@ test.describe('Routing - Preview large print letter template page', () => {
     const props = {
       page: new RoutingPreviewLargePrintLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id),
+        .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -92,12 +93,42 @@ test.describe('Routing - Preview large print letter template page', () => {
     await assertAndClickBackLinkTop(props);
   });
 
+  test('back links preserve lockNumber query parameter', async ({
+    page,
+    baseURL,
+  }) => {
+    const lockNumber = 5;
+    const previewPage = new RoutingPreviewLargePrintLetterTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id)
+      .setSearchParam('lockNumber', String(lockNumber));
+
+    await previewPage.loadPage();
+
+    await expect(previewPage.backLinkTop).toHaveAttribute(
+      'href',
+      `/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+
+    await expect(previewPage.backLinkBottom).toHaveAttribute(
+      'href',
+      `/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+
+    await previewPage.backLinkTop.click();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=${lockNumber}`
+    );
+  });
+
   test('loads the large print letter template', async ({ page, baseURL }) => {
     const previewLargePrintLetterTemplatePage =
       new RoutingPreviewLargePrintLetterTemplatePage(page);
     await previewLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
       .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id)
+      .setSearchParam('lockNumber', '0')
       .loadPage();
 
     await expect(page).toHaveURL(
@@ -148,6 +179,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', notFoundTemplateId)
+        .setSearchParam('lockNumber', '0')
         .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
@@ -160,6 +192,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', invalidTemplateId)
+        .setSearchParam('lockNumber', '0')
         .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
@@ -172,6 +205,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', templates.EMAIL.id)
+        .setSearchParam('lockNumber', '0')
         .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
@@ -187,6 +221,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', templates.STANDARD_LETTER.id)
+        .setSearchParam('lockNumber', '0')
         .loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
