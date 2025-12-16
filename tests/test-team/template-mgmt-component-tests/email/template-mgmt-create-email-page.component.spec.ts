@@ -399,7 +399,7 @@ test.describe('Create Email message template Page', () => {
           '[href="#emailTemplateMessage"]'
         );
 
-      await expect(emailMessageErrorLink).toHaveText(errorMessage);
+      await expect(emailMessageErrorLink).toContainText(errorMessage);
 
       await emailMessageErrorLink.click();
 

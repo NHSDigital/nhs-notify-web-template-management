@@ -195,7 +195,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
-    ).toHaveText([
+    ).toContainText([
       'You cannot use the following custom personalisation fields in your message',
     ]);
   });

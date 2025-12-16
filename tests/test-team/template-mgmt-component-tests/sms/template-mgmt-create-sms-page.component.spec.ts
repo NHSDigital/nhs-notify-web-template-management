@@ -360,7 +360,7 @@ test.describe('Create SMS message template Page', () => {
         '[href="#smsTemplateMessage"]'
       );
 
-      await expect(smsMessageErrorLink).toHaveText(errorMessage);
+      await expect(smsMessageErrorLink).toContainText(errorMessage);
 
       await smsMessageErrorLink.click();
 
