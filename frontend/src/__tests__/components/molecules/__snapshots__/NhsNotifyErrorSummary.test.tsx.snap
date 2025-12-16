@@ -40,6 +40,61 @@ exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
         </a>
       </li>
       <li>
+        <a
+          href="#select-id"
+        >
+          <div
+            class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+          >
+            You cannot use the following custom personalisation fields in your message:
+          </div>
+          <ul
+            class="nhsuk-list nhsuk-list--bullet"
+          >
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              date
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_1
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_2
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_3
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_4
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_5
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_6
+            </li>
+            <li
+              class="nhsuk-u-margin-bottom-0"
+            >
+              address_line_7
+            </li>
+          </ul>
+        </a>
+      </li>
+      <li>
         <span
           class="nhsuk-error-message"
         >
