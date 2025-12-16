@@ -33,6 +33,18 @@
 body {
   // This is here because amplify applies a min height which overwrites nhsuk causing a white space
   min-height: auto !important;
+
+  a.nhsuk-body-m {
+    color: nhsuk.$nhsuk-link-colour;
+
+    &:hover {
+      color: nhsuk.$nhsuk-link-hover-colour;
+    }
+
+    &:visited {
+      color: nhsuk.$nhsuk-link-visited-colour;
+    }
+  }
 }
 
 code {

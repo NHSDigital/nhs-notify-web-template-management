@@ -106,7 +106,7 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >

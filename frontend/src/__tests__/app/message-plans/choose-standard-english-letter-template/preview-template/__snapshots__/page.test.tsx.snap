@@ -109,7 +109,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >

@@ -131,7 +131,7 @@ exports[`PreviewTemplateFromMessagePlan renders Email template preview with the 
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
@@ -252,7 +252,7 @@ exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template prev
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
@@ -373,7 +373,7 @@ exports[`PreviewTemplateFromMessagePlan renders Letter template preview with the
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
@@ -491,7 +491,7 @@ exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with th
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
@@ -609,7 +609,7 @@ exports[`PreviewTemplateFromMessagePlan renders SMS template preview with the co
           </dl>
         </div>
         <a
-          class="nhsuk-body-m nhsuk-u-display-inline-block"
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
