@@ -26,7 +26,10 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
       errorState={{
         fieldErrors: {
           'radios-id': ['Radio error 1', 'Radio error 2'],
-          'select-id': ['Select error', ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME],
+          'select-id': [
+            'Select error',
+            ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+          ],
         },
         formErrors: ['Form error', 'Form error 2'],
       }}

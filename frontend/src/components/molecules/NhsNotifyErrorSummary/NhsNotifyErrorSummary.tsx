@@ -16,12 +16,17 @@ const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
 const errorComponents: Record<string, JSX.Element> = {
   [ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME]: (
     <>
-      <div className="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4">
+      <div className='nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4'>
         {templateMessageContainsInvalidPersonalisationErrorText}
       </div>
       <ul className='nhsuk-list nhsuk-list--bullet'>
         {INVALID_PERSONALISATION_FIELDS.map((item) => (
-          <li key={`personalisation-field-${item.slice(0, 5)}`} className="nhsuk-u-margin-bottom-0">{item}</li>
+          <li
+            key={`personalisation-field-${item.slice(0, 5)}`}
+            className='nhsuk-u-margin-bottom-0'
+          >
+            {item}
+          </li>
         ))}
       </ul>
     </>
