@@ -495,11 +495,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               Template name error
             </a>
           </li>
-          <li>
-            <a
-              href="#smsTemplateMessage"
-            />
-          </li>
         </ul>
       </div>
       <h1

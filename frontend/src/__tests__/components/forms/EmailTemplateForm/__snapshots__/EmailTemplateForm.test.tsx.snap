@@ -733,16 +733,6 @@ exports[`renders page one error 1`] = `
               Template name error
             </a>
           </li>
-          <li>
-            <a
-              href="#emailTemplateSubjectLine"
-            />
-          </li>
-          <li>
-            <a
-              href="#emailTemplateMessage"
-            />
-          </li>
         </ul>
       </div>
       <h1

@@ -1401,11 +1401,6 @@ exports[`renders page one error 1`] = `
               Template name error
             </a>
           </li>
-          <li>
-            <a
-              href="#nhsAppTemplateMessage"
-            />
-          </li>
         </ul>
       </div>
       <h1

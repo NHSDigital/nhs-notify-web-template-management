@@ -4,6 +4,7 @@ import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -108,7 +109,7 @@ describe('CreateEmailTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           emailTemplateMessage: [
-            'You cannot use the following custom personalisation fields in your message: date, address_line_1, address_line_2, address_line_3, address_line_4, address_line_5, address_line_6, address_line_7',
+            ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
           ],
         },
       },

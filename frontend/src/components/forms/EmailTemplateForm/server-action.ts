@@ -11,6 +11,7 @@ import {
   INVALID_PERSONALISATION_FIELDS,
 } from '@utils/constants';
 import content from '@content/content';
+import { ErrorCodes } from '@utils/error-codes';
 
 const {
   components: {
@@ -40,7 +41,7 @@ export const $EmailTemplateFormSchema = z.object({
           templateMessage.includes(`((${personalisationFieldName}))`)
         ),
       {
-        message: `${form.emailTemplateMessage.error.invalidPersonalisation} ${INVALID_PERSONALISATION_FIELDS.join(', ')}`,
+        message: ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
       }
     ),
 });

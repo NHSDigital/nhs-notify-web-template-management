@@ -12,9 +12,10 @@ const enterATemplateName = 'Enter a template name';
 const enterATemplateMessage = 'Enter a template message';
 const templateMessageTooLong = 'Template message too long';
 const templateMessageHasInsecureLink = 'URLs must start with https://';
-const templateMessageContainsInvalidPersonalisation =
-  'You cannot use the following custom personalisation fields in your message:';
 const selectAnOption = 'Select an option';
+
+export const templateMessageContainsInvalidPersonalisationErrorText =
+  'You cannot use the following custom personalisation fields in your message:';
 
 const header = {
   serviceName: 'Notify',
@@ -817,7 +818,6 @@ const templateFormNhsApp = {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
         insecureLink: templateMessageHasInsecureLink,
-        invalidPersonalisation: templateMessageContainsInvalidPersonalisation,
         invalidUrlCharacter: 'URLs cannot include the symbols < or >',
       },
     },
@@ -923,7 +923,6 @@ const templateFormEmail = {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
         insecureLink: templateMessageHasInsecureLink,
-        invalidPersonalisation: templateMessageContainsInvalidPersonalisation,
       },
     },
   },
@@ -966,7 +965,6 @@ const templateFormSms = {
         empty: enterATemplateMessage,
         max: templateMessageTooLong,
         insecureLink: templateMessageHasInsecureLink,
-        invalidPersonalisation: templateMessageContainsInvalidPersonalisation,
       },
     },
   },

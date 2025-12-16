@@ -22,7 +22,14 @@ exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
         <a
           href="#radios-id"
         >
-          Radio error 1, Radio error 2
+          Radio error 1
+        </a>
+      </li>
+      <li>
+        <a
+          href="#radios-id"
+        >
+          Radio error 2
         </a>
       </li>
       <li>
