@@ -313,8 +313,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: user1.userId,
-          updatedBy: user1.userId,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -858,8 +858,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: user1.userId,
-          updatedBy: user1.userId,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -1407,8 +1407,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: user1.userId,
-          updatedBy: user1.userId,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -2055,8 +2055,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: user1.userId,
-          updatedBy: userSharedClient.userId,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userSharedClient.internalUserId}`,
         },
       });
 
