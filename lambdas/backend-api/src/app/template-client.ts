@@ -310,6 +310,8 @@ export class TemplateClient {
 
     const lockNumberValidation = $LockNumber.safeParse(lockNumber);
 
+    const getClientConfig = await this.getClientConfiguration(user);
+
     if (!lockNumberValidation.success) {
       log.error(
         'Lock number failed validation',
@@ -319,10 +321,25 @@ export class TemplateClient {
       return failure(ErrorCase.CONFLICT, 'Invalid lock number');
     }
 
+    const { data } = await this.getTemplate(templateId, user);
+
+    if (
+      data?.templateType === 'LETTER' &&
+      data?.templateStatus === 'PROOF_AVAILABLE' &&
+      (getClientConfig.data?.features.routing ?? false)
+    ) {
+      return this.updateTemplateStatus(
+        templateId,
+        'TEMPLATE_PROOF_APPROVED',
+        user
+      );
+    }
+
     const submitResult = await this.templateRepository.submit(
       templateId,
       user,
-      lockNumberValidation.data
+      lockNumberValidation.data,
+      getClientConfig.data?.features.routing ?? false
     );
 
     if (submitResult.error) {
@@ -343,6 +360,14 @@ export class TemplateClient {
     }
 
     return success(templateDTO);
+  }
+
+  async checkRoutingEnabled(user: User): Promise<boolean> {
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    return clientConfigurationResult.data?.features.routing ?? false;
   }
 
   async deleteTemplate(

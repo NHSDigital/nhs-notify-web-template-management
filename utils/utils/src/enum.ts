@@ -6,7 +6,6 @@ import type {
   TemplateDto,
   Channel,
   RoutingConfigStatus,
-  LetterProperties,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -93,35 +92,33 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
-const isProofAvailable = (
-  template: Pick<TemplateDto & LetterProperties, 'files'>
-) => Object.entries(template.files.proofs ?? {}).length > 0;
+const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
+  statusToDisplayMappings[status];
 
-export const statusToDisplayMapping = (
-  template: TemplateDto,
-  isRoutingEnabled: boolean = false
-): string => {
-  const statusToDisplayMappings: Record<TemplateStatus, string> = {
-    NOT_YET_SUBMITTED:
-      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
-    SUBMITTED:
-      template.templateType === 'LETTER' &&
-      isRoutingEnabled &&
-      isProofAvailable(template)
-        ? 'Template proof approved'
-        : 'Submitted',
-    DELETED: '', // will not be shown in the UI
-    PENDING_PROOF_REQUEST: 'Files uploaded',
-    PENDING_UPLOAD: 'Checking files',
-    PENDING_VALIDATION: 'Checking files',
-    VALIDATION_FAILED: 'Checks failed',
-    VIRUS_SCAN_FAILED: 'Checks failed',
-    WAITING_FOR_PROOF: 'Waiting for proof',
-    PROOF_AVAILABLE: 'Proof available',
-  } as const;
+const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
+  ({
+    ...statusToDisplayMappings,
+    NOT_YET_SUBMITTED: 'Draft',
+  })[status];
 
-  return statusToDisplayMappings[template.templateStatus];
-};
+const statusToDisplayMappings: Record<TemplateStatus, string> = {
+  NOT_YET_SUBMITTED: 'Not yet submitted',
+  SUBMITTED: 'Submitted',
+  DELETED: '', // will not be shown in the UI
+  PENDING_PROOF_REQUEST: 'Files uploaded',
+  PENDING_UPLOAD: 'Checking files',
+  PENDING_VALIDATION: 'Checking files',
+  VALIDATION_FAILED: 'Checks failed',
+  VIRUS_SCAN_FAILED: 'Checks failed',
+  WAITING_FOR_PROOF: 'Waiting for proof',
+  PROOF_AVAILABLE: 'Proof available',
+  TEMPLATE_PROOF_APPROVED: 'Template proof approved',
+} as const;
+
+export const statusToDisplayMapping = (template: TemplateDto): string =>
+  template.templateType === 'LETTER'
+    ? templateStatusToDisplayMappingsLetter(template.templateStatus)
+    : templateStatusToDisplayMappingsDigital(template.templateStatus);
 
 type Colour =
   | 'white'
@@ -147,6 +144,7 @@ const colourMappings: Record<TemplateStatus, Colour> = {
   VALIDATION_FAILED: 'red',
   WAITING_FOR_PROOF: 'yellow',
   PROOF_AVAILABLE: 'orange',
+  TEMPLATE_PROOF_APPROVED: 'grey',
 } as const;
 
 const templateStatusToColourMappingsLetter = (
@@ -212,6 +210,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
+      TEMPLATE_PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -238,6 +237,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
+      TEMPLATE_PROOF_APPROVED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 

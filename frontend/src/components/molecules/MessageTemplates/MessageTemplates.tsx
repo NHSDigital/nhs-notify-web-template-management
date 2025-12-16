@@ -17,7 +17,6 @@ import {
   statusToColourMapping,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { useFeatureFlags } from '@providers/client-config-provider';
 import style from './MessageTemplates.module.scss';
 
 const messageTemplatesContent = content.pages.messageTemplates;
@@ -44,7 +43,6 @@ export function MessageTemplates({
 }: {
   templateList: TemplateDto[];
 }) {
-  const isRoutingEnabled = useFeatureFlags().routing === true;
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
@@ -88,7 +86,7 @@ export function MessageTemplates({
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag color={statusToColourMapping(template)}>
-                    {statusToDisplayMapping(template, isRoutingEnabled)}
+                    {statusToDisplayMapping(template)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>

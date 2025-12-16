@@ -218,25 +218,19 @@ describe('statusToDisplayMapping', () => {
 
   test('statusToDisplay if no files', () => {
     expect(
-      statusToDisplayMapping(
-        {
-          ...mockLetterTemplate,
-          templateStatus: 'SUBMITTED',
-        },
-        true
-      )
+      statusToDisplayMapping({
+        ...mockLetterTemplate,
+        templateStatus: 'SUBMITTED',
+      })
     ).toEqual('Submitted');
   });
 
   test('statusToDisplay if routing is enabled', () => {
     expect(
-      statusToDisplayMapping(
-        {
-          ...mockLetterWithFilesTemplate,
-          templateStatus: 'SUBMITTED',
-        },
-        true
-      )
+      statusToDisplayMapping({
+        ...mockLetterWithFilesTemplate,
+        templateStatus: 'TEMPLATE_PROOF_APPROVED',
+      })
     ).toEqual('Template proof approved');
   });
 
@@ -272,6 +266,7 @@ describe('statusToColourMapping', () => {
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
         PROOF_AVAILABLE: 'orange',
+        TEMPLATE_PROOF_APPROVED: 'grey',
       };
 
       expect(
@@ -296,6 +291,7 @@ describe('statusToColourMapping', () => {
             VALIDATION_FAILED: 'red',
             PROOF_AVAILABLE: 'orange',
             NOT_YET_SUBMITTED: 'green',
+            TEMPLATE_PROOF_APPROVED: 'grey',
           };
 
           expect(

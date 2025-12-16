@@ -205,14 +205,21 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, user: User, lockNumber: number) {
+  async submit(
+    templateId: string,
+    user: User,
+    lockNumber: number,
+    isRoutingEnabled: boolean
+  ) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
       {
         ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-        ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':expectedLetterStatus': isRoutingEnabled
+          ? ('TEMPLATE_PROOF_APPROVED' satisfies TemplateStatus)
+          : ('PROOF_AVAILABLE' satisfies TemplateStatus),
         ':passed': 'PASSED' satisfies VirusScanStatus,
         ':expectedLockNumber': lockNumber,
       };
