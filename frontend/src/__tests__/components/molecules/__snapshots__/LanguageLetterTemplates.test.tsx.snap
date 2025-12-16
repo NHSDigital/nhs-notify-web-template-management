@@ -163,7 +163,7 @@ exports[`LanguageLetterTemplates renders list of foreign language letter templat
                       aria-label="Preview French Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="french-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id?lockNumber=5"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -261,7 +261,7 @@ exports[`LanguageLetterTemplates renders list of foreign language letter templat
                       aria-label="Preview Polish Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="polish-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id?lockNumber=5"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -359,7 +359,7 @@ exports[`LanguageLetterTemplates renders list of foreign language letter templat
                       aria-label="Preview German Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="german-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id?lockNumber=5"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -540,7 +540,7 @@ exports[`LanguageLetterTemplates renders templates list with pre-selected templa
                       aria-label="Preview French Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="french-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id?lockNumber=5"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -639,7 +639,7 @@ exports[`LanguageLetterTemplates renders templates list with pre-selected templa
                       aria-label="Preview Polish Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="polish-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id?lockNumber=5"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -737,7 +737,7 @@ exports[`LanguageLetterTemplates renders templates list with pre-selected templa
                       aria-label="Preview German Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="german-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id?lockNumber=5"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -929,7 +929,7 @@ exports[`LanguageLetterTemplates renders templates with duplicate language error
                       aria-label="Preview French Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="french-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id?lockNumber=5"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -1027,7 +1027,7 @@ exports[`LanguageLetterTemplates renders templates with duplicate language error
                       aria-label="Preview Polish Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="polish-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id?lockNumber=5"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -1125,7 +1125,7 @@ exports[`LanguageLetterTemplates renders templates with duplicate language error
                       aria-label="Preview German Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="german-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id?lockNumber=5"
                       id="preview-template-link-2"
                     >
                       Preview
@@ -1317,7 +1317,7 @@ exports[`LanguageLetterTemplates renders templates with error state 1`] = `
                       aria-label="Preview French Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="french-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/french-template-id?lockNumber=5"
                       id="preview-template-link-0"
                     >
                       Preview
@@ -1415,7 +1415,7 @@ exports[`LanguageLetterTemplates renders templates with error state 1`] = `
                       aria-label="Preview Polish Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="polish-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/polish-template-id?lockNumber=5"
                       id="preview-template-link-1"
                     >
                       Preview
@@ -1513,7 +1513,7 @@ exports[`LanguageLetterTemplates renders templates with error state 1`] = `
                       aria-label="Preview German Letter Template"
                       class="nhsuk-u-margin-bottom-2 nhsuk-link"
                       data-testid="german-template-id-preview-link"
-                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id"
+                      href="/message-plans/choose-other-language-letter-template/routing-config-id/preview-template/german-template-id?lockNumber=5"
                       id="preview-template-link-2"
                     >
                       Preview

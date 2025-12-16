@@ -20,11 +20,13 @@ export function LanguageLetterTemplates({
   templateList,
   errorState,
   selectedTemplates,
+  lockNumber,
 }: {
   routingConfigId: string;
   templateList: LetterTemplate[];
   errorState: ErrorState | null;
   selectedTemplates: string[];
+  lockNumber: number;
 }) {
   return (
     <div className='nhsuk-grid-row'>
@@ -107,6 +109,7 @@ export function LanguageLetterTemplates({
                         ),
                         routingConfigId,
                         templateId: template.id,
+                        lockNumber,
                       })}
                       id={`preview-template-link-${index}`}
                       aria-label={`${tableContent.action.preview.text} ${template.name}`}

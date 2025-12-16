@@ -222,7 +222,7 @@ exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="sms-template-id-preview-link"
-                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
+                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview

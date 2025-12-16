@@ -132,6 +132,7 @@ export function ChooseLanguageLetterTemplates(
                 templateList={templateList}
                 errorState={errorState || state.errorState || null}
                 selectedTemplates={initialSelectedTemplates}
+                lockNumber={lockNumber}
               />
             ) : (
               <p className='nhsuk-body' data-testid='no-templates-message'>

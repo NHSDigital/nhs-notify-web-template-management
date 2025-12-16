@@ -5,7 +5,7 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
   <a
     class="nhsuk-back-link"
     data-testid="back-link-top"
-    href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+    href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
   >
     Go back
   </a>
@@ -133,7 +133,7 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
         <a
           class="nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
-          href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+          href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
           Go back
         </a>

@@ -21,13 +21,48 @@ const FRENCH_LETTER_TEMPLATE = {
 };
 
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should redirect to invalid page for invalid template id', async () => {
+  it('should redirect to choose-templates when lockNumber is invalid', async () => {
+    await PreviewOtherLanguageLetterTemplateFromMessagePlan({
+      params: Promise.resolve({
+        routingConfigId: 'routing-config-id',
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: 'invalid',
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/choose-templates/routing-config-id',
+      'replace'
+    );
+  });
+
+  it('should redirect to choose-templates when lockNumber is missing', async () => {
+    await PreviewOtherLanguageLetterTemplateFromMessagePlan({
+      params: Promise.resolve({
+        routingConfigId: 'routing-config-id',
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/choose-templates/routing-config-id',
+      'replace'
+    );
+  });
+
+  it('should redirect to invalid page with invalid template id', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await PreviewOtherLanguageLetterTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
         templateId: 'invalid-template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '0',
       }),
     });
 
@@ -46,6 +81,9 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
         templateId: FRENCH_LETTER_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '5',
       }),
     });
 

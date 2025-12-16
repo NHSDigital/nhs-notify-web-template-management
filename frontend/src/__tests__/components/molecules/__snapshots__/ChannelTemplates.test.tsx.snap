@@ -156,7 +156,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="app-template-id-preview-link"
-                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id?lockNumber=5"
                     id="preview-template-link-0"
                   >
                     Preview
@@ -248,7 +248,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="email-template-id-preview-link"
-                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id?lockNumber=5"
                     id="preview-template-link-1"
                   >
                     Preview
@@ -340,7 +340,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="sms-template-id-preview-link"
-                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id?lockNumber=5"
                     id="preview-template-link-2"
                   >
                     Preview
@@ -432,7 +432,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="letter-template-id-preview-link"
-                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id?lockNumber=5"
                     id="preview-template-link-3"
                   >
                     Preview
@@ -616,7 +616,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="app-template-id-preview-link"
-                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id?lockNumber=5"
                     id="preview-template-link-0"
                   >
                     Preview
@@ -708,7 +708,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="email-template-id-preview-link"
-                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id?lockNumber=5"
                     id="preview-template-link-1"
                   >
                     Preview
@@ -800,7 +800,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="sms-template-id-preview-link"
-                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id?lockNumber=5"
                     id="preview-template-link-2"
                   >
                     Preview
@@ -892,7 +892,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="letter-template-id-preview-link"
-                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id?lockNumber=5"
                     id="preview-template-link-3"
                   >
                     Preview
@@ -1064,7 +1064,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="app-template-id-preview-link"
-                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id"
+                    href="/message-plans/choose-nhs-app-template/abc/preview-template/app-template-id?lockNumber=5"
                     id="preview-template-link-0"
                   >
                     Preview
@@ -1157,7 +1157,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="email-template-id-preview-link"
-                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id"
+                    href="/message-plans/choose-email-template/abc/preview-template/email-template-id?lockNumber=5"
                     id="preview-template-link-1"
                   >
                     Preview
@@ -1249,7 +1249,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="sms-template-id-preview-link"
-                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id"
+                    href="/message-plans/choose-text-message-template/abc/preview-template/sms-template-id?lockNumber=5"
                     id="preview-template-link-2"
                   >
                     Preview
@@ -1341,7 +1341,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-label="Preview"
                     class="nhsuk-u-margin-bottom-2 nhsuk-link"
                     data-testid="letter-template-id-preview-link"
-                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/letter-template-id?lockNumber=5"
                     id="preview-template-link-3"
                   >
                     Preview

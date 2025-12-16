@@ -250,7 +250,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
                             aria-label="Preview French letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -348,7 +348,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
                             aria-label="Preview Polish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="polish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -446,7 +446,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
                             aria-label="Preview Spanish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -737,7 +737,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
                             aria-label="Preview French letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -835,7 +835,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
                             aria-label="Preview Polish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="polish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -933,7 +933,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
                             aria-label="Preview Spanish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -1182,7 +1182,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
                             aria-label="Preview French letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1280,7 +1280,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
                             aria-label="Preview Polish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="polish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -1378,7 +1378,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
                             aria-label="Preview Spanish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -1668,7 +1668,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
                             aria-label="Preview French letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1766,7 +1766,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
                             aria-label="Preview Polish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="polish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -1864,7 +1864,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
                             aria-label="Preview Spanish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -2113,7 +2113,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
                             aria-label="Preview French letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -2211,7 +2211,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
                             aria-label="Preview Polish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="polish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/polish-letter-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -2309,7 +2309,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
                             aria-label="Preview Spanish letter template"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview

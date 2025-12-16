@@ -46,6 +46,7 @@ describe('LanguageLetterTemplates', () => {
           errorState={null}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'
+          lockNumber={5}
         />
       </form>
     );
@@ -71,6 +72,7 @@ describe('LanguageLetterTemplates', () => {
             POLISH_LETTER_TEMPLATE.id,
           ]}
           routingConfigId='routing-config-id'
+          lockNumber={5}
         />
       </form>
     );
@@ -105,6 +107,7 @@ describe('LanguageLetterTemplates', () => {
           }}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'
+          lockNumber={5}
         />
       </form>
     );
@@ -133,6 +136,7 @@ describe('LanguageLetterTemplates', () => {
           }}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'
+          lockNumber={5}
         />
       </form>
     );
@@ -151,6 +155,7 @@ describe('LanguageLetterTemplates', () => {
           errorState={null}
           selectedTemplates={[]}
           routingConfigId='test-routing-id'
+          lockNumber={5}
         />
       </form>
     );
@@ -160,14 +165,14 @@ describe('LanguageLetterTemplates', () => {
     );
     expect(previewLinkFrench).toHaveAttribute(
       'href',
-      '/message-plans/choose-other-language-letter-template/test-routing-id/preview-template/french-template-id'
+      '/message-plans/choose-other-language-letter-template/test-routing-id/preview-template/french-template-id?lockNumber=5'
     );
     const previewLinkPolish = container.getByTestId(
       `${POLISH_LETTER_TEMPLATE.id}-preview-link`
     );
     expect(previewLinkPolish).toHaveAttribute(
       'href',
-      '/message-plans/choose-other-language-letter-template/test-routing-id/preview-template/polish-template-id'
+      '/message-plans/choose-other-language-letter-template/test-routing-id/preview-template/polish-template-id?lockNumber=5'
     );
   });
 
@@ -179,6 +184,7 @@ describe('LanguageLetterTemplates', () => {
           errorState={null}
           selectedTemplates={[]}
           routingConfigId='routing-config-id'
+          lockNumber={5}
         />
       </form>
     );

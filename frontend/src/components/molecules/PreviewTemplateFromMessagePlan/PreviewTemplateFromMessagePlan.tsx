@@ -16,12 +16,14 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
     previewComponent: PreviewTemplateComponent<T>;
     routingConfigId: string;
+    lockNumber: number;
   };
 
 export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   initialState: template,
   previewComponent,
   routingConfigId,
+  lockNumber,
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
@@ -38,6 +40,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
       conditionalType
     ),
     routingConfigId,
+    lockNumber,
   });
 
   return (

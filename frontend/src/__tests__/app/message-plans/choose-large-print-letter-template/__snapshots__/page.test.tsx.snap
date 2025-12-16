@@ -202,7 +202,7 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="large-print-letter-template-id-preview-link"
-                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview

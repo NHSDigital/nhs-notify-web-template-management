@@ -1207,7 +1207,7 @@ const chooseChannelTemplate = {
     action: {
       heading: '',
       preview: {
-        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}',
+        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}?lockNumber={{lockNumber}}',
         text: 'Preview',
       },
     },
@@ -1433,7 +1433,7 @@ const messagePlanForm = {
 
 const previewTemplateFromMessagePlan = {
   backLink: {
-    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}',
+    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}?lockNumber={{lockNumber}}',
     text: 'Go back',
   },
 };

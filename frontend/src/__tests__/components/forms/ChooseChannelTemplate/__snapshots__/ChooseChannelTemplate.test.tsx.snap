@@ -244,7 +244,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -507,7 +507,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="email-template-id-preview-link"
-                            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
+                            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -792,7 +792,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1035,7 +1035,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="large-print-letter-template-id-preview-link"
-                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1298,7 +1298,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="letter-template-id-preview-link"
-                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1561,7 +1561,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -1824,7 +1824,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="sms-template-id-preview-link"
-                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
+                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -2087,7 +2087,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -2179,7 +2179,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="template-2-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -2271,7 +2271,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="template-3-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -2612,7 +2612,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="large-print-template-2-preview-link"
-                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-2"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-2?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -2705,7 +2705,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="large-print-letter-template-id-preview-link"
-                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -2797,7 +2797,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="large-print-template-3-preview-link"
-                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-3"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-3?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -3060,7 +3060,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview
@@ -3152,7 +3152,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="template-2-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2?lockNumber=42"
                             id="preview-template-link-1"
                           >
                             Preview
@@ -3244,7 +3244,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="template-3-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3?lockNumber=42"
                             id="preview-template-link-2"
                           >
                             Preview
@@ -3487,7 +3487,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="app-template-id-preview-link"
-                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview

@@ -101,6 +101,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 errorState={errorState || null}
                 selectedTemplate={selectedTemplateId}
                 letterType={accessibleFormat}
+                lockNumber={lockNumber}
               />
             ) : (
               <p data-testid='no-templates-message'>

@@ -27,12 +27,14 @@ export function ChannelTemplates({
   errorState,
   selectedTemplate,
   letterType,
+  lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
   letterType?: LetterType;
+  lockNumber: number;
 }) {
   return (
     <div className='nhsuk-grid-row'>
@@ -101,6 +103,7 @@ export function ChannelTemplates({
                         ),
                         routingConfigId,
                         templateId: template.id,
+                        lockNumber,
                       })}
                       id={`preview-template-link-${index}`}
                       aria-label={`${tableContent.action.preview.text}`}
