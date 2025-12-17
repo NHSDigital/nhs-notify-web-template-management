@@ -143,7 +143,7 @@ test.describe('Routing - Preview foreign language letter template page', () => {
         .setSearchParam('lockNumber', '0');
     await previewForeignLanguageLetterTemplatePage.loadPage();
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.FRENCH_LETTER.id}`
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.FRENCH_LETTER.id}?lockNumber=0`
     );
 
     await expect(

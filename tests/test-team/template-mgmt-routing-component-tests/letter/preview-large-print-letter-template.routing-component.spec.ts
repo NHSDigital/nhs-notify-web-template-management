@@ -132,7 +132,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       .loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LARGE_PRINT_LETTER.id}`
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LARGE_PRINT_LETTER.id}?lockNumber=0`
     );
 
     await expect(

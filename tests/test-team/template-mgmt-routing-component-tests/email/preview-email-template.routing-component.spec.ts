@@ -75,7 +75,7 @@ test.describe('Routing - Preview email template page', () => {
         .setPathParam('templateId', templates.EMAIL.id)
         .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -94,7 +94,7 @@ test.describe('Routing - Preview email template page', () => {
     await previewEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${templates.EMAIL.id}`
+      `${baseURL}/templates/message-plans/choose-email-template/${messagePlans.EMAIL_ROUTING_CONFIG.id}/preview-template/${templates.EMAIL.id}?lockNumber=0`
     );
 
     await expect(previewEmailTemplatePage.pageHeading).toContainText(

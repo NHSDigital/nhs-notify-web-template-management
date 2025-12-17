@@ -75,7 +75,7 @@ test.describe('Routing - Preview app template page', () => {
         .setPathParam('templateId', templates.APP.id)
         .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -94,7 +94,7 @@ test.describe('Routing - Preview app template page', () => {
     await previewNhsAppTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${templates.APP.id}`
+      `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${templates.APP.id}?lockNumber=0`
     );
 
     await expect(previewNhsAppTemplatePage.pageHeading).toContainText(

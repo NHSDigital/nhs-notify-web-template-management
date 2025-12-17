@@ -75,7 +75,7 @@ test.describe('Routing - Preview SMS template page', () => {
         .setPathParam('templateId', templates.SMS.id)
         .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -94,7 +94,7 @@ test.describe('Routing - Preview SMS template page', () => {
     await previewSmsTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}/preview-template/${templates.SMS.id}`
+      `${baseURL}/templates/message-plans/choose-text-message-template/${messagePlans.SMS_ROUTING_CONFIG.id}/preview-template/${templates.SMS.id}?lockNumber=0`
     );
 
     await expect(previewSmsTemplatePage.pageHeading).toContainText(

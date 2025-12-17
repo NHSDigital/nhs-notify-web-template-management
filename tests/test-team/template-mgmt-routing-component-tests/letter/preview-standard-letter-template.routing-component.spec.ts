@@ -95,7 +95,7 @@ test.describe('Routing - Preview Letter template page', () => {
     await previewLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LETTER.id}`
+      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LETTER.id}?lockNumber=0`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
