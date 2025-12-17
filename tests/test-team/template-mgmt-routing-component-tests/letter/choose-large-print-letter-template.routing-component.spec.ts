@@ -266,14 +266,14 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber))
+      .setSearchParam('lockNumber', '1')
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForURL((url) =>
       url.href.includes(
-        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=`
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=1`
       )
     );
 

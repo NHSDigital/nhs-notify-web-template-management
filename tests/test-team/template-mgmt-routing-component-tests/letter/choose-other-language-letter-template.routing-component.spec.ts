@@ -259,10 +259,6 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
 
-    await expect(chooseOtherLanguageLetterTemplatePage.tableRows).toHaveCount(
-      Object.keys(languageTemplates).length
-    );
-
     for (const templateKey in languageTemplates) {
       const template = templates[templateKey as keyof typeof templates];
       await expect(table.getByText(template.name)).toBeVisible();
@@ -291,9 +287,13 @@ test.describe('Routing - Choose other language letter templates page', () => {
       );
     }
 
+    await expect(table.getByText(templates.NHSAPP.name)).toBeHidden();
     await expect(table.getByText(templates.LETTER.name)).toBeHidden();
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.ANOTHER_LARGE_PRINT_LETTER.name)
     ).toBeHidden();
 
     await expect(
@@ -526,15 +526,13 @@ test.describe('Routing - Choose other language letter templates page', () => {
       new RoutingChooseOtherLanguageLetterTemplatePage(page);
     await chooseOtherLanguageLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber))
+      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber + 1))
       .loadPage();
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await page.waitForURL((url) =>
-      url.href.includes(
-        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
-      )
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
     );
 
     await expect(
@@ -564,10 +562,8 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await page.waitForURL((url) =>
-      url.href.includes(
-        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
-      )
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
     );
 
     await expect(
@@ -598,10 +594,8 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await page.waitForURL((url) =>
-      url.href.includes(
-        `/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=`
-      )
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
     );
 
     await expect(
