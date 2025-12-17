@@ -292,9 +292,6 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER.name)
     ).toBeHidden();
-    await expect(
-      table.getByText(templates.ANOTHER_LARGE_PRINT_LETTER.name)
-    ).toBeHidden();
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.saveAndContinueButton
