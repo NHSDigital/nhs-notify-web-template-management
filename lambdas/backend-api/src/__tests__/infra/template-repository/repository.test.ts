@@ -671,7 +671,8 @@ describe('templateRepository', () => {
         const response = await templateRepository.submit(
           'abc-def-ghi-jkl-123',
           user,
-          0
+          0,
+          false
         );
 
         expect(response).toEqual({
@@ -696,7 +697,8 @@ describe('templateRepository', () => {
       const response = await templateRepository.submit(
         'abc-def-ghi-jkl-123',
         user,
-        0
+        0,
+        false
       );
 
       expect(response).toEqual({
@@ -734,7 +736,7 @@ describe('templateRepository', () => {
         })
         .resolves({ Attributes: databaseTemplate });
 
-      const response = await templateRepository.submit(id, user, 0);
+      const response = await templateRepository.submit(id, user, 0, false);
 
       expect(response).toEqual({
         data: databaseTemplate,
