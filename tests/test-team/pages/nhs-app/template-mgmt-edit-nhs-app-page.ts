@@ -1,9 +1,9 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
-import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'edit-nhs-app-template';
+export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/edit-nhs-app-template/:templateId';
 
   public readonly nameInput: Locator;
 
@@ -49,12 +49,12 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
     await expect(characterCountLocator).toBeVisible();
   }
 
-  async loadPage(templateId: string) {
-    await super.loadPage(templateId);
+  async loadPage() {
+    await super.loadPage();
     await this.waitForPageToLoad();
   }
 
-  async attemptToLoadPageExpectFailure(templateId: string) {
-    await super.loadPage(templateId);
+  async attemptToLoadPageExpectFailure() {
+    await super.loadPage();
   }
 }

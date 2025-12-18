@@ -20,7 +20,7 @@ const setup = () => {
   return { handler, mocks: { templateClient } };
 };
 
-const userId = '8B892046';
+const internalUserId = '8B892046';
 const clientId = 'A6C062FBAEBC';
 const now = '2025-03-05T17:42:47.978Z';
 
@@ -75,7 +75,7 @@ describe('upload-letter', () => {
         'Content-Type': contentType,
         Authorization: 'example',
       },
-      requestContext: { authorizer: { user: userId, clientId } },
+      requestContext: { authorizer: { internalUserId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -116,7 +116,7 @@ describe('upload-letter', () => {
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      { userId, clientId },
+      { internalUserId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       new File([csv], csvFilename, { type: csvType })
     );
@@ -147,7 +147,7 @@ describe('upload-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user: userId, clientId } },
+      requestContext: { authorizer: { internalUserId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -157,8 +157,8 @@ describe('upload-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
-      updatedBy: userId,
-      createdBy: userId,
+      updatedBy: internalUserId,
+      createdBy: internalUserId,
       lockNumber: 1,
       clientId,
       templateStatus: 'PENDING_VALIDATION',
@@ -186,7 +186,7 @@ describe('upload-letter', () => {
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      { userId, clientId },
+      { internalUserId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );
@@ -194,8 +194,8 @@ describe('upload-letter', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing clientId', { userId: 'user-id', clientId: undefined }],
-    ['missing user', { clientId: 'client-id', user: undefined }],
+    ['missing clientId', { internalUserId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -223,7 +223,7 @@ describe('upload-letter', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub', clientId } },
+      requestContext: { authorizer: { internalUserId: 'user-1234', clientId } },
       body: undefined,
       headers: { 'Content-Type': undefined, 'content-type': undefined },
     });
@@ -263,7 +263,7 @@ describe('upload-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user: userId, clientId } },
+      requestContext: { authorizer: { internalUserId, clientId } },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -312,7 +312,7 @@ describe('upload-letter', () => {
         headers: {
           'Content-Type': contentType,
         },
-        requestContext: { authorizer: { user: userId, clientId } },
+        requestContext: { authorizer: { internalUserId, clientId } },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -352,7 +352,7 @@ describe('upload-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user: userId, clientId } },
+      requestContext: { authorizer: { internalUserId, clientId } },
     });
 
     mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
@@ -376,7 +376,7 @@ describe('upload-letter', () => {
 
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      { userId, clientId },
+      { internalUserId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );

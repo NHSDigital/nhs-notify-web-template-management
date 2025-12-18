@@ -23,6 +23,8 @@ const routingConfig = RoutingConfigFactory.create({
   campaignId: 'aff79ee0-4481-4fa3-8a1a-0df53c7b41e5',
 });
 
+const errorLogger = console.error;
+
 beforeAll(() => {
   jest.mocked(redirect).mockImplementation((url, type) => {
     throw new NextRedirectError(url, type);
@@ -30,6 +32,12 @@ beforeAll(() => {
   jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
   jest.mocked(fetchClient).mockResolvedValue({ features: {}, campaignIds: [] });
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+  global.console.error = jest.fn(); // suppress error logging in expected error tests
+});
+
+afterAll(() => {
+  jest.resetAllMocks();
+  global.console.error = errorLogger;
 });
 
 beforeEach(() => {
@@ -132,7 +140,7 @@ describe('single campaign', () => {
   });
 
   it('updates the message plan and redirects to the choose templates page', async () => {
-    const user = await userEvent.setup();
+    const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
@@ -142,16 +150,20 @@ describe('single campaign', () => {
 
     await user.clear(await screen.findByTestId('name-field'));
 
-    await user.click(await screen.getByTestId('name-field'));
+    await user.click(screen.getByTestId('name-field'));
 
     await user.keyboard('New Name');
 
     await user.click(await screen.findByTestId('submit-button'));
 
-    expect(updateRoutingConfig).toHaveBeenCalledWith(routingConfig.id, {
-      name: 'New Name',
-      campaignId: routingConfig.campaignId,
-    });
+    expect(updateRoutingConfig).toHaveBeenCalledWith(
+      routingConfig.id,
+      {
+        name: 'New Name',
+        campaignId: routingConfig.campaignId,
+      },
+      routingConfig.lockNumber
+    );
 
     expect(redirect).toHaveBeenCalledWith(
       `/message-plans/choose-templates/${routingConfig.id}`,
@@ -230,7 +242,7 @@ describe('multiple campaigns', () => {
   });
 
   it('updates the message plan and redirects to the choose templates page', async () => {
-    const user = await userEvent.setup();
+    const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
@@ -240,7 +252,7 @@ describe('multiple campaigns', () => {
 
     await user.clear(await screen.findByTestId('name-field'));
 
-    await user.click(await screen.getByTestId('name-field'));
+    await user.click(screen.getByTestId('name-field'));
 
     await user.keyboard('New Name');
 
@@ -251,10 +263,14 @@ describe('multiple campaigns', () => {
 
     await user.click(await screen.findByTestId('submit-button'));
 
-    expect(updateRoutingConfig).toHaveBeenCalledWith(routingConfig.id, {
-      name: 'New Name',
-      campaignId: alternateCampaignId,
-    });
+    expect(updateRoutingConfig).toHaveBeenCalledWith(
+      routingConfig.id,
+      {
+        name: 'New Name',
+        campaignId: alternateCampaignId,
+      },
+      routingConfig.lockNumber
+    );
 
     expect(redirect).toHaveBeenCalledWith(
       `/message-plans/choose-templates/${routingConfig.id}`,

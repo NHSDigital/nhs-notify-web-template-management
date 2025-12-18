@@ -17,10 +17,12 @@ export function MessagePlanChannelTemplate({
   channel,
   template,
   routingConfigId,
+  lockNumber,
   required = true,
 }: {
   channel: Channel;
   routingConfigId: RoutingConfig['id'];
+  lockNumber: number;
   template?: TemplateDto;
   required?: boolean;
 }) {
@@ -47,7 +49,7 @@ export function MessagePlanChannelTemplate({
               <Link
                 data-testid={`choose-template-link-${channel}`}
                 className='nhsuk-link nhsuk-link--no-visited-state'
-                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
+                href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}?lockNumber=${lockNumber}`}
               >
                 {content.templateLinks.choose}
                 <span className='nhsuk-u-visually-hidden'>
@@ -64,7 +66,7 @@ export function MessagePlanChannelTemplate({
                 <Link
                   data-testid={`change-template-link-${channel}`}
                   className='nhsuk-link nhsuk-link--no-visited-state'
-                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}`}
+                  href={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(channel))}/${routingConfigId}?lockNumber=${lockNumber}`}
                 >
                   {content.templateLinks.change}
                   <span className='nhsuk-u-visually-hidden'>
@@ -75,11 +77,23 @@ export function MessagePlanChannelTemplate({
               </li>
               <li>
                 <form>
-                  <input type='hidden' name='channel' value={channel} />
+                  <input
+                    type='hidden'
+                    name='channel'
+                    value={channel}
+                    readOnly
+                  />
                   <input
                     type='hidden'
                     name='routingConfigId'
                     value={routingConfigId}
+                    readOnly
+                  />
+                  <input
+                    type='hidden'
+                    name='lockNumber'
+                    value={lockNumber}
+                    readOnly
                   />
                   <button
                     data-testid={`remove-template-link-${channel}`}

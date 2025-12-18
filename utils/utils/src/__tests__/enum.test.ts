@@ -29,6 +29,7 @@ import {
   templateDisplayDeleteAction,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
+  cascadeTemplateTypeToUrlTextMappings,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -304,16 +305,24 @@ describe('statusToColourMapping', () => {
 });
 
 describe('templateTypeToUrlTextMappings', () => {
-  test('NHS_APP', () => {
-    expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual('nhs-app');
+  test.each([
+    ['NHS_APP', 'nhs-app'],
+    ['SMS', 'text-message'],
+    ['EMAIL', 'email'],
+    ['LETTER', 'letter'],
+  ] as const)('$type maps to url fragment $expected', (type, expected) => {
+    expect(templateTypeToUrlTextMappings(type)).toEqual(expected);
   });
+});
 
-  test('SMS', () => {
-    expect(templateTypeToUrlTextMappings('SMS')).toEqual('text-message');
-  });
-
-  test('EMAIL', () => {
-    expect(templateTypeToUrlTextMappings('EMAIL')).toEqual('email');
+describe('cascadeTemplateTypeToUrlTextMappings', () => {
+  test.each([
+    ['NHS_APP', 'nhs-app'],
+    ['SMS', 'text-message'],
+    ['EMAIL', 'email'],
+    ['LETTER', 'standard-english-letter'],
+  ] as const)('$type maps to url fragment $expected', (type, expected) => {
+    expect(cascadeTemplateTypeToUrlTextMappings(type)).toEqual(expected);
   });
 });
 

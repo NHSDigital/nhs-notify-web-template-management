@@ -1,7 +1,8 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, apiSuccess } from './responses';
-import type { RoutingConfigClient } from '../app/routing-config-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { apiFailure, apiSuccess } from '@backend-api/api/responses';
+import type { RoutingConfigClient } from '@backend-api/app/routing-config-client';
+import { toHeaders } from '@backend-api/utils/headers';
 
 export function createHandler({
   routingConfigClient,
@@ -9,20 +10,21 @@ export function createHandler({
   routingConfigClient: RoutingConfigClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+    const { internalUserId, clientId } = event.requestContext.authorizer ?? {};
 
     const routingConfigId = event.pathParameters?.routingConfigId;
 
-    if (!userId || !routingConfigId || !clientId) {
+    if (!internalUserId || !routingConfigId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const user = { userId, clientId };
+    const user = { internalUserId, clientId };
     const log = logger.child(user);
 
     const { data, error } = await routingConfigClient.submitRoutingConfig(
       routingConfigId,
-      user
+      user,
+      toHeaders(event.headers).get('X-Lock-Number') ?? ''
     );
 
     if (error) {

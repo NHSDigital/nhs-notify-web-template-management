@@ -48,6 +48,7 @@ describe('SubmitSmsTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(await generateMetadata()).toEqual({
@@ -58,7 +59,7 @@ describe('SubmitSmsTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         channel='SMS'
-        lockNumber={state.lockNumber}
+        lockNumber={42}
       />
     );
   });
@@ -70,6 +71,7 @@ describe('SubmitSmsTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'invalid-template',
       }),
+      searchParams: Promise.resolve({ lockNumber: '42' }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -101,9 +103,24 @@ describe('SubmitSmsTemplatePage', () => {
         params: Promise.resolve({
           templateId: 'template-id',
         }),
+        searchParams: Promise.resolve({ lockNumber: '42' }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  test('it should redirect to preview page if lockNumber search param is invalid', async () => {
+    await SubmitSmsTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-text-message-template/template-id',
+      'replace'
+    );
+  });
 });

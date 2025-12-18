@@ -19,8 +19,8 @@ describe('Template API - get client configuration', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing clientId', { userId: 'user-id', clientId: undefined }],
-    ['missing user', { clientId: 'client-id', user: undefined }],
+    ['missing clientId', { internalUserId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -61,7 +61,10 @@ describe('Template API - get client configuration', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
     });
 
@@ -76,7 +79,7 @@ describe('Template API - get client configuration', () => {
     });
 
     expect(mocks.templateClient.getClientConfiguration).toHaveBeenCalledWith({
-      userId: 'sub',
+      internalUserId: 'user-1234',
       clientId: 'nhs-notify-client-id',
     });
   });
@@ -95,7 +98,10 @@ describe('Template API - get client configuration', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
     });
 
@@ -107,7 +113,7 @@ describe('Template API - get client configuration', () => {
     });
 
     expect(mocks.templateClient.getClientConfiguration).toHaveBeenCalledWith({
-      userId: 'sub',
+      internalUserId: 'user-1234',
       clientId: 'nhs-notify-client-id',
     });
   });

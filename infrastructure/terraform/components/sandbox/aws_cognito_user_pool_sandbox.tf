@@ -25,4 +25,12 @@ resource "aws_cognito_user_pool" "sandbox" {
     required            = false
     string_attribute_constraints {}
   }
+
+  schema {
+    name                = "nhs_notify_user_id"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
+    string_attribute_constraints {}
+  }
 }

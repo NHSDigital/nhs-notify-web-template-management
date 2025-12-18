@@ -4,7 +4,6 @@
 import PreviewSubmittedNHSAppTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-nhs-app-template/[templateId]/page';
-import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -15,6 +14,8 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
@@ -57,7 +58,10 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <ViewNHSAppTemplate initialState={submittedNHSAppTemplate} />
+      <PreviewSubmittedTemplate
+        initialState={submittedNHSAppTemplate}
+        previewComponent={PreviewTemplateDetailsNhsApp}
+      />
     );
   });
 

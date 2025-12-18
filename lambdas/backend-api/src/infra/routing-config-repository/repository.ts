@@ -23,6 +23,7 @@ import { RoutingConfigQuery } from './query';
 import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 export class RoutingConfigRepository {
   private updateCmdOpts = {
@@ -46,6 +47,7 @@ export class RoutingConfigRepository {
         ...routingConfigInput,
         clientId: user.clientId,
         createdAt: date,
+        defaultCascadeGroup: 'standard',
         id: randomUUID(),
         status: 'DRAFT',
         updatedAt: date,
@@ -57,8 +59,8 @@ export class RoutingConfigRepository {
           Item: {
             ...routingConfig,
             owner: this.clientOwnerKey(user.clientId),
-            updatedBy: user.userId,
-            createdBy: user.userId,
+            updatedBy: this.internalUserKey(user),
+            createdBy: this.internalUserKey(user),
           },
           ConditionExpression: 'attribute_not_exists(id)',
         })
@@ -77,7 +79,8 @@ export class RoutingConfigRepository {
   async update(
     id: string,
     updateData: UpdateRoutingConfig,
-    user: User
+    user: User,
+    lockNumber: number
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -101,7 +104,11 @@ export class RoutingConfigRepository {
         .setCascade(cascade)
         .setCascadeGroupOverrides(cascadeGroupOverrides);
     }
-    update.setUpdatedByUserAt(user.userId).expectStatus('DRAFT');
+    update
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .expectStatus('DRAFT')
+      .expectLockNumber(lockNumber)
+      .incrementLockNumber();
 
     try {
       const result = await this.client.send(new UpdateCommand(update.build()));
@@ -118,13 +125,14 @@ export class RoutingConfigRepository {
 
       return success(parsed.data);
     } catch (error) {
-      return this.handleUpdateError(error);
+      return this.handleUpdateError(error, lockNumber);
     }
   }
 
   async submit(
     id: string,
-    user: User
+    user: User,
+    lockNumber: number
   ): Promise<ApplicationResult<RoutingConfig>> {
     const cmdInput = new RoutingConfigUpdateBuilder(
       this.tableName,
@@ -134,7 +142,9 @@ export class RoutingConfigRepository {
     )
       .setStatus('COMPLETED')
       .expectStatus('DRAFT')
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .expectLockNumber(lockNumber)
+      .incrementLockNumber()
       .build();
 
     try {
@@ -152,13 +162,14 @@ export class RoutingConfigRepository {
 
       return success(parsed.data);
     } catch (error) {
-      return this.handleUpdateError(error);
+      return this.handleUpdateError(error, lockNumber);
     }
   }
 
   async delete(
     id: string,
-    user: User
+    user: User,
+    lockNumber: number
   ): Promise<ApplicationResult<RoutingConfig>> {
     const cmdInput = new RoutingConfigUpdateBuilder(
       this.tableName,
@@ -169,7 +180,9 @@ export class RoutingConfigRepository {
       .setStatus('DELETED')
       .setTtl(calculateTTL())
       .expectStatus('DRAFT')
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .expectLockNumber(lockNumber)
+      .incrementLockNumber()
       .build();
 
     try {
@@ -187,7 +200,7 @@ export class RoutingConfigRepository {
 
       return success(parsed.data);
     } catch (error) {
-      return this.handleUpdateError(error);
+      return this.handleUpdateError(error, lockNumber);
     }
   }
 
@@ -230,18 +243,29 @@ export class RoutingConfigRepository {
     );
   }
 
-  private handleUpdateError(err: unknown) {
+  private handleUpdateError(err: unknown, expectedLockNumber: number) {
     if (err instanceof ConditionalCheckFailedException) {
-      const status = err?.Item?.status.S;
+      const item = unmarshall(err.Item ?? {});
 
-      if (!status || status === ('DELETED' satisfies RoutingConfigStatus)) {
+      if (
+        !err.Item ||
+        item.status === ('DELETED' satisfies RoutingConfigStatus)
+      ) {
         return failure(ErrorCase.NOT_FOUND, `Routing configuration not found`);
       }
 
-      if (status === ('COMPLETED' satisfies RoutingConfigStatus)) {
+      if (item.status === ('COMPLETED' satisfies RoutingConfigStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
           `Routing configuration with status COMPLETED cannot be updated`
+        );
+      }
+
+      if (item.lockNumber !== expectedLockNumber) {
+        return failure(
+          ErrorCase.CONFLICT,
+          'Lock number mismatch - Message Plan has been modified since last read',
+          err
         );
       }
     }
@@ -251,5 +275,9 @@ export class RoutingConfigRepository {
 
   private clientOwnerKey(clientId: string) {
     return `CLIENT#${clientId}`;
+  }
+
+  private internalUserKey(user: User) {
+    return `INTERNAL_USER#${user.internalUserId}`;
   }
 }

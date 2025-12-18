@@ -19,8 +19,8 @@ describe('Template API - Submit', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -51,7 +51,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
@@ -85,7 +88,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       headers: { 'X-Lock-Number': '0' },
@@ -104,7 +110,7 @@ describe('Template API - Submit', () => {
     expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'
@@ -118,16 +124,21 @@ describe('Template API - Submit', () => {
       error: {
         errorMeta: {
           code: 409,
-          description: 'Invalid lock number',
+          description:
+            'Lock number mismatch - Template has been modified since last read',
         },
       },
     });
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
+      headers: {},
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -136,14 +147,15 @@ describe('Template API - Submit', () => {
       statusCode: 409,
       body: JSON.stringify({
         statusCode: 409,
-        technicalMessage: 'Invalid lock number',
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
       }),
     });
 
     expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       ''
@@ -170,7 +182,10 @@ describe('Template API - Submit', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { templateId: '1-2-3' },
       headers: { 'X-Lock-Number': '0' },
@@ -186,7 +201,7 @@ describe('Template API - Submit', () => {
     expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       '0'

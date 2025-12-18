@@ -1,8 +1,8 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtDeletePage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'delete-template';
+export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/delete-template/:templateId';
 
   readonly goBackButton: Locator;
 

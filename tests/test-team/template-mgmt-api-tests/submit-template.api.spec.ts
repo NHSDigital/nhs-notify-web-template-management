@@ -542,6 +542,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -712,6 +714,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -883,6 +887,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -1056,6 +1062,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userSharedClient.internalUserId}`,
         },
       });
     });
@@ -1098,7 +1106,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 
@@ -1140,7 +1149,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 });

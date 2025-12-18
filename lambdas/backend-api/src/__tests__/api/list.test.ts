@@ -19,8 +19,8 @@ describe('Template API - List', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -76,12 +76,13 @@ describe('Template API - List', () => {
       },
     });
 
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
-      },
-      pathParameters: { templateId: '1' },
-    });
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+    event.pathParameters = { templateId: '1' };
+    event.queryStringParameters = null;
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
@@ -93,13 +94,16 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith({
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      null
+    );
   });
 
-  test('should return template', async () => {
+  test('should return template with no filters', async () => {
     const { handler, mocks } = setup();
 
     const template: TemplateDto = {
@@ -118,11 +122,13 @@ describe('Template API - List', () => {
       data: [template],
     });
 
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
-      },
-    });
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.queryStringParameters = null;
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
@@ -131,9 +137,63 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, data: [template] }),
     });
 
-    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith({
-      userId: 'sub',
-      clientId: 'nhs-notify-client-id',
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      null
+    );
+  });
+
+  test('should return template with filters', async () => {
+    const { handler, mocks } = setup();
+
+    const template: TemplateDto = {
+      id: 'id',
+      templateType: 'EMAIL',
+      name: 'name',
+      message: 'message',
+      subject: 'subject',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      lockNumber: 1,
+    };
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      data: [template],
     });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.queryStringParameters = {
+      templateType: 'LETTER',
+      language: 'en',
+      letterType: 'x0',
+    };
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
+    });
+
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      {
+        templateType: 'LETTER',
+        language: 'en',
+        letterType: 'x0',
+      }
+    );
   });
 });

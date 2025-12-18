@@ -93,9 +93,12 @@ test.describe('Routing - Accessibility', () => {
     analyze(new RoutingChooseMessageOrderPage(page)));
 
   test('Choose template', async ({ page, analyze }) =>
-    analyze(new RoutingChooseTemplatesPage(page), {
-      id: validRoutingConfigId,
-    }));
+    analyze(
+      new RoutingChooseTemplatesPage(page).setPathParam(
+        'messagePlanId',
+        validRoutingConfigId
+      )
+    ));
 
   test('Choose message order - error', async ({ page, analyze }) =>
     analyze(new RoutingChooseMessageOrderPage(page), {
@@ -111,17 +114,21 @@ test.describe('Routing - Accessibility', () => {
 
     test('Create message plan', async ({ page, analyze }) =>
       analyze(
-        new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        })
+        new RoutingCreateMessagePlanPage(page).setSearchParam(
+          'messageOrder',
+          messageOrder
+        )
       ));
 
     test('Create message plan - error', async ({ page, analyze }) =>
       analyze(
-        new RoutingCreateMessagePlanPage(page, {
-          messageOrder,
-        }),
-        { beforeAnalyze: (p) => p.clickSubmit() }
+        new RoutingCreateMessagePlanPage(page).setSearchParam(
+          'messageOrder',
+          messageOrder
+        ),
+        {
+          beforeAnalyze: (p) => p.clickSubmit(),
+        }
       ));
   });
 });

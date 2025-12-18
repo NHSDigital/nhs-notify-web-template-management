@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-templates';
+export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-templates';
 
   readonly createTemplateButton: Locator;
 
@@ -17,5 +17,17 @@ export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePageNonDyn
 
   async clickCreateTemplateButton() {
     await this.createTemplateButton.click();
+  }
+
+  async getTemplatesTableRowByTemplateId(id: string) {
+    return this.page.locator(`tbody tr:has(td:nth-child(2):has-text("${id}"))`);
+  }
+
+  async getTemplateStatus(templateId: string) {
+    const row = await this.getTemplatesTableRowByTemplateId(templateId);
+
+    const statusCell = row.locator('td:nth-child(4) .nhsuk-tag');
+
+    return statusCell.textContent();
   }
 }

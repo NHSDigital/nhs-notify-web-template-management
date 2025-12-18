@@ -24,10 +24,12 @@ const buildRoutingConfig = (rc: Partial<RoutingConfig>): RoutingConfig => ({
   cascadeGroupOverrides: [],
   clientId: 'client-a',
   createdAt: '2025-09-09T10:00:00Z',
+  defaultCascadeGroup: 'standard',
   status: 'DRAFT',
   id: '',
   name: '',
   updatedAt: '',
+  lockNumber: 0,
   ...rc,
 });
 

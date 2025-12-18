@@ -6,19 +6,15 @@ import type {
   GetV1RoutingConfigurationByRoutingConfigIdData,
   RoutingConfig,
   RoutingConfigSuccess,
-  RoutingConfigStatusActive,
   RoutingConfigSuccessList,
   PostV1RoutingConfigurationData,
-  PutV1RoutingConfigurationByRoutingConfigIdData,
+  PatchV1RoutingConfigurationByRoutingConfigIdData,
   UpdateRoutingConfig,
 } from './types/generated';
-import { ErrorCase } from './types/error-cases';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';
-import { z } from 'zod';
-
-const uuidSchema = z.uuidv4();
+import { RoutingConfigFilter } from './types/filters';
 
 export const httpClient = createAxiosClient();
 
@@ -52,7 +48,7 @@ export const routingConfigurationApiClient = {
 
   async count(
     token: string,
-    status: RoutingConfigStatusActive
+    filters?: RoutingConfigFilter
   ): Promise<Result<{ count: number }>> {
     const url =
       '/v1/routing-configurations/count' satisfies GetV1RoutingConfigurationsCountData['url'];
@@ -60,7 +56,7 @@ export const routingConfigurationApiClient = {
     const { data, error } = await catchAxiosError(
       httpClient.get<CountSuccess>(url, {
         headers: { Authorization: token },
-        params: { status },
+        params: filters,
       })
     );
 
@@ -75,22 +71,10 @@ export const routingConfigurationApiClient = {
     token: string,
     id: RoutingConfig['id']
   ): Promise<Result<RoutingConfig>> {
-    if (!uuidSchema.safeParse(id).success) {
-      return {
-        error: {
-          errorMeta: {
-            code: ErrorCase.VALIDATION_FAILED,
-            description: 'Invalid routing configuration ID format',
-            details: { id },
-          },
-          actualError: undefined,
-        },
-      };
-    }
-
-    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
-      GetV1RoutingConfigurationByRoutingConfigIdData['url']
-    >;
+    const url =
+      `/v1/routing-configuration/${encodeURIComponent(id)}` satisfies OpenApiToTemplate<
+        GetV1RoutingConfigurationByRoutingConfigIdData['url']
+      >;
 
     const { data, error } = await catchAxiosError(
       httpClient.get<RoutingConfigSuccess>(url, {
@@ -105,13 +89,17 @@ export const routingConfigurationApiClient = {
     return { ...data };
   },
 
-  async list(token: string): Promise<Result<RoutingConfig[]>> {
+  async list(
+    token: string,
+    filters?: RoutingConfigFilter
+  ): Promise<Result<RoutingConfig[]>> {
     const url =
       '/v1/routing-configurations' satisfies GetV1RoutingConfigurationsData['url'];
 
     const { data, error } = await catchAxiosError(
       httpClient.get<RoutingConfigSuccessList>(url, {
         headers: { Authorization: token },
+        params: filters,
       })
     );
 
@@ -125,27 +113,17 @@ export const routingConfigurationApiClient = {
   async update(
     token: string,
     id: RoutingConfig['id'],
-    routingConfig: UpdateRoutingConfig
+    routingConfig: UpdateRoutingConfig,
+    lockNumber: number
   ): Promise<Result<RoutingConfig>> {
-    if (!uuidSchema.safeParse(id).success) {
-      return {
-        error: {
-          errorMeta: {
-            code: ErrorCase.VALIDATION_FAILED,
-            description: 'Invalid routing configuration ID format',
-            details: { id },
-          },
-          actualError: undefined,
-        },
-      };
-    }
-    const url = `/v1/routing-configuration/${id}` satisfies OpenApiToTemplate<
-      PutV1RoutingConfigurationByRoutingConfigIdData['url']
-    >;
+    const url =
+      `/v1/routing-configuration/${encodeURIComponent(id)}` satisfies OpenApiToTemplate<
+        PatchV1RoutingConfigurationByRoutingConfigIdData['url']
+      >;
 
     const { data, error } = await catchAxiosError(
-      httpClient.put<RoutingConfigSuccess>(url, routingConfig, {
-        headers: { Authorization: token },
+      httpClient.patch<RoutingConfigSuccess>(url, routingConfig, {
+        headers: { Authorization: token, 'X-Lock-Number': String(lockNumber) },
       })
     );
 

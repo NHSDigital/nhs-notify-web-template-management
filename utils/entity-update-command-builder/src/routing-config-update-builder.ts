@@ -57,10 +57,10 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
-  setUpdatedByUserAt(userId: string) {
+  setUpdatedByUserAt(userRef: string) {
     this.updateBuilder
       .setValue('updatedAt', new Date().toISOString())
-      .setValue('updatedBy', userId);
+      .setValue('updatedBy', userRef);
     return this;
   }
 
@@ -76,6 +76,17 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
 
   expectRoutingConfigExists() {
     this.updateBuilder.conditions.andFn('attribute_exists', 'id');
+    return this;
+  }
+
+  expectLockNumber(lockNumber: number) {
+    this.updateBuilder.conditions.and('lockNumber', '=', lockNumber);
+
+    return this;
+  }
+
+  incrementLockNumber() {
+    this.updateBuilder.addToValue('lockNumber', 1);
     return this;
   }
 

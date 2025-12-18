@@ -6,9 +6,10 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
 import { Metadata } from 'next';
 import content from '@content/content';
+import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
@@ -29,7 +30,12 @@ const PreviewSubmittedNHSAppTemplatePage = async (props: TemplatePageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ViewNHSAppTemplate initialState={validatedTemplate} />;
+  return (
+    <PreviewSubmittedTemplate
+      initialState={validatedTemplate}
+      previewComponent={PreviewTemplateDetailsNhsApp}
+    />
+  );
 };
 
 export default PreviewSubmittedNHSAppTemplatePage;

@@ -53,7 +53,7 @@ export async function countRoutingConfigs(
 
   const { data, error } = await routingConfigurationApiClient.count(
     accessToken,
-    status
+    { status }
   );
 
   if (error) {
@@ -118,7 +118,8 @@ export async function createRoutingConfig(
 
 export async function updateRoutingConfig(
   routingConfigId: string,
-  updatedRoutingConfig: UpdateRoutingConfig
+  updatedRoutingConfig: UpdateRoutingConfig,
+  lockNumber: number
 ): Promise<RoutingConfig | undefined> {
   const { accessToken } = await getSessionServer();
 
@@ -129,12 +130,13 @@ export async function updateRoutingConfig(
   const { data, error } = await routingConfigurationApiClient.update(
     accessToken,
     routingConfigId,
-    updatedRoutingConfig
+    updatedRoutingConfig,
+    lockNumber
   );
 
   if (error) {
-    logger.error('Failed to get routing configuration', error);
-    return;
+    logger.error('Failed to update message plan', error);
+    throw new Error('Failed to update message plan');
   }
 
   if (!data) return undefined;
@@ -142,7 +144,7 @@ export async function updateRoutingConfig(
   const result = $RoutingConfig.safeParse(data);
 
   if (!result.success) {
-    logger.error('Invalid routing configuration object', result.error);
+    logger.error('Invalid message plan object', result.error);
     return undefined;
   }
 

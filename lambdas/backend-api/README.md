@@ -180,18 +180,19 @@ curl -X POST --location "${APIG_STAGE}/v1/routing-configuration" \
       "channelType": "primary",
       "defaultTemplateId": "email_id"
    }],
-  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "cascadeGroupOverrides": [],
   "name": "RC name"
 }'
 ```
 
-### PUT - /v1/routing-configuration/:routingConfigId - Update a routing configuration
+### PATCH - /v1/routing-configuration/:routingConfigId - Update a routing configuration
 
 ```bash
-curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
+curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \
 --data '{
   "campaignId": "campaign",
   "cascade": [{
@@ -200,7 +201,7 @@ curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_
       "channelType": "primary",
       "defaultTemplateId": "email_id"
    }],
-  "cascadeGroupOverrides": [{ "name": "standard" }],
+  "cascadeGroupOverrides": [],
   "name": "New name"
 }'
 ```
@@ -210,7 +211,8 @@ curl -X PUT --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_
 ```bash
 curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}/submit" \
 --header 'Accept: application/json' \
---header "Authorization: $SANDBOX_TOKEN"
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
 ### DELETE - /v1/routing-configuration/:routingConfigId - Delete a routing configuration
@@ -219,6 +221,7 @@ curl -X PATCH --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFI
 curl -X DELETE --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONFIG_ID}" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
 <!-- vale on -->

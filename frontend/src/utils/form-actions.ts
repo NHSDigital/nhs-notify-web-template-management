@@ -2,16 +2,14 @@
 
 import { getSessionServer } from '@utils/amplify-utils';
 import {
+  $TemplateDto,
   CreateUpdateTemplate,
-  isTemplateDtoValid,
-  RoutingConfig,
   TemplateDto,
-  ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { sortAscByUpdatedAt } from './sort';
+import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -177,50 +175,34 @@ export async function getTemplate(
   return data;
 }
 
-export async function getTemplates(): Promise<TemplateDto[]> {
+export async function getTemplates(
+  filters?: TemplateFilter
+): Promise<TemplateDto[]> {
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateApiClient.listTemplates(accessToken);
+  const { data, error } = await templateApiClient.listTemplates(
+    accessToken,
+    filters
+  );
 
   if (error) {
     logger.error('Failed to get templates', { error });
     return [];
   }
 
-  const sortedData = data
-    .map((template) => isTemplateDtoValid(template))
-    .filter(
-      (template): template is ValidatedTemplateDto => template !== undefined
-    );
+  const valid = data.filter((d) => {
+    const { error: validationError, success } = $TemplateDto.safeParse(d);
 
-  return sortAscByUpdatedAt(sortedData);
-}
+    if (!success) {
+      logger.error('Listed invalid template', validationError);
+    }
 
-export async function createRoutingConfig(
-  routingConfig: Pick<
-    RoutingConfig,
-    'name' | 'campaignId' | 'cascade' | 'cascadeGroupOverrides'
-  >
-): Promise<RoutingConfig> {
-  const { accessToken } = await getSessionServer();
+    return success;
+  });
 
-  if (!accessToken) {
-    throw new Error('Failed to get access token');
-  }
-
-  const { data, error } = await routingConfigurationApiClient.create(
-    routingConfig,
-    accessToken
-  );
-
-  if (error) {
-    logger.error('Failed to create message plan', { error });
-    throw new Error('Failed to create message plan');
-  }
-
-  return data;
+  return sortAscByUpdatedAt(valid);
 }

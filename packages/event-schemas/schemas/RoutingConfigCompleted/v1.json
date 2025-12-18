@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique ID for this event",
+      "type": "string",
+      "maxLength": 1000
+    },
+    "time": {
+      "description": "Time the event was generated",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
+    },
+    "type": {
+      "type": "string",
+      "const": "uk.nhs.notify.template-management.RoutingConfigCompleted.v1"
+    },
+    "source": {
+      "description": "Source of the event",
+      "type": "string"
+    },
+    "specversion": {
+      "description": "Version of the envelope event schema",
+      "type": "string",
+      "const": "1.0"
+    },
+    "datacontenttype": {
+      "description": "Always application/json",
+      "type": "string",
+      "const": "application/json"
+    },
+    "subject": {
+      "description": "Unique identifier for the item in the event data",
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+    },
+    "dataschema": {
+      "type": "string",
+      "const": "https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json"
+    },
+    "dataschemaversion": {
+      "type": "string",
+      "pattern": "^1\\..*"
+    },
+    "plane": {
+      "type": "string",
+      "const": "control"
+    },
+    "data": {
+      "$ref": "#/$defs/RoutingConfigCompletedEventData"
+    }
+  },
+  "required": [
+    "id",
+    "time",
+    "type",
+    "source",
+    "specversion",
+    "datacontenttype",
+    "subject",
+    "dataschema",
+    "dataschemaversion",
+    "plane",
+    "data"
+  ],
+  "$defs": {
+    "RoutingConfigCompletedEventData": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "clientId": {
+              "description": "The client that owns the routing config",
+              "type": "string"
+            },
+            "campaignId": {
+              "description": "The campaign that is associated with the routing config",
+              "type": "string"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+            },
+            "name": {
+              "description": "User-provided name identifying the routing config",
+              "type": "string"
+            },
+            "defaultCascadeGroup": {
+              "description": "Default cascade group name",
+              "type": "string"
+            },
+            "createdAt": {
+              "description": "Timestamp for when the routing config was created",
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+            },
+            "cascade": {
+              "description": "Array defining the order of channels for the routing config and how they are configured",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CascadeItem"
+              }
+            },
+            "cascadeGroupOverrides": {
+              "description": "Config defining non-default cascade groups and the conditons under which they will be used",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CascadeGroupOverride"
+              }
+            },
+            "status": {
+              "description": "Routing config status",
+              "type": "string",
+              "enum": [
+                "DELETED",
+                "DRAFT",
+                "COMPLETED"
+              ]
+            }
+          },
+          "required": [
+            "clientId",
+            "campaignId",
+            "id",
+            "name",
+            "defaultCascadeGroup",
+            "createdAt",
+            "cascade",
+            "cascadeGroupOverrides",
+            "status"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "COMPLETED"
+              ]
+            }
+          },
+          "required": [
+            "status"
+          ]
+        }
+      ]
+    },
+    "CascadeItem": {
+      "type": "object",
+      "properties": {
+        "channel": {
+          "description": "Communication type for this cascade item",
+          "type": "string",
+          "enum": [
+            "NHSAPP",
+            "EMAIL",
+            "SMS",
+            "LETTER"
+          ]
+        },
+        "channelType": {
+          "description": "Channel type for this cascade item",
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        "defaultTemplateId": {
+          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "supplierReferences": {
+          "description": "Supplier references that identify the template",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "conditionalTemplates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConditionalTemplate"
+          }
+        },
+        "cascadeGroups": {
+          "description": "List of cascade groups that the cascade item will be included in",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "channel",
+        "channelType",
+        "cascadeGroups"
+      ]
+    },
+    "ConditionalTemplate": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "description": "Language override for the template",
+          "type": "string",
+          "enum": [
+            "ar",
+            "bg",
+            "bn",
+            "de",
+            "el",
+            "en",
+            "es",
+            "fa",
+            "fr",
+            "gu",
+            "hi",
+            "hu",
+            "it",
+            "ku",
+            "lt",
+            "lv",
+            "ne",
+            "pa",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "so",
+            "sq",
+            "ta",
+            "tr",
+            "ur",
+            "zh"
+          ]
+        },
+        "accessibleFormat": {
+          "description": "Communication preference override for the template",
+          "type": "string",
+          "enum": [
+            "x1"
+          ]
+        },
+        "supplierReferences": {
+          "description": "Supplier references that identify the template",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "templateId": {
+          "description": "Unique identifier for the template",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        }
+      },
+      "required": [
+        "templateId"
+      ]
+    },
+    "CascadeGroupOverride": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "accessibleFormat": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  "$id": "https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json"
+}

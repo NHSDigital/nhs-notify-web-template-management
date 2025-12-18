@@ -1,5 +1,6 @@
-import { TemplateMgmtPreviewSubmitedBasePage } from '../template-mgmt-preview-submitted-base-page';
+import { TemplateMgmtPreviewSubmittedBasePage } from '../template-mgmt-preview-submitted-base-page';
 
-export class TemplateMgmtPreviewSubmittedLetterPage extends TemplateMgmtPreviewSubmitedBasePage {
-  static readonly pageUrlSegment = 'preview-submitted-letter-template';
+export class TemplateMgmtPreviewSubmittedLetterPage extends TemplateMgmtPreviewSubmittedBasePage {
+  static readonly pathTemplate =
+    '/preview-submitted-letter-template/:templateId';
 }

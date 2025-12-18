@@ -1,5 +1,5 @@
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class RoutingInvalidMessagePlanPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-plans/invalid';
+export class RoutingInvalidMessagePlanPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-plans/invalid';
 }

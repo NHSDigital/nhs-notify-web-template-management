@@ -2,17 +2,13 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import type {
-  CascadeGroup,
-  CascadeItem,
-  Channel,
-} from 'nhs-notify-backend-client';
+import type { CascadeItem, Channel } from 'nhs-notify-backend-client';
 import {
   MESSAGE_ORDER_OPTIONS_LIST,
   type FormState,
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
-import { createRoutingConfig } from '@utils/form-actions';
+import { createRoutingConfig } from '@utils/message-plans';
 import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 
 const $CreateMessagePlanFormData = $MessagePlanFormData.extend({
@@ -88,10 +84,6 @@ function messageOrderToInitialCascade(
   )[messageOrder];
 }
 
-function messageOrderToInitialCascadeGroups(_: MessageOrder): CascadeGroup[] {
-  return [{ name: 'standard' }];
-}
-
 export async function createMessagePlanServerAction(
   formState: FormState,
   formData: FormData
@@ -113,9 +105,7 @@ export async function createMessagePlanServerAction(
     name: parsed.data.name,
     campaignId: parsed.data.campaignId,
     cascade: messageOrderToInitialCascade(parsed.data.messageOrder),
-    cascadeGroupOverrides: messageOrderToInitialCascadeGroups(
-      parsed.data.messageOrder
-    ),
+    cascadeGroupOverrides: [],
   });
 
   redirect(`/message-plans/choose-templates/${created.id}`, RedirectType.push);

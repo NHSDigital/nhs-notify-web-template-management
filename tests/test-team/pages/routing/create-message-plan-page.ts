@@ -1,8 +1,8 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'message-plans/create-message-plan';
+export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/message-plans/create-message-plan';
 
   readonly submitButton: Locator;
 
@@ -18,17 +18,13 @@ export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePageNonDynamic
 
   readonly singleCampaignIdElement: Locator;
 
-  constructor(page: Page, queryParameters?: { messageOrder: string }) {
+  constructor(page: Page) {
     super(page);
     this.submitButton = page.getByTestId('submit-button');
     this.goBackLink = page.getByTestId('go-back-link');
     this.nameField = page.getByTestId('name-field');
     this.campaignIdSelector = page.getByTestId('campaign-id-field');
     this.singleCampaignIdElement = page.getByTestId('single-campaign-id');
-
-    if (queryParameters) {
-      this.queryParameters = new URLSearchParams(queryParameters);
-    }
 
     this.nameFieldError = page.locator('#name--error-message');
 

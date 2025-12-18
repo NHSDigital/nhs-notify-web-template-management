@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { SelectObjectContentEventStream } from '@aws-sdk/client-s3';
 import {
+  $RoutingConfigCompletedEventV1,
+  $RoutingConfigDeletedEventV1,
+  $RoutingConfigDraftedEventV1,
   $TemplateCompletedEventV1,
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
@@ -13,22 +16,22 @@ import {
 } from 'date-fns';
 import { S3Helper } from '../s3-helper';
 
-const $NHSNotifyTemplateEvent = z.discriminatedUnion('type', [
+const $NHSNotifyEvent = z.discriminatedUnion('type', [
   $TemplateCompletedEventV1,
   $TemplateDraftedEventV1,
   $TemplateDeletedEventV1,
+  $RoutingConfigCompletedEventV1,
+  $RoutingConfigDraftedEventV1,
+  $RoutingConfigDeletedEventV1,
 ]);
 
-type NHSNotifyTemplateEvent = z.infer<typeof $NHSNotifyTemplateEvent>;
+type NHSNotifyEvent = z.infer<typeof $NHSNotifyEvent>;
 
 export class EventCacheHelper {
   private readonly bucketName = process.env.EVENT_CACHE_BUCKET_NAME;
 
-  async findEvents(
-    from: Date,
-    templateIds: string[]
-  ): Promise<NHSNotifyTemplateEvent[]> {
-    if (templateIds.length === 0) {
+  async findEvents(from: Date, ids: string[]): Promise<NHSNotifyEvent[]> {
+    if (ids.length === 0) {
       return [];
     }
 
@@ -41,7 +44,7 @@ export class EventCacheHelper {
     const filteredFiles = S3Helper.filterAndSort(files.flat(), from);
 
     const eventPromises = filteredFiles.map((file) =>
-      this.queryFileForEvents(file.Key!, templateIds)
+      this.queryFileForEvents(file.Key!, ids)
     );
 
     const results = await Promise.all(eventPromises);
@@ -51,9 +54,9 @@ export class EventCacheHelper {
 
   private async queryFileForEvents(
     fileName: string,
-    templateIds: string[]
-  ): Promise<NHSNotifyTemplateEvent[]> {
-    const formattedIds = templateIds.map((r) => `'${r}'`);
+    ids: string[]
+  ): Promise<NHSNotifyEvent[]> {
+    const formattedIds = ids.map((r) => `'${r}'`);
 
     const response = await S3Helper.queryJSONLFile(
       this.bucketName,
@@ -71,8 +74,8 @@ export class EventCacheHelper {
   private async parse(
     fileName: string,
     payload: AsyncIterable<SelectObjectContentEventStream>
-  ): Promise<NHSNotifyTemplateEvent[]> {
-    const events: NHSNotifyTemplateEvent[] = [];
+  ): Promise<NHSNotifyEvent[]> {
+    const events: NHSNotifyEvent[] = [];
 
     for await (const event of payload) {
       if (!event.Records?.Payload) continue;
@@ -83,7 +86,7 @@ export class EventCacheHelper {
         .split('\n')
         .filter((line) => line.trim())
         .map((line) => {
-          const { data, success, error } = $NHSNotifyTemplateEvent.safeParse(
+          const { data, success, error } = $NHSNotifyEvent.safeParse(
             JSON.parse(line)
           );
 

@@ -10,6 +10,7 @@ export const RoutingConfigFactory = {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       campaignId: randomUUID(),
+      defaultCascadeGroup: 'standard',
       cascade: [
         {
           cascadeGroups: ['standard'],
@@ -20,6 +21,7 @@ export const RoutingConfigFactory = {
       ],
       cascadeGroupOverrides: [{ name: 'standard' }],
       name: 'Test config',
+      lockNumber: 0,
       ...data,
     };
   },

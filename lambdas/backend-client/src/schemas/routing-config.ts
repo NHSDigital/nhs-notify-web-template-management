@@ -18,7 +18,7 @@ import type {
   UpdateRoutingConfig,
 } from '../types/generated';
 import { schemaFor } from './schema-for';
-import { $Language, $LetterType } from './template-schema';
+import { $Language, $LetterType, $LockNumber } from './template';
 import {
   CASCADE_GROUP_NAME_LIST,
   CHANNEL_LIST,
@@ -66,6 +66,7 @@ const $ConditionalTemplateLanguage = schemaFor<ConditionalTemplateLanguage>()(
   z.object({
     language: $Language,
     templateId: z.string().nonempty().nullable(),
+    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
 
@@ -74,6 +75,7 @@ const $ConditionalTemplateAccessible =
     z.object({
       accessibleFormat: $LetterType,
       templateId: z.string().nonempty().nullable(),
+      supplierReferences: z.record(z.string(), z.string()).optional(),
     })
   );
 
@@ -82,6 +84,7 @@ const $CascadeItemBase = schemaFor<CascadeItemBase>()(
     cascadeGroups: z.array($CascadeGroupName),
     channel: $Channel,
     channelType: $ChannelType,
+    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
 
@@ -116,7 +119,7 @@ export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup),
     name: z.string(),
   })
 );
@@ -126,7 +129,7 @@ export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
     .object({
       campaignId: z.string().optional(),
       cascade: z.array($CascadeItem).nonempty().optional(),
-      cascadeGroupOverrides: z.array($CascadeGroup).nonempty().optional(),
+      cascadeGroupOverrides: z.array($CascadeGroup).optional(),
       name: z.string().optional(),
     })
     .strict()
@@ -155,17 +158,22 @@ const $RoutingConfigStatusActive = schemaFor<RoutingConfigStatusActive>()(
   $RoutingConfigStatus.exclude(['DELETED'])
 );
 
-export const $RoutingConfig = schemaFor<RoutingConfig>()(
+export const $RoutingConfig = schemaFor<
+  RoutingConfig,
+  Omit<RoutingConfig, 'lockNumber'>
+>()(
   z.object({
     campaignId: z.string(),
     cascade: z.array($CascadeItem).nonempty(),
-    cascadeGroupOverrides: z.array($CascadeGroup).nonempty(),
+    cascadeGroupOverrides: z.array($CascadeGroup),
+    defaultCascadeGroup: z.string(),
     name: z.string(),
     clientId: z.string(),
     id: z.uuidv4(),
     status: $RoutingConfigStatus,
     createdAt: z.string(),
     updatedAt: z.string(),
+    lockNumber: $LockNumber.default(0),
   })
 );
 

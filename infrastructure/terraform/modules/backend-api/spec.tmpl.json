@@ -269,6 +269,12 @@
           },
           "channelType": {
             "$ref": "#/components/schemas/ChannelType"
+          },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           }
         },
         "required": [
@@ -343,6 +349,12 @@
           "accessibleFormat": {
             "$ref": "#/components/schemas/LetterType"
           },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
           "templateId": {
             "format": "uuid",
             "nullable": true,
@@ -360,6 +372,12 @@
         "properties": {
           "language": {
             "$ref": "#/components/schemas/Language"
+          },
+          "supplierReferences": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           },
           "templateId": {
             "format": "uuid",
@@ -643,9 +661,15 @@
             "format": "date-time",
             "type": "string"
           },
+          "defaultCascadeGroup": {
+            "type": "string"
+          },
           "id": {
             "format": "uuid",
             "type": "string"
+          },
+          "lockNumber": {
+            "type": "integer"
           },
           "name": {
             "type": "string"
@@ -663,8 +687,10 @@
           "cascadeGroupOverrides",
           "cascade",
           "clientId",
+          "defaultCascadeGroup",
           "createdAt",
           "id",
+          "lockNumber",
           "name",
           "status",
           "updatedAt"
@@ -767,8 +793,20 @@
         "type": "object"
       },
       "TemplateStatus": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/TemplateStatusActive"
+          },
+          {
+            "enum": [
+              "DELETED"
+            ],
+            "type": "string"
+          }
+        ]
+      },
+      "TemplateStatusActive": {
         "enum": [
-          "DELETED",
           "NOT_YET_SUBMITTED",
           "PENDING_PROOF_REQUEST",
           "PENDING_UPLOAD",
@@ -1152,6 +1190,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1253,7 +1300,7 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIG_LAMBDA_ARN}/invocations"
         }
       },
-      "put": {
+      "patch": {
         "description": "Update a routing configuration by Id",
         "parameters": [
           {
@@ -1263,6 +1310,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -1339,6 +1395,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the routing configuration",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -1943,6 +2008,40 @@
     "/v1/templates": {
       "get": {
         "description": "List all templates",
+        "parameters": [
+          {
+            "description": "Filter by a single active status",
+            "in": "query",
+            "name": "templateStatus",
+            "schema": {
+              "$ref": "#/components/schemas/TemplateStatusActive"
+            }
+          },
+          {
+            "description": "Filter by a single template type",
+            "in": "query",
+            "name": "templateType",
+            "schema": {
+              "$ref": "#/components/schemas/TemplateType"
+            }
+          },
+          {
+            "description": "Filter by a single language",
+            "in": "query",
+            "name": "language",
+            "schema": {
+              "$ref": "#/components/schemas/Language"
+            }
+          },
+          {
+            "description": "Filter by a single accessible letter type",
+            "in": "query",
+            "name": "letterType",
+            "schema": {
+              "$ref": "#/components/schemas/LetterType"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {

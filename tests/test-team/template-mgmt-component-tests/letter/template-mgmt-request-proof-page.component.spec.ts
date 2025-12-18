@@ -6,6 +6,7 @@ import {
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
+import { TemplateMgmtPreviewLetterPage } from 'pages/letter/template-mgmt-preview-letter-page';
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
@@ -34,20 +35,36 @@ test.describe('Request Proof Page', () => {
 
   test('when user visits page, then page is loaded, request proof button is visible', async ({
     page,
-    baseURL,
   }) => {
-    const requestProofPage = new TemplateMgmtRequestProofPage(page);
+    const requestProofPage = new TemplateMgmtRequestProofPage(page)
+      .setPathParam('templateId', templates.valid.id)
+      .setSearchParam('lockNumber', String(templates.valid.lockNumber));
 
-    await requestProofPage.loadPage(templates.valid.id);
+    await requestProofPage.loadPage();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtRequestProofPage.pageUrlSegment}/${templates.valid.id}`
-    );
+    await expect(page).toHaveURL(requestProofPage.getUrl());
 
     await expect(requestProofPage.pageHeading).toContainText(
       templates.valid.name
     );
 
     await expect(requestProofPage.requestProofButton).toBeVisible();
+  });
+
+  test('redirects to the letter template preview page if the lockNumber query parameter is not set', async ({
+    page,
+  }) => {
+    const requestProofPage = new TemplateMgmtRequestProofPage(
+      page
+    ).setPathParam('templateId', templates.valid.id);
+
+    const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+      'templateId',
+      templates.valid.id
+    );
+
+    await requestProofPage.loadPage();
+
+    await expect(page).toHaveURL(previewPage.getUrl());
   });
 });

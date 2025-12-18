@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { languages } from './common';
 
 const templateStatuses = [
   'DELETED',
@@ -11,38 +12,6 @@ const templateStatuses = [
   'VALIDATION_FAILED',
   'VIRUS_SCAN_FAILED',
   'WAITING_FOR_PROOF',
-];
-
-const languages = [
-  'ar',
-  'bg',
-  'bn',
-  'de',
-  'el',
-  'en',
-  'es',
-  'fa',
-  'fr',
-  'gu',
-  'hi',
-  'hu',
-  'it',
-  'ku',
-  'lt',
-  'lv',
-  'ne',
-  'pa',
-  'pl',
-  'pt',
-  'ro',
-  'ru',
-  'sk',
-  'so',
-  'sq',
-  'ta',
-  'tr',
-  'ur',
-  'zh',
 ];
 
 const letterTypes = ['q4', 'x0', 'x1'];

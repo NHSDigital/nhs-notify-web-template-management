@@ -1,8 +1,8 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'copy-template';
+export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/copy-template/:templateId';
 
   readonly radioButtons: Locator;
 

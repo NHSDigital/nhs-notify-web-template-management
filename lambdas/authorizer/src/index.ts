@@ -20,7 +20,7 @@ const generateMethodArn = (
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
-  context?: { user: string; clientId?: string }
+  context?: { internalUserId: string; clientId?: string }
 ) => ({
   principalId: 'api-caller',
   policyDocument: {
@@ -66,7 +66,7 @@ export const handler: APIGatewayRequestAuthorizerHandler = async (event) => {
 
   if (authResult.success) {
     return generatePolicy(methodArn, 'Allow', {
-      user: authResult.subject,
+      internalUserId: authResult.internalUserId,
       clientId: authResult.clientId,
     });
   }

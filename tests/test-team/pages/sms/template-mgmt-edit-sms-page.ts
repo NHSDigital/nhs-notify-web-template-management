@@ -1,9 +1,9 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
-import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
+import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
-  static readonly pageUrlSegment = 'edit-text-message-template';
+export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/edit-text-message-template/:templateId';
 
   public readonly nameInput: Locator;
 
@@ -48,13 +48,9 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     );
   }
 
-  async loadPage(templateId: string) {
-    await super.loadPage(templateId);
+  async loadPage() {
+    await super.loadPage();
     await this.waitForPageToLoad();
-  }
-
-  async attemptToLoadPageExpectFailure(templateId: string) {
-    await super.loadPage(templateId);
   }
 
   async waitForPageToLoad() {
@@ -66,5 +62,9 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
 
   async clickSaveAndPreviewButton() {
     await this.saveAndPreviewButton.click();
+  }
+
+  async attemptToLoadPageExpectFailure() {
+    await super.loadPage();
   }
 }

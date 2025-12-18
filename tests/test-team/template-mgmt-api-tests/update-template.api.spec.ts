@@ -313,6 +313,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -856,6 +858,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -1403,6 +1407,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
       });
 
@@ -2049,6 +2055,8 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: updateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
+          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userSharedClient.internalUserId}`,
         },
       });
 
@@ -2100,7 +2108,8 @@ test.describe('PUT /v1/template/:templateId', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 
@@ -2145,7 +2154,8 @@ test.describe('PUT /v1/template/:templateId', () => {
 
     expect(body).toEqual({
       statusCode: 409,
-      technicalMessage: 'Invalid lock number',
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
     });
   });
 });

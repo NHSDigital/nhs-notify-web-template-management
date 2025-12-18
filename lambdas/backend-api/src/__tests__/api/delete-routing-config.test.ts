@@ -16,8 +16,8 @@ describe('Delete Routing Config Handler', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -26,6 +26,9 @@ describe('Delete Routing Config Handler', () => {
       const event = mock<APIGatewayProxyEvent>({
         requestContext: { authorizer: ctx },
         pathParameters: { templateId: 'id' },
+        headers: {
+          'X-Lock-Number': '0',
+        },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -49,10 +52,16 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { routingConfigId: undefined },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -84,9 +93,15 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -102,9 +117,10 @@ describe('Delete Routing Config Handler', () => {
     expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
-      }
+      },
+      '0'
     );
   });
 
@@ -117,9 +133,15 @@ describe('Delete Routing Config Handler', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: {
-        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
       },
       pathParameters: { routingConfigId: '1-2-3' },
+      headers: {
+        'X-Lock-Number': '0',
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -132,9 +154,52 @@ describe('Delete Routing Config Handler', () => {
     expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
       '1-2-3',
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
-      }
+      },
+      '0'
+    );
+  });
+
+  test('coerces missing lock number header to empty string', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.routingConfigClient.deleteRoutingConfig.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 409,
+          description:
+            'Lock number mismatch - Message Plan has been modified since last read',
+        },
+      },
+    });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: {
+        authorizer: {
+          internalUserId: 'user-1234',
+          clientId: 'nhs-notify-client-id',
+        },
+      },
+      pathParameters: { routingConfigId: '1-2-3' },
+      headers: {},
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 409,
+      body: JSON.stringify({
+        statusCode: 409,
+        technicalMessage:
+          'Lock number mismatch - Message Plan has been modified since last read',
+      }),
+    });
+
+    expect(mocks.routingConfigClient.deleteRoutingConfig).toHaveBeenCalledWith(
+      '1-2-3',
+      { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
+      ''
     );
   });
 });

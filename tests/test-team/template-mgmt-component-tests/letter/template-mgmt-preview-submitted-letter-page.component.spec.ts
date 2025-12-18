@@ -73,9 +73,12 @@ test.describe('Preview submitted Letter message template Page', () => {
     baseURL,
   }) => {
     const previewSubmittedLetterTemplatePage =
-      new TemplateMgmtPreviewSubmittedLetterPage(page);
+      new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
+      );
 
-    await previewSubmittedLetterTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
@@ -97,8 +100,10 @@ test.describe('Preview submitted Letter message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewSubmittedLetterPage(page),
-        id: templates.valid.id,
+        page: new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        ),
         baseURL,
       };
 
@@ -117,9 +122,12 @@ test.describe('Preview submitted Letter message template Page', () => {
       page,
     }) => {
       const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page);
+        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+          'templateId',
+          templates.invalid.id
+        );
 
-      await previewSubmittedLetterTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -129,9 +137,12 @@ test.describe('Preview submitted Letter message template Page', () => {
       page,
     }) => {
       const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page);
+        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+          'templateId',
+          'fake-template-id'
+        );
 
-      await previewSubmittedLetterTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

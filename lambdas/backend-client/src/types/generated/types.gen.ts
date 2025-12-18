@@ -68,6 +68,9 @@ export type CascadeItemBase = {
   cascadeGroups: Array<CascadeGroupName>;
   channel: Channel;
   channelType: ChannelType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
 };
 
 export type Channel = 'EMAIL' | 'LETTER' | 'NHSAPP' | 'SMS';
@@ -91,11 +94,17 @@ export type ClientFeatures = {
 
 export type ConditionalTemplateAccessible = {
   accessibleFormat: LetterType;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
 export type ConditionalTemplateLanguage = {
   language: Language;
+  supplierReferences?: {
+    [key: string]: string;
+  };
   templateId: string | null;
 };
 
@@ -195,7 +204,9 @@ export type RoutingConfig = {
   cascadeGroupOverrides: Array<CascadeGroup>;
   clientId: string;
   createdAt: string;
+  defaultCascadeGroup: string;
   id: string;
+  lockNumber: number;
   name: string;
   status: RoutingConfigStatus;
   updatedAt: string;
@@ -223,8 +234,9 @@ export type SmsProperties = {
 export type TemplateDto = BaseCreatedTemplate &
   (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
-export type TemplateStatus =
-  | 'DELETED'
+export type TemplateStatus = TemplateStatusActive | 'DELETED';
+
+export type TemplateStatusActive =
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'
@@ -362,6 +374,12 @@ export type PostV1RoutingConfigurationResponse =
 
 export type DeleteV1RoutingConfigurationByRoutingConfigIdData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to delete
@@ -424,11 +442,17 @@ export type GetV1RoutingConfigurationByRoutingConfigIdResponses = {
 export type GetV1RoutingConfigurationByRoutingConfigIdResponse =
   GetV1RoutingConfigurationByRoutingConfigIdResponses[keyof GetV1RoutingConfigurationByRoutingConfigIdResponses];
 
-export type PutV1RoutingConfigurationByRoutingConfigIdData = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdData = {
   /**
    * Routing configuration update to apply
    */
   body: UpdateRoutingConfig;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to update
@@ -439,28 +463,34 @@ export type PutV1RoutingConfigurationByRoutingConfigIdData = {
   url: '/v1/routing-configuration/{routingConfigId}';
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdErrors = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdErrors = {
   /**
    * Error
    */
   default: Failure;
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdError =
-  PutV1RoutingConfigurationByRoutingConfigIdErrors[keyof PutV1RoutingConfigurationByRoutingConfigIdErrors];
+export type PatchV1RoutingConfigurationByRoutingConfigIdError =
+  PatchV1RoutingConfigurationByRoutingConfigIdErrors[keyof PatchV1RoutingConfigurationByRoutingConfigIdErrors];
 
-export type PutV1RoutingConfigurationByRoutingConfigIdResponses = {
+export type PatchV1RoutingConfigurationByRoutingConfigIdResponses = {
   /**
    * 200 response
    */
   200: RoutingConfigSuccess;
 };
 
-export type PutV1RoutingConfigurationByRoutingConfigIdResponse =
-  PutV1RoutingConfigurationByRoutingConfigIdResponses[keyof PutV1RoutingConfigurationByRoutingConfigIdResponses];
+export type PatchV1RoutingConfigurationByRoutingConfigIdResponse =
+  PatchV1RoutingConfigurationByRoutingConfigIdResponses[keyof PatchV1RoutingConfigurationByRoutingConfigIdResponses];
 
 export type PatchV1RoutingConfigurationByRoutingConfigIdSubmitData = {
   body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the routing configuration
+     */
+    'X-Lock-Number': number;
+  };
   path: {
     /**
      * ID of routing configuration to finalise
@@ -775,7 +805,24 @@ export type PatchV1TemplateByTemplateIdSubmitResponse =
 export type GetV1TemplatesData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Filter by a single active status
+     */
+    templateStatus?: TemplateStatusActive;
+    /**
+     * Filter by a single template type
+     */
+    templateType?: TemplateType;
+    /**
+     * Filter by a single language
+     */
+    language?: Language;
+    /**
+     * Filter by a single accessible letter type
+     */
+    letterType?: LetterType;
+  };
   url: '/v1/templates';
 };
 

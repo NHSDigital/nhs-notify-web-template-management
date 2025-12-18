@@ -37,6 +37,8 @@ function buildRoutingConfig({
       channelType: 'primary',
       defaultTemplateId: `template-${index}`,
     })),
+    lockNumber: 0,
+    defaultCascadeGroup: 'standard',
   };
 }
 

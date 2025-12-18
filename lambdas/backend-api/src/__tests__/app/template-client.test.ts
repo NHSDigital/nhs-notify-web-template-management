@@ -16,11 +16,13 @@ import { createMockLogger } from 'nhs-notify-web-template-management-test-helper
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+import { TemplateQuery } from '../../infra/template-repository/query';
+import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
 
-const user = { userId: '58890285E473', clientId: '00F2EF8D16FD' };
+const user = { internalUserId: '58890285E473', clientId: '00F2EF8D16FD' };
 const templateId = 'E1F5088E5B77';
 const templateName = 'template-name';
 const versionId = '28F-D4-72-A93-A6';
@@ -50,6 +52,14 @@ const setup = () => {
 
   isRightToLeftMock.mockReturnValueOnce(false);
 
+  const queryMock = mock<TemplateQuery>({
+    templateStatus: jest.fn().mockReturnThis(),
+    excludeTemplateStatus: jest.fn().mockReturnThis(),
+    templateType: jest.fn().mockReturnThis(),
+    language: jest.fn().mockReturnThis(),
+    letterType: jest.fn().mockReturnThis(),
+  });
+
   return {
     templateClient,
     mocks: {
@@ -59,6 +69,7 @@ const setup = () => {
       logger,
       clientConfigRepository,
       isRightToLeftMock,
+      queryMock,
     },
     logMessages,
   };
@@ -238,7 +249,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -289,7 +300,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -368,7 +379,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -512,7 +523,7 @@ describe('templateClient', () => {
           updatedAt: creationTime,
           templateStatus: 'PENDING_UPLOAD',
           proofingEnabled: expected,
-          owner: user.userId,
+          owner: `CLIENT#${user.clientId}`,
           version: 1,
         };
 
@@ -940,7 +951,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1037,7 +1048,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1134,7 +1145,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.clientId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1207,7 +1218,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.update.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const result = await templateClient.updateTemplate(
@@ -1318,7 +1329,8 @@ describe('templateClient', () => {
             error: expect.objectContaining({
               errorMeta: {
                 code: 409,
-                description: 'Invalid lock number',
+                description:
+                  'Lock number mismatch - Template has been modified since last read',
               },
             }),
           });
@@ -1345,7 +1357,7 @@ describe('templateClient', () => {
         };
 
         mocks.templateRepository.update.mockResolvedValueOnce({
-          data: { ...template, owner: user.userId, version: 1 },
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
         const result = await templateClient.updateTemplate(
@@ -1430,7 +1442,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1511,7 +1523,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...templateDTO,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1552,7 +1564,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const result = await templateClient.getTemplate(templateId, user);
@@ -1570,9 +1582,13 @@ describe('templateClient', () => {
 
   describe('listTemplates', () => {
     test('listTemplates should return a failure result, when fetching from the database unexpectedly fails', async () => {
-      const { templateClient, mocks } = setup();
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
+      templateRepository.query.mockReturnValueOnce(queryMock);
+      queryMock.list.mockResolvedValueOnce({
         error: {
           errorMeta: {
             code: 500,
@@ -1583,7 +1599,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
 
       expect(result).toEqual({
         error: {
@@ -1595,8 +1611,11 @@ describe('templateClient', () => {
       });
     });
 
-    test('should filter out invalid templates', async () => {
-      const { templateClient, mocks } = setup();
+    test('should return templates', async () => {
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
 
       const template: TemplateDto = {
         id: templateId,
@@ -1609,36 +1628,62 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
         lockNumber: 1,
       };
-      const template2: TemplateDto = {
-        id: undefined as unknown as string,
-        templateType: 'EMAIL',
-        name: undefined as unknown as string,
-        message: 'message',
-        subject: 'subject',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateStatus: 'NOT_YET_SUBMITTED',
-        lockNumber: 1,
-      };
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [
-          { ...template, owner: user.userId, version: 1 },
-          { ...template2, owner: user.userId, version: 1 },
-        ],
+      templateRepository.query.mockReturnValueOnce(queryMock);
+
+      queryMock.list.mockResolvedValueOnce({
+        data: [template],
       });
 
-      const result = await templateClient.listTemplates(user);
+      const result = await templateClient.listTemplates(user, null);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith('DELETED');
+      expect(queryMock.templateStatus).not.toHaveBeenCalled();
+      expect(queryMock.templateType).not.toHaveBeenCalled();
+      expect(queryMock.language).not.toHaveBeenCalled();
+      expect(queryMock.letterType).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: [template],
       });
     });
 
-    test('should return templates', async () => {
+    it('validates status filter parameter', async () => {
       const { templateClient, mocks } = setup();
+
+      const result = await templateClient.listTemplates(user, {
+        templateType: 'INVALID',
+      });
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              templateType:
+                'Invalid option: expected one of "NHS_APP"|"EMAIL"|"SMS"|"LETTER"',
+            },
+          },
+        }),
+      });
+
+      expect(mocks.templateRepository.query).not.toHaveBeenCalled();
+    });
+
+    test('uses filters', async () => {
+      const {
+        templateClient,
+        mocks: { templateRepository, queryMock },
+      } = setup();
+
+      const filter: TemplateFilter = {
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+        language: 'en',
+        letterType: 'x0',
+      };
 
       const template: TemplateDto = {
         id: templateId,
@@ -1652,13 +1697,20 @@ describe('templateClient', () => {
         lockNumber: 1,
       };
 
-      mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [{ ...template, owner: user.userId, version: 1 }],
+      templateRepository.query.mockReturnValueOnce(queryMock);
+
+      queryMock.list.mockResolvedValueOnce({
+        data: [template],
       });
 
-      const result = await templateClient.listTemplates(user);
+      const result = await templateClient.listTemplates(user, filter);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.clientId);
+      expect(templateRepository.query).toHaveBeenCalledWith(user.clientId);
+      expect(queryMock.excludeTemplateStatus).toHaveBeenCalledWith('DELETED');
+      expect(queryMock.templateStatus).toHaveBeenCalledWith('SUBMITTED');
+      expect(queryMock.templateType).toHaveBeenCalledWith('NHS_APP');
+      expect(queryMock.language).toHaveBeenCalledWith('en');
+      expect(queryMock.letterType).toHaveBeenCalledWith('x0');
 
       expect(result).toEqual({
         data: [template],
@@ -1693,7 +1745,8 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 409,
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       });
@@ -1707,7 +1760,11 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
+        data: {
+          ...expectedTemplateDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
       });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
@@ -1744,7 +1801,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         createdAt: undefined as unknown as string,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1753,7 +1810,11 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
+        data: {
+          ...expectedTemplateDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
       });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
@@ -1783,11 +1844,20 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
+        // data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
+        data: {
+          ...expectedTemplateDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
       });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
+        data: {
+          ...expectedTemplateDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -1841,11 +1911,11 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: user.internalUserId, version: 1 },
       });
 
       mocks.templateRepository.updateStatus.mockResolvedValueOnce({
-        data: { ...approvedTemplate, owner: user.userId, version: 2 },
+        data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
       });
 
       const result = await templateClient.submitTemplate(templateId, user, 1);
@@ -1896,7 +1966,7 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: user.internalUserId, version: 1 },
       });
 
       mocks.templateRepository.updateStatus.mockResolvedValueOnce({
@@ -1935,7 +2005,8 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 409,
-            description: 'Invalid lock number',
+            description:
+              'Lock number mismatch - Template has been modified since last read',
           },
         },
       });
@@ -2061,7 +2132,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -2112,7 +2183,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -2177,7 +2248,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const clientErr = new Error('sqs err');
@@ -2272,7 +2343,7 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
@@ -2350,7 +2421,8 @@ describe('templateClient', () => {
             error: expect.objectContaining({
               errorMeta: {
                 code: 409,
-                description: 'Invalid lock number',
+                description:
+                  'Lock number mismatch - Template has been modified since last read',
               },
             }),
           });
@@ -2407,6 +2479,7 @@ describe('templateClient', () => {
 
   describe('getClientConfiguration', () => {
     const clientId = 'client1';
+    const internalUserId = 'user1';
 
     test('should return a 404 failure result, when client configuration is not available for client', async () => {
       const { templateClient, mocks } = setup();
@@ -2415,7 +2488,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'sub',
+        internalUserId,
       });
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
@@ -2439,7 +2512,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'sub',
+        internalUserId,
       });
 
       expect(result).toEqual({
@@ -2464,7 +2537,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'user',
+        internalUserId,
       });
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
