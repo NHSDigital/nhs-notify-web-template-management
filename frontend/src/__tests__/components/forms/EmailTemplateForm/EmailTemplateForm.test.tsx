@@ -5,6 +5,7 @@ import {
   EmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 
@@ -80,7 +81,10 @@ test('renders page with multiple errors', () => {
           fieldErrors: {
             emailTemplateName: ['Template name error'],
             emailTemplateSubjectLine: ['Template subject line error'],
-            emailTemplateMessage: ['Template message error'],
+            emailTemplateMessage: [
+              'Template message error',
+              ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+            ],
           },
         },
         name: '',

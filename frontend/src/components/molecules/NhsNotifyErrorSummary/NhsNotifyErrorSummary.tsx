@@ -1,41 +1,14 @@
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
 import { ErrorState } from 'nhs-notify-web-template-management-utils';
-import { FC, HTMLProps, JSX, useEffect, useRef } from 'react';
-import content, {
-  templateMessageContainsInvalidPersonalisationErrorText,
-} from '@content/content';
-import { INVALID_PERSONALISATION_FIELDS } from '@utils/constants';
-import { ErrorCodes } from '@utils/error-codes';
+import { FC, HTMLProps, useEffect, useRef } from 'react';
+import content from '@content/content';
+import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
 
 const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
   <li>
     <span className='nhsuk-error-message' {...props} />
   </li>
 );
-
-const errorComponents: Record<string, JSX.Element> = {
-  [ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME]: (
-    <>
-      <div className='nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4'>
-        {templateMessageContainsInvalidPersonalisationErrorText}
-      </div>
-      <ul className='nhsuk-list nhsuk-list--bullet'>
-        {INVALID_PERSONALISATION_FIELDS.map((item) => (
-          <li
-            key={`personalisation-field-${item.slice(0, 5)}`}
-            className='nhsuk-u-margin-bottom-0'
-          >
-            {item}
-          </li>
-        ))}
-      </ul>
-    </>
-  ),
-};
-
-const renderError = (error: string) => {
-  return errorComponents[error] || error;
-};
 
 export type NhsNotifyErrorSummaryProps = {
   hint?: string;
@@ -69,7 +42,7 @@ export const NhsNotifyErrorSummary = ({
           href={`#${id}`}
           key={`field-error-summary-${id}-${error.slice(0, 5)}`}
         >
-          {renderError(error)}
+          {renderErrorItem(error)}
         </ErrorSummary.Item>
       ))
     );

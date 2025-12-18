@@ -2124,6 +2124,61 @@ exports[`renders page with multiple errors 1`] = `
               Template message error
             </a>
           </li>
+          <li>
+            <a
+              href="#nhsAppTemplateMessage"
+            >
+              <div
+                class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+              >
+                You cannot use the following custom personalisation fields in your message:
+              </div>
+              <ul
+                class="nhsuk-list nhsuk-list--bullet"
+              >
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  date
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_1
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_2
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_3
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_4
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_5
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_6
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_7
+                </li>
+              </ul>
+            </a>
+          </li>
         </ul>
       </div>
       <h1
@@ -2261,6 +2316,55 @@ exports[`renders page with multiple errors 1`] = `
                   Error: 
                 </span>
                 Template message error
+                <div
+                  class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+                >
+                  You cannot use the following custom personalisation fields in your message:
+                </div>
+                <ul
+                  class="nhsuk-list nhsuk-list--bullet"
+                >
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    date
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_1
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_2
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_3
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_4
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_5
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_6
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_7
+                  </li>
+                </ul>
               </span>
               <textarea
                 aria-describedby="nhsAppTemplateMessage--error-message"

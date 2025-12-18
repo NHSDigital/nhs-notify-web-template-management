@@ -150,7 +150,6 @@ exports[`Client-side validation triggers 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -887,7 +886,6 @@ exports[`renders page one error 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -1482,6 +1480,61 @@ exports[`renders page with multiple errors 1`] = `
               Template message error
             </a>
           </li>
+          <li>
+            <a
+              href="#emailTemplateMessage"
+            >
+              <div
+                class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+              >
+                You cannot use the following custom personalisation fields in your message:
+              </div>
+              <ul
+                class="nhsuk-list nhsuk-list--bullet"
+              >
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  date
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_1
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_2
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_3
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_4
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_5
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_6
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_7
+                </li>
+              </ul>
+            </a>
+          </li>
         </ul>
       </div>
       <h1
@@ -1655,12 +1708,60 @@ exports[`renders page with multiple errors 1`] = `
                   Error: 
                 </span>
                 Template message error
+                <div
+                  class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+                >
+                  You cannot use the following custom personalisation fields in your message:
+                </div>
+                <ul
+                  class="nhsuk-list nhsuk-list--bullet"
+                >
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    date
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_1
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_2
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_3
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_4
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_5
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_6
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_7
+                  </li>
+                </ul>
               </span>
               <textarea
                 aria-describedby="emailTemplateMessage--error-message"
                 autocomplete="off"
                 class="nhsuk-textarea nhsuk-textarea--error"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -2358,7 +2459,6 @@ exports[`renders page with preloaded field values 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -3051,7 +3151,6 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
