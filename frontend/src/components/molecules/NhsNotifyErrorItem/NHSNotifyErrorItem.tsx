@@ -23,4 +23,5 @@ const errorComponents: Record<string, JSX.Element> = {
   ),
 };
 
-export const renderErrorItem = (error: string) => errorComponents[error] || error;
+export const renderErrorItem = (error: string) =>
+  errorComponents[error] || error;

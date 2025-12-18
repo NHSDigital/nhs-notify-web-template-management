@@ -5,9 +5,8 @@ import { Label, ErrorMessage } from 'nhsuk-react-components';
 export type FormElementProps = {
   id: string;
   textAreaProps: HTMLProps<HTMLTextAreaElement>;
-  label?: string;
+  label: string;
   error?: string | JSX.Element;
-  formGroupProps?: HTMLProps<HTMLDivElement>;
 };
 
 const NHSNotifyTextArea = (props: FormElementProps): JSX.Element => {
@@ -21,11 +20,9 @@ const NHSNotifyTextArea = (props: FormElementProps): JSX.Element => {
         'nhsuk-form-group--error': error,
       })}
     >
-      {label ? (
-        <Label id={labelID} htmlFor={id} size='s'>
-          {label}
-        </Label>
-      ) : null}
+      <Label id={labelID} htmlFor={id} size='s'>
+        {label}
+      </Label>
       {error ? <ErrorMessage id={errorID}>{error}</ErrorMessage> : null}
       <textarea
         className={classNames('nhsuk-textarea', {
