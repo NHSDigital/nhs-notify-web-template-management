@@ -92,6 +92,15 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
+const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
+  statusToDisplayMappings[status];
+
+const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
+  ({
+    ...statusToDisplayMappings,
+    NOT_YET_SUBMITTED: 'Draft',
+  })[status];
+
 const statusToDisplayMappings: Record<TemplateStatus, string> = {
   NOT_YET_SUBMITTED: 'Not yet submitted',
   SUBMITTED: 'Submitted',
@@ -103,20 +112,10 @@ const statusToDisplayMappings: Record<TemplateStatus, string> = {
   VIRUS_SCAN_FAILED: 'Checks failed',
   WAITING_FOR_PROOF: 'Waiting for proof',
   PROOF_AVAILABLE: 'Proof available',
+  TEMPLATE_PROOF_APPROVED: 'Template proof approved',
 } as const;
 
-const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
-  statusToDisplayMappings[status];
-
-const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
-  ({
-    ...statusToDisplayMappings,
-    NOT_YET_SUBMITTED: 'Draft',
-  })[status];
-
-export const statusToDisplayMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
-): string =>
+export const statusToDisplayMapping = (template: TemplateDto): string =>
   template.templateType === 'LETTER'
     ? templateStatusToDisplayMappingsLetter(template.templateStatus)
     : templateStatusToDisplayMappingsDigital(template.templateStatus);
@@ -145,6 +144,7 @@ const colourMappings: Record<TemplateStatus, Colour> = {
   VALIDATION_FAILED: 'red',
   WAITING_FOR_PROOF: 'yellow',
   PROOF_AVAILABLE: 'orange',
+  TEMPLATE_PROOF_APPROVED: 'grey',
 } as const;
 
 const templateStatusToColourMappingsLetter = (
@@ -218,6 +218,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
+      TEMPLATE_PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -244,6 +245,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
+      TEMPLATE_PROOF_APPROVED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
