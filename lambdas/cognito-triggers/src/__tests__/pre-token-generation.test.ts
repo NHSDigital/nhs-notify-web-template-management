@@ -61,6 +61,7 @@ const eventWithCustomAttr = (): PreTokenGenerationV2Event => ({
       sub: '76c25234-b041-70f2-8ba4-caf538363b35',
       'custom:sbx_client_id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
       'custom:sbx_client_name': 'NHS Trust',
+      'custom:nhs_notify_user_id': 'user-1234',
     },
   },
   response: {
@@ -103,6 +104,7 @@ describe('when user has custom attributes set', () => {
     ).toMatchObject({
       'nhs-notify:client-id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
       'nhs-notify:client-name': 'NHS Trust',
+      'nhs-notify:internal-user-id': 'user-1234',
     });
 
     expect(
@@ -110,6 +112,7 @@ describe('when user has custom attributes set', () => {
         ?.claimsToAddOrOverride
     ).toMatchObject({
       'nhs-notify:client-id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
+      'nhs-notify:internal-user-id': 'user-1234',
     });
   });
 });

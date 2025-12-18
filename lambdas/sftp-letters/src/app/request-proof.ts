@@ -159,7 +159,7 @@ export class App {
         campaignId: z.string(),
         language: z.enum(LANGUAGE_LIST),
         letterType: z.enum(LETTER_TYPE_LIST),
-        user: z.object({ userId: z.string(), clientId: z.string() }),
+        user: z.object({ internalUserId: z.string(), clientId: z.string() }),
         pdfVersionId: z.string(),
         personalisationParameters: z.array(z.string()),
         supplier: z.string(),

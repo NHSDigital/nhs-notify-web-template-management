@@ -24,6 +24,7 @@ export type UserIdentityAttributes =
 
 type TestUserStaticDetails = {
   userId: string;
+  internalUserId: string;
   clientKey: ClientKey;
   /**
    * If `userAttributes` is omitted, user will be created with full identity attributes:
@@ -55,6 +56,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User1: {
     userId: 'User1',
+    internalUserId: 'InternalUser1',
     clientKey: 'Client1',
   },
   /**
@@ -63,6 +65,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User2: {
     userId: 'User2',
+    internalUserId: 'InternalUser2',
     clientKey: 'Client5',
     userAttributes: ['given_name', 'family_name'],
   },
@@ -72,6 +75,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User3: {
     userId: 'User3',
+    internalUserId: 'InternalUser3',
     clientKey: 'Client2',
   },
   /**
@@ -80,6 +84,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User4: {
     userId: 'User4',
+    internalUserId: 'InternalUser4',
     clientKey: 'Client3',
   },
   /**
@@ -88,6 +93,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User5: {
     userId: 'User5',
+    internalUserId: 'InternalUser5',
     clientKey: 'Client1',
     userAttributes: [],
   },
@@ -96,6 +102,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User6: {
     userId: 'User6',
+    internalUserId: 'InternalUser6',
     clientKey: 'Client4',
   },
   /**
@@ -103,6 +110,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User7: {
     userId: 'User7',
+    internalUserId: 'InternalUser7',
     clientKey: 'Client1',
   },
   /**
@@ -110,11 +118,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User8: {
     userId: 'User8',
+    internalUserId: 'InternalUser8',
     clientKey: 'Client6',
   },
 
   UserWithMultipleCampaigns: {
     userId: 'UserWithMultipleCampaigns',
+    internalUserId: 'InternalUserMultipleCampaigns',
     clientKey: 'ClientWithMultipleCampaigns',
   },
 
@@ -123,6 +133,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   UserRoutingEnabled: {
     userId: 'UserWithRoutingEnabled',
+    internalUserId: 'InternalUserRoutingEnabled',
     clientKey: 'ClientRoutingEnabled',
   },
 };
@@ -287,6 +298,7 @@ export class CognitoAuthHelper {
     const { name: clientName, campaignIds } = clientConfig ?? {};
 
     const clientAttributes = [
+      { Name: 'custom:nhs_notify_user_id', Value: userDetails.internalUserId },
       { Name: 'custom:sbx_client_id', Value: clientId },
       ...(clientName
         ? [{ Name: 'custom:sbx_client_name', Value: clientName }]
@@ -350,6 +362,7 @@ export class CognitoAuthHelper {
         clientName,
         identityAttributes,
         password: tempPassword,
+        internalUserId: userDetails.internalUserId,
       }
     );
   }

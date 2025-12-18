@@ -80,6 +80,7 @@ describe('EmailClient', () => {
         proofs: {
           proof1: { fileName: 'proof1.pdf', supplier: 'supplier1' },
           proof2: { fileName: 'proof2.pdf', supplier: 'supplier2' },
+          proof3: { fileName: 'proof3.pdf', supplier: 'supplier2' },
         },
       },
       updatedAt: '2022-01-01T00:00:00Z',
@@ -97,6 +98,15 @@ describe('EmailClient', () => {
       mockTemplate.language,
       mockTemplate.letterType,
     ].join('_');
+
+    const emailCanonicalizer = (emailContent: string) => {
+      emailContent = emailContent.replace(/Date:.+\n/, 'Date: <DATE>\n');
+      emailContent = emailContent.replace(
+        /Message-ID:.+\n/,
+        'Message-ID: <MESSAGE-ID>\n'
+      );
+      return emailContent;
+    };
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -210,7 +220,7 @@ describe('EmailClient', () => {
       }
 
       const supplier1EmailContent =
-        sesCall1Input.input.RawMessage?.Data?.toString();
+        sesCall1Input.input.RawMessage?.Data?.toString() ?? '';
 
       expect(supplier1EmailContent).toContain(supplierReference);
       expect(supplier1EmailContent).toContain(recipientEmails.supplier1[0]);
@@ -219,6 +229,7 @@ describe('EmailClient', () => {
       expect(supplier1EmailContent).not.toContain('supplier2');
       expect(supplier1EmailContent).toContain('proof1.pdf');
       expect(supplier1EmailContent).not.toContain('proof2.pdf');
+      expect(emailCanonicalizer(supplier1EmailContent)).toMatchSnapshot();
 
       // check emails to supplier2
       const sesCall2Input = sesClient.send.mock.calls[1][0];
@@ -227,7 +238,7 @@ describe('EmailClient', () => {
       }
 
       const supplier2Recipient1EmailContent =
-        sesCall2Input.input.RawMessage?.Data?.toString();
+        sesCall2Input.input.RawMessage?.Data?.toString() ?? '';
       expect(supplier2Recipient1EmailContent).toContain(supplierReference);
       expect(supplier2Recipient1EmailContent).toContain(
         recipientEmails.supplier2[0]
@@ -237,6 +248,9 @@ describe('EmailClient', () => {
       expect(supplier2Recipient1EmailContent).toContain('supplier2');
       expect(supplier2Recipient1EmailContent).not.toContain('proof1.pdf');
       expect(supplier2Recipient1EmailContent).toContain('proof2.pdf');
+      expect(
+        emailCanonicalizer(supplier2Recipient1EmailContent)
+      ).toMatchSnapshot();
 
       const sesCall3Input = sesClient.send.mock.calls[2][0];
       if (!(sesCall3Input instanceof SendRawEmailCommand)) {
@@ -244,7 +258,7 @@ describe('EmailClient', () => {
       }
 
       const supplier2Recipient2EmailContent =
-        sesCall3Input.input.RawMessage?.Data?.toString();
+        sesCall3Input.input.RawMessage?.Data?.toString() ?? '';
       expect(supplier2Recipient2EmailContent).toContain(supplierReference);
       expect(supplier2Recipient2EmailContent).toContain(
         recipientEmails.supplier2[1]
@@ -254,6 +268,9 @@ describe('EmailClient', () => {
       expect(supplier2Recipient2EmailContent).toContain('supplier2');
       expect(supplier2Recipient2EmailContent).not.toContain('proof1.pdf');
       expect(supplier2Recipient2EmailContent).toContain('proof2.pdf');
+      expect(
+        emailCanonicalizer(supplier2Recipient2EmailContent)
+      ).toMatchSnapshot();
     });
   });
 });

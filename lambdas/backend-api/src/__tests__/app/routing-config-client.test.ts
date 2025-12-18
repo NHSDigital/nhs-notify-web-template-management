@@ -11,7 +11,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 
-const user = { userId: 'userid', clientId: 'nhs-notify-client-id' };
+const user = { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' };
 
 function setup() {
   const routingConfigRepository = mock<RoutingConfigRepository>();

@@ -136,9 +136,7 @@ describe('getClient', () => {
       mocks: { logger, environment, ssmClient, cache },
     } = setup();
 
-    ssmClient.on(GetParameterCommand).resolvesOnce({
-      Parameter: {},
-    });
+    ssmClient.on(GetParameterCommand).resolvesOnce({});
 
     const sftpClientRepository = new SftpSupplierClientRepository(
       environment,
