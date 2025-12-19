@@ -56,9 +56,9 @@ const dtoProperties = {
   id: 'abc-def-ghi-jkl-123',
   createdAt: '2024-12-27T00:00:00.000Z',
   updatedAt: '2024-12-27T00:00:00.000Z',
-  updatedBy: userId,
+  updatedBy: `INTERNAL_USER#${userId}`,
   clientId,
-  createdBy: userId,
+  createdBy: `INTERNAL_USER#${userId}`,
   lockNumber: 0,
 };
 

@@ -9,6 +9,7 @@ import content from '@content/content';
 const { pageTitle } = content.components.templateFormNhsApp;
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 describe('CreateNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

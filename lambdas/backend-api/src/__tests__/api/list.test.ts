@@ -19,8 +19,8 @@ describe('Template API - List', () => {
 
   test.each([
     ['undefined', undefined],
-    ['missing user', { clientId: 'client-id', user: undefined }],
-    ['missing client', { clientId: undefined, user: 'user-id' }],
+    ['missing user', { clientId: 'client-id', internalUserId: undefined }],
+    ['missing client', { clientId: undefined, internalUserId: 'user-1234' }],
   ])(
     'should return 400 - Invalid request when requestContext is %s',
     async (_, ctx) => {
@@ -78,7 +78,7 @@ describe('Template API - List', () => {
 
     const event = mock<APIGatewayProxyEvent>();
     event.requestContext.authorizer = {
-      user: 'sub',
+      internalUserId: 'user-1234',
       clientId: 'nhs-notify-client-id',
     };
     event.pathParameters = { templateId: '1' };
@@ -96,7 +96,7 @@ describe('Template API - List', () => {
 
     expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       null
@@ -124,7 +124,7 @@ describe('Template API - List', () => {
 
     const event = mock<APIGatewayProxyEvent>();
     event.requestContext.authorizer = {
-      user: 'sub',
+      internalUserId: 'user-1234',
       clientId: 'nhs-notify-client-id',
     };
 
@@ -139,7 +139,7 @@ describe('Template API - List', () => {
 
     expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       null
@@ -167,7 +167,7 @@ describe('Template API - List', () => {
 
     const event = mock<APIGatewayProxyEvent>();
     event.requestContext.authorizer = {
-      user: 'sub',
+      internalUserId: 'user-1234',
       clientId: 'nhs-notify-client-id',
     };
 
@@ -186,7 +186,7 @@ describe('Template API - List', () => {
 
     expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
       {
-        userId: 'sub',
+        internalUserId: 'user-1234',
         clientId: 'nhs-notify-client-id',
       },
       {

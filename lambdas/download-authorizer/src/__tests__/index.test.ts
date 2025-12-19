@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CloudFrontRequest, CloudFrontRequestEvent } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -62,10 +63,11 @@ describe('download authorizer handler', () => {
   test('returns request, when request is valid', async () => {
     const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
     const userName = 'CIS2_555555555555';
+    const internalUserId = 'user-1234';
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: true,
-      subject,
+      internalUserId,
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
@@ -93,10 +95,11 @@ describe('download authorizer handler', () => {
   test('returns denial if no access token is available for the LastAuthUser', async () => {
     const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
     const userName = 'CIS2_555555555555';
+    const internalUserId = 'user-1234';
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: true,
-      subject,
+      internalUserId,
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
@@ -184,6 +187,33 @@ describe('parseRequest', () => {
     const request = mock<CloudFrontRequest>(
       makeEvent('/subject/file.txt', undefined).Records[0].cf.request
     );
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
+
+  test('handles missing s3 origin', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event as any).origin['s3'];
+    const request = mock<CloudFrontRequest>(event);
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
+
+  test('handles missing origin', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event as any)['origin'];
+    const request = mock<CloudFrontRequest>(event);
+
+    expect(parseRequest(request).accessToken).toBe(undefined);
+  });
+
+  test('handles missing cookie', () => {
+    const event = makeEvent('/subject/file.txt', undefined).Records[0].cf
+      .request;
+    delete (event.headers as any)['cookie'];
+    const request = mock<CloudFrontRequest>(event);
 
     expect(parseRequest(request).accessToken).toBe(undefined);
   });

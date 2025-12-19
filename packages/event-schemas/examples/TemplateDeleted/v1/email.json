@@ -2,7 +2,7 @@
   "data": {
     "clientId": "00f3b388-bbe9-41c9-9e76-052d37ee8988",
     "createdAt": "2025-07-29T08:45:00.000Z",
-    "createdBy": "f5f76264-9764-4881-a54b-9bed6698150f",
+    "createdBy": "INTERNAL_USER#f5f76264-9764-4881-a54b-9bed6698150f",
     "id": "871b0f4e-0b32-474e-a49a-23fc554bc5a6",
     "message": "# Your GP Appointment\n\nDear ((firstName))\n\nYour appointment to visit the doctor is at ((appointmentTime)) on ((appointmentDate)).\n\nIf you are unable to make your appointment, please click [this link](https://example.com) to cancel.\n\nThank you\n\n((surgeryName))\n",
     "name": "Example Email Template",
@@ -11,11 +11,11 @@
     "templateStatus": "DELETED",
     "templateType": "EMAIL",
     "updatedAt": "2025-07-29T11:13:45.563Z",
-    "updatedBy": "f5f76264-9764-4881-a54b-9bed6698150f"
+    "updatedBy": "INTERNAL_USER#f5f76264-9764-4881-a54b-9bed6698150f"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json",
-  "dataschemaversion": "1.0.0",
+  "dataschemaversion": "1.2.1",
   "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",

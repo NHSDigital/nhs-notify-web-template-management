@@ -22,7 +22,7 @@ import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
 
-const user = { userId: '58890285E473', clientId: '00F2EF8D16FD' };
+const user = { internalUserId: '58890285E473', clientId: '00F2EF8D16FD' };
 const templateId = 'E1F5088E5B77';
 const templateName = 'template-name';
 const versionId = '28F-D4-72-A93-A6';
@@ -249,7 +249,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -300,7 +300,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -379,7 +379,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -523,7 +523,7 @@ describe('templateClient', () => {
           updatedAt: creationTime,
           templateStatus: 'PENDING_UPLOAD',
           proofingEnabled: expected,
-          owner: user.userId,
+          owner: `CLIENT#${user.clientId}`,
           version: 1,
         };
 
@@ -951,7 +951,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1048,7 +1048,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1145,7 +1145,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner: user.clientId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1218,7 +1218,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.update.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const result = await templateClient.updateTemplate(
@@ -1357,7 +1357,7 @@ describe('templateClient', () => {
         };
 
         mocks.templateRepository.update.mockResolvedValueOnce({
-          data: { ...template, owner: user.userId, version: 1 },
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
         const result = await templateClient.updateTemplate(
@@ -1442,7 +1442,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1523,7 +1523,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...templateDTO,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1564,7 +1564,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const result = await templateClient.getTemplate(templateId, user);
@@ -1783,7 +1783,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -1824,7 +1824,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const result = await templateClient.submitTemplate(templateId, user, 0);
@@ -1982,7 +1982,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -2033,7 +2033,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: user.userId,
+        owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
 
@@ -2098,7 +2098,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       const clientErr = new Error('sqs err');
@@ -2193,7 +2193,7 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner: user.userId, version: 1 },
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
@@ -2329,6 +2329,7 @@ describe('templateClient', () => {
 
   describe('getClientConfiguration', () => {
     const clientId = 'client1';
+    const internalUserId = 'user1';
 
     test('should return a 404 failure result, when client configuration is not available for client', async () => {
       const { templateClient, mocks } = setup();
@@ -2337,7 +2338,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'sub',
+        internalUserId,
       });
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
@@ -2361,7 +2362,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'sub',
+        internalUserId,
       });
 
       expect(result).toEqual({
@@ -2386,7 +2387,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.getClientConfiguration({
         clientId,
-        userId: 'user',
+        internalUserId,
       });
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
