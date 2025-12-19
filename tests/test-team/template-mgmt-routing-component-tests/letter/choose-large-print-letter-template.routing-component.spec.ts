@@ -266,7 +266,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', '')
+      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber + 1))
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
@@ -275,7 +275,7 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     await page.waitForURL((url) =>
       url.href.includes(
-        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=1`
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
       )
     );
 
