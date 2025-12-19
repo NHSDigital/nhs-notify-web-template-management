@@ -47,6 +47,7 @@ const routingConfigIds = {
   valid: randomUUID(),
   withAccessibleTemplateSelected: randomUUID(),
   withLanguageTemplatesSelected: randomUUID(),
+  validationError: randomUUID(),
   forUserWithNoTemplates: randomUUID(),
   nonLetter: randomUUID(),
   invalid: 'invalid-id',
@@ -146,6 +147,14 @@ function getRoutingConfigs(
     )
       .addLanguageTemplate('fr', templateIds.FRENCH_LETTER)
       .addLanguageTemplate('pl', templateIds.POLISH_LETTER).dbEntry,
+    validationError: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        id: routingConfigIds.validationError,
+        name: 'Test message plan for validation error test',
+      }
+    ).dbEntry,
     nonLetter: RoutingConfigFactory.createForMessageOrder(
       user,
       'NHSAPP,EMAIL,SMS',
@@ -520,8 +529,11 @@ test.describe('Routing - Choose other language letter templates page', () => {
     const chooseOtherLanguageLetterTemplatePage =
       new RoutingChooseOtherLanguageLetterTemplatePage(page);
     await chooseOtherLanguageLetterTemplatePage
-      .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber + 1))
+      .setPathParam('messagePlanId', routingConfigs.validationError.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.validationError.lockNumber)
+      )
       .loadPage();
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
@@ -533,7 +545,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     ).toBeVisible();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.validationError.id}?lockNumber=${routingConfigs.validationError.lockNumber}`
     );
 
     await expect(
@@ -567,7 +579,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     ).toBeVisible();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.validationError.id}?lockNumber=${routingConfigs.validationError.lockNumber}`
     );
 
     await expect(
@@ -601,7 +613,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     ).toBeVisible();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.validationError.id}?lockNumber=${routingConfigs.validationError.lockNumber}`
     );
 
     await expect(
@@ -626,7 +638,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.validationError.id}`
     );
   });
 

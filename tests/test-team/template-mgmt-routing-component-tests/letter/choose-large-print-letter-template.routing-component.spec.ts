@@ -40,6 +40,7 @@ const templateIds = {
 const routingConfigIds = {
   valid: randomUUID(),
   withLargePrintSelected: randomUUID(),
+  validationError: randomUUID(),
   nonLetter: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
@@ -114,6 +115,14 @@ function getRoutingConfigs(
       }
     ).addAccessibleFormatTemplate('x1', templateIds.LARGE_PRINT_LETTER2)
       .dbEntry,
+    validationError: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        id: routingConfigIds.validationError,
+        name: 'Test message plan for validation error test',
+      }
+    ).dbEntry,
     nonLetter: RoutingConfigFactory.createForMessageOrder(
       user,
       'NHSAPP,EMAIL,SMS',
@@ -265,18 +274,19 @@ test.describe('Routing - Choose large print letter template page', () => {
     const chooseLargePrintLetterTemplatePage =
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
-      .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', String(routingConfigs.valid.lockNumber + 1))
+      .setPathParam('messagePlanId', routingConfigs.validationError.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.validationError.lockNumber)
+      )
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForLoadState('load');
 
-    await page.waitForURL((url) =>
-      url.href.includes(
-        `/templates/message-plans/choose-large-print-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
-      )
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigs.validationError.id}?lockNumber=${routingConfigs.validationError.lockNumber}`
     );
 
     await expect(chooseLargePrintLetterTemplatePage.errorSummary).toBeVisible();
@@ -303,7 +313,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.validationError.id}`
     );
   });
 
