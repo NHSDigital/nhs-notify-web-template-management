@@ -266,10 +266,12 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingChooseLargePrintLetterTemplatePage(page);
     await chooseLargePrintLetterTemplatePage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
-      .setSearchParam('lockNumber', '1')
+      .setSearchParam('lockNumber', '')
       .loadPage();
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
+
+    await page.waitForLoadState('load');
 
     await page.waitForURL((url) =>
       url.href.includes(
@@ -294,6 +296,9 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage
       .getRadioButton(templates.LARGE_PRINT_LETTER1.id)
       .check();
+
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await page.waitForTimeout(5000); // Wait for debounce
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 

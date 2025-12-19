@@ -336,7 +336,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
       await expect(
         chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-      ).toHaveText('You do not have any o language letter templates yet.');
+      ).toHaveText('You do not have any other language letter templates yet.');
 
       await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
 
@@ -526,13 +526,16 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
-    );
+    await page.waitForLoadState('load');
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+    );
+
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummaryHint
     ).toHaveText('You have not chosen any templates');
@@ -557,13 +560,15 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
-    );
+    await page.waitForLoadState('load');
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+    );
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummaryList.first()
@@ -589,13 +594,16 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
-    );
+    await page.waitForLoadState('load');
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummary
     ).toBeVisible();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${routingConfigs.valid.id}?lockNumber=${routingConfigs.valid.lockNumber + 1}`
+    );
+
     await expect(
       chooseOtherLanguageLetterTemplatePage.errorSummary.locator('.nhsuk-hint')
     ).toHaveText('You have not chosen any templates');
@@ -617,7 +625,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
+    await page.waitForURL(
       `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
     );
   });
