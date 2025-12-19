@@ -2,6 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
 import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import { useFeatureFlags } from '@providers/client-config-provider';
+
+jest.mock('@providers/client-config-provider');
+
+beforeEach(() => {
+  jest.resetAllMocks();
+  jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+});
 
 const messageTemplatesContent = content.pages.messageTemplates;
 
@@ -75,8 +83,9 @@ describe('MessageTemplates component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('matches snapshot with submitted status', () => {
-    messageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
+  it('matches snapshot with routing flag enabled', () => {
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+
     const container = render(<MessageTemplates {...messageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();

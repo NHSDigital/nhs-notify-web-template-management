@@ -6,6 +6,7 @@ import type {
   TemplateDto,
   Channel,
   RoutingConfigStatus,
+  ClientFeatures,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -92,34 +93,26 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
-const statusToDisplayMappings: Record<TemplateStatus, string> = {
-  NOT_YET_SUBMITTED: 'Not yet submitted',
-  SUBMITTED: 'Submitted',
-  DELETED: '', // will not be shown in the UI
-  PENDING_PROOF_REQUEST: 'Files uploaded',
-  PENDING_UPLOAD: 'Checking files',
-  PENDING_VALIDATION: 'Checking files',
-  VALIDATION_FAILED: 'Checks failed',
-  VIRUS_SCAN_FAILED: 'Checks failed',
-  WAITING_FOR_PROOF: 'Waiting for proof',
-  PROOF_AVAILABLE: 'Proof available',
-} as const;
-
-const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
-  statusToDisplayMappings[status];
-
-const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
-  ({
-    ...statusToDisplayMappings,
-    NOT_YET_SUBMITTED: 'Draft',
-  })[status];
-
 export const statusToDisplayMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
-): string =>
-  template.templateType === 'LETTER'
-    ? templateStatusToDisplayMappingsLetter(template.templateStatus)
-    : templateStatusToDisplayMappingsDigital(template.templateStatus);
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  featureFlags: Pick<ClientFeatures, 'routing'>
+): string => {
+  const statusToDisplayMappings: Record<TemplateStatus, string> = {
+    NOT_YET_SUBMITTED:
+      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
+    SUBMITTED: featureFlags.routing ? 'Locked' : 'Submitted',
+    DELETED: '', // will not be shown in the UI
+    PENDING_PROOF_REQUEST: 'Files uploaded',
+    PENDING_UPLOAD: 'Checking files',
+    PENDING_VALIDATION: 'Checking files',
+    VALIDATION_FAILED: 'Checks failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    WAITING_FOR_PROOF: 'Waiting for proof',
+    PROOF_AVAILABLE: 'Proof available',
+  };
+
+  return statusToDisplayMappings[template.templateStatus];
+};
 
 type Colour =
   | 'white'

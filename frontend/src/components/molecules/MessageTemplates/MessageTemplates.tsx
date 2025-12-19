@@ -18,6 +18,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 const messageTemplatesContent = content.pages.messageTemplates;
 
@@ -43,6 +44,7 @@ export function MessageTemplates({
 }: {
   templateList: TemplateDto[];
 }) {
+  const features = useFeatureFlags();
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
@@ -86,7 +88,7 @@ export function MessageTemplates({
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag color={statusToColourMapping(template)}>
-                    {statusToDisplayMapping(template)}
+                    {statusToDisplayMapping(template, features)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>

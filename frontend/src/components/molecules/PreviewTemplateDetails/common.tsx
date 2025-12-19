@@ -10,6 +10,7 @@ import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
@@ -75,6 +76,7 @@ export function StandardDetailRows({
   campaignId?: string;
   hideStatus?: boolean;
 }>): JSX.Element {
+  const features = useFeatureFlags();
   return (
     <>
       <SummaryList.Row>
@@ -99,7 +101,7 @@ export function StandardDetailRows({
               data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
               color={statusToColourMapping(template)}
             >
-              {statusToDisplayMapping(template)}
+              {statusToDisplayMapping(template, features)}
             </Tag>
             {previewTemplateStatusFootnote[template.templateStatus] && (
               <small

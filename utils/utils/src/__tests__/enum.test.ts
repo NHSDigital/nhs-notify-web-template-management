@@ -2,6 +2,8 @@
 import {
   Language,
   LetterType,
+  TEMPLATE_TYPE_LIST,
+  TEMPLATE_STATUS_LIST,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -29,7 +31,6 @@ import {
   templateTypeToUrlTextMappings,
   cascadeTemplateTypeToUrlTextMappings,
 } from '../enum';
-import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -115,39 +116,28 @@ describe('alphabeticalLanguageList', () => {
 });
 
 describe('statusToDisplayMapping', () => {
-  test.each([
-    { type: 'LETTER' as TemplateType, expected: 'Not yet submitted' },
-    { type: 'NHS_APP' as TemplateType, expected: 'Draft' },
-    { type: 'SMS' as TemplateType, expected: 'Draft' },
-    { type: 'EMAIl' as TemplateType, expected: 'Draft' },
-  ])(
-    'When templateType is %type NOT_YET_SUBMITTED should be %expected',
-    ({ type, expected }) => {
-      expect(
-        statusToDisplayMapping({
-          templateType: type,
-          templateStatus: 'NOT_YET_SUBMITTED',
-        })
-      ).toEqual(expected);
-    }
+  const cases = TEMPLATE_STATUS_LIST.flatMap((status) =>
+    TEMPLATE_TYPE_LIST.flatMap((type) =>
+      [true, false].map(
+        (routingFlag): [TemplateStatus, TemplateType, boolean] => [
+          status,
+          type,
+          routingFlag,
+        ]
+      )
+    )
   );
 
-  test('SUBMITTED', () => {
+  test.each(cases)('status=%s type=%s routing=%s', (status, type, routing) => {
     expect(
-      statusToDisplayMapping({
-        templateType: 'SMS',
-        templateStatus: 'SUBMITTED',
-      })
-    ).toEqual('Submitted');
-  });
-
-  test('DELETED', () => {
-    expect(
-      statusToDisplayMapping({
-        templateType: 'SMS',
-        templateStatus: 'DELETED',
-      })
-    ).toEqual('');
+      statusToDisplayMapping(
+        {
+          templateType: type,
+          templateStatus: status,
+        },
+        { routing }
+      )
+    ).toMatchSnapshot();
   });
 });
 
