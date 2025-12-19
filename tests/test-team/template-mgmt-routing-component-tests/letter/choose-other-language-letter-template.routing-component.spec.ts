@@ -336,9 +336,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
       await expect(
         chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-      ).toHaveText(
-        'You do not have any foreign language letter templates yet.'
-      );
+      ).toHaveText('You do not have any o language letter templates yet.');
 
       await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
 

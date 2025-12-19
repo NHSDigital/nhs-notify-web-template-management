@@ -157,7 +157,7 @@ export function ChooseLanguageLetterTemplates(
               ) : (
                 <Link
                   href={content.actions.goToTemplates.href}
-                  className='nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m'
+                  className='nhsuk-u-font-size-19 nhsuk-body-m fit-content'
                   data-testid='go-to-templates-link'
                 >
                   {content.actions.goToTemplates.text}

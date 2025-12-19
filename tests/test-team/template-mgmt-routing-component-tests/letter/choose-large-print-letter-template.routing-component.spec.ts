@@ -285,10 +285,10 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     const errorLink =
       chooseLargePrintLetterTemplatePage.errorSummaryList.first();
-    await expect(errorLink).toHaveText('Choose a letter template');
+    await expect(errorLink).toHaveText('Choose a large print letter template');
 
     await expect(chooseLargePrintLetterTemplatePage.formError).toHaveText(
-      'Choose a letter template'
+      'Error: Choose a large print letter template'
     );
 
     await chooseLargePrintLetterTemplatePage
@@ -297,7 +297,7 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
-    await expect(page).toHaveURL(
+    await page.waitForURL(
       `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
     );
   });

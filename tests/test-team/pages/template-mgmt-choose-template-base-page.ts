@@ -28,7 +28,7 @@ export abstract class TemplateMgmtChooseTemplateForMessagePlanBasePage extends T
     this.previousSelectionDetails = page.getByTestId(
       'previous-selection-details'
     );
-    this.formError = page.locator('#channel-template--error-message');
+    this.formError = page.locator('#channelTemplate--error-message');
     this.templatesTable = page.getByTestId('channel-templates-table');
   }
 

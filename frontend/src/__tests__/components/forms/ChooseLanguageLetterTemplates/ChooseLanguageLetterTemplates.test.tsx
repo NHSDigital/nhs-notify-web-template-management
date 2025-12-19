@@ -165,14 +165,14 @@ describe('ChooseLanguageLetterTemplates', () => {
   });
 
   describe('when there are no templates', () => {
-    it('displays "You do not have any foreign language letter templates" message', () => {
+    it('displays "You do not have any other language letter templates" message', () => {
       renderComponent({
         templateList: [],
       });
 
       expect(
         screen.getByText(
-          'You do not have any foreign language letter templates yet.'
+          'You do not have any other language letter templates yet.'
         )
       ).toBeInTheDocument();
       expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();

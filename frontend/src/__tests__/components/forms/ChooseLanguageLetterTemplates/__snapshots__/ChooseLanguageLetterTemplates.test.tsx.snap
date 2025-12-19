@@ -2402,14 +2402,14 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
             class="nhsuk-body"
             data-testid="no-templates-message"
           >
-            You do not have any foreign language letter templates yet.
+            You do not have any other language letter templates yet.
           </p>
           <div
             class="nhsuk-form-group"
             data-testid="channel-template-actions"
           >
             <a
-              class="nhsuk-u-font-size-19 nhsuk-u-display-block nhsuk-body-m"
+              class="nhsuk-u-font-size-19 nhsuk-body-m fit-content"
               data-testid="go-to-templates-link"
               href="/message-templates"
             >
