@@ -148,4 +148,19 @@ test.describe('Routing - Preview app template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.APP.id);
+
+    await previewNhsAppTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
+    );
+  });
 });

@@ -227,4 +227,21 @@ test.describe('Routing - Preview large print letter template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLargePrintLetterTemplatePage =
+      new RoutingPreviewLargePrintLetterTemplatePage(page);
+
+    await previewLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.LARGE_PRINT_LETTER.id)
+      .loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+    );
+  });
 });

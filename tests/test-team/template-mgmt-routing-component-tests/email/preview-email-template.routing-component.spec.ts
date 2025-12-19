@@ -146,4 +146,19 @@ test.describe('Routing - Preview email template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewEmailTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.EMAIL_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.EMAIL.id);
+
+    await previewEmailTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+    );
+  });
 });

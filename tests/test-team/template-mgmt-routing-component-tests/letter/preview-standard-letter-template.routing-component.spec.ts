@@ -160,4 +160,20 @@ test.describe('Routing - Preview Letter template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLetterTemplatePage =
+      new RoutingPreviewStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.LETTER.id);
+
+    await previewLetterTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+    );
+  });
 });

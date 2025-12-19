@@ -1239,7 +1239,7 @@ const chooseLanguageLetterTemplates = {
     },
   },
   previousSelectionLabel: 'Previously selected templates',
-  noTemplatesText: 'You do not have any foreign language letter templates yet.',
+  noTemplatesText: 'You do not have any other language letter templates yet.',
   tableHintText:
     'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.',
   tableContent: chooseChannelTemplate.tableContent,

@@ -241,4 +241,20 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewForeignLanguageLetterTemplatePage =
+      new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.FRENCH_LETTER.id);
+
+    await previewForeignLanguageLetterTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+    );
+  });
 });

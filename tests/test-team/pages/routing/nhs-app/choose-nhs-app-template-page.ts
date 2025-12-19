@@ -4,8 +4,4 @@ import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from 'pages/template
 export class RoutingChooseNhsAppTemplatePage extends TemplateMgmtChooseTemplateForMessagePlanBasePage {
   static readonly pathTemplate =
     '/message-plans/choose-nhs-app-template/:messagePlanId';
-
-  constructor(page: Page) {
-    super(page);
-  }
 }

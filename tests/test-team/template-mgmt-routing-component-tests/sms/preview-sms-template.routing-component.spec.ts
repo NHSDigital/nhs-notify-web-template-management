@@ -142,4 +142,19 @@ test.describe('Routing - Preview SMS template page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.SMS_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.SMS.id);
+
+    await previewSmsTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.SMS_ROUTING_CONFIG.id}`
+    );
+  });
 });

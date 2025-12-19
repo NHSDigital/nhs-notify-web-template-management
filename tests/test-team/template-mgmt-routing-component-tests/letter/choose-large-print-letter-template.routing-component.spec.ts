@@ -409,4 +409,18 @@ test.describe('Routing - Choose large print letter template page', () => {
       );
     });
   });
+
+  test.describe('redirects to choose templates page', () => {
+    test('when no lockNumber in url', async ({ page, baseURL }) => {
+      const chooseTemplatePage = new RoutingChooseLargePrintLetterTemplatePage(
+        page
+      ).setPathParam('messagePlanId', routingConfigs.valid.id);
+
+      await chooseTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      );
+    });
+  });
 });

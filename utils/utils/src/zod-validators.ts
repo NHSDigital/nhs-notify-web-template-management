@@ -3,8 +3,10 @@ import {
   $UploadLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
+  $Language,
   $LetterFiles,
   $LetterProperties,
+  $LetterType,
   $NhsAppProperties,
   $SmsProperties,
   $TemplateDto,
@@ -86,16 +88,14 @@ export const $SubmittedLetterTemplate = z.intersection(
 export const $LargePrintLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({
-    letterType: z.literal('x1'),
+    letterType: $LetterType.extract(['x1']),
   })
 );
 
 export const $ForeignLanguageLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({
-    language: z.string().refine((lang) => lang !== 'en', {
-      message: 'Template must be a foreign language',
-    }),
+    language: $Language.exclude(['en']),
   })
 );
 

@@ -44,6 +44,10 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
     setErrorState
   );
 
+  const activeErrorState = errorState?.fieldErrors
+    ? errorState
+    : state.errorState;
+
   const cascadeItem = messagePlan.cascade[cascadeIndex];
   const selectedTemplateId = accessibleFormat
     ? cascadeItem.conditionalTemplates?.find(
@@ -58,7 +62,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
     <NHSNotifyMain>
       <NhsNotifyErrorSummary
         hint={content.errorHintText}
-        errorState={errorState}
+        errorState={activeErrorState}
       />
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-full'>
@@ -98,7 +102,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
               <ChannelTemplates
                 routingConfigId={messagePlan.id}
                 templateList={templateList}
-                errorState={errorState || null}
+                errorState={activeErrorState || null}
                 selectedTemplate={selectedTemplateId}
                 letterType={accessibleFormat}
                 lockNumber={lockNumber}
