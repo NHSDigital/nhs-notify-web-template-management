@@ -4,7 +4,7 @@ const {
 
 const pageActions = [
   ...goToPreviewLetterTemplateActions,
-  'wait for [data-test-id=status-tag][data-status=waiting-for-proof] to be visible',
+  'wait for [data-testid=status-tag][data-status=waiting-for-proof] to be visible',
 ];
 
 const waitingForProofsLetterTemplatePage = (url) => ({

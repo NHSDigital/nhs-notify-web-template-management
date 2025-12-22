@@ -82,7 +82,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                 <strong
                   class="nhsuk-tag"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -267,7 +267,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -415,7 +415,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="pending-proof-request"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -563,7 +563,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="pending-upload"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -705,7 +705,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="pending-validation"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -847,7 +847,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="proof-available"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1114,7 +1114,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="proof-available"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1403,7 +1403,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="validation-failed"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1608,7 +1608,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="virus-scan-failed"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1745,7 +1745,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 <strong
                   class="nhsuk-tag"
                   data-status="waiting-for-proof"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>

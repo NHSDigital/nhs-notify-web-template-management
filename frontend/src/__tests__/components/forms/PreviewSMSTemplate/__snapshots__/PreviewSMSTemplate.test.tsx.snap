@@ -107,7 +107,7 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -361,7 +361,7 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -595,7 +595,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -838,7 +838,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -979,7 +979,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1217,7 +1217,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>

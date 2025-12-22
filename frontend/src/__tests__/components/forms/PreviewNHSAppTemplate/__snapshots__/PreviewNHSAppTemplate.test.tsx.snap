@@ -107,7 +107,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -362,7 +362,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -597,7 +597,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -841,7 +841,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -983,7 +983,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1222,7 +1222,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
                   data-status="not-yet-submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>

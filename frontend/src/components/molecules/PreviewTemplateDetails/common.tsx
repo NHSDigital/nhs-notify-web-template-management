@@ -105,7 +105,7 @@ export function StandardDetailRows({
           <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
           <SummaryList.Value>
             <Tag
-              data-test-id='status-tag'
+              data-testid='status-tag'
               data-status={toKebabCase(template.templateStatus)}
               color={statusToColourMapping(template, features)}
             >

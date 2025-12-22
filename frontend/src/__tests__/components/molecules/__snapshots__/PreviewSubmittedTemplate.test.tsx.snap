@@ -84,7 +84,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Submitted
                 </strong>
@@ -229,7 +229,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Submitted
                 </strong>
@@ -399,7 +399,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render letter
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Submitted
                 </strong>
@@ -665,7 +665,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Submitted
                 </strong>
@@ -831,7 +831,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Locked
                 </strong>
@@ -991,7 +991,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Locked
                 </strong>
@@ -1167,7 +1167,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Locked
                 </strong>
@@ -1451,7 +1451,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
                   data-status="submitted"
-                  data-test-id="status-tag"
+                  data-testid="status-tag"
                 >
                   Locked
                 </strong>
