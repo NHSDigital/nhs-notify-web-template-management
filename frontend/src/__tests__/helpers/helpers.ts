@@ -71,6 +71,25 @@ export const LETTER_TEMPLATE: LetterTemplate = {
   lockNumber: 1,
 } as const;
 
+export const LARGE_PRINT_LETTER_TEMPLATE: LetterTemplate = {
+  id: 'large-print-letter-template-id',
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  letterType: 'x1',
+  language: 'en',
+  files: {
+    pdfTemplate: {
+      fileName: 'large-print-template.pdf',
+      currentVersion: '9BDED347C6BF',
+      virusScanStatus: 'PASSED',
+    },
+  },
+  name: 'large print letter template name',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+} as const;
+
 export const ROUTING_CONFIG: RoutingConfig = {
   id: 'fbb81055-79b9-4759-ac07-d191ae57be34',
   name: 'Autumn Campaign Plan',

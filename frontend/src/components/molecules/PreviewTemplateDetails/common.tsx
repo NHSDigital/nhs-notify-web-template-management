@@ -83,7 +83,12 @@ export function StandardDetailRows({
     <>
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
-        <SummaryList.Value>{template.id}</SummaryList.Value>
+        <SummaryList.Value
+          data-testid='preview-template-id'
+          className='monospace-font'
+        >
+          {template.id}
+        </SummaryList.Value>
       </SummaryList.Row>
       {campaignId && (
         <SummaryList.Row id='campaign-id'>
