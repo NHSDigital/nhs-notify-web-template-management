@@ -4,9 +4,9 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateMgmtPreviewNhsAppPage } from '../../pages/nhs-app/template-mgmt-preview-nhs-app-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
-  assertBackToAllTemplatesBottomLink,
-  assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-preview-common.steps';
+  assertBackLinkBottom,
+  assertAndClickBackLinkTop,
+} from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
   assertSignOutLink,
@@ -113,8 +113,14 @@ test.describe('Preview NHS App template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
+      await assertBackLinkBottom({
+        ...props,
+        expectedUrl: `templates/message-templates`,
+      });
+      await assertAndClickBackLinkTop({
+        ...props,
+        expectedUrl: `templates/message-templates`,
+      });
     });
 
     test('when user clicks "Edit template", then the "Edit NHS App message template" page is displayed', async ({

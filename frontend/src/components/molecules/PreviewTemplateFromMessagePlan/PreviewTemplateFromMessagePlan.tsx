@@ -4,7 +4,7 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import {
   cascadeTemplateTypeToUrlTextMappings,
   PageComponentProps,
@@ -16,18 +16,31 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
     previewComponent: PreviewTemplateComponent<T>;
     routingConfigId: string;
+    lockNumber: number;
   };
 
 export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   initialState: template,
   previewComponent,
   routingConfigId,
+  lockNumber,
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
+  let conditionalType: LetterType | 'language' | undefined;
+  if (template.templateType === 'LETTER' && 'letterType' in template) {
+    const isForeignLanguage =
+      'language' in template && template.language && template.language !== 'en';
+    conditionalType = isForeignLanguage ? 'language' : template.letterType;
+  }
+
   const backLinkHref = interpolate(content.backLink.href, {
-    templateType: cascadeTemplateTypeToUrlTextMappings(template.templateType),
+    templateType: cascadeTemplateTypeToUrlTextMappings(
+      template.templateType,
+      conditionalType
+    ),
     routingConfigId,
+    lockNumber,
   });
 
   return (
@@ -43,10 +56,13 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
               template,
               hideStatus: true,
             })}
-
-            <p>
-              <Link href={backLinkHref}>{content.backLink.text}</Link>
-            </p>
+            <Link
+              className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
+              href={backLinkHref}
+              data-testid='back-link-bottom'
+            >
+              {content.backLink.text}
+            </Link>
           </div>
         </div>
       </NHSNotifyMain>

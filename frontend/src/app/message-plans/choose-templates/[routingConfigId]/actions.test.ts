@@ -2,9 +2,13 @@ import { randomUUID } from 'node:crypto';
 import { removeTemplateFromMessagePlan } from './actions';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
 import {
+  CascadeGroupAccessible,
   CascadeGroupName,
+  CascadeGroupTranslations,
   Channel,
   ChannelType,
+  Language,
+  LetterType,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
@@ -18,6 +22,13 @@ const mockGetRoutingConfig = jest.mocked(getRoutingConfig);
 const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
 
 const routingConfigId = randomUUID();
+const emailTemplateId = randomUUID();
+const smsTemplateId = randomUUID();
+const polishTemplateId = randomUUID();
+const frenchTemplateId = randomUUID();
+const accessibleFormatId = randomUUID();
+const largePrintId = randomUUID();
+
 const baseConfig = {
   id: routingConfigId,
   campaignId: 'campaign1',
@@ -31,13 +42,13 @@ const baseConfig = {
       channel: 'EMAIL' as Channel,
       channelType: 'primary' as ChannelType,
       cascadeGroups: ['standard' as CascadeGroupName],
-      defaultTemplateId: 'template-1',
+      defaultTemplateId: emailTemplateId,
     },
     {
       channel: 'SMS' as Channel,
       channelType: 'primary' as ChannelType,
       cascadeGroups: ['standard' as CascadeGroupName],
-      defaultTemplateId: 'template-2',
+      defaultTemplateId: smsTemplateId,
     },
   ],
   cascadeGroupOverrides: [],
@@ -50,12 +61,12 @@ describe('removeTemplateFromMessagePlan', () => {
     jest.clearAllMocks();
   });
 
-  it('removes the template from the correct channel and updates the routing configuration', async () => {
+  it('removes the correct template from the cascade item and updates the routing configuration', async () => {
     mockGetRoutingConfig.mockResolvedValue(baseConfig);
 
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
-    formData.set('channel', 'EMAIL');
+    formData.set('templateId', emailTemplateId);
     formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
@@ -72,12 +83,274 @@ describe('removeTemplateFromMessagePlan', () => {
           }),
           expect.objectContaining({
             channel: 'SMS',
-            defaultTemplateId: 'template-2',
+            defaultTemplateId: smsTemplateId,
           }),
         ],
       }),
       42
     );
+  });
+
+  it('removes multiple templates at once', async () => {
+    const configWithConditionalTemplates = {
+      ...baseConfig,
+      cascade: [
+        {
+          ...baseConfig.cascade[0],
+          conditionalTemplates: [
+            {
+              accessibleFormat: 'x1' as LetterType,
+              templateId: largePrintId,
+            },
+            { language: 'pl' as Language, templateId: polishTemplateId },
+            { language: 'fr' as Language, templateId: frenchTemplateId },
+          ],
+        },
+        baseConfig.cascade[1],
+      ],
+    };
+
+    mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+    formData.append('templateId', polishTemplateId);
+    formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
+
+    await removeTemplateFromMessagePlan(formData);
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      routingConfigId,
+      expect.objectContaining({
+        cascade: [
+          expect.objectContaining({
+            channel: 'EMAIL',
+            defaultTemplateId: emailTemplateId,
+            conditionalTemplates: [
+              {
+                accessibleFormat: 'x1',
+                templateId: largePrintId,
+              },
+            ],
+          }),
+          expect.objectContaining({
+            channel: 'SMS',
+          }),
+        ],
+      }),
+      42
+    );
+  });
+
+  it('removes conditional templates from cascade items', async () => {
+    const configWithConditionalTemplate = {
+      ...baseConfig,
+      cascade: [
+        {
+          ...baseConfig.cascade[0],
+          channel: 'LETTER' as Channel,
+          conditionalTemplates: [
+            { accessibleFormat: 'x1' as LetterType, templateId: largePrintId },
+          ],
+        },
+      ],
+    };
+
+    mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplate);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+    formData.set('templateId', largePrintId);
+    formData.set('lockNumber', '42');
+
+    await removeTemplateFromMessagePlan(formData);
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      routingConfigId,
+      expect.objectContaining({
+        cascade: [
+          expect.objectContaining({
+            channel: 'LETTER',
+          }),
+        ],
+      }),
+      42
+    );
+
+    // Verify conditionalTemplates was removed
+    const [[, updateConfig]] = mockUpdateRoutingConfig.mock.calls;
+    expect(updateConfig.cascade?.[0].conditionalTemplates).toBeUndefined();
+  });
+
+  it('updates cascadeGroupOverrides when templates are removed', async () => {
+    const configWithOverrides = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'LETTER' as Channel,
+          channelType: 'primary' as ChannelType,
+          cascadeGroups: [
+            'standard' as CascadeGroupName,
+            'accessible' as CascadeGroupName,
+            'translations' as CascadeGroupName,
+          ],
+          defaultTemplateId: emailTemplateId,
+          conditionalTemplates: [
+            {
+              accessibleFormat: 'q4' as LetterType,
+              templateId: accessibleFormatId,
+            },
+            {
+              accessibleFormat: 'x1' as LetterType,
+              templateId: largePrintId,
+            },
+            { language: 'pl' as Language, templateId: polishTemplateId },
+            { language: 'fr' as Language, templateId: frenchTemplateId },
+          ],
+        },
+      ],
+      cascadeGroupOverrides: [
+        {
+          name: 'accessible' as CascadeGroupName,
+          accessibleFormat: ['q4' as LetterType, 'x1' as LetterType],
+        } as CascadeGroupAccessible,
+        {
+          name: 'translations' as CascadeGroupName,
+          language: ['pl' as Language, 'fr' as Language],
+        } as CascadeGroupTranslations,
+      ],
+    };
+
+    mockGetRoutingConfig.mockResolvedValue(configWithOverrides);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+    formData.append('templateId', accessibleFormatId);
+    formData.append('templateId', polishTemplateId);
+    formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
+
+    await removeTemplateFromMessagePlan(formData);
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      routingConfigId,
+      expect.objectContaining({
+        cascadeGroupOverrides: [
+          {
+            name: 'accessible',
+            accessibleFormat: ['x1'],
+          },
+        ],
+      }),
+      42
+    );
+  });
+
+  it('updates cascadeGroups on cascade items when templates are removed', async () => {
+    const configWithConditionalTemplates = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'LETTER' as Channel,
+          channelType: 'primary' as ChannelType,
+          cascadeGroups: [
+            'standard' as CascadeGroupName,
+            'accessible' as CascadeGroupName,
+            'translations' as CascadeGroupName,
+          ],
+          defaultTemplateId: emailTemplateId,
+          conditionalTemplates: [
+            {
+              accessibleFormat: 'x1' as LetterType,
+              templateId: largePrintId,
+            },
+            { language: 'pl' as Language, templateId: polishTemplateId },
+            { language: 'fr' as Language, templateId: frenchTemplateId },
+          ],
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+    formData.append('templateId', polishTemplateId);
+    formData.append('templateId', frenchTemplateId);
+    formData.append('lockNumber', '42');
+
+    await removeTemplateFromMessagePlan(formData);
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      routingConfigId,
+      expect.objectContaining({
+        cascade: [
+          expect.objectContaining({
+            channel: 'LETTER',
+            cascadeGroups: ['standard', 'accessible'],
+            conditionalTemplates: [
+              {
+                accessibleFormat: 'x1',
+                templateId: largePrintId,
+              },
+            ],
+          }),
+        ],
+      }),
+      42
+    );
+  });
+
+  it('updates cascadeGroups to only standard when all conditional templates are removed', async () => {
+    const configWithConditionalTemplates = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'LETTER' as Channel,
+          channelType: 'primary' as ChannelType,
+          cascadeGroups: [
+            'standard' as CascadeGroupName,
+            'accessible' as CascadeGroupName,
+          ],
+          defaultTemplateId: emailTemplateId,
+          conditionalTemplates: [
+            {
+              accessibleFormat: 'x1' as LetterType,
+              templateId: largePrintId,
+            },
+          ],
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+    formData.set('templateId', largePrintId);
+    formData.set('lockNumber', '42');
+
+    await removeTemplateFromMessagePlan(formData);
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      routingConfigId,
+      expect.objectContaining({
+        cascade: [
+          expect.objectContaining({
+            channel: 'LETTER',
+            cascadeGroups: ['standard'],
+          }),
+        ],
+      }),
+      42
+    );
+
+    // Verify conditionalTemplates was removed
+    const [[, updateConfig]] = mockUpdateRoutingConfig.mock.calls;
+    expect(updateConfig.cascade?.[0].conditionalTemplates).toBeUndefined();
   });
 
   it('refreshes the choose-templates page after successful removal', async () => {
@@ -86,7 +359,7 @@ describe('removeTemplateFromMessagePlan', () => {
 
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
-    formData.set('channel', 'EMAIL');
+    formData.set('templateId', emailTemplateId);
     formData.set('lockNumber', '42');
 
     await removeTemplateFromMessagePlan(formData);
@@ -101,7 +374,7 @@ describe('removeTemplateFromMessagePlan', () => {
 
     const formData = new FormData();
     formData.set('routingConfigId', routingConfigId);
-    formData.set('channel', 'EMAIL');
+    formData.set('templateId', emailTemplateId);
     formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
@@ -120,7 +393,7 @@ describe('removeTemplateFromMessagePlan', () => {
   it('throws an error if form data is invalid', async () => {
     const formData = new FormData();
     formData.set('routingConfigId', 'invalid-id');
-    formData.set('channel', 'test');
+    formData.set('templateId', '');
     formData.set('lockNumber', '42');
 
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(

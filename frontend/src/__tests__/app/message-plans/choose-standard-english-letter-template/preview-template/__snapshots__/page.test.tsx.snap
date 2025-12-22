@@ -4,7 +4,8 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
+    data-testid="back-link-top"
+    href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
   >
     Go back
   </a>
@@ -49,7 +50,8 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 letter-template-id
               </dd>
@@ -106,13 +108,13 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page renders letter
             </div>
           </dl>
         </div>
-        <p>
-          <a
-            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34"
-          >
-            Go back
-          </a>
-        </p>
+        <a
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+          data-testid="back-link-bottom"
+          href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+        >
+          Go back
+        </a>
       </div>
     </div>
   </main>

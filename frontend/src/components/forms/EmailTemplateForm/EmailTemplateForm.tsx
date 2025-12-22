@@ -72,9 +72,7 @@ export const EmailTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <NotifyBackLink data-testid='back-to-templates-link'>
-            {backLinkText}
-          </NotifyBackLink>
+          <NotifyBackLink>{backLinkText}</NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>

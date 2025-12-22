@@ -10,7 +10,7 @@ export function NHSNotifyButton({
   return (
     <Button
       preventDoubleClick
-      debounceTimeout={10_000}
+      debounceTimeout={5000}
       onClick={() => {}}
       href={href}
       {...rest}

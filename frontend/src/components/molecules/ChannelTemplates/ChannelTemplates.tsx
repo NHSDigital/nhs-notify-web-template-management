@@ -10,8 +10,7 @@ import {
   ErrorState,
   cascadeTemplateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
-import style from './ChannelTemplates.module.scss';
+import { LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import { interpolate } from '@utils/interpolate';
 
 const { tableHintText, tableContent } =
@@ -27,18 +26,24 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
+  letterType,
+  lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
+  letterType?: LetterType;
+  lockNumber: number;
 }) {
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
-        <HintText>{tableHintText}</HintText>
+        <HintText className='nhsuk-u-reading-width' data-testid='table-hint'>
+          {tableHintText}
+        </HintText>
         <Radios
-          id={'channelTemplate'}
+          id='channelTemplate'
           error={errorState?.fieldErrors?.['channelTemplate']?.join(', ')}
           errorProps={{ id: 'channelTemplate--error-message' }}
         >
@@ -66,6 +71,7 @@ export function ChannelTemplates({
                 </Table.Cell>
               </Table.Row>
             </Table.Head>
+
             <Table.Body>
               {templateList.map((template, index) => (
                 <Table.Row key={template.id}>
@@ -88,22 +94,23 @@ export function ChannelTemplates({
                     {format(`${template.updatedAt}`, 'HH:mm')}
                   </Table.Cell>
                   <Table.Cell>
-                    <div className={style.actionLinksWrapper}>
-                      <Link
-                        href={interpolate(tableContent.action.preview.href, {
-                          templateType: cascadeTemplateTypeToUrlTextMappings(
-                            template.templateType
-                          ),
-                          routingConfigId,
-                          templateId: template.id,
-                        })}
-                        id={`preview-template-link-${index}`}
-                        aria-label={`${tableContent.action.preview.text}`}
-                        data-testid={`${template.id}-preview-link`}
-                      >
-                        {tableContent.action.preview.text}
-                      </Link>
-                    </div>
+                    <Link
+                      className='nhsuk-u-margin-bottom-2 nhsuk-link'
+                      href={interpolate(tableContent.action.preview.href, {
+                        templateType: cascadeTemplateTypeToUrlTextMappings(
+                          template.templateType,
+                          letterType
+                        ),
+                        routingConfigId,
+                        templateId: template.id,
+                        lockNumber,
+                      })}
+                      id={`preview-template-link-${index}`}
+                      aria-label={`${tableContent.action.preview.text}`}
+                      data-testid={`${template.id}-preview-link`}
+                    >
+                      {tableContent.action.preview.text}
+                    </Link>
                   </Table.Cell>
                 </Table.Row>
               ))}

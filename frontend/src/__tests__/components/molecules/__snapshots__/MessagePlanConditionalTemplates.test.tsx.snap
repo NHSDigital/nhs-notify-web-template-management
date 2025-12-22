@@ -1,0 +1,445 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanConditionalLetterTemplates with no templates selected should match snapshot 1`] = `
+<div>
+  <ul
+    class="message-plan-conditional-templates"
+    data-testid="message-plan-conditional-templates"
+  >
+    <li
+      class="fallback-conditions fallback-conditions"
+      data-testid="message-plan-fallback-conditions-LETTER"
+    >
+      <div
+        aria-hidden="true"
+        class="fallback-conditions-branch-icon"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 499.694748 700.749167"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            fill="none"
+            fill-rule="evenodd"
+            stroke="none"
+            stroke-width="1"
+          >
+            <g
+              transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+            >
+              <path
+                d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                fill="#005eb8"
+                fill-rule="nonzero"
+              />
+              <rect
+                height="800"
+                width="800"
+                x="0"
+                y="0"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <details
+        class="nhsuk-details fallback-conditions-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Conditions for accessible and language letters
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <ul
+            class="nhsuk-list nhsuk-list--tick"
+          >
+            <li>
+              <img
+                alt=""
+                aria-hidden="true"
+                class="nhsuk-icon nhsuk-icon--arrow-down"
+                data-nimg="1"
+                decoding="async"
+                height="34"
+                loading="lazy"
+                src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                style="color: transparent;"
+                width="34"
+              />
+              The relevant accessible or language letter will be sent instead of the standard English letter if, both: 
+              <ul>
+                <li>
+                  the recipient has requested an accessible or language letter in PDS
+                </li>
+                <li>
+                  you've included the relevant template in this message plan
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </li>
+    <li
+      class="message-plan-conditional-templates__list-item"
+    >
+      <div
+        class="channel-template-outer"
+        data-testid="channel-template-x1"
+      >
+        <div
+          class="channel-template-inner"
+        >
+          <h3
+            class="nhsuk-heading-s"
+          >
+            Large print letter (optional)
+          </h3>
+          <ul
+            class="channel-template-actions"
+          >
+            <li>
+              <a
+                class="nhsuk-link nhsuk-link--no-visited-state"
+                data-testid="choose-template-link-x1"
+                href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
+              >
+                Choose
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Large print letter
+                </span>
+                 
+                template
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li
+      class="message-plan-conditional-templates__list-item"
+    >
+      <div
+        class="channel-template-outer"
+        data-testid="channel-template-foreign-language"
+      >
+        <div
+          class="channel-template-inner"
+        >
+          <h3
+            class="nhsuk-heading-s"
+          >
+            Other language letters (optional)
+          </h3>
+          <ul
+            class="channel-template-actions"
+          >
+            <li>
+              <a
+                class="nhsuk-link nhsuk-link--no-visited-state"
+                data-testid="choose-template-link-foreign-language"
+                href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
+              >
+                Choose
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Other language letters
+                </span>
+                 
+                templates
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`MessagePlanConditionalLetterTemplates with templates selected should match snapshot with all conditional template types selected 1`] = `
+<div>
+  <ul
+    class="message-plan-conditional-templates"
+    data-testid="message-plan-conditional-templates"
+  >
+    <li
+      class="fallback-conditions fallback-conditions"
+      data-testid="message-plan-fallback-conditions-LETTER"
+    >
+      <div
+        aria-hidden="true"
+        class="fallback-conditions-branch-icon"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 499.694748 700.749167"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            fill="none"
+            fill-rule="evenodd"
+            stroke="none"
+            stroke-width="1"
+          >
+            <g
+              transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+            >
+              <path
+                d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                fill="#005eb8"
+                fill-rule="nonzero"
+              />
+              <rect
+                height="800"
+                width="800"
+                x="0"
+                y="0"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <details
+        class="nhsuk-details fallback-conditions-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Conditions for accessible and language letters
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+        >
+          <ul
+            class="nhsuk-list nhsuk-list--tick"
+          >
+            <li>
+              <img
+                alt=""
+                aria-hidden="true"
+                class="nhsuk-icon nhsuk-icon--arrow-down"
+                data-nimg="1"
+                decoding="async"
+                height="34"
+                loading="lazy"
+                src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                style="color: transparent;"
+                width="34"
+              />
+              The relevant accessible or language letter will be sent instead of the standard English letter if, both: 
+              <ul>
+                <li>
+                  the recipient has requested an accessible or language letter in PDS
+                </li>
+                <li>
+                  you've included the relevant template in this message plan
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </li>
+    <li
+      class="message-plan-conditional-templates__list-item"
+    >
+      <div
+        class="channel-template-outer"
+        data-testid="channel-template-x1"
+      >
+        <div
+          class="channel-template-inner"
+        >
+          <h3
+            class="nhsuk-heading-s"
+          >
+            Large print letter (optional)
+          </h3>
+          <div
+            class="nhsuk-u-margin-bottom-2"
+            data-testid="template-names"
+          >
+            <p
+              class="nhsuk-u-margin-bottom-1"
+              data-testid="template-name-x1"
+            >
+              Large print template
+            </p>
+          </div>
+          <ul
+            class="channel-template-actions"
+          >
+            <li>
+              <a
+                class="nhsuk-link nhsuk-link--no-visited-state"
+                data-testid="change-template-link-x1"
+                href="/message-plans/choose-large-print-letter-template/test-routing-config-id?lockNumber=42"
+              >
+                Change
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Large print letter
+                </span>
+                 
+                template
+              </a>
+            </li>
+            <li>
+              <form>
+                <input
+                  name="routingConfigId"
+                  readonly=""
+                  type="hidden"
+                  value="test-routing-config-id"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="42"
+                />
+                <input
+                  name="templateId"
+                  readonly=""
+                  type="hidden"
+                  value="large-print-id"
+                />
+                <button
+                  class="channel-template-link--remove nhsuk-link"
+                  data-testid="remove-template-link-x1"
+                  formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                  type="submit"
+                >
+                  Remove
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Large print letter
+                  </span>
+                   
+                  template
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li
+      class="message-plan-conditional-templates__list-item"
+    >
+      <div
+        class="channel-template-outer"
+        data-testid="channel-template-foreign-language"
+      >
+        <div
+          class="channel-template-inner"
+        >
+          <h3
+            class="nhsuk-heading-s"
+          >
+            Other language letters (optional)
+          </h3>
+          <div
+            class="nhsuk-u-margin-bottom-2"
+            data-testid="template-names"
+          >
+            <p
+              class="nhsuk-u-margin-bottom-1"
+              data-testid="template-name-foreign-language"
+            >
+              Polish template
+            </p>
+            <p
+              class="nhsuk-u-margin-bottom-1"
+              data-testid="template-name-foreign-language"
+            >
+              French template
+            </p>
+          </div>
+          <ul
+            class="channel-template-actions"
+          >
+            <li>
+              <a
+                class="nhsuk-link nhsuk-link--no-visited-state"
+                data-testid="change-template-link-foreign-language"
+                href="/message-plans/choose-other-language-letter-template/test-routing-config-id?lockNumber=42"
+              >
+                Change
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Other language letters
+                </span>
+                 
+                templates
+              </a>
+            </li>
+            <li>
+              <form>
+                <input
+                  name="routingConfigId"
+                  readonly=""
+                  type="hidden"
+                  value="test-routing-config-id"
+                />
+                <input
+                  name="lockNumber"
+                  readonly=""
+                  type="hidden"
+                  value="42"
+                />
+                <input
+                  name="templateId"
+                  readonly=""
+                  type="hidden"
+                  value="polish-id"
+                />
+                <input
+                  name="templateId"
+                  readonly=""
+                  type="hidden"
+                  value="french-id"
+                />
+                <button
+                  class="channel-template-link--remove nhsuk-link"
+                  data-testid="remove-template-link-foreign-language"
+                  formaction="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+                  type="submit"
+                >
+                  Remove all
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Other language letters
+                  </span>
+                   
+                  templates
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+`;

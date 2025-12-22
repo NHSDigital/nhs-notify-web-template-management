@@ -3,8 +3,10 @@ import {
   $UploadLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
+  $Language,
   $LetterFiles,
   $LetterProperties,
+  $LetterType,
   $NhsAppProperties,
   $SmsProperties,
   $TemplateDto,
@@ -83,6 +85,20 @@ export const $SubmittedLetterTemplate = z.intersection(
   $LetterTemplate
 );
 
+export const $LargePrintLetterTemplate = z.intersection(
+  $LetterTemplate,
+  z.object({
+    letterType: $LetterType.extract(['x1']),
+  })
+);
+
+export const $ForeignLanguageLetterTemplate = z.intersection(
+  $LetterTemplate,
+  z.object({
+    language: $Language.exclude(['en']),
+  })
+);
+
 export const validateNHSAppTemplate = (template?: TemplateDto) =>
   zodValidate($NHSAppTemplate, template);
 
@@ -94,6 +110,12 @@ export const validateEmailTemplate = (template?: TemplateDto) =>
 
 export const validateLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LetterTemplate, template);
+
+export const validateLargePrintLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($LargePrintLetterTemplate, template);
+
+export const validateForeignLanguageLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($ForeignLanguageLetterTemplate, template);
 
 export const validateSubmittedEmailTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedEmailTemplate, template);

@@ -31,7 +31,7 @@ export default function InvalidConfig({
             <p>{insetText}</p>
           </InsetText>
           <p>
-            <Link href={backLinkUrl} data-testid='back-link'>
+            <Link href={backLinkUrl} data-testid='back-link-bottom'>
               {backLinkText}
             </Link>
           </p>

@@ -78,7 +78,6 @@ test.describe('POST /v1/routing-configuration', () => {
   }) => {
     const payload = RoutingConfigFactory.create(user1, {
       cascadeGroupOverrides: [
-        { name: 'standard' },
         { name: 'translations', language: ['ar'] },
         { name: 'accessible', accessibleFormat: ['x0'] },
       ],

@@ -4,6 +4,7 @@ exports[`NotifyBackLink matches snapshot (default anchor) 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/somewhere"
   >
     Back
@@ -15,6 +16,7 @@ exports[`NotifyBackLink matches snapshot when rendered as a button 1`] = `
 <DocumentFragment>
   <button
     class="nhsuk-back-link"
+    data-testid="back-link-top"
   >
     Back
   </button>
