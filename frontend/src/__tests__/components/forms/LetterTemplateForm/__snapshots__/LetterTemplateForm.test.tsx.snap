@@ -960,31 +960,6 @@ exports[`renders page one error 1`] = `
                 Template name error
               </a>
             </li>
-            <li>
-              <a
-                href="#letterTemplateCampaignId"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLetterType"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLanguage"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplatePdf"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateCsv"
-              />
-            </li>
           </ul>
         </div>
         <form
@@ -1957,21 +1932,6 @@ exports[`renders page with multiple errors 1`] = `
               >
                 CSV error
               </a>
-            </li>
-            <li>
-              <a
-                href="#letterTemplateCampaignId"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLetterType"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLanguage"
-              />
             </li>
           </ul>
         </div>

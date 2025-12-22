@@ -18,6 +18,9 @@ const templateMessageTooLong = 'Template message too long';
 const templateMessageHasInsecureLink = 'URLs must start with https://';
 const selectAnOption = 'Select an option';
 
+export const templateMessageContainsInvalidPersonalisationErrorText =
+  'You cannot use the following custom personalisation fields in your message:';
+
 const header = {
   serviceName: 'Notify',
   logoLink: {
@@ -127,7 +130,6 @@ const personalisation: {
             '((firstName))',
             '((lastName))',
             '((nhsNumber))',
-            '((date))',
           ]),
         },
         {

@@ -4,6 +4,7 @@ import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -83,6 +84,29 @@ describe('CreateSmsTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           smsTemplateMessage: ['URLs must start with https://'],
+        },
+      },
+    });
+  });
+
+  it('create-sms-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-sms-template',
+        smsTemplateName: 'template-name',
+        smsTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          smsTemplateMessage: [
+            ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+          ],
         },
       },
     });

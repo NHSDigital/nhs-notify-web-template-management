@@ -290,9 +290,6 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -497,11 +494,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             >
               Template name error
             </a>
-          </li>
-          <li>
-            <a
-              href="#smsTemplateMessage"
-            />
           </li>
         </ul>
       </div>
@@ -742,9 +734,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -1161,9 +1150,6 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               <li>
                 ((nhsNumber))
               </li>
-              <li>
-                ((date))
-              </li>
             </ul>
             <p>
               Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
@@ -1376,6 +1362,61 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               Template message error
             </a>
           </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            >
+              <div
+                class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+              >
+                You cannot use the following custom personalisation fields in your message:
+              </div>
+              <ul
+                class="nhsuk-list nhsuk-list--bullet"
+              >
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  date
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_1
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_2
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_3
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_4
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_5
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_6
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_7
+                </li>
+              </ul>
+            </a>
+          </li>
         </ul>
       </div>
       <h1
@@ -1512,6 +1553,55 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                   Error: 
                 </span>
                 Template message error
+                <div
+                  class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+                >
+                  You cannot use the following custom personalisation fields in your message:
+                </div>
+                <ul
+                  class="nhsuk-list nhsuk-list--bullet"
+                >
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    date
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_1
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_2
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_3
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_4
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_5
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_6
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_7
+                  </li>
+                </ul>
               </span>
               <textarea
                 aria-describedby="smsTemplateMessage--error-message"
@@ -1627,9 +1717,6 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -2038,9 +2125,6 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>

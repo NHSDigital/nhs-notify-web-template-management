@@ -6,8 +6,12 @@ import {
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
+import {
+  MAX_SMS_CHARACTER_LENGTH,
+  INVALID_PERSONALISATION_FIELDS,
+} from '@utils/constants';
 import content from '@content/content';
+import { ErrorCodes } from '@utils/error-codes';
 
 const {
   components: {
@@ -27,7 +31,16 @@ export const $CreateSmsTemplateSchema = z.object({
     })
     .refine((templateMessage) => !templateMessage.includes('http://'), {
       message: form.smsTemplateMessage.error.insecureLink,
-    }),
+    })
+    .refine(
+      (templateMessage) =>
+        !INVALID_PERSONALISATION_FIELDS.some((personalisationFieldName) =>
+          templateMessage.includes(`((${personalisationFieldName}))`)
+        ),
+      {
+        message: ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+      }
+    ),
 });
 
 export async function processFormActions(
