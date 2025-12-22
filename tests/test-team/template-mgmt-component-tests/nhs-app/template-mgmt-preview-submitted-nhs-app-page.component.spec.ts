@@ -78,6 +78,15 @@ test.describe('Preview submitted NHS App message template Page', () => {
     await expect(previewSubmittedNHSAppTemplatePage.messageText).toHaveText(
       'test-template-message'
     );
+
+    await expect(previewSubmittedNHSAppTemplatePage.statusTag).toHaveText(
+      'Locked'
+    );
+
+    await expect(previewSubmittedNHSAppTemplatePage.copyLink).toHaveAttribute(
+      'href',
+      `/copy-template/${templates.valid.id}`
+    );
   });
 
   test.describe('Page functionality', () => {

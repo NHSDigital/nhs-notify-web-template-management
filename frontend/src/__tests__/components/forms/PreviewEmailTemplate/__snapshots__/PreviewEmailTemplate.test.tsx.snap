@@ -106,7 +106,8 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>
@@ -384,7 +385,8 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>
@@ -642,7 +644,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>
@@ -855,6 +858,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
           </p>
           <p>
             <a
+              data-testid="copy-link"
               href="/copy-template/template-id"
             >
               Copy this template
@@ -908,7 +912,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>
@@ -1073,7 +1078,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>
@@ -1281,6 +1287,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
           </p>
           <p>
             <a
+              data-testid="copy-link"
               href="/copy-template/template-id"
             >
               Copy this template
@@ -1334,7 +1341,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-test-id="status-tag"
                 >
                   Draft
                 </strong>

@@ -105,7 +105,8 @@ export function StandardDetailRows({
           <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
           <SummaryList.Value>
             <Tag
-              data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
+              data-test-id='status-tag'
+              data-status={toKebabCase(template.templateStatus)}
               color={statusToColourMapping(template, features)}
             >
               {statusToDisplayMapping(template, features)}
@@ -176,7 +177,10 @@ export function LockedTemplateWarning({ template }: { template: TemplateDto }) {
 
       {template.templateType !== 'LETTER' && (
         <p>
-          <Link href={interpolate(warningContent.copy.link.href, template)}>
+          <Link
+            data-testid='copy-link'
+            href={interpolate(warningContent.copy.link.href, template)}
+          >
             {warningContent.copy.link.text}
           </Link>
           {warningContent.copy.link.after}

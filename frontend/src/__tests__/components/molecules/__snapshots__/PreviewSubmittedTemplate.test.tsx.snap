@@ -83,7 +83,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Submitted
                 </strong>
@@ -227,7 +228,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Submitted
                 </strong>
@@ -396,7 +398,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render letter
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Submitted
                 </strong>
@@ -661,7 +664,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Submitted
                 </strong>
@@ -770,6 +774,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
           </p>
           <p>
             <a
+              data-testid="copy-link"
               href="/copy-template/template-id"
             >
               Copy this template
@@ -825,7 +830,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Locked
                 </strong>
@@ -928,6 +934,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
           </p>
           <p>
             <a
+              data-testid="copy-link"
               href="/copy-template/template-id"
             >
               Copy this template
@@ -983,7 +990,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Locked
                 </strong>
@@ -1158,7 +1166,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Locked
                 </strong>
@@ -1385,6 +1394,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
           </p>
           <p>
             <a
+              data-testid="copy-link"
               href="/copy-template/template-id"
             >
               Copy this template
@@ -1440,7 +1450,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--orange"
-                  data-test-id="status-tag-submitted"
+                  data-status="submitted"
+                  data-test-id="status-tag"
                 >
                   Locked
                 </strong>

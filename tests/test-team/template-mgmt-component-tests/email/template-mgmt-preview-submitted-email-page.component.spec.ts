@@ -83,6 +83,15 @@ test.describe('Preview submitted Email message template Page', () => {
     await expect(previewSubmittedEmailTemplatePage.messageText).toHaveText(
       'test-template-message'
     );
+
+    await expect(previewSubmittedEmailTemplatePage.statusTag).toHaveText(
+      'Locked'
+    );
+
+    await expect(previewSubmittedEmailTemplatePage.copyLink).toHaveAttribute(
+      'href',
+      `/copy-template/${templates.valid.id}`
+    );
   });
 
   test.describe('Page functionality', () => {
