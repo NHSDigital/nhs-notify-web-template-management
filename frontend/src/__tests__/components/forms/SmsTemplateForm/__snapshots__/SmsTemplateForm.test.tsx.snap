@@ -911,6 +911,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type

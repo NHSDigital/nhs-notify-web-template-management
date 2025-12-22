@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../helpers/template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
@@ -104,7 +105,8 @@ test.describe('Copy Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
+    await assertBackLinkBottomNotPresent(props);
+    await assertAndClickBackLinkTop(props);
   });
 
   test('should display correct number of radio button options', async ({

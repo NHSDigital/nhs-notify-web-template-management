@@ -8,6 +8,7 @@ import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');

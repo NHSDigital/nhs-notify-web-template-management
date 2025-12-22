@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.previewSMSTemplate;
 
@@ -23,6 +24,16 @@ const PreviewTextMessageTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const template = await getTemplate(templateId);
 
@@ -37,6 +48,7 @@ const PreviewTextMessageTemplateFromMessagePlan = async (
       initialState={validatedTemplate}
       previewComponent={PreviewTemplateDetailsSms}
       routingConfigId={routingConfigId}
+      lockNumber={lockNumberResult.data}
     />
   );
 };

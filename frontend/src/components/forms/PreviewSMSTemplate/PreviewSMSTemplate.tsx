@@ -40,9 +40,7 @@ export function PreviewSMSTemplate({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
-          {backLinkText}
-        </NotifyBackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
@@ -66,10 +64,7 @@ export function PreviewSMSTemplate({
               editPath={`/edit-text-message-template/${initialState.id}`}
             />
             <p>
-              <Link
-                href='/message-templates'
-                data-testid='back-to-templates-link-bottom'
-              >
+              <Link href='/message-templates' data-testid='back-link-bottom'>
                 {backLinkText}
               </Link>
             </p>

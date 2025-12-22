@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmailClient template-submitted email sends email to multiple suppliers 1`] = `
+"Date: <DATE>
+From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <test@nhs.net>
+To: <supplier1@nhs.net>
+Message-ID: <MESSAGE-ID>
+Subject: =?utf-8?B?c3VwcGxpZXIxIC0gTGV0dGVyIHByb29mIGFwcHJvdmVkIGJ5IGFuIE5IUyBOb3RpZnkgdXNlcg==?=
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Template Submitted</title>
+  </head>
+  <body style="font-family: Frutiger W01, sans-serif; font-size: 14px">
+    <p>For the attention of supplier1.</p>
+
+    <p>This letter proof has been approved by an NHS Notify user.</p>
+
+    <p>
+      <strong>Letter proof files:</strong><br />
+        proof1.pdf<br />
+    </p>
+
+    <p>
+      <strong>Approval date and time:</strong><br />
+      2022-01-01T00:00:00Z
+    </p>
+
+    <p>
+      This means that the letter template can be moved into your production environment.
+    </p>
+
+    <p>
+      <strong>Letter template ID:</strong><br />
+      the-client_camp-id_template-id_de_q4
+    </p>
+
+    <p>
+      <strong>Letter name:</strong><br />
+      template-name
+    </p>
+  </body>
+</html>
+"
+`;
+
+exports[`EmailClient template-submitted email sends email to multiple suppliers 2`] = `
+"Date: <DATE>
+From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <test@nhs.net>
+To: <supplier2@nhs.net>
+Message-ID: <MESSAGE-ID>
+Subject: =?utf-8?B?c3VwcGxpZXIyIC0gTGV0dGVyIHByb29mIGFwcHJvdmVkIGJ5IGFuIE5IUyBOb3RpZnkgdXNlcg==?=
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Template Submitted</title>
+  </head>
+  <body style="font-family: Frutiger W01, sans-serif; font-size: 14px">
+    <p>For the attention of supplier2.</p>
+
+    <p>This letter proof has been approved by an NHS Notify user.</p>
+
+    <p>
+      <strong>Letter proof files:</strong><br />
+        proof2.pdf<br />
+        proof3.pdf<br />
+    </p>
+
+    <p>
+      <strong>Approval date and time:</strong><br />
+      2022-01-01T00:00:00Z
+    </p>
+
+    <p>
+      This means that the letter template can be moved into your production environment.
+    </p>
+
+    <p>
+      <strong>Letter template ID:</strong><br />
+      the-client_camp-id_template-id_de_q4
+    </p>
+
+    <p>
+      <strong>Letter name:</strong><br />
+      template-name
+    </p>
+  </body>
+</html>
+"
+`;
+
+exports[`EmailClient template-submitted email sends email to multiple suppliers 3`] = `
+"Date: <DATE>
+From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <test@nhs.net>
+To: <also-supplier2@nhs.net>
+Message-ID: <MESSAGE-ID>
+Subject: =?utf-8?B?c3VwcGxpZXIyIC0gTGV0dGVyIHByb29mIGFwcHJvdmVkIGJ5IGFuIE5IUyBOb3RpZnkgdXNlcg==?=
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Template Submitted</title>
+  </head>
+  <body style="font-family: Frutiger W01, sans-serif; font-size: 14px">
+    <p>For the attention of supplier2.</p>
+
+    <p>This letter proof has been approved by an NHS Notify user.</p>
+
+    <p>
+      <strong>Letter proof files:</strong><br />
+        proof2.pdf<br />
+        proof3.pdf<br />
+    </p>
+
+    <p>
+      <strong>Approval date and time:</strong><br />
+      2022-01-01T00:00:00Z
+    </p>
+
+    <p>
+      This means that the letter template can be moved into your production environment.
+    </p>
+
+    <p>
+      <strong>Letter template ID:</strong><br />
+      the-client_camp-id_template-id_de_q4
+    </p>
+
+    <p>
+      <strong>Letter name:</strong><br />
+      template-name
+    </p>
+  </body>
+</html>
+"
+`;

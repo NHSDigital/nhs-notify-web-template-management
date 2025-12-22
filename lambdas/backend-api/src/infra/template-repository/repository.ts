@@ -85,8 +85,8 @@ export class TemplateRepository {
       templateStatus: initialStatus,
       createdAt: date,
       updatedAt: date,
-      updatedBy: user.userId,
-      createdBy: user.userId,
+      updatedBy: this.internalUserKey(user),
+      createdBy: this.internalUserKey(user),
       ...(template.templateType === 'LETTER' && {
         campaignId,
       }),
@@ -133,7 +133,7 @@ export class TemplateRepository {
       .expectNotFinalStatus()
       .expectTemplateType(template.templateType)
       .expectLockNumber(lockNumber)
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
       .incrementLockNumber();
 
     if (template.templateType === 'EMAIL') {
@@ -172,7 +172,7 @@ export class TemplateRepository {
       .expectTemplateExists()
       .expectNotFinalStatus()
       .expectLockNumber(lockNumber)
-      .setUpdatedByUserAt(user.userId)
+      .setUpdatedByUserAt(this.internalUserKey(user))
       .incrementLockNumber();
 
     try {
@@ -230,8 +230,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        user.clientId,
-        user.userId,
+        user,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -276,8 +275,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        user.clientId,
-        user.userId,
+        user,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -593,7 +591,7 @@ export class TemplateRepository {
       )
         .setStatus('WAITING_FOR_PROOF')
         .expectStatus('PENDING_PROOF_REQUEST')
-        .setUpdatedByUserAt(user.userId)
+        .setUpdatedByUserAt(this.internalUserKey(user))
 
         // dynamodb does not support conditional initialising of maps, so we have to
         // initialise an empty map here, then we set supplier-specific values in the
@@ -637,8 +635,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    clientId: string,
-    userId: string,
+    user: User,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
@@ -656,7 +653,7 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner: this.clientOwnerKey(clientId),
+        owner: this.clientOwnerKey(user.clientId),
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement`,
       ExpressionAttributeNames: {
@@ -669,7 +666,7 @@ export class TemplateRepository {
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
         ':updatedAt': updatedAt,
-        ':updatedBy': userId,
+        ':updatedBy': this.internalUserKey(user),
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
         ':lockNumberIncrement': 1,
@@ -709,6 +706,10 @@ export class TemplateRepository {
 
   private clientOwnerKey(clientId: string) {
     return `CLIENT#${clientId}`;
+  }
+
+  private internalUserKey(user: User) {
+    return `INTERNAL_USER#${user.internalUserId}`;
   }
 
   private _handleUpdateError(

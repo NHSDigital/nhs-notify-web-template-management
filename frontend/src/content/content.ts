@@ -1,4 +1,8 @@
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
@@ -1059,14 +1063,24 @@ export type FallbackConditionBlock = {
   };
 };
 
+const messagePlanConditionalLetterTemplates = {
+  accessibleFormats: {
+    q4: 'British Sign Language letter',
+    x0: 'Standard letter',
+    x1: 'Large print letter',
+  } satisfies Record<LetterType, string>,
+  languageFormats: 'Other language letters',
+};
+
 const messagePlanChannelTemplate = {
   templateLinks: {
     choose: 'Choose',
     change: 'Change',
-    remove: 'Remove',
-    template: 'template',
+    remove: 'Remove{{templateCount|| all}}',
+    templateWord: '{{templateCount|template|templates}}',
   },
   optional: '(optional)',
+  messagePlanConditionalLetterTemplates,
 };
 
 const messagePlanFallbackConditions: Record<
@@ -1164,6 +1178,24 @@ const chooseStandardEnglishLetterTemplate = {
   pageHeading: 'Choose a letter template',
 };
 
+const chooseLargePrintLetterTemplate = {
+  pageTitle: generatePageTitle('Choose a large print letter template'),
+  pageHeading: 'Choose a large print letter template',
+};
+
+const previewLargePrintLetterTemplate = {
+  pageTitle: generatePageTitle('Preview large print letter template'),
+};
+
+const previewOtherLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Preview other language letter template'),
+};
+
+const chooseOtherLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Choose other language letter templates'),
+  pageHeading: 'Choose other language letter templates',
+};
+
 const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
@@ -1177,7 +1209,7 @@ const chooseChannelTemplate = {
     action: {
       heading: '',
       preview: {
-        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}',
+        href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}/preview-template/{{templateId}}?lockNumber={{lockNumber}}',
         text: 'Preview',
       },
     },
@@ -1195,6 +1227,25 @@ const chooseChannelTemplate = {
       href: '/message-plans/choose-templates/{{routingConfigId}}',
     },
   },
+};
+
+const chooseLanguageLetterTemplates = {
+  error: {
+    missing: {
+      hintText: 'You have not chosen any templates',
+      linkText: 'Choose one or more templates',
+    },
+    duplicate: {
+      hintText: 'You can only choose one template for each language',
+      linkText: 'Choose only one template for each language',
+    },
+  },
+  previousSelectionLabel: 'Previously selected templates',
+  noTemplatesText: 'You do not have any other language letter templates yet.',
+  tableHintText:
+    'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.',
+  tableContent: chooseChannelTemplate.tableContent,
+  actions: chooseChannelTemplate.actions,
 };
 
 const messagePlanDraftAndProdInfo: {
@@ -1384,7 +1435,7 @@ const messagePlanForm = {
 
 const previewTemplateFromMessagePlan = {
   backLink: {
-    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}',
+    href: '/message-plans/choose-{{templateType}}-template/{{routingConfigId}}?lockNumber={{lockNumber}}',
     text: 'Go back',
   },
 };
@@ -1394,6 +1445,7 @@ const content = {
   components: {
     channelGuidance,
     chooseChannelTemplate,
+    chooseLanguageLetterTemplates,
     chooseMessageOrder,
     chooseTemplateType,
     copyTemplate,
@@ -1443,6 +1495,10 @@ const content = {
     chooseEmailTemplate,
     chooseTextMessageTemplate,
     chooseStandardEnglishLetterTemplate,
+    chooseLargePrintLetterTemplate,
+    chooseOtherLanguageLetterTemplate,
+    previewLargePrintLetterTemplate,
+    previewOtherLanguageLetterTemplate,
   },
 };
 

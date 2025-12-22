@@ -16,10 +16,9 @@ describe('SyntheticBatch', () => {
         () => new Date('2025-04-10T07:38:41.502Z')
       );
 
-      const userData = [
+      const userData: Array<Record<string, string>> = [
         { userData1: 'a', userData2: 'b' },
-        { userData1: 'c d', userData2: 'e f' },
-        { userData1: 'ghi', userData2: '' },
+        { userData1: 'c d', userData2: '' },
       ];
 
       const fieldsInTemplate = [
@@ -36,6 +35,7 @@ describe('SyntheticBatch', () => {
         'address_line_7',
         'userData1',
         'userData2',
+        'userData3',
       ];
 
       const batch = syntheticBatch.buildBatch(
@@ -61,6 +61,7 @@ describe('SyntheticBatch', () => {
           address_line_7: 'LS1 4AP',
           userData1: 'a',
           userData2: 'b',
+          userData3: undefined,
         },
         {
           clientRef: '3_4_1744270721',
@@ -77,7 +78,8 @@ describe('SyntheticBatch', () => {
           address_line_6: 'DN15 0AR',
           address_line_7: '',
           userData1: 'c d',
-          userData2: 'e f',
+          userData2: '',
+          userData3: undefined,
         },
         {
           clientRef: '5_6_1744270721',
@@ -94,8 +96,9 @@ describe('SyntheticBatch', () => {
           address_line_5: 'HP11 1RE',
           address_line_6: '',
           address_line_7: '',
-          userData1: 'ghi',
-          userData2: '',
+          userData1: undefined,
+          userData2: undefined,
+          userData3: undefined,
         },
       ]);
     });

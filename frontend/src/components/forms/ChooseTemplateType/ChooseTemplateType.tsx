@@ -44,9 +44,7 @@ export const ChooseTemplateType = ({
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <NotifyBackLink data-testid='back-to-templates-link'>
-          {backLinkText}
-        </NotifyBackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <NhsNotifyErrorSummary errorState={errorState} />

@@ -2,7 +2,7 @@
   "data": {
     "clientId": "2faa156e-3d87-4e80-a022-31536b79daf4",
     "createdAt": "2025-07-29T09:45:42.472Z",
-    "createdBy": "9228217c-b0d9-4368-81ec-64e0127d16f0",
+    "createdBy": "INTERNAL_USER#9228217c-b0d9-4368-81ec-64e0127d16f0",
     "id": "9779f827-0670-48b4-8e96-5cecf893468e",
     "message": "Dear ((firstName))\n\nYour appointment to visit the doctor is at ((appointmentTime)) on ((appointmentDate)).\n\nIf you are unable to make your appointment, please click this link  to cancel - https://example.com\n\nThank you\n\n((surgeryName))\n",
     "name": "Example SMS Template",
@@ -10,11 +10,11 @@
     "templateStatus": "DELETED",
     "templateType": "SMS",
     "updatedAt": "2025-07-29T11:17:41.773Z",
-    "updatedBy": "9228217c-b0d9-4368-81ec-64e0127d16f0"
+    "updatedBy": "INTERNAL_USER#9228217c-b0d9-4368-81ec-64e0127d16f0"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json",
-  "dataschemaversion": "1.0.0",
+  "dataschemaversion": "1.2.1",
   "id": "58d46ca9-dae4-4500-9b9a-9e6547289e69",
   "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",

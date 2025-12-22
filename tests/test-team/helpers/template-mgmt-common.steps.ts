@@ -201,15 +201,28 @@ export function assertHeaderNavigationLinksWhenSignedOut(
   });
 }
 
-export function assertGoBackLink(
+export function assertBackLinkTop(
   props: CommonStepsProps & { expectedUrl: string }
 ) {
-  return test.step('when user clicks "Go back", then user is redirected to previous page', async () => {
-    const { page, baseURL, expectedUrl } = props;
+  return test.step('displays back link at the top of the page with correct url', async () => {
+    const { page, expectedUrl } = props;
 
     await page.loadPage();
 
-    await page.goBackLink.click();
+    await expect(page.backLinkTop).toBeVisible();
+    await expect(page.backLinkTop).toHaveAttribute('href', `/${expectedUrl}`);
+  });
+}
+
+export function assertAndClickBackLinkTop(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
+  return test.step('when user clicks the top back link, then user is redirected to previous page', async () => {
+    await assertBackLinkTop(props);
+
+    const { page, baseURL, expectedUrl } = props;
+
+    await page.backLinkTop.click();
 
     await page.page.waitForURL(`${baseURL}/${expectedUrl}`);
 
@@ -217,13 +230,66 @@ export function assertGoBackLink(
   });
 }
 
-export function assertGoBackLinkNotPresent(props: CommonStepsProps) {
-  return test.step('should not display "Go Back" link on page', async () => {
+export function assertBackLinkBottom(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
+  return test.step('displays back link at the bottom of the page with correct url', async () => {
+    const { page, expectedUrl } = props;
+
+    await page.loadPage();
+
+    await expect(page.backLinkBottom).toBeVisible();
+    await expect(page.backLinkBottom).toHaveAttribute(
+      'href',
+      `/${expectedUrl}`
+    );
+  });
+}
+
+export function assertAndClickBackLinkBottom(
+  props: CommonStepsProps & { expectedUrl: string }
+) {
+  return test.step('when user clicks the bottom back link, then user is redirected to previous page', async () => {
+    await assertBackLinkBottom(props);
+
+    const { page, baseURL, expectedUrl } = props;
+
+    await page.backLinkBottom.click();
+
+    await page.page.waitForURL(`${baseURL}/${expectedUrl}`);
+
+    await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
+  });
+}
+
+export function assertBackLinkTopNotPresent(props: CommonStepsProps) {
+  return test.step('should not display a back link at the top of the page', async () => {
     const { page } = props;
 
     await page.loadPage();
 
-    await expect(page.goBackLink).toBeHidden();
+    await expect(page.backLinkTop).toBeHidden();
+  });
+}
+
+export function assertBackLinkBottomNotPresent(props: CommonStepsProps) {
+  return test.step('should not display "Go Back" link at bottom of page', async () => {
+    const { page } = props;
+
+    await page.loadPage();
+
+    await expect(page.backLinkBottom).toBeHidden();
+  });
+}
+
+export function assertNoBackLinks(props: CommonStepsProps) {
+  return test.step('should not display any back links on page', async () => {
+    const { page } = props;
+
+    await page.loadPage();
+
+    await expect(page.backLinkTop).toBeHidden();
+    await expect(page.backLinkBottom).toBeHidden();
   });
 }
 

@@ -9,23 +9,23 @@ export function createHandler({
   routingConfigClient: RoutingConfigClient;
 }): APIGatewayProxyHandler {
   return async function handler(event) {
-    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+    const { internalUserId, clientId } = event.requestContext.authorizer ?? {};
 
     const routingConfigId = event.pathParameters?.routingConfigId;
 
-    if (!routingConfigId || !clientId || !userId) {
+    if (!routingConfigId || !clientId || !internalUserId) {
       return apiFailure(400, 'Invalid request');
     }
 
     const log = logger.child({
       clientId,
       routingConfigId,
-      userId,
+      internalUserId,
     });
 
     const { data, error } = await routingConfigClient.getRoutingConfig(
       routingConfigId,
-      { clientId, userId }
+      { clientId, internalUserId }
     );
 
     if (error) {

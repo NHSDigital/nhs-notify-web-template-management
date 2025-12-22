@@ -14,7 +14,9 @@ export const validate = (
 
     const validationResult = $schema.safeParse(data);
 
-    if (!validationResult.success) {
+    if (validationResult.success) {
+      cb({});
+    } else {
       event.preventDefault();
 
       const error = validationResult.error.flatten();

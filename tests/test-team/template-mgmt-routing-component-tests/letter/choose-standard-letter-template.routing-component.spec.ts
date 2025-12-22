@@ -5,8 +5,13 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
+  assertAndClickBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
+import {
+  assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithTemplatesAvailable,
+} from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -57,24 +62,22 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 3',
       'SUBMITTED'
     ),
-    FRENCH_LETTER: {
-      ...TemplateFactory.uploadLetterTemplate(
-        randomUUID(),
-        user,
-        'French letter template',
-        'SUBMITTED'
-      ),
-      language: 'fr',
-    },
-    ACCESSIBLE_LETTER: {
-      ...TemplateFactory.uploadLetterTemplate(
-        randomUUID(),
-        user,
-        'Accessible letter template',
-        'SUBMITTED'
-      ),
-      letterType: 'x1',
-    },
+    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'French letter template',
+      'SUBMITTED',
+      'PASSED',
+      { language: 'fr' }
+    ),
+    ACCESSIBLE_LETTER: TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'Accessible letter template',
+      'SUBMITTED',
+      'PASSED',
+      { letterType: 'x1' }
+    ),
     APP: TemplateFactory.createNhsAppTemplate(
       randomUUID(),
       user,
@@ -114,7 +117,11 @@ test.describe('Routing - Choose letter template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkTopNotPresent(props);
+    await assertAndClickBackLinkBottom({
+      ...props,
+      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`,
+    });
   });
 
   test('loads the choose letter template page for a message plan with a letter channel', async ({
@@ -132,6 +139,14 @@ test.describe('Routing - Choose letter template page', () => {
     );
 
     await test.step('displays list of letter templates to choose from', async () => {
+      await assertChooseTemplatePageWithTemplatesAvailable({
+        page: chooseLetterTemplatePage,
+      });
+
+      await expect(chooseLetterTemplatePage.messagePlanName).toHaveText(
+        messagePlans.LETTER_ROUTING_CONFIG.name
+      );
+
       const table = page.getByTestId('channel-templates-table');
       await expect(table).toBeVisible();
       await expect(
@@ -157,17 +172,21 @@ test.describe('Routing - Choose letter template page', () => {
       ]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
-        const radioButton = table.getByTestId(`${template.id}-radio`);
+        const radioButton = chooseLetterTemplatePage.getRadioButton(
+          template.id
+        );
         await expect(radioButton).toBeVisible();
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        const previewLink = table.getByTestId(`${template.id}-preview-link`);
+        const previewLink = chooseLetterTemplatePage.getPreviewLink(
+          template.id
+        );
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-standard-english-letter-template/${plan.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-standard-english-letter-template/${plan.id}/preview-template/${template.id}?lockNumber=${plan.lockNumber}`
         );
       }
 
@@ -178,11 +197,11 @@ test.describe('Routing - Choose letter template page', () => {
       ).toBeHidden();
       await expect(table.getByText(templates.APP.name)).toBeHidden();
 
-      const submitButton = page.getByTestId('submit-button');
+      const submitButton = chooseLetterTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
+      const goBackLink = chooseLetterTemplatePage.backLinkBottom;
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
@@ -191,7 +210,7 @@ test.describe('Routing - Choose letter template page', () => {
     });
 
     await test.step('errors on no selection', async () => {
-      await page.getByTestId('submit-button').click();
+      await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${plan.id}?lockNumber=${plan.lockNumber}`
@@ -206,8 +225,10 @@ test.describe('Routing - Choose letter template page', () => {
     await test.step('submits selected template and navigates to choose templates page', async () => {
       await chooseLetterTemplatePage.loadPage();
 
-      await page.getByTestId(`${templates.LETTER2.id}-radio`).check();
-      await page.getByTestId('submit-button').click();
+      await chooseLetterTemplatePage
+        .getRadioButton(templates.LETTER2.id)
+        .check();
+      await chooseLetterTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
@@ -217,13 +238,24 @@ test.describe('Routing - Choose letter template page', () => {
     await test.step('pre-selects previously selected template', async () => {
       await chooseLetterTemplatePage.loadPage();
 
-      // Check summary list is present and displays the name of the previously selected template
-      const summaryList = page.getByTestId('previous-selection-summary');
-      await expect(summaryList).toBeVisible();
-      await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.LETTER2.name);
+      await assertChooseTemplatePageWithPreviousSelection({
+        page: chooseLetterTemplatePage,
+      });
 
-      const selectedRadio = page.getByTestId(`${templates.LETTER2.id}-radio`);
+      await expect(chooseLetterTemplatePage.messagePlanName).toHaveText(
+        messagePlans.LETTER_ROUTING_CONFIG.name
+      );
+
+      await expect(
+        chooseLetterTemplatePage.previousSelectionDetails
+      ).toContainText('Previously selected template');
+      await expect(
+        chooseLetterTemplatePage.previousSelectionDetails
+      ).toContainText(templates.LETTER2.name);
+
+      const selectedRadio = chooseLetterTemplatePage.getRadioButton(
+        templates.LETTER2.id
+      );
       await expect(selectedRadio).toBeChecked();
     });
   });

@@ -86,7 +86,9 @@ jobs:
       - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
-          node_version: "${{ inputs.nodejs_version }}"
+        # Pinned Node version for running unit tests to ensure that coverage checks work as expected
+        # Long term fix covered in CCM-9959
+          node_version: "22.21.1"
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present

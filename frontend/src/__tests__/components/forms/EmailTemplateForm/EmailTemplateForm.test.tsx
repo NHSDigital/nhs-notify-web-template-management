@@ -24,6 +24,17 @@ jest.mock('react', () => {
   };
 });
 
+const errorLogger = console.error;
+
+beforeAll(() => {
+  global.console.error = jest.fn(); // suppress error logging in tests
+});
+
+afterAll(() => {
+  jest.resetAllMocks();
+  global.console.error = errorLogger;
+});
+
 test('renders page with preloaded field values', () => {
   const container = render(
     <EmailTemplateForm

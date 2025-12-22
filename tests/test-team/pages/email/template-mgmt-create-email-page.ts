@@ -19,8 +19,6 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
 
   public readonly namingYourTemplate: Locator;
 
-  public readonly goBackLink: Locator;
-
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   public readonly saveAndPreviewButton: Locator;
@@ -40,9 +38,6 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template-details"]'
     );
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
 

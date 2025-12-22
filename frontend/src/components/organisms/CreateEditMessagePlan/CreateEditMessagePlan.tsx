@@ -10,12 +10,10 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanTemplates } from '@utils/message-plans';
-
-import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
+import { MessagePlanTemplates } from '@utils/routing-utils';
+import { interpolate } from '@utils/interpolate';
 
 import copy from '@content/content';
-import { interpolate } from '@utils/interpolate';
 const { createEditMessagePlan: content } = copy.components;
 
 export function CreateEditMessagePlan({
@@ -49,7 +47,8 @@ export function CreateEditMessagePlan({
                 {content.rowHeadings.routingPlanId}
               </SummaryList.Key>
               <SummaryList.Value
-                className={styles['create-edit-message-plan-routing-config-id']}
+                data-testid='routing-config-id'
+                className='monospace-font'
               >
                 {messagePlan.id}
               </SummaryList.Value>

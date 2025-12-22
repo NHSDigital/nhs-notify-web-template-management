@@ -86,8 +86,8 @@ exports[`TemplateSubmitted component should render 1`] = `
         />
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
-            id="go-back-link"
           >
             Back to all templates
           </a>
