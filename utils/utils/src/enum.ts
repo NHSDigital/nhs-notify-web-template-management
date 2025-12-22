@@ -127,39 +127,25 @@ type Colour =
   | 'yellow'
   | undefined;
 
-const colourMappings: Record<TemplateStatus, Colour> = {
-  NOT_YET_SUBMITTED: undefined,
-  SUBMITTED: 'grey',
-  DELETED: undefined,
-  PENDING_PROOF_REQUEST: 'blue',
-  PENDING_UPLOAD: 'blue',
-  PENDING_VALIDATION: 'blue',
-  VIRUS_SCAN_FAILED: 'red',
-  VALIDATION_FAILED: 'red',
-  WAITING_FOR_PROOF: 'yellow',
-  PROOF_AVAILABLE: 'orange',
-} as const;
-
-const templateStatusToColourMappingsLetter = (
-  status: TemplateStatus
-): Colour | undefined => colourMappings[status];
-
-const templateStatusToColourMappingsDigital = (
-  status: TemplateStatus
-): Colour | undefined =>
-  (
-    ({
-      ...colourMappings,
-      NOT_YET_SUBMITTED: 'green',
-    }) satisfies typeof colourMappings
-  )[status];
-
 export const statusToColourMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
-) =>
-  template.templateType === 'LETTER'
-    ? templateStatusToColourMappingsLetter(template.templateStatus)
-    : templateStatusToColourMappingsDigital(template.templateStatus);
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  featureFlags: Pick<ClientFeatures, 'routing'>
+) => {
+  const colourMappings: Record<TemplateStatus, Colour> = {
+    NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
+    SUBMITTED: featureFlags.routing ? 'orange' : 'grey',
+    DELETED: undefined,
+    PENDING_PROOF_REQUEST: 'blue',
+    PENDING_UPLOAD: 'blue',
+    PENDING_VALIDATION: 'blue',
+    VIRUS_SCAN_FAILED: 'red',
+    VALIDATION_FAILED: 'red',
+    WAITING_FOR_PROOF: 'yellow',
+    PROOF_AVAILABLE: 'orange',
+  };
+
+  return colourMappings[template.templateStatus];
+};
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({

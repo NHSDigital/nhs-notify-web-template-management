@@ -745,6 +745,26 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
           </h1>
         </div>
         <div
+          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot edit or delete this template because it's used in a message plan that's in production.
+          </p>
+          <p>
+            <a
+              href="/copy-template/template-id"
+            >
+              Copy this template
+            </a>
+             to create a draft with the same content.
+          </p>
+        </div>
+        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -790,7 +810,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-test-id="status-tag-submitted"
                 >
                   Locked
@@ -832,12 +852,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             </div>
           </dl>
         </div>
-        <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
         <p>
           <a
             href="/message-templates"
@@ -886,6 +900,26 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
           </h1>
         </div>
         <div
+          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot edit or delete this template because it's used in a message plan that's in production.
+          </p>
+          <p>
+            <a
+              href="/copy-template/template-id"
+            >
+              Copy this template
+            </a>
+             to create a draft with the same content.
+          </p>
+        </div>
+        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -931,7 +965,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-test-id="status-tag-submitted"
                 >
                   Locked
@@ -999,12 +1033,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
           </dl>
         </div>
         <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
-        <p>
           <a
             href="/message-templates"
           >
@@ -1052,6 +1080,18 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
           </h1>
         </div>
         <div
+          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot delete this template because it's used in a message plan that's in production.
+          </p>
+        </div>
+        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -1097,7 +1137,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-test-id="status-tag-submitted"
                 >
                   Locked
@@ -1264,9 +1304,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
           </dl>
         </div>
         <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
-        <p>
           <a
             href="/message-templates"
           >
@@ -1314,6 +1351,26 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
           </h1>
         </div>
         <div
+          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot edit or delete this template because it's used in a message plan that's in production.
+          </p>
+          <p>
+            <a
+              href="/copy-template/template-id"
+            >
+              Copy this template
+            </a>
+             to create a draft with the same content.
+          </p>
+        </div>
+        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -1359,7 +1416,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-test-id="status-tag-submitted"
                 >
                   Locked
@@ -1401,12 +1458,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
             </div>
           </dl>
         </div>
-        <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
         <p>
           <a
             href="/message-templates"

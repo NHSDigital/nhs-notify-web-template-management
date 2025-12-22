@@ -1039,6 +1039,16 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           </h1>
         </div>
         <div
+          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          />
+          <p>
+            You cannot delete this template because it's used in a message plan that's in production.
+          </p>
+        </div>
+        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl

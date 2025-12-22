@@ -87,7 +87,7 @@ export function MessageTemplates({
                 <Table.Cell>{template.id}</Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
-                  <Tag color={statusToColourMapping(template)}>
+                  <Tag color={statusToColourMapping(template, features)}>
                     {statusToDisplayMapping(template, features)}
                   </Tag>
                 </Table.Cell>
