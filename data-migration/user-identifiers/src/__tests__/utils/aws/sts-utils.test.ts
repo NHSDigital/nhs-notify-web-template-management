@@ -1,4 +1,4 @@
-import { getAccountId } from '@/src/utils/sts-utils';
+import { getAccountId } from '@/src/utils/aws/sts-utils';
 import { STSClient } from '@aws-sdk/client-sts';
 
 jest.mock('@aws-sdk/client-sts', () => ({
