@@ -1,5 +1,5 @@
 module "sqs_sftp_upload" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.27/terraform-sqs.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip"
 
   aws_account_id = var.aws_account_id
   component      = var.component

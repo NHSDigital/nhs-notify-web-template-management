@@ -1,5 +1,5 @@
 module "download_authorizer_lambda" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-lambda.zip"
 
   providers = {
     aws = aws.us-east-1
