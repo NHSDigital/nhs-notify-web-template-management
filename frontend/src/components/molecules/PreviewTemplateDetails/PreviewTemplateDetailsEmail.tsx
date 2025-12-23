@@ -30,7 +30,11 @@ export default function PreviewTemplateDetailsEmail({
   return (
     <>
       <DetailsHeader templateName={template.name} />
-      {features.routing && <LockedTemplateWarning template={template} />}
+
+      {features.routing && template.templateStatus === 'SUBMITTED' && (
+        <LockedTemplateWarning template={template} />
+      )}
+
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >

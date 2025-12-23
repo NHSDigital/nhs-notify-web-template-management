@@ -846,27 +846,6 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
           </h1>
         </div>
         <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--green nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Draft
-          </strong>
-          <p>
-            You cannot edit or delete this template because it's used in a message plan that's in production.
-          </p>
-          <p>
-            <a
-              data-testid="copy-link"
-              href="/copy-template/template-id"
-            >
-              Copy this template
-            </a>
-             to create a draft with the same content.
-          </p>
-        </div>
-        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -1273,27 +1252,6 @@ exports[`Preview email form renders matches snapshot when navigating from manage
           >
             test-template-email
           </h1>
-        </div>
-        <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--green nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Draft
-          </strong>
-          <p>
-            You cannot edit or delete this template because it's used in a message plan that's in production.
-          </p>
-          <p>
-            <a
-              data-testid="copy-link"
-              href="/copy-template/template-id"
-            >
-              Copy this template
-            </a>
-             to create a draft with the same content.
-          </p>
         </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
