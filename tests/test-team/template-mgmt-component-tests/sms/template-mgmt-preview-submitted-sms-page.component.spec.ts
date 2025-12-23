@@ -84,7 +84,7 @@ test.describe('Preview submitted sms message template Page', () => {
 
     await expect(previewSubmittedSMSTemplatePage.copyLink).toHaveAttribute(
       'href',
-      `/copy-template/${templates.valid.id}`
+      `/templates/copy-template/${templates.valid.id}`
     );
   });
 

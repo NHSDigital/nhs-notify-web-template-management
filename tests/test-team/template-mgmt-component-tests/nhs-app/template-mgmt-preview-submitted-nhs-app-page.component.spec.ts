@@ -85,7 +85,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
 
     await expect(previewSubmittedNHSAppTemplatePage.copyLink).toHaveAttribute(
       'href',
-      `/copy-template/${templates.valid.id}`
+      `/templates/copy-template/${templates.valid.id}`
     );
   });
 
