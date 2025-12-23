@@ -4,6 +4,7 @@ import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -86,6 +87,30 @@ describe('CreateEmailTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           emailTemplateMessage: ['URLs must start with https://'],
+        },
+      },
+    });
+  });
+
+  it('create-email-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-email-template',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          emailTemplateMessage: [
+            ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+          ],
         },
       },
     });

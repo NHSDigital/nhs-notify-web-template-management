@@ -10,6 +10,23 @@ exports[`Client-side validation triggers 1`] = `
     <div
       class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
     >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        />
+      </div>
       <h1
         class="nhsuk-heading-xl"
         data-testid="page-heading"
@@ -150,7 +167,6 @@ exports[`Client-side validation triggers 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -236,9 +252,6 @@ exports[`Client-side validation triggers 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -700,7 +713,7 @@ exports[`renders page one error 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -735,16 +748,6 @@ exports[`renders page one error 1`] = `
             >
               Template name error
             </a>
-          </li>
-          <li>
-            <a
-              href="#emailTemplateSubjectLine"
-            />
-          </li>
-          <li>
-            <a
-              href="#emailTemplateMessage"
-            />
           </li>
         </ul>
       </div>
@@ -900,7 +903,6 @@ exports[`renders page one error 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -984,9 +986,6 @@ exports[`renders page one error 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -1448,7 +1447,7 @@ exports[`renders page with multiple errors 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -1496,6 +1495,61 @@ exports[`renders page with multiple errors 1`] = `
               href="#emailTemplateMessage"
             >
               Template message error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#emailTemplateMessage"
+            >
+              <div
+                class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+              >
+                You cannot use the following custom personalisation fields in your message:
+              </div>
+              <ul
+                class="nhsuk-list nhsuk-list--bullet"
+              >
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  date
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_1
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_2
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_3
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_4
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_5
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_6
+                </li>
+                <li
+                  class="nhsuk-u-margin-bottom-0"
+                >
+                  address_line_7
+                </li>
+              </ul>
             </a>
           </li>
         </ul>
@@ -1671,12 +1725,60 @@ exports[`renders page with multiple errors 1`] = `
                   Error: 
                 </span>
                 Template message error
+                <div
+                  class="nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-4"
+                >
+                  You cannot use the following custom personalisation fields in your message:
+                </div>
+                <ul
+                  class="nhsuk-list nhsuk-list--bullet"
+                >
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    date
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_1
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_2
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_3
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_4
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_5
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_6
+                  </li>
+                  <li
+                    class="nhsuk-u-margin-bottom-0"
+                  >
+                    address_line_7
+                  </li>
+                </ul>
               </span>
               <textarea
                 aria-describedby="emailTemplateMessage--error-message"
                 autocomplete="off"
                 class="nhsuk-textarea nhsuk-textarea--error"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -1760,9 +1862,6 @@ exports[`renders page with multiple errors 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -2224,7 +2323,7 @@ exports[`renders page with preloaded field values 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -2377,7 +2476,6 @@ exports[`renders page with preloaded field values 1`] = `
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -2463,9 +2561,6 @@ exports[`renders page with preloaded field values 1`] = `
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>
@@ -3073,7 +3168,6 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               <textarea
                 autocomplete="off"
                 class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
                 id="emailTemplateMessage"
                 name="emailTemplateMessage"
                 rows="12"
@@ -3159,9 +3253,6 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               </li>
               <li>
                 ((nhsNumber))
-              </li>
-              <li>
-                ((date))
               </li>
             </ul>
             <p>

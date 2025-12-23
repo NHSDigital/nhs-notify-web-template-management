@@ -5,7 +5,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
-import { HintText, Label, Textarea, TextInput } from 'nhsuk-react-components';
+import { HintText, Label, TextInput } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
   ErrorState,
@@ -27,6 +27,8 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import NHSNotifyTextArea from '@atoms/NHSNotifyTextArea/NHSNotifyTextArea';
+import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
@@ -48,8 +50,15 @@ export const SmsTemplateForm: FC<
   const templateNameError =
     errorState?.fieldErrors?.smsTemplateName?.join(', ');
 
-  const templateMessageError =
-    errorState?.fieldErrors?.smsTemplateMessage?.join(', ');
+  const hasTemplateMessageError =
+    (errorState?.fieldErrors?.smsTemplateMessage?.length ?? 0) > 0;
+  const templateMessageError = hasTemplateMessageError ? (
+    <>
+      {errorState?.fieldErrors?.smsTemplateMessage.map((error) =>
+        renderErrorItem(error)
+      )}
+    </>
+  ) : undefined;
 
   const editMode = 'id' in initialState;
 
@@ -107,17 +116,17 @@ export const SmsTemplateForm: FC<
                 />
               </div>
               <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
-                <Textarea
-                  id='smsTemplateMessage'
+                <NHSNotifyTextArea
                   label={templateMessageLabelText}
-                  labelProps={{ size: 's' }}
-                  defaultValue={smsTemplateMessage}
-                  onChange={smsTemplateMessageHandler}
-                  maxLength={MAX_SMS_CHARACTER_LENGTH}
-                  rows={12}
+                  id='smsTemplateMessage'
+                  textAreaProps={{
+                    rows: 12,
+                    onChange: smsTemplateMessageHandler,
+                    defaultValue: smsTemplateMessage,
+                    autoComplete: 'off',
+                    maxLength: MAX_SMS_CHARACTER_LENGTH,
+                  }}
                   error={templateMessageError}
-                  errorProps={{ id: 'smsTemplateMessage--error-message' }}
-                  autoComplete='off'
                 />
                 <JsEnabled>
                   <ContentRenderer

@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
+import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -23,6 +24,16 @@ const PreviewEmailTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const template = await getTemplate(templateId);
 
@@ -37,6 +48,7 @@ const PreviewEmailTemplateFromMessagePlan = async (
       initialState={validatedTemplate}
       previewComponent={PreviewTemplateDetailsEmail}
       routingConfigId={routingConfigId}
+      lockNumber={lockNumberResult.data}
     />
   );
 };

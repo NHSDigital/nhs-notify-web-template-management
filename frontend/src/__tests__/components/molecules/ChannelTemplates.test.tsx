@@ -27,6 +27,7 @@ describe('ChannelTemplates', () => {
         errorState={null}
         selectedTemplate={null}
         routingConfigId='abc'
+        lockNumber={5}
       />
     );
 
@@ -45,6 +46,7 @@ describe('ChannelTemplates', () => {
         errorState={null}
         selectedTemplate={EMAIL_TEMPLATE.id}
         routingConfigId='abc'
+        lockNumber={5}
       />
     );
 
@@ -70,6 +72,7 @@ describe('ChannelTemplates', () => {
         }}
         selectedTemplate={null}
         routingConfigId='abc'
+        lockNumber={5}
       />
     );
 

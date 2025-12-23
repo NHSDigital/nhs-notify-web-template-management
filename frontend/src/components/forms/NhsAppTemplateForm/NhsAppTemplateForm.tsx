@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useActionState, useState } from 'react';
-import { TextInput, HintText, Label, Textarea } from 'nhsuk-react-components';
+import { TextInput, HintText, Label } from 'nhsuk-react-components';
 import {
   $CreateNhsAppTemplateSchema,
   processFormActions,
@@ -28,6 +28,8 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import NHSNotifyTextArea from '@atoms/NHSNotifyTextArea/NHSNotifyTextArea';
+import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
@@ -59,8 +61,15 @@ export const NhsAppTemplateForm: FC<
   const templateNameError =
     errorState?.fieldErrors?.nhsAppTemplateName?.join(', ');
 
-  const templateMessageError =
-    errorState?.fieldErrors?.nhsAppTemplateMessage?.join(', ');
+  const hasTemplateMessageError =
+    (errorState?.fieldErrors?.nhsAppTemplateMessage?.length ?? 0) > 0;
+  const templateMessageError = hasTemplateMessageError ? (
+    <>
+      {errorState?.fieldErrors?.nhsAppTemplateMessage.map((error) =>
+        renderErrorItem(error)
+      )}
+    </>
+  ) : undefined;
 
   const editMode = 'id' in initialState;
 
@@ -108,17 +117,17 @@ export const NhsAppTemplateForm: FC<
                 />
               </div>
               <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
-                <Textarea
+                <NHSNotifyTextArea
                   label={templateMessageLabelText}
-                  labelProps={{ size: 's' }}
                   id='nhsAppTemplateMessage'
-                  maxLength={5000}
-                  rows={12}
-                  onChange={nhsAppMessageHandler}
-                  defaultValue={nhsAppTemplateMessage}
+                  textAreaProps={{
+                    rows: 12,
+                    maxLength: 5000,
+                    onChange: nhsAppMessageHandler,
+                    defaultValue: nhsAppTemplateMessage,
+                    autoComplete: 'off',
+                  }}
                   error={templateMessageError}
-                  errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
-                  autoComplete='off'
                 />
                 <JsEnabled>
                   <MarkdownContent

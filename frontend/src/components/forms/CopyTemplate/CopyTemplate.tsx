@@ -45,9 +45,7 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
-          {backLinkText}
-        </NotifyBackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

@@ -4,7 +4,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
+  assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -71,26 +72,29 @@ test.describe('Routing - Preview app template page', () => {
     const props = {
       page: new RoutingPreviewNhsAppTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.APP.id),
+        .setPathParam('templateId', templates.APP.id)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
+    await assertBackLinkBottom(props);
+    await assertAndClickBackLinkTop(props);
   });
 
   test('loads the NHS app template', async ({ page, baseURL }) => {
     const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(page)
       .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.APP.id);
+      .setPathParam('templateId', templates.APP.id)
+      .setSearchParam('lockNumber', '0');
 
     await previewNhsAppTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${templates.APP.id}`
+      `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlans.APP_ROUTING_CONFIG.id}/preview-template/${templates.APP.id}?lockNumber=0`
     );
 
     await expect(previewNhsAppTemplatePage.pageHeading).toContainText(
@@ -110,7 +114,8 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', notFoundTemplateId);
+        .setPathParam('templateId', notFoundTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 
@@ -122,7 +127,8 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', invalidTemplateId);
+        .setPathParam('templateId', invalidTemplateId)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 
@@ -134,11 +140,27 @@ test.describe('Routing - Preview app template page', () => {
         page
       )
         .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.EMAIL.id);
+        .setPathParam('templateId', templates.EMAIL.id)
+        .setSearchParam('lockNumber', '0');
 
       await previewNhsAppTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
+  });
+
+  test('redirects to choose-templates page when lockNumber is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewNhsAppTemplatePage = new RoutingPreviewNhsAppTemplatePage(page)
+      .setPathParam('messagePlanId', messagePlans.APP_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.APP.id);
+
+    await previewNhsAppTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
+    );
   });
 });

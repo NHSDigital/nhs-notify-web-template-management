@@ -5,8 +5,13 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertBackLinkTopNotPresent,
+  assertAndClickBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
+import {
+  assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithTemplatesAvailable,
+} from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
@@ -96,7 +101,11 @@ test.describe('Routing - Choose email template page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertBackLinkTopNotPresent(props);
+    await assertAndClickBackLinkBottom({
+      ...props,
+      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
+    });
   });
 
   test('loads the choose email template page for a message plan with an email channel', async ({
@@ -115,7 +124,15 @@ test.describe('Routing - Choose email template page', () => {
     );
 
     await test.step('displays list of email templates to choose from', async () => {
-      const table = page.getByTestId('channel-templates-table');
+      await assertChooseTemplatePageWithTemplatesAvailable({
+        page: chooseEmailTemplatePage,
+      });
+
+      await expect(chooseEmailTemplatePage.messagePlanName).toHaveText(
+        messagePlans.EMAIL_ROUTING_CONFIG.name
+      );
+
+      const table = chooseEmailTemplatePage.templatesTable;
       await expect(table).toBeVisible();
       await expect(
         table.getByTestId('channel-templates-table-header-template-select')
@@ -140,27 +157,27 @@ test.describe('Routing - Choose email template page', () => {
       ]) {
         await expect(table.getByText(template.name)).toBeVisible();
 
-        const radioButton = table.getByTestId(`${template.id}-radio`);
+        const radioButton = chooseEmailTemplatePage.getRadioButton(template.id);
         await expect(radioButton).toBeVisible();
         await expect(radioButton).toHaveAttribute('value', template.id);
         await expect(radioButton).not.toBeChecked();
 
-        const previewLink = table.getByTestId(`${template.id}-preview-link`);
+        const previewLink = chooseEmailTemplatePage.getPreviewLink(template.id);
         await expect(previewLink).toBeVisible();
         await expect(previewLink).toHaveText('Preview');
         await expect(previewLink).toHaveAttribute(
           'href',
-          `/templates/message-plans/choose-email-template/${plan.id}/preview-template/${template.id}`
+          `/templates/message-plans/choose-email-template/${plan.id}/preview-template/${template.id}?lockNumber=${plan.lockNumber}`
         );
       }
 
       await expect(table.getByText(templates.APP.name)).toBeHidden();
 
-      const submitButton = page.getByTestId('submit-button');
+      const submitButton = chooseEmailTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();
       await expect(submitButton).toHaveText('Save and continue');
 
-      const goBackLink = page.getByRole('link', { name: 'Go back' });
+      const goBackLink = chooseEmailTemplatePage.backLinkBottom;
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
@@ -169,7 +186,7 @@ test.describe('Routing - Choose email template page', () => {
     });
 
     await test.step('errors on no selection', async () => {
-      await page.getByTestId('submit-button').click();
+      await chooseEmailTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-email-template/${plan.id}?lockNumber=${plan.lockNumber}`
@@ -184,8 +201,8 @@ test.describe('Routing - Choose email template page', () => {
     await test.step('submits selected template and navigates to choose templates page', async () => {
       await chooseEmailTemplatePage.loadPage();
 
-      await page.getByTestId(`${templates.EMAIL2.id}-radio`).check();
-      await page.getByTestId('submit-button').click();
+      await chooseEmailTemplatePage.getRadioButton(templates.EMAIL2.id).check();
+      await chooseEmailTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
@@ -195,13 +212,24 @@ test.describe('Routing - Choose email template page', () => {
     await test.step('pre-selects previously selected template', async () => {
       await chooseEmailTemplatePage.loadPage();
 
-      // Check summary list is present and displays the name of the previously selected template
-      const summaryList = page.getByTestId('previous-selection-summary');
-      await expect(summaryList).toBeVisible();
-      await expect(summaryList).toContainText('Previously selected template');
-      await expect(summaryList).toContainText(templates.EMAIL2.name);
+      await assertChooseTemplatePageWithPreviousSelection({
+        page: chooseEmailTemplatePage,
+      });
 
-      const selectedRadio = page.getByTestId(`${templates.EMAIL2.id}-radio`);
+      await expect(chooseEmailTemplatePage.messagePlanName).toHaveText(
+        messagePlans.EMAIL_ROUTING_CONFIG.name
+      );
+
+      await expect(
+        chooseEmailTemplatePage.previousSelectionDetails
+      ).toContainText('Previously selected template');
+      await expect(
+        chooseEmailTemplatePage.previousSelectionDetails
+      ).toContainText(templates.EMAIL2.name);
+
+      const selectedRadio = chooseEmailTemplatePage.getRadioButton(
+        templates.EMAIL2.id
+      );
       await expect(selectedRadio).toBeChecked();
     });
   });

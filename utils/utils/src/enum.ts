@@ -176,12 +176,20 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
-export const cascadeTemplateTypeToUrlTextMappings = (type: TemplateType) =>
+export const cascadeTemplateTypeToUrlTextMappings = (
+  type: TemplateType,
+  conditionalType?: LetterType | 'language'
+) =>
   ({
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
     EMAIL: 'email',
-    LETTER: 'standard-english-letter',
+    LETTER: {
+      q4: 'british-sign-language-letter',
+      x0: 'standard-english-letter',
+      x1: 'large-print-letter',
+      language: 'other-language-letter',
+    }[conditionalType || 'x0'],
   })[type];
 
 const creationAction = (type: TemplateType) =>
@@ -200,10 +208,11 @@ export const previewTemplatePages = (type: TemplateType) =>
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
 
-export const messagePlanChooseTemplateUrl = (type: TemplateType) =>
-  type === 'LETTER'
-    ? 'choose-standard-english-letter-template'
-    : `choose-${templateTypeToUrlTextMappings(type)}-template`;
+export const messagePlanChooseTemplateUrl = (
+  type: TemplateType,
+  conditionalType?: LetterType | 'language'
+) =>
+  `choose-${cascadeTemplateTypeToUrlTextMappings(type, conditionalType)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (
@@ -322,7 +331,7 @@ export const channelDisplayMappings = (channel: Channel) => {
     NHSAPP: 'NHS App',
     SMS: 'Text message (SMS)',
     EMAIL: 'Email',
-    LETTER: 'Letter',
+    LETTER: 'Standard English letter',
   };
   return map[channel];
 };

@@ -3,10 +3,11 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateMgmtCreateSmsPage } from '../../pages/sms/template-mgmt-create-sms-page';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -52,7 +53,8 @@ test.describe('Create SMS message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLink({
+      await assertBackLinkBottomNotPresent(props);
+      await assertAndClickBackLinkTop({
         ...props,
         expectedUrl: 'templates/choose-a-template-type',
       });
@@ -333,6 +335,34 @@ test.describe('Create SMS message template Page', () => {
       );
 
       await expect(smsMessageErrorLink).toHaveText(errorMessage);
+
+      await smsMessageErrorLink.click();
+
+      await expect(createSmsTemplatePage.messageTextArea).toBeFocused();
+    });
+
+    test('when user submits form with unsupported personalisation, then an error is displayed', async ({
+      page,
+    }) => {
+      const errorMessage =
+        'You cannot use the following custom personalisation fields in your message';
+
+      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+      await createSmsTemplatePage.loadPage();
+
+      await createSmsTemplatePage.nameInput.fill('template-name');
+      await createSmsTemplatePage.messageTextArea.fill(
+        'a template message containing ((date))'
+      );
+
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
+
+      const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
+        '[href="#smsTemplateMessage"]'
+      );
+
+      await expect(smsMessageErrorLink).toContainText(errorMessage);
 
       await smsMessageErrorLink.click();
 

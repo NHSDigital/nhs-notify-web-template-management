@@ -3,10 +3,11 @@ import { TemplateMgmtCreateNhsAppPage } from '../../pages/nhs-app/template-mgmt-
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLink,
+  assertAndClickBackLinkTop,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -36,7 +37,8 @@ test.describe('Create NHS App Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLink({
+    await assertBackLinkBottomNotPresent(props);
+    await assertAndClickBackLinkTop({
       ...props,
       expectedUrl: 'templates/choose-a-template-type',
     });
@@ -175,6 +177,29 @@ test.describe('Create NHS App Template Page', () => {
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
     ).toHaveText(['URLs must start with https://']);
+  });
+
+  test('Validate error messages on the create NHS App message template page with unsupported personalisation in message', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
+
+    await createTemplatePage.loadPage();
+    await expect(createTemplatePage.pageHeading).toHaveText(
+      'Create NHS App message template'
+    );
+    await page.locator('[id="nhsAppTemplateName"]').fill('template-name');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('a template message containing ((date))');
+    await createTemplatePage.clickSaveAndPreviewButton();
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toContainText([
+      'You cannot use the following custom personalisation fields in your message',
+    ]);
   });
 
   test('Validate error messages on the create NHS App message template page with angle brackets in linked url', async ({

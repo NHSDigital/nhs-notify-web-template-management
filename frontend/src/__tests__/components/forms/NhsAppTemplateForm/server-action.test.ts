@@ -6,6 +6,7 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -89,6 +90,29 @@ describe('CreateNHSAppTemplate server actions', () => {
         formErrors: [],
         fieldErrors: {
           nhsAppTemplateMessage: ['URLs must start with https://'],
+        },
+      },
+    });
+  });
+
+  it('create-nhs-app-template - should return response when when template message contains unsupported personalisation', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({
+        'form-id': 'create-nhs-app-template',
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage: 'a template message containing ((date))',
+      })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      errorState: {
+        formErrors: [],
+        fieldErrors: {
+          nhsAppTemplateMessage: [
+            ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+          ],
         },
       },
     });

@@ -22,13 +22,17 @@ export abstract class TemplateMgmtBasePage {
 
   readonly headerNavigationLinks: Locator;
 
-  readonly goBackLink: Locator;
+  readonly backLinkTop: Locator;
+
+  readonly backLinkBottom: Locator;
 
   readonly pageHeading: Locator;
 
   readonly errorSummary: Locator;
 
   readonly errorSummaryHeading: Locator;
+
+  readonly errorSummaryHint: Locator;
 
   readonly errorSummaryList: Locator;
 
@@ -52,9 +56,9 @@ export abstract class TemplateMgmtBasePage {
 
     this.headerNavigationLinks = page.getByTestId('navigation-links');
 
-    this.goBackLink = page
-      .locator('.nhsuk-back-link')
-      .and(page.getByText('Go back'));
+    this.backLinkTop = page.getByTestId('back-link-top');
+
+    this.backLinkBottom = page.getByTestId('back-link-bottom');
 
     this.pageHeading = page.getByRole('heading', { level: 1 });
 
@@ -64,6 +68,8 @@ export abstract class TemplateMgmtBasePage {
       level: 2,
       name: 'There is a problem',
     });
+
+    this.errorSummaryHint = this.errorSummary.locator('.nhsuk-hint');
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
 
@@ -111,8 +117,8 @@ export abstract class TemplateMgmtBasePage {
     await this.signInLink.click();
   }
 
-  async clickBackLink() {
-    await this.goBackLink.click();
+  async clickBackLinkTop() {
+    await this.backLinkTop.click();
   }
 
   /**

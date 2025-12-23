@@ -6,6 +6,7 @@ import {
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');
 
@@ -115,7 +116,10 @@ test('renders page with multiple errors', () => {
           formErrors: [],
           fieldErrors: {
             nhsAppTemplateName: ['Template name error'],
-            nhsAppTemplateMessage: ['Template message error'],
+            nhsAppTemplateMessage: [
+              'Template message error',
+              ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+            ],
           },
         },
         name: '',
