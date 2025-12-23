@@ -77,6 +77,15 @@ test.describe('Preview submitted sms message template Page', () => {
     await expect(previewSubmittedSMSTemplatePage.messageText).toHaveText(
       'test-template-message'
     );
+
+    await expect(previewSubmittedSMSTemplatePage.statusTag).toHaveText(
+      'Locked'
+    );
+
+    await expect(previewSubmittedSMSTemplatePage.copyLink).toHaveAttribute(
+      'href',
+      `/templates/copy-template/${templates.valid.id}`
+    );
   });
 
   test.describe('Page functionality', () => {

@@ -81,7 +81,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -265,7 +266,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -412,7 +414,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-proof-request"
+                  data-status="pending-proof-request"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -559,7 +562,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-upload"
+                  data-status="pending-upload"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -700,7 +704,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-validation"
+                  data-status="pending-validation"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -841,7 +846,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-proof-available"
+                  data-status="proof-available"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1097,7 +1103,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-proof-available"
+                  data-status="proof-available"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1385,7 +1392,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-validation-failed"
+                  data-status="validation-failed"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1589,7 +1597,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-virus-scan-failed"
+                  data-status="virus-scan-failed"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1725,7 +1734,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-waiting-for-proof"
+                  data-status="waiting-for-proof"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>

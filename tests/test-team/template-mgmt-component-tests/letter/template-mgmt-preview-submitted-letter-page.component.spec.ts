@@ -93,6 +93,12 @@ test.describe('Preview submitted Letter message template Page', () => {
     await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
       templates.valid.campaignId
     );
+
+    await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
+      'Locked'
+    );
+
+    await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
   });
 
   test.describe('Page functionality', () => {

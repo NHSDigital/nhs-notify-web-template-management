@@ -7,6 +7,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 export type PreviewSubmittedTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
@@ -18,6 +19,8 @@ export function PreviewSubmittedTemplate<T extends TemplateDto>({
   previewComponent,
 }: Readonly<PreviewSubmittedTemplateProps<T>>) {
   const content = baseContent.components.viewSubmittedTemplate;
+
+  const { routing } = useFeatureFlags();
 
   return (
     <>
@@ -32,10 +35,14 @@ export function PreviewSubmittedTemplate<T extends TemplateDto>({
               template: initialState,
             })}
 
-            {initialState.templateType !== 'LETTER' && (
-              <p>{content.cannotEdit}</p>
+            {!routing && (
+              <>
+                {initialState.templateType !== 'LETTER' && (
+                  <p>{content.cannotEdit}</p>
+                )}
+                <p>{content.createNewTemplate}</p>
+              </>
             )}
-            <p>{content.createNewTemplate}</p>
 
             <p>
               <Link href={content.backLink.href} data-testid='back-link-bottom'>
