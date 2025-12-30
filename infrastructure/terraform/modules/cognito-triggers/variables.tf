@@ -62,3 +62,21 @@ variable "user_pool_id" {
   type        = string
   description = "ID of the Cognito user pool the triggers should be applied to"
 }
+
+variable "log_destination_arn" {
+  type        = string
+  description = "Destination ARN to use for the log subscription filter"
+  default     = ""
+}
+
+variable "send_to_firehose" {
+  type        = bool
+  description = "Flag indicating whether logs should be sent to firehose"
+  default     = true
+}
+
+variable "log_subscription_role_arn" {
+  type        = string
+  description = "The ARN of the IAM role to use for the log subscription filter"
+  default     = ""
+}
