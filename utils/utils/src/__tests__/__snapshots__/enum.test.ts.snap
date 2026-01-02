@@ -1,0 +1,321 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`statusToColourMapping status=DELETED type=EMAIL routing=false 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=EMAIL routing=true 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=LETTER routing=false 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=LETTER routing=true 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=NHS_APP routing=false 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=NHS_APP routing=true 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=SMS routing=false 1`] = `undefined`;
+
+exports[`statusToColourMapping status=DELETED type=SMS routing=true 1`] = `undefined`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=EMAIL routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=EMAIL routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=false 1`] = `undefined`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=true 1`] = `undefined`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=SMS routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=SMS routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=EMAIL routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=EMAIL routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=SMS routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=SMS routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=EMAIL routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=EMAIL routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=NHS_APP routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=NHS_APP routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=SMS routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_UPLOAD type=SMS routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=EMAIL routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=EMAIL routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=NHS_APP routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=NHS_APP routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=SMS routing=false 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PENDING_VALIDATION type=SMS routing=true 1`] = `"blue"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=EMAIL routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=false 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=NHS_APP routing=false 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=NHS_APP routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=SMS routing=false 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=PROOF_AVAILABLE type=SMS routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=false 1`] = `"grey"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false 1`] = `"grey"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=false 1`] = `"grey"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=SMS routing=false 1`] = `"grey"`;
+
+exports[`statusToColourMapping status=SUBMITTED type=SMS routing=true 1`] = `"orange"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=EMAIL routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=EMAIL routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=NHS_APP routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=NHS_APP routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=SMS routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VALIDATION_FAILED type=SMS routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=EMAIL routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=EMAIL routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=SMS routing=false 1`] = `"red"`;
+
+exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=SMS routing=true 1`] = `"red"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=EMAIL routing=false 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=EMAIL routing=true 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=false 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=true 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=NHS_APP routing=false 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=NHS_APP routing=true 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=SMS routing=false 1`] = `"yellow"`;
+
+exports[`statusToColourMapping status=WAITING_FOR_PROOF type=SMS routing=true 1`] = `"yellow"`;
+
+exports[`statusToDisplayMapping status=DELETED type=EMAIL routing=false 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=EMAIL routing=true 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=LETTER routing=false 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=LETTER routing=true 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=NHS_APP routing=false 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=NHS_APP routing=true 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=SMS routing=false 1`] = `""`;
+
+exports[`statusToDisplayMapping status=DELETED type=SMS routing=true 1`] = `""`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=EMAIL routing=false 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=EMAIL routing=true 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=false 1`] = `"Not yet submitted"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=true 1`] = `"Not yet submitted"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=false 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=true 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=SMS routing=false 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=SMS routing=true 1`] = `"Draft"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=EMAIL routing=false 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=EMAIL routing=true 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=false 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=true 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=SMS routing=false 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=SMS routing=true 1`] = `"Files uploaded"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=EMAIL routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=EMAIL routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=NHS_APP routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=NHS_APP routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=SMS routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_UPLOAD type=SMS routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=EMAIL routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=EMAIL routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=NHS_APP routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=NHS_APP routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=SMS routing=false 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PENDING_VALIDATION type=SMS routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=EMAIL routing=true 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=false 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=true 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=NHS_APP routing=false 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=NHS_APP routing=true 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=SMS routing=false 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=SMS routing=true 1`] = `"Proof available"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=EMAIL routing=false 1`] = `"Submitted"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"Locked"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=false 1`] = `"Submitted"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true 1`] = `"Locked"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=NHS_APP routing=false 1`] = `"Submitted"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"Locked"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=SMS routing=false 1`] = `"Submitted"`;
+
+exports[`statusToDisplayMapping status=SUBMITTED type=SMS routing=true 1`] = `"Locked"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=EMAIL routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=EMAIL routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=NHS_APP routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=NHS_APP routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=SMS routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VALIDATION_FAILED type=SMS routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=EMAIL routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=EMAIL routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=SMS routing=false 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=SMS routing=true 1`] = `"Checks failed"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=EMAIL routing=false 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=EMAIL routing=true 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=false 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=true 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=NHS_APP routing=false 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=NHS_APP routing=true 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=SMS routing=false 1`] = `"Waiting for proof"`;
+
+exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=SMS routing=true 1`] = `"Waiting for proof"`;
