@@ -25,8 +25,6 @@ module "backend_api" {
   log_destination_arn       = local.log_destination_arn
   log_subscription_role_arn = local.acct.log_subscription_role_arn
 
-  send_to_firehose = true
-
   email_domain                            = module.ses.domain
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
   proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
