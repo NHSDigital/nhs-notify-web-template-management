@@ -4,8 +4,6 @@
  */
 
 import type { Config } from 'jest';
-import { pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.json';
 
 const config: Config = {
   preset: 'ts-jest',
@@ -31,14 +29,9 @@ const config: Config = {
     },
   },
 
-  collectCoverageFrom: ['src/**/*.ts*'],
+  collectCoverageFrom: ['src/**/*.ts*', 'src/*.ts*'],
 
-  coveragePathIgnorePatterns: ['migrate-cli.ts', 'plan-cli.ts', 'types.ts'],
-
-  // Set the absolute path for imports
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
-    prefix: '<rootDir>/',
-  }),
+  coveragePathIgnorePatterns: ['.snap'],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [
@@ -57,6 +50,11 @@ const config: Config = {
   testEnvironment: 'node',
 
   testPathIgnorePatterns: ['/node_modules/', '/tests/'],
+
+  // Set the path for imports
+  moduleNameMapper: {
+    '^@/(.*)': '<rootDir>/$1',
+  },
 };
 
 export default config;
