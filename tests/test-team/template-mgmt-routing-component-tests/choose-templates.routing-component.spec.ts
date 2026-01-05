@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-commented-out-tests */
 import {
   MESSAGE_ORDERS,
   MessageOrder,
@@ -7,6 +6,8 @@ import {
 import { test, expect } from '@playwright/test';
 import { RoutingChooseTemplatesPage } from 'pages/routing/choose-templates-page';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
+import { RoutingChooseNhsAppTemplatePage } from 'pages/routing/nhs-app/choose-nhs-app-template-page';
+import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import {
   assertFooterLinks,
@@ -47,6 +48,8 @@ const templateIds = {
 const routingConfigIds = {
   valid: randomUUID(),
   validWithLetterTemplates: randomUUID(),
+  withConditionalTemplateSelected: randomUUID(),
+  noTemplatesSelected: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
 };
@@ -90,6 +93,22 @@ function createRoutingConfigs(
         'x1',
         templateIds.LARGE_PRINT_LETTER
       ).dbEntry;
+
+  routingConfigs.withConditionalTemplateSelected =
+    RoutingConfigFactory.createForMessageOrder(
+      user,
+      'NHSAPP,EMAIL,SMS,LETTER',
+      {
+        id: routingConfigIds.withConditionalTemplateSelected,
+        name: 'Plan with optional template only',
+      }
+    ).addAccessibleFormatTemplate('x1', templateIds.LARGE_PRINT_LETTER).dbEntry;
+
+  routingConfigs.noTemplatesSelected =
+    RoutingConfigFactory.createForMessageOrder(user, 'NHSAPP,EMAIL', {
+      id: routingConfigIds.noTemplatesSelected,
+      name: 'Plan with no templates selected',
+    }).dbEntry;
 
   return routingConfigs;
 }
@@ -629,13 +648,154 @@ test.describe('Routing - Choose Templates page', () => {
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans`);
   });
 
-  //  TODO: CCM-11495
-  //  Upgrade to the below once validation is in
-  //  test('can move to production once all templates have been chosen', () => {});
+  test('user sees validation errors when trying to move to production without required templates selected', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      page
+    ).setPathParam(
+      'messagePlanId',
+      routingConfigIds.withConditionalTemplateSelected
+    );
 
-  // TODO: CCM-11495
-  // Add as part of validation ticket
-  // test('displays an error message when trying to "Move to production" without all required templates', () => {});
+    await chooseTemplatesPage.loadPage();
+
+    await test.step('initially no error summary is visible', async () => {
+      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+    });
+
+    await test.step('optional template (large print letter) is already selected', async () => {
+      const alternativeLetterFormats =
+        chooseTemplatesPage.alternativeLetterFormats();
+      const largePrintItem = alternativeLetterFormats.largePrint;
+
+      await expect(largePrintItem.templateName).toHaveText(
+        templates.LARGE_PRINT_LETTER.name
+      );
+    });
+
+    await test.step('clicking "Move to production" shows validation errors for all required channels', async () => {
+      await chooseTemplatesPage.clickMoveToProduction();
+
+      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
+      await expect(chooseTemplatesPage.errorSummaryHint).toHaveText(
+        'You must choose a template for each message.'
+      );
+
+      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      expect(errorLinks.length).toBe(4);
+
+      await expect(errorLinks[0]).toHaveText(
+        'You have not chosen a template for your first message'
+      );
+      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
+
+      await expect(errorLinks[1]).toHaveText(
+        'You have not chosen a template for your second message'
+      );
+      await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
+
+      await expect(errorLinks[2]).toHaveText(
+        'You have not chosen a template for your third message'
+      );
+      await expect(errorLinks[2]).toHaveAttribute('href', '#channel-SMS');
+
+      await expect(errorLinks[3]).toHaveText(
+        'You have not chosen a template for your fourth message'
+      );
+      await expect(errorLinks[3]).toHaveAttribute('href', '#channel-LETTER');
+    });
+
+    await test.step('clicking an error link navigates to the relevant channel section', async () => {
+      const firstErrorLink = chooseTemplatesPage.errorLinks.first();
+      await firstErrorLink.click();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.withConditionalTemplateSelected}#channel-NHSAPP`
+      );
+    });
+  });
+
+  test('user can choose to move to production once all validation errors are resolved by selecting templates for all required channels', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      page
+    ).setPathParam('messagePlanId', routingConfigIds.noTemplatesSelected);
+
+    await chooseTemplatesPage.loadPage();
+
+    await test.step('clicking "Move to production" without templates shows validation errors', async () => {
+      await chooseTemplatesPage.clickMoveToProduction();
+
+      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
+      await expect(chooseTemplatesPage.errorSummaryHint).toHaveText(
+        'You must choose a template for each message.'
+      );
+
+      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      expect(errorLinks.length).toBe(2);
+      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
+      await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
+    });
+
+    await test.step('selecting NHS App template', async () => {
+      await chooseTemplatesPage.nhsApp.clickChooseTemplateLink();
+
+      await page.waitForURL(
+        `${baseURL}/templates/message-plans/choose-nhs-app-template/${routingConfigIds.noTemplatesSelected}?lockNumber=0`
+      );
+
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      );
+      await chooseNhsAppTemplatePage.getRadioButton(templateIds.NHSAPP).check();
+      await chooseNhsAppTemplatePage.saveAndContinueButton.click();
+
+      await page.waitForURL(
+        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.noTemplatesSelected}`
+      );
+    });
+
+    await test.step('validation still shown after selecting only one template', async () => {
+      await chooseTemplatesPage.clickMoveToProduction();
+      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
+
+      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      expect(errorLinks.length).toBe(1);
+      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
+    });
+
+    await test.step('selecting Email template', async () => {
+      await chooseTemplatesPage.email.clickChooseTemplateLink();
+
+      await page.waitForURL(
+        `${baseURL}/templates/message-plans/choose-email-template/${routingConfigIds.noTemplatesSelected}?lockNumber=1`
+      );
+
+      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
+      await chooseEmailTemplatePage.getRadioButton(templateIds.EMAIL).check();
+      await chooseEmailTemplatePage.saveAndContinueButton.click();
+
+      await page.waitForURL(
+        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.noTemplatesSelected}`
+      );
+    });
+
+    await test.step('validation clears and user can move to production', async () => {
+      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+
+      await chooseTemplatesPage.clickMoveToProduction();
+
+      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/get-ready-to-move/${routingConfigIds.noTemplatesSelected}`
+      );
+    });
+  });
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
