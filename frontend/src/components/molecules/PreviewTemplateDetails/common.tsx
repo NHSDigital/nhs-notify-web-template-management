@@ -1,4 +1,4 @@
-import { Tag, SummaryList } from 'nhsuk-react-components';
+import { Tag, SummaryList, WarningCallout } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
   statusToColourMapping,
@@ -10,6 +10,9 @@ import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
+import { useFeatureFlags } from '@providers/client-config-provider';
+import Link from 'next/link';
+import { interpolate } from '@utils/interpolate';
 
 export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
@@ -75,6 +78,7 @@ export function StandardDetailRows({
   campaignId?: string;
   hideStatus?: boolean;
 }>): JSX.Element {
+  const features = useFeatureFlags();
   return (
     <>
       <SummaryList.Row>
@@ -101,10 +105,11 @@ export function StandardDetailRows({
           <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
           <SummaryList.Value>
             <Tag
-              data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
-              color={statusToColourMapping(template)}
+              data-testid='status-tag'
+              data-status={toKebabCase(template.templateStatus)}
+              color={statusToColourMapping(template, features)}
             >
-              {statusToDisplayMapping(template)}
+              {statusToDisplayMapping(template, features)}
             </Tag>
             {previewTemplateStatusFootnote[template.templateStatus] && (
               <small
@@ -140,5 +145,47 @@ export function DetailsHeader({
         {templateName}
       </h1>
     </div>
+  );
+}
+
+export function LockedTemplateWarning({ template }: { template: TemplateDto }) {
+  const features = useFeatureFlags();
+
+  const warningContent = content.components.lockedTemplateWarning;
+
+  return (
+    <WarningCallout
+      className={classNames(
+        'nhsuk-u-padding-4',
+        'nhsuk-u-margin-bottom-6',
+        'nhsuk-u-reading-width',
+        styles.warning_callout
+      )}
+    >
+      <Tag
+        className='nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3'
+        color={statusToColourMapping(template, features)}
+      >
+        {statusToDisplayMapping(template, features)}
+      </Tag>
+
+      <p>
+        {template.templateType === 'LETTER'
+          ? warningContent.mainLetter
+          : warningContent.main}
+      </p>
+
+      {template.templateType !== 'LETTER' && (
+        <p>
+          <Link
+            data-testid='copy-link'
+            href={interpolate(warningContent.copy.link.href, template)}
+          >
+            {warningContent.copy.link.text}
+          </Link>
+          {warningContent.copy.link.after}
+        </p>
+      )}
+    </WarningCallout>
   );
 }

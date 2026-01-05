@@ -1444,6 +1444,19 @@ const previewTemplateFromMessagePlan = {
   },
 };
 
+const lockedTemplateWarning = {
+  main: "You cannot edit or delete this template because it's used in a message plan that's in production.",
+  mainLetter:
+    "You cannot delete this template because it's used in a message plan that's in production.",
+  copy: {
+    link: {
+      href: '/copy-template/{{id}}',
+      text: 'Copy this template',
+      after: ' to create a draft with the same content.',
+    },
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1458,6 +1471,7 @@ const content = {
     errorSummary,
     footer,
     header,
+    lockedTemplateWarning,
     logoutWarning,
     messageFormatting,
     messagePlanBlock,
