@@ -960,7 +960,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
 </DocumentFragment>
 `;
 
-exports[`MessageTemplates component matches snapshot with submitted status 1`] = `
+exports[`MessageTemplates component matches snapshot with routing flag enabled 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -1046,7 +1046,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Name 
               </span>
               <a
-                href="/preview-submitted-nhs-app-template/1"
+                href="/preview-nhs-app-template/1"
               >
                 Template 1
               </a>
@@ -1086,9 +1086,9 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--grey"
+                class="nhsuk-tag nhsuk-tag--green"
               >
-                Submitted
+                Draft
               </strong>
             </td>
             <td
@@ -1128,6 +1128,17 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                     id="copy-template-link-0"
                   >
                     Copy
+                  </a>
+                </p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 1"
+                    data-testid="delete-link"
+                    href="/delete-template/1"
+                  >
+                    Delete
                   </a>
                 </p>
               </div>
@@ -1187,9 +1198,9 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--grey"
+                class="nhsuk-tag nhsuk-tag--orange"
               >
-                Submitted
+                Locked
               </strong>
             </td>
             <td
@@ -1288,9 +1299,9 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--grey"
+                class="nhsuk-tag nhsuk-tag--orange"
               >
-                Submitted
+                Locked
               </strong>
             </td>
             <td
