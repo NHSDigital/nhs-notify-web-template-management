@@ -32,7 +32,7 @@ module "download_authorizer_lambda" {
   lambda_at_edge          = true
   enable_lambda_insights  = false
 
-  log_destination_arn       = local.log_destination_arn
+  log_destination_arn       = local.log_destination_arn_us
   log_subscription_role_arn = local.acct.log_subscription_role_arn
 }
 
