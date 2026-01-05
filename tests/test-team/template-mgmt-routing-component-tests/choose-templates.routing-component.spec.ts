@@ -288,14 +288,20 @@ test.describe('Routing - Choose Templates page', () => {
       messagePlans.valid.name
     );
 
-    await expect(chooseTemplatesPage.changeNameLink).toHaveText('Change name');
-    await expect(chooseTemplatesPage.changeNameLink).toHaveAttribute(
+    await expect(chooseTemplatesPage.editSettingsLink).toHaveText(
+      'Edit settings'
+    );
+    await expect(chooseTemplatesPage.editSettingsLink).toHaveAttribute(
       'href',
       `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
     );
 
     await expect(chooseTemplatesPage.routingConfigId).toHaveText(
       messagePlans.valid.id
+    );
+
+    await expect(chooseTemplatesPage.campaignId).toHaveText(
+      messagePlans.valid.campaignId
     );
 
     const messagePlanStatus =
