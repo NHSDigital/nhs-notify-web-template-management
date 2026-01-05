@@ -1,5 +1,5 @@
 module "download_authorizer_lambda" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-lambda.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip"
 
   providers = {
     aws = aws.us-east-1
@@ -31,6 +31,9 @@ module "download_authorizer_lambda" {
   timeout                 = 3
   lambda_at_edge          = true
   enable_lambda_insights  = false
+
+  log_destination_arn       = local.log_destination_arn
+  log_subscription_role_arn = local.acct.log_subscription_role_arn
 }
 
 data "aws_iam_policy_document" "authorizer" {
