@@ -17,7 +17,7 @@ export type NhsNotifyErrorSummaryProps = {
 
 export const NhsNotifyErrorSummary = ({
   hint,
-  errorState,
+  errorState = {},
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -27,10 +27,6 @@ export const NhsNotifyErrorSummary = ({
       errorSummaryRef.current.scrollIntoView();
     }
   }, [errorState]);
-
-  if (!errorState) {
-    return;
-  }
 
   const { fieldErrors, formErrors } = errorState;
 
@@ -47,8 +43,16 @@ export const NhsNotifyErrorSummary = ({
       ))
     );
 
+  const showErrorSummary =
+    (fieldErrors && Object.values(fieldErrors).some(Boolean)) ||
+    (formErrors && formErrors.length > 0);
+
+  if (!showErrorSummary) {
+    return;
+  }
+
   return (
-    <ErrorSummary ref={errorSummaryRef}>
+    <ErrorSummary ref={errorSummaryRef} tabIndex={-1}>
       <ErrorSummary.Title data-testid='error-summary'>
         {content.components.errorSummary.heading}
       </ErrorSummary.Title>

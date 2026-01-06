@@ -12,8 +12,16 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-test('Renders NhsNotifyErrorSummary correctly without errors', () => {
+test('Renders NhsNotifyErrorSummary correctly without errors', async () => {
   const container = render(<NhsNotifyErrorSummary errorState={undefined} />);
+
+  expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).not.toHaveBeenCalled();
+  expect(scrollIntoViewMock).not.toHaveBeenCalled();
+});
+
+test('Renders NhsNotifyErrorSummary correctly with empty error state', async () => {
+  const container = render(<NhsNotifyErrorSummary errorState={{}} />);
 
   expect(container.asFragment()).toMatchSnapshot();
   expect(focusMock).not.toHaveBeenCalled();

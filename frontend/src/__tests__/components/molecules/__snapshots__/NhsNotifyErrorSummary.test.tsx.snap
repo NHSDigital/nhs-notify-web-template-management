@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Renders NhsNotifyErrorSummary correctly with empty error state 1`] = `<DocumentFragment />`;
+
 exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
 <DocumentFragment>
   <div
