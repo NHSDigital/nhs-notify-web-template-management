@@ -1,5 +1,5 @@
 module "sqs_validate_letter_template_files" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-sqs.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip"
 
   aws_account_id             = var.aws_account_id
   component                  = var.component

@@ -48,10 +48,10 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
+        <NhsNotifyErrorSummary errorState={errorState} />
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
             <h1 className='nhsuk-heading-xl'>{fullPageHeading}</h1>
-            <NhsNotifyErrorSummary errorState={errorState} />
             <NHSNotifyRadioButtonForm
               formId='choose-a-template-type'
               radiosId='templateType'

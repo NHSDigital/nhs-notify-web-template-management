@@ -1,6 +1,6 @@
 module "eventpub" {
   # TODO CCM-12089 - move to zip release after fix from the ticket
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v2.0.19"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v2.0.28"
 
   name = "eventpub"
 

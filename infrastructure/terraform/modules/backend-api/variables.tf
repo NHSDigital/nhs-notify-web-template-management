@@ -105,6 +105,7 @@ variable "log_destination_arn" {
 variable "send_to_firehose" {
   type        = bool
   description = "Flag indicating whether logs should be sent to firehose"
+  default     = true
 }
 
 variable "log_subscription_role_arn" {
