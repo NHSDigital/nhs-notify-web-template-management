@@ -32,6 +32,7 @@ const templateIds = {
   LARGE_PRINT_LETTER1: randomUUID(),
   LARGE_PRINT_LETTER2: randomUUID(),
   LARGE_PRINT_LETTER3: randomUUID(),
+  LARGE_PRINT_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   FRENCH_LETTER: randomUUID(),
   APP: randomUUID(),
@@ -54,7 +55,7 @@ function getTemplates(
       templateIds.LARGE_PRINT_LETTER1,
       user,
       'Large print letter template 1',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
     ),
@@ -62,7 +63,7 @@ function getTemplates(
       templateIds.LARGE_PRINT_LETTER2,
       user,
       'Large print letter template 2',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
     ),
@@ -70,20 +71,30 @@ function getTemplates(
       templateIds.LARGE_PRINT_LETTER3,
       user,
       'Large print letter template 3',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
+      'PASSED',
+      { letterType: 'x1' }
+    ),
+    LARGE_PRINT_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER_NOT_SUBMITTED,
+      user,
+      'Proof available large print letter',
+      'PROOF_AVAILABLE',
       'PASSED',
       { letterType: 'x1' }
     ),
     STANDARD_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template'
+      'Standard letter template',
+      'SUBMITTED',
+      'PASSED'
     ),
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       'French letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'fr' }
     ),
@@ -227,8 +238,12 @@ test.describe('Routing - Choose large print letter template page', () => {
       );
     }
 
+    await expect(
+      table.getByText(templates.LARGE_PRINT_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
     await expect(table.getByText(templates.STANDARD_LETTER.name)).toBeHidden();
     await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();
+    await expect(table.getByText(templates.APP.name)).toBeHidden();
 
     await chooseLargePrintLetterTemplatePage.backLinkBottom.click();
 

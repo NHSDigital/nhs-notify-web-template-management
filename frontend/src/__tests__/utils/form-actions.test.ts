@@ -591,6 +591,30 @@ describe('form-actions', () => {
       expect(response).not.toContainEqual(englishTemplate);
     });
 
+    test('passes filters through to getTemplates', async () => {
+      const polishTemplate: TemplateDto = {
+        ...LETTER_TEMPLATE,
+        id: 'polish-1',
+        name: 'Polish Template',
+        language: 'pl',
+      };
+
+      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
+        data: [polishTemplate],
+      });
+
+      const response = await getForeignLanguageLetterTemplates({
+        templateStatus: 'SUBMITTED',
+      });
+
+      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
+        templateType: 'LETTER',
+        letterType: 'x0',
+        templateStatus: 'SUBMITTED',
+      });
+      expect(response).toEqual([polishTemplate]);
+    });
+
     test('returns empty array when no foreign language templates exist', async () => {
       const englishTemplate: TemplateDto = {
         ...LETTER_TEMPLATE,

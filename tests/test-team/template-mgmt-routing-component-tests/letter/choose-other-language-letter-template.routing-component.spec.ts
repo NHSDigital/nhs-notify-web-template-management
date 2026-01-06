@@ -32,6 +32,7 @@ const templateStorageHelper = new TemplateStorageHelper();
 const languageTemplates = {
   FRENCH_LETTER: randomUUID(),
   ANOTHER_FRENCH_LETTER: randomUUID(),
+  FRENCH_LETTER_NOT_SUBMITTED: randomUUID(),
   POLISH_LETTER: randomUUID(),
   SPANISH_LETTER: randomUUID(),
 };
@@ -66,13 +67,15 @@ function getTemplates(
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,
       user,
-      'Test Letter template'
+      'Test Letter template',
+      'SUBMITTED',
+      'PASSED'
     ),
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       'Test Large Print Letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
     ),
@@ -80,7 +83,7 @@ function getTemplates(
       templateIds.FRENCH_LETTER,
       user,
       'Test French Letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'fr' }
     ),
@@ -88,7 +91,15 @@ function getTemplates(
       templateIds.ANOTHER_FRENCH_LETTER,
       user,
       'Test Duplicate French Letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
+      'PASSED',
+      { language: 'fr' }
+    ),
+    FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+      templateIds.FRENCH_LETTER_NOT_SUBMITTED,
+      user,
+      'Proof available French letter',
+      'PROOF_AVAILABLE',
       'PASSED',
       { language: 'fr' }
     ),
@@ -96,7 +107,7 @@ function getTemplates(
       templateIds.SPANISH_LETTER,
       user,
       'Test Spanish Letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'es' }
     ),
@@ -104,7 +115,7 @@ function getTemplates(
       templateIds.POLISH_LETTER,
       user,
       'Test Polish Letter template',
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'pl' }
     ),
@@ -296,6 +307,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
       );
     }
 
+    await expect(
+      table.getByText(templates.FRENCH_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
     await expect(table.getByText(templates.NHSAPP.name)).toBeHidden();
     await expect(table.getByText(templates.LETTER.name)).toBeHidden();
     await expect(
