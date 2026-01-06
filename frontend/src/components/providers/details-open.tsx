@@ -13,17 +13,10 @@ const DetailsOpenContext = createContext<(() => void) | null>(null);
 
 export function useDetailsOpen() {
   const ctx = useContext(DetailsOpenContext);
-  if (!ctx)
-    throw new Error('useDetailsOpen must be used inside DetailsOpenProvider');
+
   return ctx;
 }
 
-/**
- * DetailsOpenProvider
- * - containerSelector: CSS selector that contains your <Details> elements (default: '#Details-list')
- *
- * Minimal: only exposes openAll(), and only mutates DOM when called.
- */
 export function DetailsOpenProvider({
   children,
   targetClassName,
