@@ -17,6 +17,7 @@ import {
   addDefaultTemplateToCascade,
   removeLanguageTemplatesFromCascadeItem,
   replaceLanguageTemplatesInCascadeItem,
+  getChannelsMissingTemplates,
   type ConditionalTemplate,
   type MessagePlanTemplates,
 } from '@utils/routing-utils';
@@ -1835,5 +1836,95 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
       templateId: 'german-template',
       supplierReferences: { MBA: 'ref-de-101' },
     });
+  });
+});
+
+describe('getChannelsMissingTemplates', () => {
+  it('should return empty array when all channels have templates', () => {
+    const routingConfig: RoutingConfig = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: 'template-1',
+        },
+        {
+          channel: 'SMS',
+          channelType: 'secondary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: 'template-2',
+        },
+      ],
+    };
+
+    const result = getChannelsMissingTemplates(routingConfig);
+    expect(result).toEqual([]);
+  });
+
+  it('should return indices of channels without templates', () => {
+    const routingConfig: RoutingConfig = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: 'template-1',
+        },
+        {
+          channel: 'SMS',
+          channelType: 'secondary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: null,
+        },
+        {
+          channel: 'EMAIL',
+          channelType: 'secondary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: null,
+        },
+      ],
+    };
+
+    const result = getChannelsMissingTemplates(routingConfig);
+    expect(result).toEqual([1, 2]);
+  });
+
+  it('should not include items with templates', () => {
+    const routingConfig: RoutingConfig = {
+      ...baseConfig,
+      cascade: [
+        {
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: 'template-1',
+        },
+        {
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['standard', 'accessible'],
+          defaultTemplateId: 'template-2',
+          conditionalTemplates: [
+            { templateId: 'large-print', accessibleFormat: 'x1' },
+          ],
+        },
+      ],
+    };
+
+    const result = getChannelsMissingTemplates(routingConfig);
+    expect(result).toEqual([]);
+  });
+
+  it('should handle empty cascade array', () => {
+    const routingConfig: RoutingConfig = {
+      ...baseConfig,
+      cascade: [],
+    };
+
+    const result = getChannelsMissingTemplates(routingConfig);
+    expect(result).toEqual([]);
   });
 });

@@ -5,6 +5,7 @@ exports[`MessagePlanBlock for channel EMAIL with no template should match snapsh
   <li
     class="message-plan-block"
     data-testid="message-plan-block-EMAIL"
+    id="channel-EMAIL"
   >
     <div
       aria-hidden="true"
@@ -59,6 +60,7 @@ exports[`MessagePlanBlock for channel EMAIL with template should match snapshot 
   <li
     class="message-plan-block"
     data-testid="message-plan-block-EMAIL"
+    id="channel-EMAIL"
   >
     <div
       aria-hidden="true"
@@ -160,6 +162,7 @@ exports[`MessagePlanBlock for channel LETTER with no template should match snaps
   <li
     class="message-plan-block"
     data-testid="message-plan-block-LETTER"
+    id="channel-LETTER"
   >
     <div
       aria-hidden="true"
@@ -375,6 +378,7 @@ exports[`MessagePlanBlock for channel LETTER with template should match snapshot
   <li
     class="message-plan-block"
     data-testid="message-plan-block-LETTER"
+    id="channel-LETTER"
   >
     <div
       aria-hidden="true"
@@ -637,6 +641,7 @@ exports[`MessagePlanBlock for channel NHSAPP with no template should match snaps
   <li
     class="message-plan-block"
     data-testid="message-plan-block-NHSAPP"
+    id="channel-NHSAPP"
   >
     <div
       aria-hidden="true"
@@ -691,6 +696,7 @@ exports[`MessagePlanBlock for channel NHSAPP with template should match snapshot
   <li
     class="message-plan-block"
     data-testid="message-plan-block-NHSAPP"
+    id="channel-NHSAPP"
   >
     <div
       aria-hidden="true"
@@ -792,6 +798,7 @@ exports[`MessagePlanBlock for channel SMS with no template should match snapshot
   <li
     class="message-plan-block"
     data-testid="message-plan-block-SMS"
+    id="channel-SMS"
   >
     <div
       aria-hidden="true"
@@ -846,6 +853,7 @@ exports[`MessagePlanBlock for channel SMS with template should match snapshot 1`
   <li
     class="message-plan-block"
     data-testid="message-plan-block-SMS"
+    id="channel-SMS"
   >
     <div
       aria-hidden="true"

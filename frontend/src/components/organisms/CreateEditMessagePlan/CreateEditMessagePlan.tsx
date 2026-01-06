@@ -1,16 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { SummaryList, Tag } from 'nhsuk-react-components';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 import { MessagePlanChannelList } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
+  ORDINALS,
+  ErrorState,
 } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanTemplates } from '@utils/routing-utils';
+import {
+  MessagePlanTemplates,
+  getChannelsMissingTemplates,
+} from '@utils/routing-utils';
 import { interpolate } from '@utils/interpolate';
 
 import copy from '@content/content';
@@ -23,11 +30,43 @@ export function CreateEditMessagePlan({
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
 }) {
+  const [errorState, setErrorState] = useState<ErrorState | null>(null);
+
+  const handleMoveToProduction = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    const channelsWithoutTemplates = getChannelsMissingTemplates(messagePlan);
+
+    if (channelsWithoutTemplates.length > 0) {
+      event.preventDefault();
+
+      const errors: Record<string, string[]> = {};
+
+      for (const index of channelsWithoutTemplates) {
+        const ordinal = ORDINALS[index]?.toLowerCase();
+        const channelIdentifier = messagePlan.cascade[index].channel;
+
+        errors[`channel-${channelIdentifier}`] = [
+          interpolate(content.validationError.linkText, { ordinal }),
+        ];
+      }
+
+      setErrorState({
+        fieldErrors: errors,
+      });
+    }
+  };
+
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-three-quarters'>
-          {/* TODO: CCM-11495 Add ErrorSummary component */}
+          {errorState && (
+            <NhsNotifyErrorSummary
+              hint={content.validationError.hintText}
+              errorState={errorState}
+            />
+          )}
           <span className='nhsuk-caption-l'>{content.headerCaption}</span>
           <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
           <p className='nhsuk-body-s'>
@@ -80,7 +119,6 @@ export function CreateEditMessagePlan({
           />
 
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
-            {/* TODO: CCM-11495 Add validation */}
             <Link
               href={interpolate(content.ctas.primary.href, {
                 routingConfigId: messagePlan.id,
@@ -88,7 +126,10 @@ export function CreateEditMessagePlan({
               passHref
               legacyBehavior
             >
-              <NHSNotifyButton data-testid='move-to-production-cta'>
+              <NHSNotifyButton
+                data-testid='move-to-production-cta'
+                onClick={handleMoveToProduction}
+              >
                 {content.ctas.primary.text}
               </NHSNotifyButton>
             </Link>

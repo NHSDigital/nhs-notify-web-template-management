@@ -8,6 +8,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
     <li
       class="message-plan-block"
       data-testid="message-plan-block-NHSAPP"
+      id="channel-NHSAPP"
     >
       <div
         aria-hidden="true"
@@ -193,6 +194,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
     <li
       class="message-plan-block"
       data-testid="message-plan-block-EMAIL"
+      id="channel-EMAIL"
     >
       <div
         aria-hidden="true"
@@ -378,6 +380,7 @@ exports[`MessagePlanChannelList should match snapshot for a digital routing plan
     <li
       class="message-plan-block"
       data-testid="message-plan-block-SMS"
+      id="channel-SMS"
     >
       <div
         aria-hidden="true"
@@ -483,6 +486,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
     <li
       class="message-plan-block"
       data-testid="message-plan-block-NHSAPP"
+      id="channel-NHSAPP"
     >
       <div
         aria-hidden="true"
@@ -668,6 +672,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
     <li
       class="message-plan-block"
       data-testid="message-plan-block-EMAIL"
+      id="channel-EMAIL"
     >
       <div
         aria-hidden="true"
@@ -853,6 +858,7 @@ exports[`MessagePlanChannelList should match snapshot for a routing plan with a 
     <li
       class="message-plan-block"
       data-testid="message-plan-block-LETTER"
+      id="channel-LETTER"
     >
       <div
         aria-hidden="true"

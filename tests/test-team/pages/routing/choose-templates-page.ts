@@ -5,8 +5,6 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
   static readonly pathTemplate =
     '/message-plans/choose-templates/:messagePlanId';
 
-  public readonly errorSummary: Locator;
-
   public readonly editSettingsLink: Locator;
 
   public readonly routingConfigId: Locator;
@@ -23,10 +21,14 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
 
   public readonly conditionalLetterTemplates: Locator;
 
+  public readonly errorLinks: Locator;
+
   constructor(page: Page) {
     super(page);
-    this.errorSummary = page.locator('.nhsuk-error-summary');
     this.editSettingsLink = page.getByTestId('edit-settings-link');
+    this.errorLinks = page.getByRole('link', {
+      name: /You have not chosen a template/,
+    });
     this.routingConfigId = page.getByTestId('routing-config-id');
     this.campaignId = page.getByTestId('campaign-id');
     this.messagePlanStatus = page.locator('strong.nhsuk-tag');
