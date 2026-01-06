@@ -1,3 +1,5 @@
+'use client';
+
 import { Details } from 'nhsuk-react-components';
 import { FallbackConditionBlock } from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';

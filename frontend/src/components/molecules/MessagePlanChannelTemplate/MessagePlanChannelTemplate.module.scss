@@ -9,6 +9,10 @@
   &-inner {
     padding: 20px;
     border: 2px solid var(--nhsuk-border-colour);
+
+    p:last-of-type {
+      margin-bottom: 0;
+    }
   }
 
   &-actions {

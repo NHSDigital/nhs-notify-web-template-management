@@ -30,6 +30,10 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const { status, count } = props;
   const statusDisplayMapping = messagePlanStatusToDisplayText(status);
   const statusDisplayLower = statusDisplayMapping.toLowerCase();
+  const messagePlanLink =
+    status === 'DRAFT'
+      ? messagePlansListComponent.draftMessagePlanLink
+      : messagePlansListComponent.productionMessagePlanLink;
 
   const header = (
     <Table.Row>
@@ -43,7 +47,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
     <Table.Row key={plan.id}>
       <Table.Cell>
         <Link
-          href={interpolate(messagePlansListComponent.messagePlanLink, {
+          href={interpolate(messagePlanLink, {
             routingConfigId: plan.id,
           })}
         >

@@ -1,6 +1,7 @@
+import { PropsWithChildren } from 'react';
 import {
   CascadeItem,
-  ConditionalTemplateAccessible,
+  Channel,
   ConditionalTemplateLanguage,
   LetterType,
   RoutingConfig,
@@ -11,14 +12,14 @@ import {
   MessagePlanLanguageTemplate,
 } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
 import {
+  ACCESSIBLE_FORMATS,
   ConditionalTemplate,
+  getTemplateForAccessibleFormat,
   MessagePlanTemplates,
 } from '@utils/routing-utils';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 
 import styles from './MessagePlanConditionalTemplates.module.scss';
-
-const ACCESSIBLE_FORMATS: LetterType[] = ['x1']; // Large print only
 
 export function MessagePlanConditionalLetterTemplates({
   cascadeItem,
@@ -36,8 +37,6 @@ export function MessagePlanConditionalLetterTemplates({
   if (cascadeItem.channel !== 'LETTER') {
     return null;
   }
-
-  const accessibleFormats = ACCESSIBLE_FORMATS;
 
   const languageTemplates: TemplateDto[] = (
     cascadeItem.conditionalTemplates || []
@@ -63,7 +62,7 @@ export function MessagePlanConditionalLetterTemplates({
         index={cascadeIndex}
       />
 
-      {accessibleFormats.map((format) => (
+      {ACCESSIBLE_FORMATS.map((format) => (
         <li
           key={format}
           className={styles['message-plan-conditional-templates__list-item']}
@@ -92,18 +91,32 @@ export function MessagePlanConditionalLetterTemplates({
   );
 }
 
-const getTemplateForAccessibleFormat = (
-  format: LetterType,
-  cascadeItem: CascadeItem,
-  templates: MessagePlanTemplates
-): TemplateDto | undefined => {
-  const conditionalTemplate = (cascadeItem.conditionalTemplates || []).find(
-    (
-      template: ConditionalTemplate
-    ): template is ConditionalTemplateAccessible =>
-      'accessibleFormat' in template && template.accessibleFormat === format
+export function MessagePlanCascadeConditionalTemplatesList({
+  channel,
+  children,
+  index,
+}: PropsWithChildren<{
+  channel: Channel;
+  index: number;
+}>) {
+  return (
+    <ul
+      className={styles['message-plan-conditional-templates']}
+      data-testid='message-plan-conditional-templates'
+    >
+      <MessagePlanFallbackConditions channel={channel} index={index} />
+
+      {children}
+    </ul>
   );
-  return conditionalTemplate?.templateId
-    ? templates[conditionalTemplate.templateId]
-    : undefined;
-};
+}
+
+export function MessagePlanCascadeConditionalTemplatesListItem({
+  children,
+}: PropsWithChildren) {
+  return (
+    <li className={styles['message-plan-conditional-templates__list-item']}>
+      {children}
+    </li>
+  );
+}

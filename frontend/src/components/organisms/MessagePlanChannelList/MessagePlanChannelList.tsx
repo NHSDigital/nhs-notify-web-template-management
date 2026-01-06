@@ -1,13 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, PropsWithChildren } from 'react';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
-import {
-  CascadeItem,
-  RoutingConfig,
-  TemplateDto,
-} from 'nhs-notify-backend-client';
+import { CascadeItem, RoutingConfig } from 'nhs-notify-backend-client';
 import {
   getConditionalTemplatesForItem,
+  getDefaultTemplateForItem,
   MessagePlanTemplates,
 } from '@utils/routing-utils';
 
@@ -20,13 +17,6 @@ export function MessagePlanChannelList({
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
 }) {
-  function getMessagePlanTemplateById(
-    templateId?: string | null
-  ): TemplateDto | undefined {
-    if (!templateId) return;
-    return templates[templateId];
-  }
-
   return (
     <ul className={styles['channel-list']}>
       {messagePlan.cascade.map(
@@ -35,8 +25,9 @@ export function MessagePlanChannelList({
             <MessagePlanBlock
               index={index}
               channelItem={messagePlanChannel}
-              defaultTemplate={getMessagePlanTemplateById(
-                messagePlanChannel.defaultTemplateId
+              defaultTemplate={getDefaultTemplateForItem(
+                messagePlanChannel,
+                templates
               )}
               routingConfigId={messagePlan.id}
               conditionalTemplates={getConditionalTemplatesForItem(
@@ -58,4 +49,8 @@ export function MessagePlanChannelList({
       )}
     </ul>
   );
+}
+
+export function MessagePlanChannelListNew({ children }: PropsWithChildren) {
+  return <ul className={styles['channel-list']}>{children}</ul>;
 }

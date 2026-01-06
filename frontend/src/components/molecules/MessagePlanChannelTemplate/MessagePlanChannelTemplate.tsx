@@ -6,6 +6,7 @@ import {
   TemplateDto,
 } from 'nhs-notify-backend-client';
 import {
+  accessibleFormatDisplayMappings,
   channelDisplayMappings,
   channelToTemplateType,
   messagePlanChooseTemplateUrl,
@@ -17,7 +18,27 @@ import { interpolate } from '@utils/interpolate';
 import styles from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate.module.scss';
 
 import copy from '@content/content';
+import { HTMLProps, PropsWithChildren } from 'react';
 const { messagePlanChannelTemplate: content } = copy.components;
+
+export function MessagePlanChannelTemplateNew({
+  children,
+  className,
+  heading,
+  ...props
+}: PropsWithChildren<HTMLProps<HTMLDivElement> & { heading: string }>) {
+  return (
+    <div
+      {...props}
+      className={classNames(styles['channel-template-outer'], className)}
+    >
+      <div className={styles['channel-template-inner']}>
+        <h3 className='nhsuk-heading-s'>{heading}</h3>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function MessagePlanChannelTemplateBase({
   channelTemplateType,
@@ -198,11 +219,7 @@ export function MessagePlanAccessibleFormatTemplate({
 
   return (
     <MessagePlanChannelTemplateBase
-      channelTemplateType={
-        content.messagePlanConditionalLetterTemplates.accessibleFormats[
-          accessibleFormat
-        ]
-      }
+      channelTemplateType={accessibleFormatDisplayMappings(accessibleFormat)}
       required={false}
       templates={template ? [template] : []}
       routingConfigId={routingConfigId}

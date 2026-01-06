@@ -1064,11 +1064,6 @@ export type FallbackConditionBlock = {
 };
 
 const messagePlanConditionalLetterTemplates = {
-  accessibleFormats: {
-    q4: 'British Sign Language letter',
-    x0: 'Standard letter',
-    x1: 'Large print letter',
-  } satisfies Record<LetterType, string>,
   languageFormats: 'Other language letters',
 };
 
@@ -1360,7 +1355,9 @@ const messagePlanGetReadyToMoveToProduction = () => {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
+  draftMessagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
+  productionMessagePlanLink:
+    '/message-plans/preview-message-plan/{{routingConfigId}}',
 };
 
 const chooseMessageOrder = {
@@ -1453,6 +1450,26 @@ const lockedTemplateWarning = {
   },
 };
 
+const previewMessagePlan = {
+  pageTitle: generatePageTitle('Preview message plan'),
+  backLink: {
+    href: '/message-plans',
+    text: 'Back to all message plans',
+  },
+  headerCaption: 'Message plan',
+  warningCallout: [
+    {
+      type: 'text',
+      text: "You cannot edit this message plan because it's in production.",
+    },
+    {
+      type: 'text',
+      text: '[Copy this message plan into draft](/message-plans/copy-message-plan/{{routingConfigId}}) to create a new one with the same messages.',
+    },
+  ] satisfies ContentBlock[],
+  languageFormatsCardHeading: 'Other language letters (optional)',
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1513,6 +1530,7 @@ const content = {
     chooseOtherLanguageLetterTemplate,
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
+    previewMessagePlan,
   },
 };
 
