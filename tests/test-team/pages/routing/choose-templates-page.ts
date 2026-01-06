@@ -7,9 +7,11 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
 
   public readonly errorSummary: Locator;
 
-  public readonly changeNameLink: Locator;
+  public readonly editSettingsLink: Locator;
 
   public readonly routingConfigId: Locator;
+
+  public readonly campaignId: Locator;
 
   public readonly messagePlanStatus: Locator;
 
@@ -24,8 +26,9 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
   constructor(page: Page) {
     super(page);
     this.errorSummary = page.locator('.nhsuk-error-summary');
-    this.changeNameLink = page.getByTestId('change-message-plan-name-link');
+    this.editSettingsLink = page.getByTestId('edit-settings-link');
     this.routingConfigId = page.getByTestId('routing-config-id');
+    this.campaignId = page.getByTestId('campaign-id');
     this.messagePlanStatus = page.locator('strong.nhsuk-tag');
     this.channelBlocks = page.locator('[data-testid^="message-plan-block-"]');
     this.moveToProductionButton = page.getByTestId('move-to-production-cta');

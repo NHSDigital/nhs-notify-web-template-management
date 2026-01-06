@@ -1134,10 +1134,11 @@ const createEditMessagePlan = {
   headerCaption: 'Message plan',
   changeNameLink: {
     href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
-    text: 'Change name',
+    text: 'Edit settings',
   },
   rowHeadings: {
     routingPlanId: 'Routing Plan ID',
+    campaignId: 'Campaign',
     status: 'Status',
   },
   ctas: {

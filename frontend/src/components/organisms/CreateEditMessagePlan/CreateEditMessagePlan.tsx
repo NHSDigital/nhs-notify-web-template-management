@@ -32,7 +32,7 @@ export function CreateEditMessagePlan({
           <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
           <p className='nhsuk-body-s'>
             <Link
-              data-testid='change-message-plan-name-link'
+              data-testid='edit-settings-link'
               href={interpolate(content.changeNameLink.href, {
                 routingConfigId: messagePlan.id,
               })}
@@ -51,6 +51,17 @@ export function CreateEditMessagePlan({
                 className='monospace-font'
               >
                 {messagePlan.id}
+              </SummaryList.Value>
+            </SummaryList.Row>
+            <SummaryList.Row>
+              <SummaryList.Key>
+                {content.rowHeadings.campaignId}
+              </SummaryList.Key>
+              <SummaryList.Value
+                data-testid='campaign-id'
+                className='monospace-font'
+              >
+                {messagePlan.campaignId}
               </SummaryList.Value>
             </SummaryList.Row>
             <SummaryList.Row>
