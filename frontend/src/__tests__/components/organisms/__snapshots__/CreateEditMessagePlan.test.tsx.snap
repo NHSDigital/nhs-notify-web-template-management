@@ -27,10 +27,10 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           class="nhsuk-body-s"
         >
           <a
-            data-testid="change-message-plan-name-link"
+            data-testid="edit-settings-link"
             href="/message-plans/edit-message-plan-settings/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
           >
-            Change name
+            Edit settings
           </a>
         </p>
         <dl
@@ -49,6 +49,21 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               data-testid="routing-config-id"
             >
               30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
+            </dd>
+          </div>
+          <div
+            class="nhsuk-summary-list__row"
+          >
+            <dt
+              class="nhsuk-summary-list__key"
+            >
+              Campaign
+            </dt>
+            <dd
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="campaign-id"
+            >
+              campaign-1
             </dd>
           </div>
           <div
@@ -760,10 +775,10 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
           class="nhsuk-body-s"
         >
           <a
-            data-testid="change-message-plan-name-link"
+            data-testid="edit-settings-link"
             href="/message-plans/edit-message-plan-settings/30fd1e1c-a608-47cf-9cc2-eabaeeeebeca"
           >
-            Change name
+            Edit settings
           </a>
         </p>
         <dl
@@ -782,6 +797,21 @@ exports[`CreateEditMessagePlan should match snapshot for a typical message plan 
               data-testid="routing-config-id"
             >
               30fd1e1c-a608-47cf-9cc2-eabaeeeebeca
+            </dd>
+          </div>
+          <div
+            class="nhsuk-summary-list__row"
+          >
+            <dt
+              class="nhsuk-summary-list__key"
+            >
+              Campaign
+            </dt>
+            <dd
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="campaign-id"
+            >
+              campaign-1
             </dd>
           </div>
           <div

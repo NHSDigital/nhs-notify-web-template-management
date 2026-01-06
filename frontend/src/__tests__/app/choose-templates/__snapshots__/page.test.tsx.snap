@@ -27,10 +27,10 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           class="nhsuk-body-s"
         >
           <a
-            data-testid="change-message-plan-name-link"
+            data-testid="edit-settings-link"
             href="/message-plans/edit-message-plan-settings/fbb81055-79b9-4759-ac07-d191ae57be34"
           >
-            Change name
+            Edit settings
           </a>
         </p>
         <dl
@@ -49,6 +49,21 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
               data-testid="routing-config-id"
             >
               fbb81055-79b9-4759-ac07-d191ae57be34
+            </dd>
+          </div>
+          <div
+            class="nhsuk-summary-list__row"
+          >
+            <dt
+              class="nhsuk-summary-list__key"
+            >
+              Campaign
+            </dt>
+            <dd
+              class="nhsuk-summary-list__value monospace-font"
+              data-testid="campaign-id"
+            >
+              campaign-2
             </dd>
           </div>
           <div

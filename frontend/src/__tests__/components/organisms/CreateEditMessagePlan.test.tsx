@@ -68,6 +68,18 @@ describe('CreateEditMessagePlan', () => {
     expect(messagePlanId).toHaveTextContent('routing-config-test');
   });
 
+  it('should display the campaign ID', () => {
+    const plan = buildRoutingConfig();
+
+    render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
+
+    const campaignId = screen.getByTestId('campaign-id');
+
+    expect(campaignId).toHaveTextContent('campaign-1');
+  });
+
   it.each([
     { status: 'DRAFT' as const, display: 'Draft' },
     { status: 'COMPLETED' as const, display: 'Production' },
@@ -123,15 +135,15 @@ describe('CreateEditMessagePlan', () => {
     expect(buttons[1].textContent).toBe('Save and close');
   });
 
-  it('should render a "change name" link', () => {
+  it('should render an "edit settings" link', () => {
     const plan = buildRoutingConfig();
 
     render(
       <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
     );
 
-    const link = screen.getByTestId('change-message-plan-name-link');
-    expect(link.textContent).toBe('Change name');
+    const link = screen.getByTestId('edit-settings-link');
+    expect(link.textContent).toBe('Edit settings');
     expect(link.getAttribute('href')).toBe(
       `/message-plans/edit-message-plan-settings/${plan.id}`
     );
