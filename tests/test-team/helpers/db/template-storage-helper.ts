@@ -41,6 +41,75 @@ export class TemplateStorageHelper {
   }
 
   /**
+   * Get all templates from the database
+   */
+  async getAllTemplates(): Promise<Template[]> {
+    const { ScanCommand } = await import('@aws-sdk/lib-dynamodb');
+
+    const { Items } = await this.ddbDocClient.send(
+      new ScanCommand({
+        TableName: process.env.TEMPLATES_TABLE_NAME,
+      })
+    );
+
+    return (Items as Template[]) || [];
+  }
+
+  /**
+   * Delete templates from the database with optional filters
+   * @param filters Optional filters to apply:
+   *   - clientId: Only delete templates for a specific client
+   *   - createdAfter: Only delete templates created on or after this date (ISO string or Date)
+   *   - templateStatus: Only delete templates with a specific status
+   * @returns Number of templates deleted
+   */
+  async deleteTemplates(filters?: {
+    clientId?: string;
+    createdAfter?: string | Date;
+    templateStatus?: string;
+  }): Promise<number> {
+    let templatesToDelete = await this.getAllTemplates();
+
+    if (filters) {
+      if (filters.clientId) {
+        templatesToDelete = templatesToDelete.filter(
+          (template) => template.clientId === filters.clientId
+        );
+      }
+
+      if (filters.createdAfter) {
+        const targetDate =
+          typeof filters.createdAfter === 'string'
+            ? new Date(filters.createdAfter)
+            : filters.createdAfter;
+        templatesToDelete = templatesToDelete.filter((template) => {
+          const createdAt = new Date(template.createdAt);
+          return createdAt >= targetDate;
+        });
+      }
+
+      if (filters.templateStatus) {
+        templatesToDelete = templatesToDelete.filter(
+          (template) => template.templateStatus === filters.templateStatus
+        );
+      }
+    }
+
+    if (templatesToDelete.length === 0) {
+      return 0;
+    }
+
+    await this.delete(
+      templatesToDelete.map(({ id, owner }) => ({
+        id,
+        owner,
+      }))
+    );
+
+    return templatesToDelete.length;
+  }
+
+  /**
    * Seed a load of templates into the database
    */
   async seedTemplateData(data: Template[]) {
@@ -69,7 +138,7 @@ export class TemplateStorageHelper {
    * Delete templates seeded by calls to seedTemplateData
    */
   public async deleteSeededTemplates() {
-    await this.deleteTemplates(
+    await this.delete(
       this.seedData.map(({ id, owner }) => ({
         id,
         owner,
@@ -89,7 +158,7 @@ export class TemplateStorageHelper {
    * Delete templates referenced by calls to addAdHocTemplateKey from database and associated files from s3
    */
   async deleteAdHocTemplates() {
-    await this.deleteTemplates(
+    await this.delete(
       this.adHocTemplateKeys.map(({ templateId, clientId }) => ({
         id: templateId,
         owner: this.addClientOwnerPrefix(clientId),
@@ -98,7 +167,7 @@ export class TemplateStorageHelper {
     this.adHocTemplateKeys = [];
   }
 
-  private async deleteTemplates(keys: { id: string; owner: string }[]) {
+  private async delete(keys: { id: string; owner: string }[]) {
     const dbChunks = TemplateStorageHelper.chunk(keys);
 
     await Promise.all(
