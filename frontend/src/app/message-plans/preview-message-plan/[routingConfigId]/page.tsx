@@ -31,7 +31,10 @@ import {
   MessagePlanCascadeConditionalTemplatesList,
   MessagePlanCascadeConditionalTemplatesListItem,
 } from '@molecules/MessagePlanConditionalTemplates/MessagePlanConditionalTemplates';
-import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
+import {
+  MessagePlanFallbackConditionsDetails,
+  MessagePlanFallbackConditionsListItem,
+} from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 import { MessagePlanChannelListNew } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
 import { interpolate } from '@utils/interpolate';
 import {
@@ -112,9 +115,7 @@ export default async function PreviewMessagePlanPage({
 
             <DetailsOpenProvider targetClassName='preview-template-details'>
               <p>
-                <DetailsOpenButton>
-                  Open all template previews
-                </DetailsOpenButton>
+                <DetailsOpenButton />
               </p>
 
               <MessagePlanChannelListNew>
@@ -182,10 +183,14 @@ export default async function PreviewMessagePlanPage({
                         </MessagePlanChannelTemplateNew>
 
                         {conditionalTemplatesCount > 0 && (
-                          <MessagePlanCascadeConditionalTemplatesList
-                            index={index}
-                            channel={cascadeItem.channel}
-                          >
+                          <MessagePlanCascadeConditionalTemplatesList>
+                            <MessagePlanFallbackConditionsListItem>
+                              <MessagePlanFallbackConditionsDetails
+                                channel={cascadeItem.channel}
+                                className='preview-template-details'
+                                index={index}
+                              />
+                            </MessagePlanFallbackConditionsListItem>
                             {accessibleTemplates.map(
                               ([accessibleFormat, template]) => (
                                 <MessagePlanCascadeConditionalTemplatesListItem
@@ -242,10 +247,13 @@ export default async function PreviewMessagePlanPage({
 
                       {messagePlan.cascade.length > 1 &&
                         index < messagePlan.cascade.length - 1 && (
-                          <MessagePlanFallbackConditions
-                            channel={cascadeItem.channel}
-                            index={index}
-                          />
+                          <MessagePlanFallbackConditionsListItem>
+                            <MessagePlanFallbackConditionsDetails
+                              channel={cascadeItem.channel}
+                              className='preview-template-details'
+                              index={index}
+                            />
+                          </MessagePlanFallbackConditionsListItem>
                         )}
                     </Fragment>
                   );

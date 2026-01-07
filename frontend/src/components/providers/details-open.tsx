@@ -1,15 +1,20 @@
 'use client';
 
-import { Button } from 'nhsuk-react-components';
 import {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
+import { Button } from 'nhsuk-react-components';
 
-const DetailsOpenContext = createContext<(() => void) | null>(null);
+const DetailsOpenContext = createContext<[boolean, () => void]>([
+  false,
+  () => {},
+]);
 
 export function useDetailsOpen() {
   const ctx = useContext(DetailsOpenContext);
@@ -24,31 +29,37 @@ export function DetailsOpenProvider({
   targetClassName: string;
 }>) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  function openAll() {
+  useEffect(() => {
     if (!ref.current) return;
     ref.current
       .querySelectorAll<HTMLDetailsElement>(`details.${targetClassName}`)
       .forEach((d) => {
-        d.open = true;
+        d.open = isOpen;
       });
-  }
+  }, [isOpen]);
 
-  const value = useMemo(() => openAll, []);
+  const toggle = useMemo(
+    () => () => {
+      setIsOpen(!isOpen);
+    },
+    [isOpen]
+  );
 
   return (
-    <DetailsOpenContext.Provider value={value}>
+    <DetailsOpenContext.Provider value={[isOpen, toggle]}>
       <div ref={ref}>{children}</div>
     </DetailsOpenContext.Provider>
   );
 }
 
-export function DetailsOpenButton({ children }: PropsWithChildren) {
-  const openAll = useDetailsOpen();
+export function DetailsOpenButton() {
+  const [isOpen, toggle] = useDetailsOpen();
 
   return (
-    <Button type='button' secondary onClick={openAll}>
-      {children}
+    <Button type='button' secondary onClick={toggle}>
+      {isOpen ? 'Close all template previews' : 'Open all template previews'}
     </Button>
   );
 }

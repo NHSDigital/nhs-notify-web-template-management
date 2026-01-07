@@ -92,20 +92,13 @@ export function MessagePlanConditionalLetterTemplates({
 }
 
 export function MessagePlanCascadeConditionalTemplatesList({
-  channel,
   children,
-  index,
-}: PropsWithChildren<{
-  channel: Channel;
-  index: number;
-}>) {
+}: PropsWithChildren) {
   return (
     <ul
       className={styles['message-plan-conditional-templates']}
       data-testid='message-plan-conditional-templates'
     >
-      <MessagePlanFallbackConditions channel={channel} index={index} />
-
       {children}
     </ul>
   );
