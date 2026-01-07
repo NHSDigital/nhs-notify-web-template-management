@@ -1051,33 +1051,6 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
-const chooseTemplatesForMessagePlan = {
-  pageTitle: generatePageTitle('Choose templates for your message plan'),
-};
-
-export type FallbackConditionBlock = {
-  title: string;
-  content: {
-    stop?: string | ContentBlock[];
-    continue?: string | ContentBlock[];
-  };
-};
-
-const messagePlanConditionalLetterTemplates = {
-  languageFormats: 'Other language letters',
-};
-
-const messagePlanChannelTemplate = {
-  templateLinks: {
-    choose: 'Choose',
-    change: 'Change',
-    remove: 'Remove{{templateCount|| all}}',
-    templateWord: '{{templateCount|template|templates}}',
-  },
-  optional: '(optional)',
-  messagePlanConditionalLetterTemplates,
-};
-
 const messagePlanFallbackConditions: Record<
   TemplateType,
   FallbackConditionBlock
@@ -1126,11 +1099,12 @@ const messagePlanFallbackConditions: Record<
   },
 };
 
-const messagePlanBlock = {
-  title: '{{ordinal}} message',
+const messagePlanConditionalLetterTemplates = {
+  languageFormats: 'Other language letters',
 };
 
-const createEditMessagePlan = {
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
   changeNameLink: {
     href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
@@ -1152,6 +1126,29 @@ const createEditMessagePlan = {
     },
   },
   messagePlanFallbackConditions,
+  messagePlanConditionalLetterTemplates,
+};
+
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove{{templateCount|| all}}',
+    templateWord: '{{templateCount|template|templates}}',
+  },
+  optional: '(optional)',
+};
+
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
 };
 
 const chooseNhsAppTemplate = {
@@ -1480,7 +1477,6 @@ const content = {
     chooseMessageOrder,
     chooseTemplateType,
     copyTemplate,
-    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,

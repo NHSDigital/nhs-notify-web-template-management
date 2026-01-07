@@ -3,7 +3,7 @@ import {
   MessagePlanChannelTemplate,
   MessagePlanAccessibleFormatTemplate,
   MessagePlanLanguageTemplate,
-} from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
+} from '@molecules/MessagePlanChannelTemplateCard/MessagePlanChannelTemplateCard';
 import type { TemplateDto } from 'nhs-notify-backend-client';
 
 describe('MessagePlanChannelTemplate', () => {

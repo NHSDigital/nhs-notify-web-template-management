@@ -1,7 +1,6 @@
-// TODO: CCM-12038 - variables
 .nhs_notify_warning_callout {
-  border: #ffeb3b 1px solid;
-  background-color: #fff9c4;
+  border: var(--nhsuk-yellow-colour) 1px solid;
+  background-color: var(--nhsuk-pale-yellow-colour);
 
   p:last-of-type {
     margin-bottom: 0;

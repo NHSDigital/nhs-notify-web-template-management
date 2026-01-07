@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MessagePlanChannelList } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
+import { MessagePlanChannelList } from '@molecules/MessagePlanChannelList/MessagePlanChannelList';
 import type {
   RoutingConfig,
   Channel,

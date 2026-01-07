@@ -25,8 +25,9 @@ import {
 } from '@atoms/NHSNotifySummaryList/NHSNotifySummaryList';
 import content from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
-import { MessagePlanChannelBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
-import { MessagePlanChannelTemplateNew } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
+import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
+import { MessagePlanChannelList } from '@molecules/MessagePlanChannelList/MessagePlanChannelList';
+import { MessagePlanChannelTemplateCard } from '@molecules/MessagePlanChannelTemplateCard/MessagePlanChannelTemplateCard';
 import {
   MessagePlanCascadeConditionalTemplatesList,
   MessagePlanCascadeConditionalTemplatesListItem,
@@ -35,7 +36,10 @@ import {
   MessagePlanFallbackConditionsDetails,
   MessagePlanFallbackConditionsListItem,
 } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
-import { MessagePlanChannelListNew } from '@organisms/MessagePlanChannelList/MessagePlanChannelList';
+import {
+  DetailsOpenButton,
+  DetailsOpenProvider,
+} from '@providers/details-open';
 import { interpolate } from '@utils/interpolate';
 import {
   getMessagePlanTemplates,
@@ -47,10 +51,6 @@ import {
   getDefaultTemplateForItem,
   getLanguageTemplatesForCascadeItem,
 } from '@utils/routing-utils';
-import {
-  DetailsOpenButton,
-  DetailsOpenProvider,
-} from '@providers/details-open';
 
 const pageContent = content.pages.previewMessagePlan;
 
@@ -67,6 +67,13 @@ export default async function PreviewMessagePlanPage({
 
   if (!messagePlan) {
     return redirect('/message-plans/invalid', RedirectType.replace);
+  }
+
+  if (messagePlan.status === 'DRAFT') {
+    return redirect(
+      `/message-plans/choose-templates/${routingConfigId}`,
+      RedirectType.replace
+    );
   }
 
   const templates = await getMessagePlanTemplates(messagePlan);
@@ -118,7 +125,7 @@ export default async function PreviewMessagePlanPage({
                 <DetailsOpenButton />
               </p>
 
-              <MessagePlanChannelListNew>
+              <MessagePlanChannelList>
                 {messagePlan.cascade.map((cascadeItem, index) => {
                   const defaultTemplate = getDefaultTemplateForItem(
                     cascadeItem,
@@ -144,11 +151,11 @@ export default async function PreviewMessagePlanPage({
                   }
                   return (
                     <Fragment key={`channel-${index + 1}`}>
-                      <MessagePlanChannelBlock
+                      <MessagePlanBlock
                         index={index}
                         data-testid={`message-plan-block-${cascadeItem.channel}`}
                       >
-                        <MessagePlanChannelTemplateNew
+                        <MessagePlanChannelTemplateCard
                           heading={channelDisplayMappings(cascadeItem.channel)}
                         >
                           {cascadeItem.channel !== 'LETTER' ? (
@@ -180,7 +187,7 @@ export default async function PreviewMessagePlanPage({
                               </Link>
                             </p>
                           )}
-                        </MessagePlanChannelTemplateNew>
+                        </MessagePlanChannelTemplateCard>
 
                         {conditionalTemplatesCount > 0 && (
                           <MessagePlanCascadeConditionalTemplatesList>
@@ -196,7 +203,7 @@ export default async function PreviewMessagePlanPage({
                                 <MessagePlanCascadeConditionalTemplatesListItem
                                   key={template.id}
                                 >
-                                  <MessagePlanChannelTemplateNew
+                                  <MessagePlanChannelTemplateCard
                                     heading={`${accessibleFormatDisplayMappings(
                                       accessibleFormat
                                     )} (optional)`}
@@ -211,14 +218,14 @@ export default async function PreviewMessagePlanPage({
                                         {template.name}
                                       </Link>
                                     </p>
-                                  </MessagePlanChannelTemplateNew>
+                                  </MessagePlanChannelTemplateCard>
                                 </MessagePlanCascadeConditionalTemplatesListItem>
                               )
                             )}
 
                             {languageTemplates.length > 0 && (
                               <MessagePlanCascadeConditionalTemplatesListItem>
-                                <MessagePlanChannelTemplateNew
+                                <MessagePlanChannelTemplateCard
                                   heading={
                                     pageContent.languageFormatsCardHeading
                                   }
@@ -238,12 +245,12 @@ export default async function PreviewMessagePlanPage({
                                       </Link>
                                     </p>
                                   ))}
-                                </MessagePlanChannelTemplateNew>
+                                </MessagePlanChannelTemplateCard>
                               </MessagePlanCascadeConditionalTemplatesListItem>
                             )}
                           </MessagePlanCascadeConditionalTemplatesList>
                         )}
-                      </MessagePlanChannelBlock>
+                      </MessagePlanBlock>
 
                       {messagePlan.cascade.length > 1 &&
                         index < messagePlan.cascade.length - 1 && (
@@ -258,7 +265,7 @@ export default async function PreviewMessagePlanPage({
                     </Fragment>
                   );
                 })}
-              </MessagePlanChannelListNew>
+              </MessagePlanChannelList>
             </DetailsOpenProvider>
 
             <div className='nhsuk-form-group'>

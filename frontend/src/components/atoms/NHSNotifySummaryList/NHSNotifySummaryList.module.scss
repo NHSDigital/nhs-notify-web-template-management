@@ -1,5 +1,3 @@
-// TODO: CCM-12038 - variables
-
 .nhs_notify_summary_list {
   .nhs_notify_summary_list__key,
   .nhs_notify_summary_list__value {
@@ -8,6 +6,6 @@
 
   .nhs_notify_summary_list__key {
     width: 20%;
-    color: #4c6272;
+    color: var(--nhsuk-secondary-text-colour);
   }
 }
