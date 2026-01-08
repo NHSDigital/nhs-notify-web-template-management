@@ -1,8 +1,4 @@
-import type {
-  LetterType,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';

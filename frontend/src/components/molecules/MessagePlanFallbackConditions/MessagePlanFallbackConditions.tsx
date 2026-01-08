@@ -17,13 +17,17 @@ const { messagePlanFallbackConditions } = copy.components;
 
 export function MessagePlanFallbackConditionsListItem({
   children,
-}: PropsWithChildren) {
+  className,
+  ...props
+}: PropsWithChildren<HTMLProps<HTMLLIElement>>) {
   return (
     <li
       className={classNames(
         styles['fallback-conditions'],
-        'fallback-conditions'
+        'fallback-conditions',
+        className
       )}
+      {...props}
     >
       <div
         className={styles['fallback-conditions-branch-icon']}

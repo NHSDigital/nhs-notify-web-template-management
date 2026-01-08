@@ -158,7 +158,18 @@ export default async function PreviewMessagePlanPage({
                         <MessagePlanChannelTemplateCard
                           heading={channelDisplayMappings(cascadeItem.channel)}
                         >
-                          {cascadeItem.channel !== 'LETTER' ? (
+                          {cascadeItem.channel === 'LETTER' ? (
+                            <p>
+                              <Link
+                                href={interpolate(
+                                  '/preview-submitted-letter-template/{{id}}',
+                                  { id: defaultTemplate.id }
+                                )}
+                              >
+                                {defaultTemplate.name}
+                              </Link>
+                            </p>
+                          ) : (
                             <>
                               <p>{defaultTemplate.name}</p>
                               <Details className='nhsuk-u-margin-bottom-0 preview-template-details'>
@@ -175,17 +186,6 @@ export default async function PreviewMessagePlanPage({
                                 </DetailsText>
                               </Details>
                             </>
-                          ) : (
-                            <p>
-                              <Link
-                                href={interpolate(
-                                  '/preview-submitted-letter-template/{{id}}',
-                                  { id: defaultTemplate.id }
-                                )}
-                              >
-                                {defaultTemplate.name}
-                              </Link>
-                            </p>
                           )}
                         </MessagePlanChannelTemplateCard>
 

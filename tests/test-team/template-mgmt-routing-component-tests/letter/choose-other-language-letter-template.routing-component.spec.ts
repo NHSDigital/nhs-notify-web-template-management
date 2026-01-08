@@ -61,17 +61,17 @@ function getTemplates(
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
       user,
-      'Test NHS App template'
+      `     'Test NHS App template - ${templateIds.NHSAPP}`
     ),
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,
       user,
-      'Test Letter template'
+      `Test Letter template - ${templateIds.LETTER}`
     ),
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
-      'Test Large Print Letter template',
+      `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
@@ -79,7 +79,7 @@ function getTemplates(
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
-      'Test French Letter template',
+      `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'fr' }
@@ -87,7 +87,7 @@ function getTemplates(
     ANOTHER_FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.ANOTHER_FRENCH_LETTER,
       user,
-      'Test Duplicate French Letter template',
+      `Test Duplicate French Letter template - ${templateIds.ANOTHER_FRENCH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'fr' }
@@ -95,7 +95,7 @@ function getTemplates(
     SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
-      'Test Spanish Letter template',
+      `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'es' }
@@ -103,7 +103,7 @@ function getTemplates(
     POLISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
-      'Test Polish Letter template',
+      `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'pl' }

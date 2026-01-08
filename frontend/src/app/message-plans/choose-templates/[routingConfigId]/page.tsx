@@ -144,7 +144,10 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
 
               return (
                 <Fragment key={`channel-${index + 1}`}>
-                  <MessagePlanBlock index={index}>
+                  <MessagePlanBlock
+                    index={index}
+                    data-testid={`message-plan-block-${cascadeItem.channel}`}
+                  >
                     <MessagePlanChannelTemplateCard
                       data-testid={`channel-template-${cascadeItem.channel}`}
                       heading={channelTemplateType}
@@ -162,7 +165,9 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
 
                     {cascadeItem.channel === 'LETTER' ? (
                       <MessagePlanCascadeConditionalTemplatesList data-testid='message-plan-conditional-templates'>
-                        <MessagePlanFallbackConditionsListItem>
+                        <MessagePlanFallbackConditionsListItem
+                          data-testid={`message-plan-fallback-conditions-${cascadeItem.channel}`}
+                        >
                           <MessagePlanFallbackConditionsDetails
                             channel={cascadeItem.channel}
                             index={index}
@@ -175,7 +180,7 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                             cascadeItem,
                             conditionalTemplates
                           );
-                          const channelTemplateType =
+                          const formatDisplay =
                             accessibleFormatDisplayMappings(format);
 
                           return (
@@ -184,10 +189,10 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                             >
                               <MessagePlanChannelTemplateCard
                                 data-testid={`channel-template-${format}`}
-                                heading={`${channelTemplateType} (optional)`}
+                                heading={`${formatDisplay} (optional)`}
                               >
                                 <MessagePlanChooseTemplateCardContent
-                                  channelTemplateType={channelTemplateType}
+                                  channelTemplateType={formatDisplay}
                                   templates={template ? [template] : []}
                                   routingConfigId={messagePlan.id}
                                   chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl('LETTER', format)}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
@@ -230,7 +235,9 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                   {/* Show fallback conditions only if there is more than one channel, and not for the last channel */}
                   {messagePlan.cascade.length > 1 &&
                     index < messagePlan.cascade.length - 1 && (
-                      <MessagePlanFallbackConditionsListItem>
+                      <MessagePlanFallbackConditionsListItem
+                        data-testid={`message-plan-fallback-conditions-${cascadeItem.channel}`}
+                      >
                         <MessagePlanFallbackConditionsDetails
                           channel={cascadeItem.channel}
                           index={index}

@@ -15,19 +15,17 @@ export function MessagePlanBlock({
   ...props
 }: PropsWithChildren<HTMLProps<HTMLLIElement> & { index: number }>) {
   return (
-    <>
-      <li
-        {...props}
-        className={classNames(styles['message-plan-block'], className)}
-      >
-        <div className={styles['message-plan-block-number']} aria-hidden='true'>
-          {index + 1}
-        </div>
-        <h2 className='nhsuk-heading-m nhsuk-u-padding-top-1'>
-          {interpolate(content.title, { ordinal: ORDINALS[index] })}
-        </h2>
-        {children}
-      </li>
-    </>
+    <li
+      {...props}
+      className={classNames(styles['message-plan-block'], className)}
+    >
+      <div className={styles['message-plan-block-number']} aria-hidden='true'>
+        {index + 1}
+      </div>
+      <h2 className='nhsuk-heading-m nhsuk-u-padding-top-1'>
+        {interpolate(content.title, { ordinal: ORDINALS[index] })}
+      </h2>
+      {children}
+    </li>
   );
 }

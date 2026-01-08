@@ -33,12 +33,14 @@ export function DetailsOpenProvider({
 
   useEffect(() => {
     if (!ref.current) return;
-    ref.current
-      .querySelectorAll<HTMLDetailsElement>(`details.${targetClassName}`)
-      .forEach((d) => {
-        d.open = isOpen;
-      });
-  }, [isOpen]);
+    const details = ref.current.querySelectorAll<HTMLDetailsElement>(
+      `details.${targetClassName}`
+    );
+
+    for (const element of details) {
+      element.open = isOpen;
+    }
+  }, [isOpen, targetClassName]);
 
   const toggle = useMemo(
     () => () => {
