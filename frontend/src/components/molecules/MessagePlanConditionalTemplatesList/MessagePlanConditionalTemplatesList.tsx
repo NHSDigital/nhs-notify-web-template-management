@@ -1,9 +1,8 @@
-import { HTMLProps, PropsWithChildren } from 'react';
+import type { HTMLProps, PropsWithChildren } from 'react';
 import classNames from 'classnames';
-import styles from './MessagePlanConditionalTemplates.module.scss';
+import styles from './MessagePlanConditionalTemplatesList.module.scss';
 
-// TODO: CCM-12038 - atoms
-export function MessagePlanCascadeConditionalTemplatesList({
+export function MessagePlanConditionalTemplatesList({
   children,
   className,
   ...props
@@ -21,7 +20,7 @@ export function MessagePlanCascadeConditionalTemplatesList({
   );
 }
 
-export function MessagePlanCascadeConditionalTemplatesListItem({
+export function MessagePlanConditionalTemplatesListItem({
   children,
   className,
   ...props

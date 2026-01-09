@@ -16,8 +16,8 @@ export function MessagePlanBlock({
 }: PropsWithChildren<HTMLProps<HTMLLIElement> & { index: number }>) {
   return (
     <li
-      {...props}
       className={classNames(styles['message-plan-block'], className)}
+      {...props}
     >
       <div className={styles['message-plan-block-number']} aria-hidden='true'>
         {index + 1}

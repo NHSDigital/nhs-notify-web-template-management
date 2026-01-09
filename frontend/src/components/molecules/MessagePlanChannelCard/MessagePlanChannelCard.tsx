@@ -1,9 +1,8 @@
-import { HTMLProps, PropsWithChildren } from 'react';
+import type { HTMLProps, PropsWithChildren } from 'react';
 import classNames from 'classnames';
+import styles from './MessagePlanChannelCard.module.scss';
 
-import styles from './MessagePlanChannelTemplateCard.module.scss';
-
-export function MessagePlanChannelTemplateCard({
+export function MessagePlanChannelCard({
   children,
   className,
   heading,

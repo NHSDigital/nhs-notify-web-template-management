@@ -1,3 +1,4 @@
+'use client';
 import { HTMLProps, PropsWithChildren } from 'react';
 import { Details, DetailsSummary, DetailsText } from '@atoms/nhsuk-components';
 import { FallbackConditionBlock } from '@content/content';

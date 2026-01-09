@@ -22,11 +22,11 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
-import { MessagePlanChannelTemplateCard } from '@molecules/MessagePlanChannelTemplateCard/MessagePlanChannelTemplateCard';
+import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
 import {
-  MessagePlanCascadeConditionalTemplatesList,
-  MessagePlanCascadeConditionalTemplatesListItem,
-} from '@molecules/MessagePlanConditionalTemplates/MessagePlanConditionalTemplates';
+  MessagePlanConditionalTemplatesList,
+  MessagePlanConditionalTemplatesListItem,
+} from '@molecules/MessagePlanConditionalTemplatesList/MessagePlanConditionalTemplatesList';
 import {
   MessagePlanFallbackConditionsDetails,
   MessagePlanFallbackConditionsListItem,
@@ -76,9 +76,10 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-three-quarters'>
-          {/* TODO: CCM-11495 Add ErrorSummary component */}
           <span className='nhsuk-caption-l'>{content.headerCaption}</span>
-          <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
+          <h1 className='nhsuk-heading-l' data-testid='routing-config-name'>
+            {messagePlan.name}
+          </h1>
           <p className='nhsuk-body-s'>
             <Link
               data-testid='edit-settings-link'
@@ -148,7 +149,7 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                     index={index}
                     data-testid={`message-plan-block-${cascadeItem.channel}`}
                   >
-                    <MessagePlanChannelTemplateCard
+                    <MessagePlanChannelCard
                       data-testid={`channel-template-${cascadeItem.channel}`}
                       heading={channelTemplateType}
                     >
@@ -161,10 +162,10 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                         removeTemplateAction={removeTemplateFromMessagePlan}
                         testIdSuffix={cascadeItem.channel}
                       />
-                    </MessagePlanChannelTemplateCard>
+                    </MessagePlanChannelCard>
 
                     {cascadeItem.channel === 'LETTER' ? (
-                      <MessagePlanCascadeConditionalTemplatesList data-testid='message-plan-conditional-templates'>
+                      <MessagePlanConditionalTemplatesList data-testid='message-plan-conditional-templates'>
                         <MessagePlanFallbackConditionsListItem
                           data-testid={`message-plan-fallback-conditions-${cascadeItem.channel}`}
                         >
@@ -184,10 +185,10 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                             accessibleFormatDisplayMappings(format);
 
                           return (
-                            <MessagePlanCascadeConditionalTemplatesListItem
+                            <MessagePlanConditionalTemplatesListItem
                               key={format}
                             >
-                              <MessagePlanChannelTemplateCard
+                              <MessagePlanChannelCard
                                 data-testid={`channel-template-${format}`}
                                 heading={`${formatDisplay} (optional)`}
                               >
@@ -202,13 +203,13 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                                   }
                                   testIdSuffix={format}
                                 />
-                              </MessagePlanChannelTemplateCard>
-                            </MessagePlanCascadeConditionalTemplatesListItem>
+                              </MessagePlanChannelCard>
+                            </MessagePlanConditionalTemplatesListItem>
                           );
                         })}
 
-                        <MessagePlanCascadeConditionalTemplatesListItem>
-                          <MessagePlanChannelTemplateCard
+                        <MessagePlanConditionalTemplatesListItem>
+                          <MessagePlanChannelCard
                             data-testid='channel-template-foreign-language'
                             heading={`${content.messagePlanConditionalLetterTemplates.languageFormats} (optional)`}
                           >
@@ -226,9 +227,13 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                               }
                               testIdSuffix='foreign-language'
                             />
-                          </MessagePlanChannelTemplateCard>
-                        </MessagePlanCascadeConditionalTemplatesListItem>
-                      </MessagePlanCascadeConditionalTemplatesList>
+                          </MessagePlanChannelCard>
+                        </MessagePlanConditionalTemplatesListItem>
+
+                        <MessagePlanConditionalTemplatesListItem>
+                          Hello
+                        </MessagePlanConditionalTemplatesListItem>
+                      </MessagePlanConditionalTemplatesList>
                     ) : null}
                   </MessagePlanBlock>
 
@@ -250,7 +255,6 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
           </MessagePlanChannelList>
 
           <div className='nhsuk-form-group' data-testid='message-plan-actions'>
-            {/* TODO: CCM-11495 Add validation */}
             <Link
               href={interpolate(content.ctas.primary.href, {
                 routingConfigId: messagePlan.id,

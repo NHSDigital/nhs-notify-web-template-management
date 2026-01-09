@@ -27,11 +27,11 @@ import content from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanChannelList } from '@molecules/MessagePlanChannelList/MessagePlanChannelList';
-import { MessagePlanChannelTemplateCard } from '@molecules/MessagePlanChannelTemplateCard/MessagePlanChannelTemplateCard';
+import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
 import {
-  MessagePlanCascadeConditionalTemplatesList,
-  MessagePlanCascadeConditionalTemplatesListItem,
-} from '@molecules/MessagePlanConditionalTemplates/MessagePlanConditionalTemplates';
+  MessagePlanConditionalTemplatesList,
+  MessagePlanConditionalTemplatesListItem,
+} from '@molecules/MessagePlanConditionalTemplatesList/MessagePlanConditionalTemplatesList';
 import {
   MessagePlanFallbackConditionsDetails,
   MessagePlanFallbackConditionsListItem,
@@ -155,7 +155,7 @@ export default async function PreviewMessagePlanPage({
                         index={index}
                         data-testid={`message-plan-block-${cascadeItem.channel}`}
                       >
-                        <MessagePlanChannelTemplateCard
+                        <MessagePlanChannelCard
                           heading={channelDisplayMappings(cascadeItem.channel)}
                         >
                           {cascadeItem.channel === 'LETTER' ? (
@@ -187,10 +187,10 @@ export default async function PreviewMessagePlanPage({
                               </Details>
                             </>
                           )}
-                        </MessagePlanChannelTemplateCard>
+                        </MessagePlanChannelCard>
 
                         {conditionalTemplatesCount > 0 && (
-                          <MessagePlanCascadeConditionalTemplatesList>
+                          <MessagePlanConditionalTemplatesList>
                             <MessagePlanFallbackConditionsListItem>
                               <MessagePlanFallbackConditionsDetails
                                 channel={cascadeItem.channel}
@@ -200,10 +200,10 @@ export default async function PreviewMessagePlanPage({
                             </MessagePlanFallbackConditionsListItem>
                             {accessibleTemplates.map(
                               ([accessibleFormat, template]) => (
-                                <MessagePlanCascadeConditionalTemplatesListItem
+                                <MessagePlanConditionalTemplatesListItem
                                   key={template.id}
                                 >
-                                  <MessagePlanChannelTemplateCard
+                                  <MessagePlanChannelCard
                                     heading={`${accessibleFormatDisplayMappings(
                                       accessibleFormat
                                     )} (optional)`}
@@ -218,14 +218,14 @@ export default async function PreviewMessagePlanPage({
                                         {template.name}
                                       </Link>
                                     </p>
-                                  </MessagePlanChannelTemplateCard>
-                                </MessagePlanCascadeConditionalTemplatesListItem>
+                                  </MessagePlanChannelCard>
+                                </MessagePlanConditionalTemplatesListItem>
                               )
                             )}
 
                             {languageTemplates.length > 0 && (
-                              <MessagePlanCascadeConditionalTemplatesListItem>
-                                <MessagePlanChannelTemplateCard
+                              <MessagePlanConditionalTemplatesListItem>
+                                <MessagePlanChannelCard
                                   heading={
                                     pageContent.languageFormatsCardHeading
                                   }
@@ -245,10 +245,10 @@ export default async function PreviewMessagePlanPage({
                                       </Link>
                                     </p>
                                   ))}
-                                </MessagePlanChannelTemplateCard>
-                              </MessagePlanCascadeConditionalTemplatesListItem>
+                                </MessagePlanChannelCard>
+                              </MessagePlanConditionalTemplatesListItem>
                             )}
-                          </MessagePlanCascadeConditionalTemplatesList>
+                          </MessagePlanConditionalTemplatesList>
                         )}
                       </MessagePlanBlock>
 
