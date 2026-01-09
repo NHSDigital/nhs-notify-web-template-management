@@ -252,7 +252,7 @@ describe('Template schemas', () => {
   });
 
   describe('$TemplateFilter', () => {
-    test.each(['templateStatus', 'templateType', 'language', 'letterType'])(
+    test.each(['templateType', 'language', 'letterType', 'excludeLanguage'])(
       '$TemplateFilter should fail when unknown $filter field is provided',
       (filterField) => {
         const filter = {
@@ -273,23 +273,44 @@ describe('Template schemas', () => {
       }
     );
 
+    test('$TemplateFilter should fail when unknown templateStatus is provided', () => {
+      const filter = {
+        templateStatus: ['UNKNOWN'],
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            templateStatus: [
+              expect.stringContaining('Invalid option: expected one of'),
+            ],
+          },
+        })
+      );
+    });
+
     test.each([
       {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED'],
       },
       {
         templateType: 'LETTER',
       },
       {
         language: 'en',
+      },
+      {
+        excludeLanguage: 'fr',
       },
       {
         letterType: 'x0',
       },
       {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
         templateType: 'LETTER',
-        language: 'en',
+        excludeLanguage: 'en',
         letterType: 'x0',
       },
     ])('should pass template filter validation %p', async (filter) => {
