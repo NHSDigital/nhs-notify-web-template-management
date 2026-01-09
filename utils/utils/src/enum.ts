@@ -315,6 +315,16 @@ export const channelDisplayMappings = (channel: Channel) => {
   return map[channel];
 };
 
+export const accessibleFormatDisplayMappings = (letterType: LetterType) => {
+  const map: Record<LetterType, string> = {
+    q4: 'British Sign Language letter',
+    x0: 'Standard letter',
+    x1: 'Large print letter',
+  };
+
+  return map[letterType];
+};
+
 const messagePlanStatusToDisplayMappings: Record<RoutingConfigStatus, string> =
   {
     DRAFT: 'Draft',

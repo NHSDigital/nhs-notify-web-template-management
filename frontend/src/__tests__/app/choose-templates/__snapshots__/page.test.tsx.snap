@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChooseTemplatesPage renders correctly for a message plan with multiple templates (snapshot) 1`] = `
-<div>
+<DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
     id="maincontent"
@@ -20,6 +20,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
         </span>
         <h1
           class="nhsuk-heading-l"
+          data-testid="routing-config-name"
         >
           Autumn Campaign Plan
         </h1>
@@ -141,8 +142,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         NHS App
                       </span>
-                       
-                      template
+                       template
                     </a>
                   </li>
                   <li>
@@ -177,8 +177,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           NHS App
                         </span>
-                         
-                        template
+                         template
                       </button>
                     </form>
                   </li>
@@ -328,8 +327,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Text message (SMS)
                       </span>
-                       
-                      template
+                       template
                     </a>
                   </li>
                   <li>
@@ -364,8 +362,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           Text message (SMS)
                         </span>
-                         
-                        template
+                         template
                       </button>
                     </form>
                   </li>
@@ -504,8 +501,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Email
                       </span>
-                       
-                      template
+                       template
                     </a>
                   </li>
                 </ul>
@@ -654,8 +650,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                       >
                         Standard English letter
                       </span>
-                       
-                      template
+                       template
                     </a>
                   </li>
                   <li>
@@ -690,8 +685,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                         >
                           Standard English letter
                         </span>
-                         
-                        template
+                         template
                       </button>
                     </form>
                   </li>
@@ -814,8 +808,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                           >
                             Large print letter
                           </span>
-                           
-                          template
+                           template
                         </a>
                       </li>
                     </ul>
@@ -869,8 +862,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                           >
                             Other language letters
                           </span>
-                           
-                          templates
+                           templates
                         </a>
                       </li>
                       <li>
@@ -911,14 +903,18 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
                             >
                               Other language letters
                             </span>
-                             
-                            templates
+                             templates
                           </button>
                         </form>
                       </li>
                     </ul>
                   </div>
                 </div>
+              </li>
+              <li
+                class="message-plan-conditional-templates__list-item"
+              >
+                Hello
               </li>
             </ul>
           </li>
@@ -951,5 +947,5 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
       </div>
     </div>
   </main>
-</div>
+</DocumentFragment>
 `;

@@ -17,6 +17,8 @@ export type ConditionalTemplate =
 
 export type MessagePlanTemplates = Record<string, TemplateDto>;
 
+export const ACCESSIBLE_FORMATS: LetterType[] = ['x1']; // Large print only
+
 /**
  * Type guard to check if a template is a letter template
  */
@@ -24,6 +26,17 @@ export function isLetterTemplate(
   template: TemplateDto
 ): template is LetterTemplate {
   return template.templateType === 'LETTER';
+}
+
+/**
+ * Gets the default template for a cascade item, from the provided templates object
+ */
+export function getDefaultTemplateForItem(
+  channelItem: CascadeItem,
+  templates: MessagePlanTemplates
+): TemplateDto | undefined {
+  if (!channelItem.defaultTemplateId) return;
+  return templates[channelItem.defaultTemplateId];
 }
 
 /**
@@ -404,4 +417,56 @@ export function replaceLanguageTemplatesInCascadeItem(
     cascadeItemWithoutLanguages,
     selectedTemplates
   );
+}
+
+/**
+ * Gets the template for a cascade item with the given accessible format from the provided templates object
+ */
+export function getTemplateForAccessibleFormat(
+  format: LetterType,
+  cascadeItem: CascadeItem,
+  templates: MessagePlanTemplates
+): TemplateDto | undefined {
+  const conditionalTemplate = (cascadeItem.conditionalTemplates || []).find(
+    (
+      template: ConditionalTemplate
+    ): template is ConditionalTemplateAccessible =>
+      'accessibleFormat' in template && template.accessibleFormat === format
+  );
+  return conditionalTemplate?.templateId
+    ? templates[conditionalTemplate.templateId]
+    : undefined;
+}
+
+/**
+ * Returns a list of language templates for a cascade item from the provided templates object
+ */
+export function getLanguageTemplatesForCascadeItem(
+  cascadeItem: CascadeItem,
+  templates: MessagePlanTemplates
+): TemplateDto[] {
+  return (cascadeItem.conditionalTemplates || [])
+    .filter(
+      (
+        template: ConditionalTemplate
+      ): template is ConditionalTemplateLanguage =>
+        'language' in template && !!template.templateId
+    )
+    .map(
+      (template: ConditionalTemplateLanguage) => templates[template.templateId!]
+    )
+    .filter(Boolean);
+}
+
+/**
+ * Returns a list of accessible format templates for a cascade item from the provided templates object
+ */
+export function getAccessibleTemplatesForCascadeItem(
+  cascadeItem: CascadeItem,
+  templates: MessagePlanTemplates
+): [LetterType, TemplateDto][] {
+  return ACCESSIBLE_FORMATS.map((format) => [
+    format,
+    getTemplateForAccessibleFormat(format, cascadeItem, templates),
+  ]).filter((pair): pair is [LetterType, TemplateDto] => Boolean(pair[1]));
 }

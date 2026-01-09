@@ -99,27 +99,27 @@ function createTemplates(user: TestUser) {
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
       user,
-      'Test NHS App template'
+      `Test NHS App template - ${templateIds.NHSAPP}`
     ),
     EMAIL: TemplateFactory.createEmailTemplate(
       templateIds.EMAIL,
       user,
-      'Test Email template'
+      `Test Email template - ${templateIds.EMAIL}`
     ),
     SMS: TemplateFactory.createSmsTemplate(
       templateIds.SMS,
       user,
-      'Test SMS template'
+      `Test SMS template - ${templateIds.SMS}`
     ),
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,
       user,
-      'Test Letter template'
+      `Test Letter template - ${templateIds.LETTER}`
     ),
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
-      'Test Large Print Letter template',
+      `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
@@ -127,7 +127,7 @@ function createTemplates(user: TestUser) {
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
-      'Test French Letter template',
+      `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'fr' }
@@ -135,7 +135,7 @@ function createTemplates(user: TestUser) {
     SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
-      'Test Spanish Letter template',
+      `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'NOT_YET_SUBMITTED',
       'PASSED',
       { language: 'es' }

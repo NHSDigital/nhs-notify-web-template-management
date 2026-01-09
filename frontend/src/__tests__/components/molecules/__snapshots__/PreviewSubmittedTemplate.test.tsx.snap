@@ -762,7 +762,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
           </h1>
         </div>
         <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
@@ -922,7 +922,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
           </h1>
         </div>
         <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
@@ -1107,7 +1107,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
           </h1>
         </div>
         <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
@@ -1382,7 +1382,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
           </h1>
         </div>
         <div
-          class="nhsuk-warning-callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width warning_callout"
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
