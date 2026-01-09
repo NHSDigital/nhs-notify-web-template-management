@@ -2009,11 +2009,14 @@
         "description": "List all templates",
         "parameters": [
           {
-            "description": "Filter by a single active status",
+            "description": "Filter by one or more active statuses",
             "in": "query",
             "name": "templateStatus",
             "schema": {
-              "$ref": "#/components/schemas/TemplateStatusActive"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TemplateStatusActive"
+              }
             }
           },
           {
@@ -2028,6 +2031,14 @@
             "description": "Filter by a single language",
             "in": "query",
             "name": "language",
+            "schema": {
+              "$ref": "#/components/schemas/Language"
+            }
+          },
+          {
+            "description": "Exclude a single language",
+            "in": "query",
+            "name": "excludeLanguage",
             "schema": {
               "$ref": "#/components/schemas/Language"
             }

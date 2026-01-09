@@ -182,9 +182,10 @@ export const $TemplateDto = schemaFor<
 export const $TemplateFilter = schemaFor<TemplateFilter>()(
   z
     .object({
-      templateStatus: $TemplateStatusActive,
+      templateStatus: z.array($TemplateStatusActive),
       templateType: $TemplateType,
       language: $Language,
+      excludeLanguage: $Language,
       letterType: $LetterType,
     })
     .partial()

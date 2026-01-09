@@ -57,6 +57,7 @@ const setup = () => {
     excludeTemplateStatus: jest.fn().mockReturnThis(),
     templateType: jest.fn().mockReturnThis(),
     language: jest.fn().mockReturnThis(),
+    excludeLanguage: jest.fn().mockReturnThis(),
     letterType: jest.fn().mockReturnThis(),
   });
 
@@ -1679,9 +1680,10 @@ describe('templateClient', () => {
       } = setup();
 
       const filter: TemplateFilter = {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED'],
         templateType: 'NHS_APP',
         language: 'en',
+        excludeLanguage: 'fr',
         letterType: 'x0',
       };
 
@@ -1710,6 +1712,7 @@ describe('templateClient', () => {
       expect(queryMock.templateStatus).toHaveBeenCalledWith('SUBMITTED');
       expect(queryMock.templateType).toHaveBeenCalledWith('NHS_APP');
       expect(queryMock.language).toHaveBeenCalledWith('en');
+      expect(queryMock.excludeLanguage).toHaveBeenCalledWith('fr');
       expect(queryMock.letterType).toHaveBeenCalledWith('x0');
 
       expect(result).toEqual({

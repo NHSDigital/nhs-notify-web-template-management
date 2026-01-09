@@ -62,6 +62,12 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 3',
       'SUBMITTED'
     ),
+    LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'Proof available letter template',
+      'PROOF_AVAILABLE'
+    ),
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       randomUUID(),
       user,
@@ -196,6 +202,9 @@ test.describe('Routing - Choose letter template page', () => {
         table.getByText(templates.ACCESSIBLE_LETTER.name)
       ).toBeHidden();
       await expect(table.getByText(templates.APP.name)).toBeHidden();
+      await expect(
+        table.getByText(templates.LETTER_NOT_SUBMITTED.name)
+      ).toBeHidden();
 
       const submitButton = chooseLetterTemplatePage.saveAndContinueButton;
       await expect(submitButton).toBeVisible();

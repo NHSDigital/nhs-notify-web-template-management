@@ -14,6 +14,7 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
   private excludeStatuses: TemplateStatus[] = [];
   private includeTemplateTypes: TemplateType[] = [];
   private includeLanguages: Language[] = [];
+  private excludeLanguages: Language[] = [];
   private includeLetterTypes: LetterType[] = [];
 
   constructor(
@@ -48,6 +49,12 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
     return this;
   }
 
+  /** Exclude items with any of the given languages. */
+  excludeLanguage(...languages: Language[]) {
+    this.excludeLanguages.push(...languages);
+    return this;
+  }
+
   letterType(...letterTypes: LetterType[]) {
     this.includeLetterTypes.push(...letterTypes);
     return this;
@@ -58,6 +65,7 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
     this.addFilterToQuery('templateStatus', 'EXCLUDE', this.excludeStatuses);
     this.addFilterToQuery('templateType', 'INCLUDE', this.includeTemplateTypes);
     this.addFilterToQuery('language', 'INCLUDE', this.includeLanguages);
+    this.addFilterToQuery('language', 'EXCLUDE', this.excludeLanguages);
     this.addFilterToQuery('letterType', 'INCLUDE', this.includeLetterTypes);
   }
 }
