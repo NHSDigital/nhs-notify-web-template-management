@@ -91,6 +91,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <li
             class="message-plan-block"
             data-testid="message-plan-block-NHSAPP"
+            id="channel-NHSAPP"
           >
             <div
               aria-hidden="true"
@@ -278,6 +279,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <li
             class="message-plan-block"
             data-testid="message-plan-block-SMS"
+            id="channel-SMS"
           >
             <div
               aria-hidden="true"
@@ -465,6 +467,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <li
             class="message-plan-block"
             data-testid="message-plan-block-EMAIL"
+            id="channel-EMAIL"
           >
             <div
               aria-hidden="true"
@@ -604,6 +607,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
           <li
             class="message-plan-block"
             data-testid="message-plan-block-LETTER"
+            id="channel-LETTER"
           >
             <div
               aria-hidden="true"

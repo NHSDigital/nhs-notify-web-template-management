@@ -405,3 +405,22 @@ export function replaceLanguageTemplatesInCascadeItem(
     selectedTemplates
   );
 }
+
+/**
+ * Gets the indices of channels that are missing templates in a routing config.
+ * Conditional templates (large print, foreign language) are optional and not validated.
+ * @returns Array of indices for channels missing templates
+ */
+export function getChannelsMissingTemplates(
+  messagePlan: RoutingConfig
+): number[] {
+  const missingTemplateIndices: number[] = [];
+
+  for (const [index, cascadeItem] of messagePlan.cascade.entries()) {
+    if (!cascadeItem.defaultTemplateId) {
+      missingTemplateIndices.push(index);
+    }
+  }
+
+  return missingTemplateIndices;
+}
