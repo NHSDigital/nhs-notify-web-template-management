@@ -110,14 +110,29 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('LETTER templates', () => {
-    const createNotYetSubmittedLetterTemplate = async (): Promise<Template> => {
+    const createProofAvailableLetterTemplate = async (): Promise<Template> => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
         user1,
-        'Test Letter template'
+        'Test Letter template',
+        'PROOF_AVAILABLE'
       );
 
-      await templateStorageHelper.seedTemplateData([letterTemplate]);
+      await templateStorageHelper.seedTemplateData([
+        {
+          ...letterTemplate,
+          files: {
+            ...letterTemplate.files,
+            proofs: {
+              proof1: {
+                fileName: 'proof.pdf',
+                supplier: 'WTMMOCK',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          },
+        },
+      ]);
 
       return letterTemplate;
     };
@@ -129,7 +144,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         templateType,
         createdAt,
         lockNumber,
-      } = await createNotYetSubmittedLetterTemplate();
+      } = await createProofAvailableLetterTemplate();
 
       const start = new Date();
 
@@ -189,7 +204,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createNotYetSubmittedLetterTemplate();
+        await createProofAvailableLetterTemplate();
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
@@ -231,7 +246,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     test('returns 400 - cannot submit a template when status is VIRUS_SCAN_FAILED', async ({
       request,
     }) => {
-      const { id: templateId } = await createNotYetSubmittedLetterTemplate();
+      const { id: templateId } = await createProofAvailableLetterTemplate();
 
       const failedVirusScanUpdate = await orchestrator.send(
         new SimulateFailedVirusScan({
@@ -270,7 +285,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createNotYetSubmittedLetterTemplate();
+        await createProofAvailableLetterTemplate();
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
