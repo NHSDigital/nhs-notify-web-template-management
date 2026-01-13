@@ -234,18 +234,28 @@ describe('Template API - List', () => {
   test('should handle multiValueQueryStringParameters with array values', async () => {
     const { handler, mocks } = setup();
 
-    const template: TemplateDto = {
+    const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
       id: 'id',
       templateType: 'LETTER',
       name: 'name',
-      message: 'message',
-      subject: 'subject',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: 'SUBMITTED',
       lockNumber: 1,
       language: 'en',
       letterType: 'x0',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+        testDataCsv: {
+          fileName: 'file.csv',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
     };
 
     mocks.templateClient.listTemplates.mockResolvedValueOnce({
@@ -285,18 +295,28 @@ describe('Template API - List', () => {
   test('should convert single-value multiValueQueryStringParameters to scalar', async () => {
     const { handler, mocks } = setup();
 
-    const template: TemplateDto = {
+    const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
       id: 'id',
       templateType: 'LETTER',
       name: 'name',
-      message: 'message',
-      subject: 'subject',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: 'SUBMITTED',
       lockNumber: 1,
       language: 'en',
       letterType: 'x0',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+        testDataCsv: {
+          fileName: 'file.csv',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
     };
 
     mocks.templateClient.listTemplates.mockResolvedValueOnce({

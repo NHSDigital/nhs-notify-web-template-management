@@ -2,6 +2,8 @@ import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
 import { TemplateClient } from '../app/template-client';
 
+type QueryParams = Record<string, string | string[]> | null | undefined;
+
 export function createHandler({
   templateClient,
 }: {
@@ -14,18 +16,18 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    let params: Record<string, string | string[]> | null =
-      event.queryStringParameters;
+    let params: QueryParams = event.queryStringParameters as QueryParams;
 
     if (event.multiValueQueryStringParameters) {
       const multiParams = event.multiValueQueryStringParameters;
-      const keys = Object.keys(multiParams);
+      const entries = Object.entries(multiParams);
 
-      if (keys.length > 0) {
+      if (entries.length > 0) {
         params = {};
-        for (const key of keys) {
-          const values = multiParams[key];
-          params[key] = values.length === 1 ? values[0] : values;
+        for (const [key, values] of entries) {
+          if (values) {
+            params[key] = values.length === 1 ? values[0] : values;
+          }
         }
       }
     }
