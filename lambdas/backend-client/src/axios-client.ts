@@ -12,6 +12,20 @@ export const createAxiosClient = () => {
     baseURL: process.env.API_BASE_URL,
     paramsSerializer: {
       indexes: null, // Use repeat style: ?key=value1&key=value2
+      serialize: (params) => {
+        // Explicitly serialize arrays in repeat style
+        const searchParams = new URLSearchParams();
+        for (const [key, value] of Object.entries(params)) {
+          if (Array.isArray(value)) {
+            for (const v of value) {
+              searchParams.append(key, String(v));
+            }
+          } else if (value !== undefined && value !== null) {
+            searchParams.append(key, String(value));
+          }
+        }
+        return searchParams.toString();
+      },
     },
   });
   axiosRetry(client, {

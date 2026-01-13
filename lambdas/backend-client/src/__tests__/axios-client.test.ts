@@ -144,5 +144,31 @@ describe('axios-client', () => {
       });
       expect(axiosMock.history.get.length).toBe(1);
     });
+
+    test('should serialize array parameters in repeat style', async () => {
+      axiosMock.onGet(/\/test/).reply(200, { data: 'test' });
+
+      await client.get('/test', {
+        params: {
+          templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+          templateType: 'LETTER',
+        },
+      });
+
+      const config = axiosMock.history.get[0];
+
+      const { serialize } = config.paramsSerializer as {
+        serialize: (params: Record<string, unknown>) => string;
+      };
+
+      const serialized = serialize({
+        templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+        templateType: 'LETTER',
+      });
+
+      expect(serialized).toContain('templateStatus=SUBMITTED');
+      expect(serialized).toContain('templateStatus=PROOF_APPROVED');
+      expect(serialized).toContain('templateType=LETTER');
+    });
   });
 });
