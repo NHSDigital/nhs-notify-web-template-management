@@ -134,7 +134,7 @@ export const statusToColourMapping = (
 ) => {
   const colourMappings: Record<TemplateStatus, Colour> = {
     NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
-    SUBMITTED: featureFlags.routing ? 'orange' : 'grey',
+    SUBMITTED: featureFlags.routing ? 'pink' : 'grey',
     DELETED: undefined,
     PENDING_PROOF_REQUEST: 'blue',
     PENDING_UPLOAD: 'blue',
@@ -143,7 +143,7 @@ export const statusToColourMapping = (
     VALIDATION_FAILED: 'red',
     WAITING_FOR_PROOF: 'yellow',
     PROOF_AVAILABLE: 'orange',
-    PROOF_APPROVED: 'grey',
+    PROOF_APPROVED: 'green',
   };
 
   return colourMappings[template.templateStatus];
