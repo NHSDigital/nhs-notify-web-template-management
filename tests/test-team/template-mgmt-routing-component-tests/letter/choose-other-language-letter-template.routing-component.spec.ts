@@ -29,12 +29,16 @@ import { RoutingChooseTemplatesPage } from 'pages/routing';
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-const languageTemplates = {
+const languageTemplatesToDisplay = {
   FRENCH_LETTER: randomUUID(),
   FRENCH_LETTER_APPROVED: randomUUID(),
-  FRENCH_LETTER_NOT_SUBMITTED: randomUUID(),
   POLISH_LETTER: randomUUID(),
   SPANISH_LETTER: randomUUID(),
+};
+
+const languageTemplates = {
+  ...languageTemplatesToDisplay,
+  FRENCH_LETTER_NOT_SUBMITTED: randomUUID(),
 };
 
 const templateIds = {
@@ -279,7 +283,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
 
-    for (const templateKey in languageTemplates) {
+    for (const templateKey in languageTemplatesToDisplay) {
       const template = templates[templateKey as keyof typeof templates];
       await expect(table.getByText(template.name)).toBeVisible();
 
