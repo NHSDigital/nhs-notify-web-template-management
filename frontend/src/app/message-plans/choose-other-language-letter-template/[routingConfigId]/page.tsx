@@ -36,7 +36,9 @@ export default async function ChooseOtherLanguageLetterTemplate(
 
   const [messagePlan, foreignLanguageTemplates] = await Promise.all([
     getRoutingConfig(routingConfigId),
-    getForeignLanguageLetterTemplates({ templateStatus: ['SUBMITTED'] }),
+    getForeignLanguageLetterTemplates({
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    }),
   ]);
 
   if (!messagePlan) {

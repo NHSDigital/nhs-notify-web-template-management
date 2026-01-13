@@ -31,7 +31,7 @@ const templateStorageHelper = new TemplateStorageHelper();
 
 const languageTemplates = {
   FRENCH_LETTER: randomUUID(),
-  ANOTHER_FRENCH_LETTER: randomUUID(),
+  FRENCH_LETTER_APPROVED: randomUUID(),
   FRENCH_LETTER_NOT_SUBMITTED: randomUUID(),
   POLISH_LETTER: randomUUID(),
   SPANISH_LETTER: randomUUID(),
@@ -87,11 +87,11 @@ function getTemplates(
       'PASSED',
       { language: 'fr' }
     ),
-    ANOTHER_FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
-      templateIds.ANOTHER_FRENCH_LETTER,
+    FRENCH_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+      templateIds.FRENCH_LETTER_APPROVED,
       user,
       'Test Duplicate French Letter template',
-      'SUBMITTED',
+      'PROOF_APPROVED',
       'PASSED',
       { language: 'fr' }
     ),
@@ -578,7 +578,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER.id)
       .check();
     await chooseOtherLanguageLetterTemplatePage
-      .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
+      .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .check();
 
     // eslint-disable-next-line playwright/no-wait-for-timeout
@@ -612,7 +612,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER.id)
       .uncheck();
     await chooseOtherLanguageLetterTemplatePage
-      .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
+      .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .uncheck();
 
     // eslint-disable-next-line playwright/no-wait-for-timeout

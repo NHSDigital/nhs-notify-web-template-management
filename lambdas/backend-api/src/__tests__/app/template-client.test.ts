@@ -1728,7 +1728,7 @@ describe('templateClient', () => {
         } = setup();
 
         const filter: TemplateFilter = {
-          templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
+          templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
         };
 
         const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
@@ -1753,7 +1753,7 @@ describe('templateClient', () => {
 
         expect(queryMock.templateStatus).toHaveBeenCalledWith(
           'SUBMITTED',
-          'PROOF_AVAILABLE'
+          'PROOF_APPROVED'
         );
         expect(result).toEqual({
           data: [template],

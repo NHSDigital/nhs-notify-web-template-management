@@ -105,7 +105,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
-      templateStatus: ['SUBMITTED'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     });
   });
 
@@ -129,7 +129,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
-      templateStatus: ['SUBMITTED'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     });
 
     expect(await generateMetadata()).toEqual({

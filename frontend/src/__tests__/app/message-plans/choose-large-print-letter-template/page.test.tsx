@@ -37,7 +37,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       templateType: 'LETTER',
       language: 'en',
       letterType: 'x1',
-      templateStatus: ['SUBMITTED'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
@@ -90,7 +90,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       templateType: 'LETTER',
       language: 'en',
       letterType: 'x1',
-      templateStatus: ['SUBMITTED'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     });
   });
 
@@ -114,7 +114,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       templateType: 'LETTER',
       language: 'en',
       letterType: 'x1',
-      templateStatus: ['SUBMITTED'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     });
 
     expect(await generateMetadata()).toEqual({

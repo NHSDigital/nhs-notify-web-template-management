@@ -56,11 +56,11 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 2',
       'SUBMITTED'
     ),
-    LETTER3: TemplateFactory.uploadLetterTemplate(
+    LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
       randomUUID(),
       user,
-      'Submitted letter template 3',
-      'SUBMITTED'
+      'Submitted letter template - proof approved',
+      'PROOF_APPROVED'
     ),
     LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
       randomUUID(),
@@ -174,7 +174,7 @@ test.describe('Routing - Choose letter template page', () => {
       for (const template of [
         templates.LETTER1,
         templates.LETTER2,
-        templates.LETTER3,
+        templates.LETTER_APPROVED,
       ]) {
         await expect(table.getByText(template.name)).toBeVisible();
 

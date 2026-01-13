@@ -31,7 +31,7 @@ const templateStorageHelper = new TemplateStorageHelper();
 const templateIds = {
   LARGE_PRINT_LETTER1: randomUUID(),
   LARGE_PRINT_LETTER2: randomUUID(),
-  LARGE_PRINT_LETTER3: randomUUID(),
+  LARGE_PRINT_LETTER_APPROVED: randomUUID(),
   LARGE_PRINT_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   FRENCH_LETTER: randomUUID(),
@@ -67,11 +67,11 @@ function getTemplates(
       'PASSED',
       { letterType: 'x1' }
     ),
-    LARGE_PRINT_LETTER3: TemplateFactory.uploadLetterTemplate(
-      templateIds.LARGE_PRINT_LETTER3,
+    LARGE_PRINT_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER_APPROVED,
       user,
-      'Large print letter template 3',
-      'SUBMITTED',
+      'Large print letter template 3 - proof approved',
+      'PROOF_APPROVED',
       'PASSED',
       { letterType: 'x1' }
     ),
@@ -220,7 +220,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     for (const template of [
       templates.LARGE_PRINT_LETTER1,
       templates.LARGE_PRINT_LETTER2,
-      templates.LARGE_PRINT_LETTER3,
+      templates.LARGE_PRINT_LETTER_APPROVED,
     ]) {
       await expect(table.getByText(template.name)).toBeVisible();
       const radioButton = chooseLargePrintLetterTemplatePage.getRadioButton(
@@ -373,7 +373,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await expect(selectedRadio).toBeChecked();
 
     const newSelection = chooseLargePrintLetterTemplatePage.getRadioButton(
-      templates.LARGE_PRINT_LETTER3.id
+      templates.LARGE_PRINT_LETTER_APPROVED.id
     );
     await newSelection.check();
     await expect(selectedRadio).not.toBeChecked();
@@ -387,7 +387,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await expect(
       new RoutingChooseTemplatesPage(page).alternativeLetterFormats().largePrint
         .templateName
-    ).toHaveText(templates.LARGE_PRINT_LETTER3.name);
+    ).toHaveText(templates.LARGE_PRINT_LETTER_APPROVED.name);
   });
 
   test.describe('redirects to invalid message plan page', () => {
