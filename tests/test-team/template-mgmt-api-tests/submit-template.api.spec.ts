@@ -10,10 +10,6 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import {
-  UseCaseOrchestrator,
-  SimulateFailedVirusScan,
-} from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -22,7 +18,6 @@ import { Template } from 'helpers/types';
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
@@ -137,6 +132,20 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       return letterTemplate;
     };
 
+    const createVirusScanFailedLetterTemplate = async (): Promise<Template> => {
+      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        user1,
+        'Test Letter template',
+        'VIRUS_SCAN_FAILED',
+        'FAILED'
+      );
+
+      await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+      return letterTemplate;
+    };
+
     test('returns 200 and the updated template data', async ({ request }) => {
       const {
         id: templateId,
@@ -246,27 +255,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     test('returns 400 - cannot submit a template when status is VIRUS_SCAN_FAILED', async ({
       request,
     }) => {
-      const { id: templateId } = await createProofAvailableLetterTemplate();
-
-      const failedVirusScanUpdate = await orchestrator.send(
-        new SimulateFailedVirusScan({
-          templateId,
-          clientId: user1.clientId,
-          filePath: 'files.pdfTemplate.virusScanStatus',
-        })
-      );
-
-      expect(
-        failedVirusScanUpdate.templateStatus,
-        JSON.stringify(failedVirusScanUpdate, null, 2)
-      ).toBe('VIRUS_SCAN_FAILED');
+      const { id: templateId, lockNumber } =
+        await createVirusScanFailedLetterTemplate();
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(failedVirusScanUpdate.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
