@@ -459,7 +459,7 @@ export function getLanguageTemplatesForCascadeItem(
 }
 
 /**
- * Returns a list of accessible format templates for a cascade item from the provided templates object
+ * Returns a list of supported accessible format templates for a cascade item from the provided templates object
  */
 export function getAccessibleTemplatesForCascadeItem(
   cascadeItem: CascadeItem,
@@ -469,4 +469,22 @@ export function getAccessibleTemplatesForCascadeItem(
     format,
     getTemplateForAccessibleFormat(format, cascadeItem, templates),
   ]).filter((pair): pair is [LetterType, TemplateDto] => Boolean(pair[1]));
+}
+/**
+ * Gets the indices of channels that are missing templates in a routing config.
+ * Conditional templates (large print, foreign language) are optional and not validated.
+ * @returns Array of indices for channels missing templates
+ */
+export function getChannelsMissingTemplates(
+  messagePlan: RoutingConfig
+): number[] {
+  const missingTemplateIndices: number[] = [];
+
+  for (const [index, cascadeItem] of messagePlan.cascade.entries()) {
+    if (!cascadeItem.defaultTemplateId) {
+      missingTemplateIndices.push(index);
+    }
+  }
+
+  return missingTemplateIndices;
 }

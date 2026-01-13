@@ -15,6 +15,7 @@ export function MessagePlanChooseTemplateCardContent({
   lockNumber,
   removeTemplateAction,
   testIdSuffix,
+  multipleTemplates = false,
 }: {
   channelTemplateType: string;
   templates: TemplateDto[];
@@ -23,10 +24,10 @@ export function MessagePlanChooseTemplateCardContent({
   lockNumber: number;
   removeTemplateAction: (formData: FormData) => Promise<void>;
   testIdSuffix: string;
+  multipleTemplates?: boolean;
 }) {
   const templateCount = templates.length;
   const hasTemplates = templateCount > 0;
-  const multipleTemplates = templateCount > 1;
 
   return (
     <>

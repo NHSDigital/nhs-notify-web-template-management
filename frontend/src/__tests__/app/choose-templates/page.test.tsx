@@ -1,11 +1,17 @@
 import ChooseTemplatesPage from '@app/message-plans/choose-templates/[routingConfigId]/page';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   getRoutingConfig,
   getMessagePlanTemplates,
 } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
-import { Channel, RoutingConfig } from 'nhs-notify-backend-client';
+import {
+  CascadeItem,
+  Channel,
+  ConditionalTemplateLanguage,
+  RoutingConfig,
+} from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
@@ -16,10 +22,17 @@ import {
   channelDisplayMappings,
   ORDINALS,
 } from 'nhs-notify-web-template-management-utils';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { MessagePlanTemplates } from '@utils/routing-utils';
+import {
+  NextRedirectBoundary,
+  NextRedirectError,
+} from '@testhelpers/next-redirect';
 
 jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
+jest.mock('@utils/csrf-utils');
+jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 const routingConfigId = 'fbb81055-79b9-4759-ac07-d191ae57be34';
 const appTemplateId = 'd3a2c6ba-438a-4bf4-b94a-7c64c6528e7f';
@@ -28,6 +41,7 @@ const emailTemplateId = '1d5bba4a-da2f-4409-8bab-9d9baf2f5774';
 const letterTemplateId = '9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d';
 const frenchLetterTemplateId = '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d';
 const spanishLetterTemplateId = '6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a';
+const largePrintLetterTemplateId = 'cdee1708-e68d-45de-bb4c-4e193dd21012';
 
 const mockRoutingConfig = (): RoutingConfig => ({
   id: routingConfigId,
@@ -95,6 +109,11 @@ const templates: MessagePlanTemplates = {
     ...LETTER_TEMPLATE,
     name: 'Spanish Letter Template',
     id: spanishLetterTemplateId,
+  },
+  [largePrintLetterTemplateId]: {
+    ...LETTER_TEMPLATE,
+    name: 'Large Print Letter Template',
+    id: largePrintLetterTemplateId,
   },
 };
 
@@ -303,6 +322,7 @@ describe('ChooseTemplatesPage', () => {
         const removeButton = within(card).getByRole('button', {
           name: `Remove ${display} template`,
         });
+
         const form = removeButton.closest('form');
 
         expect(form).toBeInTheDocument();
@@ -382,12 +402,463 @@ describe('ChooseTemplatesPage', () => {
   );
 
   describe('letter channel only', () => {
-    it('renders template names, change and remove links for english, foreign languages and all accessible formats when templates are set', async () => {
-      // TODO: CCM-12038 - this test
+    it('renders fallback conditions, template names, change and remove links for english, foreign languages and all accessible formats when templates are set', async () => {
+      const routingConfig = mockRoutingConfig();
+
+      const cascade: CascadeItem[] = [];
+
+      const conditionalLanguageTemplates: ConditionalTemplateLanguage[] = [
+        {
+          language: 'fr',
+          templateId: frenchLetterTemplateId,
+        },
+        {
+          language: 'es',
+          templateId: spanishLetterTemplateId,
+        },
+      ];
+
+      for (const item of routingConfig.cascade) {
+        if (item.channel === 'LETTER') {
+          item.conditionalTemplates = [
+            ...conditionalLanguageTemplates,
+            {
+              accessibleFormat: 'x1',
+              templateId: largePrintLetterTemplateId,
+            },
+          ];
+
+          cascade.push(item);
+        }
+      }
+
+      routingConfig.cascade = cascade;
+
+      jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      render(page);
+
+      const letterBlock = screen.getByTestId('message-plan-block-LETTER');
+
+      // Standard English
+
+      const standardEnglishCard = within(letterBlock).getByTestId(
+        'channel-template-LETTER'
+      );
+
+      expect(
+        within(standardEnglishCard).getByTestId('template-name-LETTER')
+      ).toHaveTextContent(templates[letterTemplateId].name);
+
+      const standardEnglishChangeLink = within(standardEnglishCard).getByRole(
+        'link',
+        {
+          name: 'Change Standard English letter template',
+        }
+      );
+      expect(standardEnglishChangeLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-standard-english-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+
+      expect(
+        within(standardEnglishCard).getByRole('button', {
+          name: 'Remove Standard English letter template',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(standardEnglishCard).queryByRole('link', {
+          name: `Choose Standard English letter template`,
+        })
+      ).not.toBeInTheDocument();
+
+      // Conditional Templates
+
+      const conditionalTemplatesBlock = screen.getByTestId(
+        'message-plan-conditional-templates'
+      );
+
+      expect(
+        within(conditionalTemplatesBlock).getByTestId(
+          'message-plan-fallback-conditions-LETTER'
+        )
+      ).toBeInTheDocument();
+
+      // Large Print
+
+      const largePrintCard = within(conditionalTemplatesBlock).getByTestId(
+        'channel-template-x1'
+      );
+
+      expect(
+        within(largePrintCard).getByRole('heading', {
+          level: 3,
+          name: 'Large print letter (optional)',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(largePrintCard).getByTestId('template-name-x1')
+      ).toHaveTextContent(templates[largePrintLetterTemplateId].name);
+
+      const largePrintChangeLink = within(largePrintCard).getByRole('link', {
+        name: 'Change Large print letter template',
+      });
+
+      expect(largePrintChangeLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+
+      expect(
+        within(largePrintCard).getByRole('button', {
+          name: 'Remove Large print letter template',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(largePrintCard).queryByRole('link', {
+          name: `Choose Large print letter template`,
+        })
+      ).not.toBeInTheDocument();
+
+      // Languages
+
+      const languagesCard = within(conditionalTemplatesBlock).getByTestId(
+        'channel-template-foreign-language'
+      );
+
+      expect(
+        within(languagesCard).getByRole('heading', {
+          level: 3,
+          name: 'Other language letters (optional)',
+        })
+      ).toBeInTheDocument();
+
+      const languageTemplateNames = within(languagesCard).getAllByTestId(
+        'template-name-foreign-language'
+      );
+
+      expect(languageTemplateNames).toHaveLength(2);
+      expect(languageTemplateNames[0]).toHaveTextContent(
+        templates[frenchLetterTemplateId].name
+      );
+      expect(languageTemplateNames[1]).toHaveTextContent(
+        templates[spanishLetterTemplateId].name
+      );
+
+      const languageChangeLink = within(languagesCard).getByRole('link', {
+        name: 'Change Other language letters templates',
+      });
+
+      expect(languageChangeLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+
+      expect(
+        within(languagesCard).getByRole('button', {
+          name: 'Remove all Other language letters templates',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(languagesCard).queryByRole('link', {
+          name: `Choose Other language letters templates`,
+        })
+      ).not.toBeInTheDocument();
     });
 
     it('renders choose links for english, foreign languages and all accessible formats when templates are not set', async () => {
-      // TODO: CCM-12038 - this test
+      const routingConfig = mockRoutingConfig();
+
+      const cascade: CascadeItem[] = [];
+
+      for (const item of routingConfig.cascade) {
+        if (item.channel === 'LETTER') {
+          item.defaultTemplateId = null;
+          item.conditionalTemplates = [];
+          cascade.push(item);
+        }
+      }
+
+      routingConfig.cascade = cascade;
+
+      jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      render(page);
+
+      const letterBlock = screen.getByTestId('message-plan-block-LETTER');
+
+      // Standard English
+
+      const standardEnglishCard = within(letterBlock).getByTestId(
+        'channel-template-LETTER'
+      );
+
+      expect(
+        within(standardEnglishCard).queryByTestId('template-name-LETTER')
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(standardEnglishCard).queryByRole('link', {
+          name: 'Change Standard English letter template',
+        })
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(standardEnglishCard).queryByRole('button', {
+          name: 'Remove Standard English letter template',
+        })
+      ).not.toBeInTheDocument();
+
+      const standardEnglishChooseLink = within(standardEnglishCard).getByRole(
+        'link',
+        {
+          name: 'Choose Standard English letter template',
+        }
+      );
+      expect(standardEnglishChooseLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-standard-english-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+
+      // Conditional Templates
+
+      const conditionalTemplatesBlock = screen.getByTestId(
+        'message-plan-conditional-templates'
+      );
+
+      expect(
+        within(conditionalTemplatesBlock).getByTestId(
+          'message-plan-fallback-conditions-LETTER'
+        )
+      ).toBeInTheDocument();
+
+      // Large Print
+
+      const largePrintCard = within(conditionalTemplatesBlock).getByTestId(
+        'channel-template-x1'
+      );
+
+      expect(
+        within(largePrintCard).getByRole('heading', {
+          level: 3,
+          name: 'Large print letter (optional)',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(largePrintCard).queryByTestId('template-name-x1')
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(largePrintCard).queryByRole('link', {
+          name: 'Change Large print letter template',
+        })
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(largePrintCard).queryByRole('button', {
+          name: 'Remove Large print letter template',
+        })
+      ).not.toBeInTheDocument();
+
+      const largePrintChooseLink = within(largePrintCard).getByRole('link', {
+        name: 'Choose Large print letter template',
+      });
+
+      expect(largePrintChooseLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-large-print-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+
+      // Languages
+
+      const languagesCard = within(conditionalTemplatesBlock).getByTestId(
+        'channel-template-foreign-language'
+      );
+
+      expect(
+        within(languagesCard).getByRole('heading', {
+          level: 3,
+          name: 'Other language letters (optional)',
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        within(languagesCard).queryByTestId('template-name-foreign-language')
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(languagesCard).queryByRole('link', {
+          name: 'Change Other language letters templates',
+        })
+      ).not.toBeInTheDocument();
+
+      expect(
+        within(languagesCard).queryByRole('button', {
+          name: 'Remove all Other language letters templates',
+        })
+      ).not.toBeInTheDocument();
+
+      const languageChooseLink = within(languagesCard).getByRole('link', {
+        name: 'Choose Other language letters templates',
+      });
+
+      expect(languageChooseLink).toHaveAttribute(
+        'href',
+        `/message-plans/choose-other-language-letter-template/${routingConfigId}?lockNumber=${routingConfig.lockNumber}`
+      );
+    });
+  });
+
+  describe('validation', () => {
+    it('should not display error summary when all channels have templates', async () => {
+      const user = userEvent.setup();
+
+      const routingConfig = mockRoutingConfig();
+
+      routingConfig.cascade = routingConfig.cascade.filter(
+        (item) => item.defaultTemplateId !== null
+      );
+
+      jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
+
+      jest.mocked(redirect).mockImplementation((url, type) => {
+        throw new NextRedirectError(url, type);
+      });
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      render(<NextRedirectBoundary>{page}</NextRedirectBoundary>);
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorSummary = screen.queryByRole('alert');
+
+      expect(errorSummary).not.toBeInTheDocument();
+
+      expect(redirect).toHaveBeenCalledWith(
+        `/message-plans/get-ready-to-move/${routingConfigId}`
+      );
+    });
+
+    it('should show error summary when a channel is missing a template', async () => {
+      const user = userEvent.setup();
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      render(page);
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorSummary = screen.getByRole('alert');
+
+      expect(
+        within(errorSummary).getByTestId('error-summary')
+      ).toHaveTextContent('There is a problem');
+
+      const hintText = errorSummary.querySelector('.nhsuk-hint');
+      expect(hintText).toHaveTextContent(
+        'You must choose a template for each message.'
+      );
+      const errorLink = within(errorSummary).getByRole('link', {
+        name: 'You have not chosen a template for your third message',
+      });
+      expect(errorLink).toBeInTheDocument();
+      expect(errorLink).toHaveAttribute('href', '#channel-EMAIL');
+    });
+
+    it('should show multiple errors when multiple channels are missing templates', async () => {
+      const user = userEvent.setup();
+
+      const routingConfig = mockRoutingConfig();
+
+      for (const cascadeItem of routingConfig.cascade) {
+        cascadeItem.defaultTemplateId = null;
+      }
+
+      jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      render(page);
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorLinks = screen.getAllByRole('link', {
+        name: /You have not chosen a template for your/,
+      });
+      expect(errorLinks).toHaveLength(4);
+      expect(errorLinks[0]).toHaveTextContent(
+        'You have not chosen a template for your first message'
+      );
+      expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
+
+      expect(errorLinks[1]).toHaveTextContent(
+        'You have not chosen a template for your second message'
+      );
+      expect(errorLinks[1]).toHaveAttribute('href', '#channel-SMS');
+
+      expect(errorLinks[2]).toHaveTextContent(
+        'You have not chosen a template for your third message'
+      );
+      expect(errorLinks[2]).toHaveAttribute('href', '#channel-EMAIL');
+
+      expect(errorLinks[3]).toHaveTextContent(
+        'You have not chosen a template for your fourth message'
+      );
+      expect(errorLinks[3]).toHaveAttribute('href', '#channel-LETTER');
+    });
+
+    it('should match snapshot when displaying validation errors', async () => {
+      const user = userEvent.setup();
+
+      const routingConfig = mockRoutingConfig();
+
+      for (const cascadeItem of routingConfig.cascade) {
+        cascadeItem.defaultTemplateId = null;
+      }
+
+      jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
+
+      const page = await ChooseTemplatesPage({
+        params: Promise.resolve({ routingConfigId }),
+      });
+
+      const { asFragment } = render(page);
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 });

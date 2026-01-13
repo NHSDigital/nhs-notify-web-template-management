@@ -30,6 +30,7 @@ import {
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   cascadeTemplateTypeToUrlTextMappings,
+  accessibleFormatDisplayMappings,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -423,5 +424,17 @@ describe('ORDINALS', () => {
   test('should be indexable', () => {
     expect(ORDINALS[0]).toBe('First');
     expect(ORDINALS.at(-1)).toBe('Sixth');
+  });
+});
+
+describe('accessibleFormatDisplayMappings', () => {
+  const cases: [LetterType, string][] = [
+    ['q4', 'British Sign Language letter'],
+    ['x0', 'Standard letter'],
+    ['x1', 'Large print letter'],
+  ];
+
+  test.each(cases)('should map "%s" to "%s"', (format, display) => {
+    expect(accessibleFormatDisplayMappings(format)).toEqual(display);
   });
 });

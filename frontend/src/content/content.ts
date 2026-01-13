@@ -1113,13 +1113,16 @@ const chooseTemplatesForMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '/message-plans/get-ready-to-move/{{routingConfigId}}',
       text: 'Move to production',
     },
     secondary: {
       href: '/message-plans',
       text: 'Save and close',
     },
+  },
+  validationError: {
+    hintText: 'You must choose a template for each message.',
+    linkText: 'You have not chosen a template for your {{ordinal}} message',
   },
   messagePlanFallbackConditions,
   messagePlanConditionalLetterTemplates,
