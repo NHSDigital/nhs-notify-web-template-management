@@ -109,6 +109,7 @@ export const statusToDisplayMapping = (
     VIRUS_SCAN_FAILED: 'Checks failed',
     WAITING_FOR_PROOF: 'Waiting for proof',
     PROOF_AVAILABLE: 'Proof available',
+    PROOF_APPROVED: 'Proof approved',
   };
 
   return statusToDisplayMappings[template.templateStatus];
@@ -142,6 +143,7 @@ export const statusToColourMapping = (
     VALIDATION_FAILED: 'red',
     WAITING_FOR_PROOF: 'yellow',
     PROOF_AVAILABLE: 'orange',
+    PROOF_APPROVED: 'grey',
   };
 
   return colourMappings[template.templateStatus];
@@ -206,6 +208,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
+      PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -232,6 +235,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
+      PROOF_APPROVED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
