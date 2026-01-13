@@ -14,12 +14,28 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
+    let params: Record<string, string | string[]> | null =
+      event.queryStringParameters;
+
+    if (event.multiValueQueryStringParameters) {
+      const multiParams = event.multiValueQueryStringParameters;
+      const keys = Object.keys(multiParams);
+
+      if (keys.length > 0) {
+        params = {};
+        for (const key of keys) {
+          const values = multiParams[key];
+          params[key] = values.length === 1 ? values[0] : values;
+        }
+      }
+    }
+
     const { data, error } = await templateClient.listTemplates(
       {
         internalUserId,
         clientId,
       },
-      event.queryStringParameters
+      params
     );
 
     if (error) {
