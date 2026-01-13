@@ -20,6 +20,7 @@ import {
 } from '@atoms/nhsuk-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
+import { MessagePlanChooseTemplatesMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
 import {
@@ -47,7 +48,6 @@ import {
 } from '@utils/routing-utils';
 
 import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
-import { MessagePlanChooseTemplatesMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
 
 const content = copy.pages.chooseTemplatesForMessagePlan;
 
