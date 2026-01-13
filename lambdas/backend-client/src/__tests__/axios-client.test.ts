@@ -129,5 +129,20 @@ describe('axios-client', () => {
 
       expect(axiosMock.history.get.length).toBe(3);
     });
+
+    test('should accept array query parameters', async () => {
+      axiosMock.onGet('/test').reply(200, { data: 'test' });
+
+      await client.get('/test', {
+        params: {
+          status: ['SUBMITTED', 'PROOF_AVAILABLE'],
+        },
+      });
+
+      expect(axiosMock.history.get[0].params).toEqual({
+        status: ['SUBMITTED', 'PROOF_AVAILABLE'],
+      });
+      expect(axiosMock.history.get.length).toBe(1);
+    });
   });
 });

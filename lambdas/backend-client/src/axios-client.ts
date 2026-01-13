@@ -10,6 +10,9 @@ const isApplicationFailure = (error: any): error is Failure =>
 export const createAxiosClient = () => {
   const client = axios.create({
     baseURL: process.env.API_BASE_URL,
+    paramsSerializer: {
+      indexes: null, // Use repeat style: ?key=value1&key=value2
+    },
   });
   axiosRetry(client, {
     retries: 3,

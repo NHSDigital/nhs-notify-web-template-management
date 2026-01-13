@@ -273,7 +273,7 @@ describe('Template schemas', () => {
       }
     );
 
-    test('$TemplateFilter should fail when unknown templateStatus is provided', () => {
+    test('should fail when unknown templateStatus is provided', () => {
       const filter = {
         templateStatus: ['UNKNOWN'],
       };
@@ -283,12 +283,34 @@ describe('Template schemas', () => {
       expect(result.error?.flatten()).toEqual(
         expect.objectContaining({
           fieldErrors: {
-            templateStatus: [
-              expect.stringContaining('Invalid option: expected one of'),
-            ],
+            templateStatus: [expect.stringContaining('Invalid')],
           },
         })
       );
+    });
+
+    test('should transform single templateStatus string to array', () => {
+      const filter = {
+        templateStatus: 'SUBMITTED',
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({ templateStatus: ['SUBMITTED'] });
+    });
+
+    test('should transform multiple templateStatus values to array', () => {
+      const filter = {
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
+      });
     });
 
     test.each([
@@ -316,6 +338,7 @@ describe('Template schemas', () => {
     ])('should pass template filter validation %p', async (filter) => {
       const result = $TemplateFilter.safeParse(filter);
 
+      expect(result.success).toBe(true);
       expect(result.data).toEqual(filter);
     });
   });

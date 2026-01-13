@@ -196,4 +196,35 @@ describe('Template API - List', () => {
       }
     );
   });
+
+  test('should return validation error from template client', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Request failed validation',
+          details: {
+            templateStatus: 'Invalid option',
+          },
+        },
+      },
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.queryStringParameters = {
+      templateStatus: 'INVALID_STATUS',
+    };
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result?.statusCode).toBe(400);
+    expect(result?.body).toContain('Request failed validation');
+  });
 });
