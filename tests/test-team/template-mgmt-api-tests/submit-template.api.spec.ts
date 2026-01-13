@@ -10,13 +10,14 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import {
   UseCaseOrchestrator,
   SimulateFailedVirusScan,
-  SimulatePassedValidation,
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
+import { randomUUID } from 'node:crypto';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { Template } from 'helpers/types';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
@@ -109,66 +110,26 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('LETTER templates', () => {
+    const createNotYetSubmittedLetterTemplate = async (): Promise<Template> => {
+      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        user1,
+        'Test Letter template'
+      );
+
+      await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+      return letterTemplate;
+    };
+
     test('returns 200 and the updated template data', async ({ request }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await createResponse.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      const { id: templateId, name: templateName } = createResult.data;
-
-      expect(createResponse.status(), debug).toBe(201);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: templateId,
-        clientId: user1.clientId,
-      });
-
-      const latest = await orchestrator.send(
-        new SimulatePassedValidation({
-          templateId,
-          clientId: user1.clientId,
-          hasTestData: true,
-        })
-      );
+      const {
+        id: templateId,
+        name,
+        templateType,
+        createdAt,
+        lockNumber,
+      } = await createNotYetSubmittedLetterTemplate();
 
       const start = new Date();
 
@@ -177,7 +138,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(latest.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -191,11 +152,11 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         data: expect.objectContaining({
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
-          name: createResult.data.name,
+          name,
           templateStatus: 'SUBMITTED',
-          templateType: createResult.data.templateType,
+          templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
-          lockNumber: latest.lockNumber + 1,
+          lockNumber: lockNumber + 1,
         }),
       });
 
@@ -203,7 +164,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         start,
         new Date(),
       ]);
-      expect(updated.data.createdAt).toEqual(createResult.data.createdAt);
+
+      expect(updated.data.createdAt).toEqual(createdAt);
 
       // check email
       const emailHelper = new EmailHelper();
@@ -217,7 +179,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         );
 
         expect(emailContents).toContain(templateId);
-        expect(emailContents).toContain(templateName);
+        expect(emailContents).toContain(name);
         expect(emailContents).toContain('Template Submitted');
         expect(emailContents).toContain('proof.pdf');
       }).toPass({ timeout: 20_000 });
@@ -226,70 +188,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     test('returns 400 - cannot submit a submitted template', async ({
       request,
     }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await createResponse.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(createResponse.status(), debug).toBe(201);
-
-      const latest = await orchestrator.send(
-        new SimulatePassedValidation({
-          templateId: createResult.data.id,
-          clientId: user1.clientId,
-          hasTestData: true,
-        })
-      );
+      const { id: templateId, lockNumber } =
+        await createNotYetSubmittedLetterTemplate();
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(latest.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -302,7 +209,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       ).toBe(200);
 
       const failedSubmitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -324,59 +231,11 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     test('returns 400 - cannot submit a template when status is VIRUS_SCAN_FAILED', async ({
       request,
     }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await createResponse.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(createResponse.status(), debug).toBe(201);
+      const { id: templateId } = await createNotYetSubmittedLetterTemplate();
 
       const failedVirusScanUpdate = await orchestrator.send(
         new SimulateFailedVirusScan({
-          templateId: createResult.data.id,
+          templateId,
           clientId: user1.clientId,
           filePath: 'files.pdfTemplate.virusScanStatus',
         })
@@ -388,7 +247,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       ).toBe('VIRUS_SCAN_FAILED');
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -410,62 +269,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     test('returns 404 - cannot submit a deleted template', async ({
       request,
     }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await createResponse.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(createResponse.status(), debug).toBe(201);
+      const { id: templateId, lockNumber } =
+        await createNotYetSubmittedLetterTemplate();
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(createResult.data.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -473,11 +285,11 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(createResult.data.lockNumber + 1),
+            'X-Lock-Number': String(lockNumber + 1),
           },
         }
       );
