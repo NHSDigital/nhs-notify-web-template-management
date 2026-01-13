@@ -1,8 +1,26 @@
-import type { APIGatewayProxyHandler } from 'aws-lambda';
+import type {
+  APIGatewayProxyHandler,
+  APIGatewayProxyEventMultiValueQueryStringParameters,
+} from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
 import { TemplateClient } from '../app/template-client';
 
 type QueryParams = Record<string, string | string[]> | null | undefined;
+
+function convertMultiValueParams(
+  multiParams: APIGatewayProxyEventMultiValueQueryStringParameters
+): QueryParams {
+  const entries = Object.entries(multiParams);
+  if (entries.length === 0) return null;
+
+  const params: NonNullable<QueryParams> = {};
+  for (const [key, values] of entries) {
+    if (values) {
+      params[key] = values.length === 1 ? values[0] : values;
+    }
+  }
+  return params;
+}
 
 export function createHandler({
   templateClient,
@@ -16,21 +34,9 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    let params: QueryParams = event.queryStringParameters as QueryParams;
-
-    if (event.multiValueQueryStringParameters) {
-      const multiParams = event.multiValueQueryStringParameters;
-      const entries = Object.entries(multiParams);
-
-      if (entries.length > 0) {
-        params = {};
-        for (const [key, values] of entries) {
-          if (values) {
-            params[key] = values.length === 1 ? values[0] : values;
-          }
-        }
-      }
-    }
+    const params = event.multiValueQueryStringParameters
+      ? convertMultiValueParams(event.multiValueQueryStringParameters)
+      : (event.queryStringParameters as QueryParams);
 
     const { data, error } = await templateClient.listTemplates(
       {

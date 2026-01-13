@@ -350,4 +350,47 @@ describe('Template API - List', () => {
       }
     );
   });
+
+  test('should handle empty multiValueQueryStringParameters', async () => {
+    const { handler, mocks } = setup();
+
+    const template: Extract<TemplateDto, { templateType: 'EMAIL' }> = {
+      id: 'id',
+      templateType: 'EMAIL',
+      name: 'name',
+      message: 'message',
+      subject: 'subject',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      lockNumber: 1,
+    };
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      data: [template],
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.multiValueQueryStringParameters = {};
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
+    });
+
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      null
+    );
+  });
 });
