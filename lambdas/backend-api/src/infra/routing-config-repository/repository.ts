@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto';
 import {
   GetCommand,
   PutCommand,
+  TransactWriteCommand,
+  TransactWriteCommandInput,
   UpdateCommand,
   type DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
@@ -33,7 +35,8 @@ export class RoutingConfigRepository {
 
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly tableName: string
+    private readonly tableName: string,
+    private readonly templateTableName: string
   ) {}
 
   async create(
@@ -80,7 +83,8 @@ export class RoutingConfigRepository {
     id: string,
     updateData: UpdateRoutingConfig,
     user: User,
-    lockNumber: number
+    lockNumber: number,
+    templateIds: string[]
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -110,10 +114,30 @@ export class RoutingConfigRepository {
       .expectLockNumber(lockNumber)
       .incrementLockNumber();
 
-    try {
-      const result = await this.client.send(new UpdateCommand(update.build()));
+    const transactItems: TransactWriteCommandInput = {
+      TransactItems: [
+        { Update: update.build() },
+        ...templateIds.map((templateId) => ({
+          ConditionCheck: {
+            TableName: this.templateTableName,
+            Key: { id: templateId, owner: this.clientOwnerKey(user.clientId) },
+            ConditionExpression: 'attribute_exists(id)',
+          },
+        })),
+      ],
+    };
 
-      const parsed = $RoutingConfig.safeParse(result.Attributes);
+    try {
+      await this.client.send(new TransactWriteCommand(transactItems));
+
+      const getResult = await this.client.send(
+        new GetCommand({
+          TableName: this.tableName,
+          Key: { id, owner: this.clientOwnerKey(user.clientId) },
+        })
+      );
+
+      const parsed = $RoutingConfig.safeParse(getResult.Item);
 
       if (!parsed.success) {
         return failure(
@@ -125,6 +149,9 @@ export class RoutingConfigRepository {
 
       return success(parsed.data);
     } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        return failure(ErrorCase.NOT_FOUND, 'Some templates not found');
+      }
       return this.handleUpdateError(error, lockNumber);
     }
   }

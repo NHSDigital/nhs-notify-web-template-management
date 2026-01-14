@@ -101,11 +101,19 @@ export class RoutingConfigClient {
       );
     }
 
+    const templateIds = [
+      ...(validated.cascade?.map((r) => r.defaultTemplateId) || []),
+      ...(validated.cascade?.flatMap((r) =>
+        r.conditionalTemplates?.map((a) => a.templateId)
+      ) || []),
+    ].filter((id): id is string => id != null);
+
     return this.routingConfigRepository.update(
       routingConfigId,
       validated,
       user,
-      lockNumberValidation.data
+      lockNumberValidation.data,
+      templateIds
     );
   }
 
