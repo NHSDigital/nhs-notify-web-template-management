@@ -16,7 +16,9 @@ function convertMultiValueParams(
   const params: NonNullable<QueryParams> = {};
   for (const [key, values] of entries) {
     if (values) {
-      params[key] = values;
+      // Convert single-element arrays to strings
+      // Most query parameters expect strings; only templateStatus accepts arrays
+      params[key] = values.length === 1 ? values[0] : values;
     }
   }
   return params;
