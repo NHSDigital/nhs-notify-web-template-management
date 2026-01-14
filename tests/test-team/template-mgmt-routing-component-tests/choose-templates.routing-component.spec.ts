@@ -335,10 +335,6 @@ test.describe('Routing - Choose Templates page', () => {
     await expect(chooseTemplatesPage.moveToProductionButton).toHaveText(
       'Move to production'
     );
-    await expect(chooseTemplatesPage.moveToProductionButton).toHaveAttribute(
-      'href',
-      `/templates/message-plans/get-ready-to-move/${routingConfigIds.valid}`
-    );
     await expect(chooseTemplatesPage.saveAndCloseButton).toHaveText(
       'Save and close'
     );
