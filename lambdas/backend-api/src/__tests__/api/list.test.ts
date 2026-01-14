@@ -286,13 +286,13 @@ describe('Template API - List', () => {
         clientId: 'nhs-notify-client-id',
       },
       {
-        templateType: 'LETTER',
+        templateType: ['LETTER'],
         templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       }
     );
   });
 
-  test('should convert single-value multiValueQueryStringParameters to scalar', async () => {
+  test('should pass through single-value multiValueQueryStringParameters as arrays', async () => {
     const { handler, mocks } = setup();
 
     const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
@@ -346,7 +346,7 @@ describe('Template API - List', () => {
         clientId: 'nhs-notify-client-id',
       },
       {
-        templateType: 'LETTER',
+        templateType: ['LETTER'],
       }
     );
   });

@@ -16,7 +16,7 @@ function convertMultiValueParams(
   const params: NonNullable<QueryParams> = {};
   for (const [key, values] of entries) {
     if (values) {
-      params[key] = values.length === 1 ? values[0] : values;
+      params[key] = values;
     }
   }
   return params;
@@ -36,7 +36,7 @@ export function createHandler({
 
     const params = event.multiValueQueryStringParameters
       ? convertMultiValueParams(event.multiValueQueryStringParameters)
-      : (event.queryStringParameters as QueryParams);
+      : event.queryStringParameters;
 
     const { data, error } = await templateClient.listTemplates(
       {
