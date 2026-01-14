@@ -7,6 +7,7 @@ import {
   CreateUpdateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');
@@ -80,7 +81,10 @@ describe('CreateSmsTemplate component', () => {
             formErrors: [],
             fieldErrors: {
               smsTemplateName: ['Template name error'],
-              smsTemplateMessage: ['Template message error'],
+              smsTemplateMessage: [
+                'Template message error',
+                ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,
+              ],
             },
           },
           id: 'template-id',

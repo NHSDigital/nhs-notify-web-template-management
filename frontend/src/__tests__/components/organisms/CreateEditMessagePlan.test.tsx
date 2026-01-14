@@ -6,7 +6,7 @@ import type {
   Channel,
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
-import type { MessagePlanTemplates } from '@utils/message-plans';
+import type { MessagePlanTemplates } from '@utils/routing-utils';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
@@ -58,15 +58,25 @@ describe('CreateEditMessagePlan', () => {
   it('should display the routing config ID', () => {
     const plan = buildRoutingConfig({ id: 'routing-config-test' });
 
-    const { container } = render(
+    render(
       <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
     );
 
-    const messagePlanId = container.querySelector(
-      '.create-edit-message-plan-routing-config-id'
-    ) as HTMLElement;
+    const messagePlanId = screen.getByTestId('routing-config-id');
 
     expect(messagePlanId).toHaveTextContent('routing-config-test');
+  });
+
+  it('should display the campaign ID', () => {
+    const plan = buildRoutingConfig();
+
+    render(
+      <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
+    );
+
+    const campaignId = screen.getByTestId('campaign-id');
+
+    expect(campaignId).toHaveTextContent('campaign-1');
   });
 
   it.each([
@@ -124,15 +134,15 @@ describe('CreateEditMessagePlan', () => {
     expect(buttons[1].textContent).toBe('Save and close');
   });
 
-  it('should render a "change name" link', () => {
+  it('should render an "edit settings" link', () => {
     const plan = buildRoutingConfig();
 
     render(
       <CreateEditMessagePlan messagePlan={plan} templates={mockTemplates} />
     );
 
-    const link = screen.getByTestId('change-message-plan-name-link');
-    expect(link.textContent).toBe('Change name');
+    const link = screen.getByTestId('edit-settings-link');
+    expect(link.textContent).toBe('Edit settings');
     expect(link.getAttribute('href')).toBe(
       `/message-plans/edit-message-plan-settings/${plan.id}`
     );

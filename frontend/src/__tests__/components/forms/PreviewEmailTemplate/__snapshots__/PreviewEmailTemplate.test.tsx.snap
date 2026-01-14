@@ -4,9 +4,8 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -76,7 +75,8 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -106,7 +106,8 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -266,7 +267,7 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -282,9 +283,8 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -354,7 +354,8 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -384,7 +385,8 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -544,7 +546,7 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -560,9 +562,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -612,7 +613,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -642,7 +644,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -790,7 +793,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -806,9 +809,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -858,7 +860,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -888,7 +891,8 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -960,7 +964,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
         </a>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -976,9 +980,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -1023,7 +1026,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1053,7 +1057,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1201,7 +1206,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -1217,9 +1222,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -1264,7 +1268,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1294,7 +1299,8 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1366,7 +1372,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
         </a>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates

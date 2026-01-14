@@ -4,6 +4,8 @@ import {
   LetterFiles,
   LetterType,
   TemplateDto,
+  TEMPLATE_TYPE_LIST,
+  TEMPLATE_STATUS_LIST,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -31,7 +33,6 @@ import {
   templateTypeToUrlTextMappings,
   cascadeTemplateTypeToUrlTextMappings,
 } from '../enum';
-import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
 const mockLetterWithFilesTemplate: TemplateDto = {
   id: '1',
@@ -58,6 +59,7 @@ const mockLetterWithFilesTemplate: TemplateDto = {
     },
   },
 };
+
 const mockLetterTemplate: TemplateDto = {
   id: '1',
   lockNumber: 1234,
@@ -188,118 +190,48 @@ describe('alphabeticalLanguageList', () => {
   });
 });
 
+const TEMPLATE_STATUS_CASES = TEMPLATE_STATUS_LIST.flatMap((status) =>
+  TEMPLATE_TYPE_LIST.flatMap((type) =>
+    [true, false].map(
+      (routingFlag): [TemplateStatus, TemplateType, boolean] => [
+        status,
+        type,
+        routingFlag,
+      ]
+    )
+  )
+);
+
 describe('statusToDisplayMapping', () => {
-  test.each([
-    {
-      template: mockLetterTemplate,
-      type: 'LETTER' as TemplateType,
-      expected: 'Not yet submitted',
-    },
-    {
-      template: mockNHSAppTemplate,
-      type: 'NHS_APP' as TemplateType,
-      expected: 'Draft',
-    },
-    {
-      template: mockSMSTemplate,
-      type: 'SMS' as TemplateType,
-      expected: 'Draft',
-    },
-    {
-      template: mockEmailTemplate,
-      type: 'EMAIL' as TemplateType,
-      expected: 'Draft',
-    },
-  ])(
-    'When templateType is %type NOT_YET_SUBMITTED should be %expected',
-    ({ template, expected }) => {
-      expect(statusToDisplayMapping(template)).toEqual(expected);
+  test.each(TEMPLATE_STATUS_CASES)(
+    'status=%s type=%s routing=%s',
+    (status, type, routing) => {
+      expect(
+        statusToDisplayMapping(
+          {
+            templateType: type,
+            templateStatus: status,
+          },
+          { routing }
+        )
+      ).toMatchSnapshot();
     }
   );
-
-  test('statusToDisplay if no files', () => {
-    expect(
-      statusToDisplayMapping({
-        ...mockLetterTemplate,
-        templateStatus: 'SUBMITTED',
-      })
-    ).toEqual('Submitted');
-  });
-
-  test('statusToDisplay if routing is enabled', () => {
-    expect(
-      statusToDisplayMapping({
-        ...mockLetterWithFilesTemplate,
-        templateStatus: 'TEMPLATE_PROOF_APPROVED',
-      })
-    ).toEqual('Template proof approved');
-  });
-
-  test('SUBMITTED', () => {
-    expect(
-      statusToDisplayMapping({
-        ...mockSMSTemplate,
-        templateStatus: 'SUBMITTED',
-      })
-    ).toEqual('Submitted');
-  });
-
-  test('DELETED', () => {
-    expect(
-      statusToDisplayMapping({
-        ...mockSMSTemplate,
-        templateStatus: 'DELETED',
-      })
-    ).toEqual('');
-  });
 });
 
 describe('statusToColourMapping', () => {
-  it.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected colour when templateStatus is %s for LETTERS',
-    (templateStatus) => {
-      const expectedColours: { [key in TemplateStatus]?: string } = {
-        SUBMITTED: 'grey',
-        WAITING_FOR_PROOF: 'yellow',
-        PENDING_PROOF_REQUEST: 'blue',
-        PENDING_UPLOAD: 'blue',
-        PENDING_VALIDATION: 'blue',
-        VIRUS_SCAN_FAILED: 'red',
-        VALIDATION_FAILED: 'red',
-        PROOF_AVAILABLE: 'orange',
-        TEMPLATE_PROOF_APPROVED: 'grey',
-      };
-
+  test.each(TEMPLATE_STATUS_CASES)(
+    'status=%s type=%s routing=%s',
+    (status, type, routing) => {
       expect(
-        statusToColourMapping({ templateStatus, templateType: 'LETTER' })
-      ).toEqual(expectedColours[templateStatus]);
-    }
-  );
-
-  describe.each(['NHS_APP', 'SMS', 'EMAIL'] as TemplateType[])(
-    'template type: %p',
-    (templateType) => {
-      it.each(TEMPLATE_STATUS_LIST)(
-        'should give the expected colour when templateStatus is %p',
-        (templateStatus) => {
-          const expectedColours: { [key in TemplateStatus]?: string } = {
-            SUBMITTED: 'grey',
-            WAITING_FOR_PROOF: 'yellow',
-            PENDING_PROOF_REQUEST: 'blue',
-            PENDING_UPLOAD: 'blue',
-            PENDING_VALIDATION: 'blue',
-            VIRUS_SCAN_FAILED: 'red',
-            VALIDATION_FAILED: 'red',
-            PROOF_AVAILABLE: 'orange',
-            NOT_YET_SUBMITTED: 'green',
-            TEMPLATE_PROOF_APPROVED: 'grey',
-          };
-
-          expect(
-            statusToColourMapping({ templateStatus, templateType })
-          ).toEqual(expectedColours[templateStatus]);
-        }
-      );
+        statusToColourMapping(
+          {
+            templateType: type,
+            templateStatus: status,
+          },
+          { routing }
+        )
+      ).toMatchSnapshot();
     }
   );
 });
@@ -345,6 +277,22 @@ describe('messagePlanChooseTemplateUrl', () => {
     ['LETTER', 'choose-standard-english-letter-template'],
   ] as const)('should map %s to "%s"', (type, expected) => {
     expect(messagePlanChooseTemplateUrl(type)).toBe(expected);
+  });
+
+  describe('conditional letter templates', () => {
+    test.each([
+      ['q4', 'choose-british-sign-language-letter-template'],
+      ['x0', 'choose-standard-english-letter-template'],
+      ['x1', 'choose-large-print-letter-template'],
+      ['language', 'choose-other-language-letter-template'],
+    ] as const)(
+      'should map LETTER with conditionalType %s to "%s"',
+      (conditionalType, expected) => {
+        expect(messagePlanChooseTemplateUrl('LETTER', conditionalType)).toBe(
+          expected
+        );
+      }
+    );
   });
 });
 
@@ -506,7 +454,7 @@ describe('channelDisplayMappings', () => {
     ['NHSAPP', 'NHS App'],
     ['SMS', 'Text message (SMS)'],
     ['EMAIL', 'Email'],
-    ['LETTER', 'Letter'],
+    ['LETTER', 'Standard English letter'],
   ] as const)('should map %s to "%s"', (channel, expected) => {
     expect(channelDisplayMappings(channel)).toBe(expected);
   });

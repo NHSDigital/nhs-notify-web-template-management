@@ -10,6 +10,7 @@ import content from '@content/content';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import React from 'react';
 
 const {
   pages: { messagePlansPage },
@@ -40,7 +41,7 @@ export const MessagePlans = (props: MessagePlansProps) => {
             <Details.Text>
               {draftAndProductionInfo.map(
                 ({ title, content: draftProdContent }) => (
-                  <>
+                  <React.Fragment key={title}>
                     <h2
                       className={classNames(
                         'nhsuk-heading-s',
@@ -50,7 +51,7 @@ export const MessagePlans = (props: MessagePlansProps) => {
                       {title}
                     </h2>
                     <ContentRenderer content={draftProdContent} />
-                  </>
+                  </React.Fragment>
                 )
               )}
             </Details.Text>

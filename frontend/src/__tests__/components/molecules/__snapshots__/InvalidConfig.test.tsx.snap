@@ -32,7 +32,7 @@ exports[`InvalidConfig 1`] = `
         </div>
         <p>
           <a
-            data-testid="back-link"
+            data-testid="back-link-bottom"
             href="/example-back-link-url"
           >
             Example Back Link Text

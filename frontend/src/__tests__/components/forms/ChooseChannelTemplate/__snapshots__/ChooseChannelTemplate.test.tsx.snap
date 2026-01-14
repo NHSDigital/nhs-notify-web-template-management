@@ -43,16 +43,20 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -81,7 +85,8 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -235,18 +240,15 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -269,320 +271,8 @@ exports[`ChooseChannelTemplate Client-side validation triggers 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
-            >
-              Go back
-            </a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`ChooseChannelTemplate renders correctly when no templates are available 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <span
-          class="nhsuk-caption-l"
-        >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
-        <form
-          action="/action"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="choose-channel-template"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="42"
-          />
-          <p>
-            You do not have any templates yet.
-          </p>
-          <div
-            class="nhsuk-form-group"
-            data-testid="channel-template-actions"
-          >
-            <p>
-              <a
-                class="nhsuk-u-font-size-19"
-                href="/message-templates"
-              >
-                Go to templates
-              </a>
-            </p>
-            <a
-              class="nhsuk-u-font-size-19"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
-            >
-              Go back
-            </a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`ChooseChannelTemplate renders correctly when template is unselected 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <span
-          class="nhsuk-caption-l"
-        >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
-        <form
-          action="/action"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="choose-channel-template"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="42"
-          />
-          <div
-            class="nhsuk-grid-row"
-          >
-            <div
-              class="nhsuk-grid-column-full"
-            >
-              <div
-                class="nhsuk-hint"
-              >
-                Choose one option
-              </div>
-              <div
-                class="nhsuk-form-group"
-              >
-                <div
-                  class="nhsuk-radios"
-                  id="channelTemplate"
-                >
-                  <table
-                    class="nhsuk-table-responsive"
-                    data-testid="channel-templates-table"
-                    id="channel-templates-table"
-                  >
-                    <thead
-                      class="nhsuk-table__head"
-                      role="rowgroup"
-                    >
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-select"
-                          scope="col"
-                        >
-                          Select
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-name"
-                          scope="col"
-                        >
-                          Name
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-type"
-                          scope="col"
-                        >
-                          Type
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-last-edited"
-                          scope="col"
-                        >
-                          Last edited
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-action"
-                          scope="col"
-                        />
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="nhsuk-table__body"
-                    >
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Select 
-                          </span>
-                          <div
-                            class="nhsuk-radios__item"
-                          >
-                            <input
-                              class="nhsuk-radios__input"
-                              data-testid="app-template-id-radio"
-                              id="channelTemplate-app-template-id"
-                              name="channelTemplate"
-                              type="radio"
-                              value="app-template-id"
-                            />
-                            <label
-                              class="nhsuk-label nhsuk-radios__label"
-                              for="channelTemplate-app-template-id"
-                              id="channelTemplate-app-template-id--label"
-                            >
-                               
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Name 
-                          </span>
-                          app template name
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Type 
-                          </span>
-                          NHS App message
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Last edited 
-                          </span>
-                          13th Jan 2025
-                          <br />
-                          10:19
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                             
-                          </span>
-                          <div
-                            class="actionLinksWrapper"
-                          >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group"
-            data-testid="channel-template-actions"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              id="channel-template-submit-button"
-              type="submit"
-            >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -608,16 +298,20 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an email template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an email template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -641,7 +335,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -665,7 +359,8 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -808,18 +503,15 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="email-template-id-preview-link"
+                            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="email-template-id-preview-link"
-                              href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/email-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -842,7 +534,8 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -898,16 +591,20 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -929,25 +626,6 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
             type="hidden"
             value="42"
           />
-          <dl
-            class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Previously selected template
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                app template name
-              </dd>
-            </div>
-          </dl>
           <div
             class="nhsuk-grid-row"
           >
@@ -955,7 +633,8 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1045,7 +724,6 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
-                              checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
                               id="channelTemplate-app-template-id"
@@ -1110,18 +788,15 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1144,7 +819,251 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate renders large print letter form with accessibleFormat x1 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a large print letter template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="large-print-letter-template-id-radio"
+                              id="channelTemplate-large-print-letter-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="large-print-letter-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-large-print-letter-template-id"
+                              id="channelTemplate-large-print-letter-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          large print letter template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Large print letter
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-letter-template-id-preview-link"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1170,16 +1089,20 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose a letter template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a letter template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1203,7 +1126,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1227,7 +1150,8 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1370,18 +1294,15 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="letter-template-id-preview-link"
-                              href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1404,362 +1325,8 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
-            >
-              Go back
-            </a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`ChooseChannelTemplate renders multiple options 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <span
-          class="nhsuk-caption-l"
-        >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
-        <form
-          action="/action"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="choose-channel-template"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="42"
-          />
-          <dl
-            class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Previously selected template
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                app template name
-              </dd>
-            </div>
-          </dl>
-          <div
-            class="nhsuk-grid-row"
-          >
-            <div
-              class="nhsuk-grid-column-full"
-            >
-              <div
-                class="nhsuk-hint"
-              >
-                Choose one option
-              </div>
-              <div
-                class="nhsuk-form-group"
-              >
-                <div
-                  class="nhsuk-radios"
-                  id="channelTemplate"
-                >
-                  <table
-                    class="nhsuk-table-responsive"
-                    data-testid="channel-templates-table"
-                    id="channel-templates-table"
-                  >
-                    <thead
-                      class="nhsuk-table__head"
-                      role="rowgroup"
-                    >
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-select"
-                          scope="col"
-                        >
-                          Select
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-name"
-                          scope="col"
-                        >
-                          Name
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-type"
-                          scope="col"
-                        >
-                          Type
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-last-edited"
-                          scope="col"
-                        >
-                          Last edited
-                        </th>
-                        <th
-                          class="nhsuk-table__header"
-                          data-testid="channel-templates-table-header-template-action"
-                          scope="col"
-                        />
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="nhsuk-table__body"
-                    >
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Select 
-                          </span>
-                          <div
-                            class="nhsuk-radios__item"
-                          >
-                            <input
-                              checked=""
-                              class="nhsuk-radios__input"
-                              data-testid="app-template-id-radio"
-                              id="channelTemplate-app-template-id"
-                              name="channelTemplate"
-                              type="radio"
-                              value="app-template-id"
-                            />
-                            <label
-                              class="nhsuk-label nhsuk-radios__label"
-                              for="channelTemplate-app-template-id"
-                              id="channelTemplate-app-template-id--label"
-                            >
-                               
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Name 
-                          </span>
-                          app template name
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Type 
-                          </span>
-                          NHS App message
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Last edited 
-                          </span>
-                          13th Jan 2025
-                          <br />
-                          10:19
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                             
-                          </span>
-                          <div
-                            class="actionLinksWrapper"
-                          >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Select 
-                          </span>
-                          <div
-                            class="nhsuk-radios__item"
-                          >
-                            <input
-                              class="nhsuk-radios__input"
-                              data-testid="another-id-radio"
-                              id="channelTemplate-another-id"
-                              name="channelTemplate"
-                              type="radio"
-                              value="another-id"
-                            />
-                            <label
-                              class="nhsuk-label nhsuk-radios__label"
-                              for="channelTemplate-another-id"
-                              id="channelTemplate-another-id--label"
-                            >
-                               
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Name 
-                          </span>
-                          Another template
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Type 
-                          </span>
-                          NHS App message
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Last edited 
-                          </span>
-                          13th Jan 2025
-                          <br />
-                          10:19
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                             
-                          </span>
-                          <div
-                            class="actionLinksWrapper"
-                          >
-                            <a
-                              aria-label="Preview"
-                              data-testid="another-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/another-id"
-                              id="preview-template-link-1"
-                            >
-                              Preview
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group"
-            data-testid="channel-template-actions"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              id="channel-template-submit-button"
-              type="submit"
-            >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -1785,16 +1352,20 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose an NHS App template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -1818,7 +1389,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -1842,7 +1413,8 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -1985,18 +1557,15 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="app-template-id-preview-link"
-                              href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2019,7 +1588,8 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
@@ -2045,16 +1615,20 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
       <div
         class="nhsuk-grid-column-full"
       >
-        <span
-          class="nhsuk-caption-l"
+        <div
+          class="nhsuk-u-reading-width"
         >
-          Autumn Campaign Plan
-        </span>
-        <h1
-          class="nhsuk-heading-l"
-        >
-          Choose a text message (SMS) template
-        </h1>
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a text message (SMS) template
+          </h1>
+        </div>
         <form
           action="/action"
         >
@@ -2078,7 +1652,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
           />
           <dl
             class="nhsuk-summary-list"
-            data-testid="previous-selection-summary"
+            data-testid="previous-selection-details"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -2102,7 +1676,8 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
               class="nhsuk-grid-column-full"
             >
               <div
-                class="nhsuk-hint"
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
               >
                 Choose one option
               </div>
@@ -2245,18 +1820,15 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                           >
                              
                           </span>
-                          <div
-                            class="actionLinksWrapper"
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="sms-template-id-preview-link"
+                            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id?lockNumber=42"
+                            id="preview-template-link-0"
                           >
-                            <a
-                              aria-label="Preview"
-                              data-testid="sms-template-id-preview-link"
-                              href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/sms-template-id"
-                              id="preview-template-link-0"
-                            >
-                              Preview
-                            </a>
-                          </div>
+                            Preview
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2279,7 +1851,1671 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
               Save and continue
             </button>
             <a
-              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate when templates are available renders multiple options 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <dl
+            class="nhsuk-summary-list"
+            data-testid="previous-selection-details"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Previously selected template
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                app template name
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              checked=""
+                              class="nhsuk-radios__input"
+                              data-testid="app-template-id-radio"
+                              id="channelTemplate-app-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="app-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-app-template-id"
+                              id="channelTemplate-app-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          app template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="template-2-radio"
+                              id="channelTemplate-template-2"
+                              name="channelTemplate"
+                              type="radio"
+                              value="template-2"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-template-2"
+                              id="channelTemplate-template-2--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Second template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-2-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2?lockNumber=42"
+                            id="preview-template-link-1"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="template-3-radio"
+                              id="channelTemplate-template-3"
+                              name="channelTemplate"
+                              type="radio"
+                              value="template-3"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-template-3"
+                              id="channelTemplate-template-3--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Third template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-3-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3?lockNumber=42"
+                            id="preview-template-link-2"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate when there are no templates renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <p
+            data-testid="no-templates-message"
+          >
+            You do not have any templates yet.
+          </p>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <a
+              class="nhsuk-u-font-size-19 nhsuk-body-m fit-content"
+              data-testid="go-to-templates-link"
+              href="/message-templates"
+            >
+              Go to templates
+            </a>
+            <a
+              class="nhsuk-u-font-size-19"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate when there is a conditional template selected renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose a large print letter template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <dl
+            class="nhsuk-summary-list"
+            data-testid="previous-selection-details"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Previously selected template
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                large print letter template name
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="large-print-template-2-radio"
+                              id="channelTemplate-large-print-template-2"
+                              name="channelTemplate"
+                              type="radio"
+                              value="large-print-template-2"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-large-print-template-2"
+                              id="channelTemplate-large-print-template-2--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Second large print template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Large print letter
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-template-2-preview-link"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-2?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              checked=""
+                              class="nhsuk-radios__input"
+                              data-testid="large-print-letter-template-id-radio"
+                              id="channelTemplate-large-print-letter-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="large-print-letter-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-large-print-letter-template-id"
+                              id="channelTemplate-large-print-letter-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          large print letter template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Large print letter
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-letter-template-id-preview-link"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-letter-template-id?lockNumber=42"
+                            id="preview-template-link-1"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="large-print-template-3-radio"
+                              id="channelTemplate-large-print-template-3"
+                              name="channelTemplate"
+                              type="radio"
+                              value="large-print-template-3"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-large-print-template-3"
+                              id="channelTemplate-large-print-template-3--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Third large print template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Large print letter
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="large-print-template-3-preview-link"
+                            href="/message-plans/choose-large-print-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/large-print-template-3?lockNumber=42"
+                            id="preview-template-link-2"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate when there is a default template selected renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <dl
+            class="nhsuk-summary-list"
+            data-testid="previous-selection-details"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Previously selected template
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                app template name
+              </dd>
+            </div>
+          </dl>
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              checked=""
+                              class="nhsuk-radios__input"
+                              data-testid="app-template-id-radio"
+                              id="channelTemplate-app-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="app-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-app-template-id"
+                              id="channelTemplate-app-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          app template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="template-2-radio"
+                              id="channelTemplate-template-2"
+                              name="channelTemplate"
+                              type="radio"
+                              value="template-2"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-template-2"
+                              id="channelTemplate-template-2--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Second template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-2-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-2?lockNumber=42"
+                            id="preview-template-link-1"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="template-3-radio"
+                              id="channelTemplate-template-3"
+                              name="channelTemplate"
+                              type="radio"
+                              value="template-3"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-template-3"
+                              id="channelTemplate-template-3--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          Third template
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="template-3-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/template-3?lockNumber=42"
+                            id="preview-template-link-2"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`ChooseChannelTemplate when there is no template preselected renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose an NHS App template
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-channel-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose one option
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="channelTemplate"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="channel-templates-table"
+                    id="channel-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="channel-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-radios__item"
+                          >
+                            <input
+                              class="nhsuk-radios__input"
+                              data-testid="app-template-id-radio"
+                              id="channelTemplate-app-template-id"
+                              name="channelTemplate"
+                              type="radio"
+                              value="app-template-id"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-radios__label"
+                              for="channelTemplate-app-template-id"
+                              id="channelTemplate-app-template-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          app template name
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          NHS App message
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="app-template-id-preview-link"
+                            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/app-template-id?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
               href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back

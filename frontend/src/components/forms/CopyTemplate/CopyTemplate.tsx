@@ -45,15 +45,13 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
-        <NotifyBackLink id='back-link' data-testid='back-to-templates-link'>
-          {backLinkText}
-        </NotifyBackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
+        <NhsNotifyErrorSummary errorState={errorState} />
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
             <h1 className='nhsuk-heading-xl'>{fullPageHeading}</h1>
-            <NhsNotifyErrorSummary errorState={errorState} />
             <NHSNotifyRadioButtonForm
               formId='choose-a-template-type'
               radiosId='templateType'

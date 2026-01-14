@@ -1,5 +1,5 @@
 module "lambda_process_proof" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.22/terraform-lambda.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip"
 
   project        = var.project
   environment    = var.environment

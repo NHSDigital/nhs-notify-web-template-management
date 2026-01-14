@@ -15,6 +15,38 @@ const redirectMock = jest.mocked(redirect);
 describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
   beforeEach(jest.resetAllMocks);
 
+  it('should redirect to choose-templates when lockNumber is invalid', async () => {
+    await PreviewTextMessageTemplateFromMessagePlan({
+      params: Promise.resolve({
+        routingConfigId: 'routing-config-id',
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: 'invalid',
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/choose-templates/routing-config-id',
+      'replace'
+    );
+  });
+
+  it('should redirect to choose-templates when lockNumber is missing', async () => {
+    await PreviewTextMessageTemplateFromMessagePlan({
+      params: Promise.resolve({
+        routingConfigId: 'routing-config-id',
+        templateId: 'template-id',
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/choose-templates/routing-config-id',
+      'replace'
+    );
+  });
+
   it('should redirect to invalid page with invalid template id', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
@@ -22,6 +54,9 @@ describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
         templateId: 'invalid-template-id',
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '0',
       }),
     });
 
@@ -40,6 +75,9 @@ describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
         templateId: SMS_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '5',
       }),
     });
 

@@ -75,9 +75,9 @@ export const SubmitLetterTemplateProofingDisabled: FC<
             />
             <NHSNotifyButton
               secondary
-              id='go-back-button'
               className='nhsuk-u-margin-right-3'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
+              data-testid='back-link-bottom'
             >
               {goBackButtonText}
             </NHSNotifyButton>
@@ -168,6 +168,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
             />
             <NHSNotifyButton
               id='submit-template-button'
+              secondary
               className='nhsuk-u-margin-right-3'
             >
               {buttonText}
@@ -176,6 +177,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
               className='nhsuk-button-background-button'
               id='go-back-button'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
+              data-testid='back-link-bottom'
             >
               {goBackButtonText}
             </NHSNotifyButton>

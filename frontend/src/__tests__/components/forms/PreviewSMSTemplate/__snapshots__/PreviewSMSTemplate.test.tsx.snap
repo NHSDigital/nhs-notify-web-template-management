@@ -4,9 +4,8 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -76,7 +75,8 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -106,7 +106,8 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -241,7 +242,7 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -257,9 +258,8 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -329,7 +329,8 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -359,7 +360,8 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -494,7 +496,7 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -510,9 +512,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -562,7 +563,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -592,7 +594,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -715,7 +718,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -731,9 +734,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -783,7 +785,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -813,7 +816,8 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -860,7 +864,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
         </a>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -876,9 +880,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -923,7 +926,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -953,7 +957,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1076,7 +1081,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
         </form>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -1092,9 +1097,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -1139,7 +1143,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1169,7 +1174,8 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--green"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 >
                   Draft
                 </strong>
@@ -1216,7 +1222,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
         </a>
         <p>
           <a
-            data-testid="back-to-templates-link-bottom"
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates

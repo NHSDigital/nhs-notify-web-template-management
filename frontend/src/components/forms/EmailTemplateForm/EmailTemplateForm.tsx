@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useActionState, useState } from 'react';
-import { TextInput, HintText, Label, Textarea } from 'nhsuk-react-components';
+import { TextInput, HintText, Label } from 'nhsuk-react-components';
 import {
   $EmailTemplateFormSchema,
   processFormActions,
@@ -26,6 +26,8 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import NHSNotifyTextArea from '@atoms/NHSNotifyTextArea/NHSNotifyTextArea';
+import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
@@ -63,8 +65,15 @@ export const EmailTemplateForm: FC<
   const templateSubjectLineError =
     errorState?.fieldErrors?.emailTemplateSubjectLine?.join(', ');
 
-  const templateMessageError =
-    errorState?.fieldErrors?.emailTemplateMessage?.join(', ');
+  const hasTemplateMessageError =
+    (errorState?.fieldErrors?.emailTemplateMessage?.length ?? 0) > 0;
+  const templateMessageError = hasTemplateMessageError ? (
+    <>
+      {errorState?.fieldErrors?.emailTemplateMessage.map((error) =>
+        renderErrorItem(error)
+      )}
+    </>
+  ) : undefined;
 
   const editMode = 'id' in initialState;
 
@@ -72,9 +81,7 @@ export const EmailTemplateForm: FC<
     <>
       {editMode ? null : (
         <Link href='/choose-a-template-type' passHref legacyBehavior>
-          <NotifyBackLink data-testid='back-to-templates-link'>
-            {backLinkText}
-          </NotifyBackLink>
+          <NotifyBackLink>{backLinkText}</NotifyBackLink>
         </Link>
       )}
       <NHSNotifyMain>
@@ -137,17 +144,16 @@ export const EmailTemplateForm: FC<
                 />
               </div>
               <div className='nhsuk-form-group nhsuk-u-margin-bottom-8'>
-                <Textarea
+                <NHSNotifyTextArea
                   label={templateMessageLabelText}
-                  labelProps={{ size: 's' }}
                   id='emailTemplateMessage'
-                  rows={12}
-                  onChange={emailTemplateMessageHandler}
-                  value={emailTemplateMessage}
+                  textAreaProps={{
+                    rows: 12,
+                    onChange: emailTemplateMessageHandler,
+                    value: emailTemplateMessage,
+                    autoComplete: 'off',
+                  }}
                   error={templateMessageError}
-                  errorProps={{ id: 'emailTemplateMessage--error-message' }}
-                  data-testid='emailTemplateMessage-input'
-                  autoComplete='off'
                 />
               </div>
               <NHSNotifyButton

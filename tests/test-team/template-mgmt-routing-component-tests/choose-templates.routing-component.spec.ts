@@ -13,7 +13,7 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
 } from '../helpers/template-mgmt-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
@@ -34,22 +34,33 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-const validRoutingConfigId = randomUUID();
-const invalidRoutingConfigId = 'invalid-id';
-const notFoundRoutingConfigId = randomUUID();
-
 const templateIds = {
   NHSAPP: randomUUID(),
   EMAIL: randomUUID(),
   SMS: randomUUID(),
   LETTER: randomUUID(),
+  LARGE_PRINT_LETTER: randomUUID(),
+  FRENCH_LETTER: randomUUID(),
+  SPANISH_LETTER: randomUUID(),
+};
+
+const routingConfigIds = {
+  valid: randomUUID(),
+  validWithLetterTemplates: randomUUID(),
+  invalid: 'invalid-id',
+  notFound: randomUUID(),
 };
 
 function createRoutingConfigs(
   user: TestUser
-): Record<MessageOrder | 'valid', RoutingConfigDbEntry> {
-  const routingConfigs: Record<MessageOrder | 'valid', RoutingConfigDbEntry> =
-    {} as Record<MessageOrder | 'valid', RoutingConfigDbEntry>;
+): Record<MessageOrder | keyof typeof routingConfigIds, RoutingConfigDbEntry> {
+  const routingConfigs: Record<
+    MessageOrder | keyof typeof routingConfigIds,
+    RoutingConfigDbEntry
+  > = {} as Record<
+    MessageOrder | keyof typeof routingConfigIds,
+    RoutingConfigDbEntry
+  >;
 
   for (const messageOrder of MESSAGE_ORDERS) {
     const routingConfig = RoutingConfigFactory.createForMessageOrder(
@@ -62,10 +73,23 @@ function createRoutingConfigs(
   routingConfigs.valid = RoutingConfigFactory.createForMessageOrder(
     user,
     'NHSAPP,EMAIL,SMS,LETTER',
-    { id: validRoutingConfigId, name: 'Test plan with some templates' }
+    { id: routingConfigIds.valid, name: 'Test plan with some templates' }
   )
     .addTemplate('NHSAPP', templateIds.NHSAPP)
     .addTemplate('SMS', templateIds.SMS).dbEntry;
+
+  routingConfigs.validWithLetterTemplates =
+    RoutingConfigFactory.createForMessageOrder(user, 'LETTER', {
+      id: routingConfigIds.validWithLetterTemplates,
+      name: 'Letter plan',
+    })
+      .addTemplate('LETTER', templateIds.LETTER)
+      .addLanguageTemplate('fr', templateIds.FRENCH_LETTER)
+      .addLanguageTemplate('es', templateIds.SPANISH_LETTER)
+      .addAccessibleFormatTemplate(
+        'x1',
+        templateIds.LARGE_PRINT_LETTER
+      ).dbEntry;
 
   return routingConfigs;
 }
@@ -91,6 +115,30 @@ function createTemplates(user: TestUser) {
       templateIds.LETTER,
       user,
       'Test Letter template'
+    ),
+    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER,
+      user,
+      'Test Large Print Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { letterType: 'x1' }
+    ),
+    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+      templateIds.FRENCH_LETTER,
+      user,
+      'Test French Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { language: 'fr' }
+    ),
+    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+      templateIds.SPANISH_LETTER,
+      user,
+      'Test Spanish Letter template',
+      'NOT_YET_SUBMITTED',
+      'PASSED',
+      { language: 'es' }
     ),
   };
 }
@@ -133,6 +181,17 @@ test.describe('Routing - Choose Templates page', () => {
 
         const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
 
+        await expect(page).toHaveURL(
+          /\/templates\/message-plans\/choose-templates\//
+        );
+
+        const { messagePlanId } =
+          chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
+
+        expect(messagePlanId).not.toBeUndefined();
+
+        chooseTemplatesPage.setPathParam('messagePlanId', messagePlanId!);
+
         const messagePlanChannels = messageOrder.split(',');
 
         for (const channel of allChannels) {
@@ -155,7 +214,18 @@ test.describe('Routing - Choose Templates page', () => {
             });
 
             // eslint-disable-next-line unicorn/prefer-ternary
-            if (
+            if (channel === 'LETTER') {
+              await test.step('letter channel displays section for fallback conditions and additional letter formats', async () => {
+                const alternativeLetterFormats =
+                  chooseTemplatesPage.alternativeLetterFormats();
+                await expect(
+                  alternativeLetterFormats.conditionalTemplates
+                ).toBeVisible();
+                await expect(
+                  alternativeLetterFormats.fallbackConditions
+                ).toBeVisible();
+              });
+            } else if (
               messagePlanChannels.length > 1 &&
               channelIndexInPlan < messagePlanChannels.length - 1
             ) {
@@ -190,7 +260,7 @@ test.describe('Routing - Choose Templates page', () => {
     const props = {
       page: new RoutingChooseTemplatesPage(page).setPathParam(
         'messagePlanId',
-        validRoutingConfigId
+        routingConfigIds.valid
       ),
       baseURL,
     };
@@ -198,7 +268,7 @@ test.describe('Routing - Choose Templates page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('loads the choose templates page for a message plan', async ({
@@ -207,25 +277,31 @@ test.describe('Routing - Choose Templates page', () => {
   }) => {
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(
       page
-    ).setPathParam('messagePlanId', validRoutingConfigId);
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
 
     await chooseTemplatesPage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${validRoutingConfigId}`
+      `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.valid}`
     );
     await expect(chooseTemplatesPage.pageHeading).toHaveText(
       messagePlans.valid.name
     );
 
-    await expect(chooseTemplatesPage.changeNameLink).toHaveText('Change name');
-    await expect(chooseTemplatesPage.changeNameLink).toHaveAttribute(
+    await expect(chooseTemplatesPage.editSettingsLink).toHaveText(
+      'Edit settings'
+    );
+    await expect(chooseTemplatesPage.editSettingsLink).toHaveAttribute(
       'href',
       `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
     );
 
     await expect(chooseTemplatesPage.routingConfigId).toHaveText(
       messagePlans.valid.id
+    );
+
+    await expect(chooseTemplatesPage.campaignId).toHaveText(
+      messagePlans.valid.campaignId
     );
 
     const messagePlanStatus =
@@ -242,7 +318,7 @@ test.describe('Routing - Choose Templates page', () => {
     );
     await expect(chooseTemplatesPage.moveToProductionButton).toHaveAttribute(
       'href',
-      `/templates/message-plans/get-ready-to-move/${validRoutingConfigId}`
+      `/templates/message-plans/get-ready-to-move/${routingConfigIds.valid}`
     );
     await expect(chooseTemplatesPage.saveAndCloseButton).toHaveText(
       'Save and close'
@@ -317,7 +393,7 @@ test.describe('Routing - Choose Templates page', () => {
   }) => {
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(
       page
-    ).setPathParam('messagePlanId', validRoutingConfigId);
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
 
     await chooseTemplatesPage.loadPage();
 
@@ -330,7 +406,7 @@ test.describe('Routing - Choose Templates page', () => {
         chooseTemplatesPage.nhsApp.changeTemplateLink
       ).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-nhs-app-template/${validRoutingConfigId}?lockNumber=${messagePlans.valid.lockNumber}`
+        `/templates/message-plans/choose-nhs-app-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
       );
     });
 
@@ -346,14 +422,19 @@ test.describe('Routing - Choose Templates page', () => {
       await expect(chooseTemplatesPage.sms.changeTemplateLink).toBeVisible();
       await expect(chooseTemplatesPage.sms.changeTemplateLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-text-message-template/${validRoutingConfigId}?lockNumber=${messagePlans.valid.lockNumber}`
+        `/templates/message-plans/choose-text-message-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
       );
+    });
+
+    await test.step('letter channel with no template selected has no name or change link', async () => {
+      await expect(chooseTemplatesPage.letter.templateName).toBeHidden();
+      await expect(chooseTemplatesPage.letter.changeTemplateLink).toBeHidden();
     });
 
     await chooseTemplatesPage.nhsApp.clickChangeTemplateLink();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-nhs-app-template/${validRoutingConfigId}?lockNumber=${messagePlans.valid.lockNumber}`
+      `${baseURL}/templates/message-plans/choose-nhs-app-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
     );
 
     // TODO: CCM-11537 Choose template then return and assert updated
@@ -365,7 +446,7 @@ test.describe('Routing - Choose Templates page', () => {
   }) => {
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(
       page
-    ).setPathParam('messagePlanId', validRoutingConfigId);
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
 
     await chooseTemplatesPage.loadPage();
 
@@ -383,13 +464,160 @@ test.describe('Routing - Choose Templates page', () => {
 
     await chooseTemplatesPage.nhsApp.clickRemoveTemplateLink();
 
+    await expect(chooseTemplatesPage.letter.removeTemplateLink).toBeHidden();
+
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${validRoutingConfigId}`
+      `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.valid}`
     );
 
     await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
     await expect(chooseTemplatesPage.nhsApp.removeTemplateLink).toBeHidden();
     await expect(chooseTemplatesPage.nhsApp.chooseTemplateLink).toBeVisible();
+  });
+
+  test('user can choose alternative letter format options', async ({
+    page,
+  }) => {
+    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      page
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
+
+    await chooseTemplatesPage.loadPage();
+
+    const alternativeLetterFormats =
+      chooseTemplatesPage.alternativeLetterFormats();
+
+    await expect(alternativeLetterFormats.conditionalTemplates).toBeVisible();
+    await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
+
+    const listItems = await alternativeLetterFormats.listItems;
+    expect(await listItems.count()).toBe(2);
+
+    const largePrintItem = alternativeLetterFormats.largePrint;
+    const otherLanguagesItem = alternativeLetterFormats.otherLanguages;
+
+    await expect(largePrintItem.heading).toHaveText(
+      'Large print letter (optional)'
+    );
+    await expect(largePrintItem.templateName).toBeHidden();
+    await expect(largePrintItem.chooseTemplateLink).toBeVisible();
+    const chooseLargePrintTemplateLink =
+      await largePrintItem.chooseTemplateLink.getAttribute('href');
+    expect(chooseLargePrintTemplateLink).toMatch(
+      `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=`
+    );
+    await expect(largePrintItem.changeTemplateLink).toBeHidden();
+    await expect(largePrintItem.removeTemplateLink).toBeHidden();
+
+    await expect(otherLanguagesItem.heading).toHaveText(
+      'Other language letters (optional)'
+    );
+    await expect(otherLanguagesItem.templateName).toBeHidden();
+    await expect(otherLanguagesItem.chooseTemplateLink).toBeVisible();
+    const chooseOtherLanguageTemplateLink =
+      await otherLanguagesItem.chooseTemplateLink.getAttribute('href');
+    expect(chooseOtherLanguageTemplateLink).toMatch(
+      `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.valid}?lockNumber=`
+    );
+    await expect(otherLanguagesItem.changeTemplateLink).toBeHidden();
+    await expect(otherLanguagesItem.removeTemplateLink).toBeHidden();
+
+    await largePrintItem.clickChooseTemplateLink();
+
+    await page.waitForURL((url) =>
+      url.href.includes(
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.valid}?lockNumber=`
+      )
+    );
+  });
+
+  test('user can manage the various letter templates selected on their message plan', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      page
+    ).setPathParam('messagePlanId', routingConfigIds.validWithLetterTemplates);
+
+    await chooseTemplatesPage.loadPage();
+
+    await test.step('standard letter channel with default template has template name and change link', async () => {
+      await expect(chooseTemplatesPage.letter.templateName).toHaveText(
+        templates.LETTER.name
+      );
+      await expect(chooseTemplatesPage.letter.changeTemplateLink).toBeVisible();
+      await expect(
+        chooseTemplatesPage.letter.changeTemplateLink
+      ).toHaveAttribute(
+        'href',
+        `/templates/message-plans/choose-standard-english-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
+      );
+      await expect(chooseTemplatesPage.letter.removeTemplateLink).toBeVisible();
+      await expect(chooseTemplatesPage.letter.chooseTemplateLink).toBeHidden();
+    });
+
+    const alternativeLetterFormats =
+      chooseTemplatesPage.alternativeLetterFormats();
+
+    await test.step('standard letter is followed by alternative formats', async () => {
+      await expect(alternativeLetterFormats.conditionalTemplates).toBeVisible();
+      await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
+
+      const listItems = await alternativeLetterFormats.listItems;
+      expect(await listItems.count()).toBe(2);
+    });
+
+    const largePrintItem = alternativeLetterFormats.largePrint;
+    const otherLanguagesItem = alternativeLetterFormats.otherLanguages;
+
+    await test.step('accessible formats - large print template has name and change link', async () => {
+      await expect(largePrintItem.templateName).toHaveText(
+        templates.LARGE_PRINT_LETTER.name
+      );
+      await expect(largePrintItem.changeTemplateLink).toBeVisible();
+      await expect(largePrintItem.changeTemplateLink).toHaveAttribute(
+        'href',
+        `/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
+      );
+      await expect(largePrintItem.removeTemplateLink).toBeVisible();
+      await expect(largePrintItem.chooseTemplateLink).toBeHidden();
+    });
+
+    await test.step('foreign language templates are displayed with names and change link', async () => {
+      const templateNames = await otherLanguagesItem.templateNames.all();
+      expect(templateNames.length).toBe(2);
+
+      await expect(templateNames[0]).toHaveText(templates.FRENCH_LETTER.name);
+      await expect(templateNames[1]).toHaveText(templates.SPANISH_LETTER.name);
+
+      await expect(otherLanguagesItem.changeTemplateLink).toBeVisible();
+      await expect(otherLanguagesItem.changeTemplateLink).toHaveAttribute(
+        'href',
+        `/templates/message-plans/choose-other-language-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
+      );
+      await expect(otherLanguagesItem.removeTemplateLink).toBeVisible();
+      await expect(otherLanguagesItem.chooseTemplateLink).toBeHidden();
+    });
+
+    await test.step('can remove all foreign language templates', async () => {
+      await otherLanguagesItem.clickRemoveTemplateLink();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.validWithLetterTemplates}`
+      );
+
+      await expect(otherLanguagesItem.templateName).toBeHidden();
+      await expect(otherLanguagesItem.removeTemplateLink).toBeHidden();
+      await expect(otherLanguagesItem.chooseTemplateLink).toBeVisible();
+    });
+
+    await test.step('can change large print template', async () => {
+      await largePrintItem.clickChangeTemplateLink();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-large-print-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber + 1}`
+      );
+    });
   });
 
   test('returns to the message plans list when choosing to "Save and close"', async ({
@@ -398,11 +626,11 @@ test.describe('Routing - Choose Templates page', () => {
   }) => {
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(
       page
-    ).setPathParam('messagePlanId', validRoutingConfigId);
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
 
     await chooseTemplatesPage.loadPage();
 
-    await chooseTemplatesPage.saveAndCloseButton.click();
+    await chooseTemplatesPage.clickSaveAndClose();
 
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans`);
   });
@@ -419,7 +647,7 @@ test.describe('Routing - Choose Templates page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
       const chooseTemplatesPage = new RoutingChooseTemplatesPage(
         page
-      ).setPathParam('messagePlanId', notFoundRoutingConfigId);
+      ).setPathParam('messagePlanId', routingConfigIds.notFound);
 
       await chooseTemplatesPage.loadPage();
 
@@ -431,7 +659,7 @@ test.describe('Routing - Choose Templates page', () => {
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
       const chooseTemplatesPage = new RoutingChooseTemplatesPage(
         page
-      ).setPathParam('messagePlanId', invalidRoutingConfigId);
+      ).setPathParam('messagePlanId', routingConfigIds.invalid);
 
       await chooseTemplatesPage.loadPage();
 

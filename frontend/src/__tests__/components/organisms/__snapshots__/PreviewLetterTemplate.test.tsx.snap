@@ -4,6 +4,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -49,7 +50,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 0A097DCD-35F9-4DAD-A37E-AC358B71B74D
               </dd>
@@ -79,7 +81,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -186,6 +189,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -231,7 +235,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 0A097DCD-35F9-4DAD-A37E-AC358B71B74D
               </dd>
@@ -261,7 +266,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-not-yet-submitted"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -331,6 +337,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -376,7 +383,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 53525D03-1BC1-4563-ABF9-A74FF04142AF
               </dd>
@@ -406,7 +414,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-proof-request"
+                  data-status="pending-proof-request"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -476,6 +485,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -521,7 +531,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -551,7 +562,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-upload"
+                  data-status="pending-upload"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -615,6 +627,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -660,7 +673,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -690,7 +704,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-pending-validation"
+                  data-status="pending-validation"
+                  data-testid="status-tag"
                 />
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
@@ -754,6 +769,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -799,7 +815,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE
               </dd>
@@ -829,7 +846,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-proof-available"
+                  data-status="proof-available"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1008,6 +1026,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1053,7 +1072,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE
               </dd>
@@ -1083,7 +1103,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-proof-available"
+                  data-status="proof-available"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1262,6 +1283,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1339,7 +1361,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1369,7 +1392,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-validation-failed"
+                  data-status="validation-failed"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1464,6 +1488,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1541,7 +1566,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 template-id
               </dd>
@@ -1571,7 +1597,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-virus-scan-failed"
+                  data-status="virus-scan-failed"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>
@@ -1630,6 +1657,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
+    data-testid="back-link-top"
     href="/message-templates"
   >
     Back to all templates
@@ -1675,7 +1703,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 Template ID
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
               >
                 53525D03-1BC1-4563-ABF9-A74FF04142AF
               </dd>
@@ -1705,7 +1734,8 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               >
                 <strong
                   class="nhsuk-tag"
-                  data-test-id="status-tag-waiting-for-proof"
+                  data-status="waiting-for-proof"
+                  data-testid="status-tag"
                 />
               </dd>
             </div>

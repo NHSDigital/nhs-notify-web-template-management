@@ -4,7 +4,7 @@ exports[`Client-side validation triggers 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -488,7 +488,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -921,7 +921,7 @@ exports[`renders page one error 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -959,31 +959,6 @@ exports[`renders page one error 1`] = `
               >
                 Template name error
               </a>
-            </li>
-            <li>
-              <a
-                href="#letterTemplateCampaignId"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLetterType"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLanguage"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplatePdf"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateCsv"
-              />
             </li>
           </ul>
         </div>
@@ -1416,7 +1391,7 @@ exports[`renders page with multiple campaign ids 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -1891,7 +1866,7 @@ exports[`renders page with multiple errors 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -1957,21 +1932,6 @@ exports[`renders page with multiple errors 1`] = `
               >
                 CSV error
               </a>
-            </li>
-            <li>
-              <a
-                href="#letterTemplateCampaignId"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLetterType"
-              />
-            </li>
-            <li>
-              <a
-                href="#letterTemplateLanguage"
-              />
             </li>
           </ul>
         </div>
@@ -2422,7 +2382,7 @@ exports[`renders page with preloaded field values 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type
@@ -2881,7 +2841,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/choose-a-template-type"
   >
     Back to choose a template type

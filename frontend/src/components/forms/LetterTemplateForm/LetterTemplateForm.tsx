@@ -109,9 +109,7 @@ export const LetterTemplateForm: FC<
   return (
     <>
       <Link href='/choose-a-template-type' passHref legacyBehavior>
-        <NotifyBackLink data-testid='back-to-templates-link'>
-          {backLinkText}
-        </NotifyBackLink>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

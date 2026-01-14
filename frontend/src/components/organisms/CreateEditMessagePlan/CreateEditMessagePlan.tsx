@@ -10,12 +10,10 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
 } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanTemplates } from '@utils/message-plans';
-
-import styles from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan.module.scss';
+import { MessagePlanTemplates } from '@utils/routing-utils';
+import { interpolate } from '@utils/interpolate';
 
 import copy from '@content/content';
-import { interpolate } from '@utils/interpolate';
 const { createEditMessagePlan: content } = copy.components;
 
 export function CreateEditMessagePlan({
@@ -34,7 +32,7 @@ export function CreateEditMessagePlan({
           <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
           <p className='nhsuk-body-s'>
             <Link
-              data-testid='change-message-plan-name-link'
+              data-testid='edit-settings-link'
               href={interpolate(content.changeNameLink.href, {
                 routingConfigId: messagePlan.id,
               })}
@@ -49,9 +47,21 @@ export function CreateEditMessagePlan({
                 {content.rowHeadings.routingPlanId}
               </SummaryList.Key>
               <SummaryList.Value
-                className={styles['create-edit-message-plan-routing-config-id']}
+                data-testid='routing-config-id'
+                className='monospace-font'
               >
                 {messagePlan.id}
+              </SummaryList.Value>
+            </SummaryList.Row>
+            <SummaryList.Row>
+              <SummaryList.Key>
+                {content.rowHeadings.campaignId}
+              </SummaryList.Key>
+              <SummaryList.Value
+                data-testid='campaign-id'
+                className='monospace-font'
+              >
+                {messagePlan.campaignId}
               </SummaryList.Value>
             </SummaryList.Row>
             <SummaryList.Row>

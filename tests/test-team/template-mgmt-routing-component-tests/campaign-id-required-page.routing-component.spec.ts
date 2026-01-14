@@ -26,8 +26,8 @@ test.describe('Message Plan Campaign Id Required Page', () => {
       'Account needs a campaign ID'
     );
 
-    await expect(campaignIdRequiredPage.goBackLink).toHaveText('Go back');
-    await expect(campaignIdRequiredPage.goBackLink).toHaveAttribute(
+    await expect(campaignIdRequiredPage.backLinkBottom).toHaveText('Go back');
+    await expect(campaignIdRequiredPage.backLinkBottom).toHaveAttribute(
       'href',
       '/templates/message-plans'
     );

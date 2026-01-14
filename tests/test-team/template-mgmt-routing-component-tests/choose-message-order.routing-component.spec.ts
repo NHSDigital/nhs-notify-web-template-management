@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
+  assertBackLinkBottom,
+  assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
 
@@ -38,7 +39,11 @@ test.describe('Choose Message Order Page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertGoBackLink(props);
+    await assertBackLinkBottom({
+      ...props,
+      expectedUrl: 'templates/message-plans',
+    });
+    await assertBackLinkTopNotPresent(props);
   });
 
   test('should display correct number of radio button options', async ({

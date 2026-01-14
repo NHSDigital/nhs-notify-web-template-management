@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertNoBackLinks,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
@@ -109,7 +109,7 @@ test.describe('Manage templates page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertGoBackLinkNotPresent(props);
+    await assertNoBackLinks(props);
   });
 
   test('should navigate to the manage templates page', async ({
@@ -137,17 +137,17 @@ test.describe('Manage templates page', () => {
     const email = page.locator(
       'tr:has-text("email-submitted_message-templates-page")'
     );
-    await expect(email.getByText('Submitted', { exact: true })).toBeVisible();
+    await expect(email.getByText('Locked', { exact: true })).toBeVisible();
 
     const sms = page.locator(
       'tr:has-text("sms-submitted_message-templates-page")'
     );
-    await expect(sms.getByText('Submitted', { exact: true })).toBeVisible();
+    await expect(sms.getByText('Locked', { exact: true })).toBeVisible();
 
     const nhsapp = page.locator(
       'tr:has-text("nhs-app-submitted_message-templates-page")'
     );
-    await expect(nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
+    await expect(nhsapp.getByText('Locked', { exact: true })).toBeVisible();
   });
 
   test('Not Yet Submitted template items have correct status indicator', async ({

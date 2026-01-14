@@ -6,6 +6,7 @@ import type {
   TemplateDto,
   Channel,
   RoutingConfigStatus,
+  ClientFeatures,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -92,33 +93,27 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
-const templateStatusToDisplayMappingsLetter = (status: TemplateStatus) =>
-  statusToDisplayMappings[status];
+export const statusToDisplayMapping = (
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  featureFlags: Pick<ClientFeatures, 'routing'>
+): string => {
+  const statusToDisplayMappings: Record<TemplateStatus, string> = {
+    NOT_YET_SUBMITTED:
+      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
+    SUBMITTED: featureFlags.routing ? 'Locked' : 'Submitted',
+    DELETED: '', // will not be shown in the UI
+    PENDING_PROOF_REQUEST: 'Files uploaded',
+    PENDING_UPLOAD: 'Checking files',
+    PENDING_VALIDATION: 'Checking files',
+    VALIDATION_FAILED: 'Checks failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    WAITING_FOR_PROOF: 'Waiting for proof',
+    PROOF_AVAILABLE: 'Proof available',
+    PROOF_APPROVED: 'Proof approved',
+  };
 
-const templateStatusToDisplayMappingsDigital = (status: TemplateStatus) =>
-  ({
-    ...statusToDisplayMappings,
-    NOT_YET_SUBMITTED: 'Draft',
-  })[status];
-
-const statusToDisplayMappings: Record<TemplateStatus, string> = {
-  NOT_YET_SUBMITTED: 'Not yet submitted',
-  SUBMITTED: 'Submitted',
-  DELETED: '', // will not be shown in the UI
-  PENDING_PROOF_REQUEST: 'Files uploaded',
-  PENDING_UPLOAD: 'Checking files',
-  PENDING_VALIDATION: 'Checking files',
-  VALIDATION_FAILED: 'Checks failed',
-  VIRUS_SCAN_FAILED: 'Checks failed',
-  WAITING_FOR_PROOF: 'Waiting for proof',
-  PROOF_AVAILABLE: 'Proof available',
-  TEMPLATE_PROOF_APPROVED: 'Template proof approved',
-} as const;
-
-export const statusToDisplayMapping = (template: TemplateDto): string =>
-  template.templateType === 'LETTER'
-    ? templateStatusToDisplayMappingsLetter(template.templateStatus)
-    : templateStatusToDisplayMappingsDigital(template.templateStatus);
+  return statusToDisplayMappings[template.templateStatus];
+};
 
 type Colour =
   | 'white'
@@ -133,40 +128,26 @@ type Colour =
   | 'yellow'
   | undefined;
 
-const colourMappings: Record<TemplateStatus, Colour> = {
-  NOT_YET_SUBMITTED: undefined,
-  SUBMITTED: 'grey',
-  DELETED: undefined,
-  PENDING_PROOF_REQUEST: 'blue',
-  PENDING_UPLOAD: 'blue',
-  PENDING_VALIDATION: 'blue',
-  VIRUS_SCAN_FAILED: 'red',
-  VALIDATION_FAILED: 'red',
-  WAITING_FOR_PROOF: 'yellow',
-  PROOF_AVAILABLE: 'orange',
-  TEMPLATE_PROOF_APPROVED: 'grey',
-} as const;
-
-const templateStatusToColourMappingsLetter = (
-  status: TemplateStatus
-): Colour | undefined => colourMappings[status];
-
-const templateStatusToColourMappingsDigital = (
-  status: TemplateStatus
-): Colour | undefined =>
-  (
-    ({
-      ...colourMappings,
-      NOT_YET_SUBMITTED: 'green',
-    }) satisfies typeof colourMappings
-  )[status];
-
 export const statusToColourMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>
-) =>
-  template.templateType === 'LETTER'
-    ? templateStatusToColourMappingsLetter(template.templateStatus)
-    : templateStatusToColourMappingsDigital(template.templateStatus);
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  featureFlags: Pick<ClientFeatures, 'routing'>
+) => {
+  const colourMappings: Record<TemplateStatus, Colour> = {
+    NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
+    SUBMITTED: featureFlags.routing ? 'orange' : 'grey',
+    DELETED: undefined,
+    PENDING_PROOF_REQUEST: 'blue',
+    PENDING_UPLOAD: 'blue',
+    PENDING_VALIDATION: 'blue',
+    VIRUS_SCAN_FAILED: 'red',
+    VALIDATION_FAILED: 'red',
+    WAITING_FOR_PROOF: 'yellow',
+    PROOF_AVAILABLE: 'orange',
+    PROOF_APPROVED: 'orange',
+  };
+
+  return colourMappings[template.templateStatus];
+};
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
@@ -176,12 +157,20 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
-export const cascadeTemplateTypeToUrlTextMappings = (type: TemplateType) =>
+export const cascadeTemplateTypeToUrlTextMappings = (
+  type: TemplateType,
+  conditionalType?: LetterType | 'language'
+) =>
   ({
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
     EMAIL: 'email',
-    LETTER: 'standard-english-letter',
+    LETTER: {
+      q4: 'british-sign-language-letter',
+      x0: 'standard-english-letter',
+      x1: 'large-print-letter',
+      language: 'other-language-letter',
+    }[conditionalType || 'x0'],
   })[type];
 
 const creationAction = (type: TemplateType) =>
@@ -200,10 +189,11 @@ export const previewTemplatePages = (type: TemplateType) =>
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
 
-export const messagePlanChooseTemplateUrl = (type: TemplateType) =>
-  type === 'LETTER'
-    ? 'choose-standard-english-letter-template'
-    : `choose-${templateTypeToUrlTextMappings(type)}-template`;
+export const messagePlanChooseTemplateUrl = (
+  type: TemplateType,
+  conditionalType?: LetterType | 'language'
+) =>
+  `choose-${cascadeTemplateTypeToUrlTextMappings(type, conditionalType)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (
@@ -218,7 +208,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
-      TEMPLATE_PROOF_APPROVED: true,
+      PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -245,7 +235,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
-      TEMPLATE_PROOF_APPROVED: false,
+      PROOF_APPROVED: false,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
@@ -324,7 +314,7 @@ export const channelDisplayMappings = (channel: Channel) => {
     NHSAPP: 'NHS App',
     SMS: 'Text message (SMS)',
     EMAIL: 'Email',
-    LETTER: 'Letter',
+    LETTER: 'Standard English letter',
   };
   return map[channel];
 };

@@ -4,9 +4,8 @@ exports[`Choose template page Client-side validation triggers 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -15,6 +14,31 @@ exports[`Choose template page Client-side validation triggers 1`] = `
     id="maincontent"
     role="main"
   >
+    <div
+      aria-labelledby="error-summary-title"
+      class="nhsuk-error-summary"
+      role="alert"
+      tabindex="-1"
+    >
+      <h2
+        class="nhsuk-error-summary__title"
+        data-testid="error-summary"
+        id="error-summary-title"
+      >
+        There is a problem
+      </h2>
+      <ul
+        class="nhsuk-list nhsuk-error-summary__list"
+      >
+        <li>
+          <a
+            href="#templateType"
+          >
+            Select a template type
+          </a>
+        </li>
+      </ul>
+    </div>
     <div
       class="nhsuk-grid-row"
     >
@@ -26,31 +50,6 @@ exports[`Choose template page Client-side validation triggers 1`] = `
         >
           Copy 'undefined'
         </h1>
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <a
-                href="#templateType"
-              >
-                Select a template type
-              </a>
-            </li>
-          </ul>
-        </div>
         <form
           action="/action"
         >
@@ -184,9 +183,8 @@ exports[`Choose template page renders error component 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
@@ -195,6 +193,31 @@ exports[`Choose template page renders error component 1`] = `
     id="maincontent"
     role="main"
   >
+    <div
+      aria-labelledby="error-summary-title"
+      class="nhsuk-error-summary"
+      role="alert"
+      tabindex="-1"
+    >
+      <h2
+        class="nhsuk-error-summary__title"
+        data-testid="error-summary"
+        id="error-summary-title"
+      >
+        There is a problem
+      </h2>
+      <ul
+        class="nhsuk-list nhsuk-error-summary__list"
+      >
+        <li>
+          <a
+            href="#page"
+          >
+            Component error message
+          </a>
+        </li>
+      </ul>
+    </div>
     <div
       class="nhsuk-grid-row"
     >
@@ -206,31 +229,6 @@ exports[`Choose template page renders error component 1`] = `
         >
           Copy 'undefined'
         </h1>
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <a
-                href="#page"
-              >
-                Component error message
-              </a>
-            </li>
-          </ul>
-        </div>
         <form
           action="/action"
         >
@@ -353,9 +351,8 @@ exports[`Choose template page selects one radio button at a time 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
-    data-testid="back-to-templates-link"
+    data-testid="back-link-top"
     href="/message-templates"
-    id="back-link"
   >
     Back to all templates
   </a>
