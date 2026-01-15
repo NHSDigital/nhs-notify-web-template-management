@@ -50,7 +50,7 @@ export const TEMPLATE_STATUS_LIST = arrayOfAll<TemplateStatus>()([
   'VALIDATION_FAILED',
   'VIRUS_SCAN_FAILED',
   'WAITING_FOR_PROOF',
-  'TEMPLATE_PROOF_APPROVED',
+  'PROOF_APPROVED',
 ]);
 
 export const LANGUAGE_LIST = arrayOfAll<Language>()([

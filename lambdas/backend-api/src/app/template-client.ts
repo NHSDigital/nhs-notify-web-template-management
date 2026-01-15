@@ -336,11 +336,7 @@ export class TemplateClient {
       data?.templateStatus === 'PROOF_AVAILABLE' &&
       (getClientConfig.data?.features.routing ?? false)
     ) {
-      return this.updateTemplateStatus(
-        templateId,
-        'TEMPLATE_PROOF_APPROVED',
-        user
-      );
+      return this.updateTemplateStatus(templateId, 'PROOF_APPROVED', user);
     }
 
     const submitResult = await this.templateRepository.submit(
@@ -643,9 +639,6 @@ export class TemplateClient {
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
     );
-
-    console.log('clientConfigurationResult', clientConfigurationResult);
-    console.log('clientConfigRepository', this.clientConfigRepository);
 
     if (clientConfigurationResult.error) {
       log

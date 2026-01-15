@@ -246,7 +246,7 @@ export type TemplateStatusActive =
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
   | 'PROOF_AVAILABLE'
-  | 'TEMPLATE_PROOF_APPROVED';
+  | 'PROOF_APPROVED';
 
 export type TemplateSuccess = {
   data: TemplateDto;

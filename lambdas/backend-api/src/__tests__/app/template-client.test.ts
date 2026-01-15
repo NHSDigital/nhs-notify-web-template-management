@@ -1903,7 +1903,7 @@ describe('templateClient', () => {
 
       const approvedTemplate: TemplateDto = {
         ...template,
-        templateStatus: 'TEMPLATE_PROOF_APPROVED',
+        templateStatus: 'PROOF_APPROVED',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -1928,7 +1928,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
         user,
-        'TEMPLATE_PROOF_APPROVED'
+        'PROOF_APPROVED'
       );
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();

@@ -52,7 +52,7 @@ describe('shouldPublish', () => {
     PROOF_AVAILABLE: true,
     SUBMITTED: true,
     WAITING_FOR_PROOF: true,
-    TEMPLATE_PROOF_APPROVED: true,
+    PROOF_APPROVED: true,
     PENDING_UPLOAD: false,
     PENDING_VALIDATION: false,
     VALIDATION_FAILED: false,

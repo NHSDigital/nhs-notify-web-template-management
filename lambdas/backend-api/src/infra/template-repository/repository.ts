@@ -221,7 +221,7 @@ export class TemplateRepository {
         ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
         ':expectedLetterStatus': isRoutingEnabled
-          ? ('TEMPLATE_PROOF_APPROVED' satisfies TemplateStatus)
+          ? ('PROOF_APPROVED' satisfies TemplateStatus)
           : ('PROOF_AVAILABLE' satisfies TemplateStatus),
         ':passed': 'PASSED' satisfies VirusScanStatus,
         ':expectedLockNumber': lockNumber,
