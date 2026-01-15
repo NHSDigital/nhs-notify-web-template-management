@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { CreateEditMessagePlan } from '@organisms/CreateEditMessagePlan/CreateEditMessagePlan';
 import type {
   RoutingConfig,
@@ -181,5 +182,121 @@ describe('CreateEditMessagePlan', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  // TODO: CCM-11495 Add tests for validation (ErrorSummary)
+  describe('validation', () => {
+    it('should not display error summary when all channels have templates', async () => {
+      const user = userEvent.setup();
+      const messagePlan = buildRoutingConfig({
+        channels: ['NHSAPP', 'EMAIL'],
+      });
+
+      render(
+        <CreateEditMessagePlan
+          messagePlan={messagePlan}
+          templates={mockTemplates}
+        />
+      );
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorSummary = screen.queryByRole('alert');
+
+      expect(errorSummary).not.toBeInTheDocument();
+    });
+
+    it('should show error summary when a channel is missing a template', async () => {
+      const user = userEvent.setup();
+      const messagePlan = buildRoutingConfig({
+        channels: ['NHSAPP', 'EMAIL'],
+      });
+      messagePlan.cascade[1].defaultTemplateId = null;
+
+      render(
+        <CreateEditMessagePlan
+          messagePlan={messagePlan}
+          templates={mockTemplates}
+        />
+      );
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorSummary = screen.getByRole('alert');
+
+      expect(
+        within(errorSummary).getByTestId('error-summary')
+      ).toHaveTextContent('There is a problem');
+      const hintText = errorSummary.querySelector('.nhsuk-hint');
+      expect(hintText).toHaveTextContent(
+        'You must choose a template for each message.'
+      );
+      const errorLink = within(errorSummary).getByRole('link', {
+        name: 'You have not chosen a template for your second message',
+      });
+      expect(errorLink).toBeInTheDocument();
+      expect(errorLink).toHaveAttribute('href', '#channel-EMAIL');
+    });
+
+    it('should show multiple errors when multiple channels are missing templates', async () => {
+      const user = userEvent.setup();
+      const messagePlan = buildRoutingConfig({
+        channels: ['NHSAPP', 'EMAIL', 'SMS'],
+      });
+      messagePlan.cascade[0].defaultTemplateId = null;
+      messagePlan.cascade[2].defaultTemplateId = null;
+
+      render(
+        <CreateEditMessagePlan
+          messagePlan={messagePlan}
+          templates={mockTemplates}
+        />
+      );
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      const errorLinks = screen.getAllByRole('link', {
+        name: /You have not chosen a template for your/,
+      });
+      expect(errorLinks).toHaveLength(2);
+      expect(errorLinks[0]).toHaveTextContent(
+        'You have not chosen a template for your first message'
+      );
+      expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
+      expect(errorLinks[1]).toHaveTextContent(
+        'You have not chosen a template for your third message'
+      );
+      expect(errorLinks[1]).toHaveAttribute('href', '#channel-SMS');
+    });
+
+    it('should match snapshot when displaying validation errors', async () => {
+      const user = userEvent.setup();
+      const messagePlan = buildRoutingConfig({
+        name: 'Test Campaign with Missing Templates',
+        channels: ['NHSAPP', 'EMAIL', 'SMS'],
+      });
+      messagePlan.cascade[0].defaultTemplateId = null;
+      messagePlan.cascade[2].defaultTemplateId = null;
+
+      const { asFragment } = render(
+        <CreateEditMessagePlan
+          messagePlan={messagePlan}
+          templates={mockTemplates}
+        />
+      );
+
+      const moveToProductionButton = screen.getByTestId(
+        'move-to-production-cta'
+      );
+      await user.click(moveToProductionButton);
+
+      expect(asFragment()).toMatchSnapshot();
+    });
+  });
 });
