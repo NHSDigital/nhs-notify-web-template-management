@@ -46,7 +46,7 @@
     "typecheck": "npm run typecheck --workspaces"
   },
   "workspaces": [
-    "data-migration/user-transfer",
+    "data-migration/user-identifiers",
     "frontend",
     "lambdas/authorizer",
     "lambdas/event-publisher",
