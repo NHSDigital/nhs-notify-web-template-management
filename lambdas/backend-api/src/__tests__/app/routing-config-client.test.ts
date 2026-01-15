@@ -740,7 +740,20 @@ describe('RoutingConfigClient', () => {
 
       const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
-        cascade: routingConfig.cascade,
+        cascade: [
+          ...routingConfig.cascade,
+          {
+            channel: 'LETTER',
+            cascadeGroups: ['translations'],
+            channelType: 'primary',
+            conditionalTemplates: [
+              {
+                language: 'bg',
+                templateId: 'bg-templateId',
+              },
+            ],
+          },
+        ],
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: 'new name',
       };
@@ -772,7 +785,51 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        ['90e46ece-4a3b-47bd-b781-f986b42a5a09', 'bg-templateId']
+      );
+
+      expect(result).toEqual({
+        data: updated,
+      });
+    });
+
+    test('returns updated routing config with cascade omitted', async () => {
+      const { client, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        name: 'new name',
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: true },
+          campaignIds: [routingConfig.campaignId],
+        },
+      });
+
+      mocks.routingConfigRepository.update.mockResolvedValueOnce({
+        data: updated,
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user,
+        '42'
+      );
+
+      expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
+        routingConfig.id,
+        update,
+        user,
+        42,
+        []
       );
 
       expect(result).toEqual({
@@ -970,7 +1027,8 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        ['90e46ece-4a3b-47bd-b781-f986b42a5a09']
       );
 
       expect(result).toEqual({

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -7,10 +8,13 @@ import {
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
+import { TemplateFactory } from 'helpers/factories/template-factory';
 
 test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
   const authHelper = createAuthHelper();
   const storageHelper = new RoutingConfigStorageHelper();
+  const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
@@ -32,6 +36,8 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
   test.afterAll(async () => {
     await storageHelper.deleteAdHoc();
     await storageHelper.deleteSeeded();
+    await templateStorageHelper.deleteAdHocTemplates();
+    await templateStorageHelper.deleteSeededTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -132,6 +138,54 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
 
     expect(updated.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
     expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
+  });
+
+  test('returns 400 if template does not belong to current client', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1);
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      userDifferentClient
+    );
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([emailTemplate]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: emailTemplate.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates not found',
+      details: {
+        templateIds: emailTemplate.id,
+      },
+    });
   });
 
   test('returns 400 - cannot update a COMPLETED routing config', async ({

@@ -29,7 +29,8 @@ export const routingConfigContainer = () => {
 
   const routingConfigRepository = new RoutingConfigRepository(
     ddbDocClient,
-    config.routingConfigTableName
+    config.routingConfigTableName,
+    config.templatesTableName
   );
 
   const routingConfigClient = new RoutingConfigClient(
