@@ -1,9 +1,7 @@
 /* eslint-disable unicorn/no-array-callback-reference */
 import {
   Language,
-  LetterFiles,
   LetterType,
-  TemplateDto,
   TEMPLATE_TYPE_LIST,
   TEMPLATE_STATUS_LIST,
   TemplateStatus,
@@ -33,79 +31,6 @@ import {
   templateTypeToUrlTextMappings,
   cascadeTemplateTypeToUrlTextMappings,
 } from '../enum';
-
-const mockLetterWithFilesTemplate: TemplateDto = {
-  id: '1',
-  lockNumber: 1234,
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'Template 1',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-  language: 'en',
-  letterType: 'x0',
-  files: {
-    pdfTemplate: {
-      currentVersion: 'current-version',
-      fileName: 'letter-template-nhs-notify',
-      virusScanStatus: 'PASSED',
-    },
-    proofs: {
-      'file-name': {
-        fileName: 'file-name',
-        supplier: 'WTMMOCK',
-        virusScanStatus: 'PASSED',
-      },
-    },
-  },
-};
-
-const mockLetterTemplate: TemplateDto = {
-  id: '1',
-  lockNumber: 1234,
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'Template 1',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-  language: 'en',
-  letterType: 'x0',
-  // minimal files property to satisfy LetterFiles requirement in TemplateDto
-  files: {} as LetterFiles,
-};
-
-const mockNHSAppTemplate: TemplateDto = {
-  id: '2',
-  lockNumber: 1234,
-  templateType: 'NHS_APP',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'Template 1',
-  message: 'Message',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-};
-
-const mockSMSTemplate: TemplateDto = {
-  id: '3',
-  lockNumber: 1234,
-  templateType: 'SMS',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'Template 1',
-  message: 'Message',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-};
-const mockEmailTemplate: TemplateDto = {
-  id: '4',
-  lockNumber: 1234,
-  templateType: 'EMAIL',
-  subject: 'Email Subject',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'Template 1',
-  message: 'Message',
-  createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-};
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
