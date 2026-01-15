@@ -327,14 +327,14 @@ export class TemplateClient {
       );
     }
 
-    const getClientConfig = await this.getClientConfiguration(user);
+    const { data: clientConfig } = await this.getClientConfiguration(user);
 
-    const { data } = await this.getTemplate(templateId, user);
+    const { data: template } = await this.getTemplate(templateId, user);
 
     if (
-      data?.templateType === 'LETTER' &&
-      data?.templateStatus === 'PROOF_AVAILABLE' &&
-      (getClientConfig.data?.features.routing ?? false)
+      template?.templateType === 'LETTER' &&
+      template?.templateStatus === 'PROOF_AVAILABLE' &&
+      (clientConfig?.features.routing ?? false)
     ) {
       return this.updateTemplateStatus(templateId, 'PROOF_APPROVED', user);
     }
@@ -342,8 +342,7 @@ export class TemplateClient {
     const submitResult = await this.templateRepository.submit(
       templateId,
       user,
-      lockNumberValidation.data,
-      getClientConfig.data?.features.routing ?? false
+      lockNumberValidation.data
     );
 
     if (submitResult.error) {

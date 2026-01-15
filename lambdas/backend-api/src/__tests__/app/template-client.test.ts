@@ -1718,7 +1718,6 @@ describe('templateClient', () => {
     });
   });
 
-  // fix these tests
   describe('submitTemplate', () => {
     const expectedTemplateDto: TemplateDto = {
       id: templateId,
@@ -1781,8 +1780,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        0,
-        false
+        0
       );
 
       expect(result).toEqual({
@@ -1826,8 +1824,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        0,
-        false
+        0
       );
 
       expect(result).toEqual({
@@ -1869,8 +1866,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        0,
-        false
+        0
       );
 
       expect(result).toEqual({
@@ -1878,7 +1874,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should set LETTER template status to template approved if routing is enabled', async () => {
+    test('should set LETTER template status to proof approved if routing is enabled', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -1935,6 +1931,64 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: approvedTemplate,
+      });
+    });
+
+    test('should set LETTER template status to submitted if routing is not enabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        name: 'name',
+        templateType: 'LETTER',
+        templateStatus: 'PROOF_AVAILABLE',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 1,
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: 'v1',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const submittedTemplate: TemplateDto = {
+        ...template,
+        templateStatus: 'SUBMITTED',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {} },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: user.internalUserId, version: 1 },
+      });
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        data: { ...submittedTemplate, owner: user.internalUserId, version: 2 },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        user.clientId
+      );
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1
+      );
+
+      expect(result).toEqual({
+        data: submittedTemplate,
       });
     });
 
