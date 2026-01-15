@@ -104,7 +104,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalled();
+    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    });
   });
 
   it('renders foreign language letter template selection', async () => {
@@ -126,7 +128,9 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     const container = render(page);
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalled();
+    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    });
 
     expect(await generateMetadata()).toEqual({
       title: 'Choose other language letter templates - NHS Notify',

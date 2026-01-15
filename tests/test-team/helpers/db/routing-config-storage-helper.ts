@@ -17,6 +17,75 @@ export class RoutingConfigStorageHelper {
   private adHocKeys: RoutingConfigKey[] = [];
 
   /**
+   * Get all routing configs from the database
+   */
+  async getAllRoutingConfigs(): Promise<RoutingConfig[]> {
+    const { ScanCommand } = await import('@aws-sdk/lib-dynamodb');
+
+    const { Items } = await this.dynamo.send(
+      new ScanCommand({
+        TableName: process.env.ROUTING_CONFIG_TABLE_NAME,
+      })
+    );
+
+    return (Items as RoutingConfig[]) || [];
+  }
+
+  /**
+   * Delete routing configs from the database with optional filters
+   * @param filters Optional filters to apply:
+   *   - clientId: Only delete routing configs for a specific client
+   *   - createdAfter: Only delete routing configs created on or after this date (ISO string or Date)
+   *   - status: Only delete routing configs with a specific status
+   * @returns Number of routing configs deleted
+   */
+  async deleteRoutingConfigs(filters?: {
+    clientId?: string;
+    createdAfter?: string | Date;
+    status?: string;
+  }): Promise<number> {
+    let configsToDelete = await this.getAllRoutingConfigs();
+
+    if (filters) {
+      if (filters.clientId) {
+        configsToDelete = configsToDelete.filter(
+          (config) => config.clientId === filters.clientId
+        );
+      }
+
+      if (filters.createdAfter) {
+        const targetDate =
+          typeof filters.createdAfter === 'string'
+            ? new Date(filters.createdAfter)
+            : filters.createdAfter;
+        configsToDelete = configsToDelete.filter((config) => {
+          const createdAt = new Date(config.createdAt);
+          return createdAt >= targetDate;
+        });
+      }
+
+      if (filters.status) {
+        configsToDelete = configsToDelete.filter(
+          (config) => config.status === filters.status
+        );
+      }
+    }
+
+    if (configsToDelete.length === 0) {
+      return 0;
+    }
+
+    await this.delete(
+      configsToDelete.map(({ id, clientId }) => ({
+        id,
+        clientId,
+      }))
+    );
+
+    return configsToDelete.length;
+  }
+
+  /**
    * Seed a load of routing configs into the database
    */
   async seed(data: RoutingConfig[]) {

@@ -83,6 +83,7 @@ describe('Template API - List', () => {
     };
     event.pathParameters = { templateId: '1' };
     event.queryStringParameters = null;
+    event.multiValueQueryStringParameters = null;
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
@@ -129,6 +130,7 @@ describe('Template API - List', () => {
     };
 
     event.queryStringParameters = null;
+    event.multiValueQueryStringParameters = null;
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
@@ -176,6 +178,7 @@ describe('Template API - List', () => {
       language: 'en',
       letterType: 'x0',
     };
+    event.multiValueQueryStringParameters = null;
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
@@ -194,6 +197,200 @@ describe('Template API - List', () => {
         language: 'en',
         letterType: 'x0',
       }
+    );
+  });
+
+  test('should return validation error from template client', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Request failed validation',
+          details: {
+            templateStatus: 'Invalid option',
+          },
+        },
+      },
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.queryStringParameters = {
+      templateStatus: 'INVALID_STATUS',
+    };
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result?.statusCode).toBe(400);
+    expect(result?.body).toContain('Request failed validation');
+  });
+
+  test('should handle multiValueQueryStringParameters with array values', async () => {
+    const { handler, mocks } = setup();
+
+    const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
+      id: 'id',
+      templateType: 'LETTER',
+      name: 'name',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'SUBMITTED',
+      lockNumber: 1,
+      language: 'en',
+      letterType: 'x0',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+        testDataCsv: {
+          fileName: 'file.csv',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
+    };
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      data: [template],
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.multiValueQueryStringParameters = {
+      templateType: ['LETTER'],
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    };
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
+    });
+
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      {
+        templateType: 'LETTER',
+        templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+      }
+    );
+  });
+
+  test('should convert single-value multiValueQueryStringParameters to strings', async () => {
+    const { handler, mocks } = setup();
+
+    const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
+      id: 'id',
+      templateType: 'LETTER',
+      name: 'name',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'SUBMITTED',
+      lockNumber: 1,
+      language: 'en',
+      letterType: 'x0',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+        testDataCsv: {
+          fileName: 'file.csv',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
+    };
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      data: [template],
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.multiValueQueryStringParameters = {
+      templateType: ['LETTER'],
+    };
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
+    });
+
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      {
+        templateType: 'LETTER',
+      }
+    );
+  });
+
+  test('should handle empty multiValueQueryStringParameters', async () => {
+    const { handler, mocks } = setup();
+
+    const template: Extract<TemplateDto, { templateType: 'EMAIL' }> = {
+      id: 'id',
+      templateType: 'EMAIL',
+      name: 'name',
+      message: 'message',
+      subject: 'subject',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      lockNumber: 1,
+    };
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
+      data: [template],
+    });
+
+    const event = mock<APIGatewayProxyEvent>();
+    event.requestContext.authorizer = {
+      internalUserId: 'user-1234',
+      clientId: 'nhs-notify-client-id',
+    };
+
+    event.multiValueQueryStringParameters = {};
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, data: [template] }),
+    });
+
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      {
+        internalUserId: 'user-1234',
+        clientId: 'nhs-notify-client-id',
+      },
+      null
     );
   });
 });

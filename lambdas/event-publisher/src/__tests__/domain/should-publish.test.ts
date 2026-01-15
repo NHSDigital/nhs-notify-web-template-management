@@ -50,6 +50,7 @@ describe('shouldPublish', () => {
     DELETED: true,
     PENDING_PROOF_REQUEST: true,
     PROOF_AVAILABLE: true,
+    PROOF_APPROVED: true,
     SUBMITTED: true,
     WAITING_FOR_PROOF: true,
     PENDING_UPLOAD: false,

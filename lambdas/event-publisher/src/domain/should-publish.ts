@@ -4,6 +4,7 @@ const publishableLetterStatuses = new Set<DynamoDBTemplate['templateStatus']>([
   'DELETED',
   'PENDING_PROOF_REQUEST',
   'PROOF_AVAILABLE',
+  'PROOF_APPROVED',
   'SUBMITTED',
   'WAITING_FOR_PROOF',
 ]);
