@@ -3,7 +3,6 @@ import {
   GetCommand,
   PutCommand,
   TransactWriteCommand,
-  TransactWriteCommandInput,
   UpdateCommand,
   type DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
@@ -23,7 +22,10 @@ import {
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
 import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
-import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import {
+  ConditionalCheckFailedException,
+  TransactionCanceledException,
+} from '@aws-sdk/client-dynamodb';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
@@ -114,21 +116,26 @@ export class RoutingConfigRepository {
       .expectLockNumber(lockNumber)
       .incrementLockNumber();
 
-    const transactItems: TransactWriteCommandInput = {
-      TransactItems: [
-        { Update: update.build() },
-        ...templateIds.map((templateId) => ({
-          ConditionCheck: {
-            TableName: this.templateTableName,
-            Key: { id: templateId, owner: this.clientOwnerKey(user.clientId) },
-            ConditionExpression: 'attribute_exists(id)',
-          },
-        })),
-      ],
-    };
-
     try {
-      await this.client.send(new TransactWriteCommand(transactItems));
+      await this.client.send(
+        new TransactWriteCommand({
+          TransactItems: [
+            {
+              Update: update.build(),
+            },
+            ...templateIds.map((templateId) => ({
+              ConditionCheck: {
+                TableName: this.templateTableName,
+                Key: {
+                  id: templateId,
+                  owner: this.clientOwnerKey(user.clientId),
+                },
+                ConditionExpression: 'attribute_exists(id)',
+              },
+            })),
+          ],
+        })
+      );
 
       const getResult = await this.client.send(
         new GetCommand({
@@ -149,10 +156,7 @@ export class RoutingConfigRepository {
 
       return success(parsed.data);
     } catch (error) {
-      if (error instanceof ConditionalCheckFailedException) {
-        return failure(ErrorCase.NOT_FOUND, 'Some templates not found');
-      }
-      return this.handleUpdateError(error, lockNumber);
+      return this.handleUpdateTransactionError(error, lockNumber, templateIds);
     }
   }
 
@@ -298,6 +302,46 @@ export class RoutingConfigRepository {
     }
 
     return failure(ErrorCase.INTERNAL, 'Failed to update routing config', err);
+  }
+
+  private handleUpdateTransactionError(
+    err: unknown,
+    lockNumber: number,
+    templateIds: string[]
+  ): ApplicationResult<RoutingConfig> {
+    if (!(err instanceof TransactionCanceledException)) {
+      return this.handleUpdateError(err, lockNumber);
+    }
+
+    // Note: The first item will always be the update
+    // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CancellationReason.html
+    const [updateReason, ...templateReasons] = err.CancellationReasons ?? [];
+
+    if (updateReason && updateReason.Code !== 'None') {
+      return this.handleUpdateError(
+        new ConditionalCheckFailedException({
+          message: updateReason.Message!,
+          Item: updateReason.Item,
+          $metadata: err.$metadata,
+        }),
+        lockNumber
+      );
+    }
+
+    const templatesMissing = templateReasons.some(
+      (r) => r.Code === 'ConditionalCheckFailed'
+    );
+
+    if (templatesMissing) {
+      return failure(
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
+        'Some templates not found',
+        err,
+        { templateIds: templateIds.join(',') }
+      );
+    }
+
+    return this.handleUpdateError(err, lockNumber);
   }
 
   private clientOwnerKey(clientId: string) {
