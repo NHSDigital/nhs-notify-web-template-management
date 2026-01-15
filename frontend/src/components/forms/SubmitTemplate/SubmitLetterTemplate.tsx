@@ -96,22 +96,30 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
   templateId,
   lockNumber,
 }) => {
+  const features = useFeatureFlags();
   const {
-    buttonText,
+    routingFlagEnabled,
+    routingFlagDisabled,
     goBackButtonText,
     goBackPath,
-    leadParagraph,
-    pageHeading,
-    submitChecklistHeading,
     submitChecklistIntroduction,
     submitChecklistItems,
-    warningCalloutText,
     warningCalloutLabel,
   } = content.components.submitLetterTemplate;
 
   const [_, action] = useActionState(submitTemplate, 'LETTER');
 
-  const features = useFeatureFlags();
+  const pageContent = features.routing
+    ? routingFlagEnabled
+    : routingFlagDisabled;
+
+  const {
+    pageHeading,
+    leadParagraph,
+    submitChecklistHeading,
+    warningCalloutText,
+    buttonText,
+  } = pageContent;
 
   if (!features.proofing) {
     return (
@@ -159,15 +167,19 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
               readOnly
             />
             <NHSNotifyButton
+              id='submit-template-button'
               secondary
               className='nhsuk-u-margin-right-3'
+            >
+              {buttonText}
+            </NHSNotifyButton>
+            <NHSNotifyButton
+              className='nhsuk-button-background-button'
+              id='go-back-button'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
               data-testid='back-link-bottom'
             >
               {goBackButtonText}
-            </NHSNotifyButton>
-            <NHSNotifyButton id='submit-template-button'>
-              {buttonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
