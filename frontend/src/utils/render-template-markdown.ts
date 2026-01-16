@@ -20,7 +20,7 @@ export function renderTemplateMarkdown(template: TemplateDto): string {
     }
 
     default: {
-      return '';
+      throw new Error('Unsupported template type');
     }
   }
 }

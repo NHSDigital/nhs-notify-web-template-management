@@ -92,7 +92,7 @@ export default async function PreviewMessagePlanPage({
           <div className='nhsuk-grid-column-three-quarters'>
             <span className='nhsuk-caption-l'>{pageContent.headerCaption}</span>
             <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
-            <NHSNotifyWarningCallout>
+            <NHSNotifyWarningCallout data-testid='warning-callout'>
               {/* TODO: CCM-12038 - link shouldn't open in new tab */}
               <ContentRenderer
                 content={pageContent.warningCallout}
@@ -100,19 +100,32 @@ export default async function PreviewMessagePlanPage({
               />
             </NHSNotifyWarningCallout>
 
-            <NHSNotifySummaryList>
+            <NHSNotifySummaryList data-testid='message-plan-details'>
               <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>
                   Routing Plan ID
                 </NHSNotifySummaryListKey>
-                <NHSNotifySummaryListValue className='monospace-font'>
+                <NHSNotifySummaryListValue
+                  className='monospace-font'
+                  data-testid='plan-id'
+                >
                   {routingConfigId}
                 </NHSNotifySummaryListValue>
               </NHSNotifySummaryListRow>
 
               <NHSNotifySummaryListRow>
+                <NHSNotifySummaryListKey>Campaign</NHSNotifySummaryListKey>
+                <NHSNotifySummaryListValue
+                  className='monospace-font'
+                  data-testid='campaign-id'
+                >
+                  {messagePlan.campaignId}
+                </NHSNotifySummaryListValue>
+              </NHSNotifySummaryListRow>
+
+              <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>Status</NHSNotifySummaryListKey>
-                <NHSNotifySummaryListValue>
+                <NHSNotifySummaryListValue data-testid='status'>
                   <Tag color={messagePlanStatusToTagColour(messagePlan.status)}>
                     {messagePlanStatusToDisplayText(messagePlan.status)}
                   </Tag>
@@ -120,13 +133,27 @@ export default async function PreviewMessagePlanPage({
               </NHSNotifySummaryListRow>
             </NHSNotifySummaryList>
 
-            <DetailsOpenProvider targetClassName='preview-template-details'>
-              <p>
-                <DetailsOpenButton />
-              </p>
+            <DetailsOpenProvider targetClassName='controlled-details-section'>
+              {/* // TODO: CCM-12038 - content */}
+              {messagePlan.cascade.some((item) => item.channel !== 'LETTER') ? (
+                <p>
+                  <DetailsOpenButton
+                    secondary
+                    render={(isOpen) =>
+                      isOpen
+                        ? 'Close all template previews'
+                        : 'Open all template previews'
+                    }
+                  />
+                </p>
+              ) : null}
 
-              <MessagePlanChannelList>
+              <MessagePlanChannelList data-testid='cascade-channel-list'>
                 {messagePlan.cascade.map((cascadeItem, index) => {
+                  const channelDisplayName = channelDisplayMappings(
+                    cascadeItem.channel
+                  );
+
                   const defaultTemplate = getDefaultTemplateForItem(
                     cascadeItem,
                     templates
@@ -156,10 +183,11 @@ export default async function PreviewMessagePlanPage({
                         data-testid={`message-plan-block-${cascadeItem.channel}`}
                       >
                         <MessagePlanChannelCard
-                          heading={channelDisplayMappings(cascadeItem.channel)}
+                          heading={channelDisplayName}
+                          data-testid='channel-card'
                         >
                           {cascadeItem.channel === 'LETTER' ? (
-                            <p>
+                            <p data-testid='template-name'>
                               <Link
                                 href={interpolate(
                                   '/preview-submitted-letter-template/{{id}}',
@@ -171,12 +199,18 @@ export default async function PreviewMessagePlanPage({
                             </p>
                           ) : (
                             <>
-                              <p>{defaultTemplate.name}</p>
-                              <Details className='nhsuk-u-margin-bottom-0 preview-template-details'>
-                                <DetailsSummary>
-                                  Preview template
+                              <p data-testid='template-name'>
+                                {defaultTemplate.name}
+                              </p>
+                              <Details className='nhsuk-u-margin-bottom-0 controlled-details-section'>
+                                <DetailsSummary data-testid='preview-template-summary'>
+                                  Preview{' '}
+                                  <span className='nhsuk-u-visually-hidden'>
+                                    {channelDisplayName}
+                                  </span>{' '}
+                                  template
                                 </DetailsSummary>
-                                <DetailsText>
+                                <DetailsText data-testid='preview-template-text'>
                                   <div
                                     dangerouslySetInnerHTML={{
                                       __html:
@@ -190,11 +224,11 @@ export default async function PreviewMessagePlanPage({
                         </MessagePlanChannelCard>
 
                         {conditionalTemplatesCount > 0 && (
-                          <MessagePlanConditionalTemplatesList>
-                            <MessagePlanFallbackConditionsListItem>
+                          <MessagePlanConditionalTemplatesList data-testid='conditional-templates'>
+                            <MessagePlanFallbackConditionsListItem data-testid='conditional-templates-fallback-conditions'>
                               <MessagePlanFallbackConditionsDetails
                                 channel={cascadeItem.channel}
-                                className='preview-template-details'
+                                className='controlled-details-section'
                                 index={index}
                               />
                             </MessagePlanFallbackConditionsListItem>
@@ -202,11 +236,13 @@ export default async function PreviewMessagePlanPage({
                               ([accessibleFormat, template]) => (
                                 <MessagePlanConditionalTemplatesListItem
                                   key={template.id}
+                                  data-testid={`conditional-template-${accessibleFormat}`}
                                 >
                                   <MessagePlanChannelCard
                                     heading={`${accessibleFormatDisplayMappings(
                                       accessibleFormat
                                     )} (optional)`}
+                                    data-testid='channel-card'
                                   >
                                     <p>
                                       <Link
@@ -224,11 +260,14 @@ export default async function PreviewMessagePlanPage({
                             )}
 
                             {languageTemplates.length > 0 && (
-                              <MessagePlanConditionalTemplatesListItem>
+                              <MessagePlanConditionalTemplatesListItem
+                                data-testid={'conditional-template-languages'}
+                              >
                                 <MessagePlanChannelCard
                                   heading={
                                     pageContent.languageFormatsCardHeading
                                   }
+                                  data-testid='channel-card'
                                 >
                                   {languageTemplates.map((template) => (
                                     <p
@@ -254,10 +293,12 @@ export default async function PreviewMessagePlanPage({
 
                       {messagePlan.cascade.length > 1 &&
                         index < messagePlan.cascade.length - 1 && (
-                          <MessagePlanFallbackConditionsListItem>
+                          <MessagePlanFallbackConditionsListItem
+                            data-testid={`message-plan-fallback-conditions-${cascadeItem.channel}`}
+                          >
                             <MessagePlanFallbackConditionsDetails
                               channel={cascadeItem.channel}
-                              className='preview-template-details'
+                              className='controlled-details-section'
                               index={index}
                             />
                           </MessagePlanFallbackConditionsListItem>

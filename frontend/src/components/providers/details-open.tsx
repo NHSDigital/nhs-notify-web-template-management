@@ -1,8 +1,11 @@
 'use client';
 
 import {
+  ComponentProps,
   createContext,
+  HTMLProps,
   PropsWithChildren,
+  ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -11,15 +14,31 @@ import {
 } from 'react';
 import { Button } from 'nhsuk-react-components';
 
-const DetailsOpenContext = createContext<[boolean, () => void]>([
-  false,
-  () => {},
-]);
+const DetailsOpenContext = createContext<[boolean, () => void] | null>(null);
 
 export function useDetailsOpen() {
-  const ctx = useContext(DetailsOpenContext);
+  const context = useContext(DetailsOpenContext);
 
-  return ctx;
+  if (!context) {
+    throw new Error('useDetailsOpen must be used within DetailsOpenProvider');
+  }
+
+  return context;
+}
+
+export function updateDetailsOpenState(
+  root: HTMLDivElement | null,
+  targetClassName: string,
+  isOpen: boolean
+) {
+  if (!root) return;
+
+  const details = root.querySelectorAll<HTMLDetailsElement>(
+    `details.${targetClassName}`
+  );
+  for (const element of details) {
+    element.open = isOpen;
+  }
 }
 
 export function DetailsOpenProvider({
@@ -32,14 +51,7 @@ export function DetailsOpenProvider({
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
-    const details = ref.current.querySelectorAll<HTMLDetailsElement>(
-      `details.${targetClassName}`
-    );
-
-    for (const element of details) {
-      element.open = isOpen;
-    }
+    updateDetailsOpenState(ref.current, targetClassName, isOpen);
   }, [isOpen, targetClassName]);
 
   const toggle = useMemo(
@@ -56,12 +68,24 @@ export function DetailsOpenProvider({
   );
 }
 
-export function DetailsOpenButton() {
+type ButtonProps = Exclude<
+  ComponentProps<typeof Button>,
+  HTMLProps<HTMLAnchorElement>
+>;
+
+type DetailsOpenButtonProps = Omit<ButtonProps, 'as' | 'onClick' | 'type'> & {
+  render: (isOpen: boolean) => ReactNode;
+};
+
+export function DetailsOpenButton({
+  render,
+  ...props
+}: DetailsOpenButtonProps) {
   const [isOpen, toggle] = useDetailsOpen();
 
   return (
-    <Button type='button' secondary onClick={toggle}>
-      {isOpen ? 'Close all template previews' : 'Open all template previews'}
+    <Button {...props} type='button' onClick={toggle}>
+      {render(isOpen)}
     </Button>
   );
 }

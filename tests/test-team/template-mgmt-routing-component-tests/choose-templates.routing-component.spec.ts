@@ -52,6 +52,7 @@ const routingConfigIds = {
   noTemplatesSelected: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
+  production: randomUUID(),
 };
 
 function createRoutingConfigs(
@@ -109,6 +110,16 @@ function createRoutingConfigs(
       id: routingConfigIds.noTemplatesSelected,
       name: 'Plan with no templates selected',
     }).dbEntry;
+
+  routingConfigs.production = RoutingConfigFactory.createWithChannels(
+    user,
+    ['NHSAPP'],
+    {
+      id: routingConfigIds.production,
+      name: 'Production plan',
+      status: 'COMPLETED',
+    }
+  ).addTemplate('NHSAPP', templateIds.NHSAPP).dbEntry;
 
   return routingConfigs;
 }
@@ -821,6 +832,20 @@ test.describe('Routing - Choose Templates page', () => {
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
+      );
+    });
+  });
+
+  test.describe('redirects to preview message plan page', () => {
+    test('when message plan is in production', async ({ page, baseURL }) => {
+      const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+        page
+      ).setPathParam('messagePlanId', routingConfigIds.production);
+
+      await chooseTemplatesPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/preview-message-plan/${routingConfigIds.production}`
       );
     });
   });
