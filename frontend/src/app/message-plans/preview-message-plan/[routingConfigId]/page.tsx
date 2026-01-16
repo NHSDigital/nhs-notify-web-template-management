@@ -139,11 +139,8 @@ export default async function PreviewMessagePlanPage({
                 <p>
                   <DetailsOpenButton
                     secondary
-                    render={(isOpen) =>
-                      isOpen
-                        ? 'Close all template previews'
-                        : 'Open all template previews'
-                    }
+                    openText='Close all template previews'
+                    closedText='Open all template previews'
                   />
                 </p>
               ) : null}

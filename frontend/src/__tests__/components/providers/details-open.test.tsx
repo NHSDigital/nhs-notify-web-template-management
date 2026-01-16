@@ -16,7 +16,7 @@ import {
 function TestComponent() {
   return (
     <DetailsOpenProvider targetClassName='details-section'>
-      <DetailsOpenButton render={(isOpen) => (isOpen ? 'Close' : 'Open')} />
+      <DetailsOpenButton openText='Close' closedText='Open' />
       <details className='details-section'>
         <summary>Details Section 1</summary>
         <p>Details Text 1</p>

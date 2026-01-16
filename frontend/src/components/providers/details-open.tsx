@@ -5,7 +5,6 @@ import {
   createContext,
   HTMLProps,
   PropsWithChildren,
-  ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -74,18 +73,20 @@ type ButtonProps = Exclude<
 >;
 
 type DetailsOpenButtonProps = Omit<ButtonProps, 'as' | 'onClick' | 'type'> & {
-  render: (isOpen: boolean) => ReactNode;
+  openText: string;
+  closedText: string;
 };
 
 export function DetailsOpenButton({
-  render,
+  openText,
+  closedText,
   ...props
 }: DetailsOpenButtonProps) {
   const [isOpen, toggle] = useDetailsOpen();
 
   return (
     <Button {...props} type='button' onClick={toggle}>
-      {render(isOpen)}
+      {isOpen ? openText : closedText}
     </Button>
   );
 }
