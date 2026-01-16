@@ -55,6 +55,8 @@ export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
 
 export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
 
+export type DigitalTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
+
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanChannelList matches snapshot 1`] = `
+<DocumentFragment>
+  <ul
+    class="channel-list extra-channel-list-class"
+    data-testid="channel-list"
+  >
+    List content
+  </ul>
+</DocumentFragment>
+`;

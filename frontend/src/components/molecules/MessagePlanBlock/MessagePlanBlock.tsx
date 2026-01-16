@@ -1,39 +1,23 @@
-import {
-  CascadeItem,
-  RoutingConfig,
-  TemplateDto,
-} from 'nhs-notify-backend-client';
-import { interpolate } from '@utils/interpolate';
+import type { HTMLProps, PropsWithChildren } from 'react';
+import classNames from 'classnames';
 import { ORDINALS } from 'nhs-notify-web-template-management-utils';
-import { MessagePlanChannelTemplate } from '@molecules/MessagePlanChannelTemplate/MessagePlanChannelTemplate';
-import { MessagePlanConditionalLetterTemplates } from '@molecules/MessagePlanConditionalTemplates/MessagePlanConditionalTemplates';
-import { MessagePlanTemplates } from '@utils/routing-utils';
-
-import styles from '@molecules/MessagePlanBlock/MessagePlanBlock.module.scss';
-
 import copy from '@content/content';
+import { interpolate } from '@utils/interpolate';
+
+import styles from './MessagePlanBlock.module.scss';
+
 const { messagePlanBlock: content } = copy.components;
 
 export function MessagePlanBlock({
+  children,
+  className,
   index,
-  channelItem,
-  defaultTemplate,
-  routingConfigId,
-  conditionalTemplates,
-  lockNumber,
-}: {
-  index: number;
-  channelItem: CascadeItem;
-  defaultTemplate?: TemplateDto;
-  routingConfigId: RoutingConfig['id'];
-  conditionalTemplates: MessagePlanTemplates;
-  lockNumber: number;
-}) {
+  ...props
+}: PropsWithChildren<HTMLProps<HTMLLIElement> & { index: number }>) {
   return (
     <li
-      id={`channel-${channelItem.channel}`}
-      className={styles['message-plan-block']}
-      data-testid={`message-plan-block-${channelItem.channel}`}
+      className={classNames(styles['message-plan-block'], className)}
+      {...props}
     >
       <div className={styles['message-plan-block-number']} aria-hidden='true'>
         {index + 1}
@@ -41,22 +25,7 @@ export function MessagePlanBlock({
       <h2 className='nhsuk-heading-m nhsuk-u-padding-top-1'>
         {interpolate(content.title, { ordinal: ORDINALS[index] })}
       </h2>
-
-      <MessagePlanChannelTemplate
-        channel={channelItem.channel}
-        template={defaultTemplate}
-        required={true}
-        routingConfigId={routingConfigId}
-        lockNumber={lockNumber}
-      />
-
-      <MessagePlanConditionalLetterTemplates
-        cascadeItem={channelItem}
-        cascadeIndex={index}
-        routingConfigId={routingConfigId}
-        conditionalTemplates={conditionalTemplates}
-        lockNumber={lockNumber}
-      />
+      {children}
     </li>
   );
 }

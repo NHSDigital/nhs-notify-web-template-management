@@ -11,14 +11,7 @@ export const RoutingConfigFactory = {
       updatedAt: new Date().toISOString(),
       campaignId: randomUUID(),
       defaultCascadeGroup: 'standard',
-      cascade: [
-        {
-          cascadeGroups: ['standard'],
-          channel: 'NHSAPP',
-          channelType: 'primary',
-          defaultTemplateId: null,
-        },
-      ],
+      cascade: [],
       cascadeGroupOverrides: [],
       name: 'Test config',
       lockNumber: 0,

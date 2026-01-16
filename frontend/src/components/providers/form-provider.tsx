@@ -26,9 +26,11 @@ export function useNHSNotifyForm() {
 
 export function NHSNotifyFormProvider({
   children,
+  errorSummaryHint,
   initialState = {},
   serverAction,
 }: PropsWithChildren<{
+  errorSummaryHint?: string;
   initialState?: FormState;
   serverAction: (state: FormState, data: FormData) => Promise<FormState>;
 }>) {
@@ -39,7 +41,10 @@ export function NHSNotifyFormProvider({
 
   return (
     <FormContext.Provider value={[state, action, isPending]}>
-      <NhsNotifyErrorSummary errorState={state.errorState} />
+      <NhsNotifyErrorSummary
+        hint={errorSummaryHint}
+        errorState={state.errorState}
+      />
       {children}
     </FormContext.Provider>
   );

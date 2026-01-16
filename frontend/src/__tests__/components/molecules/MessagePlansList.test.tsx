@@ -59,4 +59,27 @@ describe('MessagePlansList', () => {
 
     expect(lastEditedCell).toHaveTextContent('13:00');
   });
+
+  it('matches snapshot when data is available - COMPLETED', async () => {
+    const data = {
+      count: 1,
+      plans: [
+        {
+          id: '3',
+          name: 'Draft Y',
+          lastUpdated: '2025-09-08T12:00:00Z',
+        },
+      ],
+    };
+
+    const container = render(
+      <MessagePlansList
+        status='COMPLETED'
+        count={data.count}
+        plans={data.plans}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

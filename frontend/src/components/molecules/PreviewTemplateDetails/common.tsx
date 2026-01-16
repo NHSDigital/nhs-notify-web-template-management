@@ -1,4 +1,4 @@
-import { Tag, SummaryList, WarningCallout } from 'nhsuk-react-components';
+import { Tag, SummaryList } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
   statusToColourMapping,
@@ -13,6 +13,7 @@ import { toKebabCase } from '@utils/kebab-case';
 import { useFeatureFlags } from '@providers/client-config-provider';
 import Link from 'next/link';
 import { interpolate } from '@utils/interpolate';
+import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
 
 export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
@@ -154,14 +155,7 @@ export function LockedTemplateWarning({ template }: { template: TemplateDto }) {
   const warningContent = content.components.lockedTemplateWarning;
 
   return (
-    <WarningCallout
-      className={classNames(
-        'nhsuk-u-padding-4',
-        'nhsuk-u-margin-bottom-6',
-        'nhsuk-u-reading-width',
-        styles.warning_callout
-      )}
-    >
+    <NHSNotifyWarningCallout>
       <Tag
         className='nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3'
         color={statusToColourMapping(template, features)}
@@ -186,6 +180,6 @@ export function LockedTemplateWarning({ template }: { template: TemplateDto }) {
           {warningContent.copy.link.after}
         </p>
       )}
-    </WarningCallout>
+    </NHSNotifyWarningCallout>
   );
 }
