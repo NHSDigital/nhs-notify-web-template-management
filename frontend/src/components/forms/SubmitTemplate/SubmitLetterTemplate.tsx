@@ -20,7 +20,7 @@ export const SubmitLetterTemplateProofingDisabled: FC<
     proofingFlagDisabled: {
       afterSubmissionHeading,
       afterSubmissionText,
-      buttonText,
+      continueButtonText,
       goBackButtonText,
       goBackPath,
       pageHeading,
@@ -82,7 +82,7 @@ export const SubmitLetterTemplateProofingDisabled: FC<
               {goBackButtonText}
             </NHSNotifyButton>
             <NHSNotifyButton id='submit-template-button'>
-              {buttonText}
+              {continueButtonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
@@ -97,6 +97,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
   lockNumber,
 }) => {
   const features = useFeatureFlags();
+
   const {
     routingFlagEnabled,
     routingFlagDisabled,
@@ -118,7 +119,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
     leadParagraph,
     submitChecklistHeading,
     warningCalloutText,
-    buttonText,
+    continueButtonText,
   } = pageContent;
 
   if (!features.proofing) {
@@ -168,10 +169,9 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
             />
             <NHSNotifyButton
               id='submit-template-button'
-              secondary
               className='nhsuk-u-margin-right-3'
             >
-              {buttonText}
+              {continueButtonText}
             </NHSNotifyButton>
             <NHSNotifyButton
               className='nhsuk-button-background-button'

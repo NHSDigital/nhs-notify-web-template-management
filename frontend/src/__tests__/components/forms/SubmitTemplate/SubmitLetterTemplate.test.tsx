@@ -52,7 +52,7 @@ describe('SubmitLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('should render with client proofing disabled', () => {
+  it('should render with client proofing and routing disabled', () => {
     jest.mocked(useFeatureFlags).mockReturnValueOnce({ proofing: false });
 
     const container = render(

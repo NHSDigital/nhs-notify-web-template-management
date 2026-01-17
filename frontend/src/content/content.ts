@@ -668,7 +668,7 @@ const submitTemplate = {
 const submitLetterTemplate = {
   proofingFlagDisabled: {
     goBackButtonText: submitTemplate.goBackButtonText,
-    buttonText: submitTemplate.buttonText,
+    continueButtonText: submitTemplate.buttonText,
     pageHeading: 'Submit',
     submitChecklistHeading: 'Before you submit',
     submitChecklistIntroduction: 'You should check that your template:',
@@ -688,7 +688,7 @@ const submitLetterTemplate = {
       'When you approve your template proof, your template will be ready to add to a message plan.',
     submitChecklistHeading: 'Before you approve this template proof',
     warningCalloutText: `You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.`,
-    buttonText: 'Approve template proof',
+    continueButtonText: 'Approve template proof',
   },
   routingFlagDisabled: {
     pageHeading: 'Approve and submit',
@@ -696,7 +696,7 @@ const submitLetterTemplate = {
       'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
     submitChecklistHeading: 'Before you submit this template',
     warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
-    buttonText: 'Approve and submit',
+    continueButtonText: 'Approve and submit',
   },
   submitChecklistIntroduction: 'Check that your template proof:',
   submitChecklistItems: [
