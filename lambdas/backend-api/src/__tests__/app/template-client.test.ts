@@ -1994,6 +1994,73 @@ describe('templateClient', () => {
         data: submittedTemplate,
       });
     });
+
+    test('should return a failure result when fetching client configuration fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const clientConfigError = {
+        actualError: new Error('config fetch error'),
+        errorMeta: {
+          code: 500,
+          description: 'Failed to fetch client configuration',
+        },
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: clientConfigError,
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          id: templateId,
+          templateType: 'SMS',
+          name: 'name',
+          message: 'message',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 1,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: clientConfigError,
+      });
+    });
+
+    test('should return a failure result when fetching template fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const templateError = {
+        actualError: new Error('template fetch error'),
+        errorMeta: {
+          code: 500,
+          description: 'Failed to fetch template',
+        },
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        error: templateError,
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: templateError,
+      });
+    });
   });
 
   describe('requestProof', () => {
