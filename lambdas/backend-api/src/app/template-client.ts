@@ -234,6 +234,9 @@ export class TemplateClient {
       return uploadResult;
     }
 
+    // this is not conditional on lock number
+    // maybe this should be named finaliseLetterUpload or something
+    // because generally we would want to assert on lock number when updating
     const updateTemplateResult = await this.updateTemplateStatus(
       templateDTO.id,
       'PENDING_VALIDATION',
@@ -327,21 +330,42 @@ export class TemplateClient {
       );
     }
 
-    const { data: clientConfig } = await this.getClientConfiguration(user);
+    const [
+      { data: clientConfig, error: clientConfigError },
+      { data: template, error: templateError },
+    ] = await Promise.all([
+      this.getClientConfiguration(user),
+      this.getTemplate(templateId, user),
+    ]);
 
-    const { data: template } = await this.getTemplate(templateId, user);
+    if (clientConfigError) {
+      log
+        .child(clientConfigError.errorMeta)
+        .error(
+          'Failed to get client configuration',
+          clientConfigError.actualError
+        );
 
-    if (
-      template?.templateType === 'LETTER' &&
-      template?.templateStatus === 'PROOF_AVAILABLE' &&
-      (clientConfig?.features.routing ?? false)
-    ) {
-      return this.updateTemplateStatus(templateId, 'PROOF_APPROVED', user);
+      return { error: clientConfigError };
     }
+
+    if (templateError) {
+      log
+        .child(templateError.errorMeta)
+        .error('Failed to get template', templateError.actualError);
+
+      return { error: templateError };
+    }
+
+    const targetStatus =
+      template.templateType === 'LETTER' && clientConfig.features.routing
+        ? 'PROOF_APPROVED'
+        : 'SUBMITTED';
 
     const submitResult = await this.templateRepository.submit(
       templateId,
       user,
+      targetStatus,
       lockNumberValidation.data
     );
 

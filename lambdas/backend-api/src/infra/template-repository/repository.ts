@@ -208,12 +208,17 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, user: User, lockNumber: number) {
+  async submit(
+    templateId: string,
+    user: User,
+    targetStatus: Extract<TemplateStatus, 'SUBMITTED' | 'PROOF_APPROVED'>,
+    lockNumber: number
+  ) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
       {
-        ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
+        ':newStatus': targetStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
         ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
         ':passed': 'PASSED' satisfies VirusScanStatus,

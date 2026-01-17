@@ -1780,6 +1780,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
+        'SUBMITTED',
         0
       );
 
@@ -1824,6 +1825,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
+        'SUBMITTED',
         0
       );
 
@@ -1866,6 +1868,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
+        'SUBMITTED',
         0
       );
 
@@ -1910,7 +1913,7 @@ describe('templateClient', () => {
         data: { ...template, owner: user.internalUserId, version: 1 },
       });
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.submit.mockResolvedValueOnce({
         data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
       });
 
@@ -1921,13 +1924,12 @@ describe('templateClient', () => {
         user.clientId
       );
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        'PROOF_APPROVED'
+        'PROOF_APPROVED',
+        1
       );
-
-      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: approvedTemplate,
@@ -1984,63 +1986,12 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
+        'SUBMITTED',
         1
       );
 
       expect(result).toEqual({
         data: submittedTemplate,
-      });
-    });
-
-    test('should return failure result when updateStatus fails during proof approval', async () => {
-      const { templateClient, mocks } = setup();
-
-      const template: TemplateDto = {
-        name: 'name',
-        templateType: 'LETTER',
-        templateStatus: 'PROOF_AVAILABLE',
-        id: templateId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lockNumber: 1,
-        language: 'en',
-        letterType: 'x0',
-        campaignId: 'campaign-id',
-        files: {
-          pdfTemplate: {
-            fileName: 'template.pdf',
-            currentVersion: 'v1',
-            virusScanStatus: 'PASSED',
-          },
-        },
-      };
-
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { routing: true } },
-      });
-
-      mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner: user.internalUserId, version: 1 },
-      });
-
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
-        error: {
-          errorMeta: {
-            code: 500,
-            description: 'Failed to update status',
-          },
-        },
-      });
-
-      const result = await templateClient.submitTemplate(templateId, user, 1);
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            code: 500,
-            description: 'Failed to update status',
-          },
-        },
       });
     });
   });
