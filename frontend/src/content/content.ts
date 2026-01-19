@@ -6,6 +6,7 @@ import type {
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
+import { title } from 'node:process';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -707,6 +708,15 @@ const submitLetterTemplate = {
   warningCalloutLabel: 'Important',
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
+};
+
+const submitLetterTemplatePage = {
+  routingFlagEnabled: {
+    pageTitle: generatePageTitle('Approve letter template proof'),
+  },
+  routingFlagDisabled: {
+    pageTitle: generatePageTitle('Submit letter template'),
+  },
 };
 
 const copyTemplate = {
@@ -1528,6 +1538,7 @@ const content = {
     chooseOtherLanguageLetterTemplate,
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
+    submitLetterTemplate: submitLetterTemplatePage,
   },
 };
 

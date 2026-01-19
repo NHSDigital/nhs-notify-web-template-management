@@ -128,14 +128,6 @@ pre {
   display: inline-block;
 };l,
 
-.nhsuk-button-background-button {
-  background-color: nhsuk.$nhsuk-input-border-colour;
-}
-
-.nhsuk-button-background-button:hover {
-  background-color: nhsuk.$nhsuk-text-colour;
-}
-
 a.nhsuk-link--no-visited-state {
   &:hover {
     color: nhsuk.$nhsuk-link-colour;

@@ -74,15 +74,17 @@ export const SubmitLetterTemplateProofingDisabled: FC<
               readOnly
             />
             <NHSNotifyButton
-              secondary
+              id='submit-template-button'
               className='nhsuk-u-margin-right-3'
+            >
+              {continueButtonText}
+            </NHSNotifyButton>
+            <NHSNotifyButton
+              secondary
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
               data-testid='back-link-bottom'
             >
               {goBackButtonText}
-            </NHSNotifyButton>
-            <NHSNotifyButton id='submit-template-button'>
-              {continueButtonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
@@ -174,7 +176,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
               {continueButtonText}
             </NHSNotifyButton>
             <NHSNotifyButton
-              className='nhsuk-button-background-button'
+              secondary
               id='go-back-button'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
               data-testid='back-link-bottom'

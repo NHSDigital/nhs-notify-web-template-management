@@ -96,9 +96,17 @@ exports[`SubmitLetterTemplate component should render with client proofing and r
             type="hidden"
             value="1234"
           />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-u-margin-right-3"
+            id="submit-template-button"
+            type="submit"
+          >
+            Submit template
+          </button>
           <a
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            class="nhsuk-button nhsuk-button--secondary"
             data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
@@ -106,14 +114,6 @@ exports[`SubmitLetterTemplate component should render with client proofing and r
           >
             Go back
           </a>
-          <button
-            aria-disabled="false"
-            class="nhsuk-button"
-            id="submit-template-button"
-            type="submit"
-          >
-            Submit template
-          </button>
         </form>
       </div>
     </div>
@@ -221,7 +221,7 @@ exports[`SubmitLetterTemplate component should render with client proofing and r
           </button>
           <a
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button-background-button"
+            class="nhsuk-button nhsuk-button--secondary"
             data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
@@ -337,7 +337,7 @@ exports[`SubmitLetterTemplate component should render with client proofing enabl
           </button>
           <a
             aria-disabled="false"
-            class="nhsuk-button nhsuk-button-background-button"
+            class="nhsuk-button nhsuk-button--secondary"
             data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
