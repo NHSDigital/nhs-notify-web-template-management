@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -6,16 +7,12 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
-import {
-  UseCaseOrchestrator,
-  SimulatePassedValidation,
-} from '../helpers/use-cases';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { Template } from 'helpers/types';
 
 test.describe('DELETE /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
@@ -103,63 +100,27 @@ test.describe('DELETE /v1/template/:templateId', () => {
   });
 
   test.describe('LETTER templates', () => {
-    test('returns 204', async ({ request }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
+    const createLetterTemplate = async (): Promise<Template> => {
+      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        user1,
+        'Test Letter template'
       );
 
-      const createResult = await response.json();
+      await templateStorageHelper.seedTemplateData([letterTemplate]);
 
-      const debug = JSON.stringify(createResult, null, 2);
+      return letterTemplate;
+    };
 
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(response.status(), debug).toBe(201);
+    test('returns 204', async ({ request }) => {
+      const { id: templateId, lockNumber } = await createLetterTemplate();
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(createResult.data.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -170,70 +131,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 400 - cannot delete a submitted template', async ({
       request,
     }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await response.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(response.status(), debug).toBe(201);
-
-      const latest = await orchestrator.send(
-        new SimulatePassedValidation({
-          templateId: createResult.data.id,
-          clientId: user1.clientId,
-          hasTestData: true,
-        })
-      );
+      const { id: templateId, lockNumber } = await createLetterTemplate();
 
       const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(latest.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -246,7 +151,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       ).toBe(200);
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -268,62 +173,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 404 - cannot delete a deleted template', async ({
       request,
     }) => {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-          },
-          [
-            {
-              _type: 'json',
-              partName: 'template',
-            },
-            {
-              _type: 'file',
-              partName: 'letterPdf',
-              fileName: 'template.pdf',
-              fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-            },
-            {
-              _type: 'file',
-              partName: 'testCsv',
-              fileName: 'test-data.csv',
-              fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv.open(),
-            },
-          ]
-        );
-
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
-
-      const createResult = await createResponse.json();
-
-      const debug = JSON.stringify(createResult, null, 2);
-
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: createResult.data.id,
-        clientId: user1.clientId,
-      });
-
-      expect(createResponse.status(), debug).toBe(201);
+      const { id: templateId, lockNumber } = await createLetterTemplate();
 
       const deleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(createResult.data.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
         }
       );
@@ -331,11 +188,11 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
 
       const failedDeleteResponse = await request.delete(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(createResult.data.lockNumber + 1),
+            'X-Lock-Number': String(lockNumber + 1),
           },
         }
       );
