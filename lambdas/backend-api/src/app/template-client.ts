@@ -233,22 +233,22 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    const updateStatusResult =
+    const finaliseUploadResult =
       await this.templateRepository.finaliseLetterUpload(templateDTO.id, user);
 
-    if (updateStatusResult.error) {
+    if (finaliseUploadResult.error) {
       log
-        .child(updateStatusResult.error.errorMeta)
+        .child(finaliseUploadResult.error.errorMeta)
         .error(
           'Failed to save template to the database',
-          updateStatusResult.error.actualError
+          finaliseUploadResult.error.actualError
         );
 
-      return updateStatusResult;
+      return finaliseUploadResult;
     }
 
     const finalTemplateDTO = this.mapDatabaseObjectToDTO(
-      updateStatusResult.data
+      finaliseUploadResult.data
     );
 
     if (!finalTemplateDTO) {
