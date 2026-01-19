@@ -7,7 +7,6 @@ import {
   CreateUpdateTemplate,
   ErrorCase,
   LetterFiles,
-  TemplateStatus,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
@@ -234,18 +233,29 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    // this is not conditional on lock number
-    // maybe this should be named finaliseLetterUpload or something
-    // because generally we would want to assert on lock number when updating
-    const updateTemplateResult = await this.updateTemplateStatus(
-      templateDTO.id,
-      'PENDING_VALIDATION',
-      user
+    const updateStatusResult =
+      await this.templateRepository.finaliseLetterUpload(templateDTO.id, user);
+
+    if (updateStatusResult.error) {
+      log
+        .child(updateStatusResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          updateStatusResult.error.actualError
+        );
+
+      return updateStatusResult;
+    }
+
+    const finalTemplateDTO = this.mapDatabaseObjectToDTO(
+      updateStatusResult.data
     );
 
-    if (updateTemplateResult.error) return updateTemplateResult;
+    if (!finalTemplateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
 
-    return success(updateTemplateResult.data);
+    return success(finalTemplateDTO);
   }
 
   async updateTemplate(
@@ -602,41 +612,6 @@ export class TemplateClient {
     }
 
     return success(proofLetterValidationResult.data);
-  }
-
-  private async updateTemplateStatus(
-    templateId: string,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: User
-  ): Promise<Result<TemplateDto>> {
-    const updateStatusResult = await this.templateRepository.updateStatus(
-      templateId,
-      user,
-      status
-    );
-
-    if (updateStatusResult.error) {
-      this.logger
-        .child({
-          templateId,
-          user,
-          ...updateStatusResult.error.errorMeta,
-        })
-        .error(
-          'Failed to save template to the database',
-          updateStatusResult.error.actualError
-        );
-
-      return updateStatusResult;
-    }
-
-    const templateDTO = this.mapDatabaseObjectToDTO(updateStatusResult.data);
-
-    if (!templateDTO) {
-      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
-    }
-
-    return success(templateDTO);
   }
 
   isCampaignIdValid(

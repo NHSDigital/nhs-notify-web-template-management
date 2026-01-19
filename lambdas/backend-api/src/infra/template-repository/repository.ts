@@ -266,15 +266,14 @@ export class TemplateRepository {
     }
   }
 
-  async updateStatus(
+  async finaliseLetterUpload(
     templateId: string,
-    user: User,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
+    user: User
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string | number> = {
-      ':newStatus': status,
+      ':newStatus': 'PENDING_VALIDATION',
     };
 
     try {

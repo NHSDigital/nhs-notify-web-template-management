@@ -922,7 +922,7 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('updateStatus', () => {
+  describe('finaliseLetterUpload', () => {
     test.each([
       {
         Item: undefined,
@@ -962,10 +962,9 @@ describe('templateRepository', () => {
 
         mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
-        const response = await templateRepository.updateStatus(
+        const response = await templateRepository.finaliseLetterUpload(
           'abc-def-ghi-jkl-123',
-          user,
-          'PENDING_VALIDATION'
+          user
         );
 
         expect(response).toEqual({
@@ -986,10 +985,9 @@ describe('templateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
-      const response = await templateRepository.updateStatus(
+      const response = await templateRepository.finaliseLetterUpload(
         'abc-def-ghi-jkl-123',
-        user,
-        'PENDING_VALIDATION'
+        user
       );
 
       expect(response).toEqual({
@@ -1003,7 +1001,7 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update templateStatus to new status', async () => {
+    test('should update templateStatus to PENDING_VALIDATION', async () => {
       const { templateRepository, mocks } = setup();
       const id = 'abc-def-ghi-jkl-123';
 
@@ -1030,10 +1028,9 @@ describe('templateRepository', () => {
           },
         });
 
-      const response = await templateRepository.updateStatus(
+      const response = await templateRepository.finaliseLetterUpload(
         'abc-def-ghi-jkl-123',
-        user,
-        'PENDING_VALIDATION'
+        user
       );
 
       expect(response).toEqual({

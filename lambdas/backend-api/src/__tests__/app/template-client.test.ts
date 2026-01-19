@@ -400,7 +400,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
         data: finalTemplate,
       });
 
@@ -439,11 +439,9 @@ describe('templateClient', () => {
         csv
       );
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
-        templateId,
-        user,
-        'PENDING_VALIDATION'
-      );
+      expect(
+        mocks.templateRepository.finaliseLetterUpload
+      ).toHaveBeenCalledWith(templateId, user);
     });
 
     const proofingEnabledFieldCases = [
@@ -546,7 +544,7 @@ describe('templateClient', () => {
           data: null,
         });
 
-        mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
           data: finalTemplate,
         });
 
@@ -1075,7 +1073,9 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce(updateErr);
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce(
+        updateErr
+      );
 
       const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
@@ -1096,11 +1096,9 @@ describe('templateClient', () => {
         undefined
       );
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
-        templateId,
-        user,
-        'PENDING_VALIDATION'
-      );
+      expect(
+        mocks.templateRepository.finaliseLetterUpload
+      ).toHaveBeenCalledWith(templateId, user);
     });
 
     test('should return a failure result when final statusUpdate returns an invalid result', async () => {
@@ -1172,7 +1170,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
         data: {
           ...finalTemplate,
           updatedAt: undefined as unknown as string,
