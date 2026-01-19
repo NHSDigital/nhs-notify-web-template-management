@@ -23,6 +23,7 @@ npx esbuild \
     src/delete-routing-config.ts \
     src/get-client.ts \
     src/get-routing-config.ts \
+    src/get-routing-configs-by-template-id.ts \
     src/get.ts \
     src/list-routing-configs.ts \
     src/list.ts \
