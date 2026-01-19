@@ -10,9 +10,11 @@ import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 const title = content.pages.deleteTemplateErrorPage.pageTitle;
 
-export const metadata: Metadata = {
-  title,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title,
+  };
+}
 
 export default async function DeleteTemplateErrorPage(
   props: TemplatePageProps

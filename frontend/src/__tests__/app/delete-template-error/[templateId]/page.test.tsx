@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import DeleteTemplateErrorPage from '@app/delete-template-error/[templateId]/page';
-import { metadata } from '@app/delete-template-error/[templateId]/page';
+import DeleteTemplateErrorPage, {
+  generateMetadata,
+} from '@app/delete-template-error/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { getRoutingConfigReferencesByTemplateId } from '@utils/message-plans';
 import type {
@@ -50,7 +51,9 @@ describe('DeleteTemplateError page', () => {
     jest.clearAllMocks();
   });
 
-  test('has correct page title', () => {
+  test('has correct page title', async () => {
+    const metadata = await generateMetadata();
+
     expect(metadata).toEqual({
       title: 'Delete template error - NHS Notify',
     });
