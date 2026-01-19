@@ -187,6 +187,16 @@ export type LetterProperties = BaseLetterTemplateProperties & {
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
+export type RoutingConfigReference = {
+  id: string;
+  name: string;
+};
+
+export type RoutingConfigReferenceListSuccess = {
+  data: Array<RoutingConfigReference>;
+  statusCode: number;
+};
+
 export type NhsAppProperties = {
   message: string;
   templateType: 'NHS_APP';
@@ -724,6 +734,38 @@ export type PutV1TemplateByTemplateIdResponses = {
 
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to check for routing configuration references
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/routing-configurations';
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsError =
+  GetV1TemplateByTemplateIdRoutingConfigurationsErrors[keyof GetV1TemplateByTemplateIdRoutingConfigurationsErrors];
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigReferenceListSuccess;
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsResponse =
+  GetV1TemplateByTemplateIdRoutingConfigurationsResponses[keyof GetV1TemplateByTemplateIdRoutingConfigurationsResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;

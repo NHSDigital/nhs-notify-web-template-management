@@ -15,6 +15,7 @@ import {
   type CreateRoutingConfig,
   ErrorCase,
   type RoutingConfig,
+  type RoutingConfigReference,
   RoutingConfigStatus,
   type UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
@@ -271,6 +272,44 @@ export class RoutingConfigRepository {
     }
 
     return failure(ErrorCase.INTERNAL, 'Failed to update routing config', err);
+  }
+
+  async getByTemplateId(
+    templateId: string,
+    clientId: string
+  ): Promise<ApplicationResult<RoutingConfigReference[]>> {
+    const query = this.query(clientId).excludeStatus('DELETED');
+
+    const routingConfigsResult = await query.list();
+
+    if (routingConfigsResult.error) {
+      return routingConfigsResult;
+    }
+
+    const routingConfigs = routingConfigsResult.data;
+    const linkedRoutingConfigs = routingConfigs
+      .filter((routingConfig) =>
+        this.doesRoutingConfigReferenceTemplateId(routingConfig, templateId)
+      )
+      .map(({ id, name }) => ({
+        id,
+        name,
+      }));
+
+    return success(linkedRoutingConfigs);
+  }
+
+  private doesRoutingConfigReferenceTemplateId(
+    routingConfig: RoutingConfig,
+    templateId: string
+  ): boolean {
+    return routingConfig.cascade.some(
+      (cascadeItem) =>
+        cascadeItem.defaultTemplateId === templateId ||
+        cascadeItem.conditionalTemplates?.some(
+          (conditionalTemplate) => conditionalTemplate.templateId === templateId
+        )
+    );
   }
 
   private clientOwnerKey(clientId: string) {

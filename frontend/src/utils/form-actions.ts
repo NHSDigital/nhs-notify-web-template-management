@@ -127,6 +127,13 @@ export async function setTemplateToDeleted(
 
   if (error) {
     logger.error('Failed to save template', error);
+
+    if (
+      error.errorMeta?.description?.includes('linked to active message plans')
+    ) {
+      throw new Error('TEMPLATE_IN_USE');
+    }
+
     throw new Error('Failed to save template data');
   }
 }

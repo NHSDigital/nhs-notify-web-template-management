@@ -697,6 +697,40 @@
         ],
         "type": "object"
       },
+      "RoutingConfigReference": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "RoutingConfigReferenceListSuccess": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RoutingConfigReference"
+            },
+            "type": "array"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "RoutingConfigStatus": {
         "anyOf": [
           {
@@ -1927,6 +1961,71 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_PROOF_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template/{templateId}/routing-configurations": {
+      "get": {
+        "description": "Get all routing configurations that reference a specific template",
+        "parameters": [
+          {
+            "description": "ID of template to check for routing configuration references",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoutingConfigReferenceListSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get routing configurations using a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_ROUTING_CONFIGS_BY_TEMPLATE_ID_LAMBDA_ARN}/invocations"
         }
       }
     },

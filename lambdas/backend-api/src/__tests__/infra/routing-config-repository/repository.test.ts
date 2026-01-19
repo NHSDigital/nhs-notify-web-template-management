@@ -2,13 +2,18 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  QueryCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ZodError } from 'zod';
 import { RoutingConfigRepository } from '../../../infra/routing-config-repository';
-import { routingConfig } from '../../fixtures/routing-config';
+import {
+  routingConfig,
+  makeRoutingConfig,
+} from '../../fixtures/routing-config';
 import {
   CreateRoutingConfig,
   RoutingConfig,
@@ -46,7 +51,9 @@ function setup() {
   const mocks = { dynamo };
 
   const repo = new RoutingConfigRepository(
-    dynamo as unknown as DynamoDBDocumentClient,
+    // pass an actual doc client - it gets intercepted by mockClient,
+    // but paginateQuery needs the real deal
+    DynamoDBDocumentClient.from(new DynamoDBClient({})),
     TABLE_NAME
   );
 
@@ -54,6 +61,10 @@ function setup() {
 }
 
 describe('RoutingConfigRepository', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('get', () => {
     test('returns the routing config data from the database', async () => {
       const { repo, mocks } = setup();
@@ -1171,6 +1182,173 @@ describe('RoutingConfigRepository', () => {
           },
         },
       });
+    });
+  });
+
+  describe('getByTemplateId', () => {
+    const templateId = 'd4e5f6a7-b8c9-40d1-ef23-456789abcdef';
+
+    it('should return empty array when no routing configs reference the template ID', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithoutTemplate = makeRoutingConfig({
+        cascade: [
+          {
+            channel: 'EMAIL',
+            channelType: 'primary',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: 'c9b6d56b-421e-462f-9ce5-3012e3fdb27f', // different template
+          },
+        ],
+      });
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [routingConfigWithoutTemplate],
+      });
+
+      const result = await repo.getByTemplateId(templateId, user.clientId);
+
+      expect(result.data).toEqual([]);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should return routing config that references the template in defaultTemplateId', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithTemplate = makeRoutingConfig({
+        id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+        name: 'Message Plan 1',
+        cascade: [
+          {
+            channel: 'EMAIL',
+            channelType: 'primary',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [routingConfigWithTemplate],
+      });
+
+      const result = await repo.getByTemplateId(templateId, user.clientId);
+
+      expect(result.data).toEqual([
+        {
+          id: routingConfigWithTemplate.id,
+          name: routingConfigWithTemplate.name,
+        },
+      ]);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should return routing config that references the template in conditionalTemplates', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithConditionalTemplate = makeRoutingConfig({
+        id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10',
+        name: 'Message Plan 2',
+        cascade: [
+          {
+            channel: 'LETTER',
+            channelType: 'primary',
+            cascadeGroups: ['standard', 'translations'],
+            defaultTemplateId: 'c9b6d56b-421e-462f-9ce5-3012e3fdb27f', // different template
+            conditionalTemplates: [
+              {
+                language: 'fr',
+                templateId,
+              },
+            ],
+          },
+        ],
+      });
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [routingConfigWithConditionalTemplate],
+      });
+
+      const result = await repo.getByTemplateId(templateId, user.clientId);
+
+      expect(result.data).toEqual([
+        {
+          id: routingConfigWithConditionalTemplate.id,
+          name: routingConfigWithConditionalTemplate.name,
+        },
+      ]);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should return multiple routing configs that reference the template', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfig1 = makeRoutingConfig({
+        id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+        name: 'Message Plan 1',
+        cascade: [
+          {
+            channel: 'EMAIL',
+            channelType: 'primary',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      const routingConfig2 = makeRoutingConfig({
+        id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10',
+        name: 'Message Plan 2',
+        cascade: [
+          {
+            channel: 'SMS',
+            channelType: 'primary',
+            cascadeGroups: ['standard'],
+            defaultTemplateId: 'e5f6a7b8-c9d0-41e2-f012-3456789abcde',
+          },
+        ],
+      });
+
+      const routingConfig3 = makeRoutingConfig({
+        id: 'b0e46ece-4a3b-47bd-8781-f986b42a5a15',
+        name: 'Message Plan 3',
+        cascade: [
+          {
+            channel: 'LETTER',
+            channelType: 'primary',
+            cascadeGroups: ['standard'],
+            conditionalTemplates: [{ language: 'es', templateId: templateId }],
+          },
+        ],
+      });
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [routingConfig1, routingConfig2, routingConfig3],
+      });
+
+      const result = await repo.getByTemplateId(templateId, user.clientId);
+
+      expect(result.data).toEqual([
+        { id: routingConfig1.id, name: routingConfig1.name },
+        { id: routingConfig3.id, name: routingConfig3.name },
+      ]);
+      expect(result.data).not.toContainEqual({
+        id: routingConfig2.id,
+        name: routingConfig2.name,
+      });
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should return error when query fails', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(QueryCommand).rejectsOnce(new Error('DynamoDB error'));
+
+      const result = await repo.getByTemplateId(templateId, user.clientId);
+
+      expect(result.error).toBeDefined();
+      expect(result.error?.errorMeta.code).toBe(500);
+      expect(result.data).toBeUndefined();
     });
   });
 });

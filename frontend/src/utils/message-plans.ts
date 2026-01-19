@@ -3,6 +3,7 @@
 import {
   $RoutingConfig,
   CreateRoutingConfig,
+  RoutingConfigReference,
   RoutingConfig,
   RoutingConfigStatusActive,
   UpdateRoutingConfig,
@@ -196,4 +197,31 @@ export async function getTemplatesByIds(
   }
 
   return templates;
+}
+
+/**
+ * Gets all routing config references that link to a specific template.
+ * Used to display which message plans are blocking template deletion.
+ */
+export async function getRoutingConfigReferencesByTemplateId(
+  templateId: string
+): Promise<RoutingConfigReference[]> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } =
+    await routingConfigurationApiClient.getRoutingConfigsByTemplateId(
+      templateId,
+      accessToken
+    );
+
+  if (error) {
+    logger.error('Failed to get routing config references for template', error);
+    throw new Error('Failed to get routing config references');
+  }
+
+  return data;
 }

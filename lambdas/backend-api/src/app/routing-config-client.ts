@@ -6,6 +6,7 @@ import {
   $UpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
+  type RoutingConfigReference,
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
@@ -246,5 +247,15 @@ export class RoutingConfigClient {
     }
 
     return query.count();
+  }
+
+  async getRoutingConfigsByTemplateId(
+    user: User,
+    templateId: string
+  ): Promise<Result<RoutingConfigReference[]>> {
+    return this.routingConfigRepository.getByTemplateId(
+      templateId,
+      user.clientId
+    );
   }
 }

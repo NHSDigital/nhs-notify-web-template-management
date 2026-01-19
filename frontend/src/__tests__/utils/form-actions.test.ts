@@ -21,14 +21,23 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { LETTER_TEMPLATE } from '@testhelpers/helpers';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
+const loggerMock = jest.mocked(logger);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
 jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
-jest.mock('nhs-notify-web-template-management-utils/logger');
+jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
+  logger: {
+    error: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+  },
+}));
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -698,13 +707,15 @@ describe('form-actions', () => {
     });
 
     test('deleteTemplate - should throw error when saving unexpectedly fails', async () => {
-      mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
-        error: {
-          errorMeta: {
-            code: 400,
-            description: 'Bad request',
-          },
+      const error = {
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
         },
+      };
+
+      mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
+        error,
       });
 
       await expect(setTemplateToDeleted('id', 0)).rejects.toThrow(
@@ -715,6 +726,40 @@ describe('form-actions', () => {
         'id',
         'token',
         0
+      );
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to save template',
+        error
+      );
+    });
+
+    test('deleteTemplate - should throw TEMPLATE_IN_USE error when template is linked to message plans', async () => {
+      const error = {
+        errorMeta: {
+          code: 400,
+          description:
+            'Template is linked to active message plans and cannot be deleted',
+        },
+      };
+
+      mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
+        error,
+      });
+
+      await expect(setTemplateToDeleted('template-id', 0)).rejects.toThrow(
+        'TEMPLATE_IN_USE'
+      );
+
+      expect(mockedTemplateClient.deleteTemplate).toHaveBeenCalledWith(
+        'template-id',
+        'token',
+        0
+      );
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to save template',
+        error
       );
     });
 

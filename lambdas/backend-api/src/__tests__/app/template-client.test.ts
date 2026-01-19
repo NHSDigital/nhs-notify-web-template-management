@@ -15,6 +15,7 @@ import { ProofingQueue } from '../../infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
+import { RoutingConfigRepository } from '../../infra/routing-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
@@ -37,6 +38,8 @@ const setup = () => {
 
   const clientConfigRepository = mock<ClientConfigRepository>();
 
+  const routingConfigRepository = mock<RoutingConfigRepository>();
+
   const { logger, logMessages } = createMockLogger();
 
   const templateClient = new TemplateClient(
@@ -45,6 +48,7 @@ const setup = () => {
     queueMock,
     defaultLetterSupplier,
     clientConfigRepository,
+    routingConfigRepository,
     logger
   );
 
@@ -68,6 +72,7 @@ const setup = () => {
       queueMock,
       logger,
       clientConfigRepository,
+      routingConfigRepository,
       isRightToLeftMock,
       queryMock,
     },
@@ -1328,9 +1333,8 @@ describe('templateClient', () => {
           expect(result).toEqual({
             error: expect.objectContaining({
               errorMeta: {
-                code: 409,
-                description:
-                  'Lock number mismatch - Template has been modified since last read',
+                code: 400,
+                description: 'Invalid lock number provided',
               },
             }),
           });
@@ -1729,9 +1733,8 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Template has been modified since last read',
+            code: 400,
+            description: 'Invalid lock number provided',
           },
         },
       });
@@ -1854,9 +1857,8 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Template has been modified since last read',
+            code: 400,
+            description: 'Invalid lock number provided',
           },
         },
       });
@@ -2227,14 +2229,22 @@ describe('templateClient', () => {
   });
 
   describe('deleteTemplate', () => {
-    test('should return nothing when successful', async () => {
+    test('should return nothing when successful (and no routing configs linked)', async () => {
       const { templateClient, mocks } = setup();
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        data: [],
+      });
 
       mocks.templateRepository.delete.mockResolvedValueOnce({
         data: null,
       });
 
       const result = await templateClient.deleteTemplate(templateId, user, 1);
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
@@ -2244,6 +2254,104 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: undefined,
+      });
+    });
+
+    test('should return TEMPLATE_IN_USE error when routing configs reference the template', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        data: [
+          {
+            id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+            name: 'Message Plan 1',
+          },
+          {
+            id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10',
+            name: 'Message Plan 2',
+          },
+        ],
+      });
+
+      const result = await templateClient.deleteTemplate(templateId, user, 1);
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
+
+      expect(mocks.templateRepository.delete).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: {
+            code: 400,
+            description:
+              'Template is linked to active message plans and cannot be deleted',
+          },
+        }),
+      });
+
+      expect(logMessages).toContainEqual({
+        level: 'error',
+        message: 'Template is linked to routing configs',
+        routingConfigs: [
+          {
+            id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+            name: 'Message Plan 1',
+          },
+          {
+            id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10',
+            name: 'Message Plan 2',
+          },
+        ],
+        templateId,
+        timestamp: expect.stringMatching(isoDateRegExp),
+        user,
+      });
+    });
+
+    test('should return error when routing config reference check fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const actualError = new Error('Database error');
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get routing configs by template',
+          },
+          actualError,
+        },
+      });
+
+      const result = await templateClient.deleteTemplate(templateId, user, 1);
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
+
+      expect(mocks.templateRepository.delete).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get routing configs by template',
+          },
+          actualError,
+        },
+      });
+
+      expect(logMessages).toContainEqual({
+        code: 500,
+        description: 'Failed to get routing configs by template',
+        level: 'error',
+        message: 'Failed to check routing config links Database error',
+        stack: expect.any(String),
+        templateId,
+        timestamp: expect.stringMatching(isoDateRegExp),
+        user,
       });
     });
 
@@ -2270,9 +2378,8 @@ describe('templateClient', () => {
           expect(result).toEqual({
             error: expect.objectContaining({
               errorMeta: {
-                code: 409,
-                description:
-                  'Lock number mismatch - Template has been modified since last read',
+                code: 400,
+                description: 'Invalid lock number provided',
               },
             }),
           });
@@ -2282,11 +2389,19 @@ describe('templateClient', () => {
       test('coerces stringified lock number to number', async () => {
         const { templateClient, mocks } = setup();
 
+        mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+          data: [],
+        });
+
         mocks.templateRepository.delete.mockResolvedValueOnce({
           data: null,
         });
 
         await templateClient.deleteTemplate(templateId, user, '10');
+
+        expect(
+          mocks.routingConfigRepository.getByTemplateId
+        ).toHaveBeenCalledWith(templateId, user.clientId);
 
         expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
           templateId,
@@ -2299,6 +2414,10 @@ describe('templateClient', () => {
     test('deleteTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        data: [],
+      });
+
       mocks.templateRepository.delete.mockResolvedValueOnce({
         error: {
           errorMeta: {
@@ -2309,6 +2428,10 @@ describe('templateClient', () => {
       });
 
       const result = await templateClient.deleteTemplate(templateId, user, 1);
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,

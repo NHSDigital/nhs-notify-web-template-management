@@ -1009,4 +1009,93 @@ describe('RoutingConfigClient', () => {
       });
     });
   });
+
+  describe('getRoutingConfigsByTemplateId', () => {
+    test('returns routing config references', async () => {
+      const { client, mocks } = setup();
+      const templateId = 'template-123';
+
+      const references = [
+        {
+          id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+          name: 'Message Plan 1',
+        },
+        {
+          id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10',
+          name: 'Message Plan 2',
+        },
+      ];
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        data: references,
+      });
+
+      const result = await client.getRoutingConfigsByTemplateId(
+        user,
+        templateId
+      );
+
+      expect(result).toEqual({
+        data: references,
+      });
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
+    });
+
+    test('returns empty array when no routing configs reference the template', async () => {
+      const { client, mocks } = setup();
+      const templateId = 'template-123';
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        data: [],
+      });
+
+      const result = await client.getRoutingConfigsByTemplateId(
+        user,
+        templateId
+      );
+
+      expect(result).toEqual({ data: [] });
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
+    });
+
+    test('returns errors', async () => {
+      const { client, mocks } = setup();
+      const templateId = 'template-123';
+
+      mocks.routingConfigRepository.getByTemplateId.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get routing configs by template',
+          },
+          actualError: new Error('Database error'),
+        },
+      });
+
+      const result = await client.getRoutingConfigsByTemplateId(
+        user,
+        templateId
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get routing configs by template',
+          },
+          actualError: new Error('Database error'),
+        },
+      });
+
+      expect(
+        mocks.routingConfigRepository.getByTemplateId
+      ).toHaveBeenCalledWith(templateId, user.clientId);
+    });
+  });
 });

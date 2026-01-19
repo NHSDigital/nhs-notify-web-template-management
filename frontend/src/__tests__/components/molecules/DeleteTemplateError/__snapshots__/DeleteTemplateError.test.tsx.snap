@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteTemplateError component matches snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+      data-testid="page-content-wrapper"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1
+          class="nhsuk-heading-l"
+          data-testid="page-heading"
+        >
+          You cannot delete the template 'Test Template'
+        </h1>
+        <p>
+          The template is linked to these message plans:
+        </p>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+          data-testid="message-plan-list"
+        >
+          <li>
+            Flu Campaign
+          </li>
+          <li>
+            Covid Campaign
+          </li>
+        </ul>
+        <p>
+          You need to unlink it from each message plan before you can delete it.
+        </p>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Go back
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

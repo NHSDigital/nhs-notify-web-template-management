@@ -9,6 +9,7 @@ import { loadConfig } from '../infra/config';
 import { ClientConfigRepository } from '../infra/client-config-repository';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
+import { RoutingConfigRepository } from '../infra/routing-config-repository';
 import { TemplateClient } from '../app/template-client';
 
 const awsConfig = { region: 'eu-west-2' };
@@ -48,12 +49,18 @@ export const templatesContainer = () => {
     new NodeCache({ stdTTL: config.clientConfigTtlSeconds })
   );
 
+  const routingConfigRepository = new RoutingConfigRepository(
+    ddbDocClient,
+    config.routingConfigTableName
+  );
+
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
     proofingQueue,
     config.defaultLetterSupplier,
     clientConfigRepository,
+    routingConfigRepository,
     logger
   );
 

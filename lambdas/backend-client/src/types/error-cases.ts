@@ -9,4 +9,5 @@ export enum ErrorCase {
   CANNOT_SUBMIT = 400,
   FEATURE_DISABLED = 403,
   CONFLICT = 409,
+  TEMPLATE_IN_USE = 400,
 }
