@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@hey-api/openapi-ts": "^0.64.13",
+    "@hey-api/openapi-ts": "^0.90.4",
     "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
     "zod": "^4.0.17"
