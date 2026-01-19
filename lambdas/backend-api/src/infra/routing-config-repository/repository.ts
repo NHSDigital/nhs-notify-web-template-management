@@ -13,6 +13,7 @@ import {
 } from '@backend-api/utils/result';
 import {
   $RoutingConfig,
+  CascadeItem,
   type CreateRoutingConfig,
   ErrorCase,
   type RoutingConfig,
@@ -85,8 +86,7 @@ export class RoutingConfigRepository {
     id: string,
     updateData: UpdateRoutingConfig,
     user: User,
-    lockNumber: number,
-    templateIds: string[]
+    lockNumber: number
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -115,6 +115,8 @@ export class RoutingConfigRepository {
       .expectStatus('DRAFT')
       .expectLockNumber(lockNumber)
       .incrementLockNumber();
+
+    const templateIds = this.extractTemplateIds(updateData.cascade);
 
     try {
       await this.client.send(
@@ -350,5 +352,14 @@ export class RoutingConfigRepository {
 
   private internalUserKey(user: User) {
     return `INTERNAL_USER#${user.internalUserId}`;
+  }
+
+  private extractTemplateIds(items: CascadeItem[] = []) {
+    return items
+      .flatMap((r) => [
+        r.defaultTemplateId,
+        ...(r.conditionalTemplates?.map((a) => a.templateId) ?? []),
+      ])
+      .filter((id): id is string => id != null);
   }
 }

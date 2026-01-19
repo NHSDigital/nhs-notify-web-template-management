@@ -646,7 +646,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -689,6 +689,16 @@ describe('RoutingConfigRepository', () => {
                 'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
         ],
       });
 
@@ -716,7 +726,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -780,7 +790,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -852,9 +862,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, [
-        'c003b4f1-d788-423d-a948-0df511d07a23',
-      ]);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -915,6 +923,135 @@ describe('RoutingConfigRepository', () => {
       });
     });
 
+    test('partial update - cascade with conditional templates', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascade: [
+          {
+            cascadeGroups: ['translations'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'default-template-id',
+            conditionalTemplates: [
+              { templateId: 'conditional-template-1', language: 'ar' },
+              { templateId: 'conditional-template-2', language: 'zh' },
+            ],
+          },
+          {
+            cascadeGroups: ['accessible'],
+            channel: 'EMAIL',
+            channelType: 'secondary',
+            conditionalTemplates: [
+              { templateId: 'accessible-template-1', accessibleFormat: 'x1' },
+            ],
+          },
+        ],
+        cascadeGroupOverrides: [
+          { name: 'translations', language: ['ar', 'zh'] },
+          { name: 'accessible', accessibleFormat: ['x1'] },
+        ],
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
+
+      const result = await repo.update(routingConfig.id, update, user, 2);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#cascade': 'cascade',
+                '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+                '#lockNumber': 'lockNumber',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':cascade': update.cascade,
+                ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'default-template-id',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'conditional-template-1',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'conditional-template-2',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'accessible-template-1',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
+      });
+    });
+
     test('partial update - does not set cascade without cascadeGroupOverrides', async () => {
       const { repo, mocks } = setup();
 
@@ -938,7 +1075,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -975,6 +1112,16 @@ describe('RoutingConfigRepository', () => {
                 'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'c003b4f1-d788-423d-a948-0df511d07a23',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
         ],
       });
 
@@ -1003,7 +1150,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
@@ -1066,7 +1213,7 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: routingConfig });
 
-      const result = await repo.update(routingConfig.id, update, user, 2, []);
+      const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: routingConfig });
 
@@ -1109,6 +1256,16 @@ describe('RoutingConfigRepository', () => {
                 'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
         ],
       });
 
@@ -1137,8 +1294,7 @@ describe('RoutingConfigRepository', () => {
           campaignId: routingConfig.campaignId,
         },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1172,8 +1328,7 @@ describe('RoutingConfigRepository', () => {
           campaignId: routingConfig.campaignId,
         },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1217,8 +1372,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1251,8 +1405,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1285,8 +1438,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1323,8 +1475,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1359,10 +1510,20 @@ describe('RoutingConfigRepository', () => {
 
       const result = await repo.update(
         routingConfig.id,
-        { name: 'new-name' },
+        {
+          name: 'new-name',
+          cascade: [
+            {
+              cascadeGroups: ['standard'],
+              channel: 'SMS',
+              channelType: 'primary',
+              defaultTemplateId: 'template1',
+            },
+          ],
+          cascadeGroupOverrides: [],
+        },
         user,
-        2,
-        ['template1', 'template2']
+        2
       );
 
       expect(result).toEqual({
@@ -1371,7 +1532,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 400,
             description: 'Some templates not found',
-            details: { templateIds: 'template1,template2' },
+            details: { templateIds: 'template1' },
           },
         },
       });
@@ -1389,8 +1550,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
@@ -1419,8 +1579,7 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2,
-        []
+        2
       );
 
       expect(result).toEqual({
