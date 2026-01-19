@@ -1,24 +1,24 @@
+import { randomUUID } from 'node:crypto';
+import { Channel } from 'nhs-notify-backend-client';
 import { test, expect } from '@playwright/test';
-import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
-import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
-import {
-  assertFooterLinks,
-  assertSignOutLink,
-  assertHeaderLogoLink,
-  assertSkipToMainContent,
-  assertNoBackLinks,
-  assertBackLinkTop,
-  assertBackLinkBottom,
-} from '../helpers/template-mgmt-common.steps';
-import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
   createAuthHelper,
   TestUser,
   testUsers,
 } from 'helpers/auth/cognito-auth-helper';
+import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
-import { randomUUID } from 'node:crypto';
+import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
+import {
+  assertFooterLinks,
+  assertSignOutLink,
+  assertHeaderLogoLink,
+  assertSkipToMainContent,
+  assertBackLinkTop,
+  assertBackLinkBottom,
+} from 'helpers/template-mgmt-common.steps';
+import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -182,19 +182,159 @@ test.describe('Routing - Preview Message Plan page', () => {
 
     await previewMessagePlanPage.loadPage();
 
-    test.step('shows message plan details', () => {
-      expect(previewMessagePlanPage.pageHeading).toHaveText(dbEntry.name);
-
-      // TODO: CCM-12038 - id, campaign id, status
+    await test.step('shows message plan details', async () => {
+      await expect(previewMessagePlanPage.pageHeading).toHaveText(dbEntry.name);
+      await expect(previewMessagePlanPage.messagePlanId).toHaveText(dbEntry.id);
+      await expect(previewMessagePlanPage.campaignId).toHaveText(
+        dbEntry.campaignId
+      );
+      await expect(previewMessagePlanPage.status).toHaveText('Production');
     });
 
-    test.step('has link to copy the message plan', () => {
-      expect(previewMessagePlanPage.copyLink).toHaveAttribute(
+    await test.step('has link to copy the message plan', async () => {
+      await expect(previewMessagePlanPage.copyLink).toHaveAttribute(
         'href',
         `/message-plans/copy-message-plan/${dbEntry.id}`
       );
     });
 
-    // TODO: CCM-12038 - assert on each part of the cascade
+    await test.step('opens and closes all details sections', async () => {
+      for (const section of await previewMessagePlanPage.detailsSections.all()) {
+        await expect(section).not.toHaveAttribute('open');
+      }
+
+      await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
+        'Open all template previews'
+      );
+
+      await previewMessagePlanPage.previewToggleButton.click();
+
+      for (const section of await previewMessagePlanPage.detailsSections.all()) {
+        await expect(section).toHaveAttribute('open');
+      }
+
+      await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
+        'Close all template previews'
+      );
+
+      await previewMessagePlanPage.previewToggleButton.click();
+
+      for (const section of await previewMessagePlanPage.detailsSections.all()) {
+        await expect(section).not.toHaveAttribute('open');
+      }
+
+      await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
+        'Open all template previews'
+      );
+    });
+
+    for (const [index, channel] of (
+      ['NHSAPP', 'EMAIL', 'SMS'] satisfies Channel[]
+    ).entries()) {
+      await test.step(`renders ${channel} template preview and fallback blocks`, async () => {
+        const templateBlock =
+          await previewMessagePlanPage.getTemplateBlock(channel);
+
+        await expect(templateBlock.number).toHaveText(`${index + 1}`);
+        await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
+          templates[channel].name
+        );
+
+        await expect(
+          templateBlock.defaultTemplateCard.previewTemplateText
+        ).toBeHidden();
+
+        await templateBlock.defaultTemplateCard.previewTemplateSummary.click();
+
+        await expect(
+          templateBlock.defaultTemplateCard.previewTemplateText
+        ).toBeVisible();
+
+        await expect(
+          templateBlock.defaultTemplateCard.previewTemplateText
+        ).toHaveText(templates[channel].message as string);
+
+        await expect(
+          previewMessagePlanPage.getFallbackBlock(channel)
+        ).toBeVisible();
+      });
+    }
+
+    await test.step('for LETTER channel renders template links for default and accessible templates along with conditional template fallback conditions', async () => {
+      const templateBlock =
+        await previewMessagePlanPage.getTemplateBlock('LETTER');
+
+      await expect(templateBlock.number).toHaveText('4');
+
+      await expect(
+        templateBlock.defaultTemplateCard.previewTemplateSummary
+      ).toBeHidden();
+
+      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+        templates.LETTER.name
+      );
+      await expect(
+        templateBlock.defaultTemplateCard.templateLink
+      ).toHaveAttribute(
+        'href',
+        `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
+      );
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('x1').templateLink
+      ).toHaveText(templates.LARGE_PRINT_LETTER.name);
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('x1').templateLink
+      ).toHaveAttribute(
+        'href',
+        `/templates/preview-submitted-letter-template/${templates.LARGE_PRINT_LETTER.id}`
+      );
+
+      for (const [index, language] of (
+        ['FRENCH_LETTER', 'SPANISH_LETTER'] satisfies (keyof ReturnType<
+          typeof createTemplates
+        >)[]
+      ).entries()) {
+        const links = await templateBlock.getLanguagesCard().templateLink.all();
+        await expect(links[index]).toHaveText(templates[language].name);
+
+        await expect(links[index]).toHaveAttribute(
+          'href',
+          `/templates/preview-submitted-letter-template/${templates[language].id}`
+        );
+      }
+    });
+  });
+
+  test('letter only with no conditional templates', async ({ page }) => {
+    const { dbEntry } = RoutingConfigFactory.createWithChannels(
+      user,
+      ['LETTER'],
+      { status: 'COMPLETED' }
+    ).addTemplate('LETTER', templates.LETTER.id);
+
+    await routingConfigStorageHelper.seed([dbEntry]);
+
+    const previewMessagePlanPage = new RoutingPreviewMessagePlanPage(
+      page
+    ).setPathParam('messagePlanId', dbEntry.id);
+
+    await previewMessagePlanPage.loadPage();
+
+    await test.step('does not render the open/close preview button', async () => {
+      await expect(previewMessagePlanPage.previewToggleButton).toBeHidden();
+    });
+
+    await test.step('does not render sections for conditional templates', async () => {
+      const templateBlock =
+        await previewMessagePlanPage.getTemplateBlock('LETTER');
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('x1').locator
+      ).toBeHidden();
+
+      await expect(templateBlock.getLanguagesCard().locator).toBeHidden();
+    });
   });
 });

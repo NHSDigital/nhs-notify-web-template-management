@@ -40,8 +40,6 @@ exports[`full cascade plan matches snapshot 1`] = `
           <p>
             <a
               href="/message-plans/copy-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267"
-              rel="noopener noreferrer"
-              target="_blank"
             >
               Copy this message plan into draft
             </a>

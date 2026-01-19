@@ -93,7 +93,6 @@ export default async function PreviewMessagePlanPage({
             <span className='nhsuk-caption-l'>{pageContent.headerCaption}</span>
             <h1 className='nhsuk-heading-l'>{messagePlan.name}</h1>
             <NHSNotifyWarningCallout data-testid='warning-callout'>
-              {/* TODO: CCM-12038 - link shouldn't open in new tab */}
               <ContentRenderer
                 content={pageContent.warningCallout}
                 variables={{ routingConfigId }}

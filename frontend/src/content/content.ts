@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -1462,6 +1463,11 @@ const previewMessagePlan = {
     {
       type: 'text',
       text: '[Copy this message plan into draft](/message-plans/copy-message-plan/{{routingConfigId}}) to create a new one with the same messages.',
+      overrides: {
+        a: {
+          component: Link,
+        },
+      },
     },
   ] satisfies ContentBlock[],
   languageFormatsCardHeading: 'Other language letters (optional)',
