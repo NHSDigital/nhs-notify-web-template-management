@@ -1,121 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubmitLetterTemplate component should render with client proofing and routing enabled 1`] = `
-<DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-two-thirds"
-      >
-        <h1>
-          Approve 'template-name'
-        </h1>
-        <p
-          class="nhsuk-body-l"
-        >
-          When you approve your template proof, your template will be ready to add to a message plan.
-        </p>
-        <h2
-          class="nhsuk-heading-s"
-        >
-          Before you approve this template proof
-        </h2>
-        <p>
-          Check that your template proof:
-        </p>
-        <ul
-          class="nhsuk-list nhsuk-list--bullet"
-        >
-          <li>
-            looks exactly as you expect your recipient to get it
-          </li>
-          <li>
-            uses personalisation as you expect
-          </li>
-          <li>
-            shows QR codes correctly (if used)
-          </li>
-        </ul>
-        <div
-          class="nhsuk-warning-callout"
-        >
-          <h2
-            class="nhsuk-warning-callout__label"
-          >
-            <span
-              role="text"
-            >
-              <span
-                class="nhsuk-u-visually-hidden"
-              >
-                Important: 
-              </span>
-              Important
-            </span>
-          </h2>
-          <p>
-            You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.
-          </p>
-        </div>
-        <form
-          action="/action"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="submit-template-form"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <input
-            name="templateId"
-            readonly=""
-            type="hidden"
-            value="template-id"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="1234"
-          />
-          <button
-            aria-disabled="false"
-            class="nhsuk-button nhsuk-u-margin-right-3"
-            id="submit-template-button"
-            type="submit"
-          >
-            Approve template proof
-          </button>
-          <a
-            aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
-            data-testid="back-link-bottom"
-            draggable="false"
-            href="/templates/preview-letter-template/template-id"
-            role="button"
-          >
-            Go back
-          </a>
-        </form>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`SubmitLetterTemplate component should render with client proofing disabled 1`] = `
+exports[`SubmitLetterTemplate component should render with client proofing and routing disabled 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -236,6 +121,122 @@ exports[`SubmitLetterTemplate component should render with client proofing disab
 </DocumentFragment>
 `;
 
+exports[`SubmitLetterTemplate component should render with client proofing and routing enabled 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1>
+          Approve 'template-name'
+        </h1>
+        <p
+          class="nhsuk-body-l"
+        >
+          When you approve your template proof, your template will be ready to add to a message plan.
+        </p>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          Before you approve this template proof
+        </h2>
+        <p>
+          Check that your template proof:
+        </p>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
+          <li>
+            looks exactly as you expect your recipient to get it
+          </li>
+          <li>
+            uses personalisation as you expect
+          </li>
+          <li>
+            shows QR codes correctly (if used)
+          </li>
+        </ul>
+        <div
+          class="nhsuk-warning-callout"
+        >
+          <h2
+            class="nhsuk-warning-callout__label"
+          >
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h2>
+          <p>
+            You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.
+          </p>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="submit-template-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="1234"
+          />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-u-margin-right-3"
+            id="submit-template-button"
+            type="submit"
+          >
+            Approve template proof
+          </button>
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button-background-button"
+            data-testid="back-link-bottom"
+            draggable="false"
+            href="/templates/preview-letter-template/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`SubmitLetterTemplate component should render with client proofing enabled 1`] = `
 <DocumentFragment>
   <main
@@ -337,6 +338,7 @@ exports[`SubmitLetterTemplate component should render with client proofing enabl
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button-background-button"
+            data-testid="back-link-bottom"
             draggable="false"
             href="/templates/preview-letter-template/template-id"
             id="go-back-button"

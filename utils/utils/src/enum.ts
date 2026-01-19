@@ -143,7 +143,7 @@ export const statusToColourMapping = (
     VALIDATION_FAILED: 'red',
     WAITING_FOR_PROOF: 'yellow',
     PROOF_AVAILABLE: 'orange',
-    PROOF_APPROVED: 'orange',
+    PROOF_APPROVED: 'green',
   };
 
   return colourMappings[template.templateStatus];
