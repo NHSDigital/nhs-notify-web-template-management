@@ -761,6 +761,13 @@ describe('form-actions', () => {
         'Failed to save template',
         error
       );
+
+      expect(loggerMock.info).toHaveBeenCalledWith(
+        'Template is in use, redirecting to error page',
+        {
+          templateId: 'template-id',
+        }
+      );
     });
 
     test('deleteTemplate - should throw error when no token', async () => {

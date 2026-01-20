@@ -131,6 +131,9 @@ export async function setTemplateToDeleted(
     if (
       error.errorMeta?.description?.includes('linked to active message plans')
     ) {
+      logger.info('Template is in use, redirecting to error page', {
+        templateId,
+      });
       throw new Error('TEMPLATE_IN_USE');
     }
 
