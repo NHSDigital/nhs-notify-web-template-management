@@ -39,6 +39,7 @@ export default async function ChooseLargePrintLetterTemplate(
       templateType: 'LETTER',
       language: 'en',
       letterType: 'x1',
+      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     }),
   ]);
 
