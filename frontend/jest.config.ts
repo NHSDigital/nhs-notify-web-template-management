@@ -42,6 +42,8 @@ const config: Config = {
   },
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  maxConcurrency: 3,
+  maxWorkers: 3,
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -12,7 +12,7 @@ import {
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 export type ChooseChannelTemplateFormState = FormState &
-  Omit<ChooseChannelTemplateProps, 'lockNumber'>;
+  Omit<ChooseChannelTemplateProps, 'lockNumber' | 'noTemplatesText'>;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>
   z.object({
