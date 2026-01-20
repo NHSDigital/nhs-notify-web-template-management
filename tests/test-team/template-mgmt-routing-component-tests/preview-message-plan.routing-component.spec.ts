@@ -194,7 +194,7 @@ test.describe('Routing - Preview Message Plan page', () => {
     await test.step('has link to copy the message plan', async () => {
       await expect(previewMessagePlanPage.copyLink).toHaveAttribute(
         'href',
-        `/message-plans/copy-message-plan/${dbEntry.id}`
+        `/templates/message-plans/copy-message-plan/${dbEntry.id}`
       );
     });
 

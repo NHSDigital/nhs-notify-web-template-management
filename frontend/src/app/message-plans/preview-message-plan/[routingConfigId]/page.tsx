@@ -102,7 +102,7 @@ export default async function PreviewMessagePlanPage({
             <NHSNotifySummaryList data-testid='message-plan-details'>
               <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>
-                  Routing Plan ID
+                  {pageContent.summaryTable.idKey}
                 </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue
                   className='monospace-font'
@@ -113,7 +113,9 @@ export default async function PreviewMessagePlanPage({
               </NHSNotifySummaryListRow>
 
               <NHSNotifySummaryListRow>
-                <NHSNotifySummaryListKey>Campaign</NHSNotifySummaryListKey>
+                <NHSNotifySummaryListKey>
+                  {pageContent.summaryTable.campaignIdKey}
+                </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue
                   className='monospace-font'
                   data-testid='campaign-id'
@@ -123,7 +125,9 @@ export default async function PreviewMessagePlanPage({
               </NHSNotifySummaryListRow>
 
               <NHSNotifySummaryListRow>
-                <NHSNotifySummaryListKey>Status</NHSNotifySummaryListKey>
+                <NHSNotifySummaryListKey>
+                  {pageContent.summaryTable.statusKey}
+                </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue data-testid='status'>
                   <Tag color={messagePlanStatusToTagColour(messagePlan.status)}>
                     {messagePlanStatusToDisplayText(messagePlan.status)}
@@ -133,13 +137,12 @@ export default async function PreviewMessagePlanPage({
             </NHSNotifySummaryList>
 
             <DetailsOpenProvider targetClassName='controlled-details-section'>
-              {/* // TODO: CCM-12038 - content */}
               {messagePlan.cascade.some((item) => item.channel !== 'LETTER') ? (
                 <p>
                   <DetailsOpenButton
                     secondary
-                    openText='Close all template previews'
-                    closedText='Open all template previews'
+                    openText={pageContent.detailsOpenButton.openText}
+                    closedText={pageContent.detailsOpenButton.closedText}
                   />
                 </p>
               ) : null}

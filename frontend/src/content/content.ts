@@ -1470,6 +1470,15 @@ const previewMessagePlan = {
       },
     },
   ] satisfies ContentBlock[],
+  summaryTable: {
+    idKey: 'Routing Plan ID',
+    campaignIdKey: 'Campaign',
+    statusKey: 'Status',
+  },
+  detailsOpenButton: {
+    openText: 'Close all template previews',
+    closedText: 'Open all template previews',
+  },
   languageFormatsCardHeading: 'Other language letters (optional)',
 };
 
