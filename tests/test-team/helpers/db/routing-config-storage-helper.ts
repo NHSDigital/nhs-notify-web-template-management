@@ -2,6 +2,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
+  ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import type { RoutingConfig } from 'nhs-notify-backend-client';
 
@@ -20,15 +21,25 @@ export class RoutingConfigStorageHelper {
    * Get all routing configs from the database
    */
   async getAllRoutingConfigs(): Promise<RoutingConfig[]> {
-    const { ScanCommand } = await import('@aws-sdk/lib-dynamodb');
+    const allItems: RoutingConfig[] = [];
+    let lastEvaluatedKey: Record<string, unknown> | undefined;
 
-    const { Items } = await this.dynamo.send(
-      new ScanCommand({
-        TableName: process.env.ROUTING_CONFIG_TABLE_NAME,
-      })
-    );
+    do {
+      const { Items, LastEvaluatedKey } = await this.dynamo.send(
+        new ScanCommand({
+          TableName: process.env.ROUTING_CONFIG_TABLE_NAME,
+          ExclusiveStartKey: lastEvaluatedKey,
+        })
+      );
 
-    return (Items as RoutingConfig[]) || [];
+      if (Items) {
+        allItems.push(...(Items as RoutingConfig[]));
+      }
+
+      lastEvaluatedKey = LastEvaluatedKey;
+    } while (lastEvaluatedKey);
+
+    return allItems;
   }
 
   /**
