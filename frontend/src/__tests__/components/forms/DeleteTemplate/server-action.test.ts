@@ -8,6 +8,14 @@ import { setTemplateToDeleted } from '@utils/form-actions';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
+jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
+  logger: {
+    error: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+  },
+}));
 
 beforeAll(() => {
   jest.useFakeTimers();
