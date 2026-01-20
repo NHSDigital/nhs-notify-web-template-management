@@ -176,7 +176,10 @@ test.describe('Delete Template Error Page', () => {
 
     await expect(messagePlanList.locator('li')).toHaveCount(2);
 
-    const planNames = await messagePlanList.allTextContents();
+    const listItems = await messagePlanList.locator('li').all();
+    const planNames = await Promise.all(
+      listItems.map((item) => item.textContent())
+    );
 
     expect(planNames).toContain(routingConfigs.MESSAGE_PLAN_WITH_DEFAULT.name);
     expect(planNames).toContain(
