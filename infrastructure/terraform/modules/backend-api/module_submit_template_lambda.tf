@@ -41,6 +41,7 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
 
     actions = [
       "dynamodb:UpdateItem",
+      "dynamodb:GetItem",
     ]
 
     resources = [
