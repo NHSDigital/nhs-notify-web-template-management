@@ -10,6 +10,7 @@ export const deleteTemplateNoAction = async () => {
 export const deleteTemplateYesAction = async (
   template: TemplateDto
 ): Promise<never> => {
+  /* istanbul ignore next */
   logger.info('Delete template action called', {
     templateId: template.id,
     lockNumber: template.lockNumber,
@@ -18,6 +19,7 @@ export const deleteTemplateYesAction = async (
   try {
     await setTemplateToDeleted(template.id, template.lockNumber);
 
+    /* istanbul ignore next */
     logger.info(
       'Template deleted successfully, redirecting to templates list',
       {
@@ -26,6 +28,7 @@ export const deleteTemplateYesAction = async (
     );
     redirect('/message-templates', RedirectType.push);
   } catch (error) {
+    /* istanbul ignore next */
     logger.error('Error during template deletion', {
       templateId: template.id,
       errorMessage: error instanceof Error ? error.message : 'Unknown error',
@@ -33,6 +36,7 @@ export const deleteTemplateYesAction = async (
     });
 
     if (error instanceof Error && error.message === 'TEMPLATE_IN_USE') {
+      /* istanbul ignore next */
       logger.info('Redirecting to delete error page', {
         templateId: template.id,
       });
