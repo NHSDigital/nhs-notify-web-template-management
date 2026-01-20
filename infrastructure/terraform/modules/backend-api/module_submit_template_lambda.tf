@@ -77,4 +77,15 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
       [for k, v in var.letter_suppliers : [for email in v.email_addresses : "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${email}"]]
     ])
   }
+
+  statement {
+    sid    = "AllowSSMParameterRead"
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParameter",
+    ]
+
+    resources = [local.client_ssm_path_pattern]
+  }
 }
