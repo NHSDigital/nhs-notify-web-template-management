@@ -1841,7 +1841,6 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        // data: { ...expectedTemplateDto, owner: user.userId, version: 1 },
         data: {
           ...expectedTemplateDto,
           owner: `CLIENT#${user.clientId}`,

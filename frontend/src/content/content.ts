@@ -6,7 +6,6 @@ import type {
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
-import { title } from 'node:process';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;

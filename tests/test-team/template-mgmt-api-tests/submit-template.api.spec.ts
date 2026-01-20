@@ -146,7 +146,9 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       return letterTemplate;
     };
 
-    test('returns 200 and the updated template data', async ({ request }) => {
+    test('returns 200 with PROOF_APPROVED status when routing is enabled', async ({
+      request,
+    }) => {
       const {
         id: templateId,
         name,
@@ -162,6 +164,77 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: expect.objectContaining({
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name,
+          templateStatus: 'PROOF_APPROVED',
+          templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: lockNumber + 1,
+        }),
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+
+      expect(updated.data.createdAt).toEqual(createdAt);
+    });
+
+    test('returns 200 with SUBMITTED status when routing is disabled', async ({
+      request,
+    }) => {
+      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        user2,
+        'Test Letter template routing disabled',
+        'PROOF_AVAILABLE'
+      );
+
+      await templateStorageHelper.seedTemplateData([
+        {
+          ...letterTemplate,
+          files: {
+            ...letterTemplate.files,
+            proofs: {
+              proof1: {
+                fileName: 'proof.pdf',
+                supplier: 'WTMMOCK',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          },
+        },
+      ]);
+
+      const {
+        id: templateId,
+        name,
+        templateType,
+        createdAt,
+        lockNumber,
+      } = letterTemplate;
+
+      const start = new Date();
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await user2.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
