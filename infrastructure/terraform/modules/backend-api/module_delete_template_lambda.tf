@@ -36,7 +36,7 @@ module "delete_template_lambda" {
 
 data "aws_iam_policy_document" "delete_template_lambda_policy" {
   statement {
-    sid    = "AllowDynamoAccess"
+    sid    = "AllowDynamoAccessTemplates"
     effect = "Allow"
 
     actions = [
@@ -45,6 +45,19 @@ data "aws_iam_policy_document" "delete_template_lambda_policy" {
 
     resources = [
       aws_dynamodb_table.templates.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowDynamoAccessRoutingConfigs"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query",
+    ]
+
+    resources = [
+      aws_dynamodb_table.routing_configuration.arn,
     ]
   }
 
