@@ -30,10 +30,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const { status, count } = props;
   const statusDisplayMapping = messagePlanStatusToDisplayText(status);
   const statusDisplayLower = statusDisplayMapping.toLowerCase();
-  const messagePlanLink =
-    status === 'DRAFT'
-      ? messagePlansListComponent.draftMessagePlanLink
-      : messagePlansListComponent.productionMessagePlanLink;
+  const messagePlanLink = messagePlansListComponent.messagePlanLink[status];
 
   const header = (
     <Table.Row>

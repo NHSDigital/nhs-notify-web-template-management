@@ -102,7 +102,7 @@ export default async function PreviewMessagePlanPage({
             <NHSNotifySummaryList data-testid='message-plan-details'>
               <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>
-                  {pageContent.summaryTable.idKey}
+                  {pageContent.summaryTable.rowHeadings.id}
                 </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue
                   className='monospace-font'
@@ -114,7 +114,7 @@ export default async function PreviewMessagePlanPage({
 
               <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>
-                  {pageContent.summaryTable.campaignIdKey}
+                  {pageContent.summaryTable.rowHeadings.campaignId}
                 </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue
                   className='monospace-font'
@@ -126,7 +126,7 @@ export default async function PreviewMessagePlanPage({
 
               <NHSNotifySummaryListRow>
                 <NHSNotifySummaryListKey>
-                  {pageContent.summaryTable.statusKey}
+                  {pageContent.summaryTable.rowHeadings.status}
                 </NHSNotifySummaryListKey>
                 <NHSNotifySummaryListValue data-testid='status'>
                   <Tag color={messagePlanStatusToTagColour(messagePlan.status)}>

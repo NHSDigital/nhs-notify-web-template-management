@@ -1967,6 +1967,19 @@ describe('getDefaultTemplateForItem', () => {
 
     expect(getDefaultTemplateForItem(item, templates)).toBeUndefined();
   });
+
+  it('returns undefined if the default template is missing from the templates object', () => {
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(getDefaultTemplateForItem(item, templates)).toBeUndefined();
+  });
 });
 
 describe('getTemplateForAccessibleFormat', () => {
@@ -2149,7 +2162,7 @@ describe('getLanguageTemplatesForCascadeItem', () => {
     expect(getLanguageTemplatesForCascadeItem(item, templates)).toEqual([]);
   });
 
-  it('returns undefined if the cascade item has undefined conditional templates', () => {
+  it('returns empty array if the cascade item has undefined conditional templates', () => {
     const item: CascadeItem = {
       cascadeGroups: ['standard'],
       channel: 'LETTER',

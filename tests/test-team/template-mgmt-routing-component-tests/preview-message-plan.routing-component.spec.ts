@@ -15,8 +15,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertBackLinkTop,
-  assertBackLinkBottom,
+  assertAndClickBackLinkTop,
+  assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 
@@ -120,8 +120,8 @@ test.describe('Routing - Preview Message Plan page', () => {
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertBackLinkTop(props);
-    await assertBackLinkBottom(props);
+    await assertAndClickBackLinkTop(props);
+    await assertAndClickBackLinkBottom(props);
   });
 
   test('redirects to invalid message plan page when message plan cannot be found', async ({
@@ -137,7 +137,7 @@ test.describe('Routing - Preview Message Plan page', () => {
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans/invalid`);
   });
 
-  test('redirects to choose templates message plan page when message plan is in draft', async ({
+  test('redirects to choose templates page when message plan is in draft', async ({
     page,
     baseURL,
   }) => {
@@ -160,7 +160,7 @@ test.describe('Routing - Preview Message Plan page', () => {
     );
   });
 
-  test('full routing config', async ({ page }) => {
+  test('displays preview of full routing config', async ({ page }) => {
     const { dbEntry } = RoutingConfigFactory.createWithChannels(
       user,
       ['NHSAPP', 'EMAIL', 'SMS', 'LETTER'],

@@ -1,5 +1,9 @@
 import Link from 'next/link';
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfigStatusActive,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
@@ -1353,9 +1357,10 @@ const messagePlanGetReadyToMoveToProduction = () => {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  draftMessagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
-  productionMessagePlanLink:
-    '/message-plans/preview-message-plan/{{routingConfigId}}',
+  messagePlanLink: {
+    DRAFT: '/message-plans/choose-templates/{{routingConfigId}}',
+    COMPLETED: '/message-plans/preview-message-plan/{{routingConfigId}}',
+  } satisfies Record<RoutingConfigStatusActive, string>,
 };
 
 const chooseMessageOrder = {
@@ -1471,9 +1476,11 @@ const previewMessagePlan = {
     },
   ] satisfies ContentBlock[],
   summaryTable: {
-    idKey: 'Routing Plan ID',
-    campaignIdKey: 'Campaign',
-    statusKey: 'Status',
+    rowHeadings: {
+      id: 'Routing Plan ID',
+      campaignId: 'Campaign',
+      status: 'Status',
+    },
   },
   detailsOpenButton: {
     openText: 'Close all template previews',
