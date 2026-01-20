@@ -249,7 +249,8 @@ export type TemplateStatusActive =
   | 'VALIDATION_FAILED'
   | 'VIRUS_SCAN_FAILED'
   | 'WAITING_FOR_PROOF'
-  | 'PROOF_AVAILABLE';
+  | 'PROOF_AVAILABLE'
+  | 'PROOF_APPROVED';
 
 export type TemplateSuccess = {
   data: TemplateDto;
@@ -810,9 +811,9 @@ export type GetV1TemplatesData = {
   path?: never;
   query?: {
     /**
-     * Filter by a single active status
+     * Filter by one or more active statuses
      */
-    templateStatus?: TemplateStatusActive;
+    templateStatus?: Array<TemplateStatusActive>;
     /**
      * Filter by a single template type
      */
@@ -821,6 +822,10 @@ export type GetV1TemplatesData = {
      * Filter by a single language
      */
     language?: Language;
+    /**
+     * Exclude a single language
+     */
+    excludeLanguage?: Language;
     /**
      * Filter by a single accessible letter type
      */
