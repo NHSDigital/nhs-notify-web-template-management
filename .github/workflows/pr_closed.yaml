@@ -99,6 +99,8 @@ jobs:
             echo "Local version is different to the latest published version - publishing new version"
             echo "version_changed=true" >> $GITHUB_OUTPUT
           fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test-contract-provider:
     name: "Test contracts (provider)"
