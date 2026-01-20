@@ -678,7 +678,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     });
   });
 
-  test('returns 409 if the lock number header is not set', async ({
+  test('returns 400 if the lock number header is not set', async ({
     request,
   }) => {
     const createResponse = await request.post(
@@ -709,14 +709,13 @@ test.describe('DELETE /v1/template/:templateId', () => {
       }
     );
 
-    expect(deleteResponse.status()).toBe(409);
+    expect(deleteResponse.status()).toBe(400);
 
     const body = await deleteResponse.json();
 
     expect(body).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Template has been modified since last read',
+      statusCode: 400,
+      technicalMessage: 'Invalid lock number provided',
     });
   });
 

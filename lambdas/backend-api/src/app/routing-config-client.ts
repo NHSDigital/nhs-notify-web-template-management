@@ -66,8 +66,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -119,8 +119,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -153,8 +153,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
