@@ -583,7 +583,7 @@ describe('RoutingConfigClient', () => {
       });
     });
 
-    test('returns conflict error when lock number is invalid', async () => {
+    test('returns validation error when lock number is invalid', async () => {
       const { client, mocks } = setup();
 
       const result = await client.submitRoutingConfig(
@@ -597,9 +597,8 @@ describe('RoutingConfigClient', () => {
       expect(result).toEqual({
         error: {
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+            code: 400,
+            description: 'Invalid lock number provided',
           },
         },
       });
@@ -711,7 +710,7 @@ describe('RoutingConfigClient', () => {
       });
     });
 
-    test('returns conflict error when lock number is invalid', async () => {
+    test('returns validation error when lock number is invalid', async () => {
       const { client, mocks } = setup();
 
       const result = await client.deleteRoutingConfig(
@@ -725,9 +724,8 @@ describe('RoutingConfigClient', () => {
       expect(result).toEqual({
         error: {
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+            code: 400,
+            description: 'Invalid lock number provided',
           },
         },
       });
@@ -978,7 +976,7 @@ describe('RoutingConfigClient', () => {
       });
     });
 
-    test('returns conflict error when lock number is invalid', async () => {
+    test('returns validation error when lock number is invalid', async () => {
       const { client, mocks } = setup();
 
       const update: UpdateRoutingConfig = {
@@ -1001,9 +999,8 @@ describe('RoutingConfigClient', () => {
       expect(result).toEqual({
         error: {
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+            code: 400,
+            description: 'Invalid lock number provided',
           },
         },
       });
