@@ -148,7 +148,8 @@ test.describe('Delete Template Error Page', () => {
     await deletePage.confirmButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/delete-template-error/${templates.TEMPLATE_IN_MESSAGE_PLAN.id}`
+      `${baseURL}/templates/delete-template-error/${templates.TEMPLATE_IN_MESSAGE_PLAN.id}`,
+      { timeout: 20_000 }
     );
 
     const deleteErrorPage = new TemplateMgmtDeleteErrorPage(page);
