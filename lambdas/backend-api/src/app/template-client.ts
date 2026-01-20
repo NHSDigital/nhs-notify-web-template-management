@@ -482,13 +482,19 @@ export class TemplateClient {
       parsedFilters = validation.data;
     }
 
-    const { templateStatus, templateType, language, letterType } =
-      parsedFilters;
+    const {
+      templateStatus,
+      templateType,
+      language,
+      excludeLanguage,
+      letterType,
+    } = parsedFilters;
     const query = this.templateRepository.query(user.clientId);
     query.excludeTemplateStatus('DELETED');
-    if (templateStatus) query.templateStatus(templateStatus);
+    if (templateStatus) query.templateStatus(...templateStatus);
     if (templateType) query.templateType(templateType);
     if (language) query.language(language);
+    if (excludeLanguage) query.excludeLanguage(excludeLanguage);
     if (letterType) query.letterType(letterType);
 
     return query.list();

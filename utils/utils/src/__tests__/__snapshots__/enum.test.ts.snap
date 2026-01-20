@@ -80,6 +80,22 @@ exports[`statusToColourMapping status=PENDING_VALIDATION type=SMS routing=false 
 
 exports[`statusToColourMapping status=PENDING_VALIDATION type=SMS routing=true 1`] = `"blue"`;
 
+exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=false 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=true 1`] = `"green"`;
+
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"orange"`;
 
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=EMAIL routing=true 1`] = `"orange"`;
@@ -98,19 +114,19 @@ exports[`statusToColourMapping status=PROOF_AVAILABLE type=SMS routing=true 1`] 
 
 exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=SMS routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=SMS routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=SMS routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=VALIDATION_FAILED type=EMAIL routing=false 1`] = `"red"`;
 
@@ -239,6 +255,22 @@ exports[`statusToDisplayMapping status=PENDING_VALIDATION type=NHS_APP routing=t
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=SMS routing=false 1`] = `"Checking files"`;
 
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=SMS routing=true 1`] = `"Checking files"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=false 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=false 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=false 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=true 1`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"Proof available"`;
 

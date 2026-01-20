@@ -197,7 +197,7 @@ describe('TemplateRepo#query', () => {
       });
     });
 
-    test('supports filtering by language(chainable)', async () => {
+    test('supports filtering by language (chainable)', async () => {
       const { repo, mocks } = setup();
 
       mocks.dynamo.on(QueryCommand).resolvesOnce({
@@ -220,6 +220,38 @@ describe('TemplateRepo#query', () => {
           ':language0': 'en',
           ':language1': 'fr',
           ':language2': 'es',
+        },
+      });
+    });
+
+    test('supports excluding language (chainable)', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [],
+      });
+
+      await repo
+        .query(clientId)
+        .excludeLanguage('en', 'fr')
+        .excludeLanguage('es')
+        .list();
+
+      expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
+      expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: '#owner = :owner',
+        FilterExpression:
+          'NOT(#language IN (:notlanguage0, :notlanguage1, :notlanguage2))',
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#language': 'language',
+        },
+        ExpressionAttributeValues: {
+          ':owner': clientOwnerKey,
+          ':notlanguage0': 'en',
+          ':notlanguage1': 'fr',
+          ':notlanguage2': 'es',
         },
       });
     });
@@ -265,6 +297,7 @@ describe('TemplateRepo#query', () => {
         .excludeTemplateStatus('DELETED')
         .templateType('LETTER')
         .language('en')
+        .excludeLanguage('fr')
         .letterType('x0')
         .list();
 
@@ -273,7 +306,7 @@ describe('TemplateRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND (#letterType IN (:letterType0))',
+          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#templateStatus': 'templateStatus',
@@ -287,6 +320,7 @@ describe('TemplateRepo#query', () => {
           ':templateStatus0': 'SUBMITTED',
           ':templateType0': 'LETTER',
           ':language0': 'en',
+          ':notlanguage0': 'fr',
           ':letterType0': 'x0',
         },
       });
@@ -309,6 +343,8 @@ describe('TemplateRepo#query', () => {
         .templateType('LETTER')
         .language('en')
         .language('en')
+        .excludeLanguage('fr')
+        .excludeLanguage('fr')
         .letterType('x0')
         .letterType('x0')
         .list();
@@ -318,7 +354,7 @@ describe('TemplateRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND (#letterType IN (:letterType0))',
+          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#templateStatus': 'templateStatus',
@@ -332,6 +368,7 @@ describe('TemplateRepo#query', () => {
           ':templateStatus0': 'SUBMITTED',
           ':templateType0': 'LETTER',
           ':language0': 'en',
+          ':notlanguage0': 'fr',
           ':letterType0': 'x0',
         },
       });
