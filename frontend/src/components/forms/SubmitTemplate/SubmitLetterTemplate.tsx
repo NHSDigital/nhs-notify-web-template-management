@@ -110,7 +110,10 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
     warningCalloutLabel,
   } = content.components.submitLetterTemplate;
 
-  const [_, action] = useActionState(submitTemplate, 'LETTER');
+  const [_, action] = useActionState(submitTemplate, {
+    channel: 'LETTER' as const,
+    routingEnabled: features.routing === true,
+  });
 
   const pageContent = features.routing
     ? routingFlagEnabled
