@@ -1147,7 +1147,6 @@ const messagePlanChannelTemplate = {
     remove: 'Remove{{templateCount|| all}}',
     templateWord: '{{templateCount|template|templates}}',
   },
-  optional: '(optional)',
 };
 
 const messagePlanBlock = {

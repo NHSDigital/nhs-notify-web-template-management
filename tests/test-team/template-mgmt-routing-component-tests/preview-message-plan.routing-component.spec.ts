@@ -19,6 +19,7 @@ import {
   assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
+import { RoutingChooseTemplatesPage } from 'pages/routing';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -158,6 +159,10 @@ test.describe('Routing - Preview Message Plan page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-templates/${dbEntry.id}`
     );
+
+    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+
+    await expect(chooseTemplatesPage.messagePlanStatus).toHaveText('Draft');
   });
 
   test('displays preview of full routing config', async ({ page }) => {
@@ -297,6 +302,12 @@ test.describe('Routing - Preview Message Plan page', () => {
           `/templates/preview-submitted-letter-template/${templates[language].id}`
         );
       }
+
+      await templateBlock.defaultTemplateCard.templateLink.click();
+
+      await expect(page).toHaveURL(
+        `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
+      );
     });
   });
 

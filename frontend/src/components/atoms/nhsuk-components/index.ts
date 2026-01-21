@@ -1,3 +1,7 @@
+/** This file is basically a proxy which allows components from
+ * "nhsuk-react-components" to be imported into server-side code
+ */
+
 'use client';
 
 import { Details, SummaryList } from 'nhsuk-react-components';
