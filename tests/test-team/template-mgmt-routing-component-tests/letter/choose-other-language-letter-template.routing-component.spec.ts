@@ -29,11 +29,16 @@ import { RoutingChooseTemplatesPage } from 'pages/routing';
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-const languageTemplates = {
+const languageTemplatesToDisplay = {
   FRENCH_LETTER: randomUUID(),
-  ANOTHER_FRENCH_LETTER: randomUUID(),
+  FRENCH_LETTER_APPROVED: randomUUID(),
   POLISH_LETTER: randomUUID(),
   SPANISH_LETTER: randomUUID(),
+};
+
+const languageTemplates = {
+  ...languageTemplatesToDisplay,
+  FRENCH_LETTER_NOT_SUBMITTED: randomUUID(),
 };
 
 const templateIds = {
@@ -66,13 +71,15 @@ function getTemplates(
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,
       user,
-      `Test Letter template - ${templateIds.LETTER}`
+      `Test Letter template - ${templateIds.LETTER}`,
+      'SUBMITTED',
+      'PASSED'
     ),
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
     ),
@@ -80,15 +87,23 @@ function getTemplates(
       templateIds.FRENCH_LETTER,
       user,
       `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'fr' }
     ),
-    ANOTHER_FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
-      templateIds.ANOTHER_FRENCH_LETTER,
+    FRENCH_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+      templateIds.FRENCH_LETTER_APPROVED,
       user,
-      `Test Duplicate French Letter template - ${templateIds.ANOTHER_FRENCH_LETTER}`,
-      'NOT_YET_SUBMITTED',
+      `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
+      'PROOF_APPROVED',
+      'PASSED',
+      { language: 'fr' }
+    ),
+    FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+      templateIds.FRENCH_LETTER_NOT_SUBMITTED,
+      user,
+      `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
+      'PROOF_AVAILABLE',
       'PASSED',
       { language: 'fr' }
     ),
@@ -96,7 +111,7 @@ function getTemplates(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'es' }
     ),
@@ -104,7 +119,7 @@ function getTemplates(
       templateIds.POLISH_LETTER,
       user,
       `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
-      'NOT_YET_SUBMITTED',
+      'SUBMITTED',
       'PASSED',
       { language: 'pl' }
     ),
@@ -268,7 +283,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
 
-    for (const templateKey in languageTemplates) {
+    for (const templateKey in languageTemplatesToDisplay) {
       const template = templates[templateKey as keyof typeof templates];
       await expect(table.getByText(template.name)).toBeVisible();
 
@@ -296,6 +311,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
       );
     }
 
+    await expect(
+      table.getByText(templates.FRENCH_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
     await expect(table.getByText(templates.NHSAPP.name)).toBeHidden();
     await expect(table.getByText(templates.LETTER.name)).toBeHidden();
     await expect(
@@ -564,7 +582,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER.id)
       .check();
     await chooseOtherLanguageLetterTemplatePage
-      .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
+      .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .check();
 
     // eslint-disable-next-line playwright/no-wait-for-timeout
@@ -598,7 +616,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER.id)
       .uncheck();
     await chooseOtherLanguageLetterTemplatePage
-      .getCheckbox(templates.ANOTHER_FRENCH_LETTER.id)
+      .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .uncheck();
 
     // eslint-disable-next-line playwright/no-wait-for-timeout

@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  TransactWriteCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
@@ -15,8 +16,12 @@ import {
   RoutingConfigStatus,
   UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
-import { randomUUID, type UUID } from 'node:crypto';
-import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { randomUUID, UUID } from 'node:crypto';
+import {
+  ConditionalCheckFailedException,
+  TransactionCanceledException,
+  ReturnValuesOnConditionCheckFailure,
+} from '@aws-sdk/client-dynamodb';
 
 jest.mock('node:crypto');
 const uuidMock = jest.mocked(randomUUID);
@@ -37,6 +42,7 @@ beforeAll(() => {
 });
 
 const TABLE_NAME = 'routing-config-table-name';
+const TEMPLATE_TABLE_NAME = 'template-table-name';
 const user = { internalUserId: 'user', clientId: 'nhs-notify-client-id' };
 const clientOwnerKey = `CLIENT#${user.clientId}`;
 
@@ -47,7 +53,8 @@ function setup() {
 
   const repo = new RoutingConfigRepository(
     dynamo as unknown as DynamoDBDocumentClient,
-    TABLE_NAME
+    TABLE_NAME,
+    TEMPLATE_TABLE_NAME
   );
 
   return { repo, mocks };
@@ -636,44 +643,71 @@ describe('RoutingConfigRepository', () => {
         ...update,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#campaignId': 'campaignId',
-          '#cascade': 'cascade',
-          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
-          '#lockNumber': 'lockNumber',
-          '#name': 'name',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':campaignId': update.campaignId,
-          ':cascade': update.cascade,
-          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':name': update.name,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#campaignId': 'campaignId',
+                '#cascade': 'cascade',
+                '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+                '#lockNumber': 'lockNumber',
+                '#name': 'name',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':campaignId': update.campaignId,
+                ':cascade': update.cascade,
+                ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':name': update.name,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -689,38 +723,55 @@ describe('RoutingConfigRepository', () => {
         ...update,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#name': 'name',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':name': update.name,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#name': 'name',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':name': update.name,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -736,38 +787,55 @@ describe('RoutingConfigRepository', () => {
         ...update,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#campaignId': 'campaignId',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':campaignId': update.campaignId,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#campaignId': 'campaignId',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':campaignId': update.campaignId,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -791,40 +859,196 @@ describe('RoutingConfigRepository', () => {
         ...update,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#cascade': 'cascade',
-          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
-          '#lockNumber': 'lockNumber',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':cascade': update.cascade,
-          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#cascade': 'cascade',
+                '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+                '#lockNumber': 'lockNumber',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':cascade': update.cascade,
+                ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'c003b4f1-d788-423d-a948-0df511d07a23',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
+      });
+    });
+
+    test('partial update - cascade with conditional templates', async () => {
+      const { repo, mocks } = setup();
+
+      const update: UpdateRoutingConfig = {
+        cascade: [
+          {
+            cascadeGroups: ['translations'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'default-template-id',
+            conditionalTemplates: [
+              { templateId: 'conditional-template-1', language: 'ar' },
+              { templateId: 'conditional-template-2', language: 'zh' },
+            ],
+          },
+          {
+            cascadeGroups: ['accessible'],
+            channel: 'EMAIL',
+            channelType: 'secondary',
+            conditionalTemplates: [
+              { templateId: 'accessible-template-1', accessibleFormat: 'x1' },
+            ],
+          },
+        ],
+        cascadeGroupOverrides: [
+          { name: 'translations', language: ['ar', 'zh'] },
+          { name: 'accessible', accessibleFormat: ['x1'] },
+        ],
+      };
+
+      const updated: RoutingConfig = {
+        ...routingConfig,
+        ...update,
+      };
+
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
+
+      const result = await repo.update(routingConfig.id, update, user, 2);
+
+      expect(result).toEqual({ data: updated });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#cascade': 'cascade',
+                '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+                '#lockNumber': 'lockNumber',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':cascade': update.cascade,
+                ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'default-template-id',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'conditional-template-1',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'conditional-template-2',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'accessible-template-1',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
         TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+        Key: {
+          id: routingConfig.id,
+          owner: clientOwnerKey,
+        },
       });
     });
 
@@ -848,38 +1072,65 @@ describe('RoutingConfigRepository', () => {
         name: 'new_name',
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#name': 'name',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':name': update.name,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#name': 'name',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':name': update.name,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: 'c003b4f1-d788-423d-a948-0df511d07a23',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -896,38 +1147,55 @@ describe('RoutingConfigRepository', () => {
         name: 'new_name',
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updated });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: updated });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#name': 'name',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':name': update.name,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#name': 'name',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':name': update.name,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -942,44 +1210,71 @@ describe('RoutingConfigRepository', () => {
         status: 'DELETED',
       } as UpdateRoutingConfig;
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: routingConfig });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: routingConfig });
 
       const result = await repo.update(routingConfig.id, update, user, 2);
 
       expect(result).toEqual({ data: routingConfig });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#campaignId': 'campaignId',
-          '#cascade': 'cascade',
-          '#cascadeGroupOverrides': 'cascadeGroupOverrides',
-          '#lockNumber': 'lockNumber',
-          '#name': 'name',
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-        },
-        ExpressionAttributeValues: {
-          ':campaignId': update.campaignId,
-          ':cascade': update.cascade,
-          ':cascadeGroupOverrides': update.cascadeGroupOverrides,
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':name': update.name,
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#campaignId': 'campaignId',
+                '#cascade': 'cascade',
+                '#cascadeGroupOverrides': 'cascadeGroupOverrides',
+                '#lockNumber': 'lockNumber',
+                '#name': 'name',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':campaignId': update.campaignId,
+                ':cascade': update.cascade,
+                ':cascadeGroupOverrides': update.cascadeGroupOverrides,
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':name': update.name,
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+              TableName: TABLE_NAME,
+              UpdateExpression:
+                'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+                owner: clientOwnerKey,
+              },
+              ConditionExpression: 'attribute_exists(id)',
+            },
+          },
+        ],
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
+        TableName: TABLE_NAME,
         Key: {
           id: routingConfig.id,
           owner: clientOwnerKey,
         },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
       });
     });
 
@@ -988,7 +1283,7 @@ describe('RoutingConfigRepository', () => {
 
       const err = new Error('ddb err');
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.update(
         routingConfig.id,
@@ -1021,7 +1316,8 @@ describe('RoutingConfigRepository', () => {
         status: 'NOT_A_STATUS' as RoutingConfigStatus,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: updatedInvalid });
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).resolves({ Item: updatedInvalid });
 
       const result = await repo.update(
         routingConfig.id,
@@ -1059,12 +1355,18 @@ describe('RoutingConfigRepository', () => {
     test('returns 404 failure if routing config does not exist', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'ConditionalCheckFailed',
+            // No Item for not found
+          },
+        ],
         $metadata: {},
-        message: 'msg',
+        message: 'Transaction cancelled',
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.update(
         routingConfig.id,
@@ -1086,13 +1388,18 @@ describe('RoutingConfigRepository', () => {
     test('returns 404 failure if routing config is DELETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'ConditionalCheckFailed',
+            Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
+          },
+        ],
         $metadata: {},
-        message: 'msg',
+        message: 'Transaction cancelled',
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.update(
         routingConfig.id,
@@ -1114,13 +1421,18 @@ describe('RoutingConfigRepository', () => {
     test('returns 400 failure if routing config is COMPLETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'ConditionalCheckFailed',
+            Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
+          },
+        ],
         $metadata: {},
-        message: 'msg',
+        message: 'Transaction cancelled',
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
 
       const result = await repo.update(
         routingConfig.id,
@@ -1143,16 +1455,96 @@ describe('RoutingConfigRepository', () => {
     test("returns 409 failure if routing config lock number doesn't match", async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: {
-          status: { S: 'DRAFT' satisfies RoutingConfigStatus },
-          lockNumber: { N: '3' },
-        },
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'ConditionalCheckFailed',
+            Item: {
+              status: { S: 'DRAFT' satisfies RoutingConfigStatus },
+              lockNumber: { N: '3' },
+            },
+          },
+        ],
         $metadata: {},
-        message: 'msg',
+        message: 'Transaction cancelled',
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new-name' },
+        user,
+        2
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(ConditionalCheckFailedException),
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Message Plan has been modified since last read',
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if some templates not found', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'None', // Update succeeded
+          },
+          {
+            Code: 'ConditionalCheckFailed', // Template not found
+          },
+        ],
+        $metadata: {},
+        message: 'Transaction cancelled',
+      });
+
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        {
+          name: 'new-name',
+          cascade: [
+            {
+              cascadeGroups: ['standard'],
+              channel: 'SMS',
+              channelType: 'primary',
+              defaultTemplateId: 'template1',
+            },
+          ],
+          cascadeGroupOverrides: [],
+        },
+        user,
+        2
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description: 'Some templates not found',
+            details: { templateIds: 'template1' },
+          },
+        },
+      });
+    });
+
+    test('returns 500 failure if GetCommand fails after TransactWriteCommand succeeds', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('GetCommand failed');
+
+      mocks.dynamo.on(TransactWriteCommand).resolves({});
+      mocks.dynamo.on(GetCommand).rejects(err);
 
       const result = await repo.update(
         routingConfig.id,
@@ -1165,9 +1557,37 @@ describe('RoutingConfigRepository', () => {
         error: {
           actualError: err,
           errorMeta: {
-            code: 409,
-            description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns failure on TransactionCanceledException with undefined CancellationReasons', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new TransactionCanceledException({
+        CancellationReasons: undefined,
+        $metadata: {},
+        message: 'Transaction cancelled',
+      });
+
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        { name: 'new-name' },
+        user,
+        2
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
           },
         },
       });
