@@ -1,3 +1,5 @@
+'use server';
+
 import { redirect, RedirectType } from 'next/navigation';
 import { setTemplateToDeleted } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';

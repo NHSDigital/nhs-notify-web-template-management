@@ -738,7 +738,20 @@ describe('RoutingConfigClient', () => {
 
       const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
-        cascade: routingConfig.cascade,
+        cascade: [
+          ...routingConfig.cascade,
+          {
+            channel: 'LETTER',
+            cascadeGroups: ['translations'],
+            channelType: 'primary',
+            conditionalTemplates: [
+              {
+                language: 'bg',
+                templateId: 'bg-templateId',
+              },
+            ],
+          },
+        ],
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: 'new name',
       };
