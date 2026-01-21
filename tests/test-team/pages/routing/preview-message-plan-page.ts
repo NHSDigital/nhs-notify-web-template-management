@@ -6,8 +6,6 @@ export class RoutingPreviewMessagePlanPage extends TemplateMgmtBasePage {
   static readonly pathTemplate =
     '/message-plans/preview-message-plan/:messagePlanId';
 
-  copyLink: Locator;
-
   messagePlanId: Locator;
 
   campaignId: Locator;
@@ -20,10 +18,6 @@ export class RoutingPreviewMessagePlanPage extends TemplateMgmtBasePage {
 
   constructor(page: Page) {
     super(page);
-
-    this.copyLink = page.getByRole('link', {
-      name: 'Copy this message plan into draft',
-    });
 
     this.messagePlanId = page.getByTestId('plan-id');
     this.campaignId = page.getByTestId('campaign-id');

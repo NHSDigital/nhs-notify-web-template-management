@@ -37,14 +37,6 @@ exports[`full cascade plan matches snapshot 1`] = `
           <p>
             You cannot edit this message plan because it's in production.
           </p>
-          <p>
-            <a
-              href="/message-plans/copy-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267"
-            >
-              Copy this message plan into draft
-            </a>
-             to create a new one with the same messages.
-          </p>
         </div>
         <dl
           class="nhsuk-summary-list nhs_notify_summary_list"

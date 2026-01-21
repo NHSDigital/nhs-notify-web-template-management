@@ -121,19 +121,6 @@ it('renders the message plan details', async () => {
   );
 });
 
-it('renders a warning callout with copy link', async () => {
-  const routingConfig = createRoutingConfig();
-
-  await renderPage(routingConfig);
-
-  const warning = screen.getByTestId('warning-callout');
-
-  expect(within(warning).getByRole('link')).toHaveAttribute(
-    'href',
-    `/message-plans/copy-message-plan/${routingConfig.id}`
-  );
-});
-
 describe('full cascade plan', () => {
   const routingConfig = createRoutingConfig({
     cascade: [

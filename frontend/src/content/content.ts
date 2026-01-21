@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type {
   RoutingConfigStatusActive,
   TemplateStatus,
@@ -1464,15 +1463,6 @@ const previewMessagePlan = {
     {
       type: 'text',
       text: "You cannot edit this message plan because it's in production.",
-    },
-    {
-      type: 'text',
-      text: '[Copy this message plan into draft](/message-plans/copy-message-plan/{{routingConfigId}}) to create a new one with the same messages.',
-      overrides: {
-        a: {
-          component: Link,
-        },
-      },
     },
   ] satisfies ContentBlock[],
   summaryTable: {

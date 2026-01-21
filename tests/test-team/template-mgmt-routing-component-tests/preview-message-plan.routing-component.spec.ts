@@ -191,13 +191,6 @@ test.describe('Routing - Preview Message Plan page', () => {
       await expect(previewMessagePlanPage.status).toHaveText('Production');
     });
 
-    await test.step('has link to copy the message plan', async () => {
-      await expect(previewMessagePlanPage.copyLink).toHaveAttribute(
-        'href',
-        `/templates/message-plans/copy-message-plan/${dbEntry.id}`
-      );
-    });
-
     await test.step('opens and closes all details sections', async () => {
       for (const section of await previewMessagePlanPage.detailsSections.all()) {
         await expect(section).not.toHaveAttribute('open');
