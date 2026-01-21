@@ -377,8 +377,6 @@ export class TemplateClient {
     }
 
     // Check if template is linked to any routing configs
-    log.info('Checking if template is linked to routing configs');
-
     const routingConfigsResult =
       await this.routingConfigRepository.getByTemplateId(
         templateId,
@@ -395,11 +393,6 @@ export class TemplateClient {
 
       return routingConfigsResult;
     }
-
-    log.info('Routing config check completed', {
-      linkedConfigsCount: routingConfigsResult.data.length,
-      linkedConfigs: routingConfigsResult.data,
-    });
 
     if (routingConfigsResult.data.length > 0) {
       log
