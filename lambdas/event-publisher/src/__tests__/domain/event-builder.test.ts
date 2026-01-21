@@ -245,7 +245,10 @@ const expectedTemplateEvent = (
   },
 });
 
-const publishableRoutingConfigEventRecord = (status: string, nullTemplateIds = false) => ({
+const publishableRoutingConfigEventRecord = (
+  status: string,
+  nullTemplateIds = false
+) => ({
   dynamodb: {
     SequenceNumber: '4',
     NewImage: {
@@ -276,7 +279,9 @@ const publishableRoutingConfigEventRecord = (status: string, nullTemplateIds = f
             M: {
               channel: { S: 'EMAIL' },
               channelType: { S: 'primary' },
-              defaultTemplateId: nullTemplateIds ? { NULL: true } : { S: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd' },
               cascadeGroups: { L: [{ S: 'standard' }] },
             },
           },
@@ -284,7 +289,9 @@ const publishableRoutingConfigEventRecord = (status: string, nullTemplateIds = f
             M: {
               channel: { S: 'LETTER' },
               channelType: { S: 'primary' },
-              defaultTemplateId: nullTemplateIds ? { NULL: true } : { S: 'd290f1ee-6c54-4b01-90e6-d701748f0851' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: 'd290f1ee-6c54-4b01-90e6-d701748f0851' },
               cascadeGroups: { L: [{ S: 'standard' }] },
             },
           },
@@ -292,7 +299,9 @@ const publishableRoutingConfigEventRecord = (status: string, nullTemplateIds = f
             M: {
               channel: { S: 'LETTER' },
               channelType: { S: 'primary' },
-              defaultTemplateId: nullTemplateIds ? { NULL: true } : { S: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
               cascadeGroups: { L: [{ S: 'translations' }] },
             },
           },
@@ -321,7 +330,7 @@ const expectedRoutingConfigEvent = (
   status: string,
   type: string,
   dataschema: string,
-  nullTemplateIds = false,
+  nullTemplateIds = false
 ) => ({
   id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   datacontenttype: 'application/json',
@@ -345,19 +354,25 @@ const expectedRoutingConfigEvent = (
         channel: 'EMAIL',
         channelType: 'primary',
         cascadeGroups: ['standard'],
-        defaultTemplateId: nullTemplateIds ? null : 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
       },
       {
         channel: 'LETTER',
         channelType: 'primary',
         cascadeGroups: ['standard'],
-        defaultTemplateId: nullTemplateIds ? null : 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : 'd290f1ee-6c54-4b01-90e6-d701748f0851',
       },
       {
         channel: 'LETTER',
         channelType: 'primary',
         cascadeGroups: ['translations'],
-        defaultTemplateId: nullTemplateIds ? null : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
     ],
     cascadeGroupOverrides: [
@@ -556,7 +571,7 @@ describe('routing config events', () => {
       expectedRoutingConfigEvent(
         'COMPLETED',
         'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
-        'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json',
+        'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json'
       )
     );
   });
@@ -571,7 +586,7 @@ describe('routing config events', () => {
         'DRAFT',
         'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json',
-        true,
+        true
       )
     );
   });
