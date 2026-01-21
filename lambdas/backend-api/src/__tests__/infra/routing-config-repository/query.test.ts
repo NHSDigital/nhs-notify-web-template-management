@@ -9,6 +9,7 @@ import { makeRoutingConfig } from '../../fixtures/routing-config';
 jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const TABLE_NAME = 'routing-config-table-name';
+const TEMPLATES_TABLE_NAME = 'templates-table-name';
 
 const clientId = '89077697-ca6d-47fc-b233-3281fbd15579';
 const clientOwnerKey = `CLIENT#${clientId}`;
@@ -24,7 +25,8 @@ function setup() {
     // pass an actual doc client - it gets intercepted up by mockClient,
     // but paginateQuery needs the real deal
     DynamoDBDocumentClient.from(new DynamoDBClient({})),
-    TABLE_NAME
+    TABLE_NAME,
+    TEMPLATES_TABLE_NAME
   );
 
   const mocks = { dynamo };
