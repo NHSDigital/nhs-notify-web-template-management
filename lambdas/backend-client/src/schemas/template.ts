@@ -149,6 +149,15 @@ const $TemplateStatusActive = schemaFor<TemplateStatusActive>()(
 
 const $TemplateType = schemaFor<TemplateType>()(z.enum(TEMPLATE_TYPE_LIST));
 
+const $TemplateStatusFilter = schemaFor<
+  TemplateStatusActive[],
+  TemplateStatusActive | TemplateStatusActive[]
+>()(
+  z
+    .union([z.array($TemplateStatusActive), $TemplateStatusActive])
+    .transform((value) => (Array.isArray(value) ? value : [value]))
+);
+
 const $BaseTemplateDto = schemaFor<
   BaseCreatedTemplate,
   Omit<BaseCreatedTemplate, 'lockNumber'>
@@ -179,13 +188,10 @@ export const $TemplateDto = schemaFor<
   ])
 );
 
-export const $TemplateFilter = schemaFor<TemplateFilter>()(
-  z
-    .object({
-      templateStatus: $TemplateStatusActive,
-      templateType: $TemplateType,
-      language: $Language,
-      letterType: $LetterType,
-    })
-    .partial()
-);
+export const $TemplateFilter = z.object({
+  templateStatus: $TemplateStatusFilter.optional(),
+  templateType: $TemplateType.optional(),
+  language: $Language.optional(),
+  excludeLanguage: $Language.optional(),
+  letterType: $LetterType.optional(),
+}) satisfies z.ZodType<TemplateFilter>;
