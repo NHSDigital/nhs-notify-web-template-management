@@ -23,7 +23,9 @@ test.describe('Event publishing - Routing Config', () => {
     await storageHelper.deleteSeeded();
   });
 
-  test('Expect a draft event and a deleted event when some template IDs are null', async ({ request }) => {
+  test('Expect a draft event and a deleted event when some template IDs are null', async ({
+    request,
+  }) => {
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
         {
