@@ -47,7 +47,7 @@ export type RoutingConfigEventConditionalTemplate = z.infer<
   typeof $RoutingConfigEventConditionalTemplate
 >;
 
-const $CascadeItem = z
+const $BaseCascadeItem = z
   .object({
     channel: $RoutingConfigEventChannel.meta({
       description: 'Communication type for this cascade item',
@@ -55,15 +55,6 @@ const $CascadeItem = z
     channelType: $RoutingConfigEventChannelType.meta({
       description: 'Channel type for this cascade item',
     }),
-    defaultTemplateId: z
-      .string()
-      // eslint-disable-next-line security/detect-unsafe-regex
-      .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/)
-      .optional()
-      .meta({
-        description:
-          'Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied',
-      }),
     supplierReferences: z.record(z.string(), z.string()).optional().meta({
       description: 'Supplier references that identify the template',
     }),
@@ -74,11 +65,37 @@ const $CascadeItem = z
       description:
         'List of cascade groups that the cascade item will be included in',
     }),
-  })
-  .meta({
+  });
+export type BaseCascadeItem = z.infer<typeof $BaseCascadeItem>;
+
+const $CascadeItem = $BaseCascadeItem.extend({
+    defaultTemplateId: z
+      .string()
+      // eslint-disable-next-line security/detect-unsafe-regex
+      .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/)
+      .optional()
+      .meta({
+        description:
+          'Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied',
+      }),
+}).meta({
     id: 'CascadeItem',
   });
-export type CascadeItem = z.infer<typeof $CascadeItem>;
+
+const $NullableCascadeItem = $BaseCascadeItem.extend({
+    defaultTemplateId: z
+      .string()
+      // eslint-disable-next-line security/detect-unsafe-regex
+      .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/)
+      .nullable()
+      .optional()
+      .meta({
+        description:
+          'Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied',
+      }),
+}).meta({
+    id: 'NullableCascadeItem',
+  });
 
 const $CascadeGroupOverride = z
   .object({
@@ -91,7 +108,7 @@ const $CascadeGroupOverride = z
   });
 export type CascadeGroupOverride = z.infer<typeof $CascadeGroupOverride>;
 
-export const $RoutingConfigEventV1Data = z.object({
+export const $BaseRoutingConfigEventData = z.object({
   clientId: z.string().meta({
     description: 'The client that owns the routing config',
   }),
@@ -127,5 +144,19 @@ export const $RoutingConfigEventV1Data = z.object({
   }),
   status: $RoutingConfigStatus.meta({
     description: 'Routing config status',
+  }),
+});
+
+export const $NullableRoutingConfigEventData = $BaseRoutingConfigEventData.extend({
+  cascade: z.array($NullableCascadeItem).meta({
+    description:
+      'Array defining the order of channels for the routing config and how they are configured',
+  }),
+});
+
+export const $RoutingConfigEventData = $BaseRoutingConfigEventData.extend({
+  cascade: z.array($CascadeItem).meta({
+    description:
+      'Array defining the order of channels for the routing config and how they are configured',
   }),
 });
