@@ -82,19 +82,35 @@ exports[`statusToColourMapping status=PENDING_VALIDATION type=SMS routing=true 1
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=false 1`] = `"green"`;
 
+exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=false 2`] = `"green"`;
+
 exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=EMAIL routing=true 2`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false 1`] = `"green"`;
 
+exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false 2`] = `"green"`;
+
 exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true 2`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=false 1`] = `"green"`;
 
+exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=false 2`] = `"green"`;
+
 exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=true 2`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=false 1`] = `"green"`;
 
+exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=false 2`] = `"green"`;
+
 exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=true 1`] = `"green"`;
+
+exports[`statusToColourMapping status=PROOF_APPROVED type=SMS routing=true 2`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"orange"`;
 
@@ -258,19 +274,35 @@ exports[`statusToDisplayMapping status=PENDING_VALIDATION type=SMS routing=true 
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=false 1`] = `"Proof approved"`;
 
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=false 2`] = `"Proof approved"`;
+
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=true 2`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false 1`] = `"Proof approved"`;
 
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false 2`] = `"Proof approved"`;
+
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true 2`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=false 1`] = `"Proof approved"`;
 
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=false 2`] = `"Proof approved"`;
+
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=true 2`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=false 1`] = `"Proof approved"`;
 
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=false 2`] = `"Proof approved"`;
+
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=true 1`] = `"Proof approved"`;
+
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=SMS routing=true 2`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=EMAIL routing=false 1`] = `"Proof available"`;
 
