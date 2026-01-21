@@ -111,6 +111,7 @@ const renderComponent = (overrides = {}) => {
   const defaultProps = {
     messagePlan: ROUTING_CONFIG,
     lockNumber: 42,
+    noTemplatesText: 'You do not have any templates yet.',
     ...propsByChannel.NHSAPP,
   };
 
