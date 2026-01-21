@@ -23,6 +23,80 @@ test.describe('Event publishing - Routing Config', () => {
     await storageHelper.deleteSeeded();
   });
 
+  test('Expect a draft event and a deleted event when some template IDs are null', async ({ request }) => {
+    const payload = RoutingConfigFactory.create(user, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'NHSAPP',
+          channelType: 'primary',
+          defaultTemplateId: null,
+        },
+      ],
+    }).apiPayload;
+
+    const start = new Date();
+
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/routing-configuration`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+        },
+        data: payload,
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+
+    const {
+      data: { id, lockNumber },
+    } = await createResponse.json();
+
+    storageHelper.addAdHocKey({
+      id,
+      clientId: user.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${id}`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(204);
+
+    await expect(async () => {
+      const events = await eventCacheHelper.findEvents(start, [id]);
+
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'DRAFT',
+          }),
+        })
+      );
+
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+          data: expect.objectContaining({
+            id,
+            status: 'DELETED',
+          }),
+        })
+      );
+
+      expect(events).toHaveLength(2);
+    }).toPass({ timeout: 60_000 });
+  });
+
   test('Expect a draft event and a deleted event', async ({ request }) => {
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
