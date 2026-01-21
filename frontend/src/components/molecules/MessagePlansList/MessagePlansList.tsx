@@ -2,13 +2,14 @@
 
 import classNames from 'classnames';
 import content from '@content/content';
-import { Details, Table } from 'nhsuk-react-components';
+import { Button, Details, Table } from 'nhsuk-react-components';
 import { format } from 'date-fns/format';
 import Link from 'next/link';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import type { RoutingConfigStatusActive } from 'nhs-notify-backend-client';
 import { messagePlanStatusToDisplayText } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
+import { useCopyTableToClipboard } from '@hooks/use-copy-table-to-clipboard.hook';
 
 export type MessagePlanListItem = {
   name: string;
@@ -30,6 +31,18 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const { status, count } = props;
   const statusDisplayMapping = messagePlanStatusToDisplayText(status);
   const statusDisplayLower = statusDisplayMapping.toLowerCase();
+  const { copyToClipboard, copied } =
+    useCopyTableToClipboard<MessagePlanListItem>();
+
+  const handleCopyToClipboard = async () => {
+    await copyToClipboard({
+      data: props.plans,
+      columns: [
+        { key: 'name', header: 'routing_plan_name' },
+        { key: 'id', header: 'routing_plan_id' },
+      ],
+    });
+  };
 
   const header = (
     <Table.Row>
@@ -68,10 +81,22 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
       </Details.Summary>
       <Details.Text>
         {rows.length > 0 ? (
-          <Table responsive>
-            <Table.Head role='rowgroup'>{header}</Table.Head>
-            <Table.Body>{rows}</Table.Body>
-          </Table>
+          <>
+            <Table responsive>
+              <Table.Head role='rowgroup'>{header}</Table.Head>
+              <Table.Body>{rows}</Table.Body>
+            </Table>
+            <Button
+              type='button'
+              data-testid={`copy-button-${statusDisplayLower}`}
+              secondary
+              onClick={handleCopyToClipboard}
+            >
+              {copied
+                ? messagePlansListComponent.copiedText
+                : messagePlansListComponent.copyText}
+            </Button>
+          </>
         ) : (
           <MarkdownContent
             content={messagePlansListComponent.noMessagePlansMessage}

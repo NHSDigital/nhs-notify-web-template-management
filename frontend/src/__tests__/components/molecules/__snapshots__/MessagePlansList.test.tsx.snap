@@ -101,6 +101,14 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
           </tr>
         </tbody>
       </table>
+      <button
+        aria-disabled="false"
+        class="nhsuk-button nhsuk-button--secondary"
+        data-testid="copy-button-draft"
+        type="button"
+      >
+        Copy names and IDs to clipboard
+      </button>
     </div>
   </details>
 </DocumentFragment>
