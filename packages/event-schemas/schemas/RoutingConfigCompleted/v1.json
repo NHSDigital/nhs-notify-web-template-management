@@ -169,11 +169,6 @@
             "secondary"
           ]
         },
-        "defaultTemplateId": {
-          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
-          "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
-        },
         "supplierReferences": {
           "description": "Supplier references that identify the template",
           "type": "object",
@@ -196,6 +191,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "defaultTemplateId": {
+          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         }
       },
       "required": [

@@ -100,7 +100,7 @@
               "description": "Array defining the order of channels for the routing config and how they are configured",
               "type": "array",
               "items": {
-                "$ref": "#/$defs/CascadeItem"
+                "$ref": "#/$defs/NullableCascadeItem"
               }
             },
             "cascadeGroupOverrides": {
@@ -148,7 +148,7 @@
         }
       ]
     },
-    "CascadeItem": {
+    "NullableCascadeItem": {
       "type": "object",
       "properties": {
         "channel": {
@@ -168,11 +168,6 @@
             "primary",
             "secondary"
           ]
-        },
-        "defaultTemplateId": {
-          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
-          "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "supplierReferences": {
           "description": "Supplier references that identify the template",
@@ -196,6 +191,18 @@
           "items": {
             "type": "string"
           }
+        },
+        "defaultTemplateId": {
+          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
