@@ -47,28 +47,28 @@ export type RoutingConfigEventConditionalTemplate = z.infer<
   typeof $RoutingConfigEventConditionalTemplate
 >;
 
-const $BaseCascadeItem = z
-  .object({
-    channel: $RoutingConfigEventChannel.meta({
-      description: 'Communication type for this cascade item',
-    }),
-    channelType: $RoutingConfigEventChannelType.meta({
-      description: 'Channel type for this cascade item',
-    }),
-    supplierReferences: z.record(z.string(), z.string()).optional().meta({
-      description: 'Supplier references that identify the template',
-    }),
-    conditionalTemplates: z
-      .array($RoutingConfigEventConditionalTemplate)
-      .optional(),
-    cascadeGroups: z.array(z.string()).meta({
-      description:
-        'List of cascade groups that the cascade item will be included in',
-    }),
-  });
+const $BaseCascadeItem = z.object({
+  channel: $RoutingConfigEventChannel.meta({
+    description: 'Communication type for this cascade item',
+  }),
+  channelType: $RoutingConfigEventChannelType.meta({
+    description: 'Channel type for this cascade item',
+  }),
+  supplierReferences: z.record(z.string(), z.string()).optional().meta({
+    description: 'Supplier references that identify the template',
+  }),
+  conditionalTemplates: z
+    .array($RoutingConfigEventConditionalTemplate)
+    .optional(),
+  cascadeGroups: z.array(z.string()).meta({
+    description:
+      'List of cascade groups that the cascade item will be included in',
+  }),
+});
 export type BaseCascadeItem = z.infer<typeof $BaseCascadeItem>;
 
-const $CascadeItem = $BaseCascadeItem.extend({
+const $CascadeItem = $BaseCascadeItem
+  .extend({
     defaultTemplateId: z
       .string()
       // eslint-disable-next-line security/detect-unsafe-regex
@@ -78,11 +78,13 @@ const $CascadeItem = $BaseCascadeItem.extend({
         description:
           'Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied',
       }),
-}).meta({
+  })
+  .meta({
     id: 'CascadeItem',
   });
 
-const $NullableCascadeItem = $BaseCascadeItem.extend({
+const $NullableCascadeItem = $BaseCascadeItem
+  .extend({
     defaultTemplateId: z
       .string()
       // eslint-disable-next-line security/detect-unsafe-regex
@@ -93,7 +95,8 @@ const $NullableCascadeItem = $BaseCascadeItem.extend({
         description:
           'Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied',
       }),
-}).meta({
+  })
+  .meta({
     id: 'NullableCascadeItem',
   });
 
@@ -147,12 +150,13 @@ export const $BaseRoutingConfigEventData = z.object({
   }),
 });
 
-export const $NullableRoutingConfigEventData = $BaseRoutingConfigEventData.extend({
-  cascade: z.array($NullableCascadeItem).meta({
-    description:
-      'Array defining the order of channels for the routing config and how they are configured',
-  }),
-});
+export const $NullableRoutingConfigEventData =
+  $BaseRoutingConfigEventData.extend({
+    cascade: z.array($NullableCascadeItem).meta({
+      description:
+        'Array defining the order of channels for the routing config and how they are configured',
+    }),
+  });
 
 export const $RoutingConfigEventData = $BaseRoutingConfigEventData.extend({
   cascade: z.array($CascadeItem).meta({
