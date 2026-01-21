@@ -9,7 +9,8 @@ import { getTemplates } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 import content from '@content/content';
-const { pageTitle, pageHeading } = content.pages.chooseLargePrintLetterTemplate;
+const { pageTitle, pageHeading, noTemplatesText } =
+  content.pages.chooseLargePrintLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -59,6 +60,7 @@ export default async function ChooseLargePrintLetterTemplate(
     <ChooseChannelTemplate
       messagePlan={messagePlan}
       pageHeading={pageHeading}
+      noTemplatesText={noTemplatesText}
       templateList={availableTemplateList}
       cascadeIndex={cascadeIndex}
       accessibleFormat='x1'
