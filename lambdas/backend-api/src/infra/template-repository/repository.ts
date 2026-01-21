@@ -220,7 +220,8 @@ export class TemplateRepository {
       {
         ':newStatus': targetStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-        ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':expectedProofingLetterStatus':
+          'PROOF_AVAILABLE' satisfies TemplateStatus,
         ':passed': 'PASSED' satisfies VirusScanStatus,
         ':expectedLockNumber': lockNumber,
       };
@@ -228,7 +229,7 @@ export class TemplateRepository {
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus)',
+      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus)',
       '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
     ];
 

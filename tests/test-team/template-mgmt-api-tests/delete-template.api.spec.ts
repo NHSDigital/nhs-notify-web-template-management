@@ -14,12 +14,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user2: TestUser;
+  let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
@@ -86,7 +86,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await userRoutingDisabled.getAccessToken(),
           'X-Lock-Number': String(created.data.lockNumber),
         },
       }
@@ -100,10 +100,10 @@ test.describe('DELETE /v1/template/:templateId', () => {
   });
 
   test.describe('LETTER templates', () => {
-    const createLetterTemplate = async (): Promise<Template> => {
+    const createLetterTemplate = async (user: TestUser): Promise<Template> => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
-        user1,
+        user,
         'Test Letter template'
       );
 
@@ -113,7 +113,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     };
 
     test('returns 204', async ({ request }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
@@ -131,13 +131,15 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 400 - cannot delete a submitted template', async ({
       request,
     }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } =
+        await createLetterTemplate(userRoutingDisabled);
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            // Letters only reach SUBMITTED status if routing is disabled
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -154,7 +156,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
@@ -173,7 +175,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 404 - cannot delete a deleted template', async ({
       request,
     }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,

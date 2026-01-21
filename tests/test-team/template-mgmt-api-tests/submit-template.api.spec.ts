@@ -19,12 +19,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user2: TestUser;
+  let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
@@ -91,7 +91,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await userRoutingDisabled.getAccessToken(),
           'X-Lock-Number': String(created.data.lockNumber),
         },
       }
@@ -105,10 +105,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('LETTER templates', () => {
-    const createProofAvailableLetterTemplate = async (): Promise<Template> => {
+    const createProofAvailableLetterTemplate = async (
+      user: TestUser
+    ): Promise<Template> => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
-        user1,
+        user,
         'Test Letter template',
         'PROOF_AVAILABLE'
       );
@@ -155,7 +157,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         templateType,
         createdAt,
         lockNumber,
-      } = await createProofAvailableLetterTemplate();
+      } = await createProofAvailableLetterTemplate(user1);
 
       const start = new Date();
 
@@ -199,7 +201,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     }) => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
-        user2,
+        userRoutingDisabled,
         'Test Letter template routing disabled',
         'PROOF_AVAILABLE'
       );
@@ -234,7 +236,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user2.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -286,13 +288,13 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createProofAvailableLetterTemplate();
+        await createProofAvailableLetterTemplate(userRoutingDisabled);
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -309,7 +311,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
@@ -355,7 +357,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createProofAvailableLetterTemplate();
+        await createProofAvailableLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
