@@ -252,7 +252,7 @@ describe('Template schemas', () => {
   });
 
   describe('$TemplateFilter', () => {
-    test.each(['templateStatus', 'templateType', 'language', 'letterType'])(
+    test.each(['templateType', 'language', 'letterType', 'excludeLanguage'])(
       '$TemplateFilter should fail when unknown $filter field is provided',
       (filterField) => {
         const filter = {
@@ -273,28 +273,72 @@ describe('Template schemas', () => {
       }
     );
 
+    test('should fail when unknown templateStatus is provided', () => {
+      const filter = {
+        templateStatus: ['UNKNOWN'],
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            templateStatus: [expect.stringContaining('Invalid')],
+          },
+        })
+      );
+    });
+
+    test('should transform single templateStatus string to array', () => {
+      const filter = {
+        templateStatus: 'SUBMITTED',
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({ templateStatus: ['SUBMITTED'] });
+    });
+
+    test('should transform multiple templateStatus values to array', () => {
+      const filter = {
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
+      };
+
+      const result = $TemplateFilter.safeParse(filter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
+      });
+    });
+
     test.each([
       {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED'],
       },
       {
         templateType: 'LETTER',
       },
       {
         language: 'en',
+      },
+      {
+        excludeLanguage: 'fr',
       },
       {
         letterType: 'x0',
       },
       {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED', 'PROOF_AVAILABLE'],
         templateType: 'LETTER',
-        language: 'en',
+        excludeLanguage: 'en',
         letterType: 'x0',
       },
     ])('should pass template filter validation %p', async (filter) => {
       const result = $TemplateFilter.safeParse(filter);
 
+      expect(result.success).toBe(true);
       expect(result.data).toEqual(filter);
     });
   });

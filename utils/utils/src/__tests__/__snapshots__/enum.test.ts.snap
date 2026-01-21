@@ -114,19 +114,19 @@ exports[`statusToColourMapping status=PROOF_AVAILABLE type=SMS routing=true 1`] 
 
 exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=EMAIL routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=SMS routing=false 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=SMS routing=true 1`] = `"orange"`;
+exports[`statusToColourMapping status=SUBMITTED type=SMS routing=true 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=VALIDATION_FAILED type=EMAIL routing=false 1`] = `"red"`;
 

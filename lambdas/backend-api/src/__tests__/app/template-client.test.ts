@@ -57,6 +57,7 @@ const setup = () => {
     excludeTemplateStatus: jest.fn().mockReturnThis(),
     templateType: jest.fn().mockReturnThis(),
     language: jest.fn().mockReturnThis(),
+    excludeLanguage: jest.fn().mockReturnThis(),
     letterType: jest.fn().mockReturnThis(),
   });
 
@@ -1677,9 +1678,10 @@ describe('templateClient', () => {
       } = setup();
 
       const filter: TemplateFilter = {
-        templateStatus: 'SUBMITTED',
+        templateStatus: ['SUBMITTED'],
         templateType: 'NHS_APP',
         language: 'en',
+        excludeLanguage: 'fr',
         letterType: 'x0',
       };
 
@@ -1708,10 +1710,85 @@ describe('templateClient', () => {
       expect(queryMock.templateStatus).toHaveBeenCalledWith('SUBMITTED');
       expect(queryMock.templateType).toHaveBeenCalledWith('NHS_APP');
       expect(queryMock.language).toHaveBeenCalledWith('en');
+      expect(queryMock.excludeLanguage).toHaveBeenCalledWith('fr');
       expect(queryMock.letterType).toHaveBeenCalledWith('x0');
 
       expect(result).toEqual({
         data: [template],
+      });
+    });
+
+    describe('templateStatus array parameter spreading', () => {
+      test('should spread multiple templateStatus values as separate arguments', async () => {
+        const {
+          templateClient,
+          mocks: { templateRepository, queryMock },
+        } = setup();
+
+        const filter: TemplateFilter = {
+          templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+        };
+
+        const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
+          id: templateId,
+          templateType: 'LETTER',
+          name: 'name',
+          language: 'en',
+          letterType: 'x0',
+          files: {} as LetterFiles,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          templateStatus: 'SUBMITTED',
+          lockNumber: 1,
+        };
+
+        templateRepository.query.mockReturnValueOnce(queryMock);
+        queryMock.list.mockResolvedValueOnce({
+          data: [template],
+        });
+
+        const result = await templateClient.listTemplates(user, filter);
+
+        expect(queryMock.templateStatus).toHaveBeenCalledWith(
+          'SUBMITTED',
+          'PROOF_APPROVED'
+        );
+        expect(result).toEqual({
+          data: [template],
+        });
+      });
+
+      test('should spread single-element templateStatus array correctly', async () => {
+        const {
+          templateClient,
+          mocks: { templateRepository, queryMock },
+        } = setup();
+
+        const filter = {
+          templateStatus: ['SUBMITTED'],
+        } as TemplateFilter;
+
+        const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
+          id: templateId,
+          templateType: 'LETTER',
+          name: 'name',
+          language: 'en',
+          letterType: 'x0',
+          files: {} as LetterFiles,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          templateStatus: 'SUBMITTED',
+          lockNumber: 1,
+        };
+
+        templateRepository.query.mockReturnValueOnce(queryMock);
+        queryMock.list.mockResolvedValueOnce({
+          data: [template],
+        });
+
+        await templateClient.listTemplates(user, filter);
+
+        expect(queryMock.templateStatus).toHaveBeenCalledWith('SUBMITTED');
       });
     });
   });
