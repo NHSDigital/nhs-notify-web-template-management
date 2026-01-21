@@ -49,7 +49,7 @@
       "const": "control"
     },
     "data": {
-      "$ref": "#/$defs/TemplateDeletedEventData"
+      "$ref": "#/$defs/TemplateEventData"
     }
   },
   "required": [
@@ -66,37 +66,19 @@
     "data"
   ],
   "$defs": {
-    "TemplateDeletedEventData": {
-      "allOf": [
+    "TemplateEventData": {
+      "anyOf": [
         {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/EmailTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/NhsAppTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/LetterTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/SmsTemplateEventData"
-            }
-          ]
+          "$ref": "#/$defs/EmailTemplateEventData"
         },
         {
-          "type": "object",
-          "properties": {
-            "templateStatus": {
-              "type": "string",
-              "enum": [
-                "DELETED"
-              ]
-            }
-          },
-          "required": [
-            "templateStatus"
-          ]
+          "$ref": "#/$defs/NhsAppTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/LetterTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/SmsTemplateEventData"
         }
       ]
     },
@@ -135,19 +117,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_APPROVED",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -222,19 +192,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_APPROVED",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -303,19 +261,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_APPROVED",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -467,19 +413,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_APPROVED",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",

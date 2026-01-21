@@ -1,23 +1,9 @@
 import { z } from 'zod';
 import { languages } from './common';
 
-const templateStatuses = [
-  'DELETED',
-  'NOT_YET_SUBMITTED',
-  'PENDING_PROOF_REQUEST',
-  'PENDING_UPLOAD',
-  'PENDING_VALIDATION',
-  'PROOF_APPROVED',
-  'PROOF_AVAILABLE',
-  'SUBMITTED',
-  'VALIDATION_FAILED',
-  'VIRUS_SCAN_FAILED',
-  'WAITING_FOR_PROOF',
-];
-
 const letterTypes = ['q4', 'x0', 'x1'];
 
-export const $TemplateStatus = z.enum(templateStatuses);
+export const $TemplateStatus = z.string().max(1000);
 
 const $TemplateEventV1BaseData = z.object({
   owner: z.string().meta({
@@ -143,9 +129,13 @@ const $SmsTemplateEventV1Data = $TemplateEventV1BaseData
     id: 'SmsTemplateEventData',
   });
 
-export const $TemplateEventV1Data = z.discriminatedUnion('templateType', [
-  $EmailTemplateEventV1Data,
-  $NhsAppTemplateEventV1Data,
-  $LetterTemplateEventV1Data,
-  $SmsTemplateEventV1Data,
-]);
+export const $TemplateEventV1Data = z
+  .discriminatedUnion('templateType', [
+    $EmailTemplateEventV1Data,
+    $NhsAppTemplateEventV1Data,
+    $LetterTemplateEventV1Data,
+    $SmsTemplateEventV1Data,
+  ])
+  .meta({
+    id: 'TemplateEventData',
+  });
