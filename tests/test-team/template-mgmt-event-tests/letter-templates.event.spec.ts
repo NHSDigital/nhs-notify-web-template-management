@@ -22,7 +22,7 @@ test.describe('Event publishing - Letters', () => {
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
   let userProofingAndRoutingEnabled: TestUser;
-  let userProofingEnabledRoutingDisabled: TestUser;
+  let userProofingAndRoutingDisabled: TestUser;
   let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
