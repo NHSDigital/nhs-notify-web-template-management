@@ -1,6 +1,17 @@
 import { z } from 'zod';
-import { $TemplateEventV1Data } from '../template';
+import { $TemplateEventV1Data, $TemplateStatus } from '../template';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
+
+const $TemplateCompletedEventV1Data = z
+  .intersection(
+    $TemplateEventV1Data,
+    z.object({
+      templateStatus: $TemplateStatus.extract(['SUBMITTED']),
+    })
+  )
+  .meta({
+    id: 'TemplateCompletedEventData',
+  });
 
 export const $TemplateCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateCompleted.v1'),
@@ -9,7 +20,7 @@ export const $TemplateCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
   ),
   dataschemaversion: z.string().startsWith('1.'),
   plane: z.literal('control'),
-  data: $TemplateEventV1Data,
+  data: $TemplateCompletedEventV1Data,
 });
 
 export type TemplateCompletedEventV1 = z.infer<
