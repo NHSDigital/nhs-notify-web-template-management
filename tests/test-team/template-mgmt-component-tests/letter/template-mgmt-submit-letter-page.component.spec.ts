@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
