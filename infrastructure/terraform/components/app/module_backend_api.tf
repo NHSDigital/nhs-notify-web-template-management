@@ -24,6 +24,7 @@ module "backend_api" {
   letter_suppliers          = var.letter_suppliers
   log_destination_arn       = local.log_destination_arn
   log_subscription_role_arn = local.acct.log_subscription_role_arn
+  enable_api_data_trace     = var.enable_api_data_trace
 
   email_domain                            = module.ses.domain
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
