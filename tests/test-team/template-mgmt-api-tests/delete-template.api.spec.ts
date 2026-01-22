@@ -9,10 +9,14 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { Template } from 'helpers/types';
+import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
+import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 
 test.describe('DELETE /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
+  const routingConfigStorageHelper = new RoutingConfigStorageHelper();
+
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
@@ -26,6 +30,8 @@ test.describe('DELETE /v1/template/:templateId', () => {
   test.afterAll(async () => {
     await templateStorageHelper.deleteAdHocTemplates();
     await templateStorageHelper.deleteSeededTemplates();
+    await routingConfigStorageHelper.deleteAdHoc();
+    await routingConfigStorageHelper.deleteSeeded();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -759,6 +765,63 @@ test.describe('DELETE /v1/template/:templateId', () => {
       statusCode: 409,
       technicalMessage:
         'Lock number mismatch - Template has been modified since last read',
+    });
+  });
+
+  test('returns 400 with errorCode when template is referenced in active message plans', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const messagePlan = RoutingConfigFactory.createForMessageOrder(
+      user1,
+      'NHSAPP'
+    ).addTemplate('NHSAPP', created.data.id).dbEntry;
+
+    await routingConfigStorageHelper.seed([messagePlan]);
+    routingConfigStorageHelper.addAdHocKey({
+      id: messagePlan.id,
+      clientId: user1.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
+        },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(400);
+
+    const body = await deleteResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'Template is linked to active message plans and cannot be deleted',
+      details: {
+        errorCode: 'TEMPLATE_IN_USE',
+      },
     });
   });
 });

@@ -129,7 +129,10 @@ export async function setTemplateToDeleted(
     logger.error('Failed to save template', error);
 
     if (
-      error.errorMeta?.description?.includes('linked to active message plans')
+      error.errorMeta?.details &&
+      typeof error.errorMeta.details === 'object' &&
+      'errorCode' in error.errorMeta.details &&
+      error.errorMeta.details.errorCode === 'TEMPLATE_IN_USE'
     ) {
       throw new Error('TEMPLATE_IN_USE');
     }

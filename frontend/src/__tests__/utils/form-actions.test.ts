@@ -727,6 +727,9 @@ describe('form-actions', () => {
           code: 400,
           description:
             'Template is linked to active message plans and cannot be deleted',
+          details: {
+            errorCode: 'TEMPLATE_IN_USE',
+          },
         },
       };
 

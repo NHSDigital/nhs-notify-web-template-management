@@ -403,7 +403,9 @@ export class TemplateClient {
 
       return failure(
         ErrorCase.TEMPLATE_IN_USE,
-        'Template is linked to active message plans and cannot be deleted'
+        'Template is linked to active message plans and cannot be deleted',
+        undefined,
+        { errorCode: 'TEMPLATE_IN_USE' }
       );
     }
 
