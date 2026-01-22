@@ -1915,7 +1915,44 @@ describe('templateClient', () => {
       });
     });
 
-    test('submitTemplate should return updated template', async () => {
+    test('submitTemplate should return template updated to SUBMITTED - routing is disabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 0);
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        user,
+        'SUBMITTED',
+        0
+      );
+
+      expect(result).toEqual({
+        data: notYetSubmittedDto,
+      });
+    });
+
+    test('submitTemplate should return template updated to SUBMITTED  - routing is enabled', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.get.mockResolvedValueOnce({

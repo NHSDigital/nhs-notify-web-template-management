@@ -15,8 +15,8 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { fetchClient } from '@utils/server-features';
 import content from '@content/content';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -25,7 +25,7 @@ jest.mock('@utils/server-features');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
-const fetchClientMock = jest.mocked(fetchClient);
+const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('SubmitLetterTemplatePage', () => {
   beforeEach(() => {
@@ -117,38 +117,26 @@ describe('SubmitLetterTemplatePage', () => {
   });
 
   test('should generate metadata with routing-enabled title when routing feature is enabled', async () => {
-    fetchClientMock.mockResolvedValueOnce({
-      features: { routing: true },
-      campaignIds: [],
-    });
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(true);
 
     const metadata = await generateMetadata();
 
     expect(metadata).toEqual({
       title: content.pages.submitLetterTemplate.routingFlagEnabled.pageTitle,
     });
+
+    expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('routing');
   });
 
   test('should generate metadata with routing-disabled title when routing feature is disabled', async () => {
-    fetchClientMock.mockResolvedValueOnce({
-      features: { routing: false },
-      campaignIds: [],
-    });
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(false);
 
     const metadata = await generateMetadata();
 
     expect(metadata).toEqual({
       title: content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle,
     });
-  });
 
-  test('should generate metadata with routing-disabled title when fetchClient returns null', async () => {
-    fetchClientMock.mockResolvedValueOnce(null);
-
-    const metadata = await generateMetadata();
-
-    expect(metadata).toEqual({
-      title: content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle,
-    });
+    expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('routing');
   });
 });
