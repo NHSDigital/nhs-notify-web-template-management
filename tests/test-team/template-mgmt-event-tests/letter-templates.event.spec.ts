@@ -21,16 +21,14 @@ test.describe('Event publishing - Letters', () => {
   const sftpHelper = new SftpHelper();
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-  let userProofingAndRoutingEnabled: TestUser;
-  let userProofingAndRoutingDisabled: TestUser;
+  let userRoutingEnabled: TestUser;
+  let userRoutingDisabledProofingEnabled: TestUser;
   let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
     await sftpHelper.connect();
-    userProofingAndRoutingEnabled = await authHelper.getTestUser(
-      testUsers.User1.userId
-    );
-    userProofingEnabledRoutingDisabled = await authHelper.getTestUser(
+    userRoutingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
+    userRoutingDisabledProofingEnabled = await authHelper.getTestUser(
       testUsers.User2.userId
     );
     userProofingDisabled = await authHelper.getTestUser(testUsers.User3.userId);
@@ -91,7 +89,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingAndRoutingEnabled,
+        userRoutingEnabled,
         'user-proof-disabled',
         'VALIDATION_FAILED'
       ),
@@ -103,7 +101,7 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
-          Authorization: await userProofingAndRoutingEnabled.getAccessToken(),
+          Authorization: await userRoutingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -127,7 +125,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingEnabledRoutingDisabled,
+        userRoutingDisabledProofingEnabled,
         'userProofingEnabledTemplate',
         'PENDING_PROOF_REQUEST'
       ),
@@ -144,7 +142,7 @@ test.describe('Event publishing - Letters', () => {
     );
 
     const supplierReference = [
-      userProofingEnabledRoutingDisabled.clientId,
+      userRoutingDisabledProofingEnabled.clientId,
       'campaign',
       templateId,
       'en',
@@ -169,7 +167,7 @@ test.describe('Event publishing - Letters', () => {
       {
         headers: {
           Authorization:
-            await userProofingEnabledRoutingDisabled.getAccessToken(),
+            await userRoutingDisabledProofingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -191,7 +189,7 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       latest = await templateStorageHelper.getTemplate({
         templateId,
-        clientId: userProofingEnabledRoutingDisabled.clientId,
+        clientId: userRoutingDisabledProofingEnabled.clientId,
       });
 
       expect(latest.templateStatus).toBe('PROOF_AVAILABLE');
@@ -202,7 +200,7 @@ test.describe('Event publishing - Letters', () => {
       {
         headers: {
           Authorization:
-            await userProofingEnabledRoutingDisabled.getAccessToken(),
+            await userRoutingDisabledProofingEnabled.getAccessToken(),
           'X-Lock-Number': String(latest.lockNumber),
         },
       }
@@ -283,7 +281,7 @@ test.describe('Event publishing - Letters', () => {
 
     const template = TemplateFactory.uploadLetterTemplate(
       templateId,
-      userProofingAndRoutingEnabled,
+      userRoutingEnabled,
       'userRoutingEnabledTemplate',
       'PROOF_AVAILABLE'
     );
@@ -296,7 +294,7 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
       {
         headers: {
-          Authorization: await userProofingAndRoutingEnabled.getAccessToken(),
+          Authorization: await userRoutingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -341,7 +339,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingAndRoutingEnabled,
+        userRoutingEnabled,
         'user-proof-deleted',
         'PENDING_PROOF_REQUEST'
       ),
@@ -356,7 +354,7 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
-          Authorization: await userProofingAndRoutingEnabled.getAccessToken(),
+          Authorization: await userRoutingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
