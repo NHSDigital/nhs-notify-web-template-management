@@ -8,8 +8,6 @@ export const $RoutingConfigEventChannel = z.enum([
   'LETTER',
 ]);
 
-export const $RoutingConfigStatus = z.enum(['DELETED', 'DRAFT', 'COMPLETED']);
-
 const accessibleFormats = ['x1'];
 
 export type RoutingConfigEventChannel = z.infer<
@@ -91,41 +89,45 @@ const $CascadeGroupOverride = z
   });
 export type CascadeGroupOverride = z.infer<typeof $CascadeGroupOverride>;
 
-export const $RoutingConfigEventV1Data = z.object({
-  clientId: z.string().meta({
-    description: 'The client that owns the routing config',
-  }),
-  campaignId: z.string().meta({
-    description: 'The campaign that is associated with the routing config',
-  }),
-  id: z
-    .string()
-    .meta({
-      description: 'Unique identifier of the routing config',
-    })
-    // eslint-disable-next-line security/detect-unsafe-regex
-    .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/),
-  name: z.string().meta({
-    description: 'User-provided name identifying the routing config',
-  }),
-  defaultCascadeGroup: z.string().meta({
-    description: 'Default cascade group name',
-  }),
-  createdAt: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
-    .meta({
-      description: 'Timestamp for when the routing config was created',
+export const $RoutingConfigEventV1Data = z
+  .object({
+    clientId: z.string().meta({
+      description: 'The client that owns the routing config',
     }),
-  cascade: z.array($CascadeItem).meta({
-    description:
-      'Array defining the order of channels for the routing config and how they are configured',
-  }),
-  cascadeGroupOverrides: z.array($CascadeGroupOverride).meta({
-    description:
-      'Config defining non-default cascade groups and the conditons under which they will be used',
-  }),
-  status: $RoutingConfigStatus.meta({
-    description: 'Routing config status',
-  }),
-});
+    campaignId: z.string().meta({
+      description: 'The campaign that is associated with the routing config',
+    }),
+    id: z
+      .string()
+      .meta({
+        description: 'Unique identifier of the routing config',
+      })
+      // eslint-disable-next-line security/detect-unsafe-regex
+      .regex(/^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/),
+    name: z.string().meta({
+      description: 'User-provided name identifying the routing config',
+    }),
+    defaultCascadeGroup: z.string().meta({
+      description: 'Default cascade group name',
+    }),
+    createdAt: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+      .meta({
+        description: 'Timestamp for when the routing config was created',
+      }),
+    cascade: z.array($CascadeItem).meta({
+      description:
+        'Array defining the order of channels for the routing config and how they are configured',
+    }),
+    cascadeGroupOverrides: z.array($CascadeGroupOverride).meta({
+      description:
+        'Config defining non-default cascade groups and the conditons under which they will be used',
+    }),
+    status: z.string().meta({
+      description: 'Routing config status',
+    }),
+  })
+  .meta({
+    id: 'RoutingConfigEventData',
+  });

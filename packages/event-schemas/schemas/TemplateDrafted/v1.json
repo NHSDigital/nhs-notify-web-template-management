@@ -49,7 +49,7 @@
       "const": "control"
     },
     "data": {
-      "$ref": "#/$defs/TemplateDraftedEventData"
+      "$ref": "#/$defs/TemplateEventData"
     }
   },
   "required": [
@@ -66,44 +66,19 @@
     "data"
   ],
   "$defs": {
-    "TemplateDraftedEventData": {
-      "allOf": [
+    "TemplateEventData": {
+      "anyOf": [
         {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/EmailTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/NhsAppTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/LetterTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/SmsTemplateEventData"
-            }
-          ]
+          "$ref": "#/$defs/EmailTemplateEventData"
         },
         {
-          "type": "object",
-          "properties": {
-            "templateStatus": {
-              "type": "string",
-              "enum": [
-                "NOT_YET_SUBMITTED",
-                "PENDING_PROOF_REQUEST",
-                "PENDING_UPLOAD",
-                "PENDING_VALIDATION",
-                "PROOF_AVAILABLE",
-                "VALIDATION_FAILED",
-                "VIRUS_SCAN_FAILED",
-                "WAITING_FOR_PROOF"
-              ]
-            }
-          },
-          "required": [
-            "templateStatus"
-          ]
+          "$ref": "#/$defs/NhsAppTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/LetterTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/SmsTemplateEventData"
         }
       ]
     },
@@ -142,18 +117,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -228,18 +192,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -308,18 +261,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -471,18 +413,7 @@
         "templateStatus": {
           "description": "Current status of the template",
           "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
+          "maxLength": 1000
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
