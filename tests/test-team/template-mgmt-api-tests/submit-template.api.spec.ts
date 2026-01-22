@@ -196,7 +196,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated.data.createdAt).toEqual(createdAt);
     });
 
-    test('returns 200 with SUBMITTED status when routing is disabled', async ({
+    test('returns 200 with SUBMITTED status when routing is disabled, email is sent to supplier', async ({
       request,
     }) => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(

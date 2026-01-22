@@ -53,7 +53,7 @@ describe('SubmitLetterTemplate component', () => {
   });
 
   it('should render with client proofing and routing disabled', () => {
-    jest.mocked(useFeatureFlags).mockReturnValueOnce({ proofing: false });
+    jest.mocked(useFeatureFlags).mockReturnValueOnce({});
 
     const container = render(
       <SubmitLetterTemplate

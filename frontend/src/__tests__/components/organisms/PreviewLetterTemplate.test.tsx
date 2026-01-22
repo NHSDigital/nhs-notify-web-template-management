@@ -173,6 +173,44 @@ describe('PreviewLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('matches snapshot when template status is PROOF_APPROVED', () => {
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE',
+          clientId: 'client-id',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'PROOF_APPROVED',
+          letterType: 'x1',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+            },
+          },
+          proofingEnabled: true,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('matches snapshot when template status is NOT_YET_SUBMITTED', () => {
     const container = render(
       <PreviewLetterTemplate

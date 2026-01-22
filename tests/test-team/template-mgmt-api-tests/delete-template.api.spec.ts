@@ -128,6 +128,41 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
     });
 
+    test('returns 204 - can delete a proof approved letter', async ({
+      request,
+    }) => {
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
+
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await userRoutingDisabled.getAccessToken(),
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      );
+
+      const submitResult = await submitResponse.json();
+
+      expect(
+        submitResponse.status(),
+        JSON.stringify(submitResult, null, 2)
+      ).toBe(200);
+
+      const deleteResponse = await request.delete(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(submitResult.data.lockNumber),
+          },
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(204);
+    });
+
     test('returns 400 - cannot delete a submitted template', async ({
       request,
     }) => {

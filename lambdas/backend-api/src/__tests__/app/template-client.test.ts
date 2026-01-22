@@ -1794,16 +1794,17 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
-    const expectedTemplateDto: TemplateDto = {
+    const notYetSubmittedDto: TemplateDto = {
       id: templateId,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       templateType: 'SMS',
       lockNumber: 1,
     };
+
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1835,7 +1836,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
-          ...expectedTemplateDto,
+          ...notYetSubmittedDto,
           owner: user.internalUserId,
           version: 1,
         },
@@ -1873,7 +1874,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const template: DatabaseTemplate = {
-        ...expectedTemplateDto,
+        ...notYetSubmittedDto,
         createdAt: undefined as unknown as string,
         owner: `CLIENT#${user.clientId}`,
         version: 1,
@@ -1885,7 +1886,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
-          ...expectedTemplateDto,
+          ...notYetSubmittedDto,
           owner: user.internalUserId,
           version: 1,
         },
@@ -1919,7 +1920,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
-          ...expectedTemplateDto,
+          ...notYetSubmittedDto,
           owner: `CLIENT#${user.clientId}`,
           version: 1,
         },
@@ -1927,7 +1928,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         data: {
-          ...expectedTemplateDto,
+          ...notYetSubmittedDto,
           owner: user.internalUserId,
           version: 1,
         },
@@ -1947,7 +1948,7 @@ describe('templateClient', () => {
       );
 
       expect(result).toEqual({
-        data: expectedTemplateDto,
+        data: notYetSubmittedDto,
       });
     });
 
