@@ -14,6 +14,7 @@ import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-pro
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { EmailHelper } from '../helpers/email-helper';
 import { loginAsUser } from '../helpers/auth/login-as-user';
+import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 const emailHelper = new EmailHelper();
@@ -266,6 +267,24 @@ function submit(
   });
 }
 
+function approve(
+  page: Page,
+  templateStorageHelper: TemplateStorageHelper,
+  templateKey: { templateId: string; clientId: string }
+) {
+  return test.step('approve the template', async () => {
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+
+    const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
+    await submitTemplatePage.clickSubmitTemplateButton();
+
+    await expect(page).toHaveURL(TemplateMgmtMessageTemplatesPage.url);
+
+    const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
+    expect(finalTemplate.templateStatus).toBe('PROOF_APPROVED');
+  });
+}
+
 function checkEmail(
   supplierReference: string,
   testStart: Date,
@@ -292,12 +311,16 @@ function checkEmail(
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
-  let userWithProofing: TestUser;
+  let userWithRouting: TestUser;
+  let userWithoutRouting: TestUser;
   let userWithoutProofing: TestUser;
 
   test.beforeAll(async () => {
-    userWithProofing = await createAuthHelper().getTestUser(
+    userWithRouting = await createAuthHelper().getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
+    );
+    userWithoutRouting = await createAuthHelper().getTestUser(
+      testUsers.User2.userId
     );
     userWithoutProofing = await createAuthHelper().getTestUser(
       testUsers.User3.userId
@@ -308,19 +331,58 @@ test.describe('letter complete e2e journey', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  test('Full journey - template created, files scanned and validated, proof requested, template successfully submitted', async ({
+  test('Full journey - template created, files scanned and validated, proof requested, template approved', async ({
     page,
   }) => {
     const testStart = new Date();
 
-    await loginAsUser(userWithProofing, page);
+    await loginAsUser(userWithRouting, page);
 
     const templateKey = await create(
       page,
       templateStorageHelper,
-      userWithProofing,
+      userWithRouting,
       'PENDING_PROOF_REQUEST',
       'campaign-id'
+    );
+
+    await continueAfterCreation(page);
+
+    const supplierReference = await requestProof(
+      page,
+      templateStorageHelper,
+      templateKey
+    );
+
+    await checkEmail(
+      supplierReference,
+      testStart,
+      'Proof Requested',
+      'proof-requested-sender'
+    );
+
+    await approve(page, templateStorageHelper, templateKey);
+
+    await checkEmail(
+      supplierReference,
+      testStart,
+      'Template Submitted',
+      'template-submitted-sender'
+    );
+  });
+
+  test('Full journey with routing disabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
+    page,
+  }) => {
+    const testStart = new Date();
+
+    await loginAsUser(userWithoutRouting, page);
+
+    const templateKey = await create(
+      page,
+      templateStorageHelper,
+      userWithoutRouting,
+      'PENDING_PROOF_REQUEST'
     );
 
     await continueAfterCreation(page);

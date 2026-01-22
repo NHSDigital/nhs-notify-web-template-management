@@ -17,7 +17,8 @@ import {
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
 import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
-import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
+
+// submit/approve letter tests are in template-mgmt-submit-letter-page.component.spec.ts
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
@@ -131,32 +132,6 @@ async function createTemplates() {
         message: 'test-template-message',
       },
     },
-    letter: {
-      empty: {
-        id: '324a6461-16af-4b49-939f-dd3562aa037e',
-        version: 1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateType: 'LETTER',
-        templateStatus: 'NOT_YET_SUBMITTED',
-        owner: `CLIENT#${user.clientId}`,
-      } as Template,
-      submit: TemplateFactory.uploadLetterTemplate(
-        '525812d2-04ed-4363-941d-8fc4f41ad2c1',
-        user,
-        'submit-letter-submit-template'
-      ),
-      submitAndReturn: TemplateFactory.uploadLetterTemplate(
-        'ca0979e2-a8de-40bc-bf59-8cfd946145c5',
-        user,
-        'submit-and-return-letter-template'
-      ),
-      valid: TemplateFactory.uploadLetterTemplate(
-        '70ab3978-3d07-4ad4-bf58-a8bbe8db45ec',
-        user,
-        'valid-letter-submit-template'
-      ),
-    },
   };
 }
 
@@ -170,7 +145,6 @@ test.describe('Submit template Page', () => {
       ...Object.values(templates.email),
       ...Object.values(templates['text-message']),
       ...Object.values(templates['nhs-app']),
-      ...Object.values(templates.letter),
     ];
     await templateStorageHelper.seedTemplateData(templateList);
   });
@@ -197,12 +171,6 @@ test.describe('Submit template Page', () => {
       channelIdentifier: 'nhs-app',
       PageModel: TemplateMgmtSubmitNhsAppPage,
       expectedHeading: "Submit 'valid-nhs-app-submit-template'",
-    },
-    {
-      channelName: 'Letter',
-      channelIdentifier: 'letter',
-      PageModel: TemplateMgmtSubmitLetterPage,
-      expectedHeading: "Approve 'valid-letter-submit-template'",
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop

@@ -18,16 +18,19 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
+import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
 
+// clear login state from e2e.setup.ts
+test.use({ storageState: { cookies: [], origins: [] } });
+
+let routingEnabledUser: TestUser;
 let routingDisabledUser: TestUser;
 let proofingDisabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
-  const user = await authHelper.getTestUser(testUsers.User1.userId);
-  // User2 has Client5: proofing=true, routing=false
+  routingEnabledUser = await authHelper.getTestUser(testUsers.User1.userId);
   routingDisabledUser = await authHelper.getTestUser(testUsers.User2.userId);
-  // User3 has Client2: proofing=false, routing=false
   proofingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
 
   return {
@@ -38,43 +41,28 @@ async function createTemplates() {
       updatedAt: new Date().toISOString(),
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
-      owner: `CLIENT#${user.clientId}`,
+      owner: `CLIENT#${routingEnabledUser.clientId}`,
     } as Template,
-    // User1 template: proofing=true, routing=true -> "Approve" heading
+
     routingEnabled: TemplateFactory.uploadLetterTemplate(
-      'E3F4D5C6-B7A8-9012-3456-789012345678',
-      user,
-      'routing-enabled-submit-letter'
+      '71f93ddb-d949-438c-af28-127abfc15f24',
+      routingEnabledUser,
+      'routing-enabled-submit-letter',
+      'PROOF_AVAILABLE'
     ),
-    // Additional template for submit action test (User1)
-    routingEnabledSubmit: TemplateFactory.uploadLetterTemplate(
-      'A1B2C3D4-E5F6-7890-1234-567890123456',
-      user,
-      'routing-enabled-submit-action-letter'
-    ),
-    // User2 template: proofing=true, routing=false -> "Approve and submit" heading
+
     routingDisabled: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
+      'b9321307-abfe-48d1-a10a-1d7fe21bd18c',
       routingDisabledUser,
-      'routing-disabled-submit-letter'
+      'routing-disabled-submit-letter',
+      'PROOF_AVAILABLE'
     ),
-    // Additional template for submit action test (User2)
-    routingDisabledSubmit: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
-      routingDisabledUser,
-      'routing-disabled-submit-action-letter'
-    ),
-    // User3 template: proofing=false, routing=false -> "Submit" heading
+
     proofingDisabled: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
+      '900a8ee3-50e4-49a8-b157-a179f1905f4b',
       proofingDisabledUser,
-      'proofing-disabled-submit-letter'
-    ),
-    // Additional template for submit action test (User3)
-    proofingDisabledSubmit: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
-      proofingDisabledUser,
-      'proofing-disabled-submit-action-letter'
+      'proofing-disabled-submit-letter',
+      'NOT_YET_SUBMITTED'
     ),
   };
 }
@@ -92,87 +80,98 @@ test.describe('Submit Letter Template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  // Default tests run with User1 (proofing=true, routing=true)
-  test.describe('Proofing enabled, Routing enabled', () => {
-    test('when user visits page, then page is loaded with "Approve" heading', async ({
-      page,
-      baseURL,
-    }) => {
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingEnabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingEnabled.lockNumber)
-        );
+  test('when routing is enabled and user submits form, then the "message templates" page is displayed', async ({
+    page,
+    baseURL,
+  }) => {
+    await loginAsUser(routingEnabledUser, page);
 
-      await submitPage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-letter-template/${templates.routingEnabled.id}?lockNumber=${templates.routingEnabled.lockNumber}`
+    const submitPage = new TemplateMgmtSubmitLetterPage(page)
+      .setPathParam('templateId', templates.routingEnabled.id)
+      .setSearchParam(
+        'lockNumber',
+        String(templates.routingEnabled.lockNumber)
       );
 
-      await expect(submitPage.pageHeading).toHaveText(
-        `Approve '${templates.routingEnabled.name}'`
+    await submitPage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/submit-letter-template/${templates.routingEnabled.id}?lockNumber=${templates.routingEnabled.lockNumber}`
+    );
+
+    await expect(submitPage.pageHeading).toHaveText(
+      `Approve '${templates.routingEnabled.name}'`
+    );
+
+    await expect(submitPage.submitButton).toHaveText('Approve template proof');
+
+    await submitPage.clickSubmitTemplateButton();
+
+    await expect(page).toHaveURL(TemplateMgmtMessageTemplatesPage.url);
+  });
+
+  test('when routing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
+    page,
+    baseURL,
+  }) => {
+    await loginAsUser(routingDisabledUser, page);
+
+    const submitPage = new TemplateMgmtSubmitLetterPage(page)
+      .setPathParam('templateId', templates.routingDisabled.id)
+      .setSearchParam(
+        'lockNumber',
+        String(templates.routingDisabled.lockNumber)
       );
-    });
 
-    test('submit button has "Approve template proof" text', async ({
-      page,
-    }) => {
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingEnabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingEnabled.lockNumber)
-        );
+    await submitPage.loadPage();
 
-      await submitPage.loadPage();
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/submit-letter-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
+    );
 
-      await expect(submitPage.submitButton).toHaveText(
-        'Approve template proof'
+    await expect(submitPage.pageHeading).toHaveText(
+      `Approve and submit '${templates.routingDisabled.name}'`
+    );
+
+    await expect(submitPage.submitButton).toHaveText('Approve and submit');
+
+    await submitPage.clickSubmitTemplateButton();
+
+    await expect(page).toHaveURL(
+      `/templates/letter-template-submitted/${templates.routingDisabled.id}`
+    );
+  });
+
+  test('when proofing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
+    page,
+    baseURL,
+  }) => {
+    await loginAsUser(proofingDisabledUser, page);
+
+    const submitPage = new TemplateMgmtSubmitLetterPage(page)
+      .setPathParam('templateId', templates.proofingDisabled.id)
+      .setSearchParam(
+        'lockNumber',
+        String(templates.proofingDisabled.lockNumber)
       );
-    });
 
-    test('common page tests', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtSubmitLetterPage(page)
-          .setPathParam('templateId', templates.routingEnabled.id)
-          .setSearchParam(
-            'lockNumber',
-            String(templates.routingEnabled.lockNumber)
-          ),
-        baseURL,
-      };
+    await submitPage.loadPage();
 
-      await assertSkipToMainContent(props);
-      await assertHeaderLogoLink(props);
-      await assertSignOutLink(props);
-      await assertFooterLinks(props);
-      await assertBackLinkBottom({
-        ...props,
-        expectedUrl: `templates/preview-letter-template/${templates.routingEnabled.id}`,
-      });
-      await assertBackLinkTopNotPresent(props);
-    });
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/submit-letter-template/${templates.proofingDisabled.id}?lockNumber=${templates.proofingDisabled.lockNumber}`
+    );
 
-    test('when user submits form, then the "Template submitted" page is displayed', async ({
-      page,
-    }) => {
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingEnabledSubmit.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingEnabledSubmit.lockNumber)
-        );
+    await expect(submitPage.pageHeading).toHaveText(
+      `Submit '${templates.proofingDisabled.name}'`
+    );
 
-      await submitPage.loadPage();
+    await expect(submitPage.submitButton).toHaveText('Submit template');
 
-      await submitPage.clickSubmitTemplateButton();
+    await submitPage.clickSubmitTemplateButton();
 
-      await expect(page).toHaveURL(
-        /\/templates\/letter-template-submitted\/(.*)/ // eslint-disable-line security/detect-non-literal-regexp
-      );
-    });
+    await expect(page).toHaveURL(
+      `/templates/letter-template-submitted/${templates.proofingDisabled.id}`
+    );
   });
 
   test.describe('Error handling', () => {
@@ -180,6 +179,8 @@ test.describe('Submit Letter Template Page', () => {
       baseURL,
       page,
     }) => {
+      await loginAsUser(routingEnabledUser, page);
+
       const submitPage = new TemplateMgmtSubmitLetterPage(page)
         .setPathParam('templateId', templates.empty.id)
         .setSearchParam('lockNumber', String(templates.empty.lockNumber));
@@ -193,6 +194,8 @@ test.describe('Submit Letter Template Page', () => {
       baseURL,
       page,
     }) => {
+      await loginAsUser(routingEnabledUser, page);
+
       const submitPage = new TemplateMgmtSubmitLetterPage(page)
         .setPathParam('templateId', 'fake-template-id')
         .setSearchParam('lockNumber', '1');
@@ -206,6 +209,8 @@ test.describe('Submit Letter Template Page', () => {
       baseURL,
       page,
     }) => {
+      await loginAsUser(routingEnabledUser, page);
+
       const submitPage = new TemplateMgmtSubmitLetterPage(page).setPathParam(
         'templateId',
         templates.routingEnabled.id
@@ -219,133 +224,27 @@ test.describe('Submit Letter Template Page', () => {
     });
   });
 
-  // Tests for User2 (proofing=true, routing=false)
-  test.describe('Proofing enabled, Routing disabled', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+  test('common page tests', async ({ page, baseURL }) => {
+    await loginAsUser(routingEnabledUser, page);
 
-    test('when user visits page, then page is loaded with "Approve and submit" heading', async ({
-      page,
+    const props = {
+      page: new TemplateMgmtSubmitLetterPage(page)
+        .setPathParam('templateId', templates.routingEnabled.id)
+        .setSearchParam(
+          'lockNumber',
+          String(templates.routingEnabled.lockNumber)
+        ),
       baseURL,
-    }) => {
-      await loginAsUser(routingDisabledUser, page);
+    };
 
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingDisabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingDisabled.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-letter-template/${templates.routingDisabled.id}?lockNumber=${templates.routingDisabled.lockNumber}`
-      );
-
-      await expect(submitPage.pageHeading).toHaveText(
-        `Approve and submit '${templates.routingDisabled.name}'`
-      );
+    await assertSkipToMainContent(props);
+    await assertHeaderLogoLink(props);
+    await assertSignOutLink(props);
+    await assertFooterLinks(props);
+    await assertBackLinkBottom({
+      ...props,
+      expectedUrl: `templates/preview-letter-template/${templates.routingEnabled.id}`,
     });
-
-    test('submit button has "Approve and submit" text', async ({ page }) => {
-      await loginAsUser(routingDisabledUser, page);
-
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingDisabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingDisabled.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await expect(submitPage.submitButton).toHaveText('Approve and submit');
-    });
-
-    test('when user submits form, then the "Template submitted" page is displayed', async ({
-      page,
-    }) => {
-      await loginAsUser(routingDisabledUser, page);
-
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.routingDisabledSubmit.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.routingDisabledSubmit.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await submitPage.clickSubmitTemplateButton();
-
-      await expect(page).toHaveURL(
-        /\/templates\/letter-template-submitted\/(.*)/ // eslint-disable-line security/detect-non-literal-regexp
-      );
-    });
-  });
-
-  // Tests for User3 (proofing=false, routing=false)
-  test.describe('Proofing disabled', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test('when user visits page, then page is loaded with "Submit" heading', async ({
-      page,
-      baseURL,
-    }) => {
-      await loginAsUser(proofingDisabledUser, page);
-
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.proofingDisabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.proofingDisabled.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-letter-template/${templates.proofingDisabled.id}?lockNumber=${templates.proofingDisabled.lockNumber}`
-      );
-
-      await expect(submitPage.pageHeading).toHaveText(
-        `Submit '${templates.proofingDisabled.name}'`
-      );
-    });
-
-    test('submit button has "Submit" text', async ({ page }) => {
-      await loginAsUser(proofingDisabledUser, page);
-
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.proofingDisabled.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.proofingDisabled.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await expect(submitPage.submitButton).toHaveText('Submit');
-    });
-
-    test('when user submits form, then the "Template submitted" page is displayed', async ({
-      page,
-    }) => {
-      await loginAsUser(proofingDisabledUser, page);
-
-      const submitPage = new TemplateMgmtSubmitLetterPage(page)
-        .setPathParam('templateId', templates.proofingDisabledSubmit.id)
-        .setSearchParam(
-          'lockNumber',
-          String(templates.proofingDisabledSubmit.lockNumber)
-        );
-
-      await submitPage.loadPage();
-
-      await submitPage.clickSubmitTemplateButton();
-
-      await expect(page).toHaveURL(
-        /\/templates\/letter-template-submitted\/(.*)/ // eslint-disable-line security/detect-non-literal-regexp
-      );
-    });
+    await assertBackLinkTopNotPresent(props);
   });
 });
