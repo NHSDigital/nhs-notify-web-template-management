@@ -9,16 +9,15 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
 import { $LockNumber } from 'nhs-notify-backend-client';
-import { fetchClient } from '@utils/server-features';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 import content from '@content/content';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const clientConfig = await fetchClient();
+  const routingEnabled = await serverIsFeatureEnabled('routing');
 
-  const title =
-    clientConfig?.features.routing === true
-      ? content.pages.submitLetterTemplate.routingFlagEnabled.pageTitle
-      : content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle;
+  const title = routingEnabled
+    ? content.pages.submitLetterTemplate.routingFlagEnabled.pageTitle
+    : content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle;
 
   return {
     title,
