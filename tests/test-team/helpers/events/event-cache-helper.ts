@@ -94,6 +94,8 @@ export class EventCacheHelper {
             return data;
           }
 
+          console.log(error);
+
           throw new Error(
             `Unrecognized event schema detected in S3 file: ${fileName}`,
             {

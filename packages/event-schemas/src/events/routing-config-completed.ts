@@ -1,20 +1,6 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
-import {
-  $RoutingConfigEventV1Data,
-  $RoutingConfigStatus,
-} from '../routing-config';
-
-const $RoutingConfigCompletedEventV1Data = z
-  .intersection(
-    $RoutingConfigEventV1Data,
-    z.object({
-      status: $RoutingConfigStatus.extract(['COMPLETED']),
-    })
-  )
-  .meta({
-    id: 'RoutingConfigCompletedEventData',
-  });
+import { $RoutingConfigEventV1Data } from '../routing-config';
 
 export const $RoutingConfigCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal(
@@ -25,7 +11,7 @@ export const $RoutingConfigCompletedEventV1 = $NHSNotifyEventEnvelope.extend({
   ),
   dataschemaversion: z.string().startsWith('1.'),
   plane: z.literal('control'),
-  data: $RoutingConfigCompletedEventV1Data,
+  data: $RoutingConfigEventV1Data,
 });
 
 export type RoutingConfigCompletedEventV1 = z.infer<
