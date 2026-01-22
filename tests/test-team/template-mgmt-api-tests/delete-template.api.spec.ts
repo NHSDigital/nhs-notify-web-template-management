@@ -137,7 +137,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await userRoutingDisabled.getAccessToken(),
+            Authorization: await user1.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
