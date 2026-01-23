@@ -60,6 +60,11 @@ export type {
   GetV1TemplateByTemplateIdErrors,
   GetV1TemplateByTemplateIdResponse,
   GetV1TemplateByTemplateIdResponses,
+  GetV1TemplateByTemplateIdRoutingConfigurationsData,
+  GetV1TemplateByTemplateIdRoutingConfigurationsError,
+  GetV1TemplateByTemplateIdRoutingConfigurationsErrors,
+  GetV1TemplateByTemplateIdRoutingConfigurationsResponse,
+  GetV1TemplateByTemplateIdRoutingConfigurationsResponses,
   GetV1TemplatesData,
   GetV1TemplatesError,
   GetV1TemplatesErrors,
@@ -112,6 +117,8 @@ export type {
   PutV1TemplateByTemplateIdResponse,
   PutV1TemplateByTemplateIdResponses,
   RoutingConfig,
+  RoutingConfigReference,
+  RoutingConfigReferenceListSuccess,
   RoutingConfigStatus,
   RoutingConfigStatusActive,
   RoutingConfigSuccess,
@@ -128,4 +135,4 @@ export type {
   UploadLetterTemplate,
   VersionedFileDetails,
   VirusScanStatus,
-} from './types.gen.js';
+} from './types.gen';

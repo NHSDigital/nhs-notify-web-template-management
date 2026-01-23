@@ -28,6 +28,7 @@ import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
 import { TemplateRepository } from '../infra';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -45,6 +46,7 @@ export class TemplateClient {
     private readonly proofingQueue: ProofingQueue,
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
+    private readonly routingConfigRepository: RoutingConfigRepository,
     private readonly logger: Logger
   ) {}
 
@@ -289,8 +291,8 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -335,8 +337,8 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -422,8 +424,41 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    // Check if template is linked to any routing configs
+    const routingConfigsResult =
+      await this.routingConfigRepository.getByTemplateId(
+        templateId,
+        user.clientId
+      );
+
+    if (routingConfigsResult.error) {
+      log
+        .child(routingConfigsResult.error.errorMeta)
+        .error(
+          'Failed to check routing config links',
+          routingConfigsResult.error.actualError
+        );
+
+      return routingConfigsResult;
+    }
+
+    if (routingConfigsResult.data.length > 0) {
+      log
+        .child({
+          routingConfigs: routingConfigsResult.data,
+        })
+        .error('Template is linked to routing configs');
+
+      return failure(
+        ErrorCase.TEMPLATE_IN_USE,
+        'Template is linked to active message plans and cannot be deleted',
+        undefined,
+        { errorCode: 'TEMPLATE_IN_USE' }
       );
     }
 
@@ -529,8 +564,8 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 

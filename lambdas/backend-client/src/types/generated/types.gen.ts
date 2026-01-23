@@ -216,6 +216,16 @@ export type RoutingConfig = {
   updatedAt: string;
 };
 
+export type RoutingConfigReference = {
+  id: string;
+  name: string;
+};
+
+export type RoutingConfigReferenceListSuccess = {
+  data: Array<RoutingConfigReference>;
+  statusCode: number;
+};
+
 export type RoutingConfigStatus = RoutingConfigStatusActive | 'DELETED';
 
 export type RoutingConfigStatusActive = 'COMPLETED' | 'DRAFT';
@@ -767,6 +777,38 @@ export type PostV1TemplateByTemplateIdProofResponses = {
 
 export type PostV1TemplateByTemplateIdProofResponse =
   PostV1TemplateByTemplateIdProofResponses[keyof PostV1TemplateByTemplateIdProofResponses];
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to check for routing configuration references
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/routing-configurations';
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsError =
+  GetV1TemplateByTemplateIdRoutingConfigurationsErrors[keyof GetV1TemplateByTemplateIdRoutingConfigurationsErrors];
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsResponses = {
+  /**
+   * 200 response
+   */
+  200: RoutingConfigReferenceListSuccess;
+};
+
+export type GetV1TemplateByTemplateIdRoutingConfigurationsResponse =
+  GetV1TemplateByTemplateIdRoutingConfigurationsResponses[keyof GetV1TemplateByTemplateIdRoutingConfigurationsResponses];
 
 export type PatchV1TemplateByTemplateIdSubmitData = {
   body?: never;

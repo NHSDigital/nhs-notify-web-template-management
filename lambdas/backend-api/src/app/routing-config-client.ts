@@ -6,6 +6,7 @@ import {
   $UpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
+  type RoutingConfigReference,
   type Result,
   type RoutingConfig,
 } from 'nhs-notify-backend-client';
@@ -65,8 +66,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -118,8 +119,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -152,8 +153,8 @@ export class RoutingConfigClient {
 
     if (!lockNumberValidation.success) {
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -246,5 +247,15 @@ export class RoutingConfigClient {
     }
 
     return query.count();
+  }
+
+  async getRoutingConfigsByTemplateId(
+    user: User,
+    templateId: string
+  ): Promise<Result<RoutingConfigReference[]>> {
+    return this.routingConfigRepository.getByTemplateId(
+      templateId,
+      user.clientId
+    );
   }
 }
