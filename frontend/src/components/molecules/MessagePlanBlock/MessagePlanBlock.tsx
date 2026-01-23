@@ -31,6 +31,7 @@ export function MessagePlanBlock({
 }) {
   return (
     <li
+      id={`channel-${channelItem.channel}`}
       className={styles['message-plan-block']}
       data-testid={`message-plan-block-${channelItem.channel}`}
     >

@@ -1156,32 +1156,41 @@ const createEditMessagePlan = {
       text: 'Save and close',
     },
   },
+  validationError: {
+    hintText: 'You must choose a template for each message.',
+    linkText: 'You have not chosen a template for your {{ordinal}} message',
+  },
   messagePlanFallbackConditions,
 };
 
 const chooseNhsAppTemplate = {
   pageTitle: generatePageTitle('Choose an NHS App template'),
   pageHeading: 'Choose an NHS App template',
+  noTemplatesText: 'You do not have any NHS App templates yet.',
 };
 
 const chooseEmailTemplate = {
   pageTitle: generatePageTitle('Choose an email template'),
   pageHeading: 'Choose an email template',
+  noTemplatesText: 'You do not have any email templates yet.',
 };
 
 const chooseTextMessageTemplate = {
   pageTitle: generatePageTitle('Choose a text message (SMS) template'),
   pageHeading: 'Choose a text message (SMS) template',
+  noTemplatesText: 'You do not have any text message (SMS) templates yet.',
 };
 
 const chooseStandardEnglishLetterTemplate = {
   pageTitle: generatePageTitle('Choose a letter template'),
   pageHeading: 'Choose a letter template',
+  noTemplatesText: 'You do not have any standard letter templates yet.',
 };
 
 const chooseLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Choose a large print letter template'),
   pageHeading: 'Choose a large print letter template',
+  noTemplatesText: 'You do not have any large print letter templates yet.',
 };
 
 const previewLargePrintLetterTemplate = {
@@ -1200,7 +1209,6 @@ const chooseOtherLanguageLetterTemplate = {
 const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
-  noTemplatesText: 'You do not have any templates yet.',
   tableHintText: 'Choose one option',
   tableContent: {
     selectHeading: 'Select',
