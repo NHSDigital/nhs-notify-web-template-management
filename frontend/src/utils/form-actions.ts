@@ -127,6 +127,16 @@ export async function setTemplateToDeleted(
 
   if (error) {
     logger.error('Failed to save template', error);
+
+    if (
+      error.errorMeta?.details &&
+      typeof error.errorMeta.details === 'object' &&
+      'errorCode' in error.errorMeta.details &&
+      error.errorMeta.details.errorCode === 'TEMPLATE_IN_USE'
+    ) {
+      throw new Error('TEMPLATE_IN_USE');
+    }
+
     throw new Error('Failed to save template data');
   }
 }

@@ -2,6 +2,7 @@ import type {
   Failure,
   TemplateDto,
   RoutingConfig,
+  RoutingConfigReference,
 } from 'nhs-notify-backend-client';
 
 type Count = { count: number };
@@ -11,6 +12,7 @@ export const apiSuccess = <
     | Count
     | RoutingConfig
     | RoutingConfig[]
+    | RoutingConfigReference[]
     | TemplateDto
     | TemplateDto[],
 >(
