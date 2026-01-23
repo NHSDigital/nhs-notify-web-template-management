@@ -27,6 +27,17 @@ jest.mock('react', () => {
 jest.mock('@utils/amplify-utils');
 
 describe('CreateSmsTemplate component', () => {
+  const errorLogger = console.error;
+
+  beforeAll(() => {
+    global.console.error = jest.fn(); // suppress error logging in tests
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+    global.console.error = errorLogger;
+  });
+
   test('renders page with back link if initial state has no id - edit mode', async () => {
     const container = render(
       <SmsTemplateForm
@@ -131,7 +142,24 @@ describe('CreateSmsTemplate component', () => {
     );
   }, 10_000);
 
-  test('Client-side validation triggers', () => {
+  test('Client-side validation triggers - valid form - no errors', () => {
+    const container = render(
+      <SmsTemplateForm
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+          errorState: undefined,
+          name: 'template-name',
+          message: 'template-message',
+          id: 'template-id',
+        })}
+      />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  test('Client-side validation triggers - invalid form - errors displayed', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
@@ -144,6 +172,7 @@ describe('CreateSmsTemplate component', () => {
     );
     const submitButton = screen.getByTestId('submit-button');
     fireEvent.click(submitButton);
+
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

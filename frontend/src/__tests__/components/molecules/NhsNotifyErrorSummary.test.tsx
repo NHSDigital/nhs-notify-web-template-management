@@ -33,7 +33,7 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
     <NhsNotifyErrorSummary
       errorState={{
         fieldErrors: {
-          'radios-id': ['Radio error 1', 'Radio error 2'],
+          'radios-id': ['#1 Radio error', '#2 Radio error'],
           'select-id': [
             'Select error',
             ErrorCodes.MESSAGE_CONTAINS_INVALID_PERSONALISATION_FIELD_NAME,

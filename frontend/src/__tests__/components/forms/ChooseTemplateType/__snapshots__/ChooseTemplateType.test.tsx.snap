@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Choose template page Client-side validation triggers 1`] = `
+exports[`Choose template page Client-side validation triggers - invalid form - errors displayed 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -101,6 +101,168 @@ exports[`Choose template page Client-side validation triggers 1`] = `
             </span>
             <div
               aria-describedby="templateType--hint templateType--error-message"
+              class="nhsuk-radios"
+              id="templateType"
+            >
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="nhsapp-radio"
+                  id="templateType-nhsapp"
+                  name="templateType"
+                  type="radio"
+                  value="NHS_APP"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="templateType-nhsapp"
+                  id="templateType-nhsapp--label"
+                >
+                  NHS App message
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="email-radio"
+                  id="templateType-email"
+                  name="templateType"
+                  type="radio"
+                  value="EMAIL"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="templateType-email"
+                  id="templateType-email--label"
+                >
+                  Email
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="sms-radio"
+                  id="templateType-sms"
+                  name="templateType"
+                  type="radio"
+                  value="SMS"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="templateType-sms"
+                  id="templateType-sms--label"
+                >
+                  Text message (SMS)
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="letter-radio"
+                  id="templateType-letter"
+                  name="templateType"
+                  type="radio"
+                  value="LETTER"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="templateType-letter"
+                  id="templateType-letter--label"
+                >
+                  Letter
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <button
+        aria-disabled="false"
+        class="nhsuk-button"
+        data-testid="submit-button"
+        id="choose-a-template-type-submit-button"
+        type="submit"
+      >
+        Continue
+      </button>
+    </form>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Choose template page Client-side validation triggers - valid form - no errors 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <form
+      action="/action"
+    >
+      <input
+        name="form-id"
+        readonly=""
+        type="hidden"
+        value="choose-a-template-type"
+      />
+      <input
+        name="csrf_token"
+        readonly=""
+        type="hidden"
+        value="no_token"
+      />
+      <div
+        class="nhsuk-form-group"
+      >
+        <fieldset
+          class="nhsuk-fieldset"
+        >
+          <legend
+            class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+            data-testid="templateType-form__legend"
+          >
+            <h1
+              class="nhsuk-fieldset__heading"
+            >
+              Choose a template type to create
+            </h1>
+          </legend>
+          <p>
+            <a
+              href="/features"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more about message channels (opens in a new tab)
+            </a>
+          </p>
+          <div
+            class="nhsuk-form-group"
+          >
+            <div
+              class="nhsuk-hint"
+              id="templateType--hint"
+            >
+              Select one option
+            </div>
+            <div
+              aria-describedby="templateType--hint"
               class="nhsuk-radios"
               id="templateType"
             >

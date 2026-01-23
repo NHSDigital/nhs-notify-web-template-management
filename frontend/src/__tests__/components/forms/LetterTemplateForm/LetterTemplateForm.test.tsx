@@ -1,12 +1,24 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import {
+  ErrorState,
   TemplateFormState,
   UploadLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import userEvent from '@testing-library/user-event';
+import { validate } from '@utils/client-validate-form';
 
 jest.mock('@utils/amplify-utils');
+
+jest.mock('@utils/client-validate-form', () => ({
+  validate: jest.fn(
+    (_: unknown, cb: (value: ErrorState | undefined) => void) =>
+      (__: React.FormEvent<HTMLFormElement>) => {
+        cb({});
+      }
+  ),
+}));
 
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');
@@ -21,6 +33,17 @@ jest.mock('react', () => {
       initialState: TemplateFormState
     ) => [initialState, '/action'],
   };
+});
+
+const errorLogger = console.error;
+
+beforeAll(() => {
+  global.console.error = jest.fn(); // suppress error logging in tests
+});
+
+afterAll(() => {
+  jest.resetAllMocks();
+  global.console.error = errorLogger;
 });
 
 test('renders page with preloaded field values', () => {
@@ -155,7 +178,20 @@ test('renders page with multiple errors', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('Client-side validation triggers', () => {
+test('Client-side validation triggers - valid form - with errors', async () => {
+  const validateMock = jest
+    .mocked(validate)
+    .mockImplementationOnce(
+      (_: unknown, cb: (value: ErrorState | undefined) => void) =>
+        (__: React.FormEvent<HTMLFormElement>) => {
+          cb({
+            fieldErrors: {
+              letterTemplateName: ['Mock template name error'],
+            },
+          });
+        }
+    );
+
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
@@ -169,6 +205,32 @@ test('Client-side validation triggers', () => {
     />
   );
   const submitButton = screen.getByTestId('submit-button');
-  fireEvent.click(submitButton);
+
+  await userEvent.click(submitButton);
+
   expect(container.asFragment()).toMatchSnapshot();
+  expect(validateMock).toHaveBeenCalled();
+});
+
+test('Client-side validation triggers - valid form - without errors', async () => {
+  const validateMock = jest.mocked(validate);
+
+  const container = render(
+    <LetterTemplateForm
+      initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
+        campaignId: 'campaign-id',
+        errorState: undefined,
+        name: undefined,
+        letterType: undefined,
+        language: undefined,
+      })}
+      campaignIds={['campaign-id']}
+    />
+  );
+  const submitButton = screen.getByTestId('submit-button');
+
+  await userEvent.click(submitButton);
+
+  expect(container.asFragment()).toMatchSnapshot();
+  expect(validateMock).toHaveBeenCalled();
 });
