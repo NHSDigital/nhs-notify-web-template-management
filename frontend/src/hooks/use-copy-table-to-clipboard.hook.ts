@@ -14,46 +14,30 @@ type CopyToClipboardParams<T> = {
   columns: ColumnDefinition<T>[];
 };
 
-const escapeCSVValue = (value: unknown): string => {
-  const stringValue = String(value ?? '');
-  // Wrap in quotes and escape existing quotes by doubling them
-  return `"${stringValue.replaceAll('"', '""')}"`;
-};
-
-const generateCSV = <T extends Record<string, unknown>>(
+const generateCSV = <T extends Record<string, string>>(
   data: T[],
   columns: ColumnDefinition<T>[]
 ): string => {
-  const headerRow = columns.map((col) => escapeCSVValue(col.header)).join(',');
+  const headerRow = columns.map((col) => col.header).join(',');
 
   const dataRows = data.map((row) =>
-    columns.map((col) => escapeCSVValue(row[col.key])).join(',')
+    columns.map((col) => `"${row[col.key]}"`).join(',')
   );
 
   return [headerRow, ...dataRows].join('\n');
-};
-
-const escapeHTMLValue = (value: unknown): string => {
-  const stringValue = String(value ?? '');
-  return stringValue
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
 };
 
 const generateHTMLTable = <T extends Record<string, unknown>>(
   data: T[],
   columns: ColumnDefinition<T>[]
 ): string => {
-  const headerRow = columns
-    .map((col) => `<th>${escapeHTMLValue(col.header)}</th>`)
-    .join('');
+  const headerRow = columns.map((col) => `<th>${col.header}</th>`).join('');
 
   const dataRows = data
     .map((row) => {
       const cells = columns
         .map((col) => {
-          return `<td>${escapeHTMLValue(row[col.key])}</td>`;
+          return `<td>${row[col.key]}</td>`;
         })
         .join('');
       return `<tr>${cells}</tr>`;
@@ -63,14 +47,14 @@ const generateHTMLTable = <T extends Record<string, unknown>>(
   return `<table><thead><tr>${headerRow}</tr></thead><tbody>${dataRows}</tbody></table>`;
 };
 
-export const useCopyTableToClipboard = <T extends Record<string, unknown>>(
+export const useCopyTableToClipboard = <T extends Record<string, string>>(
   options: UseCopyTableToClipboardOptions = {}
 ) => {
   const { successDurationMs = 5000 } = options;
 
   const [copied, setCopied] = useState(false);
-  const [copyError, setCopyError] = useState<Error | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [copyError, setCopyError] = useState<unknown>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   const copyToClipboard = async (params: CopyToClipboardParams<T>) => {
     try {
@@ -98,11 +82,7 @@ export const useCopyTableToClipboard = <T extends Record<string, unknown>>(
         successDurationMs
       );
     } catch (caughtError) {
-      const errorToSet =
-        caughtError instanceof Error
-          ? caughtError
-          : new Error('Failed to copy to clipboard');
-      setCopyError(errorToSet);
+      setCopyError(caughtError);
       setCopied(false);
     }
   };

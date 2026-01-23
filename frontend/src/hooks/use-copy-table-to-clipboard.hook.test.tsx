@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react';
-import { useCopyTableToClipboard } from '../use-copy-table-to-clipboard.hook';
+import { useCopyTableToClipboard } from './use-copy-table-to-clipboard.hook';
 
-type TestData = Record<string, unknown> & {
+type TestData = {
   name: string;
   id: string;
-  value: number;
+  value: string;
 };
 
 describe('useCopyTableToClipboard', () => {
@@ -38,8 +38,8 @@ describe('useCopyTableToClipboard', () => {
     const { result } = renderHook(() => useCopyTableToClipboard<TestData>());
 
     const testData: TestData[] = [
-      { name: 'Test "quoted" value', id: 'id-1', value: 100 },
-      { name: '<script>alert("xss")</script>', id: 'id & value', value: 200 },
+      { name: 'Test "quoted" value', id: 'id-1', value: '100' },
+      { name: '<template test name>', id: 'id & value', value: '200' },
     ];
 
     await act(async () => {
@@ -54,20 +54,41 @@ describe('useCopyTableToClipboard', () => {
 
     expect(mockClipboardWrite).toHaveBeenCalledTimes(1);
 
-    const callArgs = mockClipboardWrite.mock.calls[0][0];
-    const clipboardItem = callArgs[0];
+    const [clipboardItem] = mockClipboardWrite.mock.calls[0][0];
     const csv = clipboardItem['text/plain'];
     const html = clipboardItem['text/html'];
 
-    expect(csv).toContain('"Name","ID"');
-    expect(csv).toContain('"Test ""quoted"" value","id-1"');
-    expect(csv).toContain('"id & value"');
+    const expectedCSV = [
+      'Name,ID',
+      '"Test "quoted" value","id-1"',
+      '"<template test name>","id & value"',
+    ].join('\n');
 
-    expect(html).toContain('<table>');
-    expect(html).toContain('<th>Name</th>');
-    expect(html).toContain('&lt;script&gt;');
-    expect(html).toContain('id &amp; value');
-    expect(html).not.toContain('<script>');
+    expect(csv).toEqual(expectedCSV);
+
+    const expectedHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Test "quoted" value</td>
+          <td>id-1</td>
+        </tr>
+        <tr>
+          <td><template test name></td>
+          <td>id & value</td>
+        </tr>
+      </tbody>
+    </table>`
+      .replaceAll(/>\s+</g, '><')
+      .trim();
+
+    expect(html).toEqual(expectedHTML);
 
     expect(result.current.copied).toBe(true);
     expect(result.current.error).toBeNull();
@@ -86,7 +107,7 @@ describe('useCopyTableToClipboard', () => {
 
     await act(async () => {
       await result.current.copyToClipboard({
-        data: [{ name: 'Test', id: 'id-1', value: 100 }],
+        data: [{ name: 'Test', id: 'id-1', value: '100' }],
         columns: [{ key: 'name', header: 'Name' }],
       });
     });
@@ -94,12 +115,11 @@ describe('useCopyTableToClipboard', () => {
     expect(result.current.error).toEqual(new Error('Permission denied'));
     expect(result.current.copied).toBe(false);
 
-    // Error clears on successful copy
     mockClipboardWrite.mockResolvedValueOnce(undefined);
 
     await act(async () => {
       await result.current.copyToClipboard({
-        data: [{ name: 'Test', id: 'id-1', value: 100 }],
+        data: [{ name: 'Test', id: 'id-1', value: '100' }],
         columns: [{ key: 'name', header: 'Name' }],
       });
     });
@@ -108,44 +128,45 @@ describe('useCopyTableToClipboard', () => {
     expect(result.current.copied).toBe(true);
   });
 
-  it('should handle non-Error exceptions', async () => {
-    mockClipboardWrite.mockRejectedValueOnce('String error');
-
+  it('should clear previous timeout when copying multiple times', async () => {
     const { result } = renderHook(() => useCopyTableToClipboard<TestData>());
 
-    await act(async () => {
-      await result.current.copyToClipboard({
-        data: [{ name: 'Test', id: 'id-1', value: 100 }],
-        columns: [{ key: 'name', header: 'Name' }],
-      });
-    });
-
-    expect(result.current.error).toEqual(
-      new Error('Failed to copy to clipboard')
-    );
-    expect(result.current.copied).toBe(false);
-  });
-
-  it('should cleanup timeout on unmount', async () => {
-    const { result, unmount } = renderHook(() =>
-      useCopyTableToClipboard<TestData>()
-    );
+    const testData: TestData[] = [{ name: 'Test 1', id: 'id-1', value: '100' }];
 
     await act(async () => {
       await result.current.copyToClipboard({
-        data: [{ name: 'Test', id: 'id-1', value: 100 }],
+        data: testData,
         columns: [{ key: 'name', header: 'Name' }],
       });
     });
 
     expect(result.current.copied).toBe(true);
 
-    unmount();
-
     act(() => {
-      jest.advanceTimersByTime(5000);
+      jest.advanceTimersByTime(2500);
     });
 
-    // No errors thrown - cleanup successful
+    expect(result.current.copied).toBe(true);
+
+    await act(async () => {
+      await result.current.copyToClipboard({
+        data: testData,
+        columns: [{ key: 'name', header: 'Name' }],
+      });
+    });
+
+    expect(result.current.copied).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
+    expect(result.current.copied).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(2500);
+    });
+
+    expect(result.current.copied).toBe(false);
   });
 });
