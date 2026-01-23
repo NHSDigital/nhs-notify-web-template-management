@@ -26,6 +26,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
   const {
     messagePlan,
     pageHeading,
+    noTemplatesText,
     templateList,
     cascadeIndex,
     lockNumber,
@@ -108,9 +109,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 lockNumber={lockNumber}
               />
             ) : (
-              <p data-testid='no-templates-message'>
-                {content.noTemplatesText}
-              </p>
+              <p data-testid='no-templates-message'>{noTemplatesText}</p>
             )}
 
             <div

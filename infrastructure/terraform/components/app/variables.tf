@@ -213,3 +213,9 @@ variable "external_email_domain" {
   default     = null
   description = "Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider."
 }
+
+variable "enable_api_data_trace" {
+  type        = bool
+  description = "Enable API Gateway data trace logging"
+  default     = false
+}
