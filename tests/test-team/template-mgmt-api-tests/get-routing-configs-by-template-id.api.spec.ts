@@ -10,7 +10,7 @@ import { RoutingConfigFactory } from '../helpers/factories/routing-config-factor
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 
-test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
+test.describe('GET /v1/template/:templateId/routing-configurations', () => {
   const authHelper = createAuthHelper();
   const routingConfigStorageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
@@ -27,7 +27,7 @@ test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configs-by-template-id/some-template`
+      `${process.env.API_BASE_URL}/v1/template/some-template/routing-configurations`
     );
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
@@ -48,7 +48,7 @@ test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configs-by-template-id/${templateId}`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/routing-configurations`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -89,7 +89,7 @@ test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
     await routingConfigStorageHelper.seed([messagePlan1, messagePlan2]);
 
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configs-by-template-id/${templateId}`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/routing-configurations`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -133,7 +133,7 @@ test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
     await routingConfigStorageHelper.seed([messagePlan]);
 
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configs-by-template-id/${templateId}`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/routing-configurations`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -175,7 +175,7 @@ test.describe('GET /v1/routing-configs-by-template-id/:templateId', () => {
     await routingConfigStorageHelper.seed([activePlan, deletedPlan]);
 
     const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/routing-configs-by-template-id/${templateId}`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/routing-configurations`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
