@@ -2,19 +2,7 @@ import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 import {
   $DraftRoutingConfigEventData,
-  $RoutingConfigStatus,
 } from '../routing-config';
-
-const $RoutingConfigDeletedEventV1Data = z
-  .intersection(
-    $DraftRoutingConfigEventData,
-    z.object({
-      status: $RoutingConfigStatus.extract(['DELETED']),
-    })
-  )
-  .meta({
-    id: 'RoutingConfigDeletedEventData',
-  });
 
 export const $RoutingConfigDeletedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.RoutingConfigDeleted.v1'),
@@ -23,7 +11,7 @@ export const $RoutingConfigDeletedEventV1 = $NHSNotifyEventEnvelope.extend({
   ),
   dataschemaversion: z.string().startsWith('1.'),
   plane: z.literal('control'),
-  data: $RoutingConfigDeletedEventV1Data,
+  data: $DraftRoutingConfigEventData,
 });
 
 export type RoutingConfigDeletedEventV1 = z.infer<

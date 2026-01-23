@@ -8,8 +8,6 @@ export const $RoutingConfigEventChannel = z.enum([
   'LETTER',
 ]);
 
-export const $RoutingConfigStatus = z.enum(['DELETED', 'DRAFT', 'COMPLETED']);
-
 const accessibleFormats = ['x1'];
 
 export type RoutingConfigEventChannel = z.infer<
@@ -145,7 +143,7 @@ export const $BaseRoutingConfigEventData = z.object({
     description:
       'Config defining non-default cascade groups and the conditons under which they will be used',
   }),
-  status: $RoutingConfigStatus.meta({
+  status: z.string().meta({
     description: 'Routing config status',
   }),
 });
