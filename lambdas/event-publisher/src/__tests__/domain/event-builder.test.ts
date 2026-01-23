@@ -619,6 +619,21 @@ describe('routing config events', () => {
     );
   });
 
+  test('builds routing config drafted event with null template IDs', () => {
+    const event = eventBuilder.buildEvent(
+      publishableRoutingConfigEventRecord('DELETED', true)
+    );
+
+    expect(event).toEqual(
+      expectedRoutingConfigEvent(
+        'DELETED',
+        'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+        'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json',
+        true
+      )
+    );
+  });
+
   test('does not build routing config event on hard delete', () => {
     const hardDeletePublishableRoutingConfigEventRecord = {
       ...publishableRoutingConfigEventRecord('DRAFT'),

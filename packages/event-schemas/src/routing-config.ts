@@ -150,7 +150,7 @@ export const $BaseRoutingConfigEventData = z.object({
   }),
 });
 
-export const $NullableRoutingConfigEventData =
+export const $DraftRoutingConfigEventData =
   $BaseRoutingConfigEventData.extend({
     cascade: z.array($NullableCascadeItem).meta({
       description:
@@ -158,7 +158,7 @@ export const $NullableRoutingConfigEventData =
     }),
   });
 
-export const $RoutingConfigEventData = $BaseRoutingConfigEventData.extend({
+export const $CompletedRoutingConfigEventData = $BaseRoutingConfigEventData.extend({
   cascade: z.array($CascadeItem).meta({
     description:
       'Array defining the order of channels for the routing config and how they are configured',

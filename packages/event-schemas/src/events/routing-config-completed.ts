@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 import {
-  $RoutingConfigEventData,
+  $CompletedRoutingConfigEventData,
   $RoutingConfigStatus,
 } from '../routing-config';
 
 const $RoutingConfigCompletedEventV1Data = z
   .intersection(
-    $RoutingConfigEventData,
+    $CompletedRoutingConfigEventData,
     z.object({
       status: $RoutingConfigStatus.extract(['COMPLETED']),
     })

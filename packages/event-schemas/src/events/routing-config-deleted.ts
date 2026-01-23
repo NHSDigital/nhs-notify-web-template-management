@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 import {
-  $NullableRoutingConfigEventData,
+  $DraftRoutingConfigEventData,
   $RoutingConfigStatus,
 } from '../routing-config';
 
 const $RoutingConfigDeletedEventV1Data = z
   .intersection(
-    $NullableRoutingConfigEventData,
+    $DraftRoutingConfigEventData,
     z.object({
       status: $RoutingConfigStatus.extract(['DELETED']),
     })
