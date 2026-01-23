@@ -2,19 +2,7 @@ import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 import {
   $DraftRoutingConfigEventData,
-  $RoutingConfigStatus,
 } from '../routing-config';
-
-const $RoutingConfigDraftedEventV1Data = z
-  .intersection(
-    $DraftRoutingConfigEventData,
-    z.object({
-      status: $RoutingConfigStatus.extract(['DRAFT']),
-    })
-  )
-  .meta({
-    id: 'RoutingConfigDraftedEventData',
-  });
 
 export const $RoutingConfigDraftedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.RoutingConfigDrafted.v1'),
@@ -23,7 +11,7 @@ export const $RoutingConfigDraftedEventV1 = $NHSNotifyEventEnvelope.extend({
   ),
   dataschemaversion: z.string().startsWith('1.'),
   plane: z.literal('control'),
-  data: $RoutingConfigDraftedEventV1Data,
+  data: $DraftRoutingConfigEventData,
 });
 
 export type RoutingConfigDraftedEventV1 = z.infer<
