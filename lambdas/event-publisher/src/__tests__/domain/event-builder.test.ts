@@ -619,7 +619,7 @@ describe('routing config events', () => {
     );
   });
 
-  test('builds routing config drafted event with null template IDs', () => {
+  test('builds routing config deleted event with null template IDs', () => {
     const event = eventBuilder.buildEvent(
       publishableRoutingConfigEventRecord('DELETED', true)
     );
