@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useCopyTableToClipboard } from './use-copy-table-to-clipboard.hook';
+import { useCopyTableToClipboard } from '../../hooks/use-copy-table-to-clipboard.hook';
 
 type TestData = {
   name: string;
