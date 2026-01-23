@@ -90,9 +90,11 @@ describe('MessagePlansList', () => {
     fireEvent.click(expander);
 
     const copyButton = getByTestId('copy-button-draft');
+
     await userEvent.click(copyButton);
 
     expect(mockClipboardWrite).toHaveBeenCalledTimes(1);
+    expect(copyButton).toHaveTextContent("Names and ID's copied to clipboard");
 
     const [clipboardItem] = mockClipboardWrite.mock.calls[0][0];
 
