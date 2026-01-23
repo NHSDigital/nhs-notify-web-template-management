@@ -115,4 +115,6 @@ exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
 </DocumentFragment>
 `;
 
+exports[`Renders NhsNotifyErrorSummary correctly with falsey error state 1`] = `<DocumentFragment />`;
+
 exports[`Renders NhsNotifyErrorSummary correctly without errors 1`] = `<DocumentFragment />`;

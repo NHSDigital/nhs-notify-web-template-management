@@ -52,7 +52,7 @@ export const NhsNotifyErrorSummary = ({
   }
 
   return (
-    <ErrorSummary ref={errorSummaryRef} tabIndex={-1}>
+    <ErrorSummary ref={errorSummaryRef}>
       <ErrorSummary.Title data-testid='error-summary'>
         {content.components.errorSummary.heading}
       </ErrorSummary.Title>

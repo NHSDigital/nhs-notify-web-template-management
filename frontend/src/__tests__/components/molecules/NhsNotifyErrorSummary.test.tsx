@@ -28,6 +28,21 @@ test('Renders NhsNotifyErrorSummary correctly with empty error state', async () 
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
+test('Renders NhsNotifyErrorSummary correctly with falsey error state', async () => {
+  const container = render(
+    <NhsNotifyErrorSummary
+      errorState={{
+        fieldErrors: {},
+        formErrors: [],
+      }}
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).not.toHaveBeenCalled();
+  expect(scrollIntoViewMock).not.toHaveBeenCalled();
+});
+
 test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   const container = render(
     <NhsNotifyErrorSummary
