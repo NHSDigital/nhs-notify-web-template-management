@@ -367,10 +367,17 @@ export class TemplateClient {
       return { error: templateError };
     }
 
-    const targetStatus =
-      template.templateType === 'LETTER' && clientConfig.features.routing
-        ? 'PROOF_APPROVED'
-        : 'SUBMITTED';
+    if (clientConfig.features.routing && template.templateType !== 'LETTER') {
+      log
+        .child({ templateType: template.templateType })
+        .error('Routing is enabled, only letters are permitted');
+
+      return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
+    }
+
+    const targetStatus = clientConfig.features.routing
+      ? 'PROOF_APPROVED'
+      : 'SUBMITTED';
 
     const submitResult = await this.templateRepository.submit(
       templateId,

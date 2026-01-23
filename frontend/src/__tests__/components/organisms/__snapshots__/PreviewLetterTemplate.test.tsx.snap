@@ -66,7 +66,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Standard letter - Arabic
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -83,7 +85,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                   class="nhsuk-tag"
                   data-status="not-yet-submitted"
                   data-testid="status-tag"
-                />
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
             <div
@@ -251,7 +255,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Standard letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -268,7 +274,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="nhsuk-tag"
                   data-status="not-yet-submitted"
                   data-testid="status-tag"
-                />
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
             <div
@@ -399,7 +407,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                British Sign Language letter - Arabic
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -413,10 +423,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--blue"
                   data-status="pending-proof-request"
                   data-testid="status-tag"
-                />
+                >
+                  Files uploaded
+                </strong>
               </dd>
             </div>
             <div
@@ -456,6 +468,43 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-two-thirds"
+          >
+            <div
+              aria-live="polite"
+              class="nhsuk-warning-callout nhsuk-u-margin-top-3"
+              data-testid="rtl-language-warning"
+            >
+              <h2
+                class="nhsuk-warning-callout__label"
+              >
+                <span
+                  role="text"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Important: 
+                  </span>
+                  Important
+                </span>
+              </h2>
+              <p>
+                The proof of this letter template will not be available online because of the language you've chosen.
+              </p>
+              <p>
+                After you submit your template, our service team will send you a proof by email instead.
+              </p>
+              <p>
+                This email will tell you what to do next.
+              </p>
+            </div>
+          </div>
         </div>
         <a
           aria-disabled="false"
@@ -547,7 +596,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -561,10 +612,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--blue"
                   data-status="pending-upload"
                   data-testid="status-tag"
-                />
+                >
+                  Checking files
+                </strong>
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
                 >
@@ -689,7 +742,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -703,10 +758,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--blue"
                   data-status="pending-validation"
                   data-testid="status-tag"
-                />
+                >
+                  Checking files
+                </strong>
                 <small
                   class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
                 >
@@ -831,7 +888,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -845,10 +904,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--green"
                   data-status="proof-approved"
                   data-testid="status-tag"
-                />
+                >
+                  Proof approved
+                </strong>
               </dd>
             </div>
             <div
@@ -1021,7 +1082,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1035,10 +1098,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-status="proof-available"
                   data-testid="status-tag"
-                />
+                >
+                  Proof available
+                </strong>
               </dd>
             </div>
             <div
@@ -1278,7 +1343,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1292,10 +1359,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--orange"
                   data-status="proof-available"
                   data-testid="status-tag"
-                />
+                >
+                  Proof available
+                </strong>
               </dd>
             </div>
             <div
@@ -1567,7 +1636,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1581,10 +1652,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--red"
                   data-status="validation-failed"
                   data-testid="status-tag"
-                />
+                >
+                  Checks failed
+                </strong>
               </dd>
             </div>
             <div
@@ -1772,7 +1845,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Large print letter
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1786,10 +1861,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--red"
                   data-status="virus-scan-failed"
                   data-testid="status-tag"
-                />
+                >
+                  Checks failed
+                </strong>
               </dd>
             </div>
             <div
@@ -1909,7 +1986,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                British Sign Language letter - Arabic
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1923,10 +2002,12 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--yellow"
                   data-status="waiting-for-proof"
                   data-testid="status-tag"
-                />
+                >
+                  Waiting for proof
+                </strong>
               </dd>
             </div>
             <div
@@ -1976,6 +2057,43 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           <p>
             If you still have not received your proof after this time, contact NHS Notify.
           </p>
+        </div>
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-two-thirds"
+          >
+            <div
+              aria-live="polite"
+              class="nhsuk-warning-callout nhsuk-u-margin-top-3"
+              data-testid="rtl-language-warning"
+            >
+              <h2
+                class="nhsuk-warning-callout__label"
+              >
+                <span
+                  role="text"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Important: 
+                  </span>
+                  Important
+                </span>
+              </h2>
+              <p>
+                The proof of this letter template will not be available online because of the language you've chosen.
+              </p>
+              <p>
+                After you submit your template, our service team will send you a proof by email instead.
+              </p>
+              <p>
+                This email will tell you what to do next.
+              </p>
+            </div>
+          </div>
         </div>
         <p>
           <a

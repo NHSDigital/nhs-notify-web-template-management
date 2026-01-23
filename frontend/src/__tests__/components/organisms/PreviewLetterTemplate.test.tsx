@@ -3,7 +3,6 @@ import { render } from '@testing-library/react';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
-jest.mock('nhs-notify-web-template-management-utils/enum');
 jest.mock('@providers/client-config-provider');
 
 const isRightToLeftMock = jest.mocked(isRightToLeft);
@@ -11,7 +10,6 @@ const isRightToLeftMock = jest.mocked(isRightToLeft);
 describe('PreviewLetterTemplate component', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    isRightToLeftMock.mockReturnValueOnce(false);
     jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
   });
 
@@ -336,10 +334,6 @@ describe('PreviewLetterTemplate component', () => {
   });
 
   it('matches snapshot when template language is Right to Left', () => {
-    isRightToLeftMock.mockReset();
-
-    isRightToLeftMock.mockReturnValueOnce(true);
-
     const container = render(
       <PreviewLetterTemplate
         template={{

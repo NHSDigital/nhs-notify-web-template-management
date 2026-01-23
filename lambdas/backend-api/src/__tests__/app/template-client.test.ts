@@ -1952,40 +1952,33 @@ describe('templateClient', () => {
       });
     });
 
-    test('submitTemplate should return template updated to SUBMITTED  - routing is enabled', async () => {
+    test('should return validation failure when routing is enabled for non-letter template', async () => {
       const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
           ...notYetSubmittedDto,
-          owner: `CLIENT#${user.clientId}`,
-          version: 1,
-        },
-      });
-
-      mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: {
-          ...notYetSubmittedDto,
+          templateType: 'SMS',
           owner: user.internalUserId,
           version: 1,
         },
       });
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { routing: false } },
-      });
-
       const result = await templateClient.submitTemplate(templateId, user, 0);
 
-      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
-        templateId,
-        user,
-        'SUBMITTED',
-        0
-      );
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
       expect(result).toEqual({
-        data: notYetSubmittedDto,
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Unexpected non-letter',
+          },
+        },
       });
     });
 
