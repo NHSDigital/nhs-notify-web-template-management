@@ -305,4 +305,77 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.patch.length).toBe(1);
     });
   });
+
+  describe('getRoutingConfigsByTemplateId', () => {
+    const templateId = '123e4567-e89b-12d3-a456-426614174000';
+
+    it('should return error when failing to fetch from API', async () => {
+      axiosMock
+        .onGet(`/v1/template/${templateId}/routing-configurations`)
+        .reply(400, {
+          statusCode: 400,
+          technicalMessage: 'Bad request',
+          details: {
+            message: 'Template not found',
+          },
+        });
+
+      const response = await client.getRoutingConfigsByTemplateId(
+        templateId,
+        'token'
+      );
+
+      expect(response.error).toEqual({
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Template not found',
+          },
+        },
+      });
+
+      expect(response.data).toBeUndefined();
+      expect(axiosMock.history.get.length).toBe(1);
+    });
+
+    it('should return list of routing config references', async () => {
+      const data = [
+        { id: 'routing-1', name: 'Message Plan 1' },
+        { id: 'routing-2', name: 'Message Plan 2' },
+      ];
+
+      axiosMock
+        .onGet(`/v1/template/${templateId}/routing-configurations`)
+        .reply(200, {
+          data,
+        });
+
+      const response = await client.getRoutingConfigsByTemplateId(
+        templateId,
+        'token'
+      );
+
+      expect(response.data).toEqual(data);
+      expect(response.error).toBeUndefined();
+      expect(axiosMock.history.get.length).toBe(1);
+    });
+
+    it('should return empty array when no routing configs reference the template', async () => {
+      axiosMock
+        .onGet(`/v1/template/${templateId}/routing-configurations`)
+        .reply(200, {
+          data: [],
+        });
+
+      const response = await client.getRoutingConfigsByTemplateId(
+        templateId,
+        'token'
+      );
+
+      expect(response.data).toEqual([]);
+      expect(response.error).toBeUndefined();
+      expect(axiosMock.history.get.length).toBe(1);
+    });
+  });
 });

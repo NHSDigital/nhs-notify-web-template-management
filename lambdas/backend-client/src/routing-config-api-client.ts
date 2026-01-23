@@ -4,6 +4,7 @@ import type {
   GetV1RoutingConfigurationsCountData,
   GetV1RoutingConfigurationsData,
   GetV1RoutingConfigurationByRoutingConfigIdData,
+  RoutingConfigReference,
   RoutingConfig,
   RoutingConfigSuccess,
   RoutingConfigSuccessList,
@@ -125,6 +126,26 @@ export const routingConfigurationApiClient = {
       httpClient.patch<RoutingConfigSuccess>(url, routingConfig, {
         headers: { Authorization: token, 'X-Lock-Number': String(lockNumber) },
       })
+    );
+
+    if (error) {
+      return { error };
+    }
+
+    return { ...data };
+  },
+
+  async getRoutingConfigsByTemplateId(
+    templateId: string,
+    token: string
+  ): Promise<Result<RoutingConfigReference[]>> {
+    const { data, error } = await catchAxiosError(
+      httpClient.get<{ data: RoutingConfigReference[] }>(
+        `/v1/template/${encodeURIComponent(templateId)}/routing-configurations`,
+        {
+          headers: { Authorization: token },
+        }
+      )
     );
 
     if (error) {

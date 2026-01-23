@@ -6,6 +6,7 @@ import {
   getRoutingConfigs,
   countRoutingConfigs,
   createRoutingConfig,
+  getRoutingConfigReferencesByTemplateId,
 } from '@utils/message-plans';
 import { getSessionServer } from '@utils/amplify-utils';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
@@ -686,6 +687,64 @@ describe('Message plans actions', () => {
           cascadeGroupOverrides: [],
         })
       ).rejects.toThrow('Failed to create message plan');
+    });
+  });
+
+  describe('getRoutingConfigReferencesByTemplateId', () => {
+    test('should throw error when no token', async () => {
+      getSessionServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(
+        getRoutingConfigReferencesByTemplateId('template-123')
+      ).rejects.toThrow('Failed to get access token');
+
+      expect(
+        routingConfigApiMock.getRoutingConfigsByTemplateId
+      ).not.toHaveBeenCalled();
+    });
+
+    test('should log and throw error on API error', async () => {
+      routingConfigApiMock.getRoutingConfigsByTemplateId.mockResolvedValueOnce({
+        error: {
+          errorMeta: { code: 500, description: 'Internal server error' },
+        },
+      });
+
+      await expect(
+        getRoutingConfigReferencesByTemplateId('template-456')
+      ).rejects.toThrow('Failed to get routing config references');
+
+      expect(
+        routingConfigApiMock.getRoutingConfigsByTemplateId
+      ).toHaveBeenCalledWith('template-456', 'mock-token');
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to get routing config references for template',
+        expect.objectContaining({
+          errorMeta: expect.objectContaining({ code: 500 }),
+        })
+      );
+    });
+
+    test('should return routing config references', async () => {
+      const references = [
+        { id: '90e46ece-4a3b-47bd-b781-f986b42a5a09', name: 'Message Plan 1' },
+        { id: 'a0e46ece-4a3b-47bd-b781-f986b42a5a10', name: 'Message Plan 2' },
+      ];
+
+      routingConfigApiMock.getRoutingConfigsByTemplateId.mockResolvedValueOnce({
+        data: references,
+      });
+
+      const result =
+        await getRoutingConfigReferencesByTemplateId('template-123');
+
+      expect(
+        routingConfigApiMock.getRoutingConfigsByTemplateId
+      ).toHaveBeenCalledWith('template-123', 'mock-token');
+      expect(result).toEqual(references);
     });
   });
 });
