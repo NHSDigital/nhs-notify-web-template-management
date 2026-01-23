@@ -1,11 +1,8 @@
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { render } from '@testing-library/react';
-import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@providers/client-config-provider');
-
-const isRightToLeftMock = jest.mocked(isRightToLeft);
 
 describe('PreviewLetterTemplate component', () => {
   beforeEach(() => {

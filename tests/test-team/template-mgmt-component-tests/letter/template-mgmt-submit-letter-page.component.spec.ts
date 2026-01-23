@@ -7,8 +7,8 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertBackLinkBottom,
   assertBackLinkTopNotPresent,
+  assertAndClickBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -23,13 +23,15 @@ import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-te
 test.use({ storageState: { cookies: [], origins: [] } });
 
 let routingEnabledUser: TestUser;
-let routingDisabledUser: TestUser;
+let routingDisabledProofingEnabledUser: TestUser;
 let proofingDisabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
   routingEnabledUser = await authHelper.getTestUser(testUsers.User1.userId);
-  routingDisabledUser = await authHelper.getTestUser(testUsers.User2.userId);
+  routingDisabledProofingEnabledUser = await authHelper.getTestUser(
+    testUsers.User2.userId
+  );
   proofingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
 
   return {
@@ -52,7 +54,7 @@ async function createTemplates() {
 
     routingDisabled: TemplateFactory.uploadLetterTemplate(
       'b9321307-abfe-48d1-a10a-1d7fe21bd18c',
-      routingDisabledUser,
+      routingDisabledProofingEnabledUser,
       'routing-disabled-submit-letter',
       'PROOF_AVAILABLE'
     ),
@@ -107,13 +109,21 @@ test.describe('Submit Letter Template Page', () => {
     await submitPage.clickSubmitTemplateButton();
 
     await expect(page).toHaveURL(TemplateMgmtMessageTemplatesPage.url);
+
+    const listPage = new TemplateMgmtMessageTemplatesPage(page);
+
+    const status = await listPage.getTemplateStatus(
+      templates.routingEnabled.id
+    );
+
+    expect(status).toBe('Proof approved');
   });
 
   test('when routing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
     page,
     baseURL,
   }) => {
-    await loginAsUser(routingDisabledUser, page);
+    await loginAsUser(routingDisabledProofingEnabledUser, page);
 
     const submitPage = new TemplateMgmtSubmitLetterPage(page)
       .setPathParam('templateId', templates.routingDisabled.id)
@@ -189,7 +199,7 @@ test.describe('Submit Letter Template Page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
+    test('when user visits page with a non-existent template, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
@@ -240,10 +250,10 @@ test.describe('Submit Letter Template Page', () => {
     await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
-    await assertBackLinkBottom({
+    await assertBackLinkTopNotPresent(props);
+    await assertAndClickBackLinkBottom({
       ...props,
       expectedUrl: `templates/preview-letter-template/${templates.routingEnabled.id}`,
     });
-    await assertBackLinkTopNotPresent(props);
   });
 });

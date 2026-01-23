@@ -244,6 +244,10 @@ test.describe('Preview Letter template Page', () => {
       templates.proofApproved.name
     );
 
+    await expect(previewLetterTemplatePage.statusTag).toContainText(
+      'Proof approved'
+    );
+
     await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
     await expect(previewLetterTemplatePage.continueButton).toBeHidden();
   });
