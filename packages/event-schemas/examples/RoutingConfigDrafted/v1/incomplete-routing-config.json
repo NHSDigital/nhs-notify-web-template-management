@@ -8,7 +8,7 @@
         ],
         "channel": "NHS_APP",
         "channelType": "primary",
-        "defaultTemplateId": "nhs-app-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -49,7 +49,8 @@
             "language": "ar",
             "templateId": "ar-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -62,7 +63,8 @@
             "accessibleFormat": "x1",
             "templateId": "x1-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": null
       }
     ],
     "cascadeGroupOverrides": [

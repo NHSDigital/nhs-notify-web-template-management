@@ -49,7 +49,8 @@
             "language": "ar",
             "templateId": "ar-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": "letter-template-id"
       },
       {
         "cascadeGroups": [
@@ -62,7 +63,8 @@
             "accessibleFormat": "x1",
             "templateId": "x1-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": "letter-template-id"
       }
     ],
     "cascadeGroupOverrides": [
