@@ -755,6 +755,7 @@ describe('templateRepository', () => {
           ':deleted': 'DELETED',
           ':expectedLockNumber': 0,
           ':expectedStatus': 'NOT_YET_SUBMITTED',
+          ':expectedProofingLetterStatus': 'PROOF_AVAILABLE',
           ':lockNumberIncrement': 1,
           ':newStatus': 'SUBMITTED',
           ':passed': 'PASSED',
@@ -766,7 +767,7 @@ describe('templateRepository', () => {
         UpdateExpression:
           'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
-          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND (#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus) AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
       });
     });
   });

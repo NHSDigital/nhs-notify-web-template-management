@@ -110,7 +110,8 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
         user,
-        'Test Letter template'
+        'Test Letter template',
+        'PROOF_AVAILABLE'
       );
 
       await templateStorageHelper.seedTemplateData([letterTemplate]);

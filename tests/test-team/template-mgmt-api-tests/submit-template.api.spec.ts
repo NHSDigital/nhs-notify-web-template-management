@@ -384,7 +384,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       expect(submitResult).toEqual({
         statusCode: 400,
-        technicalMessage: 'Template cannot be submitted',
+        technicalMessage: 'Proof cannot be approved',
       });
     });
 
