@@ -101,8 +101,7 @@ async function updateRecord(
       owner: record.owner,
       id: record.id,
     },
-    UpdateExpression:
-      'SET createdBy = :createdBy, updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
+    UpdateExpression: 'SET createdBy = :createdBy, updatedBy = :updatedBy',
     ConditionExpression:
       'attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber',
     ReturnValues: 'ALL_NEW',
@@ -113,7 +112,6 @@ async function updateRecord(
       ':expectedLockNumber': record.lockNumber ?? 0,
       ':createdBy': newCreatedBy ?? record.createdBy,
       ':updatedBy': newUpdatedBy ?? record.updatedBy,
-      ':lockNumberIncrement': 1,
     },
   };
 

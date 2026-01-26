@@ -9,7 +9,6 @@ exports[`template-management-repository updateRoutingConfigurationRecord should 
   "ExpressionAttributeValues": {
     ":createdBy": "newCreator",
     ":expectedLockNumber": 1,
-    ":lockNumberIncrement": 1,
     ":updatedBy": "newUpdater",
   },
   "Key": {
@@ -18,7 +17,7 @@ exports[`template-management-repository updateRoutingConfigurationRecord should 
   },
   "ReturnValues": "ALL_NEW",
   "TableName": "nhs-notify-test-env-app-api-routing-configuration",
-  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement",
+  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy",
 }
 `;
 
@@ -31,7 +30,6 @@ exports[`template-management-repository updateTemplateRecord should update templ
   "ExpressionAttributeValues": {
     ":createdBy": "newCreator",
     ":expectedLockNumber": 1,
-    ":lockNumberIncrement": 1,
     ":updatedBy": "newUpdater",
   },
   "Key": {
@@ -40,7 +38,7 @@ exports[`template-management-repository updateTemplateRecord should update templ
   },
   "ReturnValues": "ALL_NEW",
   "TableName": "nhs-notify-test-env-app-api-templates",
-  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement",
+  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy",
 }
 `;
 
@@ -53,7 +51,6 @@ exports[`template-management-repository updateTemplateRecord should update templ
   "ExpressionAttributeValues": {
     ":createdBy": "originalCreator",
     ":expectedLockNumber": 0,
-    ":lockNumberIncrement": 1,
     ":updatedBy": "newUpdater",
   },
   "Key": {
@@ -62,7 +59,7 @@ exports[`template-management-repository updateTemplateRecord should update templ
   },
   "ReturnValues": "ALL_NEW",
   "TableName": "nhs-notify-test-env-app-api-templates",
-  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement",
+  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy",
 }
 `;
 
@@ -75,7 +72,6 @@ exports[`template-management-repository updateTemplateRecord should update templ
   "ExpressionAttributeValues": {
     ":createdBy": "newCreator",
     ":expectedLockNumber": 0,
-    ":lockNumberIncrement": 1,
     ":updatedBy": "originalUpdater",
   },
   "Key": {
@@ -84,6 +80,6 @@ exports[`template-management-repository updateTemplateRecord should update templ
   },
   "ReturnValues": "ALL_NEW",
   "TableName": "nhs-notify-test-env-app-api-templates",
-  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement",
+  "UpdateExpression": "SET createdBy = :createdBy, updatedBy = :updatedBy",
 }
 `;
