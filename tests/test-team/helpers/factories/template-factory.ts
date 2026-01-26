@@ -26,7 +26,8 @@ export const TemplateFactory = {
   createSmsTemplate: (
     id: string,
     user: TestUser,
-    name: string = 'test'
+    name: string = 'test',
+    templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
       campaignId: user.campaignId,
@@ -36,13 +37,15 @@ export const TemplateFactory = {
       name,
       owner: `CLIENT#${user.clientId}`,
       templateType: 'SMS',
+      templateStatus,
     });
   },
 
   createNhsAppTemplate: (
     id: string,
     user: TestUser,
-    name: string = 'test'
+    name: string = 'test',
+    templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
       campaignId: user.campaignId,
@@ -52,6 +55,7 @@ export const TemplateFactory = {
       name,
       owner: `CLIENT#${user.clientId}`,
       templateType: 'NHS_APP',
+      templateStatus,
     });
   },
 
