@@ -55,7 +55,7 @@
         "cascadeGroups": [
           "other-format"
         ],
-        "channe": "LETTER",
+        "channel": "LETTER",
         "channelType": "primary",
         "conditionalTemplates": [
           {
