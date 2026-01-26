@@ -1859,7 +1859,6 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        'SUBMITTED',
         0
       );
 
@@ -1904,7 +1903,6 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        'SUBMITTED',
         0
       );
 
@@ -1946,7 +1944,6 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        'SUBMITTED',
         0
       );
 
@@ -2021,7 +2018,7 @@ describe('templateClient', () => {
         data: { ...template, owner: user.internalUserId, version: 1 },
       });
 
-      mocks.templateRepository.submit.mockResolvedValueOnce({
+      mocks.templateRepository.approveProof.mockResolvedValueOnce({
         data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
       });
 
@@ -2032,10 +2029,9 @@ describe('templateClient', () => {
         user.clientId
       );
 
-      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.approveProof).toHaveBeenCalledWith(
         templateId,
         user,
-        'PROOF_APPROVED',
         1
       );
 
@@ -2094,7 +2090,6 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         user,
-        'SUBMITTED',
         1
       );
 

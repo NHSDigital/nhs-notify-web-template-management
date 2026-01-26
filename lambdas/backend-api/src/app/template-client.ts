@@ -377,29 +377,30 @@ export class TemplateClient {
       return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
     }
 
-    const targetStatus = clientConfig.features.routing
-      ? 'PROOF_APPROVED'
-      : 'SUBMITTED';
-
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user,
-      targetStatus,
-      lockNumberValidation.data
-    );
-
-    if (submitResult.error) {
-      log
-        .child(submitResult.error.errorMeta)
-        .error(
-          'Failed to save template to the database',
-          submitResult.error.actualError
+    const result = clientConfig.features.routing
+      ? await this.templateRepository.approveProof(
+          templateId,
+          user,
+          lockNumberValidation.data
+        )
+      : await this.templateRepository.submit(
+          templateId,
+          user,
+          lockNumberValidation.data
         );
 
-      return submitResult;
+    if (result.error) {
+      log
+        .child(result.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          result.error.actualError
+        );
+
+      return result;
     }
 
-    const templateDTO = this.mapDatabaseObjectToDTO(submitResult.data);
+    const templateDTO = this.mapDatabaseObjectToDTO(result.data);
 
     if (!templateDTO) {
       return failure(ErrorCase.INTERNAL, 'Error retrieving template');

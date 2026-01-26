@@ -208,28 +208,21 @@ export class TemplateRepository {
     }
   }
 
-  async submit(
-    templateId: string,
-    user: User,
-    targetStatus: Extract<TemplateStatus, 'SUBMITTED' | 'PROOF_APPROVED'>,
-    lockNumber: number
-  ) {
+  async submit(templateId: string, user: User, lockNumber: number) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
       {
-        ':newStatus': targetStatus,
+        ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-        ':expectedProofingLetterStatus':
-          'PROOF_AVAILABLE' satisfies TemplateStatus,
         ':passed': 'PASSED' satisfies VirusScanStatus,
         ':expectedLockNumber': lockNumber,
       };
 
     const conditions = [
-      '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
+      'files.pdfTemplate.virusScanStatus = :passed',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus)',
+      '#templateStatus = :expectedStatus',
       '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
     ];
 
@@ -259,6 +252,59 @@ export class TemplateRepository {
         return failure(
           ErrorCase.CANNOT_SUBMIT,
           'Template cannot be submitted',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+    }
+  }
+
+  async approveProof(templateId: string, user: User, lockNumber: number) {
+    const updateExpression = ['#templateStatus = :newStatus'];
+
+    const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':newStatus': 'PROOF_APPROVED' satisfies TemplateStatus,
+        ':expectedProofingLetterStatus':
+          'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':passed': 'PASSED' satisfies VirusScanStatus,
+        ':expectedLockNumber': lockNumber,
+      };
+
+    const conditions = [
+      'files.pdfTemplate.virusScanStatus = :passed',
+      '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
+      '#templateStatus = :expectedProofingLetterStatus',
+      '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+    ];
+
+    try {
+      const result = await this._update(
+        templateId,
+        user,
+        updateExpression,
+        {},
+        expressionAttributeValues,
+        { $and: conditions }
+      );
+
+      return result;
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException && error.Item) {
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.CANNOT_APPROVE,
+          'Proof cannot be approved',
           error
         );
       }
