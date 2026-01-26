@@ -766,7 +766,7 @@ describe('templateRepository', () => {
         UpdateExpression:
           'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
-          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND files.pdfTemplate.virusScanStatus = :passed AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
       });
     });
   });
@@ -828,7 +828,7 @@ describe('templateRepository', () => {
         UpdateExpression:
           'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
-          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND files.pdfTemplate.virusScanStatus = :passed AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedProofingLetterStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedProofingLetterStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
       });
     });
 

@@ -220,7 +220,7 @@ export class TemplateRepository {
       };
 
     const conditions = [
-      'files.pdfTemplate.virusScanStatus = :passed',
+      '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
       '#templateStatus = :expectedStatus',
       '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
@@ -273,7 +273,7 @@ export class TemplateRepository {
       };
 
     const conditions = [
-      'files.pdfTemplate.virusScanStatus = :passed',
+      '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
       '#templateStatus = :expectedProofingLetterStatus',
       '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
