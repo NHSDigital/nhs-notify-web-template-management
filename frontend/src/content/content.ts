@@ -642,6 +642,16 @@ const messagePlanInvalidConfiguration = {
   backLinkUrl: '/message-plans',
 };
 
+const deleteTemplateErrorPage = {
+  pageTitle: generatePageTitle('Delete template error'),
+  pageHeading: "You cannot delete the template '{{templateName}}'",
+  intro: 'The template is linked to these message plans:',
+  guidance:
+    'You need to unlink it from each message plan before you can delete it.',
+  backLinkText: goBackButtonText,
+  backLinkUrl: '/message-templates',
+};
+
 const submitTemplate = {
   pageTitle: {
     NHS_APP: generatePageTitle('Submit NHS App template'),
@@ -1542,6 +1552,7 @@ const content = {
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
     previewMessagePlan,
+    deleteTemplateErrorPage,
   },
 };
 

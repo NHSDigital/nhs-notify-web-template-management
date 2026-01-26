@@ -139,3 +139,9 @@ variable "sns_topic_arn" {
   description = "SNS topic ARN"
   default     = null
 }
+
+variable "enable_api_data_trace" {
+  type        = bool
+  description = "Enable API Gateway data trace logging"
+  default     = false
+}

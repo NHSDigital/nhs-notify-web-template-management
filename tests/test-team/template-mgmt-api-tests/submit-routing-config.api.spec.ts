@@ -249,7 +249,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     });
   });
 
-  test('returns 409 if the lock number header is not set', async ({
+  test('returns 400 if the lock number header is not set', async ({
     request,
   }) => {
     const { dbEntry } = RoutingConfigFactory.create(user1);
@@ -265,12 +265,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
       }
     );
 
-    expect(response.status()).toBe(409);
+    expect(response.status()).toBe(400);
 
     expect(await response.json()).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Message Plan has been modified since last read',
+      statusCode: 400,
+      technicalMessage: 'Invalid lock number provided',
     });
   });
 
