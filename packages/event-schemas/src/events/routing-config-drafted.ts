@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
-import {
-  $DraftRoutingConfigEventData,
-} from '../routing-config';
+import { $DraftRoutingConfigEventData } from '../routing-config';
 
 export const $RoutingConfigDraftedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.RoutingConfigDrafted.v1'),
