@@ -8,7 +8,7 @@
         ],
         "channel": "NHS_APP",
         "channelType": "primary",
-        "defaultTemplateId": "nhs-app-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -16,7 +16,7 @@
         ],
         "channel": "EMAIL",
         "channelType": "primary",
-        "defaultTemplateId": "email-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -24,7 +24,7 @@
         ],
         "channel": "SMS",
         "channelType": "primary",
-        "defaultTemplateId": "sms-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -32,7 +32,7 @@
         ],
         "channel": "LETTER",
         "channelType": "primary",
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -50,7 +50,7 @@
             "templateId": "ar-template-id"
           }
         ],
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -64,7 +64,7 @@
             "templateId": "x1-template-id"
           }
         ],
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       }
     ],
     "cascadeGroupOverrides": [
@@ -89,7 +89,7 @@
     "name": "routing-config-name"
   },
   "datacontenttype": "application/json",
-  "dataschema": "https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json",
+  "dataschema": "https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json",
   "dataschemaversion": "1.0.0",
   "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
   "plane": "control",
@@ -97,5 +97,5 @@
   "specversion": "1.0",
   "subject": "871b0f4e-0b32-474e-a49a-23fc554bc5a6",
   "time": "2025-07-29T08:45:00.000Z",
-  "type": "uk.nhs.notify.template-management.RoutingConfigDrafted.v1"
+  "type": "uk.nhs.notify.template-management.RoutingConfigDeleted.v1"
 }
