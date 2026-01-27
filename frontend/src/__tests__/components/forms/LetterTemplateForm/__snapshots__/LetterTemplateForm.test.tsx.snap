@@ -43,6 +43,13 @@ exports[`Client-side validation triggers - valid form - with errors 1`] = `
                 Mock template name error
               </a>
             </li>
+            <li>
+              <a
+                href="#letterTemplatePdf"
+              >
+                Select a letter template PDF
+              </a>
+            </li>
           </ul>
         </div>
         <form
@@ -381,7 +388,7 @@ exports[`Client-side validation triggers - valid form - with errors 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -405,8 +412,18 @@ exports[`Client-side validation triggers - valid form - with errors 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0 nhsuk-form-group--error"
             >
+              <span
+                class="nhsuk-error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Select a letter template PDF
+              </span>
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"

@@ -187,6 +187,7 @@ test('Client-side validation triggers - valid form - with errors', async () => {
           cb({
             fieldErrors: {
               letterTemplateName: ['Mock template name error'],
+              letterTemplatePdf: ['Select a letter template PDF'],
             },
           });
         }
