@@ -245,7 +245,10 @@ const expectedTemplateEvent = (
   },
 });
 
-const publishableRoutingConfigEventRecord = (status: string) => ({
+const publishableRoutingConfigEventRecord = (
+  status: string,
+  nullTemplateIds = false
+) => ({
   dynamodb: {
     SequenceNumber: '4',
     NewImage: {
@@ -276,7 +279,9 @@ const publishableRoutingConfigEventRecord = (status: string) => ({
             M: {
               channel: { S: 'EMAIL' },
               channelType: { S: 'primary' },
-              defaultTemplateId: { S: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd' },
               cascadeGroups: { L: [{ S: 'standard' }] },
             },
           },
@@ -284,7 +289,9 @@ const publishableRoutingConfigEventRecord = (status: string) => ({
             M: {
               channel: { S: 'LETTER' },
               channelType: { S: 'primary' },
-              defaultTemplateId: { S: 'd290f1ee-6c54-4b01-90e6-d701748f0851' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: 'd290f1ee-6c54-4b01-90e6-d701748f0851' },
               cascadeGroups: { L: [{ S: 'standard' }] },
             },
           },
@@ -292,7 +299,9 @@ const publishableRoutingConfigEventRecord = (status: string) => ({
             M: {
               channel: { S: 'LETTER' },
               channelType: { S: 'primary' },
-              defaultTemplateId: { S: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+              defaultTemplateId: nullTemplateIds
+                ? { NULL: true }
+                : { S: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
               cascadeGroups: { L: [{ S: 'translations' }] },
             },
           },
@@ -318,9 +327,9 @@ const publishableRoutingConfigEventRecord = (status: string) => ({
 });
 
 const expectedRoutingConfigEvent = (
-  status: string,
   type: string,
-  dataschema: string
+  dataschema: string,
+  nullTemplateIds = false
 ) => ({
   id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   datacontenttype: 'application/json',
@@ -344,19 +353,25 @@ const expectedRoutingConfigEvent = (
         channel: 'EMAIL',
         channelType: 'primary',
         cascadeGroups: ['standard'],
-        defaultTemplateId: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
       },
       {
         channel: 'LETTER',
         channelType: 'primary',
         cascadeGroups: ['standard'],
-        defaultTemplateId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : 'd290f1ee-6c54-4b01-90e6-d701748f0851',
       },
       {
         channel: 'LETTER',
         channelType: 'primary',
         cascadeGroups: ['translations'],
-        defaultTemplateId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        defaultTemplateId: nullTemplateIds
+          ? null
+          : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
     ],
     cascadeGroupOverrides: [
@@ -365,7 +380,6 @@ const expectedRoutingConfigEvent = (
         language: ['fr'],
       },
     ],
-    status,
   },
 });
 
@@ -521,7 +535,7 @@ describe('routing config events', () => {
                 M: {
                   channel: { S: 'EMAIL' },
                   channelType: { S: 'primary' },
-                  defaultTemplateId: { S: null },
+                  defaultTemplateId: { S: 52 },
                   cascadeGroups: { L: [{ S: 'standard' }] },
                 },
               },
@@ -538,6 +552,14 @@ describe('routing config events', () => {
     expect(event).toEqual(undefined);
   });
 
+  test('does not build routing config completed event with null template IDs', () => {
+    const event = eventBuilder.buildEvent(
+      publishableRoutingConfigEventRecord('COMPLETED', true)
+    );
+
+    expect(event).toEqual(undefined);
+  });
+
   test('builds routing config completed event', () => {
     const event = eventBuilder.buildEvent(
       publishableRoutingConfigEventRecord('COMPLETED')
@@ -545,9 +567,22 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'COMPLETED',
         'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json'
+      )
+    );
+  });
+
+  test('builds routing config drafted event with null template IDs', () => {
+    const event = eventBuilder.buildEvent(
+      publishableRoutingConfigEventRecord('DRAFT', true)
+    );
+
+    expect(event).toEqual(
+      expectedRoutingConfigEvent(
+        'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+        'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json',
+        true
       )
     );
   });
@@ -559,7 +594,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DRAFT',
         'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json'
       )
@@ -573,9 +607,22 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DELETED',
         'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json'
+      )
+    );
+  });
+
+  test('builds routing config deleted event with null template IDs', () => {
+    const event = eventBuilder.buildEvent(
+      publishableRoutingConfigEventRecord('DELETED', true)
+    );
+
+    expect(event).toEqual(
+      expectedRoutingConfigEvent(
+        'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+        'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json',
+        true
       )
     );
   });
