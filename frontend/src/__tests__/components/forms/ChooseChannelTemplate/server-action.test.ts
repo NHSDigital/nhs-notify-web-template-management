@@ -170,7 +170,6 @@ test('submit form - success updates config and redirects to choose templates for
 test('submit form - success adds conditional template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
-
   const largePrintTemplate = {
     ...LARGE_PRINT_LETTER_TEMPLATE,
     id: 'large-print-template-id',
