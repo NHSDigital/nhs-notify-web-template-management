@@ -30,6 +30,14 @@ export const NhsNotifyErrorSummary = ({
 
   const { fieldErrors, formErrors } = errorState;
 
+  const showErrorSummary =
+    (fieldErrors && Object.values(fieldErrors).some(Boolean)) ||
+    (formErrors && formErrors.length > 0);
+
+  if (!showErrorSummary) {
+    return;
+  }
+
   const renderedFieldErrors =
     fieldErrors &&
     Object.entries(fieldErrors).map(([id, errors]) =>
@@ -42,14 +50,6 @@ export const NhsNotifyErrorSummary = ({
         </ErrorSummary.Item>
       ))
     );
-
-  const showErrorSummary =
-    (fieldErrors && Object.values(fieldErrors).some(Boolean)) ||
-    (formErrors && formErrors.length > 0);
-
-  if (!showErrorSummary) {
-    return;
-  }
 
   return (
     <ErrorSummary ref={errorSummaryRef}>
