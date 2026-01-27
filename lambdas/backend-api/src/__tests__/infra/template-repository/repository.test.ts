@@ -710,7 +710,7 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update templateStatus to SUBMITTED', async () => {
+    test('should update template status to SUBMITTED', async () => {
       const { templateRepository, mocks } = setup();
       const id = 'abc-def-ghi-jkl-123';
 
@@ -753,9 +753,9 @@ describe('templateRepository', () => {
         },
         ExpressionAttributeValues: {
           ':deleted': 'DELETED',
-          ':expectedLetterStatus': 'PROOF_AVAILABLE',
           ':expectedLockNumber': 0,
           ':expectedStatus': 'NOT_YET_SUBMITTED',
+          ':expectedProofingLetterStatus': 'PROOF_AVAILABLE',
           ':lockNumberIncrement': 1,
           ':newStatus': 'SUBMITTED',
           ':passed': 'PASSED',
@@ -767,7 +767,158 @@ describe('templateRepository', () => {
         UpdateExpression:
           'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
-          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND (#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus) AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND (#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus) AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+      });
+    });
+  });
+
+  describe('approveProof', () => {
+    test('should update template status to PROOF_APPROVED', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner: ownerWithClientPrefix,
+        version: 1,
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: 'PROOF_APPROVED',
+        templateType: 'NHS_APP',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
+        lockNumber: 1,
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id, owner: ownerWithClientPrefix },
+        })
+        .resolves({ Attributes: databaseTemplate });
+
+      const response = await templateRepository.approveProof(id, user, 0);
+
+      expect(response).toEqual({
+        data: databaseTemplate,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':deleted': 'DELETED',
+          ':expectedLockNumber': 0,
+          ':expectedProofingLetterStatus': 'PROOF_AVAILABLE',
+          ':lockNumberIncrement': 1,
+          ':newStatus': 'PROOF_APPROVED',
+          ':passed': 'PASSED',
+          ':submitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
+        },
+
+        UpdateExpression:
+          'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND #templateStatus = :expectedProofingLetterStatus AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+      });
+    });
+
+    test('should return error when lock number mismatch', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new ConditionalCheckFailedException({
+        message: 'mocked',
+        $metadata: { httpStatusCode: 400 },
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'PROOF_AVAILABLE',
+          lockNumber: 1,
+        }),
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.approveProof(
+        'abc-def-ghi-jkl-123',
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Template has been modified since last read',
+          },
+        },
+      });
+    });
+
+    test('should return error when template cannot be approved', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new ConditionalCheckFailedException({
+        message: 'mocked',
+        $metadata: { httpStatusCode: 400 },
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 0,
+        }),
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.approveProof(
+        'abc-def-ghi-jkl-123',
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 400,
+            description: 'Proof cannot be approved',
+          },
+        },
+      });
+    });
+
+    test('should return error when unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.approveProof(
+        'abc-def-ghi-jkl-123',
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
       });
     });
   });
@@ -911,7 +1062,7 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('updateStatus', () => {
+  describe('finaliseLetterUpload', () => {
     test.each([
       {
         Item: undefined,
@@ -951,10 +1102,9 @@ describe('templateRepository', () => {
 
         mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
-        const response = await templateRepository.updateStatus(
+        const response = await templateRepository.finaliseLetterUpload(
           'abc-def-ghi-jkl-123',
-          user,
-          'PENDING_VALIDATION'
+          user
         );
 
         expect(response).toEqual({
@@ -975,10 +1125,9 @@ describe('templateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
-      const response = await templateRepository.updateStatus(
+      const response = await templateRepository.finaliseLetterUpload(
         'abc-def-ghi-jkl-123',
-        user,
-        'PENDING_VALIDATION'
+        user
       );
 
       expect(response).toEqual({
@@ -992,7 +1141,7 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update templateStatus to new status', async () => {
+    test('should update templateStatus to PENDING_VALIDATION', async () => {
       const { templateRepository, mocks } = setup();
       const id = 'abc-def-ghi-jkl-123';
 
@@ -1019,10 +1168,9 @@ describe('templateRepository', () => {
           },
         });
 
-      const response = await templateRepository.updateStatus(
+      const response = await templateRepository.finaliseLetterUpload(
         'abc-def-ghi-jkl-123',
-        user,
-        'PENDING_VALIDATION'
+        user
       );
 
       expect(response).toEqual({

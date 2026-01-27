@@ -36,6 +36,7 @@ export default function PreviewTemplateDetailsLetter({
   const showProofs =
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
+      template.templateStatus === 'PROOF_APPROVED' ||
       template.templateStatus === 'SUBMITTED') &&
     template.clientId;
 
