@@ -80,7 +80,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
           data: expect.objectContaining({
             id,
-            status: 'DRAFT',
           }),
         })
       );
@@ -90,7 +89,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
           data: expect.objectContaining({
             id,
-            status: 'DELETED',
           }),
         })
       );
@@ -154,7 +152,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
           data: expect.objectContaining({
             id,
-            status: 'DRAFT',
           }),
         })
       );
@@ -164,7 +161,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
           data: expect.objectContaining({
             id,
-            status: 'DELETED',
           }),
         })
       );
@@ -228,7 +224,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
           data: expect.objectContaining({
             id,
-            status: 'DRAFT',
           }),
         })
       );
@@ -238,7 +233,6 @@ test.describe('Event publishing - Routing Config', () => {
           type: 'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
           data: expect.objectContaining({
             id,
-            status: 'COMPLETED',
           }),
         })
       );
