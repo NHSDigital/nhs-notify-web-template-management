@@ -1,11 +1,9 @@
 import {
-  CascadeGroup,
   CascadeGroupName,
   CascadeItem,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
   Language,
-  LetterType,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
@@ -176,70 +174,6 @@ export function removeTemplatesFromCascadeItem(
     buildCascadeGroupsForItem(updatedCascadeItem);
 
   return updatedCascadeItem;
-}
-
-/**
- * Gets all accessible format types from the cascade
- */
-export function getAccessibleLetterFormatsFromCascade(
-  cascade: CascadeItem[]
-): LetterType[] {
-  const formats = new Set<LetterType>();
-
-  for (const item of cascade) {
-    for (const template of item.conditionalTemplates ?? []) {
-      if ('accessibleFormat' in template && template.templateId) {
-        formats.add(template.accessibleFormat);
-      }
-    }
-  }
-  return [...formats];
-}
-
-/**
- * Collects all language types from the cascade
- */
-export function getCascadeLanguages(cascade: CascadeItem[]): Language[] {
-  const languages = new Set<Language>();
-
-  for (const item of cascade) {
-    for (const template of item.conditionalTemplates ?? []) {
-      if ('language' in template && template.templateId) {
-        languages.add(template.language);
-      }
-    }
-  }
-  return [...languages];
-}
-
-/**
- * Builds cascadeGroupOverrides by analysing the cascade to determine which conditional
- * template groups (accessible formats, languages) are present.
- * Returns overrides with only groups that have templates.
- */
-export function buildCascadeGroupOverridesFromCascade(
-  updatedCascade: CascadeItem[]
-): CascadeGroup[] {
-  const overrides: CascadeGroup[] = [];
-
-  const accessibleFormats =
-    getAccessibleLetterFormatsFromCascade(updatedCascade);
-  if (accessibleFormats.length > 0) {
-    overrides.push({
-      name: 'accessible',
-      accessibleFormat: accessibleFormats,
-    });
-  }
-
-  const languages = getCascadeLanguages(updatedCascade);
-  if (languages.length > 0) {
-    overrides.push({
-      name: 'translations',
-      language: languages,
-    });
-  }
-
-  return overrides;
 }
 
 /**
