@@ -89,10 +89,6 @@
           "items": {
             "$ref": "#/$defs/CascadeGroupOverride"
           }
-        },
-        "status": {
-          "description": "Routing config status",
-          "type": "string"
         }
       },
       "required": [
@@ -103,8 +99,7 @@
         "defaultCascadeGroup",
         "createdAt",
         "cascade",
-        "cascadeGroupOverrides",
-        "status"
+        "cascadeGroupOverrides"
       ]
     }
   },

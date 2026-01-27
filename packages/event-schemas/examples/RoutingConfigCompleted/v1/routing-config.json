@@ -86,8 +86,7 @@
     "createdAt": "2025-07-29T08:45:00.000Z",
     "defaultCascadeGroup": "standard",
     "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
-    "name": "routing-config-name",
-    "status": "COMPLETED"
+    "name": "routing-config-name"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json",

@@ -327,7 +327,6 @@ const publishableRoutingConfigEventRecord = (
 });
 
 const expectedRoutingConfigEvent = (
-  status: string,
   type: string,
   dataschema: string,
   nullTemplateIds = false
@@ -381,7 +380,6 @@ const expectedRoutingConfigEvent = (
         language: ['fr'],
       },
     ],
-    status,
   },
 });
 
@@ -569,7 +567,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'COMPLETED',
         'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json'
       )
@@ -583,7 +580,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DRAFT',
         'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json',
         true
@@ -598,7 +594,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DRAFT',
         'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDrafted/v1.json'
       )
@@ -612,7 +607,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DELETED',
         'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json'
       )
@@ -626,7 +620,6 @@ describe('routing config events', () => {
 
     expect(event).toEqual(
       expectedRoutingConfigEvent(
-        'DELETED',
         'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
         'https://notify.nhs.uk/events/schemas/RoutingConfigDeleted/v1.json',
         true

@@ -143,9 +143,6 @@ export const $BaseRoutingConfigEventData = z.object({
     description:
       'Config defining non-default cascade groups and the conditons under which they will be used',
   }),
-  status: z.string().meta({
-    description: 'Routing config status',
-  }),
 });
 
 export const $DraftRoutingConfigEventData = $BaseRoutingConfigEventData.extend({
