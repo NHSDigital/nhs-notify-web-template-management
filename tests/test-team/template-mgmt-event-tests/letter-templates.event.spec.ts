@@ -230,47 +230,24 @@ test.describe('Event publishing - Letters', () => {
       expect(events.length).toBeGreaterThanOrEqual(6);
       expect(events.length).toBeLessThanOrEqual(7);
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PENDING_PROOF_REQUEST',
-          }),
-        })
+      const drafts = events.filter(
+        (e) =>
+          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
+          e.data.id === templateId
       );
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'WAITING_FOR_PROOF',
-          }),
-        })
-      );
-
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PROOF_AVAILABLE',
-          }),
-        })
-      );
+      expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
 
       expect(events).toContainEqual(
         expect.objectContaining({
           type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'SUBMITTED',
           }),
         })
       );
 
-      console.log(`Events found: ${events.length}. Expected: 7`);
+      console.log(`Events found: ${events.length}. Expected: 6 or 7`);
     }).toPass({ timeout: 90_000, intervals: [1000, 3000, 5000] });
   });
 
@@ -307,25 +284,13 @@ test.describe('Event publishing - Letters', () => {
 
       expect(events).toHaveLength(2);
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PROOF_AVAILABLE',
-          }),
-        })
+      const drafts = events.filter(
+        (e) =>
+          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
+          e.data.id === templateId
       );
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PROOF_APPROVED',
-          }),
-        })
-      );
+      expect(drafts).toHaveLength(2);
     }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
   });
 
@@ -372,7 +337,6 @@ test.describe('Event publishing - Letters', () => {
           type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'PENDING_PROOF_REQUEST',
           }),
         })
       );
@@ -382,7 +346,6 @@ test.describe('Event publishing - Letters', () => {
           type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'DELETED',
           }),
         })
       );

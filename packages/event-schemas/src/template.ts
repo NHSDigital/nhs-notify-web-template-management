@@ -3,8 +3,6 @@ import { languages } from './common';
 
 const letterTypes = ['q4', 'x0', 'x1'];
 
-export const $TemplateStatus = z.string().max(1000);
-
 const $TemplateEventV1BaseData = z.object({
   owner: z.string().meta({
     description: 'The client that owns the template',
@@ -33,9 +31,6 @@ const $TemplateEventV1BaseData = z.object({
   }),
   name: z.string().max(1000).meta({
     description: 'User-provided template name',
-  }),
-  templateStatus: $TemplateStatus.meta({
-    description: 'Current status of the template',
   }),
   // informal ISO datetime
   updatedAt: z

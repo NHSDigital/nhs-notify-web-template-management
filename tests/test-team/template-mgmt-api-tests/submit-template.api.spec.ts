@@ -426,7 +426,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       });
     });
 
-    test('returns 409 if the lock number header does not match the current one', async ({
+    test('returns 400 if the lock number header does not match the current one', async ({
       request,
     }) => {
       const { id: templateId, lockNumber } =

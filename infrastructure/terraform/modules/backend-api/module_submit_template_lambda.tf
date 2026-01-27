@@ -40,8 +40,8 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:UpdateItem",
       "dynamodb:GetItem",
+      "dynamodb:UpdateItem",
     ]
 
     resources = [

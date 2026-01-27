@@ -100,7 +100,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name,
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -111,7 +110,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name: 'UPDATED',
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -122,7 +120,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name: 'UPDATED',
-                templateStatus: 'SUBMITTED',
               }),
             })
           );
@@ -181,7 +178,6 @@ test.describe('Event publishing - Digital', () => {
               type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
               data: expect.objectContaining({
                 id: templateId,
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -191,7 +187,6 @@ test.describe('Event publishing - Digital', () => {
               type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
               data: expect.objectContaining({
                 id: templateId,
-                templateStatus: 'DELETED',
               }),
             })
           );

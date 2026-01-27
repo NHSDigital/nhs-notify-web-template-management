@@ -114,11 +114,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "maxLength": 1000
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -150,7 +145,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "subject",
@@ -189,11 +183,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "maxLength": 1000
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -220,7 +209,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "templateType"
@@ -255,11 +243,6 @@
         },
         "name": {
           "description": "User-provided template name",
-          "type": "string",
-          "maxLength": 1000
-        },
-        "templateStatus": {
-          "description": "Current status of the template",
           "type": "string",
           "maxLength": 1000
         },
@@ -369,7 +352,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "files",
         "templateType",
@@ -410,11 +392,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "maxLength": 1000
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -441,7 +418,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "templateType"
