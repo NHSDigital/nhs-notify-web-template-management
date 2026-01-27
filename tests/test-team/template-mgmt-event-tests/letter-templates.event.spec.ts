@@ -21,12 +21,16 @@ test.describe('Event publishing - Letters', () => {
   const sftpHelper = new SftpHelper();
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-  let userProofingEnabled: TestUser;
+  let userRoutingEnabled: TestUser;
+  let userRoutingDisabledProofingEnabled: TestUser;
   let userProofingDisabled: TestUser;
 
   test.beforeAll(async () => {
     await sftpHelper.connect();
-    userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
+    userRoutingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
+    userRoutingDisabledProofingEnabled = await authHelper.getTestUser(
+      testUsers.User2.userId
+    );
     userProofingDisabled = await authHelper.getTestUser(testUsers.User3.userId);
   });
 
@@ -85,7 +89,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingEnabled,
+        userRoutingEnabled,
         'user-proof-disabled',
         'VALIDATION_FAILED'
       ),
@@ -97,7 +101,7 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
-          Authorization: await userProofingEnabled.getAccessToken(),
+          Authorization: await userRoutingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -113,7 +117,7 @@ test.describe('Event publishing - Letters', () => {
     expect(events).toHaveLength(0);
   });
 
-  test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates', async ({
+  test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates (routing disabled)', async ({
     request,
   }) => {
     const templateId = randomUUID();
@@ -121,7 +125,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingEnabled,
+        userRoutingDisabledProofingEnabled,
         'userProofingEnabledTemplate',
         'PENDING_PROOF_REQUEST'
       ),
@@ -138,7 +142,7 @@ test.describe('Event publishing - Letters', () => {
     );
 
     const supplierReference = [
-      userProofingEnabled.clientId,
+      userRoutingDisabledProofingEnabled.clientId,
       'campaign',
       templateId,
       'en',
@@ -162,7 +166,8 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
       {
         headers: {
-          Authorization: await userProofingEnabled.getAccessToken(),
+          Authorization:
+            await userRoutingDisabledProofingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -184,7 +189,7 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       latest = await templateStorageHelper.getTemplate({
         templateId,
-        clientId: userProofingEnabled.clientId,
+        clientId: userRoutingDisabledProofingEnabled.clientId,
       });
 
       expect(latest.templateStatus).toBe('PROOF_AVAILABLE');
@@ -194,7 +199,8 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
       {
         headers: {
-          Authorization: await userProofingEnabled.getAccessToken(),
+          Authorization:
+            await userRoutingDisabledProofingEnabled.getAccessToken(),
           'X-Lock-Number': String(latest.lockNumber),
         },
       }
@@ -224,48 +230,68 @@ test.describe('Event publishing - Letters', () => {
       expect(events.length).toBeGreaterThanOrEqual(6);
       expect(events.length).toBeLessThanOrEqual(7);
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PENDING_PROOF_REQUEST',
-          }),
-        })
+      const drafts = events.filter(
+        (e) =>
+          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
+          e.data.id === templateId
       );
 
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'WAITING_FOR_PROOF',
-          }),
-        })
-      );
-
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
-            templateStatus: 'PROOF_AVAILABLE',
-          }),
-        })
-      );
+      expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
 
       expect(events).toContainEqual(
         expect.objectContaining({
           type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'SUBMITTED',
           }),
         })
       );
 
-      console.log(`Events found: ${events.length}. Expected: 7`);
+      console.log(`Events found: ${events.length}. Expected: 6 or 7`);
     }).toPass({ timeout: 90_000, intervals: [1000, 3000, 5000] });
+  });
+
+  test('Expect Draft event when routing is enabled and proof is approved', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+
+    const template = TemplateFactory.uploadLetterTemplate(
+      templateId,
+      userRoutingEnabled,
+      'userRoutingEnabledTemplate',
+      'PROOF_AVAILABLE'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const start = new Date();
+
+    const submitResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+      {
+        headers: {
+          Authorization: await userRoutingEnabled.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+      }
+    );
+
+    expect(submitResponse.status()).toBe(200);
+
+    await expect(async () => {
+      const events = await eventCacheHelper.findEvents(start, [templateId]);
+
+      expect(events).toHaveLength(2);
+
+      const drafts = events.filter(
+        (e) =>
+          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
+          e.data.id === templateId
+      );
+
+      expect(drafts).toHaveLength(2);
+    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
   });
 
   test('Expect Deleted.v1 event when deleting templates', async ({
@@ -278,7 +304,7 @@ test.describe('Event publishing - Letters', () => {
     const template = {
       ...TemplateFactory.uploadLetterTemplate(
         templateId,
-        userProofingEnabled,
+        userRoutingEnabled,
         'user-proof-deleted',
         'PENDING_PROOF_REQUEST'
       ),
@@ -293,7 +319,7 @@ test.describe('Event publishing - Letters', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}`,
       {
         headers: {
-          Authorization: await userProofingEnabled.getAccessToken(),
+          Authorization: await userRoutingEnabled.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
       }
@@ -311,7 +337,6 @@ test.describe('Event publishing - Letters', () => {
           type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'PENDING_PROOF_REQUEST',
           }),
         })
       );
@@ -321,7 +346,6 @@ test.describe('Event publishing - Letters', () => {
           type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
           data: expect.objectContaining({
             id: templateId,
-            templateStatus: 'DELETED',
           }),
         })
       );

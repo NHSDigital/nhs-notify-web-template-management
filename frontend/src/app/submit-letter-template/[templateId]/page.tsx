@@ -9,10 +9,18 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
 import { $LockNumber } from 'nhs-notify-backend-client';
+import { serverIsFeatureEnabled } from '@utils/server-features';
+import content from '@content/content';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const routingEnabled = await serverIsFeatureEnabled('routing');
+
+  const title = routingEnabled
+    ? content.pages.submitLetterTemplate.routingFlagEnabled.pageTitle
+    : content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle;
+
   return {
-    title: 'Submit letter template',
+    title,
   };
 }
 

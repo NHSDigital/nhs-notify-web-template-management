@@ -15,13 +15,17 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitLetterTemplate');
+jest.mock('@utils/server-features');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
+const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('SubmitLetterTemplatePage', () => {
   beforeEach(() => {
@@ -112,11 +116,27 @@ describe('SubmitLetterTemplatePage', () => {
     );
   });
 
-  test('should generate metadata', async () => {
+  test('should generate metadata with routing-enabled title when routing feature is enabled', async () => {
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(true);
+
     const metadata = await generateMetadata();
 
     expect(metadata).toEqual({
-      title: 'Submit letter template',
+      title: content.pages.submitLetterTemplate.routingFlagEnabled.pageTitle,
     });
+
+    expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('routing');
+  });
+
+  test('should generate metadata with routing-disabled title when routing feature is disabled', async () => {
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(false);
+
+    const metadata = await generateMetadata();
+
+    expect(metadata).toEqual({
+      title: content.pages.submitLetterTemplate.routingFlagDisabled.pageTitle,
+    });
+
+    expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('routing');
   });
 });

@@ -215,7 +215,8 @@ export class TemplateRepository {
       {
         ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
         ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
-        ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':expectedProofingLetterStatus':
+          'PROOF_AVAILABLE' satisfies TemplateStatus,
         ':passed': 'PASSED' satisfies VirusScanStatus,
         ':expectedLockNumber': lockNumber,
       };
@@ -223,7 +224,7 @@ export class TemplateRepository {
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus)',
+      '(#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus)',
       '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
     ];
 
@@ -261,15 +262,67 @@ export class TemplateRepository {
     }
   }
 
-  async updateStatus(
+  async approveProof(templateId: string, user: User, lockNumber: number) {
+    const updateExpression = ['#templateStatus = :newStatus'];
+
+    const expressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':newStatus': 'PROOF_APPROVED' satisfies TemplateStatus,
+        ':expectedProofingLetterStatus':
+          'PROOF_AVAILABLE' satisfies TemplateStatus,
+        ':passed': 'PASSED' satisfies VirusScanStatus,
+        ':expectedLockNumber': lockNumber,
+      };
+
+    const conditions = [
+      '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
+      '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
+      '#templateStatus = :expectedProofingLetterStatus',
+      '(attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+    ];
+
+    try {
+      const result = await this._update(
+        templateId,
+        user,
+        updateExpression,
+        {},
+        expressionAttributeValues,
+        { $and: conditions }
+      );
+
+      return result;
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException && error.Item) {
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.CANNOT_APPROVE,
+          'Proof cannot be approved',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+    }
+  }
+
+  async finaliseLetterUpload(
     templateId: string,
-    user: User,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
+    user: User
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string | number> = {
-      ':newStatus': status,
+      ':newStatus': 'PENDING_VALIDATION',
     };
 
     try {

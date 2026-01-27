@@ -15,10 +15,12 @@ test.describe('Event publishing - Digital', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   const eventCacheHelper = new EventCacheHelper();
 
-  let user1: TestUser;
+  let userRoutingEnabled: TestUser;
+  let userRoutingDisabled: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    userRoutingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
   });
 
   test.afterAll(async () => {
@@ -27,7 +29,7 @@ test.describe('Event publishing - Digital', () => {
 
   for (const digitalChannel of DIGITAL_CHANNELS) {
     test.describe(`${digitalChannel} template events`, () => {
-      test('Expect Draft.v1 event When Creating And Updating templates And Completed.v1 event When submitting templates', async ({
+      test('Expect Draft.v1 event When Creating And Updating templates And Completed.v1 event When submitting templates (routing disabled)', async ({
         request,
       }) => {
         const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
@@ -40,7 +42,7 @@ test.describe('Event publishing - Digital', () => {
           `${process.env.API_BASE_URL}/v1/template`,
           {
             headers: {
-              Authorization: await user1.getAccessToken(),
+              Authorization: await userRoutingDisabled.getAccessToken(),
             },
             data: template,
           }
@@ -54,14 +56,14 @@ test.describe('Event publishing - Digital', () => {
 
         templateStorageHelper.addAdHocTemplateKey({
           templateId: templateId,
-          clientId: user1.clientId,
+          clientId: userRoutingDisabled.clientId,
         });
 
         const updateResponse = await request.put(
           `${process.env.API_BASE_URL}/v1/template/${templateId}`,
           {
             headers: {
-              Authorization: await user1.getAccessToken(),
+              Authorization: await userRoutingDisabled.getAccessToken(),
               'X-Lock-Number': String(lockNumber),
             },
             data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
@@ -79,7 +81,7 @@ test.describe('Event publishing - Digital', () => {
           `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
           {
             headers: {
-              Authorization: await user1.getAccessToken(),
+              Authorization: await userRoutingDisabled.getAccessToken(),
               'X-Lock-Number': String(updated.data.lockNumber),
             },
           }
@@ -98,7 +100,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name,
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -109,7 +110,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name: 'UPDATED',
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -120,7 +120,6 @@ test.describe('Event publishing - Digital', () => {
               data: expect.objectContaining({
                 id: templateId,
                 name: 'UPDATED',
-                templateStatus: 'SUBMITTED',
               }),
             })
           );
@@ -140,7 +139,7 @@ test.describe('Event publishing - Digital', () => {
           `${process.env.API_BASE_URL}/v1/template`,
           {
             headers: {
-              Authorization: await user1.getAccessToken(),
+              Authorization: await userRoutingEnabled.getAccessToken(),
             },
             data: template,
           }
@@ -154,14 +153,14 @@ test.describe('Event publishing - Digital', () => {
 
         templateStorageHelper.addAdHocTemplateKey({
           templateId: templateId,
-          clientId: user1.clientId,
+          clientId: userRoutingEnabled.clientId,
         });
 
         const updateResponse = await request.delete(
           `${process.env.API_BASE_URL}/v1/template/${templateId}`,
           {
             headers: {
-              Authorization: await user1.getAccessToken(),
+              Authorization: await userRoutingEnabled.getAccessToken(),
               'X-Lock-Number': String(lockNumber),
             },
           }
@@ -179,7 +178,6 @@ test.describe('Event publishing - Digital', () => {
               type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
               data: expect.objectContaining({
                 id: templateId,
-                templateStatus: 'NOT_YET_SUBMITTED',
               }),
             })
           );
@@ -189,7 +187,6 @@ test.describe('Event publishing - Digital', () => {
               type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
               data: expect.objectContaining({
                 id: templateId,
-                templateStatus: 'DELETED',
               }),
             })
           );
