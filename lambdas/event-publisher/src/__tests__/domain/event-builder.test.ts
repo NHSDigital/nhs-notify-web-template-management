@@ -206,11 +206,7 @@ const publishableTemplateEventRecord = (
   tableName: tables.templates,
 });
 
-const expectedTemplateEvent = (
-  status: string,
-  type: string,
-  dataschema: string
-) => ({
+const expectedTemplateEvent = (type: string, dataschema: string) => ({
   id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
   datacontenttype: 'application/json',
   time: '2022-01-01T09:00:00.000Z',
@@ -231,7 +227,6 @@ const expectedTemplateEvent = (
     updatedBy: 'updated-by',
     personalisationParameters: ['test'],
     templateType: 'LETTER',
-    templateStatus: status,
     name: 'name',
     letterType: 'x0',
     language: 'fr',
@@ -433,7 +428,6 @@ describe('template events', () => {
 
     expect(event).toEqual(
       expectedTemplateEvent(
-        'SUBMITTED',
         'uk.nhs.notify.template-management.TemplateCompleted.v1',
         'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
       )
@@ -447,7 +441,6 @@ describe('template events', () => {
 
     expect(event).toEqual(
       expectedTemplateEvent(
-        'PROOF_AVAILABLE',
         'uk.nhs.notify.template-management.TemplateDrafted.v1',
         'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
       )
@@ -470,7 +463,6 @@ describe('template events', () => {
 
     expect(event).toEqual(
       expectedTemplateEvent(
-        'SUBMITTED',
         'uk.nhs.notify.template-management.TemplateCompleted.v1',
         'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
       )
@@ -484,7 +476,6 @@ describe('template events', () => {
 
     expect(event).toEqual(
       expectedTemplateEvent(
-        'DELETED',
         'uk.nhs.notify.template-management.TemplateDeleted.v1',
         'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
       )
