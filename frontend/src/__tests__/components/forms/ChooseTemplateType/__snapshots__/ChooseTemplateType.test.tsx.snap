@@ -27,6 +27,11 @@ exports[`Choose template page Client-side validation triggers 1`] = `
       >
         There is a problem
       </h2>
+      <div
+        class="nhsuk-hint"
+      >
+        You have not chosen a template type
+      </div>
       <ul
         class="nhsuk-list nhsuk-error-summary__list"
       >
@@ -225,6 +230,11 @@ exports[`Choose template page renders error component 1`] = `
       >
         There is a problem
       </h2>
+      <div
+        class="nhsuk-hint"
+      >
+        You have not chosen a template type
+      </div>
       <ul
         class="nhsuk-list nhsuk-error-summary__list"
       >
@@ -574,6 +584,11 @@ exports[`Choose template page when letter authoring is enabled should show the c
       >
         There is a problem
       </h2>
+      <div
+        class="nhsuk-hint"
+      >
+        You have not chosen a letter template type
+      </div>
       <ul
         class="nhsuk-list nhsuk-error-summary__list"
       >

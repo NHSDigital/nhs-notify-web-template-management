@@ -745,8 +745,14 @@ const chooseTemplateType = {
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
   backLinkText: backToAllTemplates,
   form: {
-    templateType: { error: 'Select a template type' },
-    letterType: { error: 'Select a letter template type' },
+    templateType: {
+      error: 'Select a template type',
+      errorHint: 'You have not chosen a template type',
+    },
+    letterType: {
+      error: 'Select a letter template type',
+      errorHint: 'You have not chosen a letter template type',
+    },
   },
   templateTypes: {
     NHS_APP: 'NHS App message',

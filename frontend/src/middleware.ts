@@ -54,8 +54,12 @@ const protectedPaths = [
   /^\/submit-nhs-app-template\/[^/]+$/,
   /^\/submit-text-message-template\/[^/]+$/,
   /^\/text-message-template-submitted\/[^/]+$/,
+  /^\/upload-british-sign-language-letter-template$/,
+  /^\/upload-foreign-language-letter-template$/,
+  /^\/upload-large-print-letter-template$/,
   /^\/upload-letter-template\/client-id-and-campaign-id-required$/,
   /^\/upload-letter-template$/,
+  /^\/upload-standard-english-letter-template$/,
 ];
 
 const publicPaths = [

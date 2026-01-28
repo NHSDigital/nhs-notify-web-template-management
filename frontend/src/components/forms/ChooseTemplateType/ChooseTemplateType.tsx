@@ -70,13 +70,17 @@ export const ChooseTemplateType = ({
         : undefined,
   }));
 
+  const errorHintText = errorState?.fieldErrors?.['letterType']
+    ? content.form.letterType.errorHint
+    : content.form.templateType.errorHint;
+
   return (
     <>
       <Link href='/message-templates' passHref legacyBehavior>
         <NotifyBackLink>{content.backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
-        <NhsNotifyErrorSummary errorState={errorState} />
+        <NhsNotifyErrorSummary hint={errorHintText} errorState={errorState} />
         <NHSNotifyRadioButtonForm
           formId='choose-a-template-type'
           radiosId='templateType'

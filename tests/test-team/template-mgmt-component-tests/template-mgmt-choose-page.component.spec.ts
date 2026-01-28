@@ -67,7 +67,7 @@ test.describe('Choose Template Type Page', () => {
     for (const [templateType, label] of [
       ['nhsapp', 'NHS App message'],
       ['email', 'Email'],
-      ['sms', 'Text message'],
+      ['sms', 'Text message (SMS)'],
       ['letter', 'Letter'],
     ] as const) {
       const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
@@ -88,6 +88,10 @@ test.describe('Choose Template Type Page', () => {
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
 
     await expect(chooseTemplateTypePage.errorSummary).toBeVisible();
+    await expect(chooseTemplateTypePage.errorSummaryHeading).toBeVisible();
+    await expect(chooseTemplateTypePage.errorSummaryHint).toHaveText(
+      'You have not chosen a template type'
+    );
     await expect(chooseTemplateTypePage.errorSummaryList).toHaveText([
       'Select a template type',
     ]);
@@ -184,7 +188,7 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     await expect(chooseTemplateTypePage.errorSummary).toBeVisible();
     await expect(chooseTemplateTypePage.errorSummaryHeading).toBeVisible();
     await expect(chooseTemplateTypePage.errorSummaryHint).toHaveText(
-      'Select one option'
+      'You have not chosen a template type'
     );
     await expect(chooseTemplateTypePage.errorSummaryList).toHaveText([
       'Select a template type',
@@ -206,7 +210,7 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     await expect(chooseTemplateTypePage.errorSummary).toBeVisible();
     await expect(chooseTemplateTypePage.errorSummaryHeading).toBeVisible();
     await expect(chooseTemplateTypePage.errorSummaryHint).toHaveText(
-      'Select one option'
+      'You have not chosen a letter template type'
     );
     await expect(chooseTemplateTypePage.errorSummaryList).toHaveText([
       'Select a letter template type',
@@ -215,6 +219,9 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     await expect(chooseTemplateTypePage.letterTypeFormError).toContainText(
       'Select a letter template type'
     );
+
+    // eslint-disable-next-line playwright/no-wait-for-timeout
+    await page.waitForTimeout(5000); // Wait for debounce
 
     await chooseTemplateTypePage.getLetterTypeRadio('x0').check();
 
