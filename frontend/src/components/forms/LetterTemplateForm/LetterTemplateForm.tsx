@@ -137,6 +137,7 @@ export const LetterTemplateForm: FC<
                 <TextInput
                   formGroupProps={{ className: 'nhsuk-u-margin-bottom-0' }}
                   id='letterTemplateName'
+                  data-testid='letterTemplateName'
                   defaultValue={letterTemplateName}
                   onChange={letterTemplateNameHandler}
                   error={templateNameError}
