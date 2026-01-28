@@ -406,7 +406,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
         data: finalTemplate,
       });
 
@@ -445,11 +445,9 @@ describe('templateClient', () => {
         csv
       );
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
-        templateId,
-        user,
-        'PENDING_VALIDATION'
-      );
+      expect(
+        mocks.templateRepository.finaliseLetterUpload
+      ).toHaveBeenCalledWith(templateId, user);
     });
 
     const proofingEnabledFieldCases = [
@@ -552,7 +550,7 @@ describe('templateClient', () => {
           data: null,
         });
 
-        mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
           data: finalTemplate,
         });
 
@@ -1081,7 +1079,9 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce(updateErr);
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce(
+        updateErr
+      );
 
       const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
@@ -1102,11 +1102,9 @@ describe('templateClient', () => {
         undefined
       );
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
-        templateId,
-        user,
-        'PENDING_VALIDATION'
-      );
+      expect(
+        mocks.templateRepository.finaliseLetterUpload
+      ).toHaveBeenCalledWith(templateId, user);
     });
 
     test('should return a failure result when final statusUpdate returns an invalid result', async () => {
@@ -1178,7 +1176,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.finaliseLetterUpload.mockResolvedValueOnce({
         data: {
           ...finalTemplate,
           updatedAt: undefined as unknown as string,
@@ -1800,8 +1798,23 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
+    const notYetSubmittedDto: TemplateDto = {
+      id: templateId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'name',
+      message: 'message',
+      templateType: 'SMS',
+      lockNumber: 1,
+    };
+
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValue({
+        data: { features: { routing: false } },
+      });
 
       const result = await templateClient.submitTemplate(templateId, user, '');
 
@@ -1819,6 +1832,18 @@ describe('templateClient', () => {
 
     test('submitTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
+      });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         error: {
@@ -1850,22 +1875,24 @@ describe('templateClient', () => {
     test('submitTemplate should return a failure result, when updated database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
-      const expectedTemplateDto: TemplateDto = {
-        id: templateId,
-        createdAt: undefined as unknown as string,
-        updatedAt: new Date().toISOString(),
-        templateStatus: 'SUBMITTED',
-        name: 'name',
-        message: 'message',
-        templateType: 'SMS',
-        lockNumber: 1,
-      };
-
       const template: DatabaseTemplate = {
-        ...expectedTemplateDto,
+        ...notYetSubmittedDto,
+        createdAt: undefined as unknown as string,
         owner: `CLIENT#${user.clientId}`,
         version: 1,
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
+      });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         data: template,
@@ -1889,22 +1916,27 @@ describe('templateClient', () => {
       });
     });
 
-    test('submitTemplate should return updated template', async () => {
+    test('submitTemplate should return template updated to SUBMITTED - routing is disabled', async () => {
       const { templateClient, mocks } = setup();
 
-      const template: TemplateDto = {
-        name: 'name',
-        message: 'message',
-        templateStatus: 'SUBMITTED',
-        templateType: 'SMS',
-        id: templateId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lockNumber: 1,
-      };
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        data: {
+          ...notYetSubmittedDto,
+          owner: user.internalUserId,
+          version: 1,
+        },
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
       });
 
       const result = await templateClient.submitTemplate(templateId, user, 0);
@@ -1916,7 +1948,220 @@ describe('templateClient', () => {
       );
 
       expect(result).toEqual({
-        data: template,
+        data: notYetSubmittedDto,
+      });
+    });
+
+    test('should return validation failure when routing is enabled for non-letter template', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedDto,
+          templateType: 'SMS',
+          owner: user.internalUserId,
+          version: 1,
+        },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 0);
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Unexpected non-letter',
+          },
+        },
+      });
+    });
+
+    test('should set LETTER template status to proof approved if routing is enabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        name: 'name',
+        templateType: 'LETTER',
+        templateStatus: 'PROOF_AVAILABLE',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 1,
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: 'v1',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const approvedTemplate: TemplateDto = {
+        ...template,
+        templateStatus: 'PROOF_APPROVED',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: user.internalUserId, version: 1 },
+      });
+
+      mocks.templateRepository.approveProof.mockResolvedValueOnce({
+        data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        user.clientId
+      );
+
+      expect(mocks.templateRepository.approveProof).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1
+      );
+
+      expect(result).toEqual({
+        data: approvedTemplate,
+      });
+    });
+
+    test('should set LETTER template status to submitted if routing is not enabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        name: 'name',
+        templateType: 'LETTER',
+        templateStatus: 'PROOF_AVAILABLE',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 1,
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: 'v1',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const submittedTemplate: TemplateDto = {
+        ...template,
+        templateStatus: 'SUBMITTED',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {} },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: user.internalUserId, version: 1 },
+      });
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        data: { ...submittedTemplate, owner: user.internalUserId, version: 2 },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        user.clientId
+      );
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1
+      );
+
+      expect(result).toEqual({
+        data: submittedTemplate,
+      });
+    });
+
+    test('should return a failure result when fetching client configuration fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const clientConfigError = {
+        actualError: new Error('config fetch error'),
+        errorMeta: {
+          code: 500,
+          description: 'Failed to fetch client configuration',
+        },
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: clientConfigError,
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          id: templateId,
+          templateType: 'SMS',
+          name: 'name',
+          message: 'message',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 1,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: clientConfigError,
+      });
+    });
+
+    test('should return a failure result when fetching template fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const templateError = {
+        actualError: new Error('template fetch error'),
+        errorMeta: {
+          code: 500,
+          description: 'Failed to fetch template',
+        },
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: false } },
+      });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        error: templateError,
+      });
+
+      const result = await templateClient.submitTemplate(templateId, user, 1);
+
+      expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: templateError,
       });
     });
   });

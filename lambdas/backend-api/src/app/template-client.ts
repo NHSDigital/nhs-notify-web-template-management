@@ -7,7 +7,6 @@ import {
   CreateUpdateTemplate,
   ErrorCase,
   LetterFiles,
-  TemplateStatus,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
@@ -236,15 +235,29 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    const updateTemplateResult = await this.updateTemplateStatus(
-      templateDTO.id,
-      'PENDING_VALIDATION',
-      user
+    const finaliseUploadResult =
+      await this.templateRepository.finaliseLetterUpload(templateDTO.id, user);
+
+    if (finaliseUploadResult.error) {
+      log
+        .child(finaliseUploadResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          finaliseUploadResult.error.actualError
+        );
+
+      return finaliseUploadResult;
+    }
+
+    const finalTemplateDTO = this.mapDatabaseObjectToDTO(
+      finaliseUploadResult.data
     );
 
-    if (updateTemplateResult.error) return updateTemplateResult;
+    if (!finalTemplateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
 
-    return success(updateTemplateResult.data);
+    return success(finalTemplateDTO);
   }
 
   async updateTemplate(
@@ -329,24 +342,65 @@ export class TemplateClient {
       );
     }
 
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user,
-      lockNumberValidation.data
-    );
+    const [
+      { data: clientConfig, error: clientConfigError },
+      { data: template, error: templateError },
+    ] = await Promise.all([
+      this.getClientConfiguration(user),
+      this.getTemplate(templateId, user),
+    ]);
 
-    if (submitResult.error) {
+    if (clientConfigError) {
       log
-        .child(submitResult.error.errorMeta)
+        .child(clientConfigError.errorMeta)
         .error(
-          'Failed to save template to the database',
-          submitResult.error.actualError
+          'Failed to get client configuration',
+          clientConfigError.actualError
         );
 
-      return submitResult;
+      return { error: clientConfigError };
     }
 
-    const templateDTO = this.mapDatabaseObjectToDTO(submitResult.data);
+    if (templateError) {
+      log
+        .child(templateError.errorMeta)
+        .error('Failed to get template', templateError.actualError);
+
+      return { error: templateError };
+    }
+
+    if (clientConfig.features.routing && template.templateType !== 'LETTER') {
+      log
+        .child({ templateType: template.templateType })
+        .error('Routing is enabled, only letters are permitted');
+
+      return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
+    }
+
+    const result = clientConfig.features.routing
+      ? await this.templateRepository.approveProof(
+          templateId,
+          user,
+          lockNumberValidation.data
+        )
+      : await this.templateRepository.submit(
+          templateId,
+          user,
+          lockNumberValidation.data
+        );
+
+    if (result.error) {
+      log
+        .child(result.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          result.error.actualError
+        );
+
+      return result;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(result.data);
 
     if (!templateDTO) {
       return failure(ErrorCase.INTERNAL, 'Error retrieving template');
@@ -607,41 +661,6 @@ export class TemplateClient {
     }
 
     return success(proofLetterValidationResult.data);
-  }
-
-  private async updateTemplateStatus(
-    templateId: string,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: User
-  ): Promise<Result<TemplateDto>> {
-    const updateStatusResult = await this.templateRepository.updateStatus(
-      templateId,
-      user,
-      status
-    );
-
-    if (updateStatusResult.error) {
-      this.logger
-        .child({
-          templateId,
-          user,
-          ...updateStatusResult.error.errorMeta,
-        })
-        .error(
-          'Failed to save template to the database',
-          updateStatusResult.error.actualError
-        );
-
-      return updateStatusResult;
-    }
-
-    const templateDTO = this.mapDatabaseObjectToDTO(updateStatusResult.data);
-
-    if (!templateDTO) {
-      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
-    }
-
-    return success(templateDTO);
   }
 
   isCampaignIdValid(

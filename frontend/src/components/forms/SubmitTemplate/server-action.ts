@@ -16,7 +16,10 @@ const $SubmitTemplateFormData = z.object({
 });
 
 export async function submitTemplate(
-  channel: TemplateType,
+  {
+    channel,
+    routingEnabled,
+  }: { channel: TemplateType; routingEnabled?: boolean },
   formData: FormData
 ) {
   const { success, data } = $SubmitTemplateFormData.safeParse(
@@ -46,6 +49,10 @@ export async function submitTemplate(
     });
 
     throw error;
+  }
+
+  if (routingEnabled && channel === 'LETTER') {
+    return redirect('/message-templates', RedirectType.push);
   }
 
   const channelRedirectSegment = legacyTemplateTypeToUrlTextMappings(channel);

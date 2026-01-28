@@ -8,7 +8,7 @@
         ],
         "channel": "NHS_APP",
         "channelType": "primary",
-        "defaultTemplateId": "nhs-app-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -16,7 +16,7 @@
         ],
         "channel": "EMAIL",
         "channelType": "primary",
-        "defaultTemplateId": "email-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -24,7 +24,7 @@
         ],
         "channel": "SMS",
         "channelType": "primary",
-        "defaultTemplateId": "sms-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -32,7 +32,7 @@
         ],
         "channel": "LETTER",
         "channelType": "primary",
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -50,7 +50,7 @@
             "templateId": "ar-template-id"
           }
         ],
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       },
       {
         "cascadeGroups": [
@@ -64,7 +64,7 @@
             "templateId": "x1-template-id"
           }
         ],
-        "defaultTemplateId": "letter-template-id"
+        "defaultTemplateId": null
       }
     ],
     "cascadeGroupOverrides": [

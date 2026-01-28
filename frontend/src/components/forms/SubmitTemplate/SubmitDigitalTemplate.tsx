@@ -31,7 +31,7 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
     buttonText,
   } = content.components.submitTemplate;
 
-  const [_, action] = useActionState(submitTemplate, channel);
+  const [_, action] = useActionState(submitTemplate, { channel });
 
   const goBackPath = `preview-${legacyTemplateTypeToUrlTextMappings(channel)}-template`;
 

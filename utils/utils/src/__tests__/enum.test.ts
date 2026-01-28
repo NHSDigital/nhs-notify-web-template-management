@@ -318,8 +318,9 @@ describe('templateDisplayCopyAction', () => {
     ['EMAIL', 'NOT_YET_SUBMITTED', true],
     ['EMAIL', 'DELETED', false],
     ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
+    // letters are never copyable
     ['LETTER', 'SUBMITTED', false],
-    ['LETTER', 'NOT_YET_SUBMITTED', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'NOT_YET_SUBMITTED', false],
     ['LETTER', 'DELETED', false],
     ['LETTER', 'WAITING_FOR_PROOF', false],
     ['LETTER', 'PENDING_PROOF_REQUEST', false],
@@ -328,6 +329,7 @@ describe('templateDisplayCopyAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', false],
     ['LETTER', 'VALIDATION_FAILED', false],
     ['LETTER', 'PROOF_AVAILABLE', false],
+    ['LETTER', 'PROOF_APPROVED', false],
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayCopyAction) => {
@@ -363,6 +365,7 @@ describe('templateDisplayDeleteAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', true],
     ['LETTER', 'VALIDATION_FAILED', true],
     ['LETTER', 'PROOF_AVAILABLE', true],
+    ['LETTER', 'PROOF_APPROVED', true],
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayDeleteAction) => {

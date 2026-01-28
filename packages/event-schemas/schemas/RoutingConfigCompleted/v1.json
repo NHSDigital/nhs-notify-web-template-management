@@ -49,7 +49,58 @@
       "const": "control"
     },
     "data": {
-      "$ref": "#/$defs/RoutingConfigCompletedEventData"
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "description": "The client that owns the routing config",
+          "type": "string"
+        },
+        "campaignId": {
+          "description": "The campaign that is associated with the routing config",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+        },
+        "name": {
+          "description": "User-provided name identifying the routing config",
+          "type": "string"
+        },
+        "defaultCascadeGroup": {
+          "description": "Default cascade group name",
+          "type": "string"
+        },
+        "createdAt": {
+          "description": "Timestamp for when the routing config was created",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "cascade": {
+          "description": "Array defining the order of channels for the routing config and how they are configured",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CascadeItem"
+          }
+        },
+        "cascadeGroupOverrides": {
+          "description": "Config defining non-default cascade groups and the conditons under which they will be used",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CascadeGroupOverride"
+          }
+        }
+      },
+      "required": [
+        "clientId",
+        "campaignId",
+        "id",
+        "name",
+        "defaultCascadeGroup",
+        "createdAt",
+        "cascade",
+        "cascadeGroupOverrides"
+      ]
     }
   },
   "required": [
@@ -66,88 +117,6 @@
     "data"
   ],
   "$defs": {
-    "RoutingConfigCompletedEventData": {
-      "allOf": [
-        {
-          "type": "object",
-          "properties": {
-            "clientId": {
-              "description": "The client that owns the routing config",
-              "type": "string"
-            },
-            "campaignId": {
-              "description": "The campaign that is associated with the routing config",
-              "type": "string"
-            },
-            "id": {
-              "type": "string",
-              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
-            },
-            "name": {
-              "description": "User-provided name identifying the routing config",
-              "type": "string"
-            },
-            "defaultCascadeGroup": {
-              "description": "Default cascade group name",
-              "type": "string"
-            },
-            "createdAt": {
-              "description": "Timestamp for when the routing config was created",
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
-            },
-            "cascade": {
-              "description": "Array defining the order of channels for the routing config and how they are configured",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/CascadeItem"
-              }
-            },
-            "cascadeGroupOverrides": {
-              "description": "Config defining non-default cascade groups and the conditons under which they will be used",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/CascadeGroupOverride"
-              }
-            },
-            "status": {
-              "description": "Routing config status",
-              "type": "string",
-              "enum": [
-                "DELETED",
-                "DRAFT",
-                "COMPLETED"
-              ]
-            }
-          },
-          "required": [
-            "clientId",
-            "campaignId",
-            "id",
-            "name",
-            "defaultCascadeGroup",
-            "createdAt",
-            "cascade",
-            "cascadeGroupOverrides",
-            "status"
-          ]
-        },
-        {
-          "type": "object",
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "COMPLETED"
-              ]
-            }
-          },
-          "required": [
-            "status"
-          ]
-        }
-      ]
-    },
     "CascadeItem": {
       "type": "object",
       "properties": {
@@ -168,11 +137,6 @@
             "primary",
             "secondary"
           ]
-        },
-        "defaultTemplateId": {
-          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
-          "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         },
         "supplierReferences": {
           "description": "Supplier references that identify the template",
@@ -196,6 +160,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "defaultTemplateId": {
+          "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
         }
       },
       "required": [

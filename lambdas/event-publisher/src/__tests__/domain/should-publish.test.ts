@@ -49,14 +49,14 @@ describe('shouldPublish', () => {
   const letterPublishCases: Record<LetterStatus, boolean> = {
     DELETED: true,
     PENDING_PROOF_REQUEST: true,
-    PROOF_AVAILABLE: true,
-    PROOF_APPROVED: true,
-    SUBMITTED: true,
-    WAITING_FOR_PROOF: true,
     PENDING_UPLOAD: false,
     PENDING_VALIDATION: false,
+    PROOF_APPROVED: true,
+    PROOF_AVAILABLE: true,
+    SUBMITTED: true,
     VALIDATION_FAILED: false,
     VIRUS_SCAN_FAILED: false,
+    WAITING_FOR_PROOF: true,
   };
 
   // not all of these transitions are expected in real usage

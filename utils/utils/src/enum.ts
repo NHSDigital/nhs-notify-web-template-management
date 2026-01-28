@@ -269,7 +269,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
-      PROOF_APPROVED: false,
+      PROOF_APPROVED: true,
     }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
