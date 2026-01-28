@@ -1,8 +1,5 @@
-import type {
-  LetterType,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type { RoutingAccessibleFormatLetterType } from 'nhs-notify-web-template-management-utils';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
@@ -730,6 +727,19 @@ const chooseTemplateType = {
   backLinkText: backToAllTemplates,
   form: {
     templateType: { error: 'Select a template type' },
+    letterType: { error: 'Select a letter template type' },
+  },
+  templateTypes: {
+    NHS_APP: 'NHS App message',
+    SMS: 'Text message (SMS)',
+    EMAIL: 'Email',
+    LETTER: 'Letter',
+  },
+  letterTypes: {
+    q4: 'British Sign Language letter',
+    x0: 'Standard English letter',
+    x1: 'Large print letter',
+    language: 'Other language letter',
   },
 };
 
@@ -1075,10 +1085,8 @@ export type FallbackConditionBlock = {
 
 const messagePlanConditionalLetterTemplates = {
   accessibleFormats: {
-    q4: 'British Sign Language letter',
-    x0: 'Standard letter',
     x1: 'Large print letter',
-  } satisfies Record<LetterType, string>,
+  } satisfies Record<RoutingAccessibleFormatLetterType, string>,
   languageFormats: 'Other language letters',
 };
 

@@ -673,7 +673,7 @@ describe('getAccessibleLetterFormatsFromCascade', () => {
         defaultTemplateId: null,
         conditionalTemplates: [
           { templateId: 'template-1', accessibleFormat: 'q4' },
-          { templateId: 'template-2', accessibleFormat: 'x0' },
+          { templateId: 'template-2', accessibleFormat: 'x1' },
         ],
       },
       {
@@ -689,7 +689,7 @@ describe('getAccessibleLetterFormatsFromCascade', () => {
 
     const result = getAccessibleLetterFormatsFromCascade(cascade);
 
-    expect(result.sort()).toEqual(['q4', 'x0'].sort());
+    expect(result.sort()).toEqual(['q4', 'x1'].sort());
   });
 
   it('should ignore templates with null templateId', () => {
@@ -701,7 +701,7 @@ describe('getAccessibleLetterFormatsFromCascade', () => {
         defaultTemplateId: null,
         conditionalTemplates: [
           { templateId: 'template-1', accessibleFormat: 'q4' },
-          { templateId: null, accessibleFormat: 'x0' },
+          { templateId: null, accessibleFormat: 'x1' },
         ],
       },
     ];

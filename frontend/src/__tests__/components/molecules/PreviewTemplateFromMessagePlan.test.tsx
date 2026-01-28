@@ -45,6 +45,12 @@ describe('PreviewTemplateFromMessagePlan', () => {
       previewComponent: PreviewTemplateDetailsLetter,
       expectedBackLink: `/message-plans/choose-large-print-letter-template/${ROUTING_CONFIG.id}?lockNumber=5`,
     },
+    {
+      name: 'French Letter',
+      template: { ...LETTER_TEMPLATE, language: 'fr' },
+      previewComponent: PreviewTemplateDetailsLetter,
+      expectedBackLink: `/message-plans/choose-other-language-letter-template/${ROUTING_CONFIG.id}?lockNumber=5`,
+    },
   ])(
     'renders $name template preview with the correct back links',
     ({ template, previewComponent, expectedBackLink }) => {

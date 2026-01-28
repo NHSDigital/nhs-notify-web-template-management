@@ -4,10 +4,11 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import { LetterType, TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import {
-  cascadeTemplateTypeToUrlTextMappings,
+  templateTypeToUrlTextMappings,
   PageComponentProps,
+  RoutingSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
@@ -27,17 +28,19 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
-  let conditionalType: LetterType | 'language' | undefined;
+  let letterType: RoutingSupportedLetterType | undefined;
   if (template.templateType === 'LETTER' && 'letterType' in template) {
     const isForeignLanguage =
       'language' in template && template.language && template.language !== 'en';
-    conditionalType = isForeignLanguage ? 'language' : template.letterType;
+    letterType = isForeignLanguage
+      ? 'language'
+      : (template.letterType as RoutingSupportedLetterType);
   }
 
   const backLinkHref = interpolate(content.backLink.href, {
-    templateType: cascadeTemplateTypeToUrlTextMappings(
+    templateType: templateTypeToUrlTextMappings(
       template.templateType,
-      conditionalType
+      letterType
     ),
     routingConfigId,
     lockNumber,

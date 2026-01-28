@@ -92,6 +92,7 @@ export type ClientConfigurationSuccess = {
 };
 
 export type ClientFeatures = {
+  letterAuthoring?: boolean;
   proofing?: boolean;
   routing?: boolean;
 };

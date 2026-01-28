@@ -5,7 +5,7 @@ import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
-  templateTypeToUrlTextMappings,
+  legacyTemplateTypeToUrlTextMappings,
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { $LockNumber, type TemplateType } from 'nhs-notify-backend-client';
@@ -48,7 +48,7 @@ export async function submitTemplate(
     throw error;
   }
 
-  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+  const channelRedirectSegment = legacyTemplateTypeToUrlTextMappings(channel);
 
   return redirect(
     `/${channelRedirectSegment}-template-submitted/${templateId}`,

@@ -5,11 +5,13 @@ import {
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
   Language,
-  LetterType,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  AccessibleFormatLetterType,
+  LetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
   | ConditionalTemplateAccessible
@@ -183,13 +185,13 @@ export function removeTemplatesFromCascadeItem(
  */
 export function getAccessibleLetterFormatsFromCascade(
   cascade: CascadeItem[]
-): LetterType[] {
-  const formats = new Set<LetterType>();
+): AccessibleFormatLetterType[] {
+  const formats = new Set<AccessibleFormatLetterType>();
 
   for (const item of cascade) {
     for (const template of item.conditionalTemplates ?? []) {
       if ('accessibleFormat' in template && template.templateId) {
-        formats.add(template.accessibleFormat);
+        formats.add(template.accessibleFormat as AccessibleFormatLetterType);
       }
     }
   }
