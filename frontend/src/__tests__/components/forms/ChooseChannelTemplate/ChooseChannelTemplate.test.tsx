@@ -147,6 +147,17 @@ const largePrintLetterTemplates = [
 ];
 
 describe('ChooseChannelTemplate', () => {
+  const errorLogger = console.error;
+
+  beforeAll(() => {
+    global.console.error = jest.fn(); // suppress error logging in tests
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+    global.console.error = errorLogger;
+  });
+
   it('displays correct message plan name', () => {
     renderComponent();
 
@@ -437,7 +448,7 @@ describe('ChooseChannelTemplate', () => {
       '/action',
     ]);
 
-    jest.mocked(useActionState).mockImplementation(mockUseActionState);
+    jest.mocked(useActionState).mockImplementationOnce(mockUseActionState);
 
     const container = renderComponent({
       messagePlan: createEmptyMessagePlan('NHSAPP'),
@@ -445,12 +456,38 @@ describe('ChooseChannelTemplate', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  test('Client-side validation triggers', () => {
+  test('Client-side validation triggers - valid form - no errors', () => {
     const container = renderComponent({
-      messagePlan: createEmptyMessagePlan('NHSAPP'),
+      templateList: nhsAppTemplates,
+      cascadeIndex: 0,
     });
-    const submitButton = screen.getByTestId('submit-button');
-    fireEvent.click(submitButton);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  test('Client-side validation triggers - invalid form - errors displayed', () => {
+    const container = renderComponent({
+      templateList: nhsAppTemplates,
+      cascadeIndex: 0,
+    });
+
+    const mockUseActionState = jest.fn().mockReturnValue([
+      {
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            channelTemplate: ['You must select a template'],
+          },
+        },
+      },
+      '/action',
+    ]);
+    jest.mocked(useActionState).mockImplementationOnce(mockUseActionState);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

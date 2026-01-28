@@ -40,6 +40,7 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
     effect = "Allow"
 
     actions = [
+      "dynamodb:GetItem",
       "dynamodb:UpdateItem",
     ]
 
@@ -76,5 +77,16 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
       "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${var.email_domain}",
       [for k, v in var.letter_suppliers : [for email in v.email_addresses : "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${email}"]]
     ])
+  }
+
+  statement {
+    sid    = "AllowSSMParameterRead"
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParameter",
+    ]
+
+    resources = [local.client_ssm_path_pattern]
   }
 }

@@ -11,6 +11,7 @@ import {
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { TemplateFactory } from 'helpers/factories/template-factory';
 
 test.describe('PUT /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
@@ -399,45 +400,22 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot update attributes on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-          }),
-        }
-      );
+      const template = {
+        ...TemplateFactory.createNhsAppTemplate(
+          'd9389ea4-d06c-432e-b561-a973c139b3ba',
+          user1
+        ),
+        templateStatus: 'SUBMITTED',
+      };
 
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
@@ -459,44 +437,22 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot change status on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'NHS_APP',
-          }),
-        }
-      );
+      const template = {
+        ...TemplateFactory.createNhsAppTemplate(
+          '379da5f1-e317-4514-bb91-ef468b1b2d89',
+          user1
+        ),
+        templateStatus: 'SUBMITTED',
+      };
 
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
@@ -514,6 +470,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         technicalMessage: 'Template with status SUBMITTED cannot be updated',
       });
     });
+
     test('returns 404 - cannot update a deleted template', async ({
       request,
     }) => {
@@ -944,44 +901,22 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot update attributes on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'SMS',
-          }),
-        }
-      );
+      const template = {
+        ...TemplateFactory.createSmsTemplate(
+          '8e65a47d-73e6-4510-b8a6-dd4a72be8542',
+          user1
+        ),
+        templateStatus: 'SUBMITTED',
+      };
 
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
@@ -1003,52 +938,25 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot change status on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'SMS',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-        templateType: 'SMS',
+      const template = {
+        ...TemplateFactory.createSmsTemplate(
+          'b093df9e-abd2-428a-bb81-5fc0060034ad',
+          user1
+        ),
         templateStatus: 'SUBMITTED',
-      });
+      };
 
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: {
-            ...submitData,
+            ...template,
             templateStatus: 'NOT_YET_SUBMITTED',
           },
         }
@@ -1493,45 +1401,22 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot update attributes on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'EMAIL',
-          }),
-        }
-      );
+      const template = {
+        ...TemplateFactory.createEmailTemplate(
+          '0496203e-56b3-45a5-aa8c-024e96ca34e8',
+          user1
+        ),
+        templateStatus: 'SUBMITTED',
+      };
 
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
@@ -1553,52 +1438,25 @@ test.describe('PUT /v1/template/:templateId', () => {
     test('returns 400 - cannot change status on a submitted template', async ({
       request,
     }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'EMAIL',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
-        templateType: 'EMAIL',
+      const template = {
+        ...TemplateFactory.createEmailTemplate(
+          'a7114e7d-d18f-456b-8055-c32bd70cf5f6',
+          user1
+        ),
         templateStatus: 'SUBMITTED',
-      });
+      };
 
-      const submitResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(submitResponse.status()).toBe(200);
-      const submitted = await submitResponse.json();
+      await templateStorageHelper.seedTemplateData([template]);
 
       const updateResponse = await request.put(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(submitted.data.lockNumber),
+            'X-Lock-Number': String(template.lockNumber),
           },
           data: {
-            ...submitData,
+            ...template,
             templateStatus: 'NOT_YET_SUBMITTED',
           },
         }
@@ -2068,7 +1926,7 @@ test.describe('PUT /v1/template/:templateId', () => {
     });
   });
 
-  test('returns 409 if the lock number header is not set', async ({
+  test('returns 400 if the lock number header is not set', async ({
     request,
   }) => {
     const createResponse = await request.post(
@@ -2102,14 +1960,13 @@ test.describe('PUT /v1/template/:templateId', () => {
       }
     );
 
-    expect(updateResponse.status()).toBe(409);
+    expect(updateResponse.status()).toBe(400);
 
     const body = await updateResponse.json();
 
     expect(body).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Template has been modified since last read',
+      statusCode: 400,
+      technicalMessage: 'Invalid lock number provided',
     });
   });
 

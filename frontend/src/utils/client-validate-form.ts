@@ -9,9 +9,7 @@ export const validate = (
 ) => {
   return (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
-
     const data = Object.fromEntries(formData);
-
     const validationResult = $schema.safeParse(data);
 
     if (validationResult.success) {

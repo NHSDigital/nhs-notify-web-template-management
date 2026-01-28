@@ -19,12 +19,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user2: TestUser;
+  let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
@@ -91,7 +91,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await userRoutingDisabled.getAccessToken(),
           'X-Lock-Number': String(created.data.lockNumber),
         },
       }
@@ -105,10 +105,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   });
 
   test.describe('LETTER templates', () => {
-    const createProofAvailableLetterTemplate = async (): Promise<Template> => {
+    const createProofAvailableLetterTemplate = async (
+      user: TestUser
+    ): Promise<Template> => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
-        user1,
+        user,
         'Test Letter template',
         'PROOF_AVAILABLE'
       );
@@ -146,14 +148,16 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       return letterTemplate;
     };
 
-    test('returns 200 and the updated template data', async ({ request }) => {
+    test('returns 200 with PROOF_APPROVED status when routing is enabled', async ({
+      request,
+    }) => {
       const {
         id: templateId,
         name,
         templateType,
         createdAt,
         lockNumber,
-      } = await createProofAvailableLetterTemplate();
+      } = await createProofAvailableLetterTemplate(user1);
 
       const start = new Date();
 
@@ -162,6 +166,77 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: expect.objectContaining({
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          name,
+          templateStatus: 'PROOF_APPROVED',
+          templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: lockNumber + 1,
+        }),
+      });
+
+      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+
+      expect(updated.data.createdAt).toEqual(createdAt);
+    });
+
+    test('returns 200 with SUBMITTED status when routing is disabled, email is sent to supplier', async ({
+      request,
+    }) => {
+      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+        randomUUID(),
+        userRoutingDisabled,
+        'Test Letter template routing disabled',
+        'PROOF_AVAILABLE'
+      );
+
+      await templateStorageHelper.seedTemplateData([
+        {
+          ...letterTemplate,
+          files: {
+            ...letterTemplate.files,
+            proofs: {
+              proof1: {
+                fileName: 'proof.pdf',
+                supplier: 'WTMMOCK',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          },
+        },
+      ]);
+
+      const {
+        id: templateId,
+        name,
+        templateType,
+        createdAt,
+        lockNumber,
+      } = letterTemplate;
+
+      const start = new Date();
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -209,17 +284,52 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       }).toPass({ timeout: 20_000 });
     });
 
+    test('user belonging to the same client as the creator can approve', async ({
+      request,
+    }) => {
+      const created = await createProofAvailableLetterTemplate(user1);
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.id}/submit`,
+        {
+          headers: {
+            Authorization: await userSharedClient.getAccessToken(),
+            'X-Lock-Number': String(created.lockNumber),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(user1.clientId).toBe(userSharedClient.clientId);
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        data: expect.objectContaining({
+          clientId: user1.clientId,
+          createdAt: created.createdAt,
+          id: created.id,
+          templateStatus: 'PROOF_APPROVED',
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: created.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${userSharedClient.internalUserId}`,
+        }),
+      });
+    });
+
     test('returns 400 - cannot submit a submitted template', async ({
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createProofAvailableLetterTemplate();
+        await createProofAvailableLetterTemplate(userRoutingDisabled);
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -236,7 +346,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
@@ -274,7 +384,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       expect(submitResult).toEqual({
         statusCode: 400,
-        technicalMessage: 'Template cannot be submitted',
+        technicalMessage: 'Proof cannot be approved',
       });
     });
 
@@ -282,7 +392,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createProofAvailableLetterTemplate();
+        await createProofAvailableLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
@@ -315,6 +425,58 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         technicalMessage: 'Template not found',
       });
     });
+
+    test('returns 400 if the lock number header does not match the current one', async ({
+      request,
+    }) => {
+      const { id: templateId, lockNumber } =
+        await createProofAvailableLetterTemplate(user1);
+
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(lockNumber + 1),
+          },
+        }
+      );
+
+      expect(submitResponse.status()).toBe(409);
+
+      const body = await submitResponse.json();
+
+      expect(body).toEqual({
+        statusCode: 409,
+        technicalMessage:
+          'Lock number mismatch - Template has been modified since last read',
+      });
+    });
+
+    test('returns 409 if the lock number header is not set', async ({
+      request,
+    }) => {
+      const { id: templateId } =
+        await createProofAvailableLetterTemplate(user1);
+
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+        }
+      );
+
+      expect(submitResponse.status()).toBe(400);
+
+      const body = await submitResponse.json();
+
+      expect(body).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Invalid lock number provided',
+      });
+    });
   });
 
   test.describe('NHS_APP templates', () => {
@@ -323,7 +485,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
@@ -335,7 +497,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const start = new Date();
@@ -344,7 +506,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -357,7 +519,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          clientId: user1.clientId,
+          clientId: userRoutingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.data.message,
@@ -366,8 +528,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+          createdBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
         },
       });
 
@@ -385,7 +547,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
@@ -397,14 +559,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -418,7 +580,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -441,7 +603,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
@@ -453,14 +615,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -472,7 +634,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
@@ -495,7 +657,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
@@ -507,7 +669,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const start = new Date();
@@ -516,7 +678,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -529,7 +691,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          clientId: user1.clientId,
+          clientId: userRoutingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.data.message,
@@ -538,8 +700,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+          createdBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
         },
       });
 
@@ -557,7 +719,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
@@ -569,14 +731,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -590,7 +752,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -613,7 +775,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
@@ -625,14 +787,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -644,7 +806,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
@@ -667,7 +829,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
@@ -679,7 +841,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const start = new Date();
@@ -688,7 +850,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -701,7 +863,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         data: {
-          clientId: user1.clientId,
+          clientId: userRoutingDisabled.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.data.message,
@@ -711,8 +873,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
           templateType: created.data.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
           lockNumber: created.data.lockNumber + 1,
-          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+          createdBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
+          updatedBy: `INTERNAL_USER#${userRoutingDisabled.internalUserId}`,
         },
       });
 
@@ -730,7 +892,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
@@ -742,14 +904,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -763,7 +925,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -786,7 +948,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
@@ -798,14 +960,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -817,7 +979,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber + 1),
           },
         }
@@ -831,150 +993,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         statusCode: 404,
         technicalMessage: 'Template not found',
       });
-    });
-  });
-
-  test.describe('shared ownership', () => {
-    test('user belonging to the same client as the creator can submit', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-            templateType: 'EMAIL',
-          }),
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      templateStorageHelper.addAdHocTemplateKey({
-        templateId: created.data.id,
-        clientId: user1.clientId,
-      });
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-        {
-          headers: {
-            Authorization: await userSharedClient.getAccessToken(),
-            'X-Lock-Number': String(created.data.lockNumber),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(user1.clientId).toBe(userSharedClient.clientId);
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          clientId: user1.clientId,
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: created.data.message,
-          name: created.data.name,
-          subject: created.data.subject,
-          templateStatus: 'SUBMITTED',
-          templateType: created.data.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          lockNumber: created.data.lockNumber + 1,
-          createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-          updatedBy: `INTERNAL_USER#${userSharedClient.internalUserId}`,
-        },
-      });
-    });
-  });
-
-  test('returns 409 if the lock number header is not set', async ({
-    request,
-  }) => {
-    const createResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-          templateType: 'EMAIL',
-        }),
-      }
-    );
-
-    expect(createResponse.status()).toBe(201);
-    const created = await createResponse.json();
-    templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.data.id,
-      clientId: user1.clientId,
-    });
-
-    const submitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-      }
-    );
-
-    expect(submitResponse.status()).toBe(409);
-
-    const body = await submitResponse.json();
-
-    expect(body).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Template has been modified since last read',
-    });
-  });
-
-  test('returns 409 if the lock number header does not match the current one', async ({
-    request,
-  }) => {
-    const createResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-          templateType: 'EMAIL',
-        }),
-      }
-    );
-
-    expect(createResponse.status()).toBe(201);
-    const created = await createResponse.json();
-    templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.data.id,
-      clientId: user1.clientId,
-    });
-
-    const submitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'X-Lock-Number': String(created.data.lockNumber + 1),
-        },
-      }
-    );
-
-    expect(submitResponse.status()).toBe(409);
-
-    const body = await submitResponse.json();
-
-    expect(body).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Template has been modified since last read',
     });
   });
 });

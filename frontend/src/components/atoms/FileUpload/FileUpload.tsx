@@ -28,6 +28,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <input
         id={id}
+        data-testid={`file-selector-${id}`}
         name={id}
         className={classNames(styles['file-upload'], 'nhsuk-input')}
         type='file'

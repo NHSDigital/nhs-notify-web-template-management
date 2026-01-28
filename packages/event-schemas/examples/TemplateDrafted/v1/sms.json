@@ -7,7 +7,6 @@
     "message": "Dear ((firstName))\n\nYour appointment to visit the doctor is at ((appointmentTime)) on ((appointmentDate)).\n\nIf you are unable to make your appointment, please click this link  to cancel - https://example.com\n\nThank you\n\n((surgeryName))\n",
     "name": "Example SMS Template",
     "owner": "2faa156e-3d87-4e80-a022-31536b79daf4",
-    "templateStatus": "NOT_YET_SUBMITTED",
     "templateType": "SMS",
     "updatedAt": "2025-07-29T09:45:42.472Z",
     "updatedBy": "INTERNAL_USER#9228217c-b0d9-4368-81ec-64e0127d16f0"

@@ -6,6 +6,7 @@ import { getMockFormData } from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -39,7 +40,7 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await submitTemplate('NHS_APP', formData);
+    await submitTemplate({ channel: 'NHS_APP' }, formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -52,7 +53,7 @@ describe('submitTemplate', () => {
       lockNumber: 'not a number',
     });
 
-    await submitTemplate('NHS_APP', formData);
+    await submitTemplate({ channel: 'NHS_APP' }, formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -67,7 +68,7 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await submitTemplate('EMAIL', formData);
+    await submitTemplate({ channel: 'EMAIL' }, formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -82,7 +83,7 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await submitTemplate('EMAIL', formData);
+    await submitTemplate({ channel: 'EMAIL' }, formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -101,7 +102,7 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await expect(submitTemplate('SMS', formData)).rejects.toThrow(
+    await expect(submitTemplate({ channel: 'SMS' }, formData)).rejects.toThrow(
       'failed to save template'
     );
   });
@@ -118,7 +119,7 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await submitTemplate('SMS', formData);
+    await submitTemplate({ channel: 'SMS' }, formData);
 
     expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId, 2);
 
@@ -126,5 +127,48 @@ describe('submitTemplate', () => {
       `/text-message-template-submitted/${templateId}`,
       'push'
     );
+  });
+
+  it('when channel is LETTER and routing is enabled, should redirect to message-templates', async () => {
+    const templateId = '0C63C6B0-C2C7-4D74-A81B-291C1A7BF994';
+
+    const template: LetterTemplate = {
+      createdAt: '2025-01-13T10:19:25.579Z',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: 'saoj867b789',
+          virusScanStatus: 'PASSED',
+        },
+        proofs: {
+          proofid: {
+            fileName: 'proof1.png',
+            virusScanStatus: 'PASSED',
+            supplier: 'MBA',
+          },
+        },
+      },
+      id: templateId,
+      language: 'en',
+      letterType: 'x0',
+      name: 'template-name',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      templateType: 'LETTER',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
+    };
+
+    getTemplateMock.mockResolvedValueOnce(template);
+
+    const formData = getMockFormData({
+      templateId,
+      lockNumber: '2',
+    });
+
+    await submitTemplate({ channel: 'LETTER', routingEnabled: true }, formData);
+
+    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId, 2);
+
+    expect(redirectMock).toHaveBeenCalledWith(`/message-templates`, 'push');
   });
 });

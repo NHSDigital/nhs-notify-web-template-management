@@ -12,16 +12,21 @@ import {
 } from '../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
 import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
-import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+
+// submit/approve letter tests are in template-mgmt-submit-letter-page.component.spec.ts
+
+test.use({ storageState: { cookies: [], origins: [] } });
+
+let routingDisabledUser: TestUser;
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-
   return {
     email: {
       empty: {
@@ -31,12 +36,12 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'EMAIL',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: `CLIENT#${user.clientId}`,
+        owner: `CLIENT#${routingDisabledUser.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createEmailTemplate(
           '58c51276-19f8-438a-9d7b-bf8bbfed673c',
-          user
+          routingDisabledUser
         ),
         name: 'submit-email-submit-template',
         subject: 'test-template-subject-line',
@@ -45,7 +50,7 @@ async function createTemplates() {
       submitAndReturn: {
         ...TemplateFactory.createEmailTemplate(
           '00bc8566-6bd3-45d8-b251-4b205d4e4913',
-          user
+          routingDisabledUser
         ),
         name: 'submit-and-return-email-template',
         subject: 'test-template-subject-line',
@@ -54,7 +59,7 @@ async function createTemplates() {
       valid: {
         ...TemplateFactory.createEmailTemplate(
           '635ed632-e639-42fa-a328-615cea3bf082',
-          user
+          routingDisabledUser
         ),
         name: 'valid-email-submit-template',
         subject: 'test-template-subject-line',
@@ -69,12 +74,12 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'SMS',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: `CLIENT#${user.clientId}`,
+        owner: `CLIENT#${routingDisabledUser.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createSmsTemplate(
           'fd9e4983-460e-475a-af00-4c80615e20b1',
-          user
+          routingDisabledUser
         ),
         name: 'submit-sms-submit-template',
         message: 'test-template-message',
@@ -82,7 +87,7 @@ async function createTemplates() {
       submitAndReturn: {
         ...TemplateFactory.createSmsTemplate(
           'a021ca73-674d-44e7-b48d-b7c1e5514fb5',
-          user
+          routingDisabledUser
         ),
         name: 'submit-and-return-sms-template',
         message: 'test-template-message',
@@ -90,7 +95,7 @@ async function createTemplates() {
       valid: {
         ...TemplateFactory.createSmsTemplate(
           '2a37b26c-4e17-436c-a7b6-97ca1a465e91',
-          user
+          routingDisabledUser
         ),
         name: 'valid-sms-submit-template',
         message: 'test-template-message',
@@ -104,12 +109,12 @@ async function createTemplates() {
         updatedAt: new Date().toISOString(),
         templateType: 'NHS_APP',
         templateStatus: 'NOT_YET_SUBMITTED',
-        owner: `CLIENT#${user.clientId}`,
+        owner: `CLIENT#${routingDisabledUser.clientId}`,
       } as Template,
       submit: {
         ...TemplateFactory.createNhsAppTemplate(
           'f27e0e08-a612-4fe4-95ef-35138c2f28f1',
-          user
+          routingDisabledUser
         ),
         name: 'submit-nhs-app-submit-template',
         message: 'test-template-message',
@@ -117,7 +122,7 @@ async function createTemplates() {
       submitAndReturn: {
         ...TemplateFactory.createNhsAppTemplate(
           '395d640b-610a-49bb-9fcd-0f42c521d5fc',
-          user
+          routingDisabledUser
         ),
         name: 'submit-and-return-nhs-app-template',
         message: 'test-template-message',
@@ -125,37 +130,11 @@ async function createTemplates() {
       valid: {
         ...TemplateFactory.createNhsAppTemplate(
           '1e0dbdd6-d662-42d8-965c-03b8e331458d',
-          user
+          routingDisabledUser
         ),
         name: 'valid-nhs-app-submit-template',
         message: 'test-template-message',
       },
-    },
-    letter: {
-      empty: {
-        id: '324a6461-16af-4b49-939f-dd3562aa037e',
-        version: 1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateType: 'LETTER',
-        templateStatus: 'NOT_YET_SUBMITTED',
-        owner: `CLIENT#${user.clientId}`,
-      } as Template,
-      submit: TemplateFactory.uploadLetterTemplate(
-        '525812d2-04ed-4363-941d-8fc4f41ad2c1',
-        user,
-        'submit-letter-submit-template'
-      ),
-      submitAndReturn: TemplateFactory.uploadLetterTemplate(
-        'ca0979e2-a8de-40bc-bf59-8cfd946145c5',
-        user,
-        'submit-and-return-letter-template'
-      ),
-      valid: TemplateFactory.uploadLetterTemplate(
-        '70ab3978-3d07-4ad4-bf58-a8bbe8db45ec',
-        user,
-        'valid-letter-submit-template'
-      ),
     },
   };
 }
@@ -165,12 +144,15 @@ test.describe('Submit template Page', () => {
   let templates: Awaited<ReturnType<typeof createTemplates>>;
 
   test.beforeAll(async () => {
+    routingDisabledUser = await createAuthHelper().getTestUser(
+      testUsers.User2.userId
+    );
+
     templates = await createTemplates();
     const templateList = [
       ...Object.values(templates.email),
       ...Object.values(templates['text-message']),
       ...Object.values(templates['nhs-app']),
-      ...Object.values(templates.letter),
     ];
     await templateStorageHelper.seedTemplateData(templateList);
   });
@@ -198,12 +180,6 @@ test.describe('Submit template Page', () => {
       PageModel: TemplateMgmtSubmitNhsAppPage,
       expectedHeading: "Submit 'valid-nhs-app-submit-template'",
     },
-    {
-      channelName: 'Letter',
-      channelIdentifier: 'letter',
-      PageModel: TemplateMgmtSubmitLetterPage,
-      expectedHeading: "Approve and submit 'valid-letter-submit-template'",
-    },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
     // eslint-disable-next-line no-loop-func
@@ -211,6 +187,8 @@ test.describe('Submit template Page', () => {
       page,
       baseURL,
     }) => {
+      await loginAsUser(routingDisabledUser, page);
+
       const template = templates[channelIdentifier].valid;
 
       const submitTemplatePage = new PageModel(page)
@@ -229,6 +207,8 @@ test.describe('Submit template Page', () => {
     // eslint-disable-next-line no-loop-func
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
+        await loginAsUser(routingDisabledUser, page);
+
         const template = templates[channelIdentifier].valid;
         const props = {
           page: new PageModel(page)
@@ -251,6 +231,8 @@ test.describe('Submit template Page', () => {
       test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({
         page,
       }) => {
+        await loginAsUser(routingDisabledUser, page);
+
         const template = templates[channelIdentifier].submit;
         const submitTemplatePage = new PageModel(page)
           .setPathParam('templateId', template.id)
@@ -272,6 +254,8 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
+        await loginAsUser(routingDisabledUser, page);
+
         const template = templates[channelIdentifier].empty;
         const submitTemplatePage = new PageModel(page)
           .setPathParam('templateId', template.id)
@@ -286,6 +270,8 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
+        await loginAsUser(routingDisabledUser, page);
+
         const submitTemplatePage = new PageModel(page)
           .setPathParam('templateId', 'fake-template-id')
           .setSearchParam('lockNumber', '1');
@@ -299,6 +285,8 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
+        await loginAsUser(routingDisabledUser, page);
+
         const template = templates[channelIdentifier].valid;
 
         const submitTemplatePage = new PageModel(page).setPathParam(

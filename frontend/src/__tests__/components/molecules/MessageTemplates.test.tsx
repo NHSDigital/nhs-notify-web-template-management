@@ -106,6 +106,44 @@ describe('MessageTemplates component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('matches snapshot with proof approved status', () => {
+    const container = render(
+      <MessageTemplates
+        {...{
+          templateList: [
+            {
+              id: '1',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              name: 'Template 1',
+              createdAt: '2021-02-01T00:00:00.000Z',
+              letterType: 'x0',
+              language: 'en',
+              updatedAt: '2021-02-01T00:00:00.000Z',
+              lockNumber: 1,
+              files: {
+                pdfTemplate: {
+                  fileName: 'template.pdf',
+                  currentVersion: '8BAC',
+                  virusScanStatus: 'PASSED',
+                },
+                proofs: {
+                  p: {
+                    fileName: 'p.pdf',
+                    supplier: 'MBA',
+                    virusScanStatus: 'PASSED',
+                  },
+                },
+              },
+            },
+          ],
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders component correctly', () => {
     render(<MessageTemplates {...messageTemplatesProps} />);
 

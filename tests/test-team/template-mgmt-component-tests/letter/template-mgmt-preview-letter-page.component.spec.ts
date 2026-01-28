@@ -98,6 +98,11 @@ async function createTemplates() {
       ),
       proofingEnabled: false,
     },
+    proofApproved: {
+      ...withProofs,
+      templateStatus: 'PROOF_APPROVED',
+      id: '321B92CF-AECC-4938-B4CA-B00E4797327A',
+    },
     withProofs,
   };
 }
@@ -205,7 +210,7 @@ test.describe('Preview Letter template Page', () => {
     await expect(page).toHaveURL(requestProofPage.getUrl());
   });
 
-  test('when status is not actionable, no continue button is displayed', async ({
+  test('when status is not actionable (PENDING_UPLOAD), no continue button is displayed', async ({
     page,
   }) => {
     const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
@@ -218,6 +223,29 @@ test.describe('Preview Letter template Page', () => {
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
       templates.pendingUpload.name
+    );
+
+    await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
+    await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+  });
+
+  test('when status is not actionable (PROOF_APPROVED), no continue button is displayed', async ({
+    page,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+      page
+    ).setPathParam('templateId', templates.proofApproved.id);
+
+    await previewLetterTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+    await expect(previewLetterTemplatePage.pageHeading).toContainText(
+      templates.proofApproved.name
+    );
+
+    await expect(previewLetterTemplatePage.statusTag).toContainText(
+      'Proof approved'
     );
 
     await expect(previewLetterTemplatePage.errorSummary).toBeHidden();

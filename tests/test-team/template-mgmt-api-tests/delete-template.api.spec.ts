@@ -9,23 +9,29 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { Template } from 'helpers/types';
+import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
+import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 
 test.describe('DELETE /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
+  const routingConfigStorageHelper = new RoutingConfigStorageHelper();
+
   let user1: TestUser;
-  let user2: TestUser;
+  let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
     await templateStorageHelper.deleteAdHocTemplates();
     await templateStorageHelper.deleteSeededTemplates();
+    await routingConfigStorageHelper.deleteAdHoc();
+    await routingConfigStorageHelper.deleteSeeded();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -86,7 +92,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await userRoutingDisabled.getAccessToken(),
           'X-Lock-Number': String(created.data.lockNumber),
         },
       }
@@ -100,11 +106,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
   });
 
   test.describe('LETTER templates', () => {
-    const createLetterTemplate = async (): Promise<Template> => {
+    const createLetterTemplate = async (user: TestUser): Promise<Template> => {
       const letterTemplate = TemplateFactory.uploadLetterTemplate(
         randomUUID(),
-        user1,
-        'Test Letter template'
+        user,
+        'Test Letter template',
+        'PROOF_AVAILABLE'
       );
 
       await templateStorageHelper.seedTemplateData([letterTemplate]);
@@ -113,7 +120,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     };
 
     test('returns 204', async ({ request }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
@@ -128,10 +135,10 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
     });
 
-    test('returns 400 - cannot delete a submitted template', async ({
+    test('returns 204 - can delete a proof approved letter', async ({
       request,
     }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
@@ -160,6 +167,43 @@ test.describe('DELETE /v1/template/:templateId', () => {
         }
       );
 
+      expect(deleteResponse.status()).toBe(204);
+    });
+
+    test('returns 400 - cannot delete a submitted template', async ({
+      request,
+    }) => {
+      const { id: templateId, lockNumber } =
+        await createLetterTemplate(userRoutingDisabled);
+
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+        {
+          headers: {
+            // if routing was enabled, status would be PENDING_APPROVAL and deletion would be possible
+            Authorization: await userRoutingDisabled.getAccessToken(),
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      );
+
+      const submitResult = await submitResponse.json();
+
+      expect(
+        submitResponse.status(),
+        JSON.stringify(submitResult, null, 2)
+      ).toBe(200);
+
+      const deleteResponse = await request.delete(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}`,
+        {
+          headers: {
+            Authorization: await userRoutingDisabled.getAccessToken(),
+            'X-Lock-Number': String(submitResult.data.lockNumber),
+          },
+        }
+      );
+
       expect(deleteResponse.status()).toBe(400);
 
       const failedSubmitResult = await deleteResponse.json();
@@ -173,7 +217,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 404 - cannot delete a deleted template', async ({
       request,
     }) => {
-      const { id: templateId, lockNumber } = await createLetterTemplate();
+      const { id: templateId, lockNumber } = await createLetterTemplate(user1);
 
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
@@ -249,7 +293,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
@@ -261,14 +305,15 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            // submission of non-letters is allowed only when routing is disabled
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -281,7 +326,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -393,7 +438,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
@@ -405,14 +450,15 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            // submission of non-letters is allowed only when routing is disabled
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -425,7 +471,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -537,7 +583,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
           },
           data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
@@ -549,14 +595,15 @@ test.describe('DELETE /v1/template/:templateId', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         templateId: created.data.id,
-        clientId: user1.clientId,
+        clientId: userRoutingDisabled.clientId,
       });
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}/submit`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            // submission of non-letters is allowed only when routing is disabled
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(created.data.lockNumber),
           },
         }
@@ -570,7 +617,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
         {
           headers: {
-            Authorization: await user1.getAccessToken(),
+            Authorization: await userRoutingDisabled.getAccessToken(),
             'X-Lock-Number': String(submitted.data.lockNumber),
           },
         }
@@ -678,7 +725,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     });
   });
 
-  test('returns 409 if the lock number header is not set', async ({
+  test('returns 400 if the lock number header is not set', async ({
     request,
   }) => {
     const createResponse = await request.post(
@@ -709,14 +756,13 @@ test.describe('DELETE /v1/template/:templateId', () => {
       }
     );
 
-    expect(deleteResponse.status()).toBe(409);
+    expect(deleteResponse.status()).toBe(400);
 
     const body = await deleteResponse.json();
 
     expect(body).toEqual({
-      statusCode: 409,
-      technicalMessage:
-        'Lock number mismatch - Template has been modified since last read',
+      statusCode: 400,
+      technicalMessage: 'Invalid lock number provided',
     });
   });
 
@@ -760,6 +806,63 @@ test.describe('DELETE /v1/template/:templateId', () => {
       statusCode: 409,
       technicalMessage:
         'Lock number mismatch - Template has been modified since last read',
+    });
+  });
+
+  test('returns 400 with errorCode when template is referenced in active message plans', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      templateId: created.data.id,
+      clientId: user1.clientId,
+    });
+
+    const messagePlan = RoutingConfigFactory.createForMessageOrder(
+      user1,
+      'NHSAPP'
+    ).addTemplate('NHSAPP', created.data.id).dbEntry;
+
+    await routingConfigStorageHelper.seed([messagePlan]);
+    routingConfigStorageHelper.addAdHocKey({
+      id: messagePlan.id,
+      clientId: user1.clientId,
+    });
+
+    const deleteResponse = await request.delete(
+      `${process.env.API_BASE_URL}/v1/template/${created.data.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(created.data.lockNumber),
+        },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(400);
+
+    const body = await deleteResponse.json();
+
+    expect(body).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'Template is linked to active message plans and cannot be deleted',
+      details: {
+        errorCode: 'TEMPLATE_IN_USE',
+      },
     });
   });
 });

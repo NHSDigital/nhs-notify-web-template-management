@@ -12,6 +12,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly continueButton: Locator;
   public readonly pdfLinks: Locator;
   public readonly campaignId: Locator;
+  public readonly statusTag: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -19,6 +20,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
     this.campaignId = page.locator('[id="campaign-id"]');
+    this.statusTag = page.locator('[data-testid="status-tag"]');
   }
 
   async clickContinueButton() {

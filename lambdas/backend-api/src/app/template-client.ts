@@ -7,7 +7,6 @@ import {
   CreateUpdateTemplate,
   ErrorCase,
   LetterFiles,
-  TemplateStatus,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
@@ -29,6 +28,7 @@ import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
 import { TemplateRepository } from '../infra';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -46,6 +46,7 @@ export class TemplateClient {
     private readonly proofingQueue: ProofingQueue,
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
+    private readonly routingConfigRepository: RoutingConfigRepository,
     private readonly logger: Logger
   ) {}
 
@@ -234,15 +235,29 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    const updateTemplateResult = await this.updateTemplateStatus(
-      templateDTO.id,
-      'PENDING_VALIDATION',
-      user
+    const finaliseUploadResult =
+      await this.templateRepository.finaliseLetterUpload(templateDTO.id, user);
+
+    if (finaliseUploadResult.error) {
+      log
+        .child(finaliseUploadResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          finaliseUploadResult.error.actualError
+        );
+
+      return finaliseUploadResult;
+    }
+
+    const finalTemplateDTO = this.mapDatabaseObjectToDTO(
+      finaliseUploadResult.data
     );
 
-    if (updateTemplateResult.error) return updateTemplateResult;
+    if (!finalTemplateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
 
-    return success(updateTemplateResult.data);
+    return success(finalTemplateDTO);
   }
 
   async updateTemplate(
@@ -276,8 +291,8 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -322,29 +337,70 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user,
-      lockNumberValidation.data
-    );
+    const [
+      { data: clientConfig, error: clientConfigError },
+      { data: template, error: templateError },
+    ] = await Promise.all([
+      this.getClientConfiguration(user),
+      this.getTemplate(templateId, user),
+    ]);
 
-    if (submitResult.error) {
+    if (clientConfigError) {
       log
-        .child(submitResult.error.errorMeta)
+        .child(clientConfigError.errorMeta)
         .error(
-          'Failed to save template to the database',
-          submitResult.error.actualError
+          'Failed to get client configuration',
+          clientConfigError.actualError
         );
 
-      return submitResult;
+      return { error: clientConfigError };
     }
 
-    const templateDTO = this.mapDatabaseObjectToDTO(submitResult.data);
+    if (templateError) {
+      log
+        .child(templateError.errorMeta)
+        .error('Failed to get template', templateError.actualError);
+
+      return { error: templateError };
+    }
+
+    if (clientConfig.features.routing && template.templateType !== 'LETTER') {
+      log
+        .child({ templateType: template.templateType })
+        .error('Routing is enabled, only letters are permitted');
+
+      return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
+    }
+
+    const result = clientConfig.features.routing
+      ? await this.templateRepository.approveProof(
+          templateId,
+          user,
+          lockNumberValidation.data
+        )
+      : await this.templateRepository.submit(
+          templateId,
+          user,
+          lockNumberValidation.data
+        );
+
+    if (result.error) {
+      log
+        .child(result.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          result.error.actualError
+        );
+
+      return result;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(result.data);
 
     if (!templateDTO) {
       return failure(ErrorCase.INTERNAL, 'Error retrieving template');
@@ -369,8 +425,41 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    // Check if template is linked to any routing configs
+    const routingConfigsResult =
+      await this.routingConfigRepository.getByTemplateId(
+        templateId,
+        user.clientId
+      );
+
+    if (routingConfigsResult.error) {
+      log
+        .child(routingConfigsResult.error.errorMeta)
+        .error(
+          'Failed to check routing config links',
+          routingConfigsResult.error.actualError
+        );
+
+      return routingConfigsResult;
+    }
+
+    if (routingConfigsResult.data.length > 0) {
+      log
+        .child({
+          routingConfigs: routingConfigsResult.data,
+        })
+        .error('Template is linked to routing configs');
+
+      return failure(
+        ErrorCase.TEMPLATE_IN_USE,
+        'Template is linked to active message plans and cannot be deleted',
+        undefined,
+        { errorCode: 'TEMPLATE_IN_USE' }
       );
     }
 
@@ -476,8 +565,8 @@ export class TemplateClient {
       );
 
       return failure(
-        ErrorCase.CONFLICT,
-        'Lock number mismatch - Template has been modified since last read'
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
       );
     }
 
@@ -572,41 +661,6 @@ export class TemplateClient {
     }
 
     return success(proofLetterValidationResult.data);
-  }
-
-  private async updateTemplateStatus(
-    templateId: string,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: User
-  ): Promise<Result<TemplateDto>> {
-    const updateStatusResult = await this.templateRepository.updateStatus(
-      templateId,
-      user,
-      status
-    );
-
-    if (updateStatusResult.error) {
-      this.logger
-        .child({
-          templateId,
-          user,
-          ...updateStatusResult.error.errorMeta,
-        })
-        .error(
-          'Failed to save template to the database',
-          updateStatusResult.error.actualError
-        );
-
-      return updateStatusResult;
-    }
-
-    const templateDTO = this.mapDatabaseObjectToDTO(updateStatusResult.data);
-
-    if (!templateDTO) {
-      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
-    }
-
-    return success(templateDTO);
   }
 
   isCampaignIdValid(
