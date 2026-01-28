@@ -7,10 +7,7 @@ import {
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import {
-  AccessibleFormatLetterType,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
   | ConditionalTemplateAccessible
