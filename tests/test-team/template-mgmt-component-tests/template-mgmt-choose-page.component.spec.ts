@@ -108,9 +108,7 @@ test.describe('Choose Template Type Page', () => {
       await chooseTemplateTypePage.getTemplateTypeRadio(templateType).check();
       await chooseTemplateTypePage.clickContinueButton();
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/create-${path}-template`
-      );
+      await page.waitForURL(`${baseURL}/templates/create-${path}-template`);
     });
 
   test('should not show letter type conditional radios when Letter is selected', async ({
@@ -222,7 +220,7 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
 
     await chooseTemplateTypePage.clickContinueButton();
 
-    await expect(page).toHaveURL(
+    await page.waitForURL(
       `${baseURL}/templates/upload-standard-english-letter-template`
     );
   });
@@ -251,6 +249,6 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
 
       await chooseTemplateTypePage.clickContinueButton();
 
-      await expect(page).toHaveURL(`${baseURL}/templates/${path}`);
+      await page.waitForURL(`${baseURL}/templates/${path}`);
     });
 });
