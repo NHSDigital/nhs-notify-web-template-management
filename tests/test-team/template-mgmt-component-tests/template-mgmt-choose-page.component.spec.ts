@@ -138,11 +138,13 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     );
   });
 
+  test.beforeEach(async ({ page }) => {
+    await loginAsUser(userLetterAuthoringEnabled, page);
+  });
+
   test('should only show letter type conditional radios when Letter template type is selected', async ({
     page,
   }) => {
-    await loginAsUser(userLetterAuthoringEnabled, page);
-
     const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
     await chooseTemplateTypePage.loadPage();
 
@@ -176,8 +178,6 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     page,
     baseURL,
   }) => {
-    await loginAsUser(userLetterAuthoringEnabled, page);
-
     const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
     await chooseTemplateTypePage.loadPage();
 
@@ -235,14 +235,12 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
   for (const [letterType, path] of [
     ['x1', 'upload-large-print-letter-template'],
     ['q4', 'upload-british-sign-language-letter-template'],
-    ['language', 'upload-foreign-language-letter-template'],
+    ['language', 'upload-other-language-letter-template'],
   ] as const)
     test(`should navigate to ${path} when ${letterType} letter type is selected`, async ({
       page,
       baseURL,
     }) => {
-      await loginAsUser(userLetterAuthoringEnabled, page);
-
       const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
       await chooseTemplateTypePage.loadPage();
 
