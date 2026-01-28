@@ -17,7 +17,7 @@ export type NhsNotifyErrorSummaryProps = {
 
 export const NhsNotifyErrorSummary = ({
   hint,
-  errorState,
+  errorState = {},
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -28,11 +28,15 @@ export const NhsNotifyErrorSummary = ({
     }
   }, [errorState]);
 
-  if (!errorState) {
+  const { fieldErrors, formErrors } = errorState;
+
+  const showErrorSummary =
+    (fieldErrors && Object.values(fieldErrors).some(Boolean)) ||
+    (formErrors && formErrors.length > 0);
+
+  if (!showErrorSummary) {
     return;
   }
-
-  const { fieldErrors, formErrors } = errorState;
 
   const renderedFieldErrors =
     fieldErrors &&

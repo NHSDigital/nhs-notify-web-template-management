@@ -43,7 +43,6 @@ export const EmailTemplateForm: FC<
   } = content.components.templateFormEmail;
 
   const [state, action] = useActionState(processFormActions, initialState);
-
   const [errorState, setErrorState] = useState<ErrorState | undefined>(
     state.errorState
   );
