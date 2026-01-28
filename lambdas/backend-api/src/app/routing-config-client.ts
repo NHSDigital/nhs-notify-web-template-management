@@ -189,7 +189,7 @@ export class RoutingConfigClient {
     const result = await this.routingConfigRepository.get(id, user.clientId);
 
     if (result.data?.status === 'DELETED') {
-      return failure(ErrorCase.NOT_FOUND, 'Routing Config not found');
+      return failure(ErrorCase.NOT_FOUND, 'Routing configuration not found');
     }
 
     return result;

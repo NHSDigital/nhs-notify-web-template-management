@@ -173,27 +173,6 @@ describe('getSelectedLanguageTemplateIds', () => {
     ]);
   });
 
-  it('should filter out language templates with null templateId', () => {
-    const cascadeItem: CascadeItem = {
-      cascadeGroups: ['translations'],
-      channel: 'LETTER',
-      channelType: 'primary',
-      defaultTemplateId: 'default-template',
-      conditionalTemplates: [
-        { templateId: 'template-1', language: 'fr' },
-        { templateId: null, language: 'pl' },
-        { templateId: 'template-3', language: 'es' },
-      ],
-    };
-
-    const result = getSelectedLanguageTemplateIds(cascadeItem);
-
-    expect(result).toEqual([
-      { language: 'fr', templateId: 'template-1' },
-      { language: 'es', templateId: 'template-3' },
-    ]);
-  });
-
   it('should return empty array when no conditional templates exist', () => {
     const cascadeItem: CascadeItem = {
       cascadeGroups: ['standard'],
@@ -282,20 +261,6 @@ describe('removeTemplatesFromConditionalTemplates', () => {
     );
 
     expect(result).toEqual([{ templateId: 'template-2', language: 'es' }]);
-  });
-
-  it('should keep templates with null templateId', () => {
-    const conditionalTemplates: ConditionalTemplate[] = [
-      { templateId: 'template-1', language: 'fr' },
-      { templateId: null, language: 'es' },
-    ];
-
-    const result = removeTemplatesFromConditionalTemplates(
-      conditionalTemplates,
-      ['template-1']
-    );
-
-    expect(result).toEqual([{ templateId: null, language: 'es' }]);
   });
 
   it('should return empty array when all templates are removed', () => {
@@ -509,26 +474,6 @@ describe('getConditionalTemplatesForItem', () => {
     });
   });
 
-  it('should filter out templates with a missing/invalid templateId', () => {
-    const cascadeItem: CascadeItem = {
-      cascadeGroups: ['standard', 'translations'],
-      channel: 'LETTER',
-      channelType: 'primary',
-      defaultTemplateId: 'template-1',
-      conditionalTemplates: [
-        { templateId: 'template-2', language: 'fr' },
-        { templateId: null, language: 'es' },
-        { accessibleFormat: 'x1' } as ConditionalTemplate,
-      ],
-    };
-
-    const result = getConditionalTemplatesForItem(cascadeItem, templates);
-
-    expect(result).toEqual({
-      'template-2': templates['template-2'],
-    });
-  });
-
   it('should not include templates that are missing from templates object', () => {
     const cascadeItem: CascadeItem = {
       cascadeGroups: ['standard', 'translations'],
@@ -632,24 +577,6 @@ describe('buildCascadeGroupsForItem', () => {
     ]);
   });
 
-  it('should return only standard group when conditional templates have missing templateIds', () => {
-    const cascadeItem: CascadeItem = {
-      cascadeGroups: ['standard'],
-      channel: 'LETTER',
-      channelType: 'primary',
-      defaultTemplateId: 'template-1',
-      conditionalTemplates: [
-        { templateId: null, accessibleFormat: 'q4' },
-        { templateId: 'template-2', language: 'fr' },
-      ],
-    };
-
-    expect(buildCascadeGroupsForItem(cascadeItem)).toEqual([
-      'standard',
-      'translations',
-    ]);
-  });
-
   it('should return only standard when conditional templates array is empty', () => {
     const cascadeItem: CascadeItem = {
       cascadeGroups: ['standard'],
@@ -690,25 +617,6 @@ describe('getAccessibleLetterFormatsFromCascade', () => {
     const result = getAccessibleLetterFormatsFromCascade(cascade);
 
     expect(result.sort()).toEqual(['q4', 'x0'].sort());
-  });
-
-  it('should ignore templates with null templateId', () => {
-    const cascade: CascadeItem[] = [
-      {
-        cascadeGroups: ['accessible'],
-        channel: 'LETTER',
-        channelType: 'primary',
-        defaultTemplateId: null,
-        conditionalTemplates: [
-          { templateId: 'template-1', accessibleFormat: 'q4' },
-          { templateId: null, accessibleFormat: 'x0' },
-        ],
-      },
-    ];
-
-    const result = getAccessibleLetterFormatsFromCascade(cascade);
-
-    expect(result).toEqual(['q4']);
   });
 
   it('should return empty array when no accessible templates exist', () => {
@@ -752,25 +660,6 @@ describe('getCascadeLanguages', () => {
     const result = getCascadeLanguages(cascade);
 
     expect(result.sort()).toEqual(['es', 'fr']);
-  });
-
-  it('should ignore templates with null templateId', () => {
-    const cascade: CascadeItem[] = [
-      {
-        cascadeGroups: ['translations'],
-        channel: 'EMAIL',
-        channelType: 'primary',
-        defaultTemplateId: null,
-        conditionalTemplates: [
-          { templateId: 'template-1', language: 'fr' },
-          { templateId: null, language: 'es' },
-        ],
-      },
-    ];
-
-    const result = getCascadeLanguages(cascade);
-
-    expect(result).toEqual(['fr']);
   });
 
   it('should return empty array when no language templates exist', () => {

@@ -357,7 +357,6 @@
           },
           "templateId": {
             "format": "uuid",
-            "nullable": true,
             "type": "string"
           }
         },
@@ -381,7 +380,6 @@
           },
           "templateId": {
             "format": "uuid",
-            "nullable": true,
             "type": "string"
           }
         },
