@@ -203,7 +203,7 @@ export class RoutingConfigRepository {
     }
 
     const submittableValidationError =
-      this.validateRoutingConfigIsSubmittable(cascade);
+      this.parseSubmittableRoutingConfig(cascade);
     if (submittableValidationError) {
       return submittableValidationError;
     }
@@ -480,7 +480,7 @@ export class RoutingConfigRepository {
       .filter((id): id is string => id != null);
   }
 
-  private validateRoutingConfigIsSubmittable(cascade: CascadeItem[]) {
+  private parseSubmittableRoutingConfig(cascade: CascadeItem[]) {
     const result = $SubmittableCascade.safeParse(cascade);
 
     if (!result.success) {
@@ -490,8 +490,6 @@ export class RoutingConfigRepository {
         result.error
       );
     }
-
-    return null;
   }
 
   private handleSubmitTransactionError(

@@ -25,6 +25,7 @@ test.describe('Event publishing - Routing Config', () => {
 
   test.afterAll(async () => {
     await storageHelper.deleteSeeded();
+    await templateStorageHelper.deleteSeededTemplates();
   });
 
   test('Expect a draft event and a deleted event when some template IDs are null', async ({
