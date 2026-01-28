@@ -36,7 +36,7 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
   }
 
   getRadioButton(radioId: string): Locator {
-    return this.page.getByRole('radio').getByTestId(`${radioId}-radio`);
+    return this.page.getByTestId(`${radioId}-radio`);
   }
 
   getTemplateTypeRadio(
