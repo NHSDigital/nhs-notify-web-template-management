@@ -162,7 +162,7 @@ exports[`Client-side validation triggers 1`] = `
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 16 of 5000 characters
               </p>
@@ -271,7 +271,7 @@ exports[`Client-side validation triggers 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -282,7 +282,7 @@ exports[`Client-side validation triggers 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -290,7 +290,7 @@ exports[`Client-side validation triggers 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -365,9 +365,9 @@ exports[`Client-side validation triggers 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>
@@ -844,7 +844,7 @@ exports[`renders page 1`] = `
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 16 of 5000 characters
               </p>
@@ -953,7 +953,7 @@ exports[`renders page 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -964,7 +964,7 @@ exports[`renders page 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -972,7 +972,7 @@ exports[`renders page 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1047,9 +1047,9 @@ exports[`renders page 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>
@@ -1520,7 +1520,7 @@ exports[`renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -1561,7 +1561,7 @@ exports[`renders page one error 1`] = `
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 0 of 5000 characters
               </p>
@@ -1670,7 +1670,7 @@ exports[`renders page one error 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1681,7 +1681,7 @@ exports[`renders page one error 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1689,7 +1689,7 @@ exports[`renders page one error 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1764,9 +1764,9 @@ exports[`renders page one error 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>
@@ -2299,7 +2299,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -2334,7 +2334,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template message error
                 <div
@@ -2401,7 +2401,7 @@ exports[`renders page with multiple errors 1`] = `
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 0 of 5000 characters
               </p>
@@ -2510,7 +2510,7 @@ exports[`renders page with multiple errors 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -2521,7 +2521,7 @@ exports[`renders page with multiple errors 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -2529,7 +2529,7 @@ exports[`renders page with multiple errors 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -2604,9 +2604,9 @@ exports[`renders page with multiple errors 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>
@@ -3083,7 +3083,7 @@ exports[`renders page with preloaded field values 1`] = `
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 16 of 5000 characters
               </p>
@@ -3192,7 +3192,7 @@ exports[`renders page with preloaded field values 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -3203,7 +3203,7 @@ exports[`renders page with preloaded field values 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -3211,7 +3211,7 @@ exports[`renders page with preloaded field values 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -3286,9 +3286,9 @@ exports[`renders page with preloaded field values 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>
@@ -3758,7 +3758,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class=""
             >
               <p
-                data-testid="character-count-0"
+                data-testid="character-count"
               >
                 16 of 5000 characters
               </p>
@@ -3867,7 +3867,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -3878,7 +3878,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -3886,7 +3886,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -3961,9 +3961,9 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-line 2  
-line 3  
+                line 1
+line 2
+line 3
               </code>
             </pre>
             <p>

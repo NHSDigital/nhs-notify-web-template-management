@@ -945,13 +945,25 @@ const templateFormEmail = {
 const smsTemplateFooter: ContentBlock[] = [
   {
     type: 'text',
-    testId: 'character-message-count',
     text: `{{characters}} {{characters|character|characters}}  \nThis template will be charged as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could be charged as more.`,
+    overrides: {
+      p: {
+        props: {
+          'data-testid': 'character-message-count',
+        },
+      },
+    },
   },
   {
     type: 'text',
-    testId: 'sms-pricing-info',
     text: '[Learn more about character counts and text messaging pricing (opens in a new tab)](/pricing/text-messages)',
+    overrides: {
+      p: {
+        props: {
+          'data-testid': 'sms-pricing-info',
+        },
+      },
+    },
   },
 ];
 
@@ -1472,6 +1484,99 @@ const lockedTemplateWarning = {
   },
 };
 
+const uploadStandardLetterTemplateSideBar: ContentBlock[] = [
+  {
+    type: 'text',
+    text: '## How to create a standard letter template',
+    overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+  },
+  {
+    type: 'text',
+    text: markdownList('ol', [
+      'Download the blank [standard letter template file](https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx).',
+      'Add [formatting (opens in a new tab)](https://notify.nhs.uk).',
+      'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk).',
+      'Save your Microsoft Word file and upload it to this page.',
+    ]),
+    overrides: {
+      ol: { props: { className: 'nhsuk-list nhsuk-list--number' } },
+      li: { props: { className: 'nhsuk-u-margin-bottom-4' } },
+    },
+  },
+];
+
+const uploadStandardLetterTemplate = {
+  backLink: {
+    href: '/choose-a-template-type',
+    text: 'Back to choose a template type',
+  },
+  heading: 'Upload a standard English letter template',
+  sideBar: uploadStandardLetterTemplateSideBar,
+  form: {
+    name: {
+      label: 'Template name',
+      hint: 'This will not be visible to recipients.',
+      details: {
+        summary: 'Naming your templates',
+        text: [
+          {
+            type: 'text',
+            text: 'You should name your templates in a way that works best for your service or organisation.',
+          },
+          {
+            type: 'text',
+            text: 'Common template names include the:',
+          },
+          {
+            type: 'text',
+            text: markdownList('ul', [
+              'subject or reason for the message',
+              'intended audience for the template',
+              'version number of the template',
+            ]),
+          },
+          {
+            type: 'text',
+            text: "For example, 'Covid19 2025 - over 65s - version 3'",
+          },
+        ] satisfies ContentBlock[],
+      },
+    },
+    campaignId: {
+      label: 'Campaign',
+      single: {
+        hint: 'This message plan will link to your only campaign:',
+      },
+      select: {
+        hint: 'Choose which campaign this letter is for',
+      },
+    },
+    file: {
+      label: 'Template file',
+      hint: [
+        {
+          type: 'inline-text',
+          text: 'Only upload your final letter template file.  \nMake sure you use one of our blank template files to create the letter.',
+        },
+      ] satisfies ContentBlock[],
+    },
+    submitButton: {
+      text: 'Upload letter template file',
+    },
+  },
+  errors: {
+    name: {
+      empty: 'Enter a template name',
+    },
+    campaignId: {
+      empty: 'Choose a campaign',
+    },
+    file: {
+      empty: 'Choose a template file',
+    },
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1533,6 +1638,7 @@ const content = {
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
     deleteTemplateErrorPage,
+    uploadStandardLetterTemplate,
   },
 };
 

@@ -62,3 +62,7 @@ export const pdfUploadFixtures = {
     ),
   },
 };
+
+export const docxFixtures = {
+  standard: getFile('docx', 'standard-template.docx'),
+};

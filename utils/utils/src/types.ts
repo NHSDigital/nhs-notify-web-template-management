@@ -24,8 +24,11 @@ export type ErrorState = {
   fieldErrors?: Record<string, string[]>;
 };
 
-export type FormState = {
+export type FormState<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = {
   errorState?: ErrorState;
+  fields?: Partial<T>;
 };
 
 export type CreateUpdateNHSAppTemplate = Extract<

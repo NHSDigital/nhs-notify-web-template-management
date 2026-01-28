@@ -56,6 +56,7 @@ const protectedPaths = [
   /^\/text-message-template-submitted\/[^/]+$/,
   /^\/upload-letter-template\/client-id-and-campaign-id-required$/,
   /^\/upload-letter-template$/,
+  /^\/upload-standard-letter-template$/,
 ];
 
 const publicPaths = [

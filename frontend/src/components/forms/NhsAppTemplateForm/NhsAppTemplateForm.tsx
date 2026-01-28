@@ -131,9 +131,11 @@ export const NhsAppTemplateForm: FC<
                 />
                 <JsEnabled>
                   <MarkdownContent
-                    testId='character-count'
                     content={characterCountText}
                     variables={{ characters: nhsAppTemplateMessage.length }}
+                    overrides={{
+                      p: { props: { 'data-testid': 'character-count' } },
+                    }}
                   />
                 </JsEnabled>
               </div>

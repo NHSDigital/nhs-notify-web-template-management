@@ -138,7 +138,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Enter a template name
               </span>
@@ -173,7 +173,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Enter a template message
               </span>
@@ -191,7 +191,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count-0"
+                data-testid="character-message-count"
               >
                 0 characters
                 <br />
@@ -200,7 +200,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 If you're using personalisation fields, it could be charged as more.
               </p>
               <p
-                data-testid="sms-pricing-info-0"
+                data-testid="sms-pricing-info"
               >
                 <a
                   href="/pricing/text-messages"
@@ -315,7 +315,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -326,7 +326,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -334,7 +334,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -593,7 +593,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -636,7 +636,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count-0"
+                data-testid="character-message-count"
               >
                 16 characters
                 <br />
@@ -645,7 +645,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                 If you're using personalisation fields, it could be charged as more.
               </p>
               <p
-                data-testid="sms-pricing-info-0"
+                data-testid="sms-pricing-info"
               >
                 <a
                   href="/pricing/text-messages"
@@ -760,7 +760,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -771,7 +771,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -779,7 +779,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1051,7 +1051,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               class=""
             >
               <p
-                data-testid="character-message-count-0"
+                data-testid="character-message-count"
               >
                 16 characters
                 <br />
@@ -1060,7 +1060,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                 If you're using personalisation fields, it could be charged as more.
               </p>
               <p
-                data-testid="sms-pricing-info-0"
+                data-testid="sms-pricing-info"
               >
                 <a
                   href="/pricing/text-messages"
@@ -1175,7 +1175,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1186,7 +1186,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1194,7 +1194,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1515,7 +1515,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -1550,7 +1550,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template message error
                 <div
@@ -1619,7 +1619,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count-0"
+                data-testid="character-message-count"
               >
                 16 characters
                 <br />
@@ -1628,7 +1628,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 If you're using personalisation fields, it could be charged as more.
               </p>
               <p
-                data-testid="sms-pricing-info-0"
+                data-testid="sms-pricing-info"
               >
                 <a
                   href="/pricing/text-messages"
@@ -1743,7 +1743,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1754,7 +1754,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1762,7 +1762,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -2027,7 +2027,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               class=""
             >
               <p
-                data-testid="character-message-count-0"
+                data-testid="character-message-count"
               >
                 16 characters
                 <br />
@@ -2036,7 +2036,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                 If you're using personalisation fields, it could be charged as more.
               </p>
               <p
-                data-testid="sms-pricing-info-0"
+                data-testid="sms-pricing-info"
               >
                 <a
                   href="/pricing/text-messages"
@@ -2151,7 +2151,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add 
+              You can add
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -2162,7 +2162,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -2170,7 +2170,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               >
                 NHS Notify API
               </a>
-               or 
+               or
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"

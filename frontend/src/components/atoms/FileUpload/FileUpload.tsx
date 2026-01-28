@@ -8,6 +8,19 @@ interface FileUploadProps extends HTMLProps<HTMLDivElement> {
   hint?: string;
 }
 
+export function FileUploadInput({
+  className,
+  ...props
+}: Omit<HTMLProps<HTMLInputElement>, 'type'>) {
+  return (
+    <input
+      className={classNames(styles['file-upload'], 'nhsuk-input', className)}
+      type='file'
+      {...props}
+    />
+  );
+}
+
 const FileUpload: React.FC<FileUploadProps> = ({
   error,
   hint,
@@ -26,13 +39,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {label && <Label htmlFor={id}>{label}</Label>}
       {hint && <HintText>{hint}</HintText>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <input
-        id={id}
-        name={id}
-        className={classNames(styles['file-upload'], 'nhsuk-input')}
-        type='file'
-        accept={accept}
-      />
+      <FileUploadInput id={id} name={id} accept={accept} />
     </div>
   );
 };

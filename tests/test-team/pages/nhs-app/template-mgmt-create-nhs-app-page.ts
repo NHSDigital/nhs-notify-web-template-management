@@ -32,7 +32,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template-details"]'
     );
-    this.characterCountText = page.getByTestId('character-message-count-0');
+    this.characterCountText = page.getByTestId('character-message-count');
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(
       '[id="create-nhs-app-template-submit-button"]'
@@ -44,7 +44,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
   }
 
   async waitForPageToLoad() {
-    const characterCountLocator = this.page.getByTestId('character-count-0');
+    const characterCountLocator = this.page.getByTestId('character-count');
     await expect(characterCountLocator).toBeVisible();
   }
 

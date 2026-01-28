@@ -1,0 +1,54 @@
+'use server';
+
+import { redirect, RedirectType } from 'next/navigation';
+import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import copy from '@content/content';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { fetchClient } from '@utils/server-features';
+import { getCampaignIds } from '@utils/client-config';
+import {
+  UploadStandardLetterTemplateForm,
+  NHSNotifyFormProvider,
+} from './form';
+import { uploadStandardLetterTemplate } from './server-action';
+
+const content = copy.pages.uploadStandardLetterTemplate;
+
+export default async function UploadStandardLetterTemplatePage() {
+  const client = await fetchClient();
+  const campaignIds = getCampaignIds(client);
+
+  if (campaignIds.length === 0) {
+    return redirect(
+      '/upload-letter-template/client-id-and-campaign-id-required',
+      RedirectType.replace
+    );
+  }
+
+  return (
+    <>
+      <NHSNotifyBackLink href={content.backLink.href}>
+        {content.backLink.text}
+      </NHSNotifyBackLink>
+      <NHSNotifyMain>
+        <NHSNotifyFormProvider serverAction={uploadStandardLetterTemplate}>
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-two-thirds'>
+              <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
+            </div>
+          </div>
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-two-thirds'>
+              <UploadStandardLetterTemplateForm campaignIds={campaignIds} />
+            </div>
+
+            <div className='nhsuk-grid-column-one-third'>
+              <ContentRenderer content={content.sideBar} />
+            </div>
+          </div>
+        </NHSNotifyFormProvider>
+      </NHSNotifyMain>
+    </>
+  );
+}
