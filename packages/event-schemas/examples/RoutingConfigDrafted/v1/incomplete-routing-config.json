@@ -6,7 +6,7 @@
         "cascadeGroups": [
           "standard"
         ],
-        "channel": "NHS_APP",
+        "channel": "NHSAPP",
         "channelType": "primary",
         "defaultTemplateId": null
       },
