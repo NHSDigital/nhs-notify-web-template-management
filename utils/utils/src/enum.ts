@@ -73,9 +73,9 @@ const letterTypeMap: Record<LetterType, string> = {
 // Letter types that can be selected in the UI (includes frontend concept 'language')
 export type SupportedLetterType = LetterType | 'language';
 export const SUPPORTED_LETTER_TYPES = [
-  'q4',
   'x0',
   'x1',
+  'q4',
   'language',
 ] as const satisfies readonly SupportedLetterType[];
 

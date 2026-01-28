@@ -759,25 +759,6 @@ exports[`Choose template page when letter authoring is enabled should show the c
                     >
                       <input
                         class="nhsuk-radios__input"
-                        data-testid="letter-type-q4-radio"
-                        id="letterType-q4"
-                        name="letterType"
-                        type="radio"
-                        value="q4"
-                      />
-                      <label
-                        class="nhsuk-label nhsuk-radios__label"
-                        for="letterType-q4"
-                        id="letterType-q4--label"
-                      >
-                        British Sign Language letter
-                      </label>
-                    </div>
-                    <div
-                      class="nhsuk-radios__item"
-                    >
-                      <input
-                        class="nhsuk-radios__input"
                         data-testid="letter-type-x0-radio"
                         id="letterType-x0"
                         name="letterType"
@@ -809,6 +790,25 @@ exports[`Choose template page when letter authoring is enabled should show the c
                         id="letterType-x1--label"
                       >
                         Large print letter
+                      </label>
+                    </div>
+                    <div
+                      class="nhsuk-radios__item"
+                    >
+                      <input
+                        class="nhsuk-radios__input"
+                        data-testid="letter-type-q4-radio"
+                        id="letterType-q4"
+                        name="letterType"
+                        type="radio"
+                        value="q4"
+                      />
+                      <label
+                        class="nhsuk-label nhsuk-radios__label"
+                        for="letterType-q4"
+                        id="letterType-q4--label"
+                      >
+                        British Sign Language letter
                       </label>
                     </div>
                     <div
