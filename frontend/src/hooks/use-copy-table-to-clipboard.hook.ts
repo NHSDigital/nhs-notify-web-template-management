@@ -21,23 +21,41 @@ const generateCSV = <T extends Record<string, string>>(
   const headerRow = columns.map((col) => col.header).join(',');
 
   const dataRows = data.map((row) =>
-    columns.map((col) => `"${row[col.key]}"`).join(',')
+    columns
+      .map((col) => {
+        const escaped = row[col.key].replaceAll('"', '""');
+        return `"${escaped}"`;
+      })
+      .join(',')
   );
 
   return [headerRow, ...dataRows].join('\n');
 };
 
-const generateHTMLTable = <T extends Record<string, unknown>>(
+const escapeHtml = (text: string): string => {
+  const htmlEntities: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replaceAll(/["&'<>]/g, (char) => htmlEntities[char]);
+};
+
+const generateHTMLTable = <T extends Record<string, string>>(
   data: T[],
   columns: ColumnDefinition<T>[]
 ): string => {
-  const headerRow = columns.map((col) => `<th>${col.header}</th>`).join('');
+  const headerRow = columns
+    .map((col) => `<th>${escapeHtml(col.header)}</th>`)
+    .join('');
 
   const dataRows = data
     .map((row) => {
       const cells = columns
         .map((col) => {
-          return `<td>${row[col.key]}</td>`;
+          return `<td>${escapeHtml(row[col.key])}</td>`;
         })
         .join('');
       return `<tr>${cells}</tr>`;
@@ -84,6 +102,10 @@ export const useCopyTableToClipboard = <T extends Record<string, string>>(
     } catch (caughtError) {
       setCopyError(caughtError);
       setCopied(false);
+      timeoutRef.current = setTimeout(
+        () => setCopyError(null),
+        successDurationMs
+      );
     }
   };
 
@@ -98,6 +120,6 @@ export const useCopyTableToClipboard = <T extends Record<string, string>>(
   return {
     copyToClipboard,
     copied,
-    error: copyError,
+    copyError,
   };
 };

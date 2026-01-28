@@ -1371,7 +1371,8 @@ const messagePlansListComponent = {
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
   messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
   copyText: 'Copy names and IDs to clipboard',
-  copiedText: "Names and ID's copied to clipboard",
+  copiedText: 'Names and IDs copied to clipboard',
+  copiedFailedText: 'Failed copying Names and IDs to clipboard',
 };
 
 const chooseMessageOrder = {

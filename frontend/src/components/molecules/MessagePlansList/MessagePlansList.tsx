@@ -31,7 +31,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
   const { status, count } = props;
   const statusDisplayMapping = messagePlanStatusToDisplayText(status);
   const statusDisplayLower = statusDisplayMapping.toLowerCase();
-  const { copyToClipboard, copied } =
+  const { copyToClipboard, copied, copyError } =
     useCopyTableToClipboard<MessagePlanListItem>();
 
   const handleCopyToClipboard = async () => {
@@ -72,6 +72,14 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
     </Table.Row>
   ));
 
+  let copyButtonText = messagePlansListComponent.copyText;
+
+  if (copied) {
+    copyButtonText = messagePlansListComponent.copiedText;
+  } else if (copyError) {
+    copyButtonText = messagePlansListComponent.copiedFailedText;
+  }
+
   return (
     <Details expander data-testid={`message-plans-list-${statusDisplayLower}`}>
       <Details.Summary
@@ -92,9 +100,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
               secondary
               onClick={handleCopyToClipboard}
             >
-              {copied
-                ? messagePlansListComponent.copiedText
-                : messagePlansListComponent.copyText}
+              {copyButtonText}
             </Button>
           </>
         ) : (

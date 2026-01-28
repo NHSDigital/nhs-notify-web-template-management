@@ -94,7 +94,7 @@ describe('MessagePlansList', () => {
     await userEvent.click(copyButton);
 
     expect(mockClipboardWrite).toHaveBeenCalledTimes(1);
-    expect(copyButton).toHaveTextContent("Names and ID's copied to clipboard");
+    expect(copyButton).toHaveTextContent('Names and IDs copied to clipboard');
 
     const [clipboardItem] = mockClipboardWrite.mock.calls[0][0];
 
@@ -107,5 +107,41 @@ describe('MessagePlansList', () => {
     ].join('\n');
 
     expect(csv).toEqual(expectedCSV);
+  });
+
+  it('should display error message when clipboard write fails', async () => {
+    const mockPlans: MessagePlanListItem[] = [
+      { name: 'Plan 1', id: 'id-1', lastUpdated: '2026-01-23T10:00:00Z' },
+    ];
+
+    const mockClipboardWrite = jest
+      .fn()
+      .mockRejectedValue(new Error('Permission denied'));
+
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { write: mockClipboardWrite },
+      writable: true,
+      configurable: true,
+    });
+
+    global.ClipboardItem = jest.fn(
+      (data) => data
+    ) as unknown as typeof ClipboardItem;
+
+    const { getByTestId } = render(
+      <MessagePlansList status='DRAFT' count={1} plans={mockPlans} />
+    );
+
+    const expander = getByTestId('message-plans-list-draft');
+    fireEvent.click(expander);
+
+    const copyButton = getByTestId('copy-button-draft');
+
+    await userEvent.click(copyButton);
+
+    expect(mockClipboardWrite).toHaveBeenCalledTimes(1);
+    expect(copyButton).toHaveTextContent(
+      'Failed copying Names and IDs to clipboard'
+    );
   });
 });

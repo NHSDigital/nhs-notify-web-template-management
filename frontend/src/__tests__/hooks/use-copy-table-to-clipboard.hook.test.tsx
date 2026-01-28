@@ -60,7 +60,7 @@ describe('useCopyTableToClipboard', () => {
 
     const expectedCSV = [
       'Name,ID',
-      '"Test "quoted" value","id-1"',
+      '"Test ""quoted"" value","id-1"',
       '"<template test name>","id & value"',
     ].join('\n');
 
@@ -76,12 +76,12 @@ describe('useCopyTableToClipboard', () => {
       </thead>
       <tbody>
         <tr>
-          <td>Test "quoted" value</td>
+          <td>Test &quot;quoted&quot; value</td>
           <td>id-1</td>
         </tr>
         <tr>
-          <td><template test name></td>
-          <td>id & value</td>
+          <td>&lt;template test name&gt;</td>
+          <td>id &amp; value</td>
         </tr>
       </tbody>
     </table>`
@@ -91,7 +91,7 @@ describe('useCopyTableToClipboard', () => {
     expect(html).toEqual(expectedHTML);
 
     expect(result.current.copied).toBe(true);
-    expect(result.current.error).toBeNull();
+    expect(result.current.copyError).toBeNull();
 
     act(() => {
       jest.advanceTimersByTime(5000);
@@ -112,8 +112,14 @@ describe('useCopyTableToClipboard', () => {
       });
     });
 
-    expect(result.current.error).toEqual(new Error('Permission denied'));
+    expect(result.current.copyError).toEqual(new Error('Permission denied'));
     expect(result.current.copied).toBe(false);
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(result.current.copyError).toBeNull();
 
     mockClipboardWrite.mockResolvedValueOnce(undefined);
 
@@ -124,7 +130,7 @@ describe('useCopyTableToClipboard', () => {
       });
     });
 
-    expect(result.current.error).toBeNull();
+    expect(result.current.copyError).toBeNull();
     expect(result.current.copied).toBe(true);
   });
 
