@@ -365,6 +365,8 @@ export class CognitoAuthHelper {
         internalUserId: userDetails.internalUserId,
       }
     );
+
+    await this.passwordAuth(userDetails.userId, true);
   }
 
   private async deleteUser(email: string) {
@@ -383,7 +385,7 @@ export class CognitoAuthHelper {
     );
   }
 
-  private async passwordAuth(id: string) {
+  private async passwordAuth(id: string, allowPasswordChange = false) {
     const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
 
     if (!userCtx?.email || !userCtx.password) {
@@ -404,6 +406,9 @@ export class CognitoAuthHelper {
     let authResult = initiateAuthResult.AuthenticationResult;
 
     if (initiateAuthResult.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
+      if (!allowPasswordChange) {
+        throw new Error('Unexpected password reset request');
+      }
       const newPassword = CognitoAuthHelper.generatePassword();
 
       const respondToAuthChallengeResult = await this.client.send(
