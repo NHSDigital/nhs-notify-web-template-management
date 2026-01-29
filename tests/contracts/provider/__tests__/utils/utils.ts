@@ -112,6 +112,9 @@ export function getMessageProviders() {
     'TemplateCompleted',
     'TemplateDeleted',
     'TemplateDrafted',
+    'RoutingConfigCompleted',
+    'RoutingConfigDeleted',
+    'RoutingConfigDrafted',
   ];
 
   return Object.fromEntries(
