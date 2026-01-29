@@ -1,8 +1,14 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { FormState } from 'nhs-notify-web-template-management-utils';
+import {
+  FormState,
+  PdfProofingLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
-import { replaceLanguageTemplatesInCascadeItem } from '@utils/routing-utils';
+import {
+  replaceLanguageTemplatesInCascadeItem,
+  isPdfProofingLetter,
+} from '@utils/routing-utils';
 import { Language, $LockNumber } from 'nhs-notify-backend-client';
 import { ChooseLanguageLetterTemplatesProps } from './ChooseLanguageLetterTemplates';
 import baseContent from '@content/content';
@@ -85,9 +91,13 @@ export async function chooseLanguageLetterTemplatesAction(
   }
 
   const selectedTemplateIdsSet = new Set(selectedTemplateIds);
-  const templateMap = new Map(
+  const templateMap = new Map<string, PdfProofingLetterTemplate>(
     templateList
-      .filter((template) => selectedTemplateIdsSet.has(template.id))
+      .filter(
+        (template): template is PdfProofingLetterTemplate =>
+          selectedTemplateIdsSet.has(template.id) &&
+          isPdfProofingLetter(template)
+      )
       .map((template) => [template.id, template])
   );
 

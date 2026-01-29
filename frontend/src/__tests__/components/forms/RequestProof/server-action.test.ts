@@ -25,6 +25,7 @@ const mockLetterTemplate = (id: string) =>
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
     letterType: 'x0',
+    letterVersion: 'PDF_PROOFING',
     language: 'en',
     files: {
       pdfTemplate: {

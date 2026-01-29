@@ -125,6 +125,10 @@ export type CountSuccess = {
   statusCode: number;
 };
 
+export type CreatePdfProofingLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
+};
+
 export type CreateRoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
@@ -183,8 +187,6 @@ export type Language =
   | 'ur'
   | 'zh';
 
-export type LetterVersion = 'AUTHORING' | 'PDF_PROOFING';
-
 export type LetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
@@ -194,12 +196,17 @@ export type LetterFiles = {
 };
 
 export type LetterProperties =
-  | ({
-      letterVersion: 'AUTHORING';
-    } & AuthoringLetterProperties)
-  | ({
-      letterVersion: 'PDF_PROOFING';
-    } & PdfProofingLetterProperties);
+  | AuthoringLetterProperties
+  | PdfProofingLetterProperties;
+
+export type LetterType = 'q4' | 'x0' | 'x1';
+
+export type LetterVersion = 'AUTHORING' | 'PDF_PROOFING';
+
+export type NhsAppProperties = {
+  message: string;
+  templateType: 'NHS_APP';
+};
 
 export type PdfProofingLetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
@@ -209,13 +216,6 @@ export type PdfProofingLetterProperties = BaseLetterTemplateProperties & {
   supplierReferences?: {
     [key: string]: string;
   };
-};
-
-export type LetterType = 'q4' | 'x0' | 'x1';
-
-export type NhsAppProperties = {
-  message: string;
-  templateType: 'NHS_APP';
 };
 
 export type ProofFileDetails = {
@@ -301,10 +301,6 @@ export type UpdateRoutingConfig = unknown & {
   cascade?: Array<CascadeItem>;
   cascadeGroupOverrides?: Array<CascadeGroup>;
   name?: string;
-};
-
-export type CreatePdfProofingLetterProperties = BaseLetterTemplateProperties & {
-  campaignId: string;
 };
 
 export type UploadLetterTemplate = {

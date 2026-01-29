@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import {
-  $UploadLetterProperties,
+  $CreatePdfProofingLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
   $Language,
   $LetterFiles,
-  $LetterProperties,
+  $PdfProofingLetterProperties,
   $LetterType,
   $NhsAppProperties,
   $SmsProperties,
@@ -74,11 +74,11 @@ export const $SubmittedSMSTemplate = z.intersection(
 
 export const $UploadLetterTemplate = z.intersection(
   $CreateUpdateTemplate,
-  $UploadLetterProperties
+  $CreatePdfProofingLetterProperties
 );
 export const $LetterTemplate = z.intersection(
   $TemplateDto,
-  $LetterProperties.extend({ files: $LetterFiles })
+  $PdfProofingLetterProperties.extend({ files: $LetterFiles })
 );
 export const $SubmittedLetterTemplate = z.intersection(
   $SubmittedTemplate,

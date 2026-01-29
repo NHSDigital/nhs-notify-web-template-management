@@ -87,6 +87,7 @@ describe('upload-letter', () => {
       updatedAt: now,
       lockNumber: 1,
       templateStatus: 'PENDING_VALIDATION',
+      letterVersion: 'PDF_PROOFING',
       files: {
         pdfTemplate: {
           fileName: pdfFilename,
@@ -162,6 +163,7 @@ describe('upload-letter', () => {
       lockNumber: 1,
       clientId,
       templateStatus: 'PENDING_VALIDATION',
+      letterVersion: 'PDF_PROOFING',
       files: {
         pdfTemplate: {
           fileName: pdfFilename,

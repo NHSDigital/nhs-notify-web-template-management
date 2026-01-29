@@ -42,6 +42,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       id: 'template-id',
       language: 'en',
       letterType: 'x0',
+      letterVersion: 'PDF_PROOFING',
       name: 'template-name',
       templateStatus: 'SUBMITTED',
       templateType: 'LETTER',

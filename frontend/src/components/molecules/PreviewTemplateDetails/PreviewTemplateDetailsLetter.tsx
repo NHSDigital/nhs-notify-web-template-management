@@ -2,6 +2,7 @@
 
 import { Container, SummaryList } from 'nhsuk-react-components';
 import {
+  assertPdfProofingLetter,
   letterTypeDisplayMappings,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -21,13 +22,14 @@ import { useFeatureFlags } from '@providers/client-config-provider';
 const { rowHeadings } = content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsLetter({
-  template,
+  template: letterTemplate,
   hideStatus,
 }: {
   template: LetterTemplate;
   hideStatus?: boolean;
 }) {
   const features = useFeatureFlags();
+  const template = assertPdfProofingLetter(letterTemplate);
 
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')

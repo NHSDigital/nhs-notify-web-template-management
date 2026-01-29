@@ -14,7 +14,7 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfProofingLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 
@@ -74,7 +74,7 @@ describe('SubmitLetterTemplatePage', () => {
     SMS_TEMPLATE,
     {
       ...LETTER_TEMPLATE,
-      files: undefined as unknown as LetterTemplate['files'],
+      files: undefined as unknown as PdfProofingLetterTemplate['files'],
     } as TemplateDto,
     {
       ...LETTER_TEMPLATE,

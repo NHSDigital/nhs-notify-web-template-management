@@ -128,6 +128,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF_PROOFING',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -188,6 +189,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF_PROOFING',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -774,6 +776,7 @@ describe('form-actions', () => {
         name: 'template-name',
         letterType: 'x1',
         language: 'ar',
+        letterVersion: 'PDF_PROOFING',
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',

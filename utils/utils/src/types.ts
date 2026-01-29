@@ -1,9 +1,13 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
+  AuthoringLetterProperties,
+  BaseCreatedTemplate,
   CreateUpdateTemplate,
   Language,
   LetterFiles,
   LetterType,
+  LetterVersion,
+  PdfProofingLetterProperties,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -53,7 +57,31 @@ export type EmailTemplate = Extract<TemplateDto, { templateType: 'EMAIL' }>;
 
 export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
 
-export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
+export type PdfProofingLetterTemplate = BaseCreatedTemplate &
+  PdfProofingLetterProperties;
+
+export type AuthoringLetterTemplate = BaseCreatedTemplate &
+  AuthoringLetterProperties;
+
+export type LetterTemplate =
+  | PdfProofingLetterTemplate
+  | AuthoringLetterTemplate;
+
+export class UnexpectedLetterVersionError extends Error {
+  constructor(letterVersion: string) {
+    super(`ERR_UNEXPECTED_LETTER_VERSION: ${letterVersion}`);
+    this.name = 'UnexpectedLetterVersionError';
+  }
+}
+
+export const assertPdfProofingLetter = (
+  template: LetterTemplate
+): PdfProofingLetterTemplate => {
+  if (template.letterVersion !== 'PDF_PROOFING') {
+    throw new UnexpectedLetterVersionError(template.letterVersion);
+  }
+  return template;
+};
 
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
@@ -117,6 +145,7 @@ export type DatabaseTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  letterVersion?: LetterVersion;
   lockNumber?: number;
   message?: string;
   name: string;

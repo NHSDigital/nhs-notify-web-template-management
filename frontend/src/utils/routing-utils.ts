@@ -7,7 +7,10 @@ import {
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  LetterTemplate,
+  PdfProofingLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
   | ConditionalTemplateAccessible
@@ -22,6 +25,15 @@ export function isLetterTemplate(
   template: TemplateDto
 ): template is LetterTemplate {
   return template.templateType === 'LETTER';
+}
+
+/**
+ * Type guard to check if a letter template is a PDF proofing letter
+ */
+export function isPdfProofingLetter(
+  template: LetterTemplate
+): template is PdfProofingLetterTemplate {
+  return template.letterVersion === 'PDF_PROOFING';
 }
 
 /**
@@ -193,6 +205,7 @@ export function addDefaultTemplateToCascade(
     defaultTemplateId: selectedTemplateId,
     ...(selectedTemplate &&
       isLetterTemplate(selectedTemplate) &&
+      isPdfProofingLetter(selectedTemplate) &&
       selectedTemplate.supplierReferences && {
         supplierReferences: selectedTemplate.supplierReferences,
       }),
@@ -206,7 +219,7 @@ export function addDefaultTemplateToCascade(
  */
 export function addAccessibleFormatLetterTemplateToCascadeItem(
   cascadeItem: CascadeItem,
-  selectedTemplate: LetterTemplate
+  selectedTemplate: PdfProofingLetterTemplate
 ): CascadeItem {
   const newConditionalTemplate: ConditionalTemplateAccessible = {
     accessibleFormat: selectedTemplate.letterType,
@@ -240,7 +253,7 @@ export function addAccessibleFormatLetterTemplateToCascadeItem(
 export function addAccessibleFormatLetterTemplateToCascade(
   cascade: CascadeItem[],
   cascadeIndex: number,
-  selectedTemplate: LetterTemplate
+  selectedTemplate: PdfProofingLetterTemplate
 ): CascadeItem[] {
   const updatedCascade = [...cascade];
   updatedCascade[cascadeIndex] = addAccessibleFormatLetterTemplateToCascadeItem(
@@ -255,7 +268,7 @@ export function addAccessibleFormatLetterTemplateToCascade(
  */
 export function addLanguageLetterTemplatesToCascadeItem(
   cascadeItem: CascadeItem,
-  selectedTemplates: LetterTemplate[]
+  selectedTemplates: PdfProofingLetterTemplate[]
 ): CascadeItem {
   if (selectedTemplates.length === 0) {
     return cascadeItem;
@@ -290,7 +303,7 @@ export function addLanguageLetterTemplatesToCascadeItem(
 export function addLanguageLetterTemplatesToCascade(
   cascade: CascadeItem[],
   cascadeIndex: number,
-  selectedTemplates: LetterTemplate[]
+  selectedTemplates: PdfProofingLetterTemplate[]
 ): CascadeItem[] {
   const updatedCascade = [...cascade];
   updatedCascade[cascadeIndex] = addLanguageLetterTemplatesToCascadeItem(
@@ -330,7 +343,7 @@ export function removeLanguageTemplatesFromCascadeItem(
  */
 export function replaceLanguageTemplatesInCascadeItem(
   cascadeItem: CascadeItem,
-  selectedTemplates: LetterTemplate[]
+  selectedTemplates: PdfProofingLetterTemplate[]
 ): CascadeItem {
   const cascadeItemWithoutLanguages =
     removeLanguageTemplatesFromCascadeItem(cascadeItem);

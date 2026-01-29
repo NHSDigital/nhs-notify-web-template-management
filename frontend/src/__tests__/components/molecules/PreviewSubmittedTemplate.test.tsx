@@ -86,6 +86,7 @@ describe('PreviewSubmittedTemplate component', () => {
             templateStatus: 'SUBMITTED',
             templateType: 'LETTER',
             letterType: 'x0',
+            letterVersion: 'PDF_PROOFING',
             language: 'en',
             files: {
               pdfTemplate: {

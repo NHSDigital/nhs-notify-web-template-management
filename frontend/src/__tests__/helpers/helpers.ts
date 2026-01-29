@@ -1,6 +1,6 @@
 import { mockDeep } from 'jest-mock-extended';
 import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfProofingLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
   for (const item of list) {
@@ -52,12 +52,13 @@ export const SMS_TEMPLATE: TemplateDto = {
   lockNumber: 1,
 } as const;
 
-export const LETTER_TEMPLATE: LetterTemplate = {
+export const LETTER_TEMPLATE: PdfProofingLetterTemplate = {
   id: 'letter-template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
   language: 'en',
+  letterVersion: 'PDF_PROOFING',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -71,12 +72,13 @@ export const LETTER_TEMPLATE: LetterTemplate = {
   lockNumber: 1,
 } as const;
 
-export const LARGE_PRINT_LETTER_TEMPLATE: LetterTemplate = {
+export const LARGE_PRINT_LETTER_TEMPLATE: PdfProofingLetterTemplate = {
   id: 'large-print-letter-template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x1',
   language: 'en',
+  letterVersion: 'PDF_PROOFING',
   files: {
     pdfTemplate: {
       fileName: 'large-print-template.pdf',

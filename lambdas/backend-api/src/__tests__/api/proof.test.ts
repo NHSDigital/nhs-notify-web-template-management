@@ -166,6 +166,7 @@ describe('Template API - request proof', () => {
       lockNumber: 1,
       letterType: 'q4',
       language: 'fr',
+      letterVersion: 'PDF_PROOFING',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',

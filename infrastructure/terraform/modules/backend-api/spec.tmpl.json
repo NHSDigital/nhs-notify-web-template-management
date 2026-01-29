@@ -606,13 +606,6 @@
         "type": "object"
       },
       "LetterProperties": {
-        "discriminator": {
-          "mapping": {
-            "AUTHORING": "#/components/schemas/AuthoringLetterProperties",
-            "PDF_PROOFING": "#/components/schemas/PdfProofingLetterProperties"
-          },
-          "propertyName": "letterVersion"
-        },
         "oneOf": [
           {
             "$ref": "#/components/schemas/AuthoringLetterProperties"

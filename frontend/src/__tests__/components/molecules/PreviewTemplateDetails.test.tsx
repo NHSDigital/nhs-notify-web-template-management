@@ -78,6 +78,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
           letterType: 'x0',
+          letterVersion: 'PDF_PROOFING',
           language: 'fr',
           files: {
             pdfTemplate: {
@@ -110,6 +111,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
           letterType: 'x0',
+          letterVersion: 'PDF_PROOFING',
           language: 'fr',
           files: {
             pdfTemplate: {
@@ -138,6 +140,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
           letterType: 'x0',
+          letterVersion: 'PDF_PROOFING',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -187,6 +190,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
           letterType: 'x0',
+          letterVersion: 'PDF_PROOFING',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -214,6 +218,7 @@ describe('PreviewTemplateDetailsLetter', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'LETTER',
           letterType: 'x0',
+          letterVersion: 'PDF_PROOFING',
           language: 'en',
           files: {
             pdfTemplate: {

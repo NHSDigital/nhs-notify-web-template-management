@@ -41,6 +41,7 @@ describe('RequestProofPage', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x0',
+      letterVersion: 'PDF_PROOFING',
       language: 'en',
       proofingEnabled: true,
       files: {
@@ -144,6 +145,7 @@ describe('RequestProofPage', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x0',
+      letterVersion: 'PDF_PROOFING',
       language: 'ar',
       proofingEnabled: false,
       files: {

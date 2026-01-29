@@ -3,7 +3,10 @@ import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  LetterTemplate,
+  assertPdfProofingLetter,
+} from 'nhs-notify-web-template-management-utils';
 import Handlebars from 'handlebars';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -193,10 +196,11 @@ export class EmailClient {
       return;
     }
 
+    const pdfProofingLetter = assertPdfProofingLetter(template);
     const proofsBySupplier: Record<string, string[]> = {};
 
     for (const { supplier, fileName } of Object.values(
-      template.files.proofs ?? {}
+      pdfProofingLetter.files.proofs ?? {}
     )) {
       const proofFilenames = [...(proofsBySupplier[supplier] ?? []), fileName];
       proofsBySupplier[supplier] = proofFilenames;
@@ -204,7 +208,7 @@ export class EmailClient {
 
     for (const [supplier, proofFilenames] of Object.entries(proofsBySupplier)) {
       await this.sendTemplateSubmittedEmailToSupplier(
-        template,
+        pdfProofingLetter,
         supplier,
         proofFilenames
       );
