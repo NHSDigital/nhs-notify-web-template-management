@@ -1,34 +1,51 @@
+'use server';
+
 import { redirect, RedirectType } from 'next/navigation';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 import {
+  createTemplateUrl,
   FormState,
-  templateCreationPages,
+  legacyTemplateCreationPages,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
-import content from '@content/content';
-
-export const $ChooseTemplateType = z.object({
-  templateType: z.enum(TEMPLATE_TYPE_LIST, {
-    message: content.components.chooseTemplateType.form.templateType.error,
-  }),
-});
+import { serverIsFeatureEnabled } from '@utils/server-features';
+import {
+  $ChooseTemplateTypeBase,
+  $ChooseTemplateTypeWithLetterAuthoring,
+} from './schemas';
 
 export async function chooseTemplateTypeAction(
   _: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const parsedForm = $ChooseTemplateType.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const hasLetterAuthoring = await serverIsFeatureEnabled('letterAuthoring');
 
-  if (!parsedForm.success) {
-    return {
-      errorState: z.flattenError(parsedForm.error),
-    };
+  if (hasLetterAuthoring) {
+    const parsedForm = $ChooseTemplateTypeWithLetterAuthoring.safeParse(
+      Object.fromEntries(formData.entries())
+    );
+
+    if (!parsedForm.success) {
+      return {
+        errorState: z.flattenError(parsedForm.error),
+      };
+    }
+
+    const { templateType, letterType } = parsedForm.data;
+
+    redirect(createTemplateUrl(templateType, letterType), RedirectType.push);
+  } else {
+    const parsedForm = $ChooseTemplateTypeBase.safeParse(
+      Object.fromEntries(formData.entries())
+    );
+
+    if (!parsedForm.success) {
+      return {
+        errorState: z.flattenError(parsedForm.error),
+      };
+    }
+
+    const { templateType } = parsedForm.data;
+
+    redirect(legacyTemplateCreationPages(templateType), RedirectType.push);
   }
-
-  redirect(
-    templateCreationPages(parsedForm.data.templateType),
-    RedirectType.push
-  );
 }
