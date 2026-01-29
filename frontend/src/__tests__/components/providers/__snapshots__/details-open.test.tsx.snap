@@ -2,42 +2,40 @@
 
 exports[`DetailsOpenProvider renders children 1`] = `
 <DocumentFragment>
-  <div>
-    <button
-      aria-disabled="false"
-      class="nhsuk-button"
-      type="button"
-    >
-      Open
-    </button>
-    <details
-      class="details-section"
-    >
-      <summary>
-        Details Section 1
-      </summary>
-      <p>
-        Details Text 1
-      </p>
-    </details>
-    <details>
-      <summary>
-        Details Section 2
-      </summary>
-      <p>
-        Details Text 2
-      </p>
-    </details>
-    <details
-      class="details-section"
-    >
-      <summary>
-        Details Section 3
-      </summary>
-      <p>
-        Details Text 3
-      </p>
-    </details>
-  </div>
+  <button
+    aria-disabled="false"
+    class="nhsuk-button"
+    type="button"
+  >
+    Open
+  </button>
+  <details
+    class="nhsuk-details"
+  >
+    <summary>
+      Details Section 1
+    </summary>
+    <p>
+      Details Text 1
+    </p>
+  </details>
+  <details>
+    <summary>
+      Details Section 2
+    </summary>
+    <p>
+      Details Text 2
+    </p>
+  </details>
+  <details
+    class="nhsuk-details"
+  >
+    <summary>
+      Details Section 3
+    </summary>
+    <p>
+      Details Text 3
+    </p>
+  </details>
 </DocumentFragment>
 `;

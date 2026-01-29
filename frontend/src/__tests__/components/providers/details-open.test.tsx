@@ -1,34 +1,27 @@
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  within,
-} from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   DetailsOpenButton,
   DetailsOpenProvider,
-  updateDetailsOpenState,
-  useDetailsOpen,
+  ControlledDetails,
 } from '@providers/details-open';
 
 function TestComponent() {
   return (
-    <DetailsOpenProvider targetClassName='details-section'>
+    <DetailsOpenProvider>
       <DetailsOpenButton openText='Close' closedText='Open' />
-      <details className='details-section'>
+      <ControlledDetails>
         <summary>Details Section 1</summary>
         <p>Details Text 1</p>
-      </details>
+      </ControlledDetails>
       <details>
         <summary>Details Section 2</summary>
         <p>Details Text 2</p>
       </details>
-      <details className='details-section'>
+      <ControlledDetails>
         <summary>Details Section 3</summary>
         <p>Details Text 3</p>
-      </details>
+      </ControlledDetails>
     </DetailsOpenProvider>
   );
 }
@@ -58,7 +51,7 @@ describe('DetailsOpenProvider', () => {
     }
   });
 
-  it('opens all child `details` elements with matching className', async () => {
+  it('opens all child `ControlledDetails` elements', async () => {
     const user = await userEvent.setup();
 
     render(<TestComponent />);
@@ -78,7 +71,7 @@ describe('DetailsOpenProvider', () => {
     expect(within(details[2]).getByRole('paragraph')).toBeVisible();
   });
 
-  it('closes all child `details` elements with matching className once opened', async () => {
+  it('closes all child `ControlledDetails` elements once opened', async () => {
     const user = await userEvent.setup();
 
     render(<TestComponent />);
@@ -105,45 +98,18 @@ describe('DetailsOpenProvider', () => {
   });
 });
 
-describe('useDetailsOpen', () => {
+describe('DetailsOpenButton', () => {
   it('throws when used outside provider', () => {
-    expect(() => renderHook(() => useDetailsOpen())).toThrow(
-      'useDetailsOpen must be used within DetailsOpenProvider'
-    );
-  });
-
-  it('returns the state and toggle function', () => {
-    const { result } = renderHook(() => useDetailsOpen(), {
-      wrapper: ({ children }) => (
-        <DetailsOpenProvider targetClassName='target-class'>
-          {children}
-        </DetailsOpenProvider>
-      ),
-    });
-
-    const [isOpenInitial, toggle] = result.current;
-
-    expect(isOpenInitial).toBe(false);
-
-    act(() => {
-      toggle();
-    });
-
-    const [isOpenAfterToggle] = result.current;
-
-    expect(isOpenAfterToggle).toBe(true);
+    expect(() =>
+      render(<DetailsOpenButton openText='Close' closedText='Open' />)
+    ).toThrow('useDetailsOpen must be used within DetailsOpenProvider');
   });
 });
 
-describe('updateDetailsOpenState', () => {
-  it('does not query DOM when ref is null', () => {
-    const querySelectorAllSpy = jest.spyOn(
-      Element.prototype,
-      'querySelectorAll'
+describe('ControlledDetails', () => {
+  it('throws when used outside provider', () => {
+    expect(() => render(<ControlledDetails />)).toThrow(
+      'useDetailsOpen must be used within DetailsOpenProvider'
     );
-
-    updateDetailsOpenState(null, 'target-class', false);
-
-    expect(querySelectorAllSpy).not.toHaveBeenCalled();
   });
 });

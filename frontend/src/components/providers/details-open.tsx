@@ -6,16 +6,14 @@ import {
   HTMLProps,
   PropsWithChildren,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
-import { Button } from 'nhsuk-react-components';
+import { Button, Details } from 'nhsuk-react-components';
 
 const DetailsOpenContext = createContext<[boolean, () => void] | null>(null);
 
-export function useDetailsOpen() {
+function useDetailsOpen() {
   const context = useContext(DetailsOpenContext);
 
   if (!context) {
@@ -25,33 +23,8 @@ export function useDetailsOpen() {
   return context;
 }
 
-export function updateDetailsOpenState(
-  root: HTMLDivElement | null,
-  targetClassName: string,
-  isOpen: boolean
-) {
-  if (!root) return;
-
-  const details = root.querySelectorAll<HTMLDetailsElement>(
-    `details.${targetClassName}`
-  );
-  for (const element of details) {
-    element.open = isOpen;
-  }
-}
-
-export function DetailsOpenProvider({
-  children,
-  targetClassName,
-}: PropsWithChildren<{
-  targetClassName: string;
-}>) {
-  const ref = useRef<HTMLDivElement | null>(null);
+export function DetailsOpenProvider({ children }: PropsWithChildren) {
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    updateDetailsOpenState(ref.current, targetClassName, isOpen);
-  }, [isOpen, targetClassName]);
 
   const toggle = useMemo(
     () => () => {
@@ -62,7 +35,7 @@ export function DetailsOpenProvider({
 
   return (
     <DetailsOpenContext.Provider value={[isOpen, toggle]}>
-      <div ref={ref}>{children}</div>
+      {children}
     </DetailsOpenContext.Provider>
   );
 }
@@ -88,5 +61,18 @@ export function DetailsOpenButton({
     <Button {...props} type='button' onClick={toggle}>
       {isOpen ? openText : closedText}
     </Button>
+  );
+}
+
+export function ControlledDetails({
+  children,
+  ...props
+}: Omit<HTMLProps<HTMLDetailsElement>, 'open'>) {
+  const [isOpen] = useDetailsOpen();
+
+  return (
+    <Details {...props} open={isOpen}>
+      {children}
+    </Details>
   );
 }

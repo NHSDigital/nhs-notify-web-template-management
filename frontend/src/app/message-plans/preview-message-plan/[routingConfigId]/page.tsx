@@ -11,12 +11,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
-import {
-  Details,
-  DetailsSummary,
-  DetailsText,
-  Tag,
-} from '@atoms/nhsuk-components';
+import { DetailsSummary, DetailsText, Tag } from '@atoms/nhsuk-components';
 import {
   NHSNotifySummaryList,
   NHSNotifySummaryListKey,
@@ -37,6 +32,7 @@ import {
   MessagePlanFallbackConditionsListItem,
 } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 import {
+  ControlledDetails,
   DetailsOpenButton,
   DetailsOpenProvider,
 } from '@providers/details-open';
@@ -136,7 +132,7 @@ export default async function PreviewMessagePlanPage({
               </NHSNotifySummaryListRow>
             </NHSNotifySummaryList>
 
-            <DetailsOpenProvider targetClassName='controlled-details-section'>
+            <DetailsOpenProvider>
               {messagePlan.cascade.some((item) => item.channel !== 'LETTER') ? (
                 <p>
                   <DetailsOpenButton
@@ -201,7 +197,7 @@ export default async function PreviewMessagePlanPage({
                               <p data-testid='template-name'>
                                 {defaultTemplate.name}
                               </p>
-                              <Details className='nhsuk-u-margin-bottom-0 controlled-details-section'>
+                              <ControlledDetails className='nhsuk-u-margin-bottom-0'>
                                 <DetailsSummary data-testid='preview-template-summary'>
                                   Preview{' '}
                                   <span className='nhsuk-u-visually-hidden'>
@@ -217,7 +213,7 @@ export default async function PreviewMessagePlanPage({
                                     }}
                                   />
                                 </DetailsText>
-                              </Details>
+                              </ControlledDetails>
                             </>
                           )}
                         </MessagePlanChannelCard>
@@ -226,8 +222,8 @@ export default async function PreviewMessagePlanPage({
                           <MessagePlanConditionalTemplatesList data-testid='conditional-templates'>
                             <MessagePlanFallbackConditionsListItem data-testid='conditional-templates-fallback-conditions'>
                               <MessagePlanFallbackConditionsDetails
+                                component={ControlledDetails}
                                 channel={cascadeItem.channel}
-                                className='controlled-details-section'
                                 index={index}
                               />
                             </MessagePlanFallbackConditionsListItem>
@@ -296,8 +292,8 @@ export default async function PreviewMessagePlanPage({
                             data-testid={`message-plan-fallback-conditions-${cascadeItem.channel}`}
                           >
                             <MessagePlanFallbackConditionsDetails
+                              component={ControlledDetails}
                               channel={cascadeItem.channel}
-                              className='controlled-details-section'
                               index={index}
                             />
                           </MessagePlanFallbackConditionsListItem>

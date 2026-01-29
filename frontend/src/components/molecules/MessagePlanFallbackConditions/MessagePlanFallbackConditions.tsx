@@ -59,10 +59,12 @@ export function MessagePlanFallbackConditionsDetails({
   channel,
   className,
   index,
+  component: Component = Details,
   ...props
 }: HTMLProps<HTMLDetailsElement> & {
   channel: Channel;
   index: number;
+  component?: React.ComponentType<HTMLProps<HTMLDetailsElement>>;
 }) {
   const { title, content }: FallbackConditionBlock =
     messagePlanFallbackConditions[channelToTemplateType(channel)];
@@ -73,7 +75,7 @@ export function MessagePlanFallbackConditionsDetails({
   };
 
   return (
-    <Details
+    <Component
       className={classNames(styles['fallback-conditions-details'], className)}
       {...props}
     >
@@ -114,6 +116,6 @@ export function MessagePlanFallbackConditionsDetails({
           )}
         </ul>
       </DetailsText>
-    </Details>
+    </Component>
   );
 }
