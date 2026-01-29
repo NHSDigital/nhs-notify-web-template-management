@@ -202,7 +202,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
           >
             Add 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/formatting"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -215,7 +215,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
           >
             Add any 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/personalisation"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -506,7 +506,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
           >
             Add 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/formatting"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -519,7 +519,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
           >
             Add any 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/personalisation"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -735,7 +735,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
           >
             Add 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/formatting"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -748,7 +748,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
           >
             Add any 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/personalisation"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -1016,7 +1016,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
           >
             Add 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/formatting"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -1029,7 +1029,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
           >
             Add any 
             <a
-              href="https://notify.nhs.uk"
+              href="https://notify.nhs.uk/using-nhs-notify/personalisation"
               rel="noopener noreferrer"
               target="_blank"
             >

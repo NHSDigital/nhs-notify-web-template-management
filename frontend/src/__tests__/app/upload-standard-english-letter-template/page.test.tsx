@@ -20,9 +20,9 @@ beforeEach(() => {
 });
 
 test('metadata', () => {
-  expect(metadata).toEqual(
-    'Upload a standard English letter template - NHS Notify'
-  );
+  expect(metadata).toEqual({
+    title: 'Upload a standard English letter template - NHS Notify',
+  });
 });
 
 describe('client has no campaign ids', () => {
