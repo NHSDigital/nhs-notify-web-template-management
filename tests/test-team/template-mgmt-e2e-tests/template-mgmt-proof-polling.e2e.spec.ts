@@ -41,7 +41,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add proofs to SFTP mock
     const pdfContent = readFileSync(
-      './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
+      './fixtures/letters/no-custom-personalisation/template.pdf'
     );
 
     const supplierReference = [
@@ -158,7 +158,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add proofs to SFTP mock
     const pdfContent = readFileSync(
-      './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
+      './fixtures/letters/no-custom-personalisation/password.pdf'
     );
 
     const supplierReference = [

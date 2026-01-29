@@ -3,11 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { fetchClient } from '@utils/server-features';
-import UploadStandardLetterTemplatePage from '@app/upload-standard-english-letter-template/page';
-import {
-  DOCX_MIME,
-  uploadStandardLetterTemplate,
-} from '@app/upload-standard-english-letter-template/server-action';
+import UploadStandardLetterTemplatePage, {
+  metadata,
+} from '@app/upload-standard-english-letter-template/page';
+import { uploadStandardLetterTemplate } from '@app/upload-standard-english-letter-template/server-action';
 
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
@@ -18,6 +17,12 @@ beforeEach(() => {
   jest.resetAllMocks();
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
   jest.mocked(uploadStandardLetterTemplate).mockResolvedValue({});
+});
+
+test('metadata', () => {
+  expect(metadata).toEqual(
+    'Upload a standard English letter template - NHS Notify'
+  );
 });
 
 describe('client has no campaign ids', () => {
@@ -61,7 +66,7 @@ describe('client has one campaign id', () => {
     await user.keyboard('A new template');
 
     const file = new File(['hello'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
 
     await user.upload(screen.getByLabelText('Template file'), file);
@@ -135,7 +140,7 @@ describe('client has multiple campaign ids', () => {
     await user.selectOptions(screen.getByLabelText('Campaign'), 'Campaign 2');
 
     const file = new File(['hello'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
 
     await user.upload(screen.getByLabelText('Template file'), file);

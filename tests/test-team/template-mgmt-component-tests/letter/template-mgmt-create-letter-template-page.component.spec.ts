@@ -87,7 +87,7 @@ test.describe('Upload letter Template Page', () => {
     await page.locator('input[name="letterTemplatePdf"]').click();
     await page
       .locator('input[name="letterTemplatePdf"]')
-      .setInputFiles('./fixtures/pdf-upload/with-personalisation/template.pdf');
+      .setInputFiles('./fixtures/letters/with-personalisation/template.pdf');
 
     await createTemplatePage.clickSaveAndPreviewButton();
 
@@ -149,9 +149,7 @@ test.describe('Upload letter Template Page', () => {
       });
       await page
         .locator('input[name="letterTemplatePdf"]')
-        .setInputFiles(
-          './fixtures/pdf-upload/with-personalisation/template.pdf'
-        );
+        .setInputFiles('./fixtures/letters/with-personalisation/template.pdf');
 
       await createTemplatePage.clickSaveAndPreviewButton();
 

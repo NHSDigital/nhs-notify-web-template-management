@@ -1,7 +1,4 @@
-import {
-  uploadStandardLetterTemplate,
-  DOCX_MIME,
-} from '@app/upload-standard-english-letter-template/server-action';
+import { uploadStandardLetterTemplate } from '@app/upload-standard-english-letter-template/server-action';
 
 describe('uploadStandardLetterTemplate', () => {
   it('returns success when all fields are valid', async () => {
@@ -10,7 +7,7 @@ describe('uploadStandardLetterTemplate', () => {
     formData.append('campaignId', 'Campaign 1');
 
     const file = new File(['content'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
@@ -30,7 +27,7 @@ describe('uploadStandardLetterTemplate', () => {
     formData.append('campaignId', 'Campaign 1');
 
     const file = new File(['content'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
@@ -54,7 +51,7 @@ describe('uploadStandardLetterTemplate', () => {
     formData.append('campaignId', 'Campaign 1');
 
     const file = new File(['content'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
@@ -74,7 +71,7 @@ describe('uploadStandardLetterTemplate', () => {
     formData.append('campaignId', '');
 
     const file = new File(['content'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
@@ -98,7 +95,7 @@ describe('uploadStandardLetterTemplate', () => {
     formData.append('name', 'Test Template');
 
     const file = new File(['content'], 'template.docx', {
-      type: DOCX_MIME,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 

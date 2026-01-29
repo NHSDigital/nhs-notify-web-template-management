@@ -12,7 +12,7 @@ import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
 import copy from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { createNhsNotifyFormContext } from '@providers/form-provider';
-import { DOCX_MIME, type FormSchema } from './server-action';
+import { type FormSchema } from './server-action';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
 
@@ -106,7 +106,11 @@ export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
           <ContentRenderer content={content.file.hint} />
         </HintText>
         {fileError && <ErrorMessage>{fileError}</ErrorMessage>}
-        <FileUploadInput id='file' name='file' accept={DOCX_MIME} />
+        <FileUploadInput
+          id='file'
+          name='file'
+          accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        />
       </NHSNotifyFormGroup>
 
       <Button type='submit'>{content.submitButton.text}</Button>

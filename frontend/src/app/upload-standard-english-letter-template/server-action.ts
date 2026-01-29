@@ -6,15 +6,17 @@ import copy from '@content/content';
 
 const { errors } = copy.pages.uploadStandardLetterTemplate;
 
-export const DOCX_MIME: z.core.util.MimeTypes =
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-
 const $FormSchema = z.object({
   name: z.string(errors.name.empty).nonempty(errors.name.empty),
   campaignId: z
     .string(errors.campaignId.empty)
     .nonempty(errors.campaignId.empty),
-  file: z.file(errors.file.empty).mime(DOCX_MIME, errors.file.empty),
+  file: z
+    .file(errors.file.empty)
+    .mime(
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      errors.file.empty
+    ),
 });
 
 export type FormSchema = z.infer<typeof $FormSchema>;
