@@ -2,10 +2,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
-import {
-  replaceLanguageTemplatesInCascadeItem,
-  buildCascadeGroupOverridesFromCascade,
-} from '@utils/routing-utils';
+import { replaceLanguageTemplatesInCascadeItem } from '@utils/routing-utils';
 import { Language, $LockNumber } from 'nhs-notify-backend-client';
 import { ChooseLanguageLetterTemplatesProps } from './ChooseLanguageLetterTemplates';
 import baseContent from '@content/content';
@@ -101,14 +98,11 @@ export async function chooseLanguageLetterTemplatesAction(
     [...templateMap.values()]
   );
 
-  const updatedCascadeGroupOverrides =
-    buildCascadeGroupOverridesFromCascade(updatedCascade);
-
   await updateRoutingConfig(
     messagePlan.id,
     {
       cascade: updatedCascade,
-      cascadeGroupOverrides: updatedCascadeGroupOverrides,
+      cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
     },
     lockNumber
   );
