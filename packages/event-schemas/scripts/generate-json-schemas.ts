@@ -12,7 +12,7 @@ import {
 } from '../src';
 import { toJSONSchema, type ZodType } from 'zod';
 import { JSONSchema } from 'zod/v4/core';
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath } from 'node:url';
 
 const removeIdFieldFromDefs = (
   jsonSchema: JSONSchema.JSONSchema
@@ -38,7 +38,12 @@ function writeSchema(
   majorVersion: string,
   id: string
 ) {
-  const outDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'schemas', name);
+  const outDir = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '..',
+    'schemas',
+    name
+  );
   fs.mkdirSync(outDir, { recursive: true });
 
   const jsonSchema = toJSONSchema(schema, { io: 'input' });

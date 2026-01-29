@@ -13,7 +13,7 @@
     "esbuild": "^0.25.9",
     "jest-mock-extended": "^3.0.7",
     "nhs-notify-web-template-management-utils": "^0.0.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.9.3"
   },
   "files": [
     "src/index.ts"

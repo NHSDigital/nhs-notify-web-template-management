@@ -17,7 +17,7 @@
     "esbuild": "^0.25.9",
     "jest": "^29.7.0",
     "jest-mock-extended": "^3.0.7",
-    "typescript": "^5.8.2"
+    "typescript": "^5.9.3"
   },
   "name": "nhs-notify-templates-api-authorizer",
   "private": true,
