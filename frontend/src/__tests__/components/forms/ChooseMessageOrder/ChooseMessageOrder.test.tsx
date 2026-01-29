@@ -25,6 +25,17 @@ jest.mock('react', () => {
 });
 
 describe('Choose message order page', () => {
+  const errorLogger = console.error;
+
+  beforeAll(() => {
+    global.console.error = jest.fn(); // suppress error logging in tests
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+    global.console.error = errorLogger;
+  });
+
   it('renders form', () => {
     const container = render(<ChooseMessageOrder />);
     expect(container.asFragment()).toMatchSnapshot();
@@ -43,16 +54,26 @@ describe('Choose message order page', () => {
       '/action',
     ]);
 
-    jest.mocked(useActionState).mockImplementation(mockUseActionState);
+    jest.mocked(useActionState).mockImplementationOnce(mockUseActionState);
 
     const container = render(<ChooseMessageOrder />);
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  test('Client-side validation triggers', () => {
+  test('Client-side validation triggers - valid form - no errors', () => {
     const container = render(<ChooseMessageOrder />);
-    const submitButton = screen.getByTestId('submit-button');
-    fireEvent.click(submitButton);
+
+    fireEvent.click(screen.getByTestId('nhsapp-radio'));
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  test('Client-side validation triggers - invalid form - errors displayed', () => {
+    const container = render(<ChooseMessageOrder />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

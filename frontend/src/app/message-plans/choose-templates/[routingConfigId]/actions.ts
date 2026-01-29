@@ -2,10 +2,7 @@
 
 import { z } from 'zod';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
-import {
-  removeTemplatesFromCascadeItem,
-  buildCascadeGroupOverridesFromCascade,
-} from '@utils/routing-utils';
+import { removeTemplatesFromCascadeItem } from '@utils/routing-utils';
 import { $LockNumber } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
 
@@ -33,17 +30,14 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
   if (!routingConfig)
     throw new Error(`Routing configuration ${routingConfigId} not found`);
 
-  const { cascade } = routingConfig;
+  const { cascade, cascadeGroupOverrides } = routingConfig;
 
   const updatedCascade = cascade.map((cascadeItem) =>
     removeTemplatesFromCascadeItem(cascadeItem, templateIds)
   );
 
-  const updatedCascadeGroupOverrides =
-    buildCascadeGroupOverridesFromCascade(updatedCascade);
-
   const updatedConfig = {
-    cascadeGroupOverrides: updatedCascadeGroupOverrides,
+    cascadeGroupOverrides,
     cascade: updatedCascade,
   };
 

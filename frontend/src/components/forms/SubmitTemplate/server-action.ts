@@ -5,7 +5,7 @@ import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
-  templateTypeToUrlTextMappings,
+  legacyTemplateTypeToUrlTextMappings,
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { $LockNumber, type TemplateType } from 'nhs-notify-backend-client';
@@ -16,7 +16,10 @@ const $SubmitTemplateFormData = z.object({
 });
 
 export async function submitTemplate(
-  channel: TemplateType,
+  {
+    channel,
+    routingEnabled,
+  }: { channel: TemplateType; routingEnabled?: boolean },
   formData: FormData
 ) {
   const { success, data } = $SubmitTemplateFormData.safeParse(
@@ -48,7 +51,11 @@ export async function submitTemplate(
     throw error;
   }
 
-  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+  if (routingEnabled && channel === 'LETTER') {
+    return redirect('/message-templates', RedirectType.push);
+  }
+
+  const channelRedirectSegment = legacyTemplateTypeToUrlTextMappings(channel);
 
   return redirect(
     `/${channelRedirectSegment}-template-submitted/${templateId}`,

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Client-side validation triggers 1`] = `
+exports[`Client-side validation triggers - invalid form - errors displayed 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -32,8 +32,710 @@ exports[`Client-side validation triggers 1`] = `
         </h2>
         <ul
           class="nhsuk-list nhsuk-error-summary__list"
-        />
+        >
+          <li>
+            <a
+              href="#nhsAppTemplateName"
+            >
+              Enter a template name
+            </a>
+          </li>
+        </ul>
       </div>
+      <h1
+        class="nhsuk-heading-xl"
+        data-testid="page-heading"
+      >
+        Create NHS App message template
+      </h1>
+    </div>
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="create-nhs-app-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8 nhsuk-form-group--error"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="nhsAppTemplateName"
+            >
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
+            </div>
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template-details"
+            >
+              <summary
+                class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
+              >
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
+              <div
+                class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
+              >
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'NHS App - covid19 2023 - over 65s - version 3'
+                </p>
+              </div>
+            </details>
+            <div
+              class="nhsuk-form-group nhsuk-form-group--error"
+            >
+              <span
+                class="nhsuk-error-message"
+                id="nhsAppTemplateName--error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Enter a template name
+              </span>
+              <input
+                aria-describedby="nhsAppTemplateName--error-message"
+                autocomplete="off"
+                class="nhsuk-input nhsuk-input--error"
+                id="nhsAppTemplateName"
+                name="nhsAppTemplateName"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+          >
+            <div
+              class="nhsuk-form-group"
+            >
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="nhsAppTemplateMessage"
+                id="nhsAppTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                id="nhsAppTemplateMessage"
+                maxlength="5000"
+                name="nhsAppTemplateMessage"
+                rows="12"
+              >
+                template-message
+              </textarea>
+            </div>
+            <div
+              class=""
+            >
+              <p
+                data-testid="character-count"
+              >
+                16 of 5000 characters
+              </p>
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="create-nhs-app-template-submit-button"
+            type="submit"
+          >
+            Save and preview
+          </button>
+        </form>
+      </div>
+      <aside
+        class="nhsuk-grid-column-one-third"
+      >
+        <h2
+          class="nhsuk-heading-m"
+          data-testid="personalisation-header"
+        >
+          Personalisation
+        </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
+        <details
+          class="nhsuk-details"
+          data-testid="pds-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="pds-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              PDS personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="pds-personalisation-fields-text"
+          >
+            <p>
+              NHS Notify gets data from PDS to populate certain personalisation fields.
+            </p>
+            <p>
+              You can use the following PDS personalisation fields:
+            </p>
+            <ul>
+              <li>
+                ((fullName))
+              </li>
+              <li>
+                ((firstName))
+              </li>
+              <li>
+                ((lastName))
+              </li>
+              <li>
+                ((nhsNumber))
+              </li>
+            </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
+          </div>
+        </details>
+        <h2
+          class="nhsuk-heading-m nhsuk-u-margin-top-4"
+          data-testid="message-formatting-header"
+        >
+          Message formatting
+        </h2>
+        <details
+          class="nhsuk-details"
+          data-testid="line-breaks-and-paragraphs-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="line-breaks-and-paragraphs-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Line breaks and paragraphs
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="line-breaks-and-paragraphs-text"
+          >
+            <p>
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="linebreaks-markdown-description"
+            >
+              An example of line break markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="linebreaks-markdown-description"
+              >
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="paragraphs-markdown-description"
+            >
+              An example of paragraph markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
+                line 1
+
+line 2
+
+line 3
+              </code>
+            </pre>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="headings-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="headings-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Headings
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="headings-text"
+          >
+            <p>
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="headings-markdown-description"
+            >
+              An example of heading markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
+              To add a subheading, use 2 hash symbols:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="subheadings-markdown-description"
+            >
+              An example of subheading markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="bold-text-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bold-text-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bold text
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bold-text-text"
+          >
+            <p>
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bold-text-markdown-description"
+            >
+              An example of bold text markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="bullet-points-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-points-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-points-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-points-markdown-description"
+            >
+              An example of bullet point markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="bullet-points-markdown-description"
+              >
+                * bullet 1
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-lists-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-markdown-description"
+            >
+              An example of numbered list markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="numbered-list-markdown-description"
+              >
+                1. first item
+2. second item
+3. third item
+              </code>
+            </pre>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="links-and-urls-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="links-and-urls-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Links and URLs
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="links-and-urls-text"
+          >
+            <p>
+              To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+            </p>
+            <p>
+              Copy this example to add a link:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="text-links-markdown-description"
+            >
+              An example of link markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
+          </div>
+        </details>
+        <h2
+          class="nhsuk-heading-m"
+        >
+          More about NHS App messages
+        </h2>
+        <ul
+          class="channel-guidance__list"
+        >
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/features/nhs-app-messages"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              NHS App messages (opens in a new tab)
+            </a>
+          </li>
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Sender IDs (opens in a new tab)
+            </a>
+          </li>
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/using-nhs-notify/delivery-times"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Delivery times (opens in a new tab)
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Client-side validation triggers - valid form - no errors 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/choose-a-template-type"
+  >
+    Back to choose a template type
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
       <h1
         class="nhsuk-heading-xl"
         data-testid="page-heading"
@@ -271,7 +973,7 @@ exports[`Client-side validation triggers 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -282,7 +984,7 @@ exports[`Client-side validation triggers 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -290,7 +992,7 @@ exports[`Client-side validation triggers 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -365,9 +1067,9 @@ exports[`Client-side validation triggers 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>
@@ -953,7 +1655,7 @@ exports[`renders page 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -964,7 +1666,7 @@ exports[`renders page 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -972,7 +1674,7 @@ exports[`renders page 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1047,9 +1749,9 @@ exports[`renders page 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>
@@ -1520,7 +2222,7 @@ exports[`renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1670,7 +2372,7 @@ exports[`renders page one error 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1681,7 +2383,7 @@ exports[`renders page one error 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1689,7 +2391,7 @@ exports[`renders page one error 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1764,9 +2466,9 @@ exports[`renders page one error 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>
@@ -2299,7 +3001,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -2334,7 +3036,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template message error
                 <div
@@ -2510,7 +3212,7 @@ exports[`renders page with multiple errors 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -2521,7 +3223,7 @@ exports[`renders page with multiple errors 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -2529,7 +3231,7 @@ exports[`renders page with multiple errors 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -2604,9 +3306,9 @@ exports[`renders page with multiple errors 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>
@@ -3192,7 +3894,7 @@ exports[`renders page with preloaded field values 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -3203,7 +3905,7 @@ exports[`renders page with preloaded field values 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -3211,7 +3913,7 @@ exports[`renders page with preloaded field values 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -3286,9 +3988,9 @@ exports[`renders page with preloaded field values 1`] = `
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>
@@ -3867,7 +4569,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -3878,7 +4580,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -3886,7 +4588,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -3961,9 +4663,9 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               <code
                 aria-describedby="linebreaks-markdown-description"
               >
-                line 1
-line 2
-line 3
+                line 1  
+line 2  
+line 3  
               </code>
             </pre>
             <p>

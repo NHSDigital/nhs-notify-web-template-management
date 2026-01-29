@@ -960,6 +960,185 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
 </DocumentFragment>
 `;
 
+exports[`MessageTemplates component matches snapshot with proof approved status 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-full"
+    >
+      <table
+        class="nhsuk-table-responsive"
+        data-testid="manage-template-table"
+        id="manage-template-table"
+      >
+        <caption
+          class="nhsuk-table__caption"
+        >
+          List of templates
+        </caption>
+        <thead
+          class="nhsuk-table__head"
+          role="rowgroup"
+        >
+          <tr
+            class="nhsuk-table__row"
+          >
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-name"
+              scope="col"
+            >
+              Name
+            </th>
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-id"
+              scope="col"
+            >
+              ID
+            </th>
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-type"
+              scope="col"
+            >
+              Type
+            </th>
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-status"
+              scope="col"
+            >
+              Status
+            </th>
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-template-date-created"
+              scope="col"
+            >
+              Last edited
+            </th>
+            <th
+              class="nhsuk-table__header"
+              data-testid="manage-template-table-header-action"
+              scope="col"
+            >
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="nhsuk-table__body"
+        >
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-letter-template/1"
+              >
+                Template 1
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              1
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--green"
+              >
+                Proof approved
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Last edited 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 1"
+                    data-testid="delete-link"
+                    href="/delete-template/1"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`MessageTemplates component matches snapshot with routing flag enabled 1`] = `
 <DocumentFragment>
   <div

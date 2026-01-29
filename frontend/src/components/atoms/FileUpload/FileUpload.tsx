@@ -39,7 +39,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {label && <Label htmlFor={id}>{label}</Label>}
       {hint && <HintText>{hint}</HintText>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <FileUploadInput id={id} name={id} accept={accept} />
+      <FileUploadInput
+        id={id}
+        name={id}
+        accept={accept}
+        data-testid={`file-selector-${id}`}
+      />
     </div>
   );
 };

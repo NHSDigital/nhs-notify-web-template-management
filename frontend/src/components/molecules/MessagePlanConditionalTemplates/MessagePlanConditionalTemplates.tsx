@@ -2,10 +2,13 @@ import {
   CascadeItem,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
-  LetterType,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
+import {
+  ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,
+  RoutingAccessibleFormatLetterType,
+} from 'nhs-notify-web-template-management-utils';
 import {
   MessagePlanAccessibleFormatTemplate,
   MessagePlanLanguageTemplate,
@@ -17,8 +20,6 @@ import {
 import { MessagePlanFallbackConditions } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 
 import styles from './MessagePlanConditionalTemplates.module.scss';
-
-const ACCESSIBLE_FORMATS: LetterType[] = ['x1']; // Large print only
 
 export function MessagePlanConditionalLetterTemplates({
   cascadeItem,
@@ -36,8 +37,6 @@ export function MessagePlanConditionalLetterTemplates({
   if (cascadeItem.channel !== 'LETTER') {
     return null;
   }
-
-  const accessibleFormats = ACCESSIBLE_FORMATS;
 
   const languageTemplates: TemplateDto[] = (
     cascadeItem.conditionalTemplates || []
@@ -63,7 +62,7 @@ export function MessagePlanConditionalLetterTemplates({
         index={cascadeIndex}
       />
 
-      {accessibleFormats.map((format) => (
+      {ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES.map((format) => (
         <li
           key={format}
           className={styles['message-plan-conditional-templates__list-item']}
@@ -93,7 +92,7 @@ export function MessagePlanConditionalLetterTemplates({
 }
 
 const getTemplateForAccessibleFormat = (
-  format: LetterType,
+  format: RoutingAccessibleFormatLetterType,
   cascadeItem: CascadeItem,
   templates: MessagePlanTemplates
 ): TemplateDto | undefined => {

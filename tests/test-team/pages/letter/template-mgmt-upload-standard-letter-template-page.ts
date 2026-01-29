@@ -2,7 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
 export class TemplateMgmtUploadStandardLetterTemplatePage extends TemplateMgmtBasePage {
-  static readonly pathTemplate = '/upload-standard-letter-template';
+  static readonly pathTemplate = '/upload-standard-english-letter-template';
 
   nameInput: Locator;
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
+exports[`CreateSmsTemplate component Client-side validation triggers - invalid form - errors displayed 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -138,7 +138,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Enter a template name
               </span>
@@ -173,7 +173,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Enter a template message
               </span>
@@ -315,7 +315,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -326,7 +326,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -334,7 +334,415 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
+              <a
+                href="/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
+          </div>
+        </details>
+        <h2
+          class="nhsuk-heading-m nhsuk-u-margin-top-4"
+          data-testid="message-formatting-header"
+        >
+          Message formatting
+        </h2>
+        <details
+          class="nhsuk-details"
+          data-testid="links-and-urls-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="links-and-urls-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Links and URLs
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="links-and-urls-text"
+          >
+            <p>
+              Write the URL in full, starting with https://
+            </p>
+            <p>
+              For example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="links-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
+          </div>
+        </details>
+        <h2
+          class="nhsuk-heading-m"
+        >
+          More about text messages
+        </h2>
+        <ul
+          class="channel-guidance__list"
+        >
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/pricing/text-messages"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Text message length and pricing (opens in a new tab)
+            </a>
+          </li>
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Sender IDs (opens in a new tab)
+            </a>
+          </li>
+          <li
+            class="nhsuk-u-margin-bottom-3"
+          >
+            <a
+              href="/using-nhs-notify/delivery-times"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Delivery times (opens in a new tab)
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`CreateSmsTemplate component Client-side validation triggers - valid form - no errors 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="page-heading"
+      >
+        Edit text message template
+      </h1>
+    </div>
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="create-sms-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="smsTemplateName"
+            >
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
+            </div>
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template-details"
+            >
+              <summary
+                class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
+              >
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
+              <div
+                class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
+              >
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'SMS - covid19 2023 - over 65s - version 3'
+                </p>
+              </div>
+            </details>
+            <div
+              class="nhsuk-form-group"
+            >
+              <input
+                autocomplete="off"
+                class="nhsuk-input"
+                id="smsTemplateName"
+                name="smsTemplateName"
+                type="text"
+                value="template-name"
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+          >
+            <div
+              class="nhsuk-form-group"
+            >
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="smsTemplateMessage"
+                id="smsTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                id="smsTemplateMessage"
+                maxlength="918"
+                name="smsTemplateMessage"
+                rows="12"
+              >
+                template-message
+              </textarea>
+            </div>
+            <div
+              class=""
+            >
+              <p
+                data-testid="character-message-count"
+              >
+                16 characters
+                <br />
+                This template will be charged as 1 text message.
+                <br />
+                If you're using personalisation fields, it could be charged as more.
+              </p>
+              <p
+                data-testid="sms-pricing-info"
+              >
+                <a
+                  href="/pricing/text-messages"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more about character counts and text messaging pricing (opens in a new tab)
+                </a>
+              </p>
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="create-sms-template-submit-button"
+            type="submit"
+          >
+            Save and preview
+          </button>
+        </form>
+      </div>
+      <aside
+        class="nhsuk-grid-column-one-third"
+      >
+        <h2
+          class="nhsuk-heading-m"
+          data-testid="personalisation-header"
+        >
+          Personalisation
+        </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
+        <details
+          class="nhsuk-details"
+          data-testid="pds-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="pds-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              PDS personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="pds-personalisation-fields-text"
+          >
+            <p>
+              NHS Notify gets data from PDS to populate certain personalisation fields.
+            </p>
+            <p>
+              You can use the following PDS personalisation fields:
+            </p>
+            <ul>
+              <li>
+                ((fullName))
+              </li>
+              <li>
+                ((firstName))
+              </li>
+              <li>
+                ((lastName))
+              </li>
+              <li>
+                ((nhsNumber))
+              </li>
+            </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -593,7 +1001,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -760,7 +1168,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -771,7 +1179,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -779,7 +1187,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1175,7 +1583,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1186,7 +1594,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1194,7 +1602,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -1515,7 +1923,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1550,7 +1958,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template message error
                 <div
@@ -1743,7 +2151,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -1754,7 +2162,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -1762,7 +2170,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
@@ -2151,7 +2559,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             data-testid="custom-personalisation-fields-text"
           >
             <p>
-              You can add
+              You can add 
               <a
                 href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
@@ -2162,7 +2570,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                that use your own personalisation data.
             </p>
             <p>
-              Include custom personalisation fields in your content. Then provide your custom personalisation data using
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
                 href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
@@ -2170,7 +2578,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               >
                 NHS Notify API
               </a>
-               or
+               or 
               <a
                 href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"

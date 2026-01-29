@@ -6,6 +6,7 @@ const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
     proofing: z.boolean(),
     routing: z.boolean().optional(),
+    letterAuthoring: z.boolean().optional(),
   })
 );
 

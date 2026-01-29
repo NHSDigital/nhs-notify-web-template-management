@@ -10,7 +10,7 @@ describe('ClientConfigProviderServer', () => {
   it('returns ClientConfigProvider with value set', async () => {
     mockFetchClient.mockResolvedValueOnce({
       campaignIds: ['new-campaign-id'],
-      features: { proofing: true, routing: true },
+      features: { proofing: true, routing: true, letterAuthoring: true },
     });
 
     const rendered = await ClientConfigProviderServer({ children: <div /> });
@@ -19,7 +19,7 @@ describe('ClientConfigProviderServer', () => {
 
     expect(rendered.props.value).toEqual({
       campaignIds: ['new-campaign-id'],
-      features: { proofing: true, routing: true },
+      features: { proofing: true, routing: true, letterAuthoring: true },
     });
 
     expect(rendered.props.children).toEqual(<div />);
@@ -45,6 +45,7 @@ describe('ClientConfigProviderServer', () => {
       features: {
         proofing: true,
         routing: false,
+        letterAuthoring: false,
       },
     });
   });
