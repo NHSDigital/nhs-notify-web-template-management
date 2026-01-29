@@ -1,5 +1,6 @@
 'use server';
 
+import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -14,6 +15,10 @@ import {
 import { uploadStandardLetterTemplate } from './server-action';
 
 const content = copy.pages.uploadStandardLetterTemplate;
+
+export const metadata: Metadata = {
+  title: content.pageTitle,
+};
 
 export default async function UploadStandardLetterTemplatePage() {
   const client = await fetchClient();

@@ -1527,8 +1527,8 @@ const uploadStandardLetterTemplateSideBar: ContentBlock[] = [
     type: 'text',
     text: markdownList('ol', [
       'Download the blank [standard letter template file](https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx).',
-      'Add [formatting (opens in a new tab)](https://notify.nhs.uk).',
-      'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk).',
+      'Add [formatting (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/formatting).',
+      'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/personalisation).',
       'Save your Microsoft Word file and upload it to this page.',
     ]),
     overrides: {
@@ -1539,6 +1539,7 @@ const uploadStandardLetterTemplateSideBar: ContentBlock[] = [
 ];
 
 const uploadStandardLetterTemplate = {
+  pageTitle: generatePageTitle('Upload a standard English letter template'),
   backLink: {
     href: '/choose-a-template-type',
     text: 'Back to choose a template type',
