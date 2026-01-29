@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@aws-amplify/adapter-nextjs": "^1.5.6",
+    "@aws-amplify/adapter-nextjs": "^1.7.1",
     "@aws-amplify/ui-react": "^6.9.4",
     "aws-amplify": "^6.13.6",
     "classnames": "^2.5.1",
@@ -11,7 +11,7 @@
     "markdown-it": "^13.0.2",
     "markdown-to-jsx": "^7.7.10",
     "next": "^15.5.11",
-    "next-client-cookies": "^2.0.1",
+    "next-client-cookies": "^2.1.0",
     "nhs-notify-backend-client": "^0.0.1",
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "nhsuk-frontend": "^10.0.0",
