@@ -4,7 +4,7 @@ import { FC, useActionState } from 'react';
 import { WarningCallout } from 'nhsuk-react-components';
 import {
   ActionPageProps,
-  templateTypeToUrlTextMappings,
+  legacyTemplateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -31,9 +31,9 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
     buttonText,
   } = content.components.submitTemplate;
 
-  const [_, action] = useActionState(submitTemplate, channel);
+  const [_, action] = useActionState(submitTemplate, { channel });
 
-  const goBackPath = `preview-${templateTypeToUrlTextMappings(channel)}-template`;
+  const goBackPath = `preview-${legacyTemplateTypeToUrlTextMappings(channel)}-template`;
 
   return (
     <NHSNotifyMain>

@@ -107,11 +107,10 @@ test('renders page with multiple errors', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('Client-side validation triggers', () => {
+test('Client-side validation triggers - valid form - no errors', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        errorState: undefined,
         name: 'template-name',
         subject: 'template-subject-line',
         message: 'template-message',
@@ -121,5 +120,23 @@ test('Client-side validation triggers', () => {
   );
   const submitButton = screen.getByTestId('submit-button');
   fireEvent.click(submitButton);
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Client-side validation triggers - invalid form - errors displayed', () => {
+  const container = render(
+    <EmailTemplateForm
+      initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+        name: 'template-name',
+        subject: '',
+        message: 'template-message',
+        id: 'template-id',
+      })}
+    />
+  );
+  const submitButton = screen.getByTestId('submit-button');
+  fireEvent.click(submitButton);
+
   expect(container.asFragment()).toMatchSnapshot();
 });

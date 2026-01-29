@@ -2,9 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
 import {
-  CascadeGroupAccessible,
   CascadeGroupName,
-  CascadeGroupTranslations,
   Channel,
   ChannelType,
   Language,
@@ -31,7 +29,6 @@ const emailTemplateId = randomUUID();
 const smsTemplateId = randomUUID();
 const polishTemplateId = randomUUID();
 const frenchTemplateId = randomUUID();
-const accessibleFormatId = randomUUID();
 const largePrintId = randomUUID();
 
 const baseConfig = {
@@ -186,70 +183,6 @@ describe('removeTemplateFromMessagePlan', () => {
     // Verify conditionalTemplates was removed
     const [[, updateConfig]] = mockUpdateRoutingConfig.mock.calls;
     expect(updateConfig.cascade?.[0].conditionalTemplates).toBeUndefined();
-  });
-
-  it('updates cascadeGroupOverrides when templates are removed', async () => {
-    const configWithOverrides = {
-      ...baseConfig,
-      cascade: [
-        {
-          channel: 'LETTER' as Channel,
-          channelType: 'primary' as ChannelType,
-          cascadeGroups: [
-            'standard' as CascadeGroupName,
-            'accessible' as CascadeGroupName,
-            'translations' as CascadeGroupName,
-          ],
-          defaultTemplateId: emailTemplateId,
-          conditionalTemplates: [
-            {
-              accessibleFormat: 'q4' as LetterType,
-              templateId: accessibleFormatId,
-            },
-            {
-              accessibleFormat: 'x1' as LetterType,
-              templateId: largePrintId,
-            },
-            { language: 'pl' as Language, templateId: polishTemplateId },
-            { language: 'fr' as Language, templateId: frenchTemplateId },
-          ],
-        },
-      ],
-      cascadeGroupOverrides: [
-        {
-          name: 'accessible' as CascadeGroupName,
-          accessibleFormat: ['q4' as LetterType, 'x1' as LetterType],
-        } as CascadeGroupAccessible,
-        {
-          name: 'translations' as CascadeGroupName,
-          language: ['pl' as Language, 'fr' as Language],
-        } as CascadeGroupTranslations,
-      ],
-    };
-
-    mockGetRoutingConfig.mockResolvedValue(configWithOverrides);
-
-    const formData = new FormData();
-    formData.set('routingConfigId', routingConfigId);
-    formData.append('templateId', accessibleFormatId);
-    formData.append('templateId', polishTemplateId);
-    formData.append('templateId', frenchTemplateId);
-    formData.append('lockNumber', '42');
-
-    await removeTemplateFromMessagePlan(formData);
-
-    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
-      routingConfigId,
-      expect.objectContaining({
-        cascadeGroupOverrides: [
-          {
-            name: 'accessible',
-            accessibleFormat: ['x1'],
-          },
-        ],
-      }),
-      42
-    );
   });
 
   it('updates cascadeGroups on cascade items when templates are removed', async () => {

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { Radios } from 'nhsuk-react-components';
 
 test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
   const container = render(
@@ -170,6 +171,128 @@ test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreText 
       buttonText='Continue'
       hint='Example hint'
       learnMoreLink='/features'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm with conditional content for a radio option', () => {
+  const conditionalContent = (
+    <div data-testid='conditional-content'>
+      <p>This is conditional content</p>
+    </div>
+  );
+
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        errorState: {
+          fieldErrors: {},
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        {
+          id: 'option-2',
+          text: 'option 2',
+          conditional: conditionalContent,
+          checked: true,
+        },
+      ]}
+      buttonText='Continue'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm with nested conditional radio buttons', () => {
+  const conditionalRadios = (
+    <Radios id='nested-radios' data-testid='nested-radios'>
+      <Radios.Radio value='nested-1' id='nested-1'>
+        Nested option 1
+      </Radios.Radio>
+      <Radios.Radio value='nested-2' id='nested-2'>
+        Nested option 2
+      </Radios.Radio>
+    </Radios>
+  );
+
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        errorState: {
+          fieldErrors: {},
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        {
+          id: 'option-2',
+          text: 'option 2',
+          conditional: conditionalRadios,
+          checked: true,
+        },
+      ]}
+      buttonText='Continue'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm with conditional radios and validation error on nested field', () => {
+  const conditionalRadios = (
+    <Radios
+      id='nested-radios'
+      data-testid='nested-radios'
+      error='Please select a nested option'
+      errorProps={{ id: 'nested-radios--error-message' }}
+    >
+      <Radios.Radio value='nested-1' id='nested-1'>
+        Nested option 1
+      </Radios.Radio>
+      <Radios.Radio value='nested-2' id='nested-2'>
+        Nested option 2
+      </Radios.Radio>
+    </Radios>
+  );
+
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        errorState: {
+          fieldErrors: {
+            'nested-radios': ['Please select a nested option'],
+          },
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        {
+          id: 'option-2',
+          text: 'option 2',
+          conditional: conditionalRadios,
+          checked: true,
+        },
+      ]}
+      buttonText='Continue'
     />
   );
 

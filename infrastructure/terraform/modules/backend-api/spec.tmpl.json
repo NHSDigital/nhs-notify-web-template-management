@@ -334,6 +334,9 @@
       },
       "ClientFeatures": {
         "properties": {
+          "letterAuthoring": {
+            "type": "boolean"
+          },
           "proofing": {
             "type": "boolean"
           },

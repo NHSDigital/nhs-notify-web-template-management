@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Client-side validation triggers 1`] = `
+exports[`Client-side validation triggers - valid form - with errors 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -40,7 +40,7 @@ exports[`Client-side validation triggers 1`] = `
               <a
                 href="#letterTemplateName"
               >
-                Enter a template name
+                Mock template name error
               </a>
             </li>
             <li>
@@ -144,11 +144,12 @@ exports[`Client-side validation triggers 1`] = `
                 >
                   Error: 
                 </span>
-                Enter a template name
+                Mock template name error
               </span>
               <input
                 aria-describedby="letterTemplateName--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -426,6 +427,7 @@ exports[`Client-side validation triggers 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -462,6 +464,440 @@ exports[`Client-side validation triggers 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
+                id="letterTemplateCsv"
+                name="letterTemplateCsv"
+                type="file"
+              />
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="upload-letter-template-submit-button"
+            type="submit"
+          >
+            Save and upload
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Client-side validation triggers - valid form - without errors 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/choose-a-template-type"
+  >
+    Back to choose a template type
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="upload-letter-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <h1
+            class="nhsuk-heading-xl"
+            data-testid="page-heading"
+          >
+            Upload a letter template
+          </h1>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
+            </div>
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template-details"
+            >
+              <summary
+                class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
+              >
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
+              <div
+                class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
+              >
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'Letter - covid19 2023 - over 65s - version 3'
+                </p>
+              </div>
+            </details>
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
+            >
+              <input
+                class="nhsuk-input"
+                data-testid="letterTemplateName"
+                id="letterTemplateName"
+                name="letterTemplateName"
+                type="text"
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateName"
+            >
+              Campaign
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              You currently only have one campaign:
+            </div>
+            <input
+              name="letterTemplateCampaignId"
+              readonly=""
+              type="hidden"
+              value="campaign-id"
+            />
+            campaign-id
+          </div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateLetterType"
+              id="letterTemplateLetterType--label"
+            >
+              Letter type
+            </label>
+            <div
+              class="nhsuk-hint"
+              id="letterTemplateLetterType--hint"
+            >
+              Choose the type of letter template you are uploading
+            </div>
+            <select
+              aria-describedby="letterTemplateLetterType--hint"
+              class="nhsuk-select"
+              id="letterTemplateLetterType"
+              name="letterTemplateLetterType"
+            >
+              <option
+                value="q4"
+              >
+                British Sign Language
+              </option>
+              <option
+                value="x1"
+              >
+                Large print
+              </option>
+              <option
+                value="x0"
+              >
+                Standard
+              </option>
+            </select>
+          </div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateLanguage"
+              id="letterTemplateLanguage--label"
+            >
+              Letter language
+            </label>
+            <div
+              class="nhsuk-hint"
+              id="letterTemplateLanguage--hint"
+            >
+              Choose the language of this letter template
+            </div>
+            <select
+              aria-describedby="letterTemplateLanguage--hint"
+              class="nhsuk-select"
+              data-testid="language-select"
+              id="letterTemplateLanguage"
+              name="letterTemplateLanguage"
+            >
+              <option
+                value="sq"
+              >
+                Albanian
+              </option>
+              <option
+                value="ar"
+              >
+                Arabic
+              </option>
+              <option
+                value="bn"
+              >
+                Bengali
+              </option>
+              <option
+                value="bg"
+              >
+                Bulgarian
+              </option>
+              <option
+                value="zh"
+              >
+                Chinese
+              </option>
+              <option
+                value="en"
+              >
+                English
+              </option>
+              <option
+                value="fr"
+              >
+                French
+              </option>
+              <option
+                value="de"
+              >
+                German
+              </option>
+              <option
+                value="el"
+              >
+                Greek
+              </option>
+              <option
+                value="gu"
+              >
+                Gujurati
+              </option>
+              <option
+                value="hi"
+              >
+                Hindi
+              </option>
+              <option
+                value="hu"
+              >
+                Hungarian
+              </option>
+              <option
+                value="it"
+              >
+                Italian
+              </option>
+              <option
+                value="ku"
+              >
+                Kurdish
+              </option>
+              <option
+                value="lv"
+              >
+                Latvian
+              </option>
+              <option
+                value="lt"
+              >
+                Lithuanian
+              </option>
+              <option
+                value="ne"
+              >
+                Nepali
+              </option>
+              <option
+                value="fa"
+              >
+                Persian
+              </option>
+              <option
+                value="pl"
+              >
+                Polish
+              </option>
+              <option
+                value="pt"
+              >
+                Portuguese
+              </option>
+              <option
+                value="pa"
+              >
+                Punjabi
+              </option>
+              <option
+                value="ro"
+              >
+                Romanian
+              </option>
+              <option
+                value="ru"
+              >
+                Russian
+              </option>
+              <option
+                value="sk"
+              >
+                Slovak
+              </option>
+              <option
+                value="so"
+              >
+                Somali
+              </option>
+              <option
+                value="es"
+              >
+                Spanish
+              </option>
+              <option
+                value="ta"
+              >
+                Tamil
+              </option>
+              <option
+                value="tr"
+              >
+                Turkish
+              </option>
+              <option
+                value="ur"
+              >
+                Urdu
+              </option>
+            </select>
+          </div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplatePdf"
+            >
+              Letter template PDF
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              Your letter must follow our letter specification and be no bigger than 5MB
+            </div>
+            <p>
+              <a
+                data-testid="pdf-guidance-link"
+                href="/using-nhs-notify/upload-a-letter"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn how to create letter templates to our specification (opens in a new tab)
+              </a>
+            </p>
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
+            >
+              <input
+                accept="application/pdf"
+                class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
+                id="letterTemplatePdf"
+                name="letterTemplatePdf"
+                type="file"
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="letterTemplateCsv"
+            >
+              Example personalisation CSV (optional)
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
+            </div>
+            <p>
+              <a
+                data-testid="csv-guidance-link"
+                href="/using-nhs-notify/personalisation#providing-example-data"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn how to provide example personalisation data (opens in a new tab)
+              </a>
+            </p>
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
+            >
+              <input
+                accept="text/csv"
+                class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -589,6 +1025,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -859,6 +1296,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -895,6 +1333,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -1059,6 +1498,7 @@ exports[`renders page one error 1`] = `
               <input
                 aria-describedby="letterTemplateName--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -1329,6 +1769,7 @@ exports[`renders page one error 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -1365,6 +1806,7 @@ exports[`renders page one error 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -1492,6 +1934,7 @@ exports[`renders page with multiple campaign ids 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -1804,6 +2247,7 @@ exports[`renders page with multiple campaign ids 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -1840,6 +2284,7 @@ exports[`renders page with multiple campaign ids 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -2032,6 +2477,7 @@ exports[`renders page with multiple errors 1`] = `
               <input
                 aria-describedby="letterTemplateName--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -2310,6 +2756,7 @@ exports[`renders page with multiple errors 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -2356,6 +2803,7 @@ exports[`renders page with multiple errors 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -2483,6 +2931,7 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -2779,6 +3228,7 @@ exports[`renders page with preloaded field values 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -2815,6 +3265,7 @@ exports[`renders page with preloaded field values 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -2942,6 +3393,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="letterTemplateName"
                 id="letterTemplateName"
                 name="letterTemplateName"
                 type="text"
@@ -3238,6 +3690,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
               <input
                 accept="application/pdf"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -3274,6 +3727,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
               <input
                 accept="text/csv"
                 class="file-upload nhsuk-input"
+                data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"

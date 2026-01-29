@@ -49,7 +49,7 @@
       "const": "control"
     },
     "data": {
-      "$ref": "#/$defs/TemplateDeletedEventData"
+      "$ref": "#/$defs/TemplateEventData"
     }
   },
   "required": [
@@ -66,37 +66,19 @@
     "data"
   ],
   "$defs": {
-    "TemplateDeletedEventData": {
-      "allOf": [
+    "TemplateEventData": {
+      "anyOf": [
         {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/EmailTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/NhsAppTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/LetterTemplateEventData"
-            },
-            {
-              "$ref": "#/$defs/SmsTemplateEventData"
-            }
-          ]
+          "$ref": "#/$defs/EmailTemplateEventData"
         },
         {
-          "type": "object",
-          "properties": {
-            "templateStatus": {
-              "type": "string",
-              "enum": [
-                "DELETED"
-              ]
-            }
-          },
-          "required": [
-            "templateStatus"
-          ]
+          "$ref": "#/$defs/NhsAppTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/LetterTemplateEventData"
+        },
+        {
+          "$ref": "#/$defs/SmsTemplateEventData"
         }
       ]
     },
@@ -132,22 +114,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -179,7 +145,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "subject",
@@ -218,22 +183,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -260,7 +209,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "templateType"
@@ -297,22 +245,6 @@
           "description": "User-provided template name",
           "type": "string",
           "maxLength": 1000
-        },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
         },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
@@ -420,7 +352,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "files",
         "templateType",
@@ -461,22 +392,6 @@
           "type": "string",
           "maxLength": 1000
         },
-        "templateStatus": {
-          "description": "Current status of the template",
-          "type": "string",
-          "enum": [
-            "DELETED",
-            "NOT_YET_SUBMITTED",
-            "PENDING_PROOF_REQUEST",
-            "PENDING_UPLOAD",
-            "PENDING_VALIDATION",
-            "PROOF_AVAILABLE",
-            "SUBMITTED",
-            "VALIDATION_FAILED",
-            "VIRUS_SCAN_FAILED",
-            "WAITING_FOR_PROOF"
-          ]
-        },
         "updatedAt": {
           "description": "Timestamp for when the template was most recently updated",
           "type": "string",
@@ -503,7 +418,6 @@
         "id",
         "createdAt",
         "name",
-        "templateStatus",
         "updatedAt",
         "message",
         "templateType"

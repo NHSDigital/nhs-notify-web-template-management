@@ -6,7 +6,7 @@
         "cascadeGroups": [
           "standard"
         ],
-        "channel": "NHS_APP",
+        "channel": "NHSAPP",
         "channelType": "primary",
         "defaultTemplateId": "nhs-app-template-id"
       },
@@ -49,20 +49,22 @@
             "language": "ar",
             "templateId": "ar-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": "letter-template-id"
       },
       {
         "cascadeGroups": [
           "other-format"
         ],
-        "channe": "LETTER",
+        "channel": "LETTER",
         "channelType": "primary",
         "conditionalTemplates": [
           {
             "accessibleFormat": "x1",
             "templateId": "x1-template-id"
           }
-        ]
+        ],
+        "defaultTemplateId": "letter-template-id"
       }
     ],
     "cascadeGroupOverrides": [
@@ -84,8 +86,7 @@
     "createdAt": "2025-07-29T08:45:00.000Z",
     "defaultCascadeGroup": "standard",
     "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
-    "name": "routing-config-name",
-    "status": "COMPLETED"
+    "name": "routing-config-name"
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/RoutingConfigCompleted/v1.json",

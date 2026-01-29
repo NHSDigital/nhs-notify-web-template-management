@@ -130,7 +130,7 @@ test('renders page with multiple errors', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('Client-side validation triggers', () => {
+test('Client-side validation triggers - valid form - no errors', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
@@ -142,5 +142,22 @@ test('Client-side validation triggers', () => {
   );
   const submitButton = screen.getByTestId('submit-button');
   fireEvent.click(submitButton);
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Client-side validation triggers - invalid form - errors displayed', () => {
+  const container = render(
+    <NhsAppTemplateForm
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+        errorState: undefined,
+        name: '',
+        message: 'template-message',
+      })}
+    />
+  );
+  const submitButton = screen.getByTestId('submit-button');
+  fireEvent.click(submitButton);
+
   expect(container.asFragment()).toMatchSnapshot();
 });

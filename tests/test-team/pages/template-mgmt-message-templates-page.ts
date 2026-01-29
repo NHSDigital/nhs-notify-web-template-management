@@ -30,4 +30,6 @@ export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePage {
 
     return statusCell.textContent();
   }
+
+  public static readonly url = `${TemplateMgmtBasePage.appUrlSegment}${TemplateMgmtMessageTemplatesPage.pathTemplate}`;
 }

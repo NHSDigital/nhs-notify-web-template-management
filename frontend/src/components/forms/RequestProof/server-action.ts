@@ -4,7 +4,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, requestTemplateProof } from '@utils/form-actions';
 import { z } from 'zod';
 import {
-  templateTypeToUrlTextMappings,
+  legacyTemplateTypeToUrlTextMappings,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -45,7 +45,7 @@ export async function requestProof(channel: TemplateType, formData: FormData) {
     throw error;
   }
 
-  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+  const channelRedirectSegment = legacyTemplateTypeToUrlTextMappings(channel);
 
   return redirect(
     `/preview-${channelRedirectSegment}-template/${templateId}`,

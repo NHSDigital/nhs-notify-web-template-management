@@ -24,13 +24,15 @@ import {
   messagePlanChooseTemplateUrl,
   ORDINALS,
   statusToDisplayMapping,
-  templateCreationPages,
+  legacyTemplateCreationPages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
   templateTypeDisplayMappings,
+  legacyTemplateTypeToUrlTextMappings,
   templateTypeToUrlTextMappings,
-  cascadeTemplateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
+  type SupportedLetterType,
+  createTemplateUrl,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -162,37 +164,85 @@ describe('statusToColourMapping', () => {
   );
 });
 
-describe('templateTypeToUrlTextMappings', () => {
+describe('legacyTemplateTypeToUrlTextMappings', () => {
   test.each([
     ['NHS_APP', 'nhs-app'],
     ['SMS', 'text-message'],
     ['EMAIL', 'email'],
     ['LETTER', 'letter'],
   ] as const)('$type maps to url fragment $expected', (type, expected) => {
-    expect(templateTypeToUrlTextMappings(type)).toEqual(expected);
+    expect(legacyTemplateTypeToUrlTextMappings(type)).toEqual(expected);
   });
 });
 
-describe('cascadeTemplateTypeToUrlTextMappings', () => {
+describe('templateTypeToUrlTextMappings', () => {
   test.each([
     ['NHS_APP', 'nhs-app'],
     ['SMS', 'text-message'],
     ['EMAIL', 'email'],
     ['LETTER', 'standard-english-letter'],
   ] as const)('$type maps to url fragment $expected', (type, expected) => {
-    expect(cascadeTemplateTypeToUrlTextMappings(type)).toEqual(expected);
+    expect(templateTypeToUrlTextMappings(type)).toEqual(expected);
   });
+
+  test.each([
+    ['LETTER', 'x0', 'standard-english-letter'],
+    ['LETTER', 'x1', 'large-print-letter'],
+    ['LETTER', 'q4', 'british-sign-language-letter'],
+    ['LETTER', 'language', 'other-language-letter'],
+  ] as const)(
+    '$letterType $templateType maps to url fragment $expected',
+    (templateType, letterType, expected) => {
+      expect(templateTypeToUrlTextMappings(templateType, letterType)).toEqual(
+        expected
+      );
+    }
+  );
 });
 
-describe('templateCreationPages', () => {
+describe('legacyTemplateCreationPages', () => {
   test.each([
     ['NHS_APP' as const, '/create-nhs-app-template'],
     ['SMS' as const, '/create-text-message-template'],
     ['EMAIL' as const, '/create-email-template'],
     ['LETTER' as const, '/upload-letter-template'],
   ])('$templateType', (templateType: TemplateType, slug) => {
-    expect(templateCreationPages(templateType)).toEqual(slug);
+    expect(legacyTemplateCreationPages(templateType)).toEqual(slug);
   });
+});
+
+describe('createTemplateUrl', () => {
+  test.each([
+    ['NHS_APP' as const, undefined, '/create-nhs-app-template'],
+    ['SMS' as const, undefined, '/create-text-message-template'],
+    ['EMAIL' as const, undefined, '/create-email-template'],
+    ['LETTER' as const, undefined, '/upload-standard-english-letter-template'],
+    [
+      'LETTER' as const,
+      'x0' as const,
+      '/upload-standard-english-letter-template',
+    ],
+    ['LETTER' as const, 'x1' as const, '/upload-large-print-letter-template'],
+    [
+      'LETTER' as const,
+      'q4' as const,
+      '/upload-british-sign-language-letter-template',
+    ],
+    [
+      'LETTER' as const,
+      'language' as const,
+      '/upload-other-language-letter-template',
+    ],
+  ])(
+    '$letterType $templateType returns $slug',
+    (
+      templateType: TemplateType,
+      letterType: SupportedLetterType | undefined,
+      slug: string
+    ) => {
+      expect(createTemplateUrl(templateType, letterType)).toEqual(slug);
+    }
+  );
 });
 
 describe('messagePlanChooseTemplateUrl', () => {
@@ -205,9 +255,8 @@ describe('messagePlanChooseTemplateUrl', () => {
     expect(messagePlanChooseTemplateUrl(type)).toBe(expected);
   });
 
-  describe('conditional letter templates', () => {
+  describe('letter templates', () => {
     test.each([
-      ['q4', 'choose-british-sign-language-letter-template'],
       ['x0', 'choose-standard-english-letter-template'],
       ['x1', 'choose-large-print-letter-template'],
       ['language', 'choose-other-language-letter-template'],
@@ -270,8 +319,9 @@ describe('templateDisplayCopyAction', () => {
     ['EMAIL', 'NOT_YET_SUBMITTED', true],
     ['EMAIL', 'DELETED', false],
     ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
+    // letters are never copyable
     ['LETTER', 'SUBMITTED', false],
-    ['LETTER', 'NOT_YET_SUBMITTED', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'NOT_YET_SUBMITTED', false],
     ['LETTER', 'DELETED', false],
     ['LETTER', 'WAITING_FOR_PROOF', false],
     ['LETTER', 'PENDING_PROOF_REQUEST', false],
@@ -280,6 +330,7 @@ describe('templateDisplayCopyAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', false],
     ['LETTER', 'VALIDATION_FAILED', false],
     ['LETTER', 'PROOF_AVAILABLE', false],
+    ['LETTER', 'PROOF_APPROVED', false],
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayCopyAction) => {
@@ -315,6 +366,7 @@ describe('templateDisplayDeleteAction', () => {
     ['LETTER', 'VIRUS_SCAN_FAILED', true],
     ['LETTER', 'VALIDATION_FAILED', true],
     ['LETTER', 'PROOF_AVAILABLE', true],
+    ['LETTER', 'PROOF_APPROVED', true],
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
     (templateType, templateStatus, shouldDisplayDeleteAction) => {

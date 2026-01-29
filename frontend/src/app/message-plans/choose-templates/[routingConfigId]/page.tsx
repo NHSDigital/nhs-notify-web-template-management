@@ -10,6 +10,7 @@ import {
   MessagePlanPageProps,
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
+  ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,
 } from 'nhs-notify-web-template-management-utils';
 import {
   SummaryList,
@@ -40,7 +41,6 @@ import {
   getMessagePlanTemplates,
 } from '@utils/message-plans';
 import {
-  ACCESSIBLE_FORMATS,
   getConditionalTemplatesForItem,
   getDefaultTemplateForItem,
   getLanguageTemplatesForCascadeItem,
@@ -183,38 +183,40 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                             />
                           </MessagePlanFallbackConditionsListItem>
 
-                          {ACCESSIBLE_FORMATS.map((format) => {
-                            const template = getTemplateForAccessibleFormat(
-                              format,
-                              cascadeItem,
-                              conditionalTemplates
-                            );
-                            const formatDisplay =
-                              accessibleFormatDisplayMappings(format);
+                          {ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES.map(
+                            (format) => {
+                              const template = getTemplateForAccessibleFormat(
+                                format,
+                                cascadeItem,
+                                conditionalTemplates
+                              );
+                              const formatDisplay =
+                                accessibleFormatDisplayMappings(format);
 
-                            return (
-                              <MessagePlanConditionalTemplatesListItem
-                                key={format}
-                              >
-                                <MessagePlanChannelCard
-                                  data-testid={`channel-template-${format}`}
-                                  heading={`${formatDisplay} (optional)`}
+                              return (
+                                <MessagePlanConditionalTemplatesListItem
+                                  key={format}
                                 >
-                                  <MessagePlanChooseTemplateCardContent
-                                    channelTemplateType={formatDisplay}
-                                    templates={template ? [template] : []}
-                                    routingConfigId={messagePlan.id}
-                                    chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl('LETTER', format)}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
-                                    lockNumber={messagePlan.lockNumber}
-                                    removeTemplateAction={
-                                      removeTemplateFromMessagePlan
-                                    }
-                                    testIdSuffix={format}
-                                  />
-                                </MessagePlanChannelCard>
-                              </MessagePlanConditionalTemplatesListItem>
-                            );
-                          })}
+                                  <MessagePlanChannelCard
+                                    data-testid={`channel-template-${format}`}
+                                    heading={`${formatDisplay} (optional)`}
+                                  >
+                                    <MessagePlanChooseTemplateCardContent
+                                      channelTemplateType={formatDisplay}
+                                      templates={template ? [template] : []}
+                                      routingConfigId={messagePlan.id}
+                                      chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl('LETTER', format)}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
+                                      lockNumber={messagePlan.lockNumber}
+                                      removeTemplateAction={
+                                        removeTemplateFromMessagePlan
+                                      }
+                                      testIdSuffix={format}
+                                    />
+                                  </MessagePlanChannelCard>
+                                </MessagePlanConditionalTemplatesListItem>
+                              );
+                            }
+                          )}
 
                           <MessagePlanConditionalTemplatesListItem>
                             <MessagePlanChannelCard

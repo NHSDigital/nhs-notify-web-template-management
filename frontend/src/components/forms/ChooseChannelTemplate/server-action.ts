@@ -7,7 +7,6 @@ import {
   isLetterTemplate,
   addAccessibleFormatLetterTemplateToCascade,
   addDefaultTemplateToCascade,
-  buildCascadeGroupOverridesFromCascade,
 } from '@utils/routing-utils';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
@@ -53,36 +52,27 @@ export async function chooseChannelTemplateAction(
 
   const isAccessibleFormatTemplate = !!accessibleFormat;
 
-  let updatedCascade;
-  let updatedCascadeGroupOverrides = messagePlan.cascadeGroupOverrides;
-
-  if (
+  const updatedCascade =
     isAccessibleFormatTemplate &&
     selectedTemplate &&
     isLetterTemplate(selectedTemplate)
-  ) {
-    updatedCascade = addAccessibleFormatLetterTemplateToCascade(
-      messagePlan.cascade,
-      cascadeIndex,
-      selectedTemplate
-    );
-
-    updatedCascadeGroupOverrides =
-      buildCascadeGroupOverridesFromCascade(updatedCascade);
-  } else {
-    updatedCascade = addDefaultTemplateToCascade(
-      messagePlan.cascade,
-      cascadeIndex,
-      selectedTemplateId,
-      selectedTemplate
-    );
-  }
+      ? addAccessibleFormatLetterTemplateToCascade(
+          messagePlan.cascade,
+          cascadeIndex,
+          selectedTemplate
+        )
+      : addDefaultTemplateToCascade(
+          messagePlan.cascade,
+          cascadeIndex,
+          selectedTemplateId,
+          selectedTemplate
+        );
 
   await updateRoutingConfig(
     messagePlan.id,
     {
       cascade: updatedCascade,
-      cascadeGroupOverrides: updatedCascadeGroupOverrides,
+      cascadeGroupOverrides: messagePlan.cascadeGroupOverrides,
     },
     parsedForm.data.lockNumber
   );

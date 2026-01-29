@@ -66,7 +66,7 @@ function getTemplates(
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
       user,
-      `     'Test NHS App template - ${templateIds.NHSAPP}`
+      `'Test NHS App template - ${templateIds.NHSAPP}`
     ),
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,

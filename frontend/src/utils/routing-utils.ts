@@ -1,23 +1,23 @@
 import {
-  CascadeGroup,
   CascadeGroupName,
   CascadeItem,
   ConditionalTemplateAccessible,
   ConditionalTemplateLanguage,
   Language,
-  LetterType,
   RoutingConfig,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  LetterTemplate,
+  ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,
+  RoutingAccessibleFormatLetterType,
+} from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
   | ConditionalTemplateAccessible
   | ConditionalTemplateLanguage;
 
 export type MessagePlanTemplates = Record<string, TemplateDto>;
-
-export const ACCESSIBLE_FORMATS: LetterType[] = ['x1']; // Large print only
 
 /**
  * Type guard to check if a template is a letter template
@@ -192,70 +192,6 @@ export function removeTemplatesFromCascadeItem(
 }
 
 /**
- * Gets all accessible format types from the cascade
- */
-export function getAccessibleLetterFormatsFromCascade(
-  cascade: CascadeItem[]
-): LetterType[] {
-  const formats = new Set<LetterType>();
-
-  for (const item of cascade) {
-    for (const template of item.conditionalTemplates ?? []) {
-      if ('accessibleFormat' in template && template.templateId) {
-        formats.add(template.accessibleFormat);
-      }
-    }
-  }
-  return [...formats];
-}
-
-/**
- * Collects all language types from the cascade
- */
-export function getCascadeLanguages(cascade: CascadeItem[]): Language[] {
-  const languages = new Set<Language>();
-
-  for (const item of cascade) {
-    for (const template of item.conditionalTemplates ?? []) {
-      if ('language' in template && template.templateId) {
-        languages.add(template.language);
-      }
-    }
-  }
-  return [...languages];
-}
-
-/**
- * Builds cascadeGroupOverrides by analysing the cascade to determine which conditional
- * template groups (accessible formats, languages) are present.
- * Returns overrides with only groups that have templates.
- */
-export function buildCascadeGroupOverridesFromCascade(
-  updatedCascade: CascadeItem[]
-): CascadeGroup[] {
-  const overrides: CascadeGroup[] = [];
-
-  const accessibleFormats =
-    getAccessibleLetterFormatsFromCascade(updatedCascade);
-  if (accessibleFormats.length > 0) {
-    overrides.push({
-      name: 'accessible',
-      accessibleFormat: accessibleFormats,
-    });
-  }
-
-  const languages = getCascadeLanguages(updatedCascade);
-  if (languages.length > 0) {
-    overrides.push({
-      name: 'translations',
-      language: languages,
-    });
-  }
-
-  return overrides;
-}
-
-/**
  * Add default template to cascade at specific index
  */
 export function addDefaultTemplateToCascade(
@@ -423,7 +359,7 @@ export function replaceLanguageTemplatesInCascadeItem(
  * Gets the template for a cascade item with the given accessible format from the provided templates object
  */
 export function getTemplateForAccessibleFormat(
-  format: LetterType,
+  format: RoutingAccessibleFormatLetterType,
   cascadeItem: CascadeItem,
   templates: MessagePlanTemplates
 ): TemplateDto | undefined {
@@ -464,11 +400,13 @@ export function getLanguageTemplatesForCascadeItem(
 export function getAccessibleTemplatesForCascadeItem(
   cascadeItem: CascadeItem,
   templates: MessagePlanTemplates
-): [LetterType, TemplateDto][] {
-  return ACCESSIBLE_FORMATS.map((format) => [
+): [RoutingAccessibleFormatLetterType, TemplateDto][] {
+  return ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES.map((format) => [
     format,
     getTemplateForAccessibleFormat(format, cascadeItem, templates),
-  ]).filter((pair): pair is [LetterType, TemplateDto] => Boolean(pair[1]));
+  ]).filter((pair): pair is [RoutingAccessibleFormatLetterType, TemplateDto] =>
+    Boolean(pair[1])
+  );
 }
 /**
  * Gets the indices of channels that are missing templates in a routing config.

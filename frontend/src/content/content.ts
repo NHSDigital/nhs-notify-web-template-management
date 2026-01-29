@@ -678,7 +678,7 @@ const submitTemplate = {
 const submitLetterTemplate = {
   proofingFlagDisabled: {
     goBackButtonText: submitTemplate.goBackButtonText,
-    buttonText: submitTemplate.buttonText,
+    continueButtonText: submitTemplate.buttonText,
     pageHeading: 'Submit',
     submitChecklistHeading: 'Before you submit',
     submitChecklistIntroduction: 'You should check that your template:',
@@ -692,10 +692,22 @@ const submitLetterTemplate = {
     warningCalloutLabel: 'Important',
     warningCalloutText: `You cannot edit a template after you've submitted it. You can only replace it with a new template.`,
   },
-  pageHeading: 'Approve and submit',
-  leadParagraph:
-    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
-  submitChecklistHeading: 'Before you submit this template',
+  routingFlagEnabled: {
+    pageHeading: 'Approve',
+    leadParagraph:
+      'When you approve your template proof, your template will be ready to add to a message plan.',
+    submitChecklistHeading: 'Before you approve this template proof',
+    warningCalloutText: `You cannot edit a template after you've approved the template proof. You can only create a new template to replace it.`,
+    continueButtonText: 'Approve template proof',
+  },
+  routingFlagDisabled: {
+    pageHeading: 'Approve and submit',
+    leadParagraph:
+      'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
+    submitChecklistHeading: 'Before you submit this template',
+    warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
+    continueButtonText: 'Approve and submit',
+  },
   submitChecklistIntroduction: 'Check that your template proof:',
   submitChecklistItems: [
     'looks exactly as you expect your recipient to get it',
@@ -703,10 +715,17 @@ const submitLetterTemplate = {
     'shows QR codes correctly (if used)',
   ],
   warningCalloutLabel: 'Important',
-  warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
-  buttonText: 'Approve and submit',
+};
+
+const submitLetterTemplatePage = {
+  routingFlagEnabled: {
+    pageTitle: generatePageTitle('Approve letter template proof'),
+  },
+  routingFlagDisabled: {
+    pageTitle: generatePageTitle('Submit letter template'),
+  },
 };
 
 const copyTemplate = {
@@ -729,7 +748,26 @@ const chooseTemplateType = {
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
   backLinkText: backToAllTemplates,
   form: {
-    templateType: { error: 'Select a template type' },
+    templateType: {
+      error: 'Select a template type',
+      errorHint: 'You have not chosen a template type',
+    },
+    letterType: {
+      error: 'Select a letter template type',
+      errorHint: 'You have not chosen a letter template type',
+    },
+  },
+  templateTypes: {
+    NHS_APP: 'NHS App message',
+    SMS: 'Text message (SMS)',
+    EMAIL: 'Email',
+    LETTER: 'Letter',
+  },
+  letterTypes: {
+    q4: 'British Sign Language letter',
+    x0: 'Standard English letter',
+    x1: 'Large print letter',
+    language: 'Other language letter',
   },
 };
 
@@ -1533,26 +1571,27 @@ const content = {
     previewTemplateFromMessagePlan,
   },
   pages: {
+    chooseEmailTemplate,
+    chooseLargePrintLetterTemplate,
+    chooseNhsAppTemplate,
+    chooseOtherLanguageLetterTemplate,
+    chooseStandardEnglishLetterTemplate,
     chooseTemplatesForMessagePlan,
+    chooseTextMessageTemplate,
     createMessagePlan,
+    deleteTemplateErrorPage,
     editMessagePlanSettings,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,
-    messagePlanInvalidConfiguration,
-    messageTemplates,
-    messagePlansPage,
     messagePlanGetReadyToMoveToProduction,
-    chooseNhsAppTemplate,
-    chooseEmailTemplate,
-    chooseTextMessageTemplate,
-    chooseStandardEnglishLetterTemplate,
-    chooseLargePrintLetterTemplate,
-    chooseOtherLanguageLetterTemplate,
+    messagePlanInvalidConfiguration,
+    messagePlansPage,
+    messageTemplates,
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
     previewMessagePlan,
-    deleteTemplateErrorPage,
+    submitLetterTemplate: submitLetterTemplatePage,
   },
 };
 
