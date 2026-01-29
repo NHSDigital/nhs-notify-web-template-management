@@ -53,7 +53,7 @@
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
     "build": "next build",
     "dev": "next dev",
-    "lint": "npm run mock-amplify-outputs && next lint --dir .",
+    "lint": "npm run mock-amplify-outputs && next lint .",
     "lint:fix": "npm run lint -- --fix",
     "mock-amplify-outputs": "if [ ! -f ./amplify_outputs.json ]; then echo \"{}\" > ./amplify_outputs.json ; fi",
     "start": "next start",
