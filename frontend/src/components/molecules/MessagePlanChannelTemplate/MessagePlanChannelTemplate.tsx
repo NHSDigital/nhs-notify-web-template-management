@@ -1,14 +1,10 @@
 import Link from 'next/link';
-import {
-  Channel,
-  LetterType,
-  RoutingConfig,
-  TemplateDto,
-} from 'nhs-notify-backend-client';
+import { Channel, RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
 import {
   channelDisplayMappings,
   channelToTemplateType,
   messagePlanChooseTemplateUrl,
+  RoutingAccessibleFormatLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import classNames from 'classnames';
 import { removeTemplateFromMessagePlan } from '@app/message-plans/choose-templates/[routingConfigId]/actions';
@@ -189,7 +185,7 @@ export function MessagePlanAccessibleFormatTemplate({
   lockNumber,
   routingConfigId,
 }: {
-  accessibleFormat: LetterType;
+  accessibleFormat: RoutingAccessibleFormatLetterType;
   template?: TemplateDto;
   lockNumber: number;
   routingConfigId: string;

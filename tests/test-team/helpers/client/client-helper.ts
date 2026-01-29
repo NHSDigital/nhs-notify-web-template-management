@@ -9,12 +9,13 @@ export type ClientConfiguration = {
   features: {
     proofing: boolean;
     routing?: boolean;
+    letterAuthoring?: boolean;
   };
   name?: string;
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled'}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 
@@ -29,6 +30,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: true,
+      letterAuthoring: false,
     },
   },
   /**
@@ -40,6 +42,7 @@ export const testClients: TestClients = {
     features: {
       proofing: false,
       routing: false,
+      letterAuthoring: false,
     },
   },
   /**
@@ -54,6 +57,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: false,
+      letterAuthoring: false,
     },
   },
   /**
@@ -66,6 +70,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: false,
+      letterAuthoring: false,
     },
   },
   /**
@@ -76,6 +81,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: false,
+      letterAuthoring: false,
     },
   },
 
@@ -84,6 +90,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: true,
+      letterAuthoring: false,
     },
   },
 
@@ -93,7 +100,24 @@ export const testClients: TestClients = {
   ClientRoutingEnabled: {
     campaignIds: ['RoutingEnabledCampaign'],
     name: 'Routing Enabled Client',
-    features: { proofing: false, routing: true },
+    features: {
+      proofing: false,
+      routing: true,
+      letterAuthoring: false,
+    },
+  },
+
+  /**
+   * ClientLetterAuthoringEnabled is an alternative client with letter authoring enabled
+   */
+  ClientLetterAuthoringEnabled: {
+    campaignIds: ['LetterAuthoringEnabledCampaign'],
+    name: 'Letter Authoring Enabled Client',
+    features: {
+      proofing: false,
+      routing: true,
+      letterAuthoring: true,
+    },
   },
 };
 

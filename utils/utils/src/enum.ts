@@ -70,6 +70,35 @@ const letterTypeMap: Record<LetterType, string> = {
   x1: 'Large print',
 };
 
+// Letter types that can be selected in the UI (includes frontend concept 'language')
+export type SupportedLetterType = LetterType | 'language';
+export const SUPPORTED_LETTER_TYPES = [
+  'x0',
+  'x1',
+  'q4',
+  'language',
+] as const satisfies readonly SupportedLetterType[];
+
+// Accessible format letter types (excludes standard x0)
+export type AccessibleFormatLetterType = Exclude<LetterType, 'x0'>;
+
+// Letter types supported in routing (excludes BSL)
+export type RoutingSupportedLetterType = Exclude<SupportedLetterType, 'q4'>;
+
+// Accessible format letter types supported in routing (excludes BSL)
+export type RoutingAccessibleFormatLetterType = Exclude<
+  AccessibleFormatLetterType,
+  'q4'
+>;
+export const ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES = [
+  'x1',
+] as const satisfies readonly RoutingAccessibleFormatLetterType[];
+
+// Conditional template types in routing (accessible formats + foreign language)
+export type RoutingConditionalLetterType =
+  | RoutingAccessibleFormatLetterType
+  | 'language';
+
 export const letterTypeMapping = (letterType: LetterType) =>
   `${letterTypeMap[letterType]} letter`;
 
@@ -149,7 +178,7 @@ export const statusToColourMapping = (
   return colourMappings[template.templateStatus];
 };
 
-export const templateTypeToUrlTextMappings = (type: TemplateType) =>
+export const legacyTemplateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
@@ -157,9 +186,9 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
-export const cascadeTemplateTypeToUrlTextMappings = (
+export const templateTypeToUrlTextMappings = (
   type: TemplateType,
-  conditionalType?: LetterType | 'language'
+  letterType?: SupportedLetterType
 ) =>
   ({
     NHS_APP: 'nhs-app',
@@ -170,7 +199,7 @@ export const cascadeTemplateTypeToUrlTextMappings = (
       x0: 'standard-english-letter',
       x1: 'large-print-letter',
       language: 'other-language-letter',
-    }[conditionalType || 'x0'],
+    }[letterType || 'x0'],
   })[type];
 
 const creationAction = (type: TemplateType) =>
@@ -181,19 +210,24 @@ const creationAction = (type: TemplateType) =>
     LETTER: 'upload',
   })[type];
 
-export const templateCreationPages = (type: TemplateType) =>
-  `/${creationAction(type)}-${templateTypeToUrlTextMappings(type)}-template`;
+export const legacyTemplateCreationPages = (type: TemplateType) =>
+  `/${creationAction(type)}-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
+
+export const createTemplateUrl = (
+  templateType: TemplateType,
+  letterType?: SupportedLetterType
+) =>
+  `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 
 export const previewTemplatePages = (type: TemplateType) =>
-  `preview-${templateTypeToUrlTextMappings(type)}-template`;
+  `preview-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
-  `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+  `preview-submitted-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,
-  conditionalType?: LetterType | 'language'
-) =>
-  `choose-${cascadeTemplateTypeToUrlTextMappings(type, conditionalType)}-template`;
+  letterType?: RoutingSupportedLetterType
+) => `choose-${templateTypeToUrlTextMappings(type, letterType)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (

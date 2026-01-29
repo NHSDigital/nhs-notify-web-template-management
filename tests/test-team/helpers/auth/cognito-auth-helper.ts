@@ -136,6 +136,15 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     internalUserId: 'InternalUserRoutingEnabled',
     clientKey: 'ClientRoutingEnabled',
   },
+
+  /**
+   * UserLetterAuthoringEnabled belongs to an alternate client with letter authoring enabled
+   */
+  UserLetterAuthoringEnabled: {
+    userId: 'UserWithLetterAuthoringEnabled',
+    internalUserId: 'InternalUserLetterAuthoringEnabled',
+    clientKey: 'ClientLetterAuthoringEnabled',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
