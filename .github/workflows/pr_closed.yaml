@@ -77,10 +77,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5.0.0
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20.18.2'
+          node-version: '24.11.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: check if local version differs from latest published version
@@ -135,10 +135,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5.0.0
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20.18.2'
+          node-version: '24.11.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies

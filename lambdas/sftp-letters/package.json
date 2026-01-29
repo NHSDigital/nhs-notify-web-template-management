@@ -19,7 +19,7 @@
   "devDependencies": {
     "@swc/core": "^1.11.3",
     "@swc/jest": "^0.2.37",
-    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/node24": "^24.0.4",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",
     "@types/ssh2-sftp-client": "^9.0.0",

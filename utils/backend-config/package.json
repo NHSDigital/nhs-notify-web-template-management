@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.5"
+    "@tsconfig/node24": "^24.0.4"
   },
   "main": "src/index.ts",
   "name": "nhs-notify-web-template-management-util-backend-config",

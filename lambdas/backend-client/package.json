@@ -8,7 +8,7 @@
   "devDependencies": {
     "@swc/core": "^1.11.13",
     "@swc/jest": "^0.2.37",
-    "@tsconfig/node20": "^20.1.5",
+    "@tsconfig/node24": "^24.0.4",
     "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.25.9",
     "jest-mock-extended": "^3.0.7",

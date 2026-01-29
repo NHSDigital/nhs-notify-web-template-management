@@ -17,7 +17,7 @@ module "lambda_delete_failed_scanned_object" {
 
   memory  = 512
   timeout = 20
-  runtime = "nodejs20.x"
+  runtime = "nodejs24.x"
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {

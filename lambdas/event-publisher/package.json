@@ -11,7 +11,7 @@
   "devDependencies": {
     "@swc/core": "^1.11.13",
     "@swc/jest": "^0.2.37",
-    "@tsconfig/node20": "^20.1.5",
+    "@tsconfig/node24": "^24.0.4",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",
     "esbuild": "^0.25.9",

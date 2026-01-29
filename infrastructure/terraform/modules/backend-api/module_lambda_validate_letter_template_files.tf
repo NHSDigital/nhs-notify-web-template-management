@@ -17,7 +17,7 @@ module "lambda_validate_letter_template_files" {
 
   memory  = 512
   timeout = 10
-  runtime = "nodejs20.x"
+  runtime = "nodejs24.x"
   layers  = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
 
   log_retention_in_days = var.log_retention_in_days
