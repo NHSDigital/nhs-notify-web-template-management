@@ -61,8 +61,8 @@
       "error",
       {
         "devDependencies": [
-          "jest.config.ts",
-          "jest.setup.ts",
+          "**/jest.config.ts",
+          "**/jest.setup.ts",
           "**/__tests__/**",
           "**/*.dev.[jt]s?(x)"
         ]
