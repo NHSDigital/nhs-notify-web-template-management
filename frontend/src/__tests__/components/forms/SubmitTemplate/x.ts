@@ -1,0 +1,15 @@
+const template: LetterTemplate = {
+  letterVersion: 'AUTHORING',
+  campaignId: 'campaignId',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  id: 'templateId',
+  letterVariantId: 'letterVariantId',
+  sidesCount: 1,
+  language: 'en',
+  letterType: 'x0',
+  name: 'template-name',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  templateType: 'LETTER',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+};

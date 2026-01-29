@@ -4,6 +4,12 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  letterVariantId: string;
+  letterVersion: 'AUTHORING';
+  sidesCount: number;
+};
+
 export type BaseCreatedTemplate = BaseTemplate & {
   campaignId?: string;
   clientId?: string;
@@ -17,7 +23,6 @@ export type BaseCreatedTemplate = BaseTemplate & {
 };
 
 export type BaseLetterTemplateProperties = {
-  files?: LetterFiles;
   language: Language;
   letterType: LetterType;
   templateType: 'LETTER';
@@ -128,7 +133,12 @@ export type CreateRoutingConfig = {
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
-  (SmsProperties | EmailProperties | NhsAppProperties | UploadLetterProperties);
+  (
+    | SmsProperties
+    | EmailProperties
+    | NhsAppProperties
+    | CreatePdfProofingLetterProperties
+  );
 
 export type EmailProperties = {
   message: string;
@@ -173,6 +183,8 @@ export type Language =
   | 'ur'
   | 'zh';
 
+export type LetterVersion = 'AUTHORING' | 'PDF_PROOFING';
+
 export type LetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
@@ -181,8 +193,17 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = BaseLetterTemplateProperties & {
+export type LetterProperties =
+  | ({
+      letterVersion: 'AUTHORING';
+    } & AuthoringLetterProperties)
+  | ({
+      letterVersion: 'PDF_PROOFING';
+    } & PdfProofingLetterProperties);
+
+export type PdfProofingLetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
+  letterVersion: 'PDF_PROOFING';
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
   supplierReferences?: {
@@ -282,7 +303,7 @@ export type UpdateRoutingConfig = unknown & {
   name?: string;
 };
 
-export type UploadLetterProperties = BaseLetterTemplateProperties & {
+export type CreatePdfProofingLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
 };
 
