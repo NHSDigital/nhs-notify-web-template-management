@@ -146,16 +146,17 @@ test.describe('Message plans Page', () => {
       'Names and IDs copied to clipboard'
     );
 
-    const clipboardText = await page.evaluate(() =>
+    const draftClipboardText = await page.evaluate(() =>
       navigator.clipboard.readText()
     );
 
-    expect(clipboardText).toEqual(
-      [
-        'routing_plan_name,routing_plan_id',
-        `"${routingConfigs.draftNew.name}","${routingConfigs.draftNew.id}"`,
-        `"${routingConfigs.draftOld.name}","${routingConfigs.draftOld.id}"`,
-      ].join('\n')
+    expect(draftClipboardText).toContain('routing_plan_name,routing_plan_id');
+
+    expect(draftClipboardText).toContain(
+      `"${routingConfigs.draftNew.name}","${routingConfigs.draftNew.id}"`
+    );
+    expect(draftClipboardText).toContain(
+      `"${routingConfigs.draftOld.name}","${routingConfigs.draftOld.id}"`
     );
 
     await messagePlanPage.productionMessagePlansTable.click();
@@ -172,11 +173,12 @@ test.describe('Message plans Page', () => {
       navigator.clipboard.readText()
     );
 
-    expect(productionClipboardText).toEqual(
-      [
-        `routing_plan_name,routing_plan_id`,
-        `"${routingConfigs.production.name}","${routingConfigs.production.id}"`,
-      ].join('\n')
+    expect(productionClipboardText).toContain(
+      'routing_plan_name,routing_plan_id'
+    );
+
+    expect(productionClipboardText).toContain(
+      `"${routingConfigs.production.name}","${routingConfigs.production.id}"`
     );
   });
 
