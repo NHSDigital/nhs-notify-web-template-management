@@ -5,8 +5,8 @@
     "nhs-notify-web-template-management-utils": "^0.0.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.11.13",
-    "@swc/jest": "^0.2.37",
+    "@swc/core": "^1.15.11",
+    "@swc/jest": "^0.2.39",
     "@tsconfig/node24": "^24.0.4",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",

@@ -13,8 +13,8 @@
     "zod": "^4.0.17"
   },
   "devDependencies": {
-    "@swc/core": "^1.11.3",
-    "@swc/jest": "^0.2.37",
+    "@swc/core": "^1.15.11",
+    "@swc/jest": "^0.2.39",
     "@tsconfig/node24": "^24.0.4",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",

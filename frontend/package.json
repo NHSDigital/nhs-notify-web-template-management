@@ -10,7 +10,7 @@
     "jwt-decode": "^4.0.0",
     "markdown-it": "^13.0.2",
     "markdown-to-jsx": "^7.7.10",
-    "next": "^15.5.11",
+    "next": "^16.1.6",
     "next-client-cookies": "^2.1.0",
     "nhs-notify-backend-client": "^0.0.1",
     "nhs-notify-web-template-management-utils": "^0.0.1",

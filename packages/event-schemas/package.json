@@ -5,8 +5,8 @@
   },
   "description": "Zod validators, TypeScript type definitions and JSON Schemas for events emitted by Template Management service",
   "devDependencies": {
-    "@swc/core": "^1.11.13",
-    "@swc/jest": "^0.2.37",
+    "@swc/core": "^1.15.11",
+    "@swc/jest": "^0.2.39",
     "@tsconfig/node24": "^24.0.4",
     "@types/jest": "^29.5.14",
     "ajv": "^8.17.1",

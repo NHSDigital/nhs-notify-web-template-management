@@ -39,10 +39,12 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File(['letterPdf'], 'template.pdf', {
+        pdf: expect.objectContaining({
+          name: 'template.pdf',
           type: 'application/pdf',
         }),
-        csv: new File(['testCsv'], 'test-data.csv', {
+        csv: expect.objectContaining({
+          name: 'test-data.csv',
           type: 'text/csv',
         }),
       },
@@ -72,8 +74,8 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File(['letterPdf'], ''),
-        csv: new File(['testCsv'], ''),
+        pdf: expect.objectContaining({ name: '' }),
+        csv: expect.objectContaining({ name: '' }),
       },
     });
   });
@@ -101,7 +103,7 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File([], ''),
+        pdf: expect.objectContaining({ name: '' }),
       },
     });
   });

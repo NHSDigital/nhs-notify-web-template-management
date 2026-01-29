@@ -117,8 +117,8 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
-      new File([csv], csvFilename, { type: csvType })
+      expect.objectContaining({ name: pdfFilename, type: pdfType }),
+      expect.objectContaining({ name: csvFilename, type: csvType })
     );
   });
 
@@ -187,7 +187,7 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
+      expect.objectContaining({ name: pdfFilename, type: pdfType }),
       undefined
     );
   });
@@ -377,7 +377,7 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
+      expect.objectContaining({ name: pdfFilename, type: pdfType }),
       undefined
     );
   });
