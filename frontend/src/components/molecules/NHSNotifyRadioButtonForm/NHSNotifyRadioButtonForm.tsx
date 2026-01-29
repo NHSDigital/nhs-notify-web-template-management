@@ -2,7 +2,7 @@ import { Radios, Fieldset } from 'nhsuk-react-components';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { DetailedHTMLProps, FormHTMLAttributes } from 'react';
+import { DetailedHTMLProps, FormHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 
 export type NHSNotifyRadioButtonFormProps = {
@@ -15,6 +15,7 @@ export type NHSNotifyRadioButtonFormProps = {
     id: string;
     text: string;
     checked?: boolean;
+    conditional?: ReactNode;
   }[];
   buttonText: string;
   hint?: string;
@@ -78,13 +79,14 @@ export const NHSNotifyRadioButtonForm = ({
         error={state.errorState?.fieldErrors?.[radiosId]?.join(', ')}
         errorProps={{ id: `${radiosId}--error-message` }}
       >
-        {options.map(({ id, text, checked }) => (
+        {options.map(({ id, text, checked, conditional }) => (
           <Radios.Radio
             value={id}
             id={`${radiosId}-${normaliseId(id)}`}
             data-testid={`${normaliseId(id)}-radio`}
             key={`${normaliseId(id)}-radio`}
             defaultChecked={checked}
+            conditional={conditional}
           >
             {text}
           </Radios.Radio>

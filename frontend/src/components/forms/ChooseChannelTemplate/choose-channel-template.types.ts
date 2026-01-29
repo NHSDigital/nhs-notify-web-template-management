@@ -1,8 +1,5 @@
-import {
-  LetterType,
-  RoutingConfig,
-  TemplateDto,
-} from 'nhs-notify-backend-client';
+import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import { RoutingAccessibleFormatLetterType } from 'nhs-notify-web-template-management-utils';
 
 export type ChooseChannelTemplateProps = {
   messagePlan: RoutingConfig;
@@ -10,6 +7,6 @@ export type ChooseChannelTemplateProps = {
   noTemplatesText: string;
   templateList: TemplateDto[];
   cascadeIndex: number;
-  accessibleFormat?: Exclude<LetterType, 'x0'>;
+  accessibleFormat?: RoutingAccessibleFormatLetterType;
   lockNumber: number;
 };
