@@ -8,7 +8,7 @@ import {
   letterTypeDisplayMappings,
   ErrorState,
   templateTypeToUrlTextMappings,
-  type PdfLetterTemplate,
+  type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
 
@@ -23,7 +23,7 @@ export function LanguageLetterTemplates({
   lockNumber,
 }: {
   routingConfigId: string;
-  templateList: PdfLetterTemplate[];
+  templateList: LetterTemplate[];
   errorState: ErrorState | null;
   selectedTemplates: string[];
   lockNumber: number;

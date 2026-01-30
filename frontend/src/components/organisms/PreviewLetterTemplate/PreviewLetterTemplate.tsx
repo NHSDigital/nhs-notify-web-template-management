@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import content from '@content/content';
-import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
@@ -19,7 +19,11 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-}: Readonly<{ template: PdfLetterTemplate }>) {
+}: Readonly<{ template: LetterTemplate }>) {
+  if (template.letterVersion !== 'PDF') {
+    throw new Error('AUTHORING letter version is not supported');
+  }
+
   const {
     approveProofText,
     backLinkText,

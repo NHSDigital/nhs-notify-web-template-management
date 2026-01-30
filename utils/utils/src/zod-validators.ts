@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  $AuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
@@ -76,10 +77,29 @@ export const $UploadLetterTemplate = z.intersection(
   $CreateUpdateTemplate,
   $CreatePdfLetterProperties
 );
-export const $LetterTemplate = z.intersection(
-  $TemplateDto,
+
+// Base template fields shared by all letter templates
+const $BaseLetterTemplateDto = $TemplateDto.and(
+  z.object({
+    templateType: z.literal('LETTER'),
+  })
+);
+
+export const $PdfLetterTemplate = $BaseLetterTemplateDto.and(
   $PdfLetterProperties.extend({ files: $LetterFiles })
 );
+
+export const $AuthoringLetterTemplate = $BaseLetterTemplateDto.and(
+  $AuthoringLetterProperties
+);
+
+// Union of both letter template types - use z.union since discriminatedUnion
+// requires object schemas (not intersections) with the discriminator at top level
+export const $LetterTemplate = z.union([
+  $PdfLetterTemplate,
+  $AuthoringLetterTemplate,
+]);
+
 export const $SubmittedLetterTemplate = z.intersection(
   $SubmittedTemplate,
   $LetterTemplate
