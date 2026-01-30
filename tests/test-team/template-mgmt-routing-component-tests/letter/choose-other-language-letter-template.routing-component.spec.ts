@@ -66,19 +66,19 @@ function getTemplates(
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
       user,
-      'Test NHS App template'
+      `'Test NHS App template - ${templateIds.NHSAPP}`
     ),
     LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LETTER,
       user,
-      'Test Letter template',
+      `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED',
       'PASSED'
     ),
     LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
-      'Test Large Print Letter template',
+      `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
       'PASSED',
       { letterType: 'x1' }
@@ -86,7 +86,7 @@ function getTemplates(
     FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
-      'Test French Letter template',
+      `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
       'PASSED',
       { language: 'fr' }
@@ -94,7 +94,7 @@ function getTemplates(
     FRENCH_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER_APPROVED,
       user,
-      'Test Duplicate French Letter template',
+      `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
       'PROOF_APPROVED',
       'PASSED',
       { language: 'fr' }
@@ -102,7 +102,7 @@ function getTemplates(
     FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
       templateIds.FRENCH_LETTER_NOT_SUBMITTED,
       user,
-      'Proof available French letter',
+      `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
       'PROOF_AVAILABLE',
       'PASSED',
       { language: 'fr' }
@@ -110,7 +110,7 @@ function getTemplates(
     SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
-      'Test Spanish Letter template',
+      `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
       'PASSED',
       { language: 'es' }
@@ -118,7 +118,7 @@ function getTemplates(
     POLISH_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
-      'Test Polish Letter template',
+      `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
       'PASSED',
       { language: 'pl' }

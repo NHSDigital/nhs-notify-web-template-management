@@ -64,6 +64,8 @@ export type AuthoringLetterTemplate = BaseCreatedTemplate &
 
 export type LetterTemplate = PdfLetterTemplate | AuthoringLetterTemplate;
 
+export type DigitalTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
+
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 

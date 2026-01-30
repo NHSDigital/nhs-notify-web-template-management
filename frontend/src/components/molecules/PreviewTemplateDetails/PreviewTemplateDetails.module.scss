@@ -15,11 +15,3 @@
   flex-direction: column;
   gap: 6px;
 }
-
-.warning_callout {
-  padding-top: 16px !important;
-
-  @media (min-width: 40.0625em) {
-    padding-top: 24px !important;
-  }
-}

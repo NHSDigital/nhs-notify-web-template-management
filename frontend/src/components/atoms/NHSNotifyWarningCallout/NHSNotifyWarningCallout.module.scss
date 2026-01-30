@@ -1,0 +1,8 @@
+.nhs_notify_warning_callout {
+  border: var(--nhsuk-yellow-colour) 1px solid;
+  background-color: var(--nhsuk-pale-yellow-colour);
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}
