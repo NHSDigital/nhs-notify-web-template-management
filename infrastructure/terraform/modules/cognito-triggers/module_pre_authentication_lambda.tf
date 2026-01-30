@@ -18,7 +18,7 @@ module "pre_authentication_lambda" {
 
   memory  = 512
   timeout = 3
-  runtime = "nodejs20.x"
+  runtime = "nodejs24.x"
 
   kms_key_arn           = var.kms_key_arn
   log_retention_in_days = var.log_retention_in_days
