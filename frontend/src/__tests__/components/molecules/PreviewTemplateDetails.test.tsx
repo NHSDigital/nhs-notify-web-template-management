@@ -471,7 +471,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     );
 
     expect(
-      screen.getByText(/You cannot delete this template/i)
+      screen.getByText(/you cannot delete this template/i)
     ).toBeInTheDocument();
   });
 });
