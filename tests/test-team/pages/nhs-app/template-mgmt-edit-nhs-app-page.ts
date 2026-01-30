@@ -29,9 +29,9 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePage {
     this.personalisationFields = page.locator(
       '[data-testid="personalisation-details"]'
     );
-    this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template-details"]'
-    );
+    this.namingYourTemplate = page.getByRole('group', {
+      name: 'Naming your templates',
+    });
     this.characterCountText = page.getByTestId('character-message-count');
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
 

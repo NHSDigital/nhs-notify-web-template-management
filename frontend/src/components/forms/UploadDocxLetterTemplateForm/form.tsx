@@ -1,31 +1,26 @@
 'use client';
 
 import classNames from 'classnames';
-import {
-  Button,
-  Details,
-  ErrorMessage,
-  HintText,
-  Label,
-} from 'nhsuk-react-components';
+import { Button, ErrorMessage, HintText, Label } from 'nhsuk-react-components';
 import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
-import copy from '@content/content';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { createNhsNotifyFormContext } from '@providers/form-provider';
-import { type FormSchema } from './server-action';
-import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
+import copy from '@content/content';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
+import { createNhsNotifyFormContext } from '@providers/form-provider';
+import { DOCX_MIME, type UploadDocxLetterTemplateFormSchema } from './schema';
 
 const { useNHSNotifyForm, NHSNotifyFormProvider } =
-  createNhsNotifyFormContext<FormSchema>();
+  createNhsNotifyFormContext<UploadDocxLetterTemplateFormSchema>();
 
 export { NHSNotifyFormProvider };
 
 type FormProps = { campaignIds: string[] };
 
-const content = copy.pages.uploadStandardLetterTemplate.form;
+const { fields } = copy.components.uploadDocxLetterTemplateForm;
 
-export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
+export function UploadDocxLetterTemplateForm({ campaignIds }: FormProps) {
   const [state, action] = useNHSNotifyForm();
 
   const nameError = state.errorState?.fieldErrors?.name?.join(',');
@@ -39,16 +34,11 @@ export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
     >
       <NHSNotifyFormGroup error={Boolean(nameError)}>
         <Label size='s' htmlFor='name'>
-          {content.name.label}
+          {fields.name.label}
         </Label>
-        <HintText>{content.name.hint}</HintText>
+        <HintText>{fields.name.hint}</HintText>
 
-        <Details className='nhsuk-u-margin-top-3'>
-          <Details.Summary>{content.name.details.summary}</Details.Summary>
-          <Details.Text>
-            <ContentRenderer content={content.name.details.text} />
-          </Details.Text>
-        </Details>
+        <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
         {nameError && <ErrorMessage>{nameError}</ErrorMessage>}
         <input
           type='text'
@@ -61,11 +51,11 @@ export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
 
       <NHSNotifyFormGroup error={Boolean(campaignIdError)}>
         <Label size='s' htmlFor='campaignId'>
-          {content.campaignId.label}
+          {fields.campaignId.label}
         </Label>
         {campaignIds.length === 1 ? (
           <>
-            <HintText>{content.campaignId.single.hint}</HintText>
+            <HintText>{fields.campaignId.single.hint}</HintText>
             <input
               type='hidden'
               name='campaignId'
@@ -76,7 +66,7 @@ export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
           </>
         ) : (
           <>
-            <HintText>{content.campaignId.select.hint}</HintText>
+            <HintText>{fields.campaignId.select.hint}</HintText>
             {campaignIdError && <ErrorMessage>{campaignIdError}</ErrorMessage>}
             <select
               id='campaignId'
@@ -100,20 +90,16 @@ export function UploadStandardLetterTemplateForm({ campaignIds }: FormProps) {
 
       <NHSNotifyFormGroup error={Boolean(fileError)}>
         <Label size='s' htmlFor='file'>
-          {content.file.label}
+          {fields.file.label}
         </Label>
         <HintText>
-          <ContentRenderer content={content.file.hint} />
+          <ContentRenderer content={fields.file.hint} />
         </HintText>
         {fileError && <ErrorMessage>{fileError}</ErrorMessage>}
-        <FileUploadInput
-          id='file'
-          name='file'
-          accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        />
+        <FileUploadInput id='file' name='file' accept={DOCX_MIME} />
       </NHSNotifyFormGroup>
 
-      <Button type='submit'>{content.submitButton.text}</Button>
+      <Button type='submit'>{fields.submitButton.text}</Button>
     </NHSNotifyFormWrapper>
   );
 }

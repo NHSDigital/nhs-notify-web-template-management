@@ -1,4 +1,8 @@
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 import type { RoutingAccessibleFormatLetterType } from 'nhs-notify-web-template-management-utils';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -768,32 +772,49 @@ const chooseTemplateType = {
   },
 };
 
-const nameYourTemplate = {
-  templateNameDetailsSummary: 'Naming your templates',
-  templateNameDetailsOpeningParagraph:
-    'You should name your templates in a way that works best for your service or organisation.',
-  templateNameDetailsListHeader: 'Common template names include the:',
-  templateNameDetailsList: [
-    { id: `template-name-details-item-1`, text: 'message channel it uses' },
-    {
-      id: `template-name-details-item-2`,
-      text: 'subject or reason for the message',
-    },
-    {
-      id: `template-name-details-item-3`,
-      text: 'intended audience for the template',
-    },
-    {
-      id: `template-name-details-item-4`,
-      text: 'version number of the template',
-    },
-  ],
-  templateNameDetailsExample: {
-    NHS_APP: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
-    EMAIL: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
-    SMS: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    LETTER: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
-  },
+const templateNameGuidance = (type?: TemplateType) => {
+  const channelNames: Record<TemplateType, string> = {
+    NHS_APP: 'NHS App',
+    EMAIL: 'Email',
+    SMS: 'SMS',
+    LETTER: 'Letter',
+  };
+
+  const baseNameComponents = [
+    'subject or reason for the message',
+    'intended audience for the template',
+    'version number of the template',
+  ];
+
+  const nameComponentsList = type
+    ? ['message channel it uses', ...baseNameComponents]
+    : baseNameComponents;
+
+  const exampleText = type
+    ? `For example, '${channelNames[type]} - covid19 2023 - over 65s - version 3'`
+    : `For example, 'Covid19 2025 - over 65s - version 3'`;
+
+  return {
+    summary: 'Naming your templates',
+    text: [
+      {
+        type: 'text',
+        text: 'You should name your templates in a way that works best for your service or organisation.',
+      },
+      {
+        type: 'text',
+        text: 'Common template names include the:',
+      },
+      {
+        type: 'text',
+        text: markdownList('ul', nameComponentsList),
+      },
+      {
+        type: 'text',
+        text: exampleText,
+      },
+    ] satisfies ContentBlock[],
+  };
 };
 
 const channelGuidance = {
@@ -1517,64 +1538,11 @@ const lockedTemplateWarning = {
   },
 };
 
-const uploadStandardLetterTemplateSideBar: ContentBlock[] = [
-  {
-    type: 'text',
-    text: '## How to create a standard letter template',
-    overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
-  },
-  {
-    type: 'text',
-    text: markdownList('ol', [
-      'Download the blank [standard letter template file](https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx).',
-      'Add [formatting (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/formatting).',
-      'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/personalisation).',
-      'Save your Microsoft Word file and upload it to this page.',
-    ]),
-    overrides: {
-      ol: { props: { className: 'nhsuk-list nhsuk-list--number' } },
-      li: { props: { className: 'nhsuk-u-margin-bottom-4' } },
-    },
-  },
-];
-
-const uploadStandardLetterTemplate = {
-  pageTitle: generatePageTitle('Upload a standard English letter template'),
-  backLink: {
-    href: '/choose-a-template-type',
-    text: 'Back to choose a template type',
-  },
-  heading: 'Upload a standard English letter template',
-  sideBar: uploadStandardLetterTemplateSideBar,
-  form: {
+const uploadDocxLetterTemplateForm = {
+  fields: {
     name: {
       label: 'Template name',
       hint: 'This will not be visible to recipients.',
-      details: {
-        summary: 'Naming your templates',
-        text: [
-          {
-            type: 'text',
-            text: 'You should name your templates in a way that works best for your service or organisation.',
-          },
-          {
-            type: 'text',
-            text: 'Common template names include the:',
-          },
-          {
-            type: 'text',
-            text: markdownList('ul', [
-              'subject or reason for the message',
-              'intended audience for the template',
-              'version number of the template',
-            ]),
-          },
-          {
-            type: 'text',
-            text: "For example, 'Covid19 2025 - over 65s - version 3'",
-          },
-        ] satisfies ContentBlock[],
-      },
     },
     campaignId: {
       label: 'Campaign',
@@ -1611,6 +1579,60 @@ const uploadStandardLetterTemplate = {
   },
 };
 
+const uploadDocxLetterTemplateSideBarMappings: Record<
+  LetterType | 'language',
+  [string, string]
+> = {
+  x0: [
+    'standard English',
+    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx',
+  ],
+  x1: [
+    'large print',
+    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx',
+  ],
+  q4: ['', ''],
+  language: ['', ''],
+};
+
+const uploadDocxLetterTemplateSideBar = (type: LetterType): ContentBlock[] => {
+  const [display, templateLink] = uploadDocxLetterTemplateSideBarMappings[type];
+
+  return [
+    {
+      type: 'text',
+      text: `## How to create a ${display} letter template`,
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: markdownList('ol', [
+        `Download the blank [${display} letter template file](${templateLink}).`,
+        'Add [formatting (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/formatting).',
+        'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/personalisation).',
+        'Save your Microsoft Word file and upload it to this page.',
+      ]),
+      overrides: {
+        ol: { props: { className: 'nhsuk-list nhsuk-list--number' } },
+        li: { props: { className: 'nhsuk-u-margin-bottom-4' } },
+      },
+    },
+  ];
+};
+
+const uploadDocxLetterTemplatePage = (type: LetterType) => {
+  const [display] = uploadDocxLetterTemplateSideBarMappings[type];
+  return {
+    pageTitle: generatePageTitle(`Upload a ${display} letter template`),
+    backLink: {
+      href: '/choose-a-template-type',
+      text: 'Back to choose a template type',
+    },
+    heading: `Upload a ${display} letter template`,
+    sideBar: uploadDocxLetterTemplateSideBar(type),
+  };
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1633,7 +1655,6 @@ const content = {
     messagePlanFallbackConditions,
     messagePlanForm,
     messagePlansListComponent,
-    nameYourTemplate,
     personalisation,
     previewDigitalTemplate,
     previewEmailTemplate,
@@ -1641,6 +1662,7 @@ const content = {
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
+    previewTemplateFromMessagePlan,
     requestProof,
     submitLetterTemplate,
     submitTemplate,
@@ -1648,9 +1670,10 @@ const content = {
     templateFormLetter,
     templateFormNhsApp,
     templateFormSms,
+    templateNameGuidance,
     templateSubmitted,
+    uploadDocxLetterTemplateForm,
     viewSubmittedTemplate,
-    previewTemplateFromMessagePlan,
   },
   pages: {
     chooseEmailTemplate,
@@ -1672,8 +1695,8 @@ const content = {
     messageTemplates,
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
-    uploadStandardLetterTemplate,
     submitLetterTemplate: submitLetterTemplatePage,
+    uploadDocxLetterTemplatePage,
   },
 };
 

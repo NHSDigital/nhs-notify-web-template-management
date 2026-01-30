@@ -64,5 +64,6 @@ export const pdfUploadFixtures = {
 };
 
 export const docxFixtures = {
-  standard: getFile('docx', 'standard-template.docx'),
+  standard: getFile('docx', 'standard-english-template.docx'),
+  largePrint: getFile('docx', 'large-print-template.docx'),
 };

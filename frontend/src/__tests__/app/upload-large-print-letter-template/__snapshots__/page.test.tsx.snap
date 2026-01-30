@@ -23,7 +23,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a large print letter template
         </h1>
       </div>
     </div>
@@ -176,9 +176,9 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-large-print-letter-template"
         >
-          How to create a standard English letter template
+          How to create a large print letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -189,11 +189,11 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
           >
             Download the blank 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx"
+              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
               rel="noopener noreferrer"
               target="_blank"
             >
-              standard English letter template file
+              large print letter template file
             </a>
             .
           </li>
@@ -297,7 +297,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a large print letter template
         </h1>
       </div>
     </div>
@@ -480,9 +480,9 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-large-print-letter-template"
         >
-          How to create a standard English letter template
+          How to create a large print letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -493,11 +493,11 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
           >
             Download the blank 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx"
+              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
               rel="noopener noreferrer"
               target="_blank"
             >
-              standard English letter template file
+              large print letter template file
             </a>
             .
           </li>
@@ -562,7 +562,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a large print letter template
         </h1>
       </div>
     </div>
@@ -709,9 +709,9 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-large-print-letter-template"
         >
-          How to create a standard English letter template
+          How to create a large print letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -722,11 +722,11 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
           >
             Download the blank 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx"
+              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
               rel="noopener noreferrer"
               target="_blank"
             >
-              standard English letter template file
+              large print letter template file
             </a>
             .
           </li>
@@ -823,7 +823,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a large print letter template
         </h1>
       </div>
     </div>
@@ -990,9 +990,9 @@ exports[`client has one campaign id renders errors when blank form is submitted 
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-large-print-letter-template"
         >
-          How to create a standard English letter template
+          How to create a large print letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -1003,11 +1003,11 @@ exports[`client has one campaign id renders errors when blank form is submitted 
           >
             Download the blank 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx"
+              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
               rel="noopener noreferrer"
               target="_blank"
             >
-              standard English letter template file
+              large print letter template file
             </a>
             .
           </li>

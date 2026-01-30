@@ -12,15 +12,15 @@ import {
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { fetchClient } from '@utils/server-features';
 import { getCampaignIds } from '@utils/client-config';
-import { uploadStandardLetterTemplate } from './server-action';
+import { uploadLargePrintLetterTemplate } from './server-action';
 
-const content = copy.pages.uploadDocxLetterTemplatePage('x0');
+const content = copy.pages.uploadDocxLetterTemplatePage('x1');
 
 export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function UploadStandardLetterTemplatePage() {
+export default async function UploadLargePrintLetterTemplatePage() {
   const client = await fetchClient();
   const campaignIds = getCampaignIds(client);
 
@@ -37,7 +37,7 @@ export default async function UploadStandardLetterTemplatePage() {
         {content.backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>
-        <NHSNotifyFormProvider serverAction={uploadStandardLetterTemplate}>
+        <NHSNotifyFormProvider serverAction={uploadLargePrintLetterTemplate}>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
               <h1 className='nhsuk-heading-xl'>{content.heading}</h1>

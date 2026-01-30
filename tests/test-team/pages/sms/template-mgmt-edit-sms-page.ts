@@ -36,9 +36,9 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
     this.pdsPersonalisationFields = page.locator(
       '[data-testid="pds-personalisation-fields-details"]'
     );
-    this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template-details"]'
-    );
+    this.namingYourTemplate = page.getByRole('group', {
+      name: 'Naming your templates',
+    });
     this.pricingLink = page.getByTestId('sms-pricing-info').locator('a');
     this.characterCountText = page.getByTestId('character-message-count');
 

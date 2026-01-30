@@ -7,7 +7,7 @@ import {
   type UploadDocxLetterTemplateFormSchema,
 } from '@forms/UploadDocxLetterTemplateForm/schema';
 
-export async function uploadStandardLetterTemplate(
+export async function uploadLargePrintLetterTemplate(
   _: FormState<UploadDocxLetterTemplateFormSchema>,
   form: FormData
 ): Promise<FormState<UploadDocxLetterTemplateFormSchema>> {

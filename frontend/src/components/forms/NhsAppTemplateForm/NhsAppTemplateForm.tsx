@@ -106,7 +106,7 @@ export const NhsAppTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={'NHS_APP'} />
+                <TemplateNameGuidance templateType={'NHS_APP'} />
                 <TextInput
                   id='nhsAppTemplateName'
                   defaultValue={nhsAppTemplateName}

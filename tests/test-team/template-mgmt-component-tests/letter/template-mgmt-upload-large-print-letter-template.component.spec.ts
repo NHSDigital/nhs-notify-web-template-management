@@ -14,7 +14,7 @@ import {
   assertSignOutLink,
   assertSkipToMainContent,
 } from 'helpers/template-mgmt-common.steps';
-import { TemplateMgmtUploadStandardLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-letter-template-page';
+import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/template-mgmt-upload-large-print-letter-template-page';
 
 let userNoCampaignId: TestUser;
 let userSingleCampaign: TestUser;
@@ -30,10 +30,10 @@ test.beforeAll(async () => {
   );
 });
 
-test.describe('Upload Standard Letter Template Page', () => {
+test.describe('Upload Large Print Letter Template Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtUploadStandardLetterTemplatePage(page),
+      page: new TemplateMgmtUploadLargePrintLetterTemplatePage(page),
       baseURL,
     };
 
@@ -50,7 +50,9 @@ test.describe('Upload Standard Letter Template Page', () => {
 
   test.describe('single campaign client', () => {
     test('no validation errors when form is submitted', async ({ page }) => {
-      const uploadPage = new TemplateMgmtUploadStandardLetterTemplatePage(page);
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
 
       await uploadPage.loadPage();
 
@@ -59,10 +61,12 @@ test.describe('Upload Standard Letter Template Page', () => {
         userSingleCampaign.campaignIds?.[0] as string
       );
 
-      await uploadPage.nameInput.fill('New Letter Template');
+      await uploadPage.nameInput.fill('New Large Print Letter Template');
 
       await uploadPage.fileInput.click();
-      await uploadPage.fileInput.setInputFiles(docxFixtures.standard.filepath);
+      await uploadPage.fileInput.setInputFiles(
+        docxFixtures.largePrint.filepath
+      );
 
       await uploadPage.submitButton.click();
 
@@ -74,7 +78,9 @@ test.describe('Upload Standard Letter Template Page', () => {
     test('displays error messages when blank form is submitted', async ({
       page,
     }) => {
-      const uploadPage = new TemplateMgmtUploadStandardLetterTemplatePage(page);
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
 
       await uploadPage.loadPage();
 
@@ -97,11 +103,13 @@ test.describe('Upload Standard Letter Template Page', () => {
     });
 
     test('no validation errors when form is submitted', async ({ page }) => {
-      const uploadPage = new TemplateMgmtUploadStandardLetterTemplatePage(page);
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
 
       await uploadPage.loadPage();
 
-      await uploadPage.nameInput.fill('New Letter Template');
+      await uploadPage.nameInput.fill('New Large Print Letter Template');
 
       await expect(uploadPage.singleCampaignIdText).toBeHidden();
       await uploadPage.campaignIdInput.selectOption(
@@ -109,7 +117,9 @@ test.describe('Upload Standard Letter Template Page', () => {
       );
 
       await uploadPage.fileInput.click();
-      await uploadPage.fileInput.setInputFiles(docxFixtures.standard.filepath);
+      await uploadPage.fileInput.setInputFiles(
+        docxFixtures.largePrint.filepath
+      );
 
       await uploadPage.submitButton.click();
 
@@ -121,7 +131,9 @@ test.describe('Upload Standard Letter Template Page', () => {
     test('displays error messages when blank form is submitted', async ({
       page,
     }) => {
-      const uploadPage = new TemplateMgmtUploadStandardLetterTemplatePage(page);
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
 
       await uploadPage.loadPage();
 
@@ -145,7 +157,9 @@ test.describe('Upload Standard Letter Template Page', () => {
     });
 
     test('redirects to invalid config page', async ({ page }) => {
-      const uploadPage = new TemplateMgmtUploadStandardLetterTemplatePage(page);
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
 
       await uploadPage.loadPage();
 

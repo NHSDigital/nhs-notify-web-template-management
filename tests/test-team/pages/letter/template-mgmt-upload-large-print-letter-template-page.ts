@@ -1,8 +1,8 @@
 import type { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 
-export class TemplateMgmtUploadStandardLetterTemplatePage extends TemplateMgmtBasePage {
-  static readonly pathTemplate = '/upload-standard-english-letter-template';
+export class TemplateMgmtUploadLargePrintLetterTemplatePage extends TemplateMgmtBasePage {
+  static readonly pathTemplate = '/upload-large-print-letter-template';
 
   nameInput: Locator;
 

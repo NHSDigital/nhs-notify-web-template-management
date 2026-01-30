@@ -3,25 +3,23 @@ import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { fetchClient } from '@utils/server-features';
-import Page, {
-  metadata,
-} from '@app/upload-standard-english-letter-template/page';
-import { uploadStandardLetterTemplate } from '@app/upload-standard-english-letter-template/server-action';
+import Page, { metadata } from '@app/upload-large-print-letter-template/page';
+import { uploadLargePrintLetterTemplate } from '@app/upload-large-print-letter-template/server-action';
 
 jest.mock('next/navigation');
 jest.mock('@utils/csrf-utils');
 jest.mock('@utils/server-features');
-jest.mock('@app/upload-standard-english-letter-template/server-action');
+jest.mock('@app/upload-large-print-letter-template/server-action');
 
 beforeEach(() => {
   jest.resetAllMocks();
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
-  jest.mocked(uploadStandardLetterTemplate).mockResolvedValue({});
+  jest.mocked(uploadLargePrintLetterTemplate).mockResolvedValue({});
 });
 
 test('metadata', () => {
   expect(metadata).toEqual({
-    title: 'Upload a standard English letter template - NHS Notify',
+    title: 'Upload a large print letter template - NHS Notify',
   });
 });
 
@@ -73,9 +71,9 @@ describe('client has one campaign id', () => {
       screen.getByRole('button', { name: 'Upload letter template file' })
     );
 
-    expect(uploadStandardLetterTemplate).toHaveBeenCalledTimes(1);
+    expect(uploadLargePrintLetterTemplate).toHaveBeenCalledTimes(1);
 
-    const callArgs = jest.mocked(uploadStandardLetterTemplate).mock.calls[0];
+    const callArgs = jest.mocked(uploadLargePrintLetterTemplate).mock.calls[0];
     const formData = callArgs[1] as FormData;
 
     expect(formData.get('name')).toBe('A new template');
@@ -88,7 +86,7 @@ describe('client has one campaign id', () => {
   });
 
   it('renders errors when blank form is submitted and error state is returned', async () => {
-    jest.mocked(uploadStandardLetterTemplate).mockResolvedValue({
+    jest.mocked(uploadLargePrintLetterTemplate).mockResolvedValue({
       errorState: {
         fieldErrors: {
           name: ['Enter a template name'],
@@ -145,9 +143,9 @@ describe('client has multiple campaign ids', () => {
       screen.getByRole('button', { name: 'Upload letter template file' })
     );
 
-    expect(uploadStandardLetterTemplate).toHaveBeenCalledTimes(1);
+    expect(uploadLargePrintLetterTemplate).toHaveBeenCalledTimes(1);
 
-    const callArgs = jest.mocked(uploadStandardLetterTemplate).mock.calls[0];
+    const callArgs = jest.mocked(uploadLargePrintLetterTemplate).mock.calls[0];
     const formData = callArgs[1] as FormData;
 
     expect(formData.get('name')).toBe('A new template');
@@ -160,7 +158,7 @@ describe('client has multiple campaign ids', () => {
   });
 
   it('renders errors when blank form is submitted and error state is returned', async () => {
-    jest.mocked(uploadStandardLetterTemplate).mockResolvedValue({
+    jest.mocked(uploadLargePrintLetterTemplate).mockResolvedValue({
       errorState: {
         fieldErrors: {
           name: ['Enter a template name'],
@@ -178,7 +176,7 @@ describe('client has multiple campaign ids', () => {
       screen.getByRole('button', { name: 'Upload letter template file' })
     );
 
-    expect(uploadStandardLetterTemplate).toHaveBeenCalledTimes(1);
+    expect(uploadLargePrintLetterTemplate).toHaveBeenCalledTimes(1);
 
     expect(
       screen.queryByRole('alert', { name: 'There is a problem' })

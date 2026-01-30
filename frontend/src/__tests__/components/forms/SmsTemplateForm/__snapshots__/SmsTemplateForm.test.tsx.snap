@@ -85,11 +85,9 @@ exports[`CreateSmsTemplate component Client-side validation triggers - invalid f
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -99,7 +97,6 @@ exports[`CreateSmsTemplate component Client-side validation triggers - invalid f
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -121,9 +118,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers - invalid f
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
@@ -515,11 +510,9 @@ exports[`CreateSmsTemplate component Client-side validation triggers - valid for
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -529,7 +522,6 @@ exports[`CreateSmsTemplate component Client-side validation triggers - valid for
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -551,9 +543,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers - valid for
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
@@ -948,11 +938,9 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -962,7 +950,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -984,9 +971,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
@@ -1375,11 +1360,9 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -1389,7 +1372,6 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -1411,9 +1393,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
@@ -1870,11 +1850,9 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -1884,7 +1862,6 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -1906,9 +1883,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
@@ -2351,11 +2326,9 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
-                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -2365,7 +2338,6 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               </summary>
               <div
                 class="nhsuk-details__text"
-                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -2387,9 +2359,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                     version number of the template
                   </li>
                 </ul>
-                <p
-                  data-testid="template-name-example"
-                >
+                <p>
                   For example, 'SMS - covid19 2023 - over 65s - version 3'
                 </p>
               </div>
