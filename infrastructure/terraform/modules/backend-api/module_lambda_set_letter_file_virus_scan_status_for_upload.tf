@@ -17,7 +17,7 @@ module "lambda_set_file_virus_scan_status_for_upload" {
 
   memory  = 512
   timeout = 20
-  runtime = "nodejs20.x"
+  runtime = "nodejs24.x"
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {

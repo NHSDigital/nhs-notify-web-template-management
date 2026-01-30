@@ -117,8 +117,25 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
-      new File([csv], csvFilename, { type: csvType })
+      expect.any(File),
+      expect.any(File)
+    );
+
+    const [_1, _2, actualPdf, actualCsv] =
+      mocks.templateClient.uploadLetterTemplate.mock.calls[0];
+
+    expect(actualPdf).toEqual(
+      new File([pdf], pdfFilename, {
+        type: pdfType,
+        lastModified: actualPdf.lastModified,
+      })
+    );
+
+    expect(actualCsv).toEqual(
+      new File([csv], csvFilename, {
+        type: csvType,
+        lastModified: actualCsv!.lastModified,
+      })
     );
   });
 
@@ -187,8 +204,18 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
+      expect.any(File),
       undefined
+    );
+
+    const actualPdf =
+      mocks.templateClient.uploadLetterTemplate.mock.calls[0][2];
+
+    expect(actualPdf).toEqual(
+      new File([pdf], pdfFilename, {
+        type: pdfType,
+        lastModified: actualPdf.lastModified,
+      })
     );
   });
 
@@ -377,8 +404,18 @@ describe('upload-letter', () => {
     expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { internalUserId, clientId },
-      new File([pdf], pdfFilename, { type: pdfType }),
+      expect.any(File),
       undefined
+    );
+
+    const actualPdf =
+      mocks.templateClient.uploadLetterTemplate.mock.calls[0][2];
+
+    expect(actualPdf).toEqual(
+      new File([pdf], pdfFilename, {
+        type: pdfType,
+        lastModified: actualPdf.lastModified,
+      })
     );
   });
 });

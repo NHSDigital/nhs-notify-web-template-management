@@ -31,7 +31,7 @@ const config: Config = {
 
   collectCoverageFrom: ['src/**/*.ts*', 'src/*.ts*'],
 
-  coveragePathIgnorePatterns: ['.snap'],
+  coveragePathIgnorePatterns: ['.snap', 'src/script.ts'],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

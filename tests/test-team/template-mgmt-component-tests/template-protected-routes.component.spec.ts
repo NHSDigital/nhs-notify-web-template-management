@@ -52,6 +52,7 @@ import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/lett
 import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter/preview-large-print-letter-template-page';
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
+import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
 import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
 import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/template-mgmt-upload-large-print-letter-template-page';
@@ -74,6 +75,7 @@ const protectedPages = [
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseTextMessageTemplatePage,
+  RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,

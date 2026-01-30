@@ -17,7 +17,7 @@ module "count_routing_configs_lambda" {
 
   memory  = 2048
   timeout = 3
-  runtime = "nodejs20.x"
+  runtime = "nodejs24.x"
 
   log_retention_in_days = var.log_retention_in_days
 

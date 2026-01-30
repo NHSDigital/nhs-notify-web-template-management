@@ -30,9 +30,11 @@ export function createNhsNotifyFormContext<
 
   function NHSNotifyFormProvider({
     children,
+    errorSummaryHint,
     initialState = {},
     serverAction,
   }: PropsWithChildren<{
+    errorSummaryHint?: string;
     initialState?: FormState<T>;
     serverAction: (
       state: FormState<T>,
@@ -46,7 +48,10 @@ export function createNhsNotifyFormContext<
 
     return (
       <FormContext.Provider value={[state, action, isPending]}>
-        <NhsNotifyErrorSummary errorState={state.errorState} />
+        <NhsNotifyErrorSummary
+          errorState={state.errorState}
+          hint={errorSummaryHint}
+        />
         {children}
       </FormContext.Provider>
     );
