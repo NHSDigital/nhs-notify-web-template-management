@@ -46,17 +46,17 @@ describe('getLetterUploadParts', () => {
       },
     });
 
-    expect(result.data?.pdf).toEqual(
+    expect(result.data!.pdf).toEqual(
       new File([pdf], 'template.pdf', {
         type: 'application/pdf',
-        lastModified: result.data?.pdf.lastModified,
+        lastModified: result.data!.pdf!.lastModified,
       })
     );
 
-    expect(result.data?.csv).toEqual(
+    expect(result.data!.csv).toEqual(
       new File([csv], 'test-data.csv', {
         type: 'text/csv',
-        lastModified: result.data?.csv?.lastModified,
+        lastModified: result.data!.csv!.lastModified,
       })
     );
   });
@@ -91,14 +91,14 @@ describe('getLetterUploadParts', () => {
       },
     });
 
-    expect(result.data?.pdf).toEqual(
+    expect(result.data!.pdf).toEqual(
       new File([pdf], '', {
-        lastModified: result.data?.pdf.lastModified,
+        lastModified: result.data!.pdf!.lastModified,
       })
     );
-    expect(result.data?.csv).toEqual(
+    expect(result.data!.csv).toEqual(
       new File([csv], '', {
-        lastModified: result.data?.csv?.lastModified,
+        lastModified: result.data!.csv!.lastModified,
       })
     );
   });
@@ -132,9 +132,9 @@ describe('getLetterUploadParts', () => {
       },
     });
 
-    expect(result.data?.pdf).toEqual(
+    expect(result.data!.pdf).toEqual(
       new File([], '', {
-        lastModified: result.data?.pdf.lastModified,
+        lastModified: result.data!.pdf!.lastModified,
       })
     );
   });
