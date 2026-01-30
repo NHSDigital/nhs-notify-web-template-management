@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { removeTemplateFromMessagePlan } from './actions';
+import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
 import {
   CascadeGroupName,
@@ -10,10 +10,15 @@ import {
   RoutingConfigStatus,
 } from 'nhs-notify-backend-client';
 import { redirect } from 'next/navigation';
+import { getChannelsMissingTemplates } from '@utils/routing-utils';
 
 jest.mock('@utils/message-plans');
 jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
+}));
+jest.mock('@utils/routing-utils', () => ({
+  ...jest.requireActual('@utils/routing-utils'),
+  getChannelsMissingTemplates: jest.fn(),
 }));
 
 const mockGetRoutingConfig = jest.mocked(getRoutingConfig);
@@ -332,5 +337,65 @@ describe('removeTemplateFromMessagePlan', () => {
     await expect(removeTemplateFromMessagePlan(formData)).rejects.toThrow(
       /Invalid form data/
     );
+  });
+});
+
+describe('moveToProduction', () => {
+  it("throws if the form data can't be parsed", async () => {
+    const formData = new FormData();
+
+    await expect(() => moveToProduction({}, formData)).rejects.toThrow(
+      'Invalid form data'
+    );
+  });
+
+  it("throws if the routing config can't be found", async () => {
+    mockGetRoutingConfig.mockResolvedValue(undefined);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+
+    await expect(() => moveToProduction({}, formData)).rejects.toThrow(
+      'Routing configuration not found'
+    );
+  });
+
+  it('redirects to "ready to move" if there are no missing templates', async () => {
+    jest.mocked(getChannelsMissingTemplates).mockReturnValue([]);
+    jest.mocked(getRoutingConfig).mockResolvedValue(baseConfig);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+
+    await moveToProduction({}, formData);
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/message-plans/get-ready-to-move/${routingConfigId}`
+    );
+  });
+
+  it('returns error state if there are missing templates', async () => {
+    jest.mocked(getChannelsMissingTemplates).mockReturnValue([0, 1]);
+    jest.mocked(getRoutingConfig).mockResolvedValue(baseConfig);
+
+    const formData = new FormData();
+    formData.set('routingConfigId', routingConfigId);
+
+    const result = await moveToProduction({}, formData);
+
+    expect(result).toEqual({
+      errorState: {
+        fieldErrors: {
+          'channel-EMAIL': [
+            'You have not chosen a template for your first message',
+          ],
+          'channel-SMS': [
+            'You have not chosen a template for your second message',
+          ],
+        },
+      },
+    });
+
+    expect(redirect).not.toHaveBeenCalled();
   });
 });
