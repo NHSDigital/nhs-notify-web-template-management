@@ -4,7 +4,7 @@
 import PreviewSubmittedLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -50,7 +50,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       lockNumber: 1,
     } satisfies TemplateDto;
 
-    const submittedLetterTemplate: LetterTemplate = {
+    const submittedLetterTemplate: PdfLetterTemplate = {
       ...templateDTO,
       templateStatus: 'SUBMITTED',
     };

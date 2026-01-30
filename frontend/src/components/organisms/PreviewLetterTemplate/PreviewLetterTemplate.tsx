@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import content from '@content/content';
-import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
@@ -19,7 +19,7 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-}: Readonly<{ template: LetterTemplate }>) {
+}: Readonly<{ template: PdfLetterTemplate }>) {
   const {
     approveProofText,
     backLinkText,

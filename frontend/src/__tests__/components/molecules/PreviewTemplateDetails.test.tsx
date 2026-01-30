@@ -69,30 +69,6 @@ describe('PreviewTemplateDetailsSms', () => {
 });
 
 describe('PreviewTemplateDetailsLetter', () => {
-  // temporary, until we implement support for AUTHORING letter version
-  it('throws error for AUTHORING letter version', () => {
-    expect(() =>
-      render(
-        <PreviewTemplateDetailsLetter
-          template={{
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            templateType: 'LETTER',
-            letterType: 'x0',
-            letterVersion: 'AUTHORING',
-            letterVariantId: 'variant-123',
-            sidesCount: 2,
-            language: 'en',
-            createdAt: '2025-01-13T10:19:25.579Z',
-            updatedAt: '2025-01-13T10:19:25.579Z',
-            lockNumber: 1,
-          }}
-        />
-      )
-    ).toThrow('AUTHORING letter version is not implemented');
-  });
-
   it('matches snapshot without proofs', () => {
     const container = render(
       <PreviewTemplateDetailsLetter

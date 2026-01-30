@@ -2,7 +2,7 @@
 
 import { Container, SummaryList } from 'nhsuk-react-components';
 import {
-  LetterTemplate,
+  PdfLetterTemplate,
   letterTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { Filename } from '@atoms/Filename/Filename';
@@ -24,13 +24,9 @@ export default function PreviewTemplateDetailsLetter({
   template,
   hideStatus,
 }: {
-  template: LetterTemplate;
+  template: PdfLetterTemplate;
   hideStatus?: boolean;
 }) {
-  if (template.letterVersion !== 'PDF') {
-    throw new Error('AUTHORING letter version is not implemented');
-  }
-
   const features = useFeatureFlags();
 
   const proofFilenames = Object.values(template.files.proofs ?? {})

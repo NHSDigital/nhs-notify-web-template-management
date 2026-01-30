@@ -2,7 +2,7 @@ import { LanguageLetterTemplates } from '@molecules/LanguageLetterTemplates/Lang
 import { LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');
 
@@ -12,21 +12,21 @@ jest
     'message-plans/choose-other-language-letter-template/testid'
   );
 
-const FRENCH_LETTER_TEMPLATE: LetterTemplate = {
+const FRENCH_LETTER_TEMPLATE: PdfLetterTemplate = {
   ...LETTER_TEMPLATE,
   id: 'french-template-id',
   name: 'French Letter Template',
   language: 'fr',
 };
 
-const POLISH_LETTER_TEMPLATE: LetterTemplate = {
+const POLISH_LETTER_TEMPLATE: PdfLetterTemplate = {
   ...LETTER_TEMPLATE,
   id: 'polish-template-id',
   name: 'Polish Letter Template',
   language: 'pl',
 };
 
-const GERMAN_LETTER_TEMPLATE: LetterTemplate = {
+const GERMAN_LETTER_TEMPLATE: PdfLetterTemplate = {
   ...LETTER_TEMPLATE,
   id: 'german-template-id',
   name: 'German Letter Template',

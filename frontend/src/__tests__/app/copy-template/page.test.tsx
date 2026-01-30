@@ -6,7 +6,7 @@ import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -30,7 +30,7 @@ describe('CopyTemplatePage', () => {
     lockNumber: 1,
   } satisfies TemplateDto;
 
-  const letterTemplate: LetterTemplate = {
+  const letterTemplate: PdfLetterTemplate = {
     id: 'template-id',
     templateType: 'LETTER',
     templateStatus: 'NOT_YET_SUBMITTED',
