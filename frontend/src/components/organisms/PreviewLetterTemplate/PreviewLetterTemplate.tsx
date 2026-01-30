@@ -9,9 +9,7 @@ import type {
   LetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import {
-  isRightToLeft,
-} from 'nhs-notify-web-template-management-utils/enum';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';

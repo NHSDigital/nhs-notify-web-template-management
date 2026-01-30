@@ -61,7 +61,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
             <SummaryList.Value>
-              {letterTypeDisplayMappings(template.letterType, template.language)}
+              {letterTypeDisplayMappings(
+                template.letterType,
+                template.language
+              )}
             </SummaryList.Value>
             <SummaryList.Actions />
           </SummaryList.Row>
@@ -104,7 +107,9 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
           {/* Printing and postage */}
           <SummaryList.Row
-            className={!template.letterVariantId ? styles.missingValue : undefined}
+            className={
+              template.letterVariantId ? undefined : styles.missingValue
+            }
           >
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
@@ -133,13 +138,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 </Tag>
               </SummaryList.Value>
               <SummaryList.Actions>
-              <Link
-                href='https://notify.nhs.uk/templates/what-template-statuses-mean'
-                data-testid='status-action'
-              >
-                Learn more
-                <span className='nhsuk-u-visually-hidden'> about status</span>
-              </Link>
+                <Link
+                  href='https://notify.nhs.uk/templates/what-template-statuses-mean'
+                  data-testid='status-action'
+                >
+                  Learn more
+                  <span className='nhsuk-u-visually-hidden'> about status</span>
+                </Link>
               </SummaryList.Actions>
             </SummaryList.Row>
           )}
