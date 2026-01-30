@@ -12,7 +12,6 @@ import {
   PdfProofingLetterProperties,
   NhsAppProperties,
   SmsProperties,
-  TemplateDto,
   LetterType,
   Language,
   BaseCreatedTemplate,
@@ -214,20 +213,29 @@ const $BaseTemplateDto = schemaFor<
   })
 );
 
-export const $TemplateDto: z.ZodType<TemplateDto> = z.preprocess(
-  addDefaultLetterVersion,
-  z.union([
-    z.discriminatedUnion('templateType', [
-      $BaseTemplateDto.extend($NhsAppProperties.shape),
-      $BaseTemplateDto.extend($EmailProperties.shape),
-      $BaseTemplateDto.extend($SmsProperties.shape),
-    ]),
-    z.discriminatedUnion('letterVersion', [
-      $BaseTemplateDto.extend($PdfProofingLetterProperties.shape),
-      $BaseTemplateDto.extend($AuthoringLetterProperties.shape),
-    ]),
-  ])
+const $PdfProofingLetterTemplateDto = $BaseTemplateDto.extend(
+  $PdfProofingLetterProperties.shape
 );
+
+const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
+  $AuthoringLetterProperties.shape
+);
+
+// Inner discriminated union for LETTER templates by letterVersion
+const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
+  $PdfProofingLetterTemplateDto,
+  $AuthoringLetterTemplateDto,
+]);
+
+// Outer discriminated union by templateType
+// Note: For legacy LETTER records without letterVersion, the application/repository layer
+// must add letterVersion: 'PDF_PROOFING' before validation
+export const $TemplateDto = z.discriminatedUnion('templateType', [
+  $BaseTemplateDto.extend($NhsAppProperties.shape),
+  $BaseTemplateDto.extend($EmailProperties.shape),
+  $BaseTemplateDto.extend($SmsProperties.shape),
+  $LetterTemplateDto,
+]);
 
 export const $TemplateFilter = z.object({
   templateStatus: $TemplateStatusFilter.optional(),
