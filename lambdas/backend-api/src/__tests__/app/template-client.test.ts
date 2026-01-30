@@ -17,6 +17,7 @@ import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-ut
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 import { RoutingConfigRepository } from '../../infra/routing-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+
 import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
@@ -645,6 +646,45 @@ describe('templateClient', () => {
             }),
           }),
         }),
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
+    // temporary, until we implement support for AUTHORING letter version
+    test('should return a failure result, when letterVersion is not PDF', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+
+      const result = await templateClient.uploadLetterTemplate(
+        data as CreateUpdateTemplate,
+        user,
+        pdf
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        }),
+      });
+
+      expect(result.error?.errorMeta.details).toMatchObject({
+        letterVersion: expect.stringContaining('Invalid input: expected "PDF"'),
       });
 
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
