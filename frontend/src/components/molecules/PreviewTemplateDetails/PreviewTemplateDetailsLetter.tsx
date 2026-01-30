@@ -2,9 +2,8 @@
 
 import { Container, SummaryList } from 'nhsuk-react-components';
 import {
-  assertPdfProofingLetter,
+  LetterTemplate,
   letterTypeDisplayMappings,
-  type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { Filename } from '@atoms/Filename/Filename';
 import content from '@content/content';
@@ -22,14 +21,17 @@ import { useFeatureFlags } from '@providers/client-config-provider';
 const { rowHeadings } = content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsLetter({
-  template: letterTemplate,
+  template,
   hideStatus,
 }: {
   template: LetterTemplate;
   hideStatus?: boolean;
 }) {
+  if (template.letterVersion !== 'PDF') {
+    throw new Error('AUTHORING letter version is not implemented');
+  }
+
   const features = useFeatureFlags();
-  const template = assertPdfProofingLetter(letterTemplate);
 
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')

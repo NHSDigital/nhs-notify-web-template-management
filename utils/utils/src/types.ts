@@ -67,22 +67,6 @@ export type LetterTemplate =
   | PdfProofingLetterTemplate
   | AuthoringLetterTemplate;
 
-export class UnexpectedLetterVersionError extends Error {
-  constructor(letterVersion: string) {
-    super(`ERR_UNEXPECTED_LETTER_VERSION: ${letterVersion}`);
-    this.name = 'UnexpectedLetterVersionError';
-  }
-}
-
-export const assertPdfProofingLetter = (
-  template: LetterTemplate
-): PdfProofingLetterTemplate => {
-  if (template.letterVersion !== 'PDF') {
-    throw new UnexpectedLetterVersionError(template.letterVersion);
-  }
-  return template;
-};
-
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 
