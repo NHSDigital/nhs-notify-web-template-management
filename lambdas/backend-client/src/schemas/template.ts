@@ -213,13 +213,20 @@ const $BaseTemplateDto = schemaFor<
   })
 );
 
-const $PdfProofingLetterTemplateDto = $BaseTemplateDto.extend(
-  $PdfProofingLetterProperties.shape
-);
-
 const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
   $AuthoringLetterProperties.shape
 );
+
+// For DTO parsing, accept undefined letterVersion and default to 'PDF_PROOFING'
+// for legacy LETTER records created before letterVersion was introduced
+const $DefaultablePdfProofingLetterVersion = z
+  .union([z.undefined(), z.literal('PDF_PROOFING')])
+  .transform((val) => val ?? ('PDF_PROOFING' as const));
+
+const $PdfProofingLetterTemplateDto = $BaseTemplateDto.extend({
+  ...$PdfProofingLetterProperties.shape,
+  letterVersion: $DefaultablePdfProofingLetterVersion,
+});
 
 // Inner discriminated union for LETTER templates by letterVersion
 const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
@@ -228,8 +235,6 @@ const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
 ]);
 
 // Outer discriminated union by templateType
-// Note: For legacy LETTER records without letterVersion, the application/repository layer
-// must add letterVersion: 'PDF_PROOFING' before validation
 export const $TemplateDto = z.discriminatedUnion('templateType', [
   $BaseTemplateDto.extend($NhsAppProperties.shape),
   $BaseTemplateDto.extend($EmailProperties.shape),

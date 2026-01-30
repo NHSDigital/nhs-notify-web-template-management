@@ -501,9 +501,7 @@ describe('Template schemas', () => {
   });
 
   describe('$TemplateDto', () => {
-    test('should fail validation when letterVersion is not provided for LETTER template', () => {
-      // Legacy records without letterVersion must have it added by the repository layer
-      // before validation
+    test('should default letterVersion to PDF_PROOFING when not provided for LETTER template', () => {
       const letterWithoutVersion = {
         id: 'test-id',
         name: 'Test Letter',
@@ -524,7 +522,12 @@ describe('Template schemas', () => {
 
       const result = $TemplateDto.safeParse(letterWithoutVersion);
 
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...letterWithoutVersion,
+        lockNumber: 0,
+        letterVersion: 'PDF_PROOFING',
+      });
     });
 
     test('should pass validation for LETTER template with letterVersion provided', () => {
