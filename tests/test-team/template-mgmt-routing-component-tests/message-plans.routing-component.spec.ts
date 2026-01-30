@@ -195,7 +195,7 @@ test.describe('Message plans Page', () => {
     await copyButton.click();
 
     await expect(copyButton).toHaveText(
-      'Failed copying Names and IDs to clipboard'
+      'Failed copying names and IDs to clipboard'
     );
 
     await messagePlanPage.productionMessagePlansTable.click();
@@ -205,7 +205,7 @@ test.describe('Message plans Page', () => {
     await productionButton.click();
 
     await expect(productionButton).toHaveText(
-      'Failed copying Names and IDs to clipboard'
+      'Failed copying names and IDs to clipboard'
     );
   });
 

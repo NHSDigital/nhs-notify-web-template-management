@@ -141,7 +141,7 @@ describe('MessagePlansList', () => {
 
     expect(mockClipboardWrite).toHaveBeenCalledTimes(1);
     expect(copyButton).toHaveTextContent(
-      'Failed copying Names and IDs to clipboard'
+      'Failed copying names and IDs to clipboard'
     );
   });
 });
