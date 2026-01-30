@@ -93,8 +93,6 @@ export const $AuthoringLetterTemplate = $BaseLetterTemplateDto.and(
   $AuthoringLetterProperties
 );
 
-// Union of both letter template types - use z.union since discriminatedUnion
-// requires object schemas (not intersections) with the discriminator at top level
 export const $LetterTemplate = z.union([
   $PdfLetterTemplate,
   $AuthoringLetterTemplate,
