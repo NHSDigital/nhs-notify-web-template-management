@@ -1,5 +1,3 @@
-'use server';
-
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
