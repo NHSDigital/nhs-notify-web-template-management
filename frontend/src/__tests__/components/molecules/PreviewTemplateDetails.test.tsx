@@ -69,6 +69,7 @@ describe('PreviewTemplateDetailsSms', () => {
 });
 
 describe('PreviewTemplateDetailsLetter', () => {
+  // temporary, until we implement support for AUTHORING letter version
   it('throws error for AUTHORING letter version', () => {
     expect(() =>
       render(
