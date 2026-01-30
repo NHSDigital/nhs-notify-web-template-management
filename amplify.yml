@@ -6,8 +6,8 @@ applications:
         build:
           commands:
             - cd ..
-            - nvm install 24.11.0
-            - nvm use 24.11.0
+            - nvm install 24.13.0
+            - nvm use 24.13.0
             - npm ci --cache .npm --prefer-offline
             - npm run create-amplify-outputs env
             - npm run build
