@@ -113,7 +113,7 @@ export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
-      letterVariantId: z.string(),
+      letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
       sidesCount: z.number().int(),
     })

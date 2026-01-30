@@ -1,8 +1,17 @@
+import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { useFeatureFlags } from '@providers/client-config-provider';
+
+jest.mock('@providers/client-config-provider');
+
+beforeEach(() => {
+  jest.resetAllMocks();
+  jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+});
 
 describe('PreviewTemplateDetailsNhsApp', () => {
   it('matches snapshot', () => {
@@ -69,30 +78,6 @@ describe('PreviewTemplateDetailsSms', () => {
 });
 
 describe('PreviewTemplateDetailsLetter', () => {
-  // temporary, until we implement support for AUTHORING letter version
-  it('throws error for AUTHORING letter version', () => {
-    expect(() =>
-      render(
-        <PreviewTemplateDetailsLetter
-          template={{
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            templateType: 'LETTER',
-            letterType: 'x0',
-            letterVersion: 'AUTHORING',
-            letterVariantId: 'variant-123',
-            sidesCount: 2,
-            language: 'en',
-            createdAt: '2025-01-13T10:19:25.579Z',
-            updatedAt: '2025-01-13T10:19:25.579Z',
-            lockNumber: 1,
-          }}
-        />
-      )
-    ).toThrow('AUTHORING letter version is not implemented');
-  });
-
   it('matches snapshot without proofs', () => {
     const container = render(
       <PreviewTemplateDetailsLetter
@@ -259,5 +244,207 @@ describe('PreviewTemplateDetailsLetter', () => {
     );
 
     expect(container.asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('PreviewTemplateDetailsAuthoringLetter', () => {
+  it('matches snapshot for AUTHORING letter', () => {
+    const container = render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('renders Edit name link below template name', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    const editNameLink = screen.getByTestId('edit-name-link');
+    expect(editNameLink).toBeInTheDocument();
+    expect(editNameLink).toHaveTextContent('Edit name');
+  });
+
+  it('renders action links in summary list rows', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 4,
+          language: 'en',
+          campaignId: 'campaign-123',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    // Campaign has "Edit" action
+    expect(screen.getByTestId('campaign-action')).toHaveTextContent('Edit');
+    // Sheets has "Learn more" action
+    expect(screen.getByTestId('sheets-action')).toHaveTextContent('Learn more');
+    // Printing and postage has "Edit" action
+    expect(screen.getByTestId('printing-postage-action')).toHaveTextContent(
+      'Edit'
+    );
+    // Status has "Learn more" action
+    expect(screen.getByTestId('status-action')).toHaveTextContent('Learn more');
+  });
+
+  it('displays correct values for pages and sheets', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 5,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    // Total pages = ceil(5/2) = 3
+    expect(screen.getByText('3')).toBeInTheDocument();
+    // Sheets = sidesCount = 5
+    expect(screen.getByText('5')).toBeInTheDocument();
+  });
+
+  it('displays printing and postage value', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'my-variant-id',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(screen.getByText('my-variant-id')).toBeInTheDocument();
+  });
+
+  it('displays yellow background when letterVariantId is absent', () => {
+    const { container } = render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    // Verify the row has the missingValue class for yellow background
+    const printingAndPostageRow = container.querySelector('.missingValue');
+    expect(printingAndPostageRow).toBeInTheDocument();
+  });
+
+  it('matches snapshot when letterVariantId is absent', () => {
+    const { asFragment } = render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter without variant',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          sidesCount: 4,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('hides status when hideStatus is true', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideStatus
+      />
+    );
+
+    expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
   });
 });

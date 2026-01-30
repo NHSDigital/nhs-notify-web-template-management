@@ -62,7 +62,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -207,7 +207,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -377,7 +377,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render letter
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -643,7 +643,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -809,7 +809,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -969,7 +969,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1145,7 +1145,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1429,7 +1429,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

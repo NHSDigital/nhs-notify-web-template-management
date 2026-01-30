@@ -58,6 +58,9 @@ type TypeSpecificProperties = {
   testDataCsvHeaders?: string[];
   campaignId?: string;
   supplierReferences?: Record<string, string>;
+  // AUTHORING letter specific properties
+  sidesCount?: number;
+  letterVariantId?: string;
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

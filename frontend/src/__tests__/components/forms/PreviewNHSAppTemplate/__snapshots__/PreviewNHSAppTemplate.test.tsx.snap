@@ -87,7 +87,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -342,7 +342,7 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -577,7 +577,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -800,7 +800,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -942,7 +942,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1160,7 +1160,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

@@ -107,6 +107,8 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
+      sidesCount?: number;
+      letterVariantId?: string;
     }
   ): Template => {
     return TemplateFactory.create({
@@ -121,6 +123,8 @@ export const TemplateFactory = {
       templateStatus,
       templateType: 'LETTER',
       proofingEnabled: true,
+      sidesCount: options?.sidesCount ?? 2,
+      letterVariantId: options?.letterVariantId,
     });
   },
 

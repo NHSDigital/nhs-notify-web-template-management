@@ -62,7 +62,7 @@ exports[`PreviewTemplateFromMessagePlan renders Email template preview with the 
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -205,7 +205,7 @@ exports[`PreviewTemplateFromMessagePlan renders French Letter template preview w
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -326,7 +326,7 @@ exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template prev
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -447,7 +447,7 @@ exports[`PreviewTemplateFromMessagePlan renders Letter template preview with the
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -568,7 +568,7 @@ exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with th
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -686,7 +686,7 @@ exports[`PreviewTemplateFromMessagePlan renders SMS template preview with the co
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

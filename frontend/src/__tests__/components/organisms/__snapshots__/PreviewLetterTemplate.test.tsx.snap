@@ -1,5 +1,923 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter version 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="#"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                1
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                variant-123
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="#"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--yellow"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
+                >
+                  Approval needed
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="status-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter with VALIDATION_FAILED status 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          aria-labelledby="error-summary-title"
+          class="nhsuk-error-summary"
+          role="alert"
+          tabindex="-1"
+        >
+          <h2
+            class="nhsuk-error-summary__title"
+            data-testid="error-summary"
+            id="error-summary-title"
+          >
+            There is a problem
+          </h2>
+          <ul
+            class="nhsuk-list nhsuk-error-summary__list"
+          >
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
+                The personalisation fields in your files are missing or do not match.
+              </span>
+            </li>
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
+                Check that the personalisation fields in your template file match the fields in your example personalisation file
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="#"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                1
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                variant-123
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="#"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--yellow"
+                  data-status="validation-failed"
+                  data-testid="status-tag"
+                >
+                  Approval needed
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="status-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter with VIRUS_SCAN_FAILED status 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          aria-labelledby="error-summary-title"
+          class="nhsuk-error-summary"
+          role="alert"
+          tabindex="-1"
+        >
+          <h2
+            class="nhsuk-error-summary__title"
+            data-testid="error-summary"
+            id="error-summary-title"
+          >
+            There is a problem
+          </h2>
+          <ul
+            class="nhsuk-list nhsuk-error-summary__list"
+          >
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
+                The file(s) you uploaded may contain a virus.
+              </span>
+            </li>
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
+                Create a new letter template to upload your file(s) again or upload different file(s).
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="#"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                1
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                variant-123
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="#"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--yellow"
+                  data-status="virus-scan-failed"
+                  data-testid="status-tag"
+                >
+                  Approval needed
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="status-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter with footer text 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            test-template-letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="#"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                1
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                variant-123
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="#"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--yellow"
+                  data-status="waiting-for-proof"
+                  data-testid="status-tag"
+                >
+                  Approval needed
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              >
+                <a
+                  data-testid="status-action"
+                  href="#"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <div
+          class="preview-letter-footer nhsuk-u-margin-bottom-6"
+        >
+          <p>
+            It can take 5 to 10 working days to get a proof of your template.
+          </p>
+          <p>
+            If you still have not received your proof after this time, contact NHS Notify.
+          </p>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`PreviewLetterTemplate component matches snapshot when template language is Right to Left 1`] = `
 <DocumentFragment>
   <a
@@ -62,7 +980,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -251,7 +1169,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -403,7 +1321,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -592,7 +1510,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -738,7 +1656,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -884,7 +1802,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1078,7 +1996,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1339,7 +2257,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1632,7 +2550,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1841,7 +2759,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1982,7 +2900,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

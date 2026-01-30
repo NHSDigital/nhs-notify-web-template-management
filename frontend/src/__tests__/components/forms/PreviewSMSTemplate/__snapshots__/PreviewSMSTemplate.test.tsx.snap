@@ -87,7 +87,7 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -341,7 +341,7 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -575,7 +575,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -797,7 +797,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -938,7 +938,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1155,7 +1155,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

@@ -145,6 +145,19 @@ describe('statusToDisplayMapping', () => {
       ).toMatchSnapshot();
     }
   );
+
+  test('returns "Approval needed" for AUTHORING letter version', () => {
+    expect(
+      statusToDisplayMapping(
+        {
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterVersion: 'AUTHORING',
+        },
+        { routing: true }
+      )
+    ).toBe('Approval needed');
+  });
 });
 
 describe('statusToColourMapping', () => {
@@ -162,6 +175,19 @@ describe('statusToColourMapping', () => {
       ).toMatchSnapshot();
     }
   );
+
+  test('returns "yellow" for AUTHORING letter version', () => {
+    expect(
+      statusToColourMapping(
+        {
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterVersion: 'AUTHORING',
+        },
+        { routing: true }
+      )
+    ).toBe('yellow');
+  });
 });
 
 describe('legacyTemplateTypeToUrlTextMappings', () => {

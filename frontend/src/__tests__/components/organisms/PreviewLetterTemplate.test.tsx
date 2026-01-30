@@ -10,27 +10,96 @@ describe('PreviewLetterTemplate component', () => {
     jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
   });
 
-  it('throws error for AUTHORING letter version', () => {
-    expect(() =>
-      render(
-        <PreviewLetterTemplate
-          template={{
-            templateType: 'LETTER',
-            name: 'test-template-letter',
-            id: 'template-id',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            language: 'en',
-            letterType: 'x0',
-            letterVersion: 'AUTHORING',
-            letterVariantId: 'variant-123',
-            sidesCount: 2,
-            createdAt: '2025-04-02T09:33:25.729Z',
-            updatedAt: '2025-04-02T09:33:25.729Z',
-            lockNumber: 1,
-          }}
-        />
-      )
-    ).toThrow('AUTHORING letter version is not supported');
+  it('matches snapshot for AUTHORING letter version', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          templateType: 'LETTER',
+          name: 'test-template-letter',
+          id: 'template-id',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot for AUTHORING letter with VIRUS_SCAN_FAILED status', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          templateType: 'LETTER',
+          name: 'test-template-letter',
+          id: 'template-id',
+          templateStatus: 'VIRUS_SCAN_FAILED',
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot for AUTHORING letter with VALIDATION_FAILED status', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          templateType: 'LETTER',
+          name: 'test-template-letter',
+          id: 'template-id',
+          templateStatus: 'VALIDATION_FAILED',
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot for AUTHORING letter with footer text', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          templateType: 'LETTER',
+          name: 'test-template-letter',
+          id: 'template-id',
+          templateStatus: 'WAITING_FOR_PROOF',
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
   });
 
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {

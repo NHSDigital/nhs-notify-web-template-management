@@ -2,7 +2,7 @@
 
 import {
   TemplatePageProps,
-  validateSubmittedLetterTemplate,
+  validateSubmittedPdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -24,7 +24,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateSubmittedLetterTemplate(template);
+  const validatedTemplate = validateSubmittedPdfLetterTemplate(template);
 
   if (!validatedTemplate) {
     redirect('/invalid-template', RedirectType.replace);

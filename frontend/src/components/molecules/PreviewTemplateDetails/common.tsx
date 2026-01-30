@@ -32,11 +32,21 @@ type ContentPreviewField = {
 const { rowHeadings, previewTemplateStatusFootnote, headerCaption } =
   content.components.previewTemplateDetails;
 
-export function DetailSection({ children }: { children: React.ReactNode }) {
+export function DetailSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <SummaryList
       noBorder={false}
-      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+      className={concatClassNames(
+        'nhsuk-u-margin-bottom-4',
+        styles.preview,
+        className
+      )}
     >
       {children}
     </SummaryList>
@@ -73,11 +83,13 @@ export function StandardDetailRows({
   templateTypeText,
   campaignId,
   hideStatus,
+  includeEmptyActions,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
   campaignId?: string;
   hideStatus?: boolean;
+  includeEmptyActions?: boolean;
 }>): JSX.Element {
   const features = useFeatureFlags();
   return (
@@ -90,16 +102,19 @@ export function StandardDetailRows({
         >
           {template.id}
         </SummaryList.Value>
+        {includeEmptyActions && <SummaryList.Actions />}
       </SummaryList.Row>
       {campaignId && (
         <SummaryList.Row id='campaign-id'>
           <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
           <SummaryList.Value>{campaignId}</SummaryList.Value>
+          {includeEmptyActions && <SummaryList.Actions />}
         </SummaryList.Row>
       )}
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
+        {includeEmptyActions && <SummaryList.Actions />}
       </SummaryList.Row>
       {!hideStatus && (
         <SummaryList.Row>
@@ -125,6 +140,7 @@ export function StandardDetailRows({
               </small>
             )}
           </SummaryList.Value>
+          {includeEmptyActions && <SummaryList.Actions />}
         </SummaryList.Row>
       )}
     </>

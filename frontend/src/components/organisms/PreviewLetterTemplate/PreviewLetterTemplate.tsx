@@ -2,9 +2,16 @@
 
 import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import content from '@content/content';
-import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+import type {
+  AuthoringLetterTemplate,
+  LetterTemplate,
+  PdfLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
+import {
+  isRightToLeft,
+} from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -20,10 +27,16 @@ type ButtonDetails = { text: string; href: string };
 export function PreviewLetterTemplate({
   template,
 }: Readonly<{ template: LetterTemplate }>) {
-  if (template.letterVersion !== 'PDF') {
-    throw new Error('AUTHORING letter version is not supported');
-  }
+  return template.letterVersion === 'PDF' ? (
+    <PreviewPdfLetterTemplate template={template} />
+  ) : (
+    <PreviewAuthoringLetterTemplate template={template} />
+  );
+}
 
+function PreviewPdfLetterTemplate({
+  template,
+}: Readonly<{ template: PdfLetterTemplate }>) {
   const {
     approveProofText,
     backLinkText,
@@ -158,6 +171,69 @@ export function PreviewLetterTemplate({
                 {continueButton.text}
               </NHSNotifyButton>
             )}
+            <p>
+              <Link href='/message-templates'>{backLinkText}</Link>
+            </p>
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
+  );
+}
+
+function PreviewAuthoringLetterTemplate({
+  template,
+}: Readonly<{ template: AuthoringLetterTemplate }>) {
+  const {
+    backLinkText,
+    footer,
+    validationError,
+    validationErrorAction,
+    virusScanError,
+    virusScanErrorAction,
+  } = content.components.previewLetterTemplate;
+
+  const errors: string[] = [];
+  if (template.templateStatus === 'VIRUS_SCAN_FAILED') {
+    errors.push(virusScanError, virusScanErrorAction);
+  }
+
+  if (template.templateStatus === 'VALIDATION_FAILED') {
+    errors.push(validationError, validationErrorAction);
+  }
+
+  const footerText = footer[template.templateStatus] ?? [];
+
+  return (
+    <>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <NotifyBackLink>{backLinkText}</NotifyBackLink>
+      </Link>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            {errors.length > 0 && (
+              <NhsNotifyErrorSummary
+                errorState={{
+                  formErrors: errors,
+                }}
+              />
+            )}
+            <PreviewTemplateDetailsAuthoringLetter template={template} />
+
+            {footerText.length > 0 ? (
+              <div
+                className={classNames(
+                  'preview-letter-footer',
+                  'nhsuk-u-margin-bottom-6'
+                )}
+              >
+                {footerText.map((item, i) => (
+                  <p key={`footer-${i}`}>{item}</p>
+                ))}
+              </div>
+            ) : null}
+
             <p>
               <Link href='/message-templates'>{backLinkText}</Link>
             </p>

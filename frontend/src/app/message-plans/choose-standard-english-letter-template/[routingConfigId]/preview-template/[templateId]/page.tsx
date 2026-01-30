@@ -2,7 +2,7 @@
 
 import {
   MessagePlanAndTemplatePageProps,
-  validateLetterTemplate,
+  validatePdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -37,7 +37,7 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateLetterTemplate(template);
+  const validatedTemplate = validatePdfLetterTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

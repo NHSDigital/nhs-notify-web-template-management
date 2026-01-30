@@ -1,5 +1,369 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING letter 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example AUTHORING letter
+    </h1>
+  </div>
+  <p
+    class="nhsuk-u-margin-bottom-4"
+  >
+    <a
+      data-testid="edit-name-link"
+      href="#"
+    >
+      Edit name
+    </a>
+  </p>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value monospace-font"
+          data-testid="preview-template-id"
+        >
+          template-id
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Standard letter
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Total pages
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          1
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Sheets
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          2
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="sheets-action"
+            href="https://notify.nhs.uk/pricing-and-commercial/letters"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about sheets
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Printing and postage
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          variant-123
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="printing-postage-action"
+            href="#"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               printing and postage
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--yellow"
+            data-status="not-yet-submitted"
+            data-testid="status-tag"
+          >
+            Approval needed
+          </strong>
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="status-action"
+            href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about status
+            </span>
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVariantId is absent 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Example AUTHORING letter without variant
+    </h1>
+  </div>
+  <p
+    class="nhsuk-u-margin-bottom-4"
+  >
+    <a
+      data-testid="edit-name-link"
+      href="#"
+    >
+      Edit name
+    </a>
+  </p>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value monospace-font"
+          data-testid="preview-template-id"
+        >
+          template-id
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Standard letter
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Total pages
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          2
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Sheets
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          4
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="sheets-action"
+            href="https://notify.nhs.uk/pricing-and-commercial/letters"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about sheets
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row missingValue"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Printing and postage
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        />
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="printing-postage-action"
+            href="#"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               printing and postage
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--yellow"
+            data-status="not-yet-submitted"
+            data-testid="status-tag"
+          >
+            Approval needed
+          </strong>
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        >
+          <a
+            data-testid="status-action"
+            href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about status
+            </span>
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 <DocumentFragment>
   <div
@@ -44,7 +408,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -179,7 +543,7 @@ exports[`PreviewTemplateDetailsLetter if status is NOT_YET_SUBMITTED, then Not y
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -292,7 +656,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -405,7 +769,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -639,7 +1003,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -757,7 +1121,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -911,7 +1275,7 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -1021,7 +1385,7 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
