@@ -1,9 +1,13 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
+  AuthoringLetterProperties,
+  BaseCreatedTemplate,
   CreateUpdateTemplate,
   Language,
   LetterFiles,
   LetterType,
+  LetterVersion,
+  PdfLetterProperties,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -53,7 +57,12 @@ export type EmailTemplate = Extract<TemplateDto, { templateType: 'EMAIL' }>;
 
 export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
 
-export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
+export type PdfLetterTemplate = BaseCreatedTemplate & PdfLetterProperties;
+
+export type AuthoringLetterTemplate = BaseCreatedTemplate &
+  AuthoringLetterProperties;
+
+export type LetterTemplate = PdfLetterTemplate | AuthoringLetterTemplate;
 
 export type DigitalTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
 
@@ -119,6 +128,7 @@ export type DatabaseTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  letterVersion?: LetterVersion;
   lockNumber?: number;
   message?: string;
   name: string;

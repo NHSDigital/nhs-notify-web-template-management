@@ -17,6 +17,7 @@ const initialState: UploadLetterTemplate = {
   letterType: 'x0',
   language: 'en',
   campaignId: 'campaign-id',
+  letterVersion: 'PDF',
 };
 
 describe('UploadLetterTemplate server actions', () => {
@@ -51,6 +52,7 @@ describe('UploadLetterTemplate server actions', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
+      letterVersion: 'PDF',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -113,6 +115,7 @@ describe('UploadLetterTemplate server actions', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
+      letterVersion: 'PDF',
       language: 'ar',
       files: {
         pdfTemplate: {

@@ -97,7 +97,8 @@ curl -X POST --location "${APIG_STAGE}/v1/letter-template" \
   "templateType": "LETTER",
   "name": "example letter",
   "letterType": "x0",
-  "language": "en"
+  "language": "en",
+  "letterVersion": "PDF"
 }'
 ```
 

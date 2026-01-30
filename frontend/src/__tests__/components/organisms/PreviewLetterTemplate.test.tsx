@@ -10,6 +10,29 @@ describe('PreviewLetterTemplate component', () => {
     jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
   });
 
+  it('throws error for AUTHORING letter version', () => {
+    expect(() =>
+      render(
+        <PreviewLetterTemplate
+          template={{
+            templateType: 'LETTER',
+            name: 'test-template-letter',
+            id: 'template-id',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            language: 'en',
+            letterType: 'x0',
+            letterVersion: 'AUTHORING',
+            letterVariantId: 'variant-123',
+            sidesCount: 2,
+            createdAt: '2025-04-02T09:33:25.729Z',
+            updatedAt: '2025-04-02T09:33:25.729Z',
+            lockNumber: 1,
+          }}
+        />
+      )
+    ).toThrow('AUTHORING letter version is not supported');
+  });
+
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
     const container = render(
       <PreviewLetterTemplate
@@ -20,6 +43,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
           letterType: 'x1',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -48,6 +72,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PENDING_PROOF_REQUEST',
           letterType: 'q4',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {
@@ -76,6 +101,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'WAITING_FOR_PROOF',
           letterType: 'q4',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {
@@ -105,6 +131,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           letterType: 'x1',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -142,6 +169,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           letterType: 'x1',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -180,6 +208,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_APPROVED',
           letterType: 'x1',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -215,6 +244,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'x0',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -251,6 +281,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
           letterType: 'x1',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -284,6 +315,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
           letterType: 'x1',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -312,6 +344,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',
           letterType: 'x1',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -339,6 +372,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'x0',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {

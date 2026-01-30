@@ -1,5 +1,8 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { FormState } from 'nhs-notify-web-template-management-utils';
+import {
+  FormState,
+  LetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { replaceLanguageTemplatesInCascadeItem } from '@utils/routing-utils';
@@ -85,7 +88,7 @@ export async function chooseLanguageLetterTemplatesAction(
   }
 
   const selectedTemplateIdsSet = new Set(selectedTemplateIds);
-  const templateMap = new Map(
+  const templateMap = new Map<string, LetterTemplate>(
     templateList
       .filter((template) => selectedTemplateIdsSet.has(template.id))
       .map((template) => [template.id, template])

@@ -25,6 +25,7 @@ const generateLetterTemplateData = (
     id: randomUUID(),
     templateType: 'LETTER',
     letterType: 'x0',
+    letterVersion: 'PDF',
     language: 'en',
     createdAt: now,
     updatedAt: now,

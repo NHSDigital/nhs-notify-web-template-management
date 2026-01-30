@@ -37,6 +37,7 @@ const createTemplateBaseData = (templateType: unknown) => ({
   ...(templateType === 'LETTER' && {
     language: 'en',
     letterType: 'x0',
+    letterVersion: 'PDF',
   }),
 });
 

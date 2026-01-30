@@ -29,7 +29,10 @@ import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
 
-export type WithAttachments<T> = T extends { templateType: 'LETTER' }
+export type WithAttachments<T> = T extends {
+  templateType: 'LETTER';
+  letterVersion: 'PDF';
+}
   ? T & { files: LetterFiles }
   : T;
 

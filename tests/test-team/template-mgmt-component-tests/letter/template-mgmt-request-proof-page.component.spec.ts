@@ -16,6 +16,11 @@ async function createTemplates() {
       user,
       'request-proof'
     ),
+    authoring: TemplateFactory.createAuthoringLetterTemplate(
+      'AC85D9AB-9B56-4C34-8CD7-8B713310A37B',
+      user,
+      'authoring-request-proof'
+    ),
   };
 }
 
@@ -66,5 +71,18 @@ test.describe('Request Proof Page', () => {
     await requestProofPage.loadPage();
 
     await expect(page).toHaveURL(previewPage.getUrl());
+  });
+
+  test('redirects to invalid-template page when template has AUTHORING letterVersion', async ({
+    page,
+    baseURL,
+  }) => {
+    const requestProofPage = new TemplateMgmtRequestProofPage(page)
+      .setPathParam('templateId', templates.authoring.id)
+      .setSearchParam('lockNumber', String(templates.authoring.lockNumber));
+
+    await requestProofPage.loadPage();
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
 });

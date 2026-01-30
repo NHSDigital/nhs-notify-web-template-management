@@ -245,6 +245,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           campaignId: 'Campaign1',
           language: 'en',
           letterType: 'x0',
+          letterVersion: 'PDF',
           templateStatus: 'SUBMITTED',
         }),
       }

@@ -128,6 +128,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -155,6 +156,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -188,6 +190,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -210,6 +213,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -251,6 +255,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -281,6 +286,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -774,6 +780,7 @@ describe('form-actions', () => {
         name: 'template-name',
         letterType: 'x1',
         language: 'ar',
+        letterVersion: 'PDF',
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',

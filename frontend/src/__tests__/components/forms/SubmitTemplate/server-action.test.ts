@@ -151,6 +151,7 @@ describe('submitTemplate', () => {
       id: templateId,
       language: 'en',
       letterType: 'x0',
+      letterVersion: 'PDF',
       name: 'template-name',
       templateStatus: 'NOT_YET_SUBMITTED',
       templateType: 'LETTER',

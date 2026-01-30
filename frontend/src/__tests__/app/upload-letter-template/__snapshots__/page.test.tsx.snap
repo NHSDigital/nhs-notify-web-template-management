@@ -12,6 +12,7 @@ exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage when on
       "campaignId": "campaign-id",
       "language": "en",
       "letterType": "x0",
+      "letterVersion": "PDF",
       "name": "",
       "templateType": "LETTER",
     }
@@ -32,6 +33,7 @@ exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with mu
       "campaignId": "",
       "language": "en",
       "letterType": "x0",
+      "letterVersion": "PDF",
       "name": "",
       "templateType": "LETTER",
     }

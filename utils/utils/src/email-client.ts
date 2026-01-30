@@ -182,8 +182,11 @@ export class EmailClient {
       return;
     }
 
-    // nothing to send if template is not a letter
-    if (template.templateType !== 'LETTER') {
+    // nothing to send if template is not a PDF letter
+    if (
+      template.templateType !== 'LETTER' ||
+      template.letterVersion !== 'PDF'
+    ) {
       this.logger.info({
         description:
           'Not sending template submitted email to suppliers because templateType is not LETTER',

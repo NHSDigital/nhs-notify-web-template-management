@@ -43,6 +43,7 @@ async function createTemplates() {
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: `CLIENT#${routingEnabledUser.clientId}`,
+      letterVersion: 'PDF',
     } as Template,
 
     routingEnabled: TemplateFactory.uploadLetterTemplate(
@@ -63,6 +64,13 @@ async function createTemplates() {
       '900a8ee3-50e4-49a8-b157-a179f1905f4b',
       proofingDisabledUser,
       'proofing-disabled-submit-letter',
+      'NOT_YET_SUBMITTED'
+    ),
+
+    authoring: TemplateFactory.createAuthoringLetterTemplate(
+      'c1234567-abcd-1234-abcd-123456789abc',
+      routingEnabledUser,
+      'authoring-submit-letter',
       'NOT_YET_SUBMITTED'
     ),
   };
@@ -230,6 +238,21 @@ test.describe('Submit Letter Template Page', () => {
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-letter-template/${templates.routingEnabled.id}`
       );
+    });
+
+    test('when user visits page with an AUTHORING letter template, then an invalid template error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      await loginAsUser(routingEnabledUser, page);
+
+      const submitPage = new TemplateMgmtSubmitLetterPage(page)
+        .setPathParam('templateId', templates.authoring.id)
+        .setSearchParam('lockNumber', String(templates.authoring.lockNumber));
+
+      await submitPage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
 

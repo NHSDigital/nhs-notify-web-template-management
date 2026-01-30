@@ -32,6 +32,7 @@ const UploadLetterTemplatePage = async () => {
     letterType: 'x0',
     language: 'en',
     campaignId: campaignIds.length === 1 ? campaignIds[0] : '',
+    letterVersion: 'PDF',
   };
 
   return (

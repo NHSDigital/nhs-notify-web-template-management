@@ -5,7 +5,10 @@ import PreviewLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-letter-template/[templateId]/page';
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
-import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  type PdfLetterTemplate,
+  type LetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
@@ -41,6 +44,7 @@ const templateDTO = {
   id: 'template-id',
   language: 'en',
   letterType: 'x0',
+  letterVersion: 'PDF',
   name: 'template-name',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',
@@ -122,7 +126,7 @@ describe('PreviewLetterTemplatePage', () => {
     },
     {
       description: 'a letter where files is the wrong data type',
-      files: [] as unknown as LetterTemplate['files'],
+      files: [] as unknown as PdfLetterTemplate['files'],
     },
   ])(
     'should redirect to invalid-template when template is $description',

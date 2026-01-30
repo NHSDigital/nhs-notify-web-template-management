@@ -9,12 +9,13 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 
@@ -74,7 +75,7 @@ describe('SubmitLetterTemplatePage', () => {
     SMS_TEMPLATE,
     {
       ...LETTER_TEMPLATE,
-      files: undefined as unknown as LetterTemplate['files'],
+      files: undefined as unknown as PdfLetterTemplate['files'],
     } as TemplateDto,
     {
       ...LETTER_TEMPLATE,
@@ -86,8 +87,9 @@ describe('SubmitLetterTemplatePage', () => {
         },
       },
     } as TemplateDto,
+    AUTHORING_LETTER_TEMPLATE,
   ])(
-    'should redirect to invalid-template when template is $templateType and LETTER required fields are missing',
+    'should redirect to invalid-template when template is $templateType, letterVersion is $letterVersion and LETTER required fields are missing',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 

@@ -3,7 +3,7 @@ import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { EmailClient } from '../email-client';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { LetterTemplate } from '../types';
+import { PdfLetterTemplate } from '../types';
 
 describe('EmailClient', () => {
   const recipientEmails = {
@@ -73,9 +73,10 @@ describe('EmailClient', () => {
   });
 
   describe('template-submitted email', () => {
-    const mockTemplate = mockDeep<LetterTemplate>({
+    const mockTemplate = mockDeep<PdfLetterTemplate>({
       id: 'template-id',
       templateType: 'LETTER',
+      letterVersion: 'PDF',
       files: {
         proofs: {
           proof1: { fileName: 'proof1.pdf', supplier: 'supplier1' },
@@ -186,6 +187,7 @@ describe('EmailClient', () => {
       const template = mockDeep<TemplateDto>({
         id: 'template-id',
         templateType: 'LETTER',
+        letterVersion: 'PDF',
         files: {
           proofs: undefined,
         },
