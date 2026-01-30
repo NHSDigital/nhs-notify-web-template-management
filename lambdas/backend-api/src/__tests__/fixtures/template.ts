@@ -146,7 +146,7 @@ export const makeLetterTemplate = (
   const dtoTemplate = {
     ...createUpdateTemplate,
     ...dtoProperties,
-    letterVersion: 'PDF_PROOFING' as const,
+    letterVersion: 'PDF' as const,
   };
   const databaseTemplate = {
     ...dtoTemplate,

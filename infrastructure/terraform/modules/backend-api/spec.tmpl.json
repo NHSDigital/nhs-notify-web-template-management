@@ -626,7 +626,7 @@
       "LetterVersion": {
         "enum": [
           "AUTHORING",
-          "PDF_PROOFING"
+          "PDF"
         ],
         "type": "string"
       },
@@ -660,7 +660,7 @@
               },
               "letterVersion": {
                 "enum": [
-                  "PDF_PROOFING"
+                  "PDF"
                 ],
                 "type": "string"
               },

@@ -260,7 +260,7 @@ describe('Template schemas', () => {
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'test.pdf',
@@ -270,7 +270,7 @@ describe('Template schemas', () => {
       },
     };
 
-    test('should pass validation for valid PDF_PROOFING letter', () => {
+    test('should pass validation for valid PDF letter', () => {
       const result = $PdfProofingLetterProperties.safeParse(
         validPdfProofingLetter
       );
@@ -279,7 +279,7 @@ describe('Template schemas', () => {
       expect(result.data).toEqual(validPdfProofingLetter);
     });
 
-    test('should fail validation when letterVersion is not PDF_PROOFING', () => {
+    test('should fail validation when letterVersion is not PDF', () => {
       const result = $PdfProofingLetterProperties.safeParse({
         ...validPdfProofingLetter,
         letterVersion: 'AUTHORING',
@@ -309,7 +309,7 @@ describe('Template schemas', () => {
     test('should fail validation when letterVersion is not AUTHORING', () => {
       const result = $AuthoringLetterProperties.safeParse({
         ...validAuthoringLetter,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       });
 
       expect(result.success).toBe(false);
@@ -338,7 +338,7 @@ describe('Template schemas', () => {
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'test.pdf',
@@ -355,7 +355,7 @@ describe('Template schemas', () => {
       expect(result.data).toEqual(validLetterWithVersion);
     });
 
-    test('should default letterVersion to PDF_PROOFING when not provided', () => {
+    test('should default letterVersion to PDF when not provided', () => {
       const letterWithoutVersion = {
         templateType: 'LETTER',
         letterType: 'x0',
@@ -374,7 +374,7 @@ describe('Template schemas', () => {
       expect(result.success).toBe(true);
       expect(result.data).toEqual({
         ...letterWithoutVersion,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       });
     });
 
@@ -501,7 +501,7 @@ describe('Template schemas', () => {
   });
 
   describe('$TemplateDto', () => {
-    test('should default letterVersion to PDF_PROOFING when not provided for LETTER template', () => {
+    test('should default letterVersion to PDF when not provided for LETTER template', () => {
       const letterWithoutVersion = {
         id: 'test-id',
         name: 'Test Letter',
@@ -526,7 +526,7 @@ describe('Template schemas', () => {
       expect(result.data).toEqual({
         ...letterWithoutVersion,
         lockNumber: 0,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       });
     });
 
@@ -538,7 +538,7 @@ describe('Template schemas', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
         letterType: 'x0',
         language: 'en',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
         files: {

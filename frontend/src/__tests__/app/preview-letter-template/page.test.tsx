@@ -44,7 +44,7 @@ const templateDTO = {
   id: 'template-id',
   language: 'en',
   letterType: 'x0',
-  letterVersion: 'PDF_PROOFING',
+  letterVersion: 'PDF',
   name: 'template-name',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',

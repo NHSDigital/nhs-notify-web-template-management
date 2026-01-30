@@ -102,7 +102,7 @@ export const $PdfProofingLetterProperties =
     z.object({
       ...$BaseLetterTemplateProperties.shape,
       files: $LetterFiles,
-      letterVersion: z.literal('PDF_PROOFING'),
+      letterVersion: z.literal('PDF'),
       personalisationParameters: z.array(z.string()).optional(),
       proofingEnabled: z.boolean().optional(),
       supplierReferences: z.record(z.string(), z.string()).optional(),
@@ -120,8 +120,8 @@ export const $AuthoringLetterProperties =
   );
 
 const $DefaultablePdfProofingLetterVersion = z
-  .union([z.undefined(), z.literal('PDF_PROOFING')])
-  .transform((val) => val ?? ('PDF_PROOFING' as const));
+  .union([z.undefined(), z.literal('PDF')])
+  .transform((val) => val ?? ('PDF' as const));
 
 const $PdfProofingLetterPropertiesWithDefault = z.object({
   ...$PdfProofingLetterProperties.shape,

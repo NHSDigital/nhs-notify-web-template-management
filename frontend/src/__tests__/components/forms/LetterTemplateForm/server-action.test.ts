@@ -51,7 +51,7 @@ describe('UploadLetterTemplate server actions', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -114,7 +114,7 @@ describe('UploadLetterTemplate server actions', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       language: 'ar',
       files: {
         pdfTemplate: {

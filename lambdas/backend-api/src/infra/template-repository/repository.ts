@@ -89,7 +89,7 @@ export class TemplateRepository {
       createdBy: this.internalUserKey(user),
       ...(template.templateType === 'LETTER' && {
         campaignId,
-        letterVersion: 'PDF_PROOFING' as const,
+        letterVersion: 'PDF' as const,
       }),
       lockNumber: 0,
     };

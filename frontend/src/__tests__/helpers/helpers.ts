@@ -58,7 +58,7 @@ export const LETTER_TEMPLATE: PdfProofingLetterTemplate = {
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
   language: 'en',
-  letterVersion: 'PDF_PROOFING',
+  letterVersion: 'PDF',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -78,7 +78,7 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfProofingLetterTemplate = {
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x1',
   language: 'en',
-  letterVersion: 'PDF_PROOFING',
+  letterVersion: 'PDF',
   files: {
     pdfTemplate: {
       fileName: 'large-print-template.pdf',

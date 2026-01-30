@@ -387,7 +387,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_UPLOAD',
         owner: `CLIENT#${user.clientId}`,
         version: 1,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       };
 
       const updateTime = '2025-03-12T08:41:33.666Z';
@@ -530,7 +530,7 @@ describe('templateClient', () => {
           proofingEnabled: expected,
           owner: `CLIENT#${user.clientId}`,
           version: 1,
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
         };
 
         const updateTime = '2025-03-12T08:41:33.666Z';
@@ -952,7 +952,7 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
         lockNumber: 1,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1050,7 +1050,7 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
         lockNumber: 1,
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1743,7 +1743,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {} as LetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -1783,7 +1783,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {} as LetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -2001,7 +2001,7 @@ describe('templateClient', () => {
         lockNumber: 1,
         language: 'en',
         letterType: 'x0',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         campaignId: 'campaign-id',
         files: {
           pdfTemplate: {
@@ -2060,7 +2060,7 @@ describe('templateClient', () => {
         lockNumber: 1,
         language: 'en',
         letterType: 'x0',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         campaignId: 'campaign-id',
         files: {
           pdfTemplate: {
@@ -2421,7 +2421,7 @@ describe('templateClient', () => {
         id: templateId,
         language: 'en',
         letterType: 'x1',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         name: templateName,
         personalisationParameters,
         templateStatus: 'SUBMITTED',
@@ -2508,7 +2508,7 @@ describe('templateClient', () => {
         id: templateId,
         language: 'en',
         letterType: 'x1',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         name: templateName,
         personalisationParameters,
         templateStatus: 'SUBMITTED',

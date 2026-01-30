@@ -77,7 +77,7 @@ export class UnexpectedLetterVersionError extends Error {
 export const assertPdfProofingLetter = (
   template: LetterTemplate
 ): PdfProofingLetterTemplate => {
-  if (template.letterVersion !== 'PDF_PROOFING') {
+  if (template.letterVersion !== 'PDF') {
     throw new UnexpectedLetterVersionError(template.letterVersion);
   }
   return template;

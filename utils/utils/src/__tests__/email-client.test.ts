@@ -76,7 +76,7 @@ describe('EmailClient', () => {
     const mockTemplate = mockDeep<PdfProofingLetterTemplate>({
       id: 'template-id',
       templateType: 'LETTER',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       files: {
         proofs: {
           proof1: { fileName: 'proof1.pdf', supplier: 'supplier1' },
@@ -187,7 +187,7 @@ describe('EmailClient', () => {
       const template = mockDeep<TemplateDto>({
         id: 'template-id',
         templateType: 'LETTER',
-        letterVersion: 'PDF_PROOFING',
+        letterVersion: 'PDF',
         files: {
           proofs: undefined,
         },

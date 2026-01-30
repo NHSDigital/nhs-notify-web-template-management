@@ -22,7 +22,7 @@ describe('types', () => {
       name: 'Test Template',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       letterType: 'x0',
       language: 'en',
       files: {
@@ -37,13 +37,13 @@ describe('types', () => {
       lockNumber: 0,
     };
 
-    it('returns the template when letterVersion is PDF_PROOFING', () => {
+    it('returns the template when letterVersion is PDF', () => {
       const result = assertPdfProofingLetter(basePdfProofingTemplate);
 
       expect(result).toBe(basePdfProofingTemplate);
     });
 
-    it('throws UnexpectedLetterVersionError when letterVersion is not PDF_PROOFING', () => {
+    it('throws UnexpectedLetterVersionError when letterVersion is not PDF', () => {
       const authoringTemplate = {
         ...basePdfProofingTemplate,
         letterVersion: 'AUTHORING',

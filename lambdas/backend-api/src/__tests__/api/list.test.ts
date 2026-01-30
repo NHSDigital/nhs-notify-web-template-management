@@ -244,7 +244,7 @@ describe('Template API - List', () => {
       lockNumber: 1,
       language: 'en',
       letterType: 'x0',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',
@@ -306,7 +306,7 @@ describe('Template API - List', () => {
       lockNumber: 1,
       language: 'en',
       letterType: 'x0',
-      letterVersion: 'PDF_PROOFING',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',

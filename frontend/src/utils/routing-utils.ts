@@ -33,7 +33,7 @@ export function isLetterTemplate(
 export function isPdfProofingLetter(
   template: LetterTemplate
 ): template is PdfProofingLetterTemplate {
-  return template.letterVersion === 'PDF_PROOFING';
+  return template.letterVersion === 'PDF';
 }
 
 /**

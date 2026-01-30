@@ -20,7 +20,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -49,7 +49,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PENDING_PROOF_REQUEST',
           letterType: 'q4',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {
@@ -78,7 +78,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'WAITING_FOR_PROOF',
           letterType: 'q4',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {
@@ -108,7 +108,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -146,7 +146,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -185,7 +185,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'PROOF_APPROVED',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -221,7 +221,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'x0',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'en',
           files: {
             pdfTemplate: {
@@ -258,7 +258,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -292,7 +292,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -321,7 +321,7 @@ describe('PreviewLetterTemplate component', () => {
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',
           letterType: 'x1',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -349,7 +349,7 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'x0',
-          letterVersion: 'PDF_PROOFING',
+          letterVersion: 'PDF',
           language: 'ar',
           files: {
             pdfTemplate: {

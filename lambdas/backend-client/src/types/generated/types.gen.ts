@@ -201,7 +201,7 @@ export type LetterProperties =
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
-export type LetterVersion = 'AUTHORING' | 'PDF_PROOFING';
+export type LetterVersion = 'AUTHORING' | 'PDF';
 
 export type NhsAppProperties = {
   message: string;
@@ -210,7 +210,7 @@ export type NhsAppProperties = {
 
 export type PdfProofingLetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
-  letterVersion: 'PDF_PROOFING';
+  letterVersion: 'PDF';
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
   supplierReferences?: {
