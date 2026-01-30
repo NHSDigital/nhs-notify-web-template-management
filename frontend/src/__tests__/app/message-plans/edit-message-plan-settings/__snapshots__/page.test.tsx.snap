@@ -417,8 +417,6 @@ exports[`multiple campaigns renders errors when form is submitted in invalid sta
 </DocumentFragment>
 `;
 
-exports[`multiple campaigns updates the message plan and redirects to the choose templates page 1`] = `<DocumentFragment />`;
-
 exports[`single campaign matches snapshot 1`] = `
 <DocumentFragment>
   <main
