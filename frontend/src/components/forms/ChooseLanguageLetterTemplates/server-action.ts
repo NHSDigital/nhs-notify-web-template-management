@@ -90,9 +90,7 @@ export async function chooseLanguageLetterTemplatesAction(
   const selectedTemplateIdsSet = new Set(selectedTemplateIds);
   const templateMap = new Map<string, LetterTemplate>(
     templateList
-      .filter((template): template is LetterTemplate =>
-        selectedTemplateIdsSet.has(template.id)
-      )
+      .filter((template) => selectedTemplateIdsSet.has(template.id))
       .map((template) => [template.id, template])
   );
 
