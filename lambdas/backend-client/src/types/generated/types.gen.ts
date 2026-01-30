@@ -127,6 +127,7 @@ export type CountSuccess = {
 
 export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
+  letterVersion: 'PDF';
 };
 
 export type CreateRoutingConfig = {
@@ -195,9 +196,7 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties =
-  | AuthoringLetterProperties
-  | PdfLetterProperties;
+export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 

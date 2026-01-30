@@ -34,6 +34,7 @@ const letterProperties: WithAttachments<CreatePdfLetterProperties> = {
   templateType: 'LETTER',
   letterType: 'x0',
   language: 'en',
+  letterVersion: 'PDF',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',

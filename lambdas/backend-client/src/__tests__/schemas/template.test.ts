@@ -88,6 +88,7 @@ describe('Template schemas', () => {
         campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     },
   ])(
@@ -144,6 +145,7 @@ describe('Template schemas', () => {
         campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     },
   ])(
@@ -173,6 +175,7 @@ describe('Template schemas', () => {
       language: 'ar',
       name: 'letter',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const result = $CreateUpdateNonLetter.safeParse(letter);
@@ -208,6 +211,7 @@ describe('Template schemas', () => {
       campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
+      letterVersion: 'PDF',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -247,6 +251,7 @@ describe('Template schemas', () => {
         templateType: 'LETTER',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     ])('should pass validation %p', async (template) => {
       const result = $CreateUpdateTemplate.safeParse(template);

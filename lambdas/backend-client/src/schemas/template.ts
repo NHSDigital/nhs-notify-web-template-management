@@ -94,6 +94,7 @@ export const $CreatePdfLetterProperties =
     z.object({
       ...$BaseLetterTemplateProperties.shape,
       campaignId: z.string(),
+      letterVersion: z.literal('PDF'),
     })
   );
 

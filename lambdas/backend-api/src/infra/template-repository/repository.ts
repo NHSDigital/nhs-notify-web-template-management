@@ -29,7 +29,10 @@ import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
 
-export type WithAttachments<T> = T extends { templateType: 'LETTER' }
+export type WithAttachments<T> = T extends {
+  templateType: 'LETTER';
+  letterVersion: 'PDF';
+}
   ? T & { files: LetterFiles }
   : T;
 
@@ -89,7 +92,6 @@ export class TemplateRepository {
       createdBy: this.internalUserKey(user),
       ...(template.templateType === 'LETTER' && {
         campaignId,
-        letterVersion: 'PDF' as const,
       }),
       lockNumber: 0,
     };

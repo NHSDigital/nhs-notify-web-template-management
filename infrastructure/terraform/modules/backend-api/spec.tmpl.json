@@ -452,10 +452,17 @@
             "properties": {
               "campaignId": {
                 "type": "string"
+              },
+              "letterVersion": {
+                "enum": [
+                  "PDF"
+                ],
+                "type": "string"
               }
             },
             "required": [
-              "campaignId"
+              "campaignId",
+              "letterVersion"
             ]
           }
         ]

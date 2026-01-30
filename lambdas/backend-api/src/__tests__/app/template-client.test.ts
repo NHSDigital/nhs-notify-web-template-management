@@ -171,6 +171,7 @@ describe('templateClient', () => {
         letterType: 'x0',
         language: 'en',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const result = await templateClient.createTemplate(data, user);
@@ -349,7 +350,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -491,7 +492,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          campaignId: 'campaign-id',
+          campaignId: 'campaign-id', letterVersion: 'PDF',
         };
 
         const pdf = new File(['pdf'], pdfFilename, {
@@ -591,7 +592,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: undefined,
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       } as unknown as CreateUpdateTemplate;
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -671,7 +672,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          campaignId: 'campaign-id',
+          campaignId: 'campaign-id', letterVersion: 'PDF',
         };
 
         const result = await templateClient.uploadLetterTemplate(
@@ -718,7 +719,7 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          campaignId: 'campaign-id',
+          campaignId: 'campaign-id', letterVersion: 'PDF',
         };
 
         const pdf = new File(['pdf'], 'template.pdf', {
@@ -753,7 +754,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -783,7 +784,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -818,7 +819,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -883,7 +884,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -924,7 +925,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -1022,7 +1023,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -1122,7 +1123,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -1283,7 +1284,7 @@ describe('templateClient', () => {
         templateType: 'LETTER',
         language: 'it',
         letterType: 'x1',
-        campaignId: 'campaign-id',
+        campaignId: 'campaign-id', letterVersion: 'PDF',
       };
 
       const result = await templateClient.updateTemplate(

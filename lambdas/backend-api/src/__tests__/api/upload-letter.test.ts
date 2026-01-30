@@ -33,6 +33,7 @@ describe('upload-letter', () => {
     letterType: 'x0',
     language: 'en',
     campaignId: 'campaign-id',
+    letterVersion: 'PDF',
   };
 
   const pdf = Buffer.from('letterPdf');

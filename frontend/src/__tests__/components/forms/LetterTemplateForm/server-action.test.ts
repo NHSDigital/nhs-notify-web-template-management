@@ -17,6 +17,7 @@ const initialState: UploadLetterTemplate = {
   letterType: 'x0',
   language: 'en',
   campaignId: 'campaign-id',
+  letterVersion: 'PDF',
 };
 
 describe('UploadLetterTemplate server actions', () => {
