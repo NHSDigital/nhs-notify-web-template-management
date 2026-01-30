@@ -105,10 +105,7 @@ describe('RequestProofPage', () => {
       ...LETTER_TEMPLATE,
       name: undefined as unknown as string,
     },
-    {
-      ...AUTHORING_LETTER_TEMPLATE,
-      proofingEnabled: true,
-    },
+    AUTHORING_LETTER_TEMPLATE,
   ])(
     'should redirect to invalid-template when template is $templateType, letterVersion is $letterVersion and name is $name',
     async (value) => {
