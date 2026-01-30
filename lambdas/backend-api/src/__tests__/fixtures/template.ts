@@ -4,7 +4,7 @@ import type {
   NhsAppProperties,
   SmsProperties,
   TemplateDto,
-  CreatePdfProofingLetterProperties,
+  CreatePdfLetterProperties,
 } from 'nhs-notify-backend-client';
 import { WithAttachments } from '../../infra/template-repository';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
@@ -30,7 +30,7 @@ const nhsAppProperties: NhsAppProperties = {
   templateType: 'NHS_APP',
 };
 
-const letterProperties: WithAttachments<CreatePdfProofingLetterProperties> = {
+const letterProperties: WithAttachments<CreatePdfLetterProperties> = {
   templateType: 'LETTER',
   letterType: 'x0',
   language: 'en',
@@ -135,9 +135,9 @@ export const makeSmsTemplate = (
 
 export const makeLetterTemplate = (
   overrides: Partial<
-    TemplateDto & WithAttachments<CreatePdfProofingLetterProperties>
+    TemplateDto & WithAttachments<CreatePdfLetterProperties>
   > = {}
-): TemplateFixture<CreatePdfProofingLetterProperties> => {
+): TemplateFixture<CreatePdfLetterProperties> => {
   const createUpdateTemplate = {
     ...createTemplateProperties,
     ...letterProperties,

@@ -443,7 +443,7 @@
         ],
         "type": "object"
       },
-      "CreatePdfProofingLetterProperties": {
+      "CreatePdfLetterProperties": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseLetterTemplateProperties"
@@ -506,7 +506,7 @@
                 "$ref": "#/components/schemas/NhsAppProperties"
               },
               {
-                "$ref": "#/components/schemas/CreatePdfProofingLetterProperties"
+                "$ref": "#/components/schemas/CreatePdfLetterProperties"
               }
             ]
           }
@@ -611,7 +611,7 @@
             "$ref": "#/components/schemas/AuthoringLetterProperties"
           },
           {
-            "$ref": "#/components/schemas/PdfProofingLetterProperties"
+            "$ref": "#/components/schemas/PdfLetterProperties"
           }
         ]
       },
@@ -648,7 +648,7 @@
         ],
         "type": "object"
       },
-      "PdfProofingLetterProperties": {
+      "PdfLetterProperties": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseLetterTemplateProperties"

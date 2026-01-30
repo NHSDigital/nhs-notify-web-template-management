@@ -9,7 +9,7 @@ import {
 } from 'nhs-notify-backend-client';
 import {
   LetterTemplate,
-  PdfProofingLetterTemplate,
+  PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
@@ -297,7 +297,7 @@ export function addLanguageLetterTemplatesToCascadeItem(
 export function addLanguageLetterTemplatesToCascade(
   cascade: CascadeItem[],
   cascadeIndex: number,
-  selectedTemplates: PdfProofingLetterTemplate[]
+  selectedTemplates: PdfLetterTemplate[]
 ): CascadeItem[] {
   const updatedCascade = [...cascade];
   updatedCascade[cascadeIndex] = addLanguageLetterTemplatesToCascadeItem(

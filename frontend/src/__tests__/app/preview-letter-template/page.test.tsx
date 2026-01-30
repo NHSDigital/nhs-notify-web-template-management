@@ -6,7 +6,7 @@ import PreviewLetterTemplatePage, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import {
-  type PdfProofingLetterTemplate,
+  type PdfLetterTemplate,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -126,7 +126,7 @@ describe('PreviewLetterTemplatePage', () => {
     },
     {
       description: 'a letter where files is the wrong data type',
-      files: [] as unknown as PdfProofingLetterTemplate['files'],
+      files: [] as unknown as PdfLetterTemplate['files'],
     },
   ])(
     'should redirect to invalid-template when template is $description',

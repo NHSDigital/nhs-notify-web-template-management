@@ -7,7 +7,7 @@ import {
   LetterFiles,
   LetterType,
   LetterVersion,
-  PdfProofingLetterProperties,
+  PdfLetterProperties,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -57,15 +57,12 @@ export type EmailTemplate = Extract<TemplateDto, { templateType: 'EMAIL' }>;
 
 export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
 
-export type PdfProofingLetterTemplate = BaseCreatedTemplate &
-  PdfProofingLetterProperties;
+export type PdfLetterTemplate = BaseCreatedTemplate & PdfLetterProperties;
 
 export type AuthoringLetterTemplate = BaseCreatedTemplate &
   AuthoringLetterProperties;
 
-export type LetterTemplate =
-  | PdfProofingLetterTemplate
-  | AuthoringLetterTemplate;
+export type LetterTemplate = PdfLetterTemplate | AuthoringLetterTemplate;
 
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;

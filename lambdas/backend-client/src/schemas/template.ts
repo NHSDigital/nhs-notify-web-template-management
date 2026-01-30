@@ -2,13 +2,13 @@ import { z } from 'zod/v4';
 import {
   AuthoringLetterProperties,
   BaseTemplate,
-  CreatePdfProofingLetterProperties,
+  CreatePdfLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
   VersionedFileDetails,
   ProofFileDetails,
   LetterFiles,
-  PdfProofingLetterProperties,
+  PdfLetterProperties,
   NhsAppProperties,
   SmsProperties,
   LetterType,
@@ -89,25 +89,24 @@ export const $BaseLetterTemplateProperties = z.object({
   language: z.enum(LANGUAGE_LIST),
 });
 
-export const $CreatePdfProofingLetterProperties =
-  schemaFor<CreatePdfProofingLetterProperties>()(
+export const $CreatePdfLetterProperties =
+  schemaFor<CreatePdfLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
       campaignId: z.string(),
     })
   );
 
-export const $PdfProofingLetterProperties =
-  schemaFor<PdfProofingLetterProperties>()(
-    z.object({
-      ...$BaseLetterTemplateProperties.shape,
-      files: $LetterFiles,
-      letterVersion: z.literal('PDF'),
-      personalisationParameters: z.array(z.string()).optional(),
-      proofingEnabled: z.boolean().optional(),
-      supplierReferences: z.record(z.string(), z.string()).optional(),
-    })
-  );
+export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
+  z.object({
+    ...$BaseLetterTemplateProperties.shape,
+    files: $LetterFiles,
+    letterVersion: z.literal('PDF'),
+    personalisationParameters: z.array(z.string()).optional(),
+    proofingEnabled: z.boolean().optional(),
+    supplierReferences: z.record(z.string(), z.string()).optional(),
+  })
+);
 
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
@@ -119,17 +118,17 @@ export const $AuthoringLetterProperties =
     })
   );
 
-const $DefaultablePdfProofingLetterVersion = z
+const $DefaultablePdfLetterVersion = z
   .union([z.undefined(), z.literal('PDF')])
   .transform((val) => val ?? ('PDF' as const));
 
-const $PdfProofingLetterPropertiesWithDefault = z.object({
-  ...$PdfProofingLetterProperties.shape,
-  letterVersion: $DefaultablePdfProofingLetterVersion,
+const $PdfLetterPropertiesWithDefault = z.object({
+  ...$PdfLetterProperties.shape,
+  letterVersion: $DefaultablePdfLetterVersion,
 });
 
 export const $LetterProperties = z.discriminatedUnion('letterVersion', [
-  $PdfProofingLetterPropertiesWithDefault,
+  $PdfLetterPropertiesWithDefault,
   $AuthoringLetterProperties,
 ]);
 
@@ -155,7 +154,7 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($CreatePdfProofingLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
   ])
 );
 
@@ -207,13 +206,13 @@ const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
   $AuthoringLetterProperties.shape
 );
 
-const $PdfProofingLetterTemplateDto = $BaseTemplateDto.extend({
-  ...$PdfProofingLetterProperties.shape,
-  letterVersion: $DefaultablePdfProofingLetterVersion,
+const $PdfLetterTemplateDto = $BaseTemplateDto.extend({
+  ...$PdfLetterProperties.shape,
+  letterVersion: $DefaultablePdfLetterVersion,
 });
 
 const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
-  $PdfProofingLetterTemplateDto,
+  $PdfLetterTemplateDto,
   $AuthoringLetterTemplateDto,
 ]);
 

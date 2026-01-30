@@ -125,7 +125,7 @@ export type CountSuccess = {
   statusCode: number;
 };
 
-export type CreatePdfProofingLetterProperties = BaseLetterTemplateProperties & {
+export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
 };
 
@@ -141,7 +141,7 @@ export type CreateUpdateTemplate = BaseTemplate &
     | SmsProperties
     | EmailProperties
     | NhsAppProperties
-    | CreatePdfProofingLetterProperties
+    | CreatePdfLetterProperties
   );
 
 export type EmailProperties = {
@@ -197,7 +197,7 @@ export type LetterFiles = {
 
 export type LetterProperties =
   | AuthoringLetterProperties
-  | PdfProofingLetterProperties;
+  | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
@@ -208,7 +208,7 @@ export type NhsAppProperties = {
   templateType: 'NHS_APP';
 };
 
-export type PdfProofingLetterProperties = BaseLetterTemplateProperties & {
+export type PdfLetterProperties = BaseLetterTemplateProperties & {
   files: LetterFiles;
   letterVersion: 'PDF';
   personalisationParameters?: Array<string>;

@@ -1,10 +1,10 @@
 import {
   $AuthoringLetterProperties,
-  $CreatePdfProofingLetterProperties,
+  $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
   $LetterProperties,
-  $PdfProofingLetterProperties,
+  $PdfLetterProperties,
   $TemplateDto,
   $TemplateFilter,
 } from '../../schemas';
@@ -203,7 +203,7 @@ describe('Template schemas', () => {
   });
 
   test('Letter template fields - should fail validation, when no letterType', async () => {
-    const result = $CreatePdfProofingLetterProperties.safeParse({
+    const result = $CreatePdfLetterProperties.safeParse({
       name: 'Test Template',
       campaignId: 'campaign-id',
       templateType: 'LETTER',
@@ -255,7 +255,7 @@ describe('Template schemas', () => {
     });
   });
 
-  describe('$PdfProofingLetterProperties', () => {
+  describe('$PdfLetterProperties', () => {
     const validPdfProofingLetter = {
       templateType: 'LETTER',
       letterType: 'x0',
@@ -271,16 +271,14 @@ describe('Template schemas', () => {
     };
 
     test('should pass validation for valid PDF letter', () => {
-      const result = $PdfProofingLetterProperties.safeParse(
-        validPdfProofingLetter
-      );
+      const result = $PdfLetterProperties.safeParse(validPdfProofingLetter);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(validPdfProofingLetter);
     });
 
     test('should fail validation when letterVersion is not PDF', () => {
-      const result = $PdfProofingLetterProperties.safeParse({
+      const result = $PdfLetterProperties.safeParse({
         ...validPdfProofingLetter,
         letterVersion: 'AUTHORING',
       });
