@@ -54,6 +54,8 @@ import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/let
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
+import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
+import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/template-mgmt-upload-large-print-letter-template-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -111,6 +113,8 @@ const protectedPages = [
   TemplateMgmtTemplateSubmittedSmsPage,
   TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtUploadLetterPage,
+  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtUploadLargePrintLetterTemplatePage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

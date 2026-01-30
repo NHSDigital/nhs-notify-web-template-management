@@ -6,7 +6,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { pdfUploadFixtures } from '../fixtures/letters';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
@@ -41,7 +41,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add proofs to SFTP mock
     const pdfContent = readFileSync(
-      './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
+      './fixtures/letters/no-custom-personalisation/template.pdf'
     );
 
     const supplierReference = [
@@ -158,7 +158,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add proofs to SFTP mock
     const pdfContent = readFileSync(
-      './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
+      './fixtures/letters/no-custom-personalisation/password.pdf'
     );
 
     const supplierReference = [

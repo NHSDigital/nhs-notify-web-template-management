@@ -133,7 +133,7 @@ export const LetterTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={'LETTER'} />
+                <TemplateNameGuidance templateType={'LETTER'} />
                 <TextInput
                   formGroupProps={{ className: 'nhsuk-u-margin-bottom-0' }}
                   id='letterTemplateName'

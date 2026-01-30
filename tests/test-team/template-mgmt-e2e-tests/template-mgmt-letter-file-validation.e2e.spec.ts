@@ -6,7 +6,7 @@ import {
   testUsers,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 
 test.describe('letter file validation', () => {

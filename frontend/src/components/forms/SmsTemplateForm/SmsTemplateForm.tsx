@@ -105,7 +105,7 @@ export const SmsTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template='SMS' />
+                <TemplateNameGuidance templateType='SMS' />
                 <TextInput
                   id='smsTemplateName'
                   defaultValue={smsTemplateName}

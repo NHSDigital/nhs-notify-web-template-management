@@ -109,7 +109,7 @@ export const EmailTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={'EMAIL'} />
+                <TemplateNameGuidance templateType={'EMAIL'} />
                 <TextInput
                   id='emailTemplateName'
                   onChange={emailTemplateNameHandler}

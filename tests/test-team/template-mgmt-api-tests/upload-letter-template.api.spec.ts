@@ -10,7 +10,7 @@ import {
   isoDateRegExp,
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { pdfUploadFixtures } from '../fixtures/letters';
 
 test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
