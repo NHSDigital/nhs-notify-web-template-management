@@ -41,10 +41,6 @@ export default async function ChooseOtherLanguageLetterTemplate(
     }),
   ]);
 
-  const pdfLetterTemplates = foreignLanguageTemplates.filter(
-    (template) => template.letterVersion === 'PDF'
-  );
-
   if (!messagePlan) {
     return redirect('/message-plans/invalid', RedirectType.replace);
   }
@@ -61,7 +57,7 @@ export default async function ChooseOtherLanguageLetterTemplate(
     <ChooseLanguageLetterTemplates
       messagePlan={messagePlan}
       pageHeading={pageHeading}
-      templateList={pdfLetterTemplates}
+      templateList={foreignLanguageTemplates}
       cascadeIndex={cascadeIndex}
       lockNumber={lockNumberResult.data}
     />

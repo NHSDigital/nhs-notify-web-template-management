@@ -7,6 +7,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useActionState, useState } from 'react';
 import {
   ErrorState,
+  LetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
@@ -28,7 +29,7 @@ const content = baseContent.components.chooseLanguageLetterTemplates;
 export type ChooseLanguageLetterTemplatesProps = {
   messagePlan: RoutingConfig;
   pageHeading: string;
-  templateList: PdfLetterTemplate[];
+  templateList: LetterTemplate[];
   cascadeIndex: number;
   lockNumber: number;
 };
