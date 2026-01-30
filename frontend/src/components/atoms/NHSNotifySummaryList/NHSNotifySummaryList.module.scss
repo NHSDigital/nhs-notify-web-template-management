@@ -1,0 +1,11 @@
+.nhs_notify_summary_list {
+  .nhs_notify_summary_list__key,
+  .nhs_notify_summary_list__value {
+    padding: 20px;
+  }
+
+  .nhs_notify_summary_list__key {
+    width: 20%;
+    color: var(--nhsuk-secondary-text-colour);
+  }
+}

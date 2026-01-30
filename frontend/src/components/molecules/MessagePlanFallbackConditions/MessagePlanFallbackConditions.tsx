@@ -1,4 +1,5 @@
-import { Details } from 'nhsuk-react-components';
+import { HTMLProps, PropsWithChildren } from 'react';
+import { Details, DetailsSummary, DetailsText } from '@atoms/nhsuk-components';
 import { FallbackConditionBlock } from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { Channel } from 'nhs-notify-backend-client';
@@ -14,28 +15,19 @@ import styles from '@molecules/MessagePlanFallbackConditions/MessagePlanFallback
 import copy from '@content/content';
 const { messagePlanFallbackConditions } = copy.components;
 
-export function MessagePlanFallbackConditions({
-  channel,
-  index,
-}: {
-  channel: Channel;
-  index: number;
-}) {
-  const { title, content }: FallbackConditionBlock =
-    messagePlanFallbackConditions[channelToTemplateType(channel)];
-
-  const ordinalVariables = {
-    ordinal: ORDINALS[index].toLowerCase(),
-    nextOrdinal: ORDINALS[index + 1].toLowerCase(),
-  };
-
+export function MessagePlanFallbackConditionsListItem({
+  children,
+  className,
+  ...props
+}: PropsWithChildren<HTMLProps<HTMLLIElement>>) {
   return (
     <li
       className={classNames(
         styles['fallback-conditions'],
-        'fallback-conditions'
+        'fallback-conditions',
+        className
       )}
-      data-testid={`message-plan-fallback-conditions-${channel}`}
+      {...props}
     >
       <div
         className={styles['fallback-conditions-branch-icon']}
@@ -58,45 +50,72 @@ export function MessagePlanFallbackConditions({
           </g>
         </svg>
       </div>
-      <Details className={styles['fallback-conditions-details']}>
-        <Details.Summary>{title}</Details.Summary>
-        <Details.Text>
-          <ul className='nhsuk-list nhsuk-list--tick'>
-            {content.stop && (
-              <li>
-                <Image
-                  src='/templates/lib/assets/icons/icon-tick.svg'
-                  width={34}
-                  height={34}
-                  aria-hidden={true}
-                  alt=''
-                  className='nhsuk-icon nhsuk-icon--tick'
-                />
-                <ContentRenderer
-                  content={content.stop}
-                  variables={ordinalVariables}
-                />
-              </li>
-            )}
-            {content.continue && (
-              <li>
-                <Image
-                  src='/templates/lib/assets/icons/icon-arrow-down.svg'
-                  width={34}
-                  height={34}
-                  aria-hidden={true}
-                  alt=''
-                  className='nhsuk-icon nhsuk-icon--arrow-down'
-                />
-                <ContentRenderer
-                  content={content.continue}
-                  variables={ordinalVariables}
-                />
-              </li>
-            )}
-          </ul>
-        </Details.Text>
-      </Details>
+      {children}
     </li>
+  );
+}
+
+export function MessagePlanFallbackConditionsDetails({
+  channel,
+  className,
+  index,
+  component: Component = Details,
+  ...props
+}: HTMLProps<HTMLDetailsElement> & {
+  channel: Channel;
+  index: number;
+  component?: React.ComponentType<HTMLProps<HTMLDetailsElement>>;
+}) {
+  const { title, content }: FallbackConditionBlock =
+    messagePlanFallbackConditions[channelToTemplateType(channel)];
+
+  const ordinalVariables = {
+    ordinal: ORDINALS[index].toLowerCase(),
+    nextOrdinal: ORDINALS[index + 1].toLowerCase(),
+  };
+
+  return (
+    <Component
+      className={classNames(styles['fallback-conditions-details'], className)}
+      {...props}
+    >
+      <DetailsSummary>{title}</DetailsSummary>
+      <DetailsText>
+        <ul className='nhsuk-list nhsuk-list--tick'>
+          {content.stop && (
+            <li>
+              <Image
+                src='/templates/lib/assets/icons/icon-tick.svg'
+                width={34}
+                height={34}
+                aria-hidden={true}
+                alt=''
+                className='nhsuk-icon nhsuk-icon--tick'
+              />
+              <ContentRenderer
+                content={content.stop}
+                variables={ordinalVariables}
+              />
+            </li>
+          )}
+          {content.continue && (
+            <li>
+              <Image
+                src='/templates/lib/assets/icons/icon-arrow-down.svg'
+                width={34}
+                height={34}
+                aria-hidden={true}
+                alt=''
+                className='nhsuk-icon nhsuk-icon--arrow-down'
+              />
+              <ContentRenderer
+                content={content.continue}
+                variables={ordinalVariables}
+              />
+            </li>
+          )}
+        </ul>
+      </DetailsText>
+    </Component>
   );
 }
