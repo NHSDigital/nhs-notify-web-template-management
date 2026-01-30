@@ -5,7 +5,6 @@ import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateProps } from './choose-channel-template.types';
 import {
   isLetterTemplate,
-  isPdfProofingLetter,
   addAccessibleFormatLetterTemplateToCascade,
   addDefaultTemplateToCascade,
 } from '@utils/routing-utils';
@@ -56,8 +55,7 @@ export async function chooseChannelTemplateAction(
   const updatedCascade =
     isAccessibleFormatTemplate &&
     selectedTemplate &&
-    isLetterTemplate(selectedTemplate) &&
-    isPdfProofingLetter(selectedTemplate)
+    isLetterTemplate(selectedTemplate)
       ? addAccessibleFormatLetterTemplateToCascade(
           messagePlan.cascade,
           cascadeIndex,
