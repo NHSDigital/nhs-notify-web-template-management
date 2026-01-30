@@ -86,6 +86,7 @@ export const TemplateFactory = {
       id,
       language: options?.language || 'en',
       letterType: options?.letterType || 'x0',
+      letterVersion: 'PDF',
       name,
       owner: `CLIENT#${user.clientId}`,
       templateStatus,

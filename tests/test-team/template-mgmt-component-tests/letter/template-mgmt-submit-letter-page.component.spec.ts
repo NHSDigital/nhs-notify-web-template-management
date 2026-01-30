@@ -43,6 +43,7 @@ async function createTemplates() {
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: `CLIENT#${routingEnabledUser.clientId}`,
+      letterVersion: 'PDF',
     } as Template,
 
     routingEnabled: TemplateFactory.uploadLetterTemplate(
