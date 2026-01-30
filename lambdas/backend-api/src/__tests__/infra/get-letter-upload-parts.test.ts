@@ -37,17 +37,29 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    const result = getLetterUploadParts(multipart, contentType);
+
+    expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File(['letterPdf'], 'template.pdf', {
-          type: 'application/pdf',
-        }),
-        csv: new File(['testCsv'], 'test-data.csv', {
-          type: 'text/csv',
-        }),
+        pdf: expect.any(File),
+        csv: expect.any(File),
       },
     });
+
+    expect(result.data!.pdf).toEqual(
+      new File([pdf], 'template.pdf', {
+        type: 'application/pdf',
+        lastModified: result.data!.pdf!.lastModified,
+      })
+    );
+
+    expect(result.data!.csv).toEqual(
+      new File([csv], 'test-data.csv', {
+        type: 'text/csv',
+        lastModified: result.data!.csv!.lastModified,
+      })
+    );
   });
 
   test('defaults filenames to empty strings', () => {
@@ -70,13 +82,26 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    const result = getLetterUploadParts(multipart, contentType);
+
+    expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File(['letterPdf'], ''),
-        csv: new File(['testCsv'], ''),
+        pdf: expect.any(File),
+        csv: expect.any(File),
       },
     });
+
+    expect(result.data!.pdf).toEqual(
+      new File([pdf], '', {
+        lastModified: result.data!.pdf!.lastModified,
+      })
+    );
+    expect(result.data!.csv).toEqual(
+      new File([csv], '', {
+        lastModified: result.data!.csv!.lastModified,
+      })
+    );
   });
 
   test('returns default blank file object for PDF when expected file parts are not present', () => {
@@ -99,12 +124,20 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    const result = getLetterUploadParts(multipart, contentType);
+
+    expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: new File([], ''),
+        pdf: expect.any(File),
       },
     });
+
+    expect(result.data!.pdf).toEqual(
+      new File([], '', {
+        lastModified: result.data!.pdf!.lastModified,
+      })
+    );
   });
 
   test('returns failure result when template part cannot be parsed as JSON', () => {
