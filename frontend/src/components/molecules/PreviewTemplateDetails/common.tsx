@@ -84,14 +84,12 @@ export function StandardDetailRows({
   templateTypeHeading,
   campaignId,
   hideStatus,
-  includeEmptyActions,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
   templateTypeHeading?: string;
   campaignId?: string;
   hideStatus?: boolean;
-  includeEmptyActions?: boolean;
 }>): JSX.Element {
   const features = useFeatureFlags();
   return (
@@ -104,13 +102,11 @@ export function StandardDetailRows({
         >
           {template.id}
         </SummaryList.Value>
-        {includeEmptyActions && <SummaryList.Actions />}
       </SummaryList.Row>
       {campaignId && (
         <SummaryList.Row id='campaign-id'>
           <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
           <SummaryList.Value>{campaignId}</SummaryList.Value>
-          {includeEmptyActions && <SummaryList.Actions />}
         </SummaryList.Row>
       )}
       <SummaryList.Row>
@@ -118,7 +114,6 @@ export function StandardDetailRows({
           {templateTypeHeading ?? rowHeadings.templateType}
         </SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
-        {includeEmptyActions && <SummaryList.Actions />}
       </SummaryList.Row>
       {!hideStatus && (
         <SummaryList.Row>
@@ -144,7 +139,6 @@ export function StandardDetailRows({
               </small>
             )}
           </SummaryList.Value>
-          {includeEmptyActions && <SummaryList.Actions />}
         </SummaryList.Row>
       )}
     </>

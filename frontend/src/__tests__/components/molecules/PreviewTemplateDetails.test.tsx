@@ -447,4 +447,31 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
     expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
   });
+
+  it('displays locked template warning when routing enabled and status is SUBMITTED', () => {
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Submitted AUTHORING letter',
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(
+      screen.getByText(/You cannot delete this template/i)
+    ).toBeInTheDocument();
+  });
 });
