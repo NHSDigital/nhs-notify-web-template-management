@@ -13,7 +13,8 @@ const timeTillLogout =
 const SignInButton = () => {
   const searchParams = useSearchParams().toString();
 
-  const signInLink = getBasePath() + (searchParams ? `?${searchParams}` : '');
+  const signInLink =
+    `${getBasePath()}/auth` + (searchParams ? `?${searchParams}` : '');
 
   return (
     <Suspense fallback={<p>Loading...</p>}>

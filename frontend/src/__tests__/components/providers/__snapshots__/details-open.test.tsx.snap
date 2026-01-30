@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailsOpenProvider renders children 1`] = `
+<DocumentFragment>
+  <button
+    aria-disabled="false"
+    class="nhsuk-button"
+    type="button"
+  >
+    Open
+  </button>
+  <details
+    class="nhsuk-details"
+  >
+    <summary>
+      Details Section 1
+    </summary>
+    <p>
+      Details Text 1
+    </p>
+  </details>
+  <details>
+    <summary>
+      Details Section 2
+    </summary>
+    <p>
+      Details Text 2
+    </p>
+  </details>
+  <details
+    class="nhsuk-details"
+  >
+    <summary>
+      Details Section 3
+    </summary>
+    <p>
+      Details Text 3
+    </p>
+  </details>
+</DocumentFragment>
+`;

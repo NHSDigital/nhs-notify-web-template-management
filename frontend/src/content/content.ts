@@ -1,5 +1,8 @@
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
-import type { RoutingAccessibleFormatLetterType } from 'nhs-notify-web-template-management-utils';
+import type {
+  RoutingConfigStatusActive,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
@@ -1096,36 +1099,6 @@ const previewDigitalTemplate = {
   editButton: 'Edit template',
 };
 
-const chooseTemplatesForMessagePlan = {
-  pageTitle: generatePageTitle('Choose templates for your message plan'),
-};
-
-export type FallbackConditionBlock = {
-  title: string;
-  content: {
-    stop?: string | ContentBlock[];
-    continue?: string | ContentBlock[];
-  };
-};
-
-const messagePlanConditionalLetterTemplates = {
-  accessibleFormats: {
-    x1: 'Large print letter',
-  } satisfies Record<RoutingAccessibleFormatLetterType, string>,
-  languageFormats: 'Other language letters',
-};
-
-const messagePlanChannelTemplate = {
-  templateLinks: {
-    choose: 'Choose',
-    change: 'Change',
-    remove: 'Remove{{templateCount|| all}}',
-    templateWord: '{{templateCount|template|templates}}',
-  },
-  optional: '(optional)',
-  messagePlanConditionalLetterTemplates,
-};
-
 const messagePlanFallbackConditions: Record<
   TemplateType,
   FallbackConditionBlock
@@ -1174,11 +1147,12 @@ const messagePlanFallbackConditions: Record<
   },
 };
 
-const messagePlanBlock = {
-  title: '{{ordinal}} message',
+const messagePlanConditionalLetterTemplates = {
+  languageFormats: 'Other language letters',
 };
 
-const createEditMessagePlan = {
+const chooseTemplatesForMessagePlan = {
+  pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
   changeNameLink: {
     href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
@@ -1191,7 +1165,6 @@ const createEditMessagePlan = {
   },
   ctas: {
     primary: {
-      href: '/message-plans/get-ready-to-move/{{routingConfigId}}',
       text: 'Move to production',
     },
     secondary: {
@@ -1204,6 +1177,28 @@ const createEditMessagePlan = {
     linkText: 'You have not chosen a template for your {{ordinal}} message',
   },
   messagePlanFallbackConditions,
+  messagePlanConditionalLetterTemplates,
+};
+
+export type FallbackConditionBlock = {
+  title: string;
+  content: {
+    stop?: string | ContentBlock[];
+    continue?: string | ContentBlock[];
+  };
+};
+
+const messagePlanChannelTemplate = {
+  templateLinks: {
+    choose: 'Choose',
+    change: 'Change',
+    remove: 'Remove{{templateCount|| all}}',
+    templateWord: '{{templateCount|template|templates}}',
+  },
+};
+
+const messagePlanBlock = {
+  title: '{{ordinal}} message',
 };
 
 const chooseNhsAppTemplate = {
@@ -1412,10 +1407,13 @@ const messagePlanGetReadyToMoveToProduction = () => {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
-  messagePlanLink: '/message-plans/choose-templates/{{routingConfigId}}',
   copyText: 'Copy names and IDs to clipboard',
   copiedText: 'Names and IDs copied to clipboard',
   copiedFailedText: 'Failed copying names and IDs to clipboard',
+  messagePlanLink: {
+    DRAFT: '/message-plans/choose-templates/{{routingConfigId}}',
+    COMPLETED: '/message-plans/preview-message-plan/{{routingConfigId}}',
+  } satisfies Record<RoutingConfigStatusActive, string>,
 };
 
 const chooseMessageOrder = {
@@ -1508,6 +1506,33 @@ const lockedTemplateWarning = {
   },
 };
 
+const previewMessagePlan = {
+  pageTitle: generatePageTitle('Preview message plan'),
+  backLink: {
+    href: '/message-plans',
+    text: 'Back to all message plans',
+  },
+  headerCaption: 'Message plan',
+  warningCallout: [
+    {
+      type: 'text',
+      text: "You cannot edit this message plan because it's in production.",
+    },
+  ] satisfies ContentBlock[],
+  summaryTable: {
+    rowHeadings: {
+      id: 'Routing Plan ID',
+      campaignId: 'Campaign',
+      status: 'Status',
+    },
+  },
+  detailsOpenButton: {
+    openText: 'Close all template previews',
+    closedText: 'Open all template previews',
+  },
+  languageFormatsCardHeading: 'Other language letters (optional)',
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1517,7 +1542,6 @@ const content = {
     chooseMessageOrder,
     chooseTemplateType,
     copyTemplate,
-    createEditMessagePlan,
     deleteTemplate,
     errorSummary,
     footer,
@@ -1569,6 +1593,7 @@ const content = {
     messageTemplates,
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
+    previewMessagePlan,
     submitLetterTemplate: submitLetterTemplatePage,
   },
 };

@@ -58,7 +58,7 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <script
-          src={`${getBasePath()}/lib/nhsuk-frontend-10.0.0.min.js`}
+          src={`${getBasePath()}/lib/nhsuk-frontend-10.3.1.min.js`}
           defer
           type='module'
         />

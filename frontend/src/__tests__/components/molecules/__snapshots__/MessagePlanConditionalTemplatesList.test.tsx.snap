@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanConditionalTemplatesList matches snapshot 1`] = `
+<DocumentFragment>
+  <ul
+    class="message-plan-conditional-templates extra-list-class"
+    data-testid="conditional-templates-list"
+  >
+    <li
+      class="message-plan-conditional-templates__list-item extra-list-item-class"
+      data-testid="conditional-templates-list-item-1"
+    >
+      Second List Item Content
+    </li>
+    <li
+      class="message-plan-conditional-templates__list-item extra-list-item-class"
+      data-testid="conditional-templates-list-item-2"
+    >
+      First List Item Content
+    </li>
+  </ul>
+</DocumentFragment>
+`;

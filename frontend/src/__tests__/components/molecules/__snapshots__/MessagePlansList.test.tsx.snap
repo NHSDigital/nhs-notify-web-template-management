@@ -1,5 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MessagePlansList matches snapshot when data is available - COMPLETED 1`] = `
+<DocumentFragment>
+  <details
+    class="nhsuk-details nhsuk-expander"
+    data-testid="message-plans-list-production"
+  >
+    <summary
+      class="nhsuk-details__summary nhsuk-heading-s nhsuk-u-margin-bottom-0"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Production (1)
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+    >
+      <table
+        class="nhsuk-table-responsive"
+      >
+        <thead
+          class="nhsuk-table__head"
+          role="rowgroup"
+        >
+          <tr
+            class="nhsuk-table__row"
+          >
+            <th
+              class="nhsuk-table__header"
+              scope="col"
+            >
+              Name
+            </th>
+            <th
+              class="nhsuk-table__header"
+              scope="col"
+            >
+              Routing Plan ID
+            </th>
+            <th
+              class="nhsuk-table__header"
+              scope="col"
+            >
+              Last edited
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="nhsuk-table__body"
+        >
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/message-plans/preview-message-plan/3"
+              >
+                Draft Y
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              data-testid="message-plan-id-cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Routing Plan ID 
+              </span>
+              3
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              data-testid="message-plans-list-lastEdited"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Last edited 
+              </span>
+              8th Sep 2025
+              <br />
+              13:00
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        aria-disabled="false"
+        class="nhsuk-button nhsuk-button--secondary"
+        data-testid="copy-button-production"
+        type="button"
+      >
+        Copy names and IDs to clipboard
+      </button>
+    </div>
+  </details>
+</DocumentFragment>
+`;
+
 exports[`MessagePlansList matches snapshot when data is available 1`] = `
 <DocumentFragment>
   <details

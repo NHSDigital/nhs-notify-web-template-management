@@ -44,6 +44,8 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
     });
   };
 
+  const messagePlanLink = messagePlansListComponent.messagePlanLink[status];
+
   const header = (
     <Table.Row>
       {messagePlansListComponent.tableHeadings.map((item) => (
@@ -56,7 +58,7 @@ export const MessagePlansList = (props: MessagePlansListProps) => {
     <Table.Row key={plan.id}>
       <Table.Cell>
         <Link
-          href={interpolate(messagePlansListComponent.messagePlanLink, {
+          href={interpolate(messagePlanLink, {
             routingConfigId: plan.id,
           })}
         >

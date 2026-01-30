@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagePlanChannelCard matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="channel-template-outer extra-channel-card-class"
+    data-testid="channel-card"
+  >
+    <div
+      class="channel-template-inner"
+    >
+      <h3
+        class="nhsuk-heading-s"
+      >
+        Card Heading
+      </h3>
+      Card Content
+    </div>
+  </div>
+</DocumentFragment>
+`;

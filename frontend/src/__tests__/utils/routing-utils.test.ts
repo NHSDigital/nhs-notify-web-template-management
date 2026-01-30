@@ -17,6 +17,10 @@ import {
   getChannelsMissingTemplates,
   type ConditionalTemplate,
   type MessagePlanTemplates,
+  getDefaultTemplateForItem,
+  getTemplateForAccessibleFormat,
+  getLanguageTemplatesForCascadeItem,
+  getAccessibleTemplatesForCascadeItem,
 } from '@utils/routing-utils';
 import type {
   CascadeItem,
@@ -27,7 +31,9 @@ import type {
 import {
   LARGE_PRINT_LETTER_TEMPLATE,
   LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
 } from '@testhelpers/helpers';
+import { randomUUID } from 'node:crypto';
 
 const baseConfig: RoutingConfig = {
   id: 'test-id',
@@ -1686,5 +1692,275 @@ describe('getChannelsMissingTemplates', () => {
 
     const result = getChannelsMissingTemplates(routingConfig);
     expect(result).toEqual([]);
+  });
+});
+
+describe('getDefaultTemplateForItem', () => {
+  it('returns the template that matches the default id on the cascade item', () => {
+    const id = randomUUID();
+
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: id,
+    };
+
+    const templates: MessagePlanTemplates = {
+      [id]: NHS_APP_TEMPLATE,
+    };
+
+    expect(getDefaultTemplateForItem(item, templates)).toEqual(
+      NHS_APP_TEMPLATE
+    );
+  });
+
+  it('returns undefined if there is no default template id', () => {
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: null,
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(getDefaultTemplateForItem(item, templates)).toBeUndefined();
+  });
+
+  it('returns undefined if the default template is missing from the templates object', () => {
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(getDefaultTemplateForItem(item, templates)).toBeUndefined();
+  });
+});
+
+describe('getTemplateForAccessibleFormat', () => {
+  it('returns the template with the id matching the format on the cascade item', () => {
+    const id = randomUUID();
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        {
+          accessibleFormat: 'x1',
+          templateId: id,
+        },
+      ],
+    };
+
+    const templates: MessagePlanTemplates = {
+      [id]: LETTER_TEMPLATE,
+    };
+
+    expect(getTemplateForAccessibleFormat('x1', item, templates)).toEqual(
+      LETTER_TEMPLATE
+    );
+  });
+
+  it("returns undefined if the template doesn't exist in the map", () => {
+    const id = randomUUID();
+
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'NHSAPP',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        {
+          accessibleFormat: 'x1',
+          templateId: id,
+        },
+      ],
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(
+      getTemplateForAccessibleFormat('x1', item, templates)
+    ).toBeUndefined();
+  });
+
+  it('returns undefined if the cascade item has no conditional templates with the given format', () => {
+    const id = randomUUID();
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        {
+          accessibleFormat: 'q4',
+          templateId: id,
+        },
+      ],
+    };
+
+    const templates: MessagePlanTemplates = {
+      [id]: LETTER_TEMPLATE,
+    };
+
+    expect(
+      getTemplateForAccessibleFormat('x1', item, templates)
+    ).toBeUndefined();
+  });
+
+  it('returns undefined if the cascade item has undefined conditional templates', () => {
+    const id = randomUUID();
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+    };
+
+    const templates: MessagePlanTemplates = {
+      [id]: LETTER_TEMPLATE,
+    };
+
+    expect(
+      getTemplateForAccessibleFormat('x1', item, templates)
+    ).toBeUndefined();
+  });
+});
+
+describe('getLanguageTemplatesForCascadeItem', () => {
+  it('returns the templates with the ids matching the language templates on the cascade item', () => {
+    const id = randomUUID();
+    const id2 = randomUUID();
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        {
+          language: 'es',
+          templateId: id,
+        },
+        {
+          accessibleFormat: 'x1',
+          templateId: randomUUID(),
+        },
+        {
+          language: 'gu',
+          templateId: id2,
+        },
+      ],
+    };
+
+    const esTemplate = { ...LETTER_TEMPLATE, id };
+    const guTemplate = { ...LETTER_TEMPLATE, id: id2 };
+
+    const templates: MessagePlanTemplates = {
+      [id]: esTemplate,
+      [id2]: guTemplate,
+    };
+
+    expect(getLanguageTemplatesForCascadeItem(item, templates)).toEqual([
+      esTemplate,
+      guTemplate,
+    ]);
+  });
+
+  it("filters out templates referenced in the cascade item that don't exist in the map", () => {
+    const id = randomUUID();
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        {
+          language: 'es',
+          templateId: id,
+        },
+        {
+          accessibleFormat: 'x1',
+          templateId: randomUUID(),
+        },
+        {
+          language: 'gu',
+          templateId: randomUUID(),
+        },
+      ],
+    };
+
+    const esTemplate = { ...LETTER_TEMPLATE, id };
+
+    const templates: MessagePlanTemplates = {
+      [id]: esTemplate,
+    };
+
+    expect(getLanguageTemplatesForCascadeItem(item, templates)).toEqual([
+      esTemplate,
+    ]);
+  });
+
+  it('returns empty if the cascade item has no language templates', () => {
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        { accessibleFormat: 'x1', templateId: randomUUID() },
+      ],
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(getLanguageTemplatesForCascadeItem(item, templates)).toEqual([]);
+  });
+
+  it('returns empty array if the cascade item has undefined conditional templates', () => {
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+    };
+
+    const templates: MessagePlanTemplates = {};
+
+    expect(getLanguageTemplatesForCascadeItem(item, templates)).toEqual([]);
+  });
+});
+
+describe('getAccessibleTemplatesForCascadeItem', () => {
+  it('returns the supported accessible format templates for a cascade item', () => {
+    const id = randomUUID();
+    const id2 = randomUUID();
+
+    const item: CascadeItem = {
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: randomUUID(),
+      conditionalTemplates: [
+        { accessibleFormat: 'x1', templateId: id },
+        { language: 'de', templateId: randomUUID() },
+        { accessibleFormat: 'q4', templateId: id2 },
+      ],
+    };
+
+    const template = { ...LETTER_TEMPLATE, id };
+    const templates: MessagePlanTemplates = {
+      [id]: template,
+      [id2]: { ...LETTER_TEMPLATE, id: id2 },
+    };
+
+    expect(getAccessibleTemplatesForCascadeItem(item, templates)).toEqual([
+      ['x1', template],
+    ]);
   });
 });
