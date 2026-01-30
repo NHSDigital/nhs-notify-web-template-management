@@ -5,7 +5,7 @@ export type ClientOptions = {
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
-  letterVariantId: string;
+  letterVariantId?: string;
   letterVersion: 'AUTHORING';
   sidesCount: number;
 };

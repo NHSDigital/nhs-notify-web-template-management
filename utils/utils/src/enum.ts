@@ -7,6 +7,7 @@ import type {
   Channel,
   RoutingConfigStatus,
   ClientFeatures,
+  LetterVersion,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -123,9 +124,15 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
   })[type];
 
 export const statusToDisplayMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'> & {
+    letterVersion?: LetterVersion;
+  },
   featureFlags: Pick<ClientFeatures, 'routing'>
 ): string => {
+  if (template.letterVersion === 'AUTHORING') {
+    return 'Approval needed';
+  }
+
   const statusToDisplayMappings: Record<TemplateStatus, string> = {
     NOT_YET_SUBMITTED:
       template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
@@ -158,9 +165,15 @@ type Colour =
   | undefined;
 
 export const statusToColourMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  template: Pick<TemplateDto, 'templateType' | 'templateStatus'> & {
+    letterVersion?: LetterVersion;
+  },
   featureFlags: Pick<ClientFeatures, 'routing'>
 ) => {
+  if (template.letterVersion === 'AUTHORING') {
+    return 'yellow';
+  }
+
   const colourMappings: Record<TemplateStatus, Colour> = {
     NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
     SUBMITTED: featureFlags.routing ? 'pink' : 'grey',

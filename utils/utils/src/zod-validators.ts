@@ -102,6 +102,11 @@ export const $SubmittedLetterTemplate = z.intersection(
   $LetterTemplate
 );
 
+export const $SubmittedPdfLetterTemplate = z.intersection(
+  $SubmittedTemplate,
+  $PdfLetterTemplate
+);
+
 export const $LargePrintLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({
@@ -109,8 +114,22 @@ export const $LargePrintLetterTemplate = z.intersection(
   })
 );
 
+export const $LargePrintPdfLetterTemplate = z.intersection(
+  $PdfLetterTemplate,
+  z.object({
+    letterType: $LetterType.extract(['x1']),
+  })
+);
+
 export const $ForeignLanguageLetterTemplate = z.intersection(
   $LetterTemplate,
+  z.object({
+    language: $Language.exclude(['en']),
+  })
+);
+
+export const $ForeignLanguagePdfLetterTemplate = z.intersection(
+  $PdfLetterTemplate,
   z.object({
     language: $Language.exclude(['en']),
   })
@@ -128,11 +147,21 @@ export const validateEmailTemplate = (template?: TemplateDto) =>
 export const validateLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LetterTemplate, template);
 
+export const validatePdfLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($PdfLetterTemplate, template);
+
 export const validateLargePrintLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LargePrintLetterTemplate, template);
 
+export const validateLargePrintPdfLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($LargePrintPdfLetterTemplate, template);
+
 export const validateForeignLanguageLetterTemplate = (template?: TemplateDto) =>
   zodValidate($ForeignLanguageLetterTemplate, template);
+
+export const validateForeignLanguagePdfLetterTemplate = (
+  template?: TemplateDto
+) => zodValidate($ForeignLanguagePdfLetterTemplate, template);
 
 export const validateSubmittedEmailTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedEmailTemplate, template);
@@ -148,6 +177,9 @@ export const validateTemplate = (template?: TemplateDto) =>
 
 export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
   zodValidate($SubmittedLetterTemplate, template);
+
+export const validateSubmittedPdfLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedPdfLetterTemplate, template);
 
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);

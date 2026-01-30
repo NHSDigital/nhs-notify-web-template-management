@@ -32,11 +32,21 @@ type ContentPreviewField = {
 const { rowHeadings, previewTemplateStatusFootnote, headerCaption } =
   content.components.previewTemplateDetails;
 
-export function DetailSection({ children }: { children: React.ReactNode }) {
+export function DetailSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <SummaryList
       noBorder={false}
-      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+      className={concatClassNames(
+        'nhsuk-u-margin-bottom-4',
+        styles.preview,
+        className
+      )}
     >
       {children}
     </SummaryList>
@@ -71,11 +81,13 @@ export function ContentPreview({
 export function StandardDetailRows({
   template,
   templateTypeText,
+  templateTypeHeading,
   campaignId,
   hideStatus,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
+  templateTypeHeading?: string;
   campaignId?: string;
   hideStatus?: boolean;
 }>): JSX.Element {
@@ -98,7 +110,9 @@ export function StandardDetailRows({
         </SummaryList.Row>
       )}
       <SummaryList.Row>
-        <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
+        <SummaryList.Key>
+          {templateTypeHeading ?? rowHeadings.templateType}
+        </SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
       </SummaryList.Row>
       {!hideStatus && (

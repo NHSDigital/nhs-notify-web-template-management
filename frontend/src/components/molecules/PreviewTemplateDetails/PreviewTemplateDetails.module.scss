@@ -6,6 +6,25 @@
       margin-bottom: 0;
     }
   }
+
+  // Override NHS UK Frontend default which removes right padding from actions column
+  // This ensures consistent spacing on both sides of the table
+  // NHS UK rule: .nhsuk-summary-list__row:not(.nhsuk-summary-list__row--no-actions) > :last-child { padding-right: 0; }
+  :global(.nhsuk-summary-list__row:not(.nhsuk-summary-list__row--no-actions))
+    > :global(.nhsuk-summary-list__actions):last-child {
+    padding-right: 16px;
+  }
+}
+
+.authoringLetterDetails {
+  :global(.nhsuk-summary-list__key) {
+    width: 40%;
+  }
+}
+
+.missingValue {
+  background-color: #fff7bf;
+  box-shadow: inset 0 0 0 2px #ffeb3b;
 }
 
 .proofs {
