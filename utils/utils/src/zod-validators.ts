@@ -78,7 +78,6 @@ export const $UploadLetterTemplate = z.intersection(
   $CreatePdfLetterProperties
 );
 
-// Base template fields shared by all letter templates
 const $BaseLetterTemplateDto = $TemplateDto.and(
   z.object({
     templateType: z.literal('LETTER'),
