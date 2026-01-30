@@ -408,7 +408,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Template type
+          Type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -1275,7 +1275,7 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Template type
+          Type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -1385,7 +1385,7 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Template type
+          Type
         </dt>
         <dd
           class="nhsuk-summary-list__value"

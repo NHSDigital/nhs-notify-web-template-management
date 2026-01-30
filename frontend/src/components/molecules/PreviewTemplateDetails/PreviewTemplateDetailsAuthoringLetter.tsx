@@ -59,7 +59,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
           {/* Template type */}
           <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
+            <SummaryList.Key>{rowHeadings.letterTemplateType}</SummaryList.Key>
             <SummaryList.Value>
               {letterTypeDisplayMappings(
                 template.letterType,

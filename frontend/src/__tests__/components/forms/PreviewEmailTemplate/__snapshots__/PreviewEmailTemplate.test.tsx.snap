@@ -87,7 +87,7 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -366,7 +366,7 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -625,7 +625,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -872,7 +872,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1038,7 +1038,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
@@ -1280,7 +1280,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

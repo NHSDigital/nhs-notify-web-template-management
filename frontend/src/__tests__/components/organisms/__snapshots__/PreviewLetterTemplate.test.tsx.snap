@@ -121,7 +121,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
               >
                 <a
                   data-testid="sheets-action"
-                  href="#"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
                 >
                   Learn more
                   <span
@@ -185,7 +185,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
               >
                 <a
                   data-testid="status-action"
-                  href="#"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
                 >
                   Learn more
                   <span
@@ -364,7 +364,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="sheets-action"
-                  href="#"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
                 >
                   Learn more
                   <span
@@ -428,7 +428,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="status-action"
-                  href="#"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
                 >
                   Learn more
                   <span
@@ -607,7 +607,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="sheets-action"
-                  href="#"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
                 >
                   Learn more
                   <span
@@ -671,7 +671,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="status-action"
-                  href="#"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
                 >
                   Learn more
                   <span
@@ -818,7 +818,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="sheets-action"
-                  href="#"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
                 >
                   Learn more
                   <span
@@ -882,7 +882,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="status-action"
-                  href="#"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
                 >
                   Learn more
                   <span

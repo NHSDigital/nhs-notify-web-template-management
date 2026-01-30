@@ -62,7 +62,7 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

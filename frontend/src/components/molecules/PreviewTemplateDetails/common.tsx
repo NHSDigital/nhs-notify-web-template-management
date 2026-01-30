@@ -81,12 +81,14 @@ export function ContentPreview({
 export function StandardDetailRows({
   template,
   templateTypeText,
+  templateTypeHeading,
   campaignId,
   hideStatus,
   includeEmptyActions,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
+  templateTypeHeading?: string;
   campaignId?: string;
   hideStatus?: boolean;
   includeEmptyActions?: boolean;
@@ -112,7 +114,9 @@ export function StandardDetailRows({
         </SummaryList.Row>
       )}
       <SummaryList.Row>
-        <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
+        <SummaryList.Key>
+          {templateTypeHeading ?? rowHeadings.templateType}
+        </SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
         {includeEmptyActions && <SummaryList.Actions />}
       </SummaryList.Row>

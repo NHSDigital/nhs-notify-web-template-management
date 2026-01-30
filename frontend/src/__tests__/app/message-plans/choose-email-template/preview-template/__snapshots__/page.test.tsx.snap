@@ -62,7 +62,7 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Template type
+                Type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
