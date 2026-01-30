@@ -66,6 +66,13 @@ async function createTemplates() {
       'proofing-disabled-submit-letter',
       'NOT_YET_SUBMITTED'
     ),
+
+    authoring: TemplateFactory.createAuthoringLetterTemplate(
+      'c1234567-abcd-1234-abcd-123456789abc',
+      routingEnabledUser,
+      'authoring-submit-letter',
+      'NOT_YET_SUBMITTED'
+    ),
   };
 }
 
@@ -231,6 +238,21 @@ test.describe('Submit Letter Template Page', () => {
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-letter-template/${templates.routingEnabled.id}`
       );
+    });
+
+    test('when user visits page with an AUTHORING letter template, then an invalid template error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      await loginAsUser(routingEnabledUser, page);
+
+      const submitPage = new TemplateMgmtSubmitLetterPage(page)
+        .setPathParam('templateId', templates.authoring.id)
+        .setSearchParam('lockNumber', String(templates.authoring.lockNumber));
+
+      await submitPage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
 

@@ -10,6 +10,29 @@ describe('PreviewLetterTemplate component', () => {
     jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
   });
 
+  it('throws error for AUTHORING letter version', () => {
+    expect(() =>
+      render(
+        <PreviewLetterTemplate
+          template={{
+            templateType: 'LETTER',
+            name: 'test-template-letter',
+            id: 'template-id',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            language: 'en',
+            letterType: 'x0',
+            letterVersion: 'AUTHORING',
+            letterVariantId: 'variant-123',
+            sidesCount: 2,
+            createdAt: '2025-04-02T09:33:25.729Z',
+            updatedAt: '2025-04-02T09:33:25.729Z',
+            lockNumber: 1,
+          }}
+        />
+      )
+    ).toThrow('AUTHORING letter version is not supported');
+  });
+
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
     const container = render(
       <PreviewLetterTemplate

@@ -8,7 +8,6 @@ import { useActionState, useState } from 'react';
 import {
   ErrorState,
   LetterTemplate,
-  PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {

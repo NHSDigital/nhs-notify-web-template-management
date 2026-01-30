@@ -1,6 +1,9 @@
 import { mockDeep } from 'jest-mock-extended';
 import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
-import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  AuthoringLetterTemplate,
+  PdfLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
 function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
   for (const item of list) {
@@ -87,6 +90,21 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
     },
   },
   name: 'large print letter template name',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+} as const;
+
+export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
+  id: 'authoring-letter-template-id',
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  letterType: 'x0',
+  language: 'en',
+  letterVersion: 'AUTHORING',
+  letterVariantId: 'variant-123',
+  sidesCount: 2,
+  name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,

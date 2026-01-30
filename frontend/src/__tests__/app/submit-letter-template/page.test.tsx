@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
@@ -86,8 +87,9 @@ describe('SubmitLetterTemplatePage', () => {
         },
       },
     } as TemplateDto,
+    AUTHORING_LETTER_TEMPLATE,
   ])(
-    'should redirect to invalid-template when template is $templateType and LETTER required fields are missing',
+    'should redirect to invalid-template when template is $templateType, letterVersion is $letterVersion and LETTER required fields are missing',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 

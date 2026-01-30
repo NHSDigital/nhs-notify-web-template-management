@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
@@ -104,8 +105,12 @@ describe('RequestProofPage', () => {
       ...LETTER_TEMPLATE,
       name: undefined as unknown as string,
     },
+    {
+      ...AUTHORING_LETTER_TEMPLATE,
+      proofingEnabled: true,
+    },
   ])(
-    'should redirect to invalid-template when template is $templateType and name is $name',
+    'should redirect to invalid-template when template is $templateType, letterVersion is $letterVersion and name is $name',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
