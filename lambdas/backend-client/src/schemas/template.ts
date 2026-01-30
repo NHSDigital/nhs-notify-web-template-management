@@ -8,7 +8,6 @@ import {
   VersionedFileDetails,
   ProofFileDetails,
   LetterFiles,
-  LetterProperties,
   PdfProofingLetterProperties,
   NhsAppProperties,
   SmsProperties,
@@ -120,28 +119,19 @@ export const $AuthoringLetterProperties =
     })
   );
 
-// Default letterVersion to PDF_PROOFING for existing letters in the database
-// that were created before letterVersion was introduced
-const addDefaultLetterVersion = (val: unknown) => {
-  if (
-    typeof val === 'object' &&
-    val !== null &&
-    'templateType' in val &&
-    val.templateType === 'LETTER' &&
-    !('letterVersion' in val)
-  ) {
-    return { ...val, letterVersion: 'PDF_PROOFING' };
-  }
-  return val;
-};
+const $DefaultablePdfProofingLetterVersion = z
+  .union([z.undefined(), z.literal('PDF_PROOFING')])
+  .transform((val) => val ?? ('PDF_PROOFING' as const));
 
-export const $LetterProperties: z.ZodType<LetterProperties> = z.preprocess(
-  addDefaultLetterVersion,
-  z.discriminatedUnion('letterVersion', [
-    $PdfProofingLetterProperties,
-    $AuthoringLetterProperties,
-  ])
-);
+const $PdfProofingLetterPropertiesWithDefault = z.object({
+  ...$PdfProofingLetterProperties.shape,
+  letterVersion: $DefaultablePdfProofingLetterVersion,
+});
+
+export const $LetterProperties = z.discriminatedUnion('letterVersion', [
+  $PdfProofingLetterPropertiesWithDefault,
+  $AuthoringLetterProperties,
+]);
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
@@ -217,24 +207,16 @@ const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
   $AuthoringLetterProperties.shape
 );
 
-// For DTO parsing, accept undefined letterVersion and default to 'PDF_PROOFING'
-// for legacy LETTER records created before letterVersion was introduced
-const $DefaultablePdfProofingLetterVersion = z
-  .union([z.undefined(), z.literal('PDF_PROOFING')])
-  .transform((val) => val ?? ('PDF_PROOFING' as const));
-
 const $PdfProofingLetterTemplateDto = $BaseTemplateDto.extend({
   ...$PdfProofingLetterProperties.shape,
   letterVersion: $DefaultablePdfProofingLetterVersion,
 });
 
-// Inner discriminated union for LETTER templates by letterVersion
 const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
   $PdfProofingLetterTemplateDto,
   $AuthoringLetterTemplateDto,
 ]);
 
-// Outer discriminated union by templateType
 export const $TemplateDto = z.discriminatedUnion('templateType', [
   $BaseTemplateDto.extend($NhsAppProperties.shape),
   $BaseTemplateDto.extend($EmailProperties.shape),
