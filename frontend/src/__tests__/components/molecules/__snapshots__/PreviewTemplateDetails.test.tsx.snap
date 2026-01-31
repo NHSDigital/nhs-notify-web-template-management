@@ -99,7 +99,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING le
           2
         </dd>
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="sheets-action"
@@ -128,7 +128,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING le
           variant-123
         </dd>
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="printing-postage-action"
@@ -163,7 +163,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING le
           </strong>
         </dd>
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="status-action"
@@ -282,7 +282,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVaria
           4
         </dd>
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="sheets-action"
@@ -309,7 +309,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVaria
           class="nhsuk-summary-list__value"
         />
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="printing-postage-action"
@@ -344,7 +344,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVaria
           </strong>
         </dd>
         <dd
-          class="nhsuk-summary-list__actions"
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="status-action"

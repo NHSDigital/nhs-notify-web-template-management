@@ -611,6 +611,17 @@ const previewTemplateDetails = {
     sheets: 'Sheets',
     printingAndPostage: 'Printing and postage',
   },
+  actions: {
+    editName: 'Edit name',
+    edit: 'Edit',
+    learnMore: 'Learn more',
+  },
+  visuallyHidden: {
+    campaign: 'campaign',
+    sheets: 'about sheets',
+    printingAndPostage: 'printing and postage',
+    status: 'about status',
+  },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
 };

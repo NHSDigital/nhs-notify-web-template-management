@@ -1,6 +1,6 @@
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { render, screen } from '@testing-library/react';
@@ -77,10 +77,10 @@ describe('PreviewTemplateDetailsSms', () => {
   });
 });
 
-describe('PreviewTemplateDetailsLetter', () => {
+describe('PreviewTemplateDetailsPdfLetter', () => {
   it('matches snapshot without proofs', () => {
     const container = render(
-      <PreviewTemplateDetailsLetter
+      <PreviewTemplateDetailsPdfLetter
         template={{
           id: 'template-id',
           name: 'Example template',
@@ -113,7 +113,7 @@ describe('PreviewTemplateDetailsLetter', () => {
 
   it('matches snapshot when test data CSV is absent', () => {
     const container = render(
-      <PreviewTemplateDetailsLetter
+      <PreviewTemplateDetailsPdfLetter
         template={{
           id: 'template-id',
           name: 'Example template',
@@ -141,7 +141,7 @@ describe('PreviewTemplateDetailsLetter', () => {
 
   it('matches snapshot when proofs are present, proofs failing virus scan are not displayed', () => {
     const container = render(
-      <PreviewTemplateDetailsLetter
+      <PreviewTemplateDetailsPdfLetter
         template={{
           id: 'template-id',
           clientId: 'client-id',
@@ -192,7 +192,7 @@ describe('PreviewTemplateDetailsLetter', () => {
 
   it('if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected)', () => {
     const container = render(
-      <PreviewTemplateDetailsLetter
+      <PreviewTemplateDetailsPdfLetter
         template={{
           id: 'template-id',
           name: 'Example letter',
@@ -220,7 +220,7 @@ describe('PreviewTemplateDetailsLetter', () => {
 
   it('if status is NOT_YET_SUBMITTED, then Not yet submitted is displayed', () => {
     const container = render(
-      <PreviewTemplateDetailsLetter
+      <PreviewTemplateDetailsPdfLetter
         template={{
           id: 'template-id',
           name: 'Example letter',

@@ -15,7 +15,7 @@ import {
   LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 
 const { pageTitle } = content.components.previewLetterTemplate;
@@ -69,7 +69,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     expect(page).toEqual(
       <PreviewSubmittedTemplate
         initialState={submittedLetterTemplate}
-        previewComponent={PreviewTemplateDetailsLetter}
+        previewComponent={PreviewTemplateDetailsPdfLetter}
       />
     );
   });

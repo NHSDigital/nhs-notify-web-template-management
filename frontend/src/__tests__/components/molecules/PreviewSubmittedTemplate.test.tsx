@@ -1,6 +1,6 @@
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { useFeatureFlags } from '@providers/client-config-provider';
@@ -121,7 +121,7 @@ describe('PreviewSubmittedTemplate component', () => {
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,
           }}
-          previewComponent={PreviewTemplateDetailsLetter}
+          previewComponent={PreviewTemplateDetailsPdfLetter}
         />
       );
 
