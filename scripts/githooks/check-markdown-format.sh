@@ -52,7 +52,7 @@ function main() {
   esac
 
   if [ -n "$files" ]; then
-    if command -v markdownlint-cli > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
+    if command -v markdownlint > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
       files="$files" run-markdownlint-natively
     else
       files="$files" run-markdownlint-in-docker
@@ -60,13 +60,13 @@ function main() {
   fi
 }
 
-# Run markdownlint-cli natively.
+# Run markdownlint natively.
 # Arguments (provided as environment variables):
 #   files=[files to check]
 function run-markdownlint-natively() {
 
   # shellcheck disable=SC2086
-  markdownlint-cli \
+  markdownlint \
     $files \
     --config "$PWD/scripts/config/markdownlint.yaml"
 }
