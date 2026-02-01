@@ -33,7 +33,6 @@ EXCLUDED_FILES=(
   "Makefile"
   "project.code-workspace"
   "src/jekyll-devcontainer/src/.devcontainer/devcontainer.json"
-  ".eslintrc.json"
 )
 
 EXCLUDED_DIRS=(

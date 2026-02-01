@@ -20,7 +20,7 @@
 # All arguments are required except terraformAction, and internalRef.
 # Example:
 #   ./dispatch_internal_repo_workflow.sh \
-#     --infraRepoName "nhs-notify-web-template-management" \
+#     --infraRepoName "nhs-notify-dns" \
 #     --releaseVersion "v1.2.3" \
 #     --targetWorkflow "deploy.yaml" \
 #     --targetEnvironment "prod" \
@@ -86,7 +86,7 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-# Validate required parameters
+
 if [[ -z "$APP_PEM_FILE" ]]; then
   echo "[ERROR] PEM_FILE environment variable is not set or is empty."
   exit 1
@@ -139,7 +139,6 @@ PR_TRIGGER_PAT=$(curl --request POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${JWT}" \
   -H "X-GitHub-Api-Version: 2022-11-28" | jq -r '.token')
-
 
 # Set default values if not provided
 if [[ -z "$PR_TRIGGER_PAT" ]]; then
