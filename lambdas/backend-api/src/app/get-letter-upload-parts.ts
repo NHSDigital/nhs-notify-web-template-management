@@ -24,7 +24,7 @@ export function getLetterUploadParts(
   );
 
   const pdf = new File(
-    pdfPart?.data ? [pdfPart.data] : [],
+    pdfPart?.data ? [new Uint8Array(pdfPart.data)] : [],
     pdfPart?.filename ?? '',
     {
       type: pdfPart?.type,
@@ -52,7 +52,9 @@ export function getLetterUploadParts(
 
   const csv =
     csvPart &&
-    new File([csvPart.data], csvPart.filename ?? '', { type: csvPart.type });
+    new File([new Uint8Array(csvPart.data)], csvPart.filename ?? '', {
+      type: csvPart.type,
+    });
 
   return success({ template, pdf, csv });
 }
