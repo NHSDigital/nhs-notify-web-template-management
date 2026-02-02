@@ -126,6 +126,91 @@ test.describe('Message plans Page', () => {
     ).toBeUndefined();
   });
 
+  test('should copy message plan names and IDs to clipboard when copy button is clicked', async ({
+    page,
+  }) => {
+    const messagePlanPage = new RoutingMessagePlansPage(page);
+    await messagePlanPage.loadPage();
+
+    await messagePlanPage.draftMessagePlansTable.click();
+
+    const draftCopyButton = page.getByTestId('copy-button-draft');
+
+    await page
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    await draftCopyButton.click();
+
+    await expect(draftCopyButton).toHaveText(
+      'Names and IDs copied to clipboard'
+    );
+
+    const draftClipboardText = await page.evaluate(() =>
+      navigator.clipboard.readText()
+    );
+
+    expect(draftClipboardText).toContain('routing_plan_name,routing_plan_id');
+
+    expect(draftClipboardText).toContain(
+      `"${routingConfigs.draftNew.name}","${routingConfigs.draftNew.id}"`
+    );
+    expect(draftClipboardText).toContain(
+      `"${routingConfigs.draftOld.name}","${routingConfigs.draftOld.id}"`
+    );
+
+    await messagePlanPage.productionMessagePlansTable.click();
+
+    const productionCopyButton = page.getByTestId('copy-button-production');
+
+    await productionCopyButton.click();
+
+    await expect(productionCopyButton).toHaveText(
+      'Names and IDs copied to clipboard'
+    );
+
+    const productionClipboardText = await page.evaluate(() =>
+      navigator.clipboard.readText()
+    );
+
+    expect(productionClipboardText).toContain(
+      'routing_plan_name,routing_plan_id'
+    );
+
+    expect(productionClipboardText).toContain(
+      `"${routingConfigs.production.name}","${routingConfigs.production.id}"`
+    );
+  });
+
+  test('should display error message when clipboard write fails', async ({
+    page,
+  }) => {
+    const messagePlanPage = new RoutingMessagePlansPage(page);
+    await messagePlanPage.loadPage();
+
+    await page.context().clearPermissions();
+
+    await messagePlanPage.draftMessagePlansTable.click();
+
+    const copyButton = page.getByTestId('copy-button-draft');
+
+    await copyButton.click();
+
+    await expect(copyButton).toHaveText(
+      'Failed copying names and IDs to clipboard'
+    );
+
+    await messagePlanPage.productionMessagePlansTable.click();
+
+    const productionButton = page.getByTestId('copy-button-production');
+
+    await productionButton.click();
+
+    await expect(productionButton).toHaveText(
+      'Failed copying names and IDs to clipboard'
+    );
+  });
+
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new RoutingMessagePlansPage(page),
