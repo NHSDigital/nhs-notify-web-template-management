@@ -1,5 +1,147 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            authoring letter template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                authoring-letter-template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                1
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                variant-123
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+          data-testid="back-link-bottom"
+          href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`PreviewTemplateFromMessagePlan renders Email template preview with the correct back links 1`] = `
 <DocumentFragment>
   <a
@@ -385,7 +527,125 @@ exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template prev
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateFromMessagePlan renders Letter template preview with the correct back links 1`] = `
+exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with the correct back links 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+  >
+    Go back
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            app template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                app-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                NHS App message
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-message"
+                >
+                  <p>
+                    message
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+          data-testid="back-link-bottom"
+          href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+        >
+          Go back
+        </a>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateFromMessagePlan renders PDF Letter template preview with the correct back links 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -497,124 +757,6 @@ exports[`PreviewTemplateFromMessagePlan renders Letter template preview with the
           class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
           data-testid="back-link-bottom"
           href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
-        >
-          Go back
-        </a>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with the correct back links 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
-  >
-    Go back
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            app template name
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                app-template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                NHS App message
-              </dd>
-            </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-message"
-                >
-                  Message
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-message"
-                >
-                  <p>
-                    message
-                  </p>
-                  
-
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <a
-          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
-          data-testid="back-link-bottom"
-          href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
         >
           Go back
         </a>

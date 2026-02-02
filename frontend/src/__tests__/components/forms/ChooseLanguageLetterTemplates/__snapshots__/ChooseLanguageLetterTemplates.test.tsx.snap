@@ -974,6 +974,451 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
 </DocumentFragment>
 `;
 
+exports[`ChooseLanguageLetterTemplates when templates are available renders mixed PDF and authoring letter templates 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Autumn Campaign Plan
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Choose language letter templates
+          </h1>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="choose-language-letter-templates"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="42"
+          />
+          <div
+            class="nhsuk-grid-row"
+          >
+            <div
+              class="nhsuk-grid-column-full"
+            >
+              <div
+                class="nhsuk-hint nhsuk-u-reading-width"
+                data-testid="table-hint"
+              >
+                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-checkboxes"
+                  id="language-templates"
+                >
+                  <table
+                    class="nhsuk-table-responsive"
+                    data-testid="language-templates-table"
+                    id="language-templates-table"
+                  >
+                    <thead
+                      class="nhsuk-table__head"
+                      role="rowgroup"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="language-templates-table-header-template-select"
+                          scope="col"
+                        >
+                          Select
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="language-templates-table-header-template-name"
+                          scope="col"
+                        >
+                          Name
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="language-templates-table-header-template-type"
+                          scope="col"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="language-templates-table-header-template-last-edited"
+                          scope="col"
+                        >
+                          Last edited
+                        </th>
+                        <th
+                          class="nhsuk-table__header"
+                          data-testid="language-templates-table-header-template-action"
+                          scope="col"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="nhsuk-table__body"
+                    >
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-checkboxes__item"
+                          >
+                            <input
+                              class="nhsuk-checkboxes__input"
+                              data-checkbox-exclusive-group="language-templates"
+                              data-testid="french-letter-id-checkbox"
+                              id="template-french-letter-id"
+                              name="template_french-letter-id"
+                              type="checkbox"
+                              value="french-letter-id:fr"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-checkboxes__label"
+                              for="template-french-letter-id"
+                              id="template-french-letter-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          <label
+                            class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
+                            for="template-french-letter-id"
+                          >
+                            French letter template
+                          </label>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Standard letter - French
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview French letter template"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="french-letter-id-preview-link"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
+                            id="preview-template-link-0"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-checkboxes__item"
+                          >
+                            <input
+                              class="nhsuk-checkboxes__input"
+                              data-checkbox-exclusive-group="language-templates"
+                              data-testid="german-authoring-letter-id-checkbox"
+                              id="template-german-authoring-letter-id"
+                              name="template_german-authoring-letter-id"
+                              type="checkbox"
+                              value="german-authoring-letter-id:de"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-checkboxes__label"
+                              for="template-german-authoring-letter-id"
+                              id="template-german-authoring-letter-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          <label
+                            class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
+                            for="template-german-authoring-letter-id"
+                          >
+                            German authoring letter template
+                          </label>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Standard letter - German
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview German authoring letter template"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="german-authoring-letter-id-preview-link"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/german-authoring-letter-id?lockNumber=42"
+                            id="preview-template-link-1"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="nhsuk-table__row"
+                      >
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Select 
+                          </span>
+                          <div
+                            class="nhsuk-checkboxes__item"
+                          >
+                            <input
+                              class="nhsuk-checkboxes__input"
+                              data-checkbox-exclusive-group="language-templates"
+                              data-testid="spanish-letter-id-checkbox"
+                              id="template-spanish-letter-id"
+                              name="template_spanish-letter-id"
+                              type="checkbox"
+                              value="spanish-letter-id:es"
+                            />
+                            <label
+                              class="nhsuk-label nhsuk-checkboxes__label"
+                              for="template-spanish-letter-id"
+                              id="template-spanish-letter-id--label"
+                            >
+                               
+                            </label>
+                          </div>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Name 
+                          </span>
+                          <label
+                            class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
+                            for="template-spanish-letter-id"
+                          >
+                            Spanish letter template
+                          </label>
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Type 
+                          </span>
+                          Standard letter - Spanish
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                            Last edited 
+                          </span>
+                          13th Jan 2025
+                          <br />
+                          10:19
+                        </td>
+                        <td
+                          class="nhsuk-table__cell"
+                          role="cell"
+                        >
+                          <span
+                            aria-hidden="true"
+                            class="nhsuk-table-responsive__heading"
+                          >
+                             
+                          </span>
+                          <a
+                            aria-label="Preview Spanish letter template"
+                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                            data-testid="spanish-letter-id-preview-link"
+                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
+                            id="preview-template-link-2"
+                          >
+                            Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+            data-testid="channel-template-actions"
+          >
+            <button
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="submit-button"
+              id="channel-template-submit-button"
+              type="submit"
+            >
+              Save and continue
+            </button>
+            <a
+              class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+              data-testid="back-link-bottom"
+              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+            >
+              Go back
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`ChooseLanguageLetterTemplates when templates are available renders multiple options 1`] = `
 <DocumentFragment>
   <main

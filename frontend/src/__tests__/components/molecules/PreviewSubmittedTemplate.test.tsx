@@ -1,4 +1,5 @@
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
@@ -76,7 +77,7 @@ describe('PreviewSubmittedTemplate component', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('should render letter', () => {
+    it('should render PDF letter', () => {
       const container = render(
         <PreviewSubmittedTemplate
           initialState={{
@@ -122,6 +123,30 @@ describe('PreviewSubmittedTemplate component', () => {
             lockNumber: 1,
           }}
           previewComponent={PreviewTemplateDetailsPdfLetter}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('should render authoring letter', () => {
+      const container = render(
+        <PreviewSubmittedTemplate
+          initialState={{
+            id: 'template-id',
+            name: 'Example authoring letter',
+            templateStatus: 'SUBMITTED',
+            templateType: 'LETTER',
+            letterType: 'x0',
+            letterVersion: 'AUTHORING',
+            language: 'en',
+            sidesCount: 4,
+            letterVariantId: 'first-class',
+            createdAt: '2025-01-13T10:19:25.579Z',
+            updatedAt: '2025-01-13T10:19:25.579Z',
+            lockNumber: 1,
+          }}
+          previewComponent={PreviewTemplateDetailsAuthoringLetter}
         />
       );
 

@@ -1,321 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewSubmittedTemplate component routing = false should render app message 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example template
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                NHS App message
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Submitted
-                </strong>
-              </dd>
-            </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-message"
-                >
-                  Message
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-message"
-                >
-                  <p>
-                    app content
-                  </p>
-                  
-
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`PreviewSubmittedTemplate component routing = false should render email 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example Email template
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Email
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Submitted
-                </strong>
-              </dd>
-            </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-subject"
-                >
-                  Subject
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-subject"
-                >
-                  email subject
-                </div>
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-1"
-                  id="preview-heading-message"
-                >
-                  Message
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-1"
-                  id="preview-content-message"
-                >
-                  <p>
-                    email content
-                  </p>
-                  
-
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`PreviewSubmittedTemplate component routing = false should render letter 1`] = `
+exports[`PreviewSubmittedTemplate component routing = false should render PDF letter 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -581,6 +266,536 @@ exports[`PreviewSubmittedTemplate component routing = false should render letter
 </DocumentFragment>
 `;
 
+exports[`PreviewSubmittedTemplate component routing = false should render app message 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example template
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                NHS App message
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--grey"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Submitted
+                </strong>
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-message"
+                >
+                  <p>
+                    app content
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          This template cannot be edited because it has been submitted.
+        </p>
+        <p>
+          If you want to change a submitted or live template, you must create a new template to replace it.
+        </p>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewSubmittedTemplate component routing = false should render authoring letter 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example authoring letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="edit-template-name/template-id"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                4
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                first-class
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="choose-printing-and-postage/template-id"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--grey"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Submitted
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="status-action"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          If you want to change a submitted or live template, you must create a new template to replace it.
+        </p>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewSubmittedTemplate component routing = false should render email 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example Email template
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Email
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--grey"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Submitted
+                </strong>
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  email subject
+                </div>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-1"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-1"
+                  id="preview-content-message"
+                >
+                  <p>
+                    email content
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          This template cannot be edited because it has been submitted.
+        </p>
+        <p>
+          If you want to change a submitted or live template, you must create a new template to replace it.
+        </p>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
 exports[`PreviewSubmittedTemplate component routing = false should render sms 1`] = `
 <DocumentFragment>
   <a
@@ -726,352 +941,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
 </DocumentFragment>
 `;
 
-exports[`PreviewSubmittedTemplate component routing = true should render app message 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example template
-          </h1>
-        </div>
-        <div
-          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Locked
-          </strong>
-          <p>
-            You cannot edit or delete this template because it's used in a message plan that's in production.
-          </p>
-          <p>
-            <a
-              data-testid="copy-link"
-              href="/copy-template/template-id"
-            >
-              Copy this template
-            </a>
-             to create a draft with the same content.
-          </p>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                NHS App message
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--pink"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Locked
-                </strong>
-              </dd>
-            </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-message"
-                >
-                  Message
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-message"
-                >
-                  <p>
-                    app content
-                  </p>
-                  
-
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`PreviewSubmittedTemplate component routing = true should render email 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example Email template
-          </h1>
-        </div>
-        <div
-          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Locked
-          </strong>
-          <p>
-            You cannot edit or delete this template because it's used in a message plan that's in production.
-          </p>
-          <p>
-            <a
-              data-testid="copy-link"
-              href="/copy-template/template-id"
-            >
-              Copy this template
-            </a>
-             to create a draft with the same content.
-          </p>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Email
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--pink"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Locked
-                </strong>
-              </dd>
-            </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-subject"
-                >
-                  Subject
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-subject"
-                >
-                  email subject
-                </div>
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                <div
-                  data-testid="preview__heading-1"
-                  id="preview-heading-message"
-                >
-                  Message
-                </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="preview__content"
-                  data-testid="preview__content-1"
-                  id="preview-content-message"
-                >
-                  <p>
-                    email content
-                  </p>
-                  
-
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
-exports[`PreviewSubmittedTemplate component routing = true should render letter 1`] = `
+exports[`PreviewSubmittedTemplate component routing = true should render PDF letter 1`] = `
 <DocumentFragment>
   <a
     class="nhsuk-back-link"
@@ -1328,6 +1198,575 @@ exports[`PreviewSubmittedTemplate component routing = true should render letter 
                     </a>
                   </li>
                 </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewSubmittedTemplate component routing = true should render app message 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example template
+          </h1>
+        </div>
+        <div
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot edit or delete this template because it's used in a message plan that's in production.
+          </p>
+          <p>
+            <a
+              data-testid="copy-link"
+              href="/copy-template/template-id"
+            >
+              Copy this template
+            </a>
+             to create a draft with the same content.
+          </p>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                NHS App message
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--pink"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Locked
+                </strong>
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-message"
+                >
+                  <p>
+                    app content
+                  </p>
+                  
+
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewSubmittedTemplate component routing = true should render authoring letter 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example authoring letter
+          </h1>
+        </div>
+        <p
+          class="nhsuk-u-margin-bottom-4"
+        >
+          <a
+            data-testid="edit-name-link"
+            href="edit-template-name/template-id"
+          >
+            Edit name
+          </a>
+        </p>
+        <div
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot delete this template because it's used in a message plan that's in production.
+          </p>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Total pages
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                2
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Sheets
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                4
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Printing and postage
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                first-class
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="printing-postage-action"
+                  href="choose-printing-and-postage/template-id"
+                >
+                  Edit
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     printing and postage
+                  </span>
+                </a>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--pink"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Locked
+                </strong>
+              </dd>
+              <dd
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="status-action"
+                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about status
+                  </span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewSubmittedTemplate component routing = true should render email 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            Example Email template
+          </h1>
+        </div>
+        <div
+          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+          >
+            Locked
+          </strong>
+          <p>
+            You cannot edit or delete this template because it's used in a message plan that's in production.
+          </p>
+          <p>
+            <a
+              data-testid="copy-link"
+              href="/copy-template/template-id"
+            >
+              Copy this template
+            </a>
+             to create a draft with the same content.
+          </p>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Email
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--pink"
+                  data-status="submitted"
+                  data-testid="status-tag"
+                >
+                  Locked
+                </strong>
+              </dd>
+            </div>
+          </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  email subject
+                </div>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                <div
+                  data-testid="preview__heading-1"
+                  id="preview-heading-message"
+                >
+                  Message
+                </div>
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="preview__content"
+                  data-testid="preview__content-1"
+                  id="preview-content-message"
+                >
+                  <p>
+                    email content
+                  </p>
+                  
+
+                </div>
               </dd>
             </div>
           </dl>
