@@ -3,10 +3,8 @@ import { redirect, RedirectType } from 'next/navigation';
 import type { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import {
-  MessagePlanForm,
-  NHSNotifyFormProvider,
-} from '@forms/MessagePlan/MessagePlan';
+import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getCampaignIds } from '@utils/client-config';
 import { getRoutingConfig } from '@utils/message-plans';
 import { fetchClient } from '@utils/server-features';

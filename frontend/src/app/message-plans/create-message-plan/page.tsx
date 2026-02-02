@@ -4,10 +4,8 @@ import { z } from 'zod/v4';
 import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import {
-  MessagePlanForm,
-  NHSNotifyFormProvider,
-} from '@forms/MessagePlan/MessagePlan';
+import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getCampaignIds } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
 import { createMessagePlanServerAction } from './server-action';

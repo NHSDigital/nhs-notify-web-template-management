@@ -3,13 +3,8 @@
 import Link from 'next/link';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { createNhsNotifyFormContext } from '@providers/form-provider';
+import { useNHSNotifyForm } from '@providers/form-provider';
 import copy from '@content/content';
-
-const { useNHSNotifyForm, NHSNotifyFormProvider } =
-  createNhsNotifyFormContext();
-
-export { NHSNotifyFormProvider };
 
 const content = copy.pages.chooseTemplatesForMessagePlan;
 

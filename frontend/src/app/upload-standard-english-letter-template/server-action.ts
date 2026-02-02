@@ -2,18 +2,27 @@
 
 import { z } from 'zod/v4';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
-import {
-  $UploadDocxLetterTemplateFormSchema,
-  type UploadDocxLetterTemplateFormSchema,
-} from '@forms/UploadDocxLetterTemplateForm/schema';
+import copy from '@content/content';
+import { DOCX_MIME } from '@forms/UploadDocxLetterTemplateForm/form';
+import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
+
+const { errors } = copy.components.uploadDocxLetterTemplateForm;
+
+const $FormSchema = z.object({
+  name: z.string(errors.name.empty).nonempty(errors.name.empty),
+  campaignId: z
+    .string(errors.campaignId.empty)
+    .nonempty(errors.campaignId.empty),
+  file: z.file(errors.file.empty).mime(DOCX_MIME, errors.file.empty),
+});
 
 export async function uploadStandardLetterTemplate(
-  _: FormState<UploadDocxLetterTemplateFormSchema>,
+  _: FormState,
   form: FormData
-): Promise<FormState<UploadDocxLetterTemplateFormSchema>> {
-  const fields = Object.fromEntries(form.entries());
+): Promise<FormState> {
+  const validation = $FormSchema.safeParse(Object.fromEntries(form.entries()));
 
-  const validation = $UploadDocxLetterTemplateFormSchema.safeParse(fields);
+  const fields = formDataToFormStateFields(form);
 
   if (validation.error) {
     return {

@@ -21,10 +21,7 @@ import {
 } from '@atoms/nhsuk-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
-import {
-  MessagePlanChooseTemplatesMoveToProductionForm,
-  NHSNotifyFormProvider,
-} from '@forms/ChooseTemplates/MovetoProduction';
+import { MessagePlanChooseTemplatesMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
 import {
@@ -37,6 +34,7 @@ import {
 } from '@molecules/MessagePlanFallbackConditions/MessagePlanFallbackConditions';
 import { MessagePlanChannelList } from '@molecules/MessagePlanChannelList/MessagePlanChannelList';
 import { MessagePlanChooseTemplateCardContent } from '@organisms/MessagePlanChooseTemplateCardContent/MessagePlanChooseTemplateCardContent';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { interpolate } from '@utils/interpolate';
 import {
   getRoutingConfig,

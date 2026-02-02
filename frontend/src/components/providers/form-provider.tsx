@@ -9,53 +9,44 @@ import React, {
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 
-type NHSNotifyFormActionState<T extends Record<string, unknown>> = ReturnType<
-  typeof useActionState<FormState<T>, FormData>
+type NHSNotifyFormActionState = ReturnType<
+  typeof useActionState<FormState, FormData>
 >;
 
-export function createNhsNotifyFormContext<
-  T extends Record<string, unknown>,
->() {
-  const FormContext = createContext<NHSNotifyFormActionState<T> | null>(null);
+const FormContext = createContext<NHSNotifyFormActionState | null>(null);
 
-  function useNHSNotifyForm() {
-    const context = useContext(FormContext);
-    if (!context) {
-      throw new Error(
-        'useNHSNotifyForm must be used within NHSNotifyFormProvider'
-      );
-    }
-    return context;
+export function useNHSNotifyForm() {
+  const context = useContext(FormContext);
+  if (!context) {
+    throw new Error(
+      'useNHSNotifyForm must be used within NHSNotifyFormProvider'
+    );
   }
+  return context;
+}
 
-  function NHSNotifyFormProvider({
-    children,
-    errorSummaryHint,
-    initialState = {},
+export function NHSNotifyFormProvider({
+  children,
+  errorSummaryHint,
+  initialState = {},
+  serverAction,
+}: PropsWithChildren<{
+  errorSummaryHint?: string;
+  initialState?: FormState;
+  serverAction: (state: FormState, data: FormData) => Promise<FormState>;
+}>) {
+  const [state, action, isPending] = useActionState<FormState, FormData>(
     serverAction,
-  }: PropsWithChildren<{
-    errorSummaryHint?: string;
-    initialState?: FormState<T>;
-    serverAction: (
-      state: FormState<T>,
-      data: FormData
-    ) => Promise<FormState<T>>;
-  }>) {
-    const [state, action, isPending] = useActionState<FormState<T>, FormData>(
-      serverAction,
-      initialState
-    );
+    initialState
+  );
 
-    return (
-      <FormContext.Provider value={[state, action, isPending]}>
-        <NhsNotifyErrorSummary
-          errorState={state.errorState}
-          hint={errorSummaryHint}
-        />
-        {children}
-      </FormContext.Provider>
-    );
-  }
-
-  return { NHSNotifyFormProvider, useNHSNotifyForm };
+  return (
+    <FormContext.Provider value={[state, action, isPending]}>
+      <NhsNotifyErrorSummary
+        errorState={state.errorState}
+        hint={errorSummaryHint}
+      />
+      {children}
+    </FormContext.Provider>
+  );
 }

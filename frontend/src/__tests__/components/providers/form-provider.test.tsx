@@ -11,7 +11,10 @@ import type {
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
-import { createNhsNotifyFormContext } from '@providers/form-provider';
+import {
+  useNHSNotifyForm,
+  NHSNotifyFormProvider,
+} from '@providers/form-provider';
 import { startTransition } from 'react';
 
 jest.mock('@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary');
@@ -23,9 +26,6 @@ jest
 beforeEach(() => {
   jest.mocked(NhsNotifyErrorSummary).mockClear();
 });
-
-const { useNHSNotifyForm, NHSNotifyFormProvider } =
-  createNhsNotifyFormContext();
 
 function TestForm() {
   const [, action] = useNHSNotifyForm();

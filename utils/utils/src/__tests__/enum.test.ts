@@ -6,6 +6,7 @@ import {
   TEMPLATE_STATUS_LIST,
   TemplateStatus,
   TemplateType,
+  LANGUAGE_LIST,
 } from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
@@ -33,6 +34,7 @@ import {
   accessibleFormatDisplayMappings,
   type SupportedLetterType,
   createTemplateUrl,
+  isLanguage,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -488,5 +490,15 @@ describe('accessibleFormatDisplayMappings', () => {
 
   test.each(cases)('should map "%s" to "%s"', (format, display) => {
     expect(accessibleFormatDisplayMappings(format)).toEqual(display);
+  });
+});
+
+describe('isLanguage', () => {
+  it.each(LANGUAGE_LIST)('returns true when language is %s', (language) => {
+    expect(isLanguage(language)).toBe(true);
+  });
+
+  it('returns false when language is not valid', () => {
+    expect(isLanguage('not a language')).toBe(false);
   });
 });

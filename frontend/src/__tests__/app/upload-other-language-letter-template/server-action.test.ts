@@ -1,22 +1,24 @@
-import { uploadLargePrintLetterTemplate } from '@app/upload-large-print-letter-template/server-action';
+import { uploadOtherLanguageLetterTemplate } from '@app/upload-other-language-letter-template/server-action';
 
-describe('uploadLargePrintLetterTemplate', () => {
+describe('uploadOtherLanguageLetterTemplate', () => {
   it('returns success when all fields are valid', async () => {
     const formData = new FormData();
     formData.append('name', 'Test Template');
     formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toBeUndefined();
     expect(result.fields).toEqual({
       name: 'Test Template',
       campaignId: 'Campaign 1',
+      language: 'lv',
     });
   });
 
@@ -24,13 +26,14 @@ describe('uploadLargePrintLetterTemplate', () => {
     const formData = new FormData();
     formData.append('name', '');
     formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -43,13 +46,14 @@ describe('uploadLargePrintLetterTemplate', () => {
   it('returns validation error when name is missing', async () => {
     const formData = new FormData();
     formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -63,13 +67,14 @@ describe('uploadLargePrintLetterTemplate', () => {
     const formData = new FormData();
     formData.append('name', 'Test Template');
     formData.append('campaignId', '');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -82,13 +87,14 @@ describe('uploadLargePrintLetterTemplate', () => {
   it('returns validation error when campaignId is missing', async () => {
     const formData = new FormData();
     formData.append('name', 'Test Template');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -98,12 +104,75 @@ describe('uploadLargePrintLetterTemplate', () => {
     });
   });
 
-  it('returns validation error when file is missing', async () => {
+  it('returns validation error when language is empty', async () => {
+    const formData = new FormData();
+    formData.append('name', 'Test Template');
+    formData.append('campaignId', 'Campaign 1');
+    formData.append('language', '');
+
+    const file = new File(['content'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    formData.append('file', file);
+
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
+
+    expect(result.errorState).toEqual({
+      formErrors: [],
+      fieldErrors: {
+        language: ['Choose a language'],
+      },
+    });
+  });
+
+  it('returns validation error when language is missing', async () => {
     const formData = new FormData();
     formData.append('name', 'Test Template');
     formData.append('campaignId', 'Campaign 1');
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const file = new File(['content'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    formData.append('file', file);
+
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
+
+    expect(result.errorState).toEqual({
+      formErrors: [],
+      fieldErrors: {
+        language: ['Choose a language'],
+      },
+    });
+  });
+
+  it('returns validation error when language is invalid', async () => {
+    const formData = new FormData();
+    formData.append('name', 'Test Template');
+    formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'not a language code');
+
+    const file = new File(['content'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    formData.append('file', file);
+
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
+
+    expect(result.errorState).toEqual({
+      formErrors: [],
+      fieldErrors: {
+        language: ['Choose a language'],
+      },
+    });
+  });
+
+  it('returns validation error when file is missing', async () => {
+    const formData = new FormData();
+    formData.append('name', 'Test Template');
+    formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'lv');
+
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -117,13 +186,14 @@ describe('uploadLargePrintLetterTemplate', () => {
     const formData = new FormData();
     formData.append('name', 'Test Template');
     formData.append('campaignId', 'Campaign 1');
+    formData.append('language', 'lv');
 
     const file = new File(['content'], 'template.pdf', {
       type: 'application/pdf',
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
@@ -137,14 +207,16 @@ describe('uploadLargePrintLetterTemplate', () => {
     const formData = new FormData();
     formData.append('name', '');
     formData.append('campaignId', '');
+    formData.append('language', '');
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    const result = await uploadOtherLanguageLetterTemplate({}, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
       fieldErrors: {
         name: ['Enter a template name'],
         campaignId: ['Choose a campaign'],
+        language: ['Choose a language'],
         file: ['Choose a template file'],
       },
     });

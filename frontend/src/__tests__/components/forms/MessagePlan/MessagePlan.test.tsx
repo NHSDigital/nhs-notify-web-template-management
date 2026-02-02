@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  MessagePlanForm,
-  NHSNotifyFormProvider,
-} from '@forms/MessagePlan/MessagePlan';
+import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 
 jest.mock('@utils/csrf-utils');

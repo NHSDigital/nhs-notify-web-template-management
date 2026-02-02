@@ -55,6 +55,11 @@ const languageMap: Record<Language, LanguageMetadata> = {
   ur: { name: 'Urdu', rtl: true },
   zh: { name: 'Chinese', rtl: false },
 };
+
+export const isLanguage = (value: unknown): value is Language => {
+  return typeof value === 'string' && Object.keys(languageMap).includes(value);
+};
+
 export const languageMapping = (language: Language) =>
   languageMap[language].name;
 

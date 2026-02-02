@@ -1576,6 +1576,17 @@ const uploadDocxLetterTemplateForm = {
         hint: 'Choose which campaign this letter is for',
       },
     },
+    language: {
+      label: 'Template language',
+      hint: 'Choose the language used in this template.',
+      rtl: [
+        { type: 'text', text: '**Right-to-left language selected**' },
+        {
+          type: 'text',
+          text: "You've selected a language that reads right-to-left. Make sure you use the [other language (right-aligned) letter template file](https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language-right-aligned.docx).",
+        },
+      ] satisfies ContentBlock[],
+    },
     file: {
       label: 'Template file',
       hint: [
@@ -1599,11 +1610,16 @@ const uploadDocxLetterTemplateForm = {
     file: {
       empty: 'Choose a template file',
     },
+    language: {
+      empty: 'Choose a language',
+    },
   },
 };
 
+type DocxTemplateType = Extract<LetterType, 'x0' | 'x1'> | 'language';
+
 const uploadDocxLetterTemplateSideBarMappings: Record<
-  LetterType | 'language',
+  DocxTemplateType,
   [string, string]
 > = {
   x0: [
@@ -1614,17 +1630,23 @@ const uploadDocxLetterTemplateSideBarMappings: Record<
     'large print',
     'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx',
   ],
-  q4: ['', ''],
-  language: ['', ''],
+  language: [
+    'other language',
+    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx',
+  ],
 };
 
-const uploadDocxLetterTemplateSideBar = (type: LetterType): ContentBlock[] => {
+const article = (noun: string) => (/^[aeiou]/i.test(noun) ? 'an' : 'a');
+
+const uploadDocxLetterTemplateSideBar = (
+  type: DocxTemplateType
+): ContentBlock[] => {
   const [display, templateLink] = uploadDocxLetterTemplateSideBarMappings[type];
 
   return [
     {
       type: 'text',
-      text: `## How to create a ${display} letter template`,
+      text: `## How to create ${article(display)} ${display} letter template`,
       overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
     },
     {
@@ -1643,15 +1665,17 @@ const uploadDocxLetterTemplateSideBar = (type: LetterType): ContentBlock[] => {
   ];
 };
 
-const uploadDocxLetterTemplatePage = (type: LetterType) => {
+const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
   const [display] = uploadDocxLetterTemplateSideBarMappings[type];
   return {
-    pageTitle: generatePageTitle(`Upload a ${display} letter template`),
+    pageTitle: generatePageTitle(
+      `Upload ${article(display)} ${display} letter template`
+    ),
     backLink: {
       href: '/choose-a-template-type',
       text: 'Back to choose a template type',
     },
-    heading: `Upload a ${display} letter template`,
+    heading: `Upload ${article(display)} ${display} letter template`,
     sideBar: uploadDocxLetterTemplateSideBar(type),
   };
 };

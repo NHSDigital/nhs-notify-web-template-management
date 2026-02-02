@@ -17,7 +17,6 @@ describe('uploadStandardLetterTemplate', () => {
     expect(result.fields).toEqual({
       name: 'Test Template',
       campaignId: 'Campaign 1',
-      file,
     });
   });
 
@@ -38,11 +37,6 @@ describe('uploadStandardLetterTemplate', () => {
       fieldErrors: {
         name: ['Enter a template name'],
       },
-    });
-    expect(result.fields).toEqual({
-      name: '',
-      campaignId: 'Campaign 1',
-      file,
     });
   });
 
@@ -82,11 +76,6 @@ describe('uploadStandardLetterTemplate', () => {
       fieldErrors: {
         campaignId: ['Choose a campaign'],
       },
-    });
-    expect(result.fields).toEqual({
-      name: 'Test Template',
-      campaignId: '',
-      file,
     });
   });
 

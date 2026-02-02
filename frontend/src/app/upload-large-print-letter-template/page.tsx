@@ -5,6 +5,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
 import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm/form';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
 import { getCampaignIds } from '@utils/client-config';
 import { uploadLargePrintLetterTemplate } from './server-action';
@@ -32,9 +33,7 @@ export default async function UploadLargePrintLetterTemplatePage() {
         {content.backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>
-        <UploadDocxLetterTemplateForm.Provider
-          serverAction={uploadLargePrintLetterTemplate}
-        >
+        <NHSNotifyFormProvider serverAction={uploadLargePrintLetterTemplate}>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
               <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
@@ -55,7 +54,7 @@ export default async function UploadLargePrintLetterTemplatePage() {
               <ContentRenderer content={content.sideBar} />
             </div>
           </div>
-        </UploadDocxLetterTemplateForm.Provider>
+        </NHSNotifyFormProvider>
       </NHSNotifyMain>
     </>
   );

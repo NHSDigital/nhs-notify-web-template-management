@@ -15,15 +15,10 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { createNhsNotifyFormContext } from '@providers/form-provider';
+import { useNHSNotifyForm } from '@providers/form-provider';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const formContent = content.components.messagePlanForm;
-
-const { useNHSNotifyForm, NHSNotifyFormProvider } =
-  createNhsNotifyFormContext();
-
-export { NHSNotifyFormProvider };
 
 export function MessagePlanForm({
   backLink,

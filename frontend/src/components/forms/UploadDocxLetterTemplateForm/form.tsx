@@ -1,23 +1,46 @@
 'use client';
 
+import { useState, type PropsWithChildren } from 'react';
 import classNames from 'classnames';
-import { Button, ErrorMessage, HintText, Label } from 'nhsuk-react-components';
+import {
+  Button,
+  ErrorMessage,
+  HintText,
+  InsetText,
+  Label,
+} from 'nhsuk-react-components';
+import { z } from 'zod';
+import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
+import {
+  isLanguage,
+  isRightToLeft,
+} from 'nhs-notify-web-template-management-utils';
 import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
 import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
 import copy from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
-import { createNhsNotifyFormContext } from '@providers/form-provider';
-import { DOCX_MIME, type UploadDocxLetterTemplateFormSchema } from './schema';
-import { PropsWithChildren } from 'react';
-
-const { useNHSNotifyForm, NHSNotifyFormProvider } =
-  createNhsNotifyFormContext<UploadDocxLetterTemplateFormSchema>();
-
-export const Provider = NHSNotifyFormProvider;
+import { useNHSNotifyForm } from '@providers/form-provider';
 
 const content = copy.components.uploadDocxLetterTemplateForm;
+
+export const DOCX_MIME: z.core.util.MimeTypes =
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+export function Form({
+  children,
+  formId,
+}: PropsWithChildren<{ formId: string }>) {
+  const [, action] = useNHSNotifyForm();
+
+  return (
+    <NHSNotifyFormWrapper action={action} formId={formId}>
+      {children}
+      <Button type='submit'>{content.fields.submitButton.text}</Button>
+    </NHSNotifyFormWrapper>
+  );
+}
 
 export function NameField() {
   const [state] = useNHSNotifyForm();
@@ -110,16 +133,47 @@ export function FileField() {
   );
 }
 
-export function Form({
-  children,
-  formId,
-}: PropsWithChildren<{ formId: string }>) {
-  const [, action] = useNHSNotifyForm();
+const OTHER_LANGUAGES = LANGUAGE_LIST.filter((language) => language !== 'en');
+
+export function LanguageField() {
+  const [state] = useNHSNotifyForm();
+
+  const [selectedLanguage, setLanguage] = useState(state.fields?.language);
+
+  const error = state.errorState?.fieldErrors?.language?.join(',');
 
   return (
-    <NHSNotifyFormWrapper action={action} formId={formId}>
-      {children}
-      <Button type='submit'>{content.fields.submitButton.text}</Button>
-    </NHSNotifyFormWrapper>
+    <>
+      <NHSNotifyFormGroup error={Boolean(error)}>
+        <Label size='s' htmlFor='language'>
+          {content.fields.language.label}
+        </Label>
+
+        <HintText>{content.fields.language.hint}</HintText>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <select
+          id='language'
+          name='language'
+          defaultValue={state.fields?.language}
+          key={state.fields?.language}
+          className={classNames('nhsuk-select', {
+            'nhsuk-select--error': error,
+          })}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option />
+          {OTHER_LANGUAGES.map((language) => (
+            <option key={language} value={language}>
+              {language}
+            </option>
+          ))}
+        </select>
+      </NHSNotifyFormGroup>
+      {isLanguage(selectedLanguage) && isRightToLeft(selectedLanguage) && (
+        <InsetText>
+          <ContentRenderer content={content.fields.language.rtl} />
+        </InsetText>
+      )}
+    </>
   );
 }

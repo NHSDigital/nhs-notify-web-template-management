@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod/v4';
+import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { DOCX_MIME } from '@forms/UploadDocxLetterTemplateForm/form';
@@ -13,10 +14,11 @@ const $FormSchema = z.object({
   campaignId: z
     .string(errors.campaignId.empty)
     .nonempty(errors.campaignId.empty),
+  language: z.enum(LANGUAGE_LIST, errors.language.empty).exclude(['en']),
   file: z.file(errors.file.empty).mime(DOCX_MIME, errors.file.empty),
 });
 
-export async function uploadLargePrintLetterTemplate(
+export async function uploadOtherLanguageLetterTemplate(
   _: FormState,
   form: FormData
 ): Promise<FormState> {

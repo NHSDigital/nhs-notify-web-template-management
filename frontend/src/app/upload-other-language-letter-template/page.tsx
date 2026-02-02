@@ -8,15 +8,15 @@ import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
 import { getCampaignIds } from '@utils/client-config';
-import { uploadStandardLetterTemplate } from './server-action';
+import { uploadOtherLanguageLetterTemplate } from './server-action';
 
-const content = copy.pages.uploadDocxLetterTemplatePage('x0');
+const content = copy.pages.uploadDocxLetterTemplatePage('language');
 
 export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function UploadStandardLetterTemplatePage() {
+export default async function UploadOtherLanguageLetterTemplatePage() {
   const client = await fetchClient();
   const campaignIds = getCampaignIds(client);
 
@@ -33,7 +33,7 @@ export default async function UploadStandardLetterTemplatePage() {
         {content.backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>
-        <NHSNotifyFormProvider serverAction={uploadStandardLetterTemplate}>
+        <NHSNotifyFormProvider serverAction={uploadOtherLanguageLetterTemplate}>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
               <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
@@ -41,11 +41,12 @@ export default async function UploadStandardLetterTemplatePage() {
           </div>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
-              <UploadDocxLetterTemplateForm.Form formId='upload-standard-english-letter-template'>
+              <UploadDocxLetterTemplateForm.Form formId='upload-large-print-letter-template'>
                 <UploadDocxLetterTemplateForm.NameField />
                 <UploadDocxLetterTemplateForm.CampaignIdField
                   campaignIds={campaignIds}
                 />
+                <UploadDocxLetterTemplateForm.LanguageField />
                 <UploadDocxLetterTemplateForm.FileField />
               </UploadDocxLetterTemplateForm.Form>
             </div>
