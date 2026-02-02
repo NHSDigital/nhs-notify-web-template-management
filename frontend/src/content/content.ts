@@ -1407,6 +1407,9 @@ const messagePlanGetReadyToMoveToProduction = () => {
 const messagePlansListComponent = {
   tableHeadings: ['Name', 'Routing Plan ID', 'Last edited'],
   noMessagePlansMessage: 'You do not have any message plans in {{status}} yet.',
+  copyText: 'Copy names and IDs to clipboard',
+  copiedText: 'Names and IDs copied to clipboard',
+  copiedFailedText: 'Failed copying names and IDs to clipboard',
   messagePlanLink: {
     DRAFT: '/message-plans/choose-templates/{{routingConfigId}}',
     COMPLETED: '/message-plans/preview-message-plan/{{routingConfigId}}',
