@@ -41,6 +41,7 @@ describe('amplify-utils', () => {
   test('getSessionServer - should return the auth tokens and clientID', async () => {
     const mockAccessToken = {
       toString: () =>
+        // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
         sign(
           {
             ['nhs-notify:client-id']: 'client1',
@@ -51,6 +52,7 @@ describe('amplify-utils', () => {
     };
     const mockIdToken = {
       toString: () =>
+        // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
         sign({ ['nhs-notify:client-name']: 'client name' }, 'mockToken'),
       payload: {},
     };
@@ -73,11 +75,13 @@ describe('amplify-utils', () => {
 
   test('getSessionServer - client ID should be undefined if not present on token', async () => {
     const mockAccessToken = {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       toString: () => sign({}, 'mockToken'),
       payload: {},
     };
     const mockIdToken = {
       toString: () =>
+        // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
         sign({ ['nhs-notify:client-name']: 'client name' }, 'mockToken'),
       payload: {},
     };
@@ -131,6 +135,7 @@ describe('amplify-utils', () => {
       fetchAuthSessionMock.mockResolvedValueOnce({
         tokens: {
           accessToken: {
+            // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
             toString: () => sign({}, 'key'),
             payload: {},
           },
@@ -145,6 +150,7 @@ describe('amplify-utils', () => {
         tokens: {
           accessToken: {
             toString: () =>
+              // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
               sign(
                 {
                   origin_jti: 'jti',

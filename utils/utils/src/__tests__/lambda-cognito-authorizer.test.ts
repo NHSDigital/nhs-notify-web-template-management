@@ -84,6 +84,7 @@ beforeEach(() => {
 
 describe('LambdaCognitoAuthorizer', () => {
   test('returns success on valid token', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -109,6 +110,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns success on valid token when expected resource owner is specified', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -156,6 +158,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with missing kid', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -179,6 +182,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect cognito client_id claim', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -206,6 +210,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect iss claim', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -233,6 +238,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect token_use claim', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'id',
@@ -259,6 +265,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when no NHS Notify client ID is present in the access token', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -289,6 +296,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when NHS Notify client ID claim is empty string', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -320,6 +328,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when NHS Notify client ID claim is whitespace', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -353,6 +362,7 @@ describe('LambdaCognitoAuthorizer', () => {
   test('returns failure on Cognito not validating the token', async () => {
     const cognitoErrorUserPool = 'user-pool-id-cognito-error';
 
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -386,6 +396,7 @@ describe('LambdaCognitoAuthorizer', () => {
     'user-pool-id-cognito-no-username',
     'user-pool-id-cognito-no-userattributes',
   ])('returns failure, when no Username on Cognito %p', async (iss) => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -412,6 +423,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when expected resource owner does not match notify client id from Cognito', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',
@@ -443,6 +455,7 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns Deny policy on expired token', async () => {
+    // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
     const jwt = sign(
       {
         token_use: 'access',

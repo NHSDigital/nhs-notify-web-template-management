@@ -13,6 +13,7 @@ import { JWT } from 'aws-amplify/auth';
 describe('token-utils', () => {
   describe('decodeJwt', () => {
     it('decodes a valid JWT payload', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign({ testKey: 'value', testNum: 1 }, 'secret');
       const claims = decodeJwt(token);
 
@@ -50,6 +51,7 @@ describe('token-utils', () => {
     });
 
     it('includes clientName when present', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign(
         {
           'nhs-notify:client-name': 'Test client',
@@ -63,6 +65,7 @@ describe('token-utils', () => {
     });
 
     it('returns undefined clientName when no suitable claim exists', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign({ displayName: 'Test name' }, 'secret');
 
       const claims = getIdTokenClaims(token);
@@ -71,6 +74,7 @@ describe('token-utils', () => {
     });
 
     it('prefers preferred_username as display name when present', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign(
         {
           'nhs-notify:client-name': 'Test client',
@@ -89,6 +93,7 @@ describe('token-utils', () => {
     });
 
     it('falls back to display_name when preferred_username is missing', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign(
         {
           'nhs-notify:client-name': 'Test client',
@@ -106,6 +111,7 @@ describe('token-utils', () => {
     });
 
     it('falls back to given_name + family_name when no preferred/display name', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign(
         {
           given_name: 'Given',
@@ -122,6 +128,7 @@ describe('token-utils', () => {
     });
 
     it('falls back to email when no preferred/display/full name', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign(
         {
           email: 'user@example.com',
@@ -136,6 +143,7 @@ describe('token-utils', () => {
     });
 
     it('returns undefined displayName when no suitable claim exists', () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const token = sign({ clientName: 'client' }, 'secret');
 
       const claims = getIdTokenClaims(token);
@@ -146,6 +154,7 @@ describe('token-utils', () => {
 
   describe('getClientIdFromToken', () => {
     test('returns undefined when client ID not found', async () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const mockAccessToken = sign({}, 'key');
 
       const clientId = await getClientIdFromToken(mockAccessToken);
@@ -154,6 +163,7 @@ describe('token-utils', () => {
     });
 
     test('retrieves client id from access token param', async () => {
+      // eslint-disable-next-line sonarjs/hardcoded-secret-signatures
       const mockAccessToken = sign(
         { ['nhs-notify:client-id']: 'client2' },
         'key'

@@ -231,6 +231,7 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
       technicalMessage: 'Invalid lock number provided',
     });
   });
+
   test('returns 409 if the lock number header does not match the current one', async ({
     request,
   }) => {
