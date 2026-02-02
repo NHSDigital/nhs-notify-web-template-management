@@ -106,11 +106,6 @@ export const $SubmittedLetterTemplate = z.intersection(
   $LetterTemplate
 );
 
-export const $SubmittedPdfLetterTemplate = z.intersection(
-  $SubmittedTemplate,
-  $PdfLetterTemplate
-);
-
 export const $LargePrintLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({

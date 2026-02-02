@@ -6,6 +6,7 @@ import {
   TEMPLATE_STATUS_LIST,
   TemplateStatus,
   TemplateType,
+  LetterVersion,
 } from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
@@ -118,76 +119,72 @@ describe('alphabeticalLanguageList', () => {
   });
 });
 
-const TEMPLATE_STATUS_CASES = TEMPLATE_STATUS_LIST.flatMap((status) =>
-  TEMPLATE_TYPE_LIST.flatMap((type) =>
-    [true, false].map(
-      (routingFlag): [TemplateStatus, TemplateType, boolean] => [
-        status,
-        type,
-        routingFlag,
-      ]
+type StatusCase = [
+  TemplateStatus,
+  TemplateType,
+  boolean,
+  LetterVersion | undefined,
+];
+
+const LETTER_STATUS_CASES: StatusCase[] = TEMPLATE_STATUS_LIST.flatMap(
+  (status) =>
+    (['PDF', 'AUTHORING'] as const).flatMap((version) =>
+      ([true, false] as const).map(
+        (routingFlag): StatusCase => [
+          status,
+          'LETTER' as const,
+          routingFlag,
+          version,
+        ]
+      )
     )
-  )
 );
+
+const TEMPLATE_STATUS_CASES: StatusCase[] = [
+  ...TEMPLATE_STATUS_LIST.flatMap((status) =>
+    TEMPLATE_TYPE_LIST.flatMap((type) =>
+      ([true, false] as const).map(
+        (routingFlag): StatusCase => [status, type, routingFlag, undefined]
+      )
+    )
+  ),
+  ...LETTER_STATUS_CASES,
+];
 
 describe('statusToDisplayMapping', () => {
   test.each(TEMPLATE_STATUS_CASES)(
-    'status=%s type=%s routing=%s',
-    (status, type, routing) => {
+    'status=%s type=%s routing=%s letterVersion=%s',
+    (status, type, routing, letterVersion) => {
       expect(
         statusToDisplayMapping(
           {
             templateType: type,
             templateStatus: status,
+            letterVersion,
           },
           { routing }
         )
       ).toMatchSnapshot();
     }
   );
-
-  test('returns "Approval needed" for AUTHORING letter version', () => {
-    expect(
-      statusToDisplayMapping(
-        {
-          templateType: 'LETTER',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          letterVersion: 'AUTHORING',
-        },
-        { routing: true }
-      )
-    ).toBe('Approval needed');
-  });
 });
 
 describe('statusToColourMapping', () => {
   test.each(TEMPLATE_STATUS_CASES)(
-    'status=%s type=%s routing=%s',
-    (status, type, routing) => {
+    'status=%s type=%s routing=%s letterVersion=%s',
+    (status, type, routing, letterVersion) => {
       expect(
         statusToColourMapping(
           {
             templateType: type,
             templateStatus: status,
+            letterVersion,
           },
           { routing }
         )
       ).toMatchSnapshot();
     }
   );
-
-  test('returns "yellow" for AUTHORING letter version', () => {
-    expect(
-      statusToColourMapping(
-        {
-          templateType: 'LETTER',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          letterVersion: 'AUTHORING',
-        },
-        { routing: true }
-      )
-    ).toBe('yellow');
-  });
 });
 
 describe('legacyTemplateTypeToUrlTextMappings', () => {

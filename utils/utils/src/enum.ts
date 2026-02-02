@@ -25,6 +25,12 @@ type LanguageMetadata = {
   rtl: boolean;
 };
 
+type PartialTemplate = {
+  templateType: TemplateType;
+  templateStatus: TemplateStatus;
+  letterVersion?: LetterVersion;
+};
+
 const languageMap: Record<Language, LanguageMetadata> = {
   ar: { name: 'Arabic', rtl: true },
   bg: { name: 'Bulgarian', rtl: false },
@@ -124,19 +130,22 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
   })[type];
 
 export const statusToDisplayMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'> & {
-    letterVersion?: LetterVersion;
-  },
+  template: PartialTemplate,
   featureFlags: Pick<ClientFeatures, 'routing'>
 ): string => {
-  if (template.letterVersion === 'AUTHORING') {
-    return 'Approval needed';
-  }
+  const notYetSubmittedLetter =
+    template.letterVersion === 'AUTHORING'
+      ? 'Approval needed'
+      : 'Not yet submitted';
+
+  const notYetSubmitted =
+    template.templateType === 'LETTER' ? notYetSubmittedLetter : 'Draft';
+
+  const submitted = featureFlags.routing ? 'Locked' : 'Submitted';
 
   const statusToDisplayMappings: Record<TemplateStatus, string> = {
-    NOT_YET_SUBMITTED:
-      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
-    SUBMITTED: featureFlags.routing ? 'Locked' : 'Submitted',
+    NOT_YET_SUBMITTED: notYetSubmitted,
+    SUBMITTED: submitted,
     DELETED: '', // will not be shown in the UI
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Checking files',
@@ -165,18 +174,20 @@ type Colour =
   | undefined;
 
 export const statusToColourMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'> & {
-    letterVersion?: LetterVersion;
-  },
+  template: PartialTemplate,
   featureFlags: Pick<ClientFeatures, 'routing'>
 ) => {
-  if (template.letterVersion === 'AUTHORING') {
-    return 'yellow';
-  }
+  const notYetSubmittedLetter =
+    template.letterVersion === 'AUTHORING' ? 'yellow' : undefined;
+
+  const notYetSubmitted =
+    template.templateType === 'LETTER' ? notYetSubmittedLetter : 'green';
+
+  const submitted = featureFlags.routing ? 'pink' : 'grey';
 
   const colourMappings: Record<TemplateStatus, Colour> = {
-    NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
-    SUBMITTED: featureFlags.routing ? 'pink' : 'grey',
+    NOT_YET_SUBMITTED: notYetSubmitted,
+    SUBMITTED: submitted,
     DELETED: undefined,
     PENDING_PROOF_REQUEST: 'blue',
     PENDING_UPLOAD: 'blue',
