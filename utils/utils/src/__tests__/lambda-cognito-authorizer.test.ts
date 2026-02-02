@@ -84,7 +84,6 @@ beforeEach(() => {
 
 describe('LambdaCognitoAuthorizer', () => {
   test('returns success on valid token', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -110,7 +109,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns success on valid token when expected resource owner is specified', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -158,7 +156,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with missing kid', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -182,7 +179,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect cognito client_id claim', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -210,7 +206,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect iss claim', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -238,7 +233,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure on token with incorrect token_use claim', async () => {
-
     const jwt = sign(
       {
         token_use: 'id',
@@ -265,7 +259,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when no NHS Notify client ID is present in the access token', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -296,7 +289,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when NHS Notify client ID claim is empty string', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -328,7 +320,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when NHS Notify client ID claim is whitespace', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -361,7 +352,6 @@ describe('LambdaCognitoAuthorizer', () => {
 
   test('returns failure on Cognito not validating the token', async () => {
     const cognitoErrorUserPool = 'user-pool-id-cognito-error';
-
 
     const jwt = sign(
       {
@@ -396,7 +386,6 @@ describe('LambdaCognitoAuthorizer', () => {
     'user-pool-id-cognito-no-username',
     'user-pool-id-cognito-no-userattributes',
   ])('returns failure, when no Username on Cognito %p', async (iss) => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -423,7 +412,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns failure when expected resource owner does not match notify client id from Cognito', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
@@ -455,7 +443,6 @@ describe('LambdaCognitoAuthorizer', () => {
   });
 
   test('returns Deny policy on expired token', async () => {
-
     const jwt = sign(
       {
         token_use: 'access',
