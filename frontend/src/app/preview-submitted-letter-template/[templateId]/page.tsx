@@ -9,7 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
-import PreviewTemplateDetailsLetterAdapter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetterAdapter';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -33,7 +33,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
   return (
     <PreviewSubmittedTemplate
       initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsLetterAdapter}
+      previewComponent={PreviewTemplateDetailsLetter}
     />
   );
 };

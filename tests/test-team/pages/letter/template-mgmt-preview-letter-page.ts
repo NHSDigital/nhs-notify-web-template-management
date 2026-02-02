@@ -10,8 +10,10 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
-  public readonly pdfLinks: Locator;
   public readonly statusTag: Locator;
+
+  // PDF letter specific
+  public readonly pdfLinks: Locator;
 
   // AUTHORING letter specific
   public readonly editNameLink: Locator;
@@ -22,10 +24,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     super(page);
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
-    this.pdfLinks = page.locator('[data-testid^="proof-link"]');
     this.statusTag = page.getByTestId('status-tag');
-
-    // AUTHORING letter specific
+    this.pdfLinks = page.locator('[data-testid^="proof-link"]');
     this.editNameLink = page.getByTestId('edit-name-link');
     this.sheetsAction = page.getByTestId('sheets-action');
     this.statusAction = page.getByTestId('status-action');

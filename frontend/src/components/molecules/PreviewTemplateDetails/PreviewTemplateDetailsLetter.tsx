@@ -4,7 +4,7 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import PreviewTemplateDetailsPdfLetter from './PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsAuthoringLetter from './PreviewTemplateDetailsAuthoringLetter';
 
-export default function PreviewTemplateDetailsLetterAdapter({
+export default function PreviewTemplateDetailsLetter({
   template,
   hideStatus,
   hideActions,

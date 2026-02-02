@@ -9,7 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
-import PreviewTemplateDetailsLetterAdapter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetterAdapter';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.pages.previewLargePrintLetterTemplate;
@@ -46,7 +46,7 @@ const PreviewLargePrintLetterTemplateFromMessagePlan = async (
   return (
     <PreviewTemplateFromMessagePlan
       initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsLetterAdapter}
+      previewComponent={PreviewTemplateDetailsLetter}
       routingConfigId={routingConfigId}
       lockNumber={lockNumberResult.data}
     />

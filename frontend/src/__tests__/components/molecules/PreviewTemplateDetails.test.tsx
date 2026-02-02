@@ -1,6 +1,6 @@
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import PreviewTemplateDetailsLetterAdapter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetterAdapter';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
@@ -557,10 +557,10 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
   });
 });
 
-describe('PreviewTemplateDetailsLetterAdapter', () => {
+describe('PreviewTemplateDetailsLetter', () => {
   it('renders PreviewTemplateDetailsPdfLetter for PDF letterVersion', () => {
     render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'PDF Letter Template',
@@ -591,7 +591,7 @@ describe('PreviewTemplateDetailsLetterAdapter', () => {
 
   it('renders PreviewTemplateDetailsAuthoringLetter for AUTHORING letterVersion', () => {
     render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'Authoring Letter Template',
@@ -617,7 +617,7 @@ describe('PreviewTemplateDetailsLetterAdapter', () => {
 
   it('passes hideStatus prop to underlying components', () => {
     render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'Authoring Letter Template',
@@ -642,7 +642,7 @@ describe('PreviewTemplateDetailsLetterAdapter', () => {
 
   it('passes hideActions prop to AuthoringLetter component', () => {
     render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'Authoring Letter Template',
@@ -673,7 +673,7 @@ describe('PreviewTemplateDetailsLetterAdapter', () => {
 
   it('matches snapshot for PDF letter', () => {
     const { asFragment } = render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'PDF Letter via Adapter',
@@ -701,7 +701,7 @@ describe('PreviewTemplateDetailsLetterAdapter', () => {
 
   it('matches snapshot for AUTHORING letter with hideActions', () => {
     const { asFragment } = render(
-      <PreviewTemplateDetailsLetterAdapter
+      <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
           name: 'Authoring Letter via Adapter',

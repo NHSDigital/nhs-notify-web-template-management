@@ -416,11 +416,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--yellow"
+                  class="nhsuk-tag nhsuk-tag--red"
                   data-status="validation-failed"
                   data-testid="status-tag"
                 >
-                  Approval needed
+                  Checks failed
                 </strong>
               </dd>
               <dd
@@ -659,11 +659,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--yellow"
+                  class="nhsuk-tag nhsuk-tag--red"
                   data-status="virus-scan-failed"
                   data-testid="status-tag"
                 >
-                  Approval needed
+                  Checks failed
                 </strong>
               </dd>
               <dd
@@ -874,7 +874,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
                   data-status="waiting-for-proof"
                   data-testid="status-tag"
                 >
-                  Approval needed
+                  Waiting for proof
                 </strong>
               </dd>
               <dd
@@ -894,16 +894,6 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               </dd>
             </div>
           </dl>
-        </div>
-        <div
-          class="preview-letter-footer nhsuk-u-margin-bottom-6"
-        >
-          <p>
-            It can take 5 to 10 working days to get a proof of your template.
-          </p>
-          <p>
-            If you still have not received your proof after this time, contact NHS Notify.
-          </p>
         </div>
         <p>
           <a

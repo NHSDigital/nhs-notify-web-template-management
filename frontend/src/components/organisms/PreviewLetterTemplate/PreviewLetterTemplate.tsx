@@ -184,7 +184,6 @@ function PreviewAuthoringLetterTemplate({
 }: Readonly<{ template: AuthoringLetterTemplate }>) {
   const {
     backLinkText,
-    footer,
     validationError,
     validationErrorAction,
     virusScanError,
@@ -199,8 +198,6 @@ function PreviewAuthoringLetterTemplate({
   if (template.templateStatus === 'VALIDATION_FAILED') {
     errors.push(validationError, validationErrorAction);
   }
-
-  const footerText = footer[template.templateStatus] ?? [];
 
   return (
     <>
@@ -218,20 +215,6 @@ function PreviewAuthoringLetterTemplate({
               />
             )}
             <PreviewTemplateDetailsAuthoringLetter template={template} />
-
-            {footerText.length > 0 ? (
-              <div
-                className={classNames(
-                  'preview-letter-footer',
-                  'nhsuk-u-margin-bottom-6'
-                )}
-              >
-                {footerText.map((item, i) => (
-                  <p key={`footer-${i}`}>{item}</p>
-                ))}
-              </div>
-            ) : null}
-
             <p>
               <Link href='/message-templates'>{backLinkText}</Link>
             </p>

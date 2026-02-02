@@ -15,7 +15,8 @@ import Link from 'next/link';
 import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 
-const { rowHeadings } = content.components.previewTemplateDetails;
+const { rowHeadings, visuallyHidden } =
+  content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
@@ -90,7 +91,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                     data-testid='campaign-action'
                   >
                     Edit
-                    <span className='nhsuk-u-visually-hidden'> campaign</span>
+                    <span className='nhsuk-u-visually-hidden'>
+                      {' '}
+                      {visuallyHidden.campaign}
+                    </span>
                   </Link>
                 </SummaryList.Actions>
               )}
@@ -117,7 +121,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                   data-testid='sheets-action'
                 >
                   Learn more
-                  <span className='nhsuk-u-visually-hidden'> about sheets</span>
+                  <span className='nhsuk-u-visually-hidden'>
+                    {' '}
+                    {visuallyHidden.sheets}
+                  </span>
                 </Link>
               </SummaryList.Actions>
             )}
@@ -142,7 +149,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                   Edit
                   <span className='nhsuk-u-visually-hidden'>
                     {' '}
-                    printing and postage
+                    {visuallyHidden.printingAndPostage}
                   </span>
                 </Link>
               </SummaryList.Actions>
@@ -173,7 +180,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                     Learn more
                     <span className='nhsuk-u-visually-hidden'>
                       {' '}
-                      about status
+                      {visuallyHidden.status}
                     </span>
                   </Link>
                 </SummaryList.Actions>

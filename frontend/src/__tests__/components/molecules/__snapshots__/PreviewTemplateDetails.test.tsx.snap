@@ -653,7 +653,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsLetterAdapter matches snapshot for AUTHORING letter with hideActions 1`] = `
+exports[`PreviewTemplateDetailsLetter matches snapshot for AUTHORING letter with hideActions 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"
@@ -807,7 +807,7 @@ exports[`PreviewTemplateDetailsLetterAdapter matches snapshot for AUTHORING lett
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsLetterAdapter matches snapshot for PDF letter 1`] = `
+exports[`PreviewTemplateDetailsLetter matches snapshot for PDF letter 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"

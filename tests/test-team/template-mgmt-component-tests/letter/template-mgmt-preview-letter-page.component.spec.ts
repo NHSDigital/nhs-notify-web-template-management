@@ -105,6 +105,27 @@ async function createTemplates() {
       id: '321B92CF-AECC-4938-B4CA-B00E4797327A',
     },
     withProofs,
+    // AUTHORING letter templates
+    authoringEmpty: {
+      id: 'preview-page-invalid-authoring-letter',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      owner: `CLIENT#${user.clientId}`,
+      letterVersion: 'AUTHORING',
+      lockNumber: 0,
+      name: 'empty-authoring-letter',
+      // Missing sidesCount - should be invalid
+    } as Template,
+    authoringValid: TemplateFactory.createAuthoringLetterTemplate(
+      'A1B2C3D4-E5F6-7890-ABCD-EF1234567890',
+      user,
+      'authoring-letter-valid',
+      'NOT_YET_SUBMITTED',
+      { sidesCount: 4, letterVariantId: 'variant-123' }
+    ),
   };
 }
 
@@ -375,6 +396,71 @@ test.describe('Preview Letter template Page', () => {
           `^/templates/files/[^/]+/proofs/${templates.withProofs.id}/b.pdf$`
         )
       );
+    });
+  });
+
+  test.describe('AUTHORING letter', () => {
+    test('when user visits page, then page is loaded with template details', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${templates.authoringValid.id}`
+      );
+
+      await expect(previewPage.pageHeading).toContainText(
+        templates.authoringValid.name
+      );
+
+      await expect(previewPage.templateId).toContainText(
+        templates.authoringValid.id
+      );
+
+      await expect(previewPage.editNameLink).toBeVisible();
+
+      await expect(previewPage.statusTag).toBeVisible();
+    });
+
+    test('displays Learn more links with correct external URLs', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.sheetsAction).toHaveAttribute(
+        'href',
+        'https://notify.nhs.uk/pricing-and-commercial/letters'
+      );
+
+      await expect(previewPage.statusAction).toHaveAttribute(
+        'href',
+        'https://notify.nhs.uk/templates/what-template-statuses-mean'
+      );
+    });
+
+    test('when user visits page with missing data, then an invalid template error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringEmpty.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
   });
 });

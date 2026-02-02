@@ -27,10 +27,6 @@ export default function PreviewTemplateDetailsPdfLetter({
   template: PdfLetterTemplate;
   hideStatus?: boolean;
 }) {
-  if (template.letterVersion !== 'PDF') {
-    throw new Error('AUTHORING letter version is not implemented');
-  }
-
   const features = useFeatureFlags();
 
   const proofFilenames = Object.values(template.files.proofs ?? {})
@@ -62,7 +58,6 @@ export default function PreviewTemplateDetailsPdfLetter({
               template.letterType,
               template.language
             )}
-            templateTypeHeading={rowHeadings.templateType}
             campaignId={template.campaignId}
             hideStatus={hideStatus}
           />

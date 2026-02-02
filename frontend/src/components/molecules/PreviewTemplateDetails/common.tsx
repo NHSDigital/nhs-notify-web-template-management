@@ -80,20 +80,20 @@ export function ContentPreview({
   ));
 }
 
+// Once PDF letters are removed, this should become DigitalChannelDetailRows
 export function StandardDetailRows({
   template,
   templateTypeText,
-  templateTypeHeading,
   campaignId,
   hideStatus,
 }: Readonly<{
   template: TemplateDto;
   templateTypeText: string;
-  templateTypeHeading?: string;
   campaignId?: string;
   hideStatus?: boolean;
 }>): JSX.Element {
   const features = useFeatureFlags();
+
   return (
     <>
       <SummaryList.Row>
@@ -112,9 +112,7 @@ export function StandardDetailRows({
         </SummaryList.Row>
       )}
       <SummaryList.Row>
-        <SummaryList.Key>
-          {templateTypeHeading ?? rowHeadings.templateType}
-        </SummaryList.Key>
+        <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
         <SummaryList.Value>{templateTypeText}</SummaryList.Value>
       </SummaryList.Row>
       {!hideStatus && (
