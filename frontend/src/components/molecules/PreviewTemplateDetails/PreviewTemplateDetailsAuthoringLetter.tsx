@@ -79,7 +79,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
           {/* Campaign */}
           {template.campaignId && (
-            <SummaryList.Row>
+            <SummaryList.Row id='campaign-id'>
               <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
               <SummaryList.Value>{template.campaignId}</SummaryList.Value>
               {hideActions ? (

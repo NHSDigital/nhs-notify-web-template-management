@@ -243,6 +243,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot with hideActions
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="campaign-id"
       >
         <dt
           class="nhsuk-summary-list__key"
