@@ -245,6 +245,7 @@ test.describe('PUT /v1/template/:templateId', () => {
           campaignId: 'Campaign1',
           language: 'en',
           letterType: 'x0',
+          letterVersion: 'PDF',
           templateStatus: 'SUBMITTED',
         }),
       }
@@ -971,6 +972,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         technicalMessage: 'Template with status SUBMITTED cannot be updated',
       });
     });
+
     test('returns 400 - cannot update a deleted template', async ({
       request,
     }) => {
@@ -1075,6 +1077,7 @@ test.describe('PUT /v1/template/:templateId', () => {
         technicalMessage: 'Request failed validation',
       });
     });
+
     test('returns 400 if template name is empty', async ({ request }) => {
       const createResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template`,

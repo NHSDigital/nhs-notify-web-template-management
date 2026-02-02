@@ -90,6 +90,32 @@ export const TemplateFactory = {
       id,
       language: options?.language || 'en',
       letterType: options?.letterType || 'x0',
+      letterVersion: 'PDF',
+      name,
+      owner: `CLIENT#${user.clientId}`,
+      templateStatus,
+      templateType: 'LETTER',
+      proofingEnabled: true,
+    });
+  },
+
+  createAuthoringLetterTemplate: (
+    id: string,
+    user: TestUser,
+    name: string,
+    templateStatus = 'NOT_YET_SUBMITTED',
+    options?: {
+      letterType?: LetterType;
+      language?: Language;
+    }
+  ): Template => {
+    return TemplateFactory.create({
+      campaignId: 'campaign-id',
+      clientId: user.clientId,
+      id,
+      language: options?.language || 'en',
+      letterType: options?.letterType || 'x0',
+      letterVersion: 'AUTHORING',
       name,
       owner: `CLIENT#${user.clientId}`,
       templateStatus,

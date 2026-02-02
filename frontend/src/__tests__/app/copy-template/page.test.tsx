@@ -40,6 +40,7 @@ describe('CopyTemplatePage', () => {
     lockNumber: 1,
     letterType: 'q4',
     language: 'fr',
+    letterVersion: 'PDF',
     files: {
       pdfTemplate: {
         fileName: 'file.pdf',

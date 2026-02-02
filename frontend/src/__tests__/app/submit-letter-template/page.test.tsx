@@ -9,12 +9,13 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 
@@ -34,7 +35,7 @@ describe('SubmitLetterTemplatePage', () => {
 
   test('should load page', async () => {
     getTemplateMock.mockResolvedValue({
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       createdAt: 'today',
       updatedAt: 'today',
     });
@@ -48,8 +49,8 @@ describe('SubmitLetterTemplatePage', () => {
 
     expect(page).toEqual(
       <SubmitLetterTemplate
-        templateName={LETTER_TEMPLATE.name}
-        templateId={LETTER_TEMPLATE.id}
+        templateName={PDF_LETTER_TEMPLATE.name}
+        templateId={PDF_LETTER_TEMPLATE.id}
         lockNumber={42}
       />
     );
@@ -73,11 +74,11 @@ describe('SubmitLetterTemplatePage', () => {
     NHS_APP_TEMPLATE,
     SMS_TEMPLATE,
     {
-      ...LETTER_TEMPLATE,
-      files: undefined as unknown as LetterTemplate['files'],
+      ...PDF_LETTER_TEMPLATE,
+      files: undefined as unknown as PdfLetterTemplate['files'],
     } as TemplateDto,
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -86,8 +87,9 @@ describe('SubmitLetterTemplatePage', () => {
         },
       },
     } as TemplateDto,
+    AUTHORING_LETTER_TEMPLATE,
   ])(
-    'should redirect to invalid-template when template is $templateType and LETTER required fields are missing',
+    'should redirect to invalid-template when template is $templateType, letterVersion is $letterVersion and LETTER required fields are missing',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 

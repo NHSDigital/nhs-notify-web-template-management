@@ -8,7 +8,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -58,10 +58,10 @@ const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
   [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
   [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
-  [letterTemplateId]: { ...LETTER_TEMPLATE, id: letterTemplateId },
-  [kuTemplateId]: { ...LETTER_TEMPLATE, id: kuTemplateId },
-  [sqTemplateId]: { ...LETTER_TEMPLATE, id: sqTemplateId },
-  [largePrintTemplateId]: { ...LETTER_TEMPLATE, id: largePrintTemplateId },
+  [letterTemplateId]: { ...PDF_LETTER_TEMPLATE, id: letterTemplateId },
+  [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
+  [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
+  [largePrintTemplateId]: { ...PDF_LETTER_TEMPLATE, id: largePrintTemplateId },
 };
 
 beforeEach(() => {
