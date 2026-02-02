@@ -5,14 +5,14 @@ import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   testUsers,
+  type TestUser,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
+import { loginAsUser } from '../../helpers/auth/login-as-user';
 
-async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-
+async function createTemplates(user: TestUser) {
   const withProofsBase = TemplateFactory.uploadLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
     user,
@@ -142,7 +142,8 @@ test.describe('Preview Letter template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    templates = await createTemplates();
+    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
@@ -484,9 +485,11 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.campaignAction).toHaveText(/Edit/);
     });
 
-    test('shows campaign Edit link when template has campaignId (multi-campaign client)', async ({
+    test('hides campaign Edit link when template has campaignId (single-campaign client)', async ({
       page,
     }) => {
+      // User1 (default logged in user) has single campaign, so Edit link should be hidden
+      // when template already has a campaignId assigned
       const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
         'templateId',
         templates.authoringValid.id
@@ -494,9 +497,55 @@ test.describe('Preview Letter template Page', () => {
 
       await previewPage.loadPage();
 
-      // authoringValid has campaignId set, and test user has multiple campaigns
-      // so Edit link should be visible
-      await expect(previewPage.campaignAction).toBeVisible();
+      await expect(previewPage.campaignAction).toBeHidden();
+    });
+
+    test.describe('multi-campaign client', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
+
+      const multiCampaignTemplateStorageHelper = new TemplateStorageHelper();
+      let userWithMultipleCampaigns: TestUser;
+      let multiCampaignTemplate: Template;
+
+      test.beforeAll(async () => {
+        userWithMultipleCampaigns = await createAuthHelper().getTestUser(
+          testUsers.UserWithMultipleCampaigns.userId
+        );
+
+        multiCampaignTemplate =
+          TemplateFactory.createAuthoringLetterTemplate(
+            'C3D4E5F6-A7B8-9012-CDEF-345678901234',
+            userWithMultipleCampaigns,
+            'authoring-letter-multi-campaign',
+            'NOT_YET_SUBMITTED',
+            { sidesCount: 4, letterVariantId: 'variant-789' }
+          );
+
+        await multiCampaignTemplateStorageHelper.seedTemplateData([
+          multiCampaignTemplate,
+        ]);
+      });
+
+      test.afterAll(async () => {
+        await multiCampaignTemplateStorageHelper.deleteSeededTemplates();
+      });
+
+      test('shows campaign Edit link when template has campaignId', async ({
+        page,
+      }) => {
+        await loginAsUser(userWithMultipleCampaigns, page);
+
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', multiCampaignTemplate.id);
+
+        await previewPage.loadPage();
+
+        // userWithMultipleCampaigns has multiple campaigns, so Edit link should be visible
+        // even when template has a campaignId assigned
+        await expect(previewPage.campaignAction).toBeVisible();
+        await expect(previewPage.campaignAction).toHaveText(/Edit/);
+      });
     });
   });
 });
