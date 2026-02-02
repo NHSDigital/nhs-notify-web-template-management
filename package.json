@@ -27,6 +27,10 @@
   },
   "name": "nhs-notify-web-template-management",
   "overrides": {
+    "fast-xml-parser": "^5.3.4",
+    "nhsuk-react-components": {
+      "nhsuk-frontend": "^10.3.1"
+    },
     "pretty-format": {
       "react-is": "19.0.0"
     },
@@ -48,7 +52,6 @@
     "typecheck": "npm run typecheck --workspaces"
   },
   "workspaces": [
-    "data-migration/user-identifiers",
     "frontend",
     "lambdas/authorizer",
     "lambdas/event-publisher",
