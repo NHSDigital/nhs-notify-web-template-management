@@ -188,14 +188,6 @@ export type Language =
   | 'ur'
   | 'zh';
 
-export type PdfLetterFiles = {
-  pdfTemplate: VersionedFileDetails;
-  proofs?: {
-    [key: string]: ProofFileDetails;
-  };
-  testDataCsv?: VersionedFileDetails;
-};
-
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
@@ -205,6 +197,14 @@ export type LetterVersion = 'AUTHORING' | 'PDF';
 export type NhsAppProperties = {
   message: string;
   templateType: 'NHS_APP';
+};
+
+export type PdfLetterFiles = {
+  pdfTemplate: VersionedFileDetails;
+  proofs?: {
+    [key: string]: ProofFileDetails;
+  };
+  testDataCsv?: VersionedFileDetails;
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
