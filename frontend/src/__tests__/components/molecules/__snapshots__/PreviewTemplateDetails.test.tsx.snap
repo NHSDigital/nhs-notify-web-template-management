@@ -22,7 +22,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING le
   >
     <a
       data-testid="edit-name-link"
-      href="#"
+      href="edit-template-name/template-id"
     >
       Edit name
     </a>
@@ -132,7 +132,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot for AUTHORING le
         >
           <a
             data-testid="printing-postage-action"
-            href="#"
+            href="choose-printing-and-postage/template-id"
           >
             Edit
             <span
@@ -359,7 +359,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVaria
   >
     <a
       data-testid="edit-name-link"
-      href="#"
+      href="edit-template-name/template-id"
     >
       Edit name
     </a>
@@ -467,7 +467,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot when letterVaria
         >
           <a
             data-testid="printing-postage-action"
-            href="#"
+            href="choose-printing-and-postage/template-id"
           >
             Edit
             <span
@@ -562,7 +562,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -964,7 +964,7 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -1806,7 +1806,7 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Type
+          Template type
         </dt>
         <dd
           class="nhsuk-summary-list__value"

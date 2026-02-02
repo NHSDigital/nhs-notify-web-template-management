@@ -62,7 +62,7 @@ exports[`PreviewNhsAppTemplateFromMessagePlan page renders NHS App template prev
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

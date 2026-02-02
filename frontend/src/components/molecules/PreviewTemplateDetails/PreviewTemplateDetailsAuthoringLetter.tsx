@@ -35,7 +35,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
       {!hideActions && (
         <p className='nhsuk-u-margin-bottom-4'>
-          <Link href='#' data-testid='edit-name-link'>
+          <Link
+            href={`edit-template-name/${template.id}`}
+            data-testid='edit-name-link'
+          >
             Edit name
           </Link>
         </p>
@@ -63,7 +66,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
           {/* Template type */}
           <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.letterTemplateType}</SummaryList.Key>
+            <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
             <SummaryList.Value>
               {letterTypeDisplayMappings(
                 template.letterType,
@@ -82,7 +85,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 <SummaryList.Actions />
               ) : (
                 <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                  <Link href='#' data-testid='campaign-action'>
+                  <Link
+                    href={`edit-template-campaign/${template.id}`}
+                    data-testid='campaign-action'
+                  >
                     Edit
                     <span className='nhsuk-u-visually-hidden'> campaign</span>
                   </Link>
@@ -129,7 +135,10 @@ export default function PreviewTemplateDetailsAuthoringLetter({
               <SummaryList.Actions />
             ) : (
               <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link href='#' data-testid='printing-postage-action'>
+                <Link
+                  href={`choose-printing-and-postage/${template.id}`}
+                  data-testid='printing-postage-action'
+                >
                   Edit
                   <span className='nhsuk-u-visually-hidden'>
                     {' '}

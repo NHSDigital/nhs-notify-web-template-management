@@ -58,7 +58,7 @@ export default function PreviewTemplateDetailsPdfLetter({
               template.letterType,
               template.language
             )}
-            templateTypeHeading={rowHeadings.letterTemplateType}
+            templateTypeHeading={rowHeadings.templateType}
             campaignId={template.campaignId}
             hideStatus={hideStatus}
           />
