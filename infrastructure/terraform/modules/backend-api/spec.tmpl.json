@@ -591,26 +591,6 @@
         ],
         "type": "string"
       },
-      "LetterFiles": {
-        "properties": {
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "proofs": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ProofFileDetails"
-            },
-            "type": "object"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          }
-        },
-        "required": [
-          "pdfTemplate"
-        ],
-        "type": "object"
-      },
       "LetterProperties": {
         "oneOf": [
           {
@@ -654,6 +634,26 @@
         ],
         "type": "object"
       },
+      "PdfLetterFiles": {
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProofFileDetails"
+            },
+            "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          }
+        },
+        "required": [
+          "pdfTemplate"
+        ],
+        "type": "object"
+      },
       "PdfLetterProperties": {
         "allOf": [
           {
@@ -662,7 +662,7 @@
           {
             "properties": {
               "files": {
-                "$ref": "#/components/schemas/LetterFiles"
+                "$ref": "#/components/schemas/PdfLetterFiles"
               },
               "letterVersion": {
                 "enum": [

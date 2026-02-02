@@ -5,7 +5,7 @@ import {
 import {
   getMockFormData,
   ROUTING_CONFIG,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
@@ -18,21 +18,21 @@ const mockRedirect = jest.mocked(redirect);
 const mockUpdateRoutingConfig = jest.mocked(updateRoutingConfig);
 
 const FRENCH_LETTER: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'french-id',
   language: 'fr',
   name: 'French Letter',
 };
 
 const POLISH_LETTER: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'polish-id',
   language: 'pl',
   name: 'Polish Letter',
 };
 
 const SPANISH_LETTER: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'spanish-id',
   language: 'es',
   name: 'Spanish Letter',
@@ -240,7 +240,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
 
   test('should return error when selecting templates with duplicate languages', async () => {
     const FRENCH_LETTER_2: LetterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-2-id',
       language: 'fr',
       name: 'Another French Letter',

@@ -5,7 +5,7 @@ import {
   $CreateUpdateTemplate,
   $EmailProperties,
   $Language,
-  $LetterFiles,
+  $PdfLetterFiles,
   $PdfLetterProperties,
   $LetterType,
   $NhsAppProperties,
@@ -78,20 +78,24 @@ export const $UploadLetterTemplate = z.intersection(
   $CreatePdfLetterProperties
 );
 
-const $BaseLetterTemplateDto = $TemplateDto.and(
+const $BaseLetterTemplateDto = z.intersection(
+  $TemplateDto,
   z.object({
     templateType: z.literal('LETTER'),
   })
 );
 
-export const $PdfLetterTemplate = $BaseLetterTemplateDto.and(
-  $PdfLetterProperties.extend({ files: $LetterFiles })
+export const $PdfLetterTemplate = z.intersection(
+  $BaseLetterTemplateDto,
+  $PdfLetterProperties.extend({ files: $PdfLetterFiles })
 );
 
-export const $AuthoringLetterTemplate = $BaseLetterTemplateDto.and(
+export const $AuthoringLetterTemplate = z.intersection(
+  $BaseLetterTemplateDto,
   $AuthoringLetterProperties
 );
 
+// zod.discriminatedUnion not used here due to default letter version
 export const $LetterTemplate = z.union([
   $PdfLetterTemplate,
   $AuthoringLetterTemplate,

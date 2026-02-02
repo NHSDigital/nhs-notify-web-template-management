@@ -2,7 +2,7 @@ import { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
 import type {
-  LetterFiles,
+  PdfLetterFiles,
   TemplateDto,
   CreateUpdateTemplate,
   ClientConfiguration,
@@ -361,7 +361,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -375,7 +375,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -504,7 +504,7 @@ describe('templateClient', () => {
 
         const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-        const filesWithVersions: LetterFiles = {
+        const filesWithVersions: PdfLetterFiles = {
           pdfTemplate: {
             fileName: pdfFilename,
             currentVersion: versionId,
@@ -518,10 +518,11 @@ describe('templateClient', () => {
           proofs: {},
         };
 
-        const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-          ...data,
-          files: filesWithVersions,
-        };
+        const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } =
+          {
+            ...data,
+            files: filesWithVersions,
+          };
 
         const creationTime = '2025-03-12T08:41:08.805Z';
 
@@ -874,7 +875,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -883,7 +884,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -982,7 +983,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -991,7 +992,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -1081,7 +1082,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -1090,7 +1091,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -1184,7 +1185,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -1798,7 +1799,7 @@ describe('templateClient', () => {
           language: 'en',
           letterType: 'x0',
           letterVersion: 'PDF',
-          files: {} as LetterFiles,
+          files: {} as PdfLetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: 'SUBMITTED',
@@ -1838,7 +1839,7 @@ describe('templateClient', () => {
           language: 'en',
           letterType: 'x0',
           letterVersion: 'PDF',
-          files: {} as LetterFiles,
+          files: {} as PdfLetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: 'SUBMITTED',

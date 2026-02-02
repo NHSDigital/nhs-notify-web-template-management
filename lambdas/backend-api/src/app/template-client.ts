@@ -6,7 +6,7 @@ import {
   TemplateDto,
   CreateUpdateTemplate,
   ErrorCase,
-  LetterFiles,
+  PdfLetterFiles,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
@@ -168,7 +168,7 @@ export class TemplateClient {
 
     const versionId = randomUUID();
 
-    const files: LetterFiles = {
+    const files: PdfLetterFiles = {
       pdfTemplate: {
         fileName: pdf.name,
         currentVersion: versionId,

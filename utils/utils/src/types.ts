@@ -1,12 +1,12 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
-import {
+import type {
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   CreateUpdateTemplate,
   Language,
-  LetterFiles,
   LetterType,
   LetterVersion,
+  PdfLetterFiles,
   PdfLetterProperties,
   TemplateDto,
   TemplateStatus,
@@ -124,7 +124,7 @@ export type DatabaseTemplate = {
   clientId?: string;
   createdAt: string;
   createdBy?: string;
-  files?: LetterFiles;
+  files?: PdfLetterFiles;
   id: string;
   language?: Language;
   letterType?: LetterType;

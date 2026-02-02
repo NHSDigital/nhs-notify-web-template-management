@@ -14,7 +14,7 @@ import {
 } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -97,21 +97,21 @@ const templates: MessagePlanTemplates = {
   [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
   [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
   [letterTemplateId]: {
-    ...LETTER_TEMPLATE,
+    ...PDF_LETTER_TEMPLATE,
     id: letterTemplateId,
   },
   [frenchLetterTemplateId]: {
-    ...LETTER_TEMPLATE,
+    ...PDF_LETTER_TEMPLATE,
     name: 'French Letter Template',
     id: frenchLetterTemplateId,
   },
   [spanishLetterTemplateId]: {
-    ...LETTER_TEMPLATE,
+    ...PDF_LETTER_TEMPLATE,
     name: 'Spanish Letter Template',
     id: spanishLetterTemplateId,
   },
   [largePrintLetterTemplateId]: {
-    ...LETTER_TEMPLATE,
+    ...PDF_LETTER_TEMPLATE,
     name: 'Large Print Letter Template',
     id: largePrintLetterTemplateId,
   },

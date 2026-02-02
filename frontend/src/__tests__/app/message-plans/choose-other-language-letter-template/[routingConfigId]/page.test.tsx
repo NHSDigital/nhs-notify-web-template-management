@@ -1,7 +1,7 @@
 import ChooseOtherLanguageLetterTemplate, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/page';
-import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
@@ -19,14 +19,14 @@ const getForeignLanguageLetterTemplatesMock = jest.mocked(
 const redirectMock = jest.mocked(redirect);
 
 const FRENCH_LETTER_TEMPLATE = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'french-letter-id',
   name: 'French letter template',
   language: 'fr' as Language,
 };
 
 const POLISH_LETTER_TEMPLATE = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'polish-letter-id',
   name: 'Polish letter template',
   language: 'pl' as Language,

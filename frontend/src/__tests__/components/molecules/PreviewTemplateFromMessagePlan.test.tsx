@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import {
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   ROUTING_CONFIG,
   SMS_TEMPLATE,
@@ -35,7 +35,7 @@ describe('PreviewTemplateFromMessagePlan', () => {
     },
     {
       name: 'Letter',
-      template: { ...LETTER_TEMPLATE },
+      template: { ...PDF_LETTER_TEMPLATE },
       previewComponent: PreviewTemplateDetailsLetter,
       expectedBackLink: `/message-plans/choose-standard-english-letter-template/${ROUTING_CONFIG.id}?lockNumber=5`,
     },
@@ -47,7 +47,7 @@ describe('PreviewTemplateFromMessagePlan', () => {
     },
     {
       name: 'French Letter',
-      template: { ...LETTER_TEMPLATE, language: 'fr' },
+      template: { ...PDF_LETTER_TEMPLATE, language: 'fr' },
       previewComponent: PreviewTemplateDetailsLetter,
       expectedBackLink: `/message-plans/choose-other-language-letter-template/${ROUTING_CONFIG.id}?lockNumber=5`,
     },

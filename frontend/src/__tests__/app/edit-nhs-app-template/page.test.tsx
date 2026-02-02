@@ -11,7 +11,7 @@ import EditNhsAppTemplatePage, {
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
@@ -70,7 +70,7 @@ describe('EditNhsAppTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  test.each([EMAIL_TEMPLATE, SMS_TEMPLATE, LETTER_TEMPLATE])(
+  test.each([EMAIL_TEMPLATE, SMS_TEMPLATE, PDF_LETTER_TEMPLATE])(
     'should render invalid template, when template type is $templateType',
     async (template) => {
       getTemplateMock.mockResolvedValueOnce(template);

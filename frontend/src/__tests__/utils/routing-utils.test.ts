@@ -30,7 +30,7 @@ import type {
 } from 'nhs-notify-backend-client';
 import {
   LARGE_PRINT_LETTER_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
 } from '@testhelpers/helpers';
 import { randomUUID } from 'node:crypto';
@@ -52,7 +52,7 @@ const baseConfig: RoutingConfig = {
 describe('isLetterTemplate', () => {
   it('should return true for letter templates', () => {
     const letterTemplate: TemplateDto = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       templateType: 'LETTER',
     };
 
@@ -699,7 +699,7 @@ describe('addDefaultTemplateToCascade', () => {
     ];
 
     const letterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'letter-template-id',
       supplierReferences: { MBA: 'supplier-ref-123' },
     };
@@ -868,7 +868,7 @@ describe('addAccessibleFormatLetterTemplateToCascadeItem', () => {
     };
 
     const largePrintLetterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'accessible-template',
       letterType: 'x1' as const,
     };
@@ -1024,7 +1024,7 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     };
 
     const frenchLetterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-template',
       language: 'fr' as Language,
       supplierReferences: { MBA: 'ref-fr-123' },
@@ -1052,7 +1052,7 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     };
 
     const spanishLetterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'spanish-template',
       language: 'es' as Language,
       supplierReferences: { MBA: 'ref-es-456' },
@@ -1083,7 +1083,7 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     };
 
     const frenchTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-template',
       language: 'fr' as const,
     };
@@ -1102,7 +1102,7 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     };
 
     const templateWithoutLanguage = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'no-language-template',
       language: undefined,
     };
@@ -1125,14 +1125,14 @@ describe('addLanguageLetterTemplatesToCascadeItem', () => {
     };
 
     const frenchTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-template',
       language: 'fr' as Language,
       supplierReferences: { MBA: 'ref-fr-123' },
     };
 
     const spanishTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'spanish-template',
       language: 'es' as Language,
       supplierReferences: { MBA: 'ref-es-456' },
@@ -1175,7 +1175,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     ];
 
     const frenchLetterTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-template',
       language: 'fr' as Language,
       supplierReferences: { MBA: 'ref-789' },
@@ -1206,7 +1206,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     ];
 
     const frenchTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'french-template',
       language: 'fr' as Language,
     };
@@ -1230,7 +1230,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     ];
 
     const spanishTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'spanish-template',
       language: 'es' as Language,
     };
@@ -1246,7 +1246,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     expect(result[0].conditionalTemplates![1]).toEqual({
       language: 'es',
       templateId: 'spanish-template',
-      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+      supplierReferences: PDF_LETTER_TEMPLATE.supplierReferences,
     });
   });
 
@@ -1265,7 +1265,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     ];
 
     const spanishTemplate = {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       id: 'spanish-template',
       language: 'es' as Language,
     };
@@ -1286,7 +1286,7 @@ describe('addLanguageLetterTemplatesToCascade', () => {
     expect(result[0].conditionalTemplates![2]).toEqual({
       language: 'es',
       templateId: 'spanish-template',
-      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+      supplierReferences: PDF_LETTER_TEMPLATE.supplierReferences,
     });
   });
 });
@@ -1402,7 +1402,7 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
 
     const newTemplates = [
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'polish-template',
         language: 'pl' as Language,
         supplierReferences: { MBA: 'ref-pl-789' },
@@ -1436,13 +1436,13 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
 
     const newTemplates = [
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'spanish-template',
         language: 'es' as Language,
         supplierReferences: { MBA: 'ref-es-456' },
       },
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'polish-template',
         language: 'pl' as Language,
         supplierReferences: { MBA: 'ref-pl-789' },
@@ -1495,7 +1495,7 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
 
     const newTemplates = [
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'french-template',
         language: 'fr' as Language,
         supplierReferences: { MBA: 'ref-fr-123' },
@@ -1526,7 +1526,7 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
 
     const newTemplates = [
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'spanish-template',
         language: 'es' as Language,
       },
@@ -1545,7 +1545,7 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
     expect(result.conditionalTemplates![0]).toEqual({
       language: 'es',
       templateId: 'spanish-template',
-      supplierReferences: LETTER_TEMPLATE.supplierReferences,
+      supplierReferences: PDF_LETTER_TEMPLATE.supplierReferences,
     });
   });
 
@@ -1565,13 +1565,13 @@ describe('replaceLanguageTemplatesInCascadeItem', () => {
 
     const newTemplates = [
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'polish-template',
         language: 'pl' as Language,
         supplierReferences: { MBA: 'ref-pl-789' },
       },
       {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'german-template',
         language: 'de' as Language,
         supplierReferences: { MBA: 'ref-de-101' },
@@ -1759,11 +1759,11 @@ describe('getTemplateForAccessibleFormat', () => {
     };
 
     const templates: MessagePlanTemplates = {
-      [id]: LETTER_TEMPLATE,
+      [id]: PDF_LETTER_TEMPLATE,
     };
 
     expect(getTemplateForAccessibleFormat('x1', item, templates)).toEqual(
-      LETTER_TEMPLATE
+      PDF_LETTER_TEMPLATE
     );
   });
 
@@ -1806,7 +1806,7 @@ describe('getTemplateForAccessibleFormat', () => {
     };
 
     const templates: MessagePlanTemplates = {
-      [id]: LETTER_TEMPLATE,
+      [id]: PDF_LETTER_TEMPLATE,
     };
 
     expect(
@@ -1824,7 +1824,7 @@ describe('getTemplateForAccessibleFormat', () => {
     };
 
     const templates: MessagePlanTemplates = {
-      [id]: LETTER_TEMPLATE,
+      [id]: PDF_LETTER_TEMPLATE,
     };
 
     expect(
@@ -1858,8 +1858,8 @@ describe('getLanguageTemplatesForCascadeItem', () => {
       ],
     };
 
-    const esTemplate = { ...LETTER_TEMPLATE, id };
-    const guTemplate = { ...LETTER_TEMPLATE, id: id2 };
+    const esTemplate = { ...PDF_LETTER_TEMPLATE, id };
+    const guTemplate = { ...PDF_LETTER_TEMPLATE, id: id2 };
 
     const templates: MessagePlanTemplates = {
       [id]: esTemplate,
@@ -1895,7 +1895,7 @@ describe('getLanguageTemplatesForCascadeItem', () => {
       ],
     };
 
-    const esTemplate = { ...LETTER_TEMPLATE, id };
+    const esTemplate = { ...PDF_LETTER_TEMPLATE, id };
 
     const templates: MessagePlanTemplates = {
       [id]: esTemplate,
@@ -1953,10 +1953,10 @@ describe('getAccessibleTemplatesForCascadeItem', () => {
       ],
     };
 
-    const template = { ...LETTER_TEMPLATE, id };
+    const template = { ...PDF_LETTER_TEMPLATE, id };
     const templates: MessagePlanTemplates = {
       [id]: template,
-      [id2]: { ...LETTER_TEMPLATE, id: id2 },
+      [id2]: { ...PDF_LETTER_TEMPLATE, id: id2 },
     };
 
     expect(getAccessibleTemplatesForCascadeItem(item, templates)).toEqual([

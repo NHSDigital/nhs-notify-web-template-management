@@ -1,5 +1,5 @@
 import { LanguageLetterTemplates } from '@molecules/LanguageLetterTemplates/LanguageLetterTemplates';
-import { LETTER_TEMPLATE } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -13,21 +13,21 @@ jest
   );
 
 const FRENCH_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'french-template-id',
   name: 'French Letter Template',
   language: 'fr',
 };
 
 const POLISH_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'polish-template-id',
   name: 'Polish Letter Template',
   language: 'pl',
 };
 
 const GERMAN_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'german-template-id',
   name: 'German Letter Template',
   language: 'de',

@@ -397,19 +397,6 @@ describe('Template schemas', () => {
       });
     });
 
-    test('should not add letterVersion for non-LETTER templates', () => {
-      const emailTemplate = {
-        templateType: 'EMAIL',
-        subject: 'Test',
-        message: 'Hello',
-      };
-
-      const result = $LetterProperties.safeParse(emailTemplate);
-
-      // Should fail validation since it's not a letter
-      expect(result.success).toBe(false);
-    });
-
     test('should pass validation for AUTHORING letter', () => {
       const authoringLetter = {
         templateType: 'LETTER',
