@@ -39,8 +39,16 @@ function createTemplates(user: TestUser) {
     },
   };
 
+  const authoringValid = TemplateFactory.createAuthoringLetterTemplate(
+    'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
+    user,
+    'authoring-letter-template-preview-submitted',
+    'SUBMITTED'
+  );
+
   return {
     valid,
+    authoringValid,
     invalid: {
       ...TemplateFactory.uploadLetterTemplate(
         '621456cf-ace3-49c3-941e-4df5eba11373',
@@ -53,7 +61,7 @@ function createTemplates(user: TestUser) {
 }
 
 test.describe('Preview submitted Letter message template Page', () => {
-  let templates: Record<string, Template>;
+  let templates: ReturnType<typeof createTemplates>;
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
@@ -66,39 +74,78 @@ test.describe('Preview submitted Letter message template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('when user visits page, then page is loaded', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewSubmittedLetterTemplatePage =
-      new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-        'templateId',
-        templates.valid.id
+  test.describe('PDF letter', () => {
+    test('when user visits page, then page is loaded', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewSubmittedLetterTemplatePage =
+        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+          'templateId',
+          templates.valid.id
+        );
+
+      await previewSubmittedLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
       );
 
-    await previewSubmittedLetterTemplatePage.loadPage();
+      await expect(
+        previewSubmittedLetterTemplatePage.pageHeading
+      ).toContainText(templates.valid.name);
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
-    );
+      if (!templates.valid.campaignId) {
+        throw new Error('Test data misconfiguration');
+      }
 
-    await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
-      templates.valid.name
-    );
+      await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
+        templates.valid.campaignId
+      );
 
-    if (!templates.valid.campaignId) {
-      throw new Error('Test data misconfiguration');
-    }
+      await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
+        'Locked'
+      );
 
-    await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
-      templates.valid.campaignId
-    );
+      await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
+    });
+  });
 
-    await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
-      'Locked'
-    );
+  test.describe('AUTHORING letter', () => {
+    test('when user visits page, then page is loaded with template details', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewSubmittedLetterTemplatePage =
+        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+          'templateId',
+          templates.authoringValid.id
+        );
 
-    await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
+      await previewSubmittedLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-submitted-letter-template/${templates.authoringValid.id}`
+      );
+
+      await expect(
+        previewSubmittedLetterTemplatePage.pageHeading
+      ).toContainText(templates.authoringValid.name);
+
+      if (!templates.authoringValid.campaignId) {
+        throw new Error('Test data misconfiguration');
+      }
+
+      await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
+        templates.authoringValid.campaignId
+      );
+
+      await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
+        'Locked'
+      );
+
+      await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
+    });
   });
 
   test.describe('Page functionality', () => {

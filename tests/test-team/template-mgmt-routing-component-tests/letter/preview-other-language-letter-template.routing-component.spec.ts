@@ -29,6 +29,7 @@ const templateIds = {
   EMAIL: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   FRENCH_LETTER: randomUUID(),
+  AUTHORING_FRENCH_LETTER: randomUUID(),
 };
 
 function createMessagePlans(user: TestUser) {
@@ -58,6 +59,13 @@ function createTemplates(user: TestUser) {
       'French letter template name',
       'SUBMITTED',
       'PASSED',
+      { language: 'fr' }
+    ),
+    AUTHORING_FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.AUTHORING_FRENCH_LETTER,
+      user,
+      'Authoring French letter template name',
+      'SUBMITTED',
       { language: 'fr' }
     ),
   };
@@ -187,6 +195,51 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     await expect(
       page.getByText(templates.FRENCH_LETTER.files!.testDataCsv!.fileName)
     ).toBeVisible();
+  });
+
+  test('loads the AUTHORING foreign language letter template', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewForeignLanguageLetterTemplatePage =
+      new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.AUTHORING_FRENCH_LETTER.id)
+        .setSearchParam('lockNumber', '0');
+    await previewForeignLanguageLetterTemplatePage.loadPage();
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_FRENCH_LETTER.id}?lockNumber=0`
+    );
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.templateCaption
+    ).toBeVisible();
+    await expect(
+      previewForeignLanguageLetterTemplatePage.templateCaption
+    ).toContainText('Template');
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.pageHeading
+    ).toContainText(templates.AUTHORING_FRENCH_LETTER.name);
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.templateId
+    ).toBeVisible();
+    await expect(
+      previewForeignLanguageLetterTemplatePage.templateId
+    ).toContainText(templates.AUTHORING_FRENCH_LETTER.id);
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.summaryList
+    ).toBeVisible();
+
+    if (!templates.AUTHORING_FRENCH_LETTER.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.campaignId
+    ).toContainText(templates.AUTHORING_FRENCH_LETTER.campaignId);
   });
 
   test.describe('redirects to invalid template page', () => {

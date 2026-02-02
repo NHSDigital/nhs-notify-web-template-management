@@ -197,11 +197,15 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     const { letterVariantId: _, ...templateWithoutVariant } =
       baseAuthoringLetter;
     const container = render(
-      <PreviewTemplateDetailsAuthoringLetter template={templateWithoutVariant} />
+      <PreviewTemplateDetailsAuthoringLetter
+        template={templateWithoutVariant}
+      />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
-    expect(container.container.querySelector('.missingValue')).toBeInTheDocument();
+    expect(
+      container.container.querySelector('.missingValue')
+    ).toBeInTheDocument();
   });
 
   it('matches snapshot with hideActions', () => {
@@ -252,9 +256,7 @@ describe('PreviewTemplateDetailsLetter', () => {
   });
 
   it('renders authoring letter component for AUTHORING letterVersion', () => {
-    render(
-      <PreviewTemplateDetailsLetter template={baseAuthoringLetter} />
-    );
+    render(<PreviewTemplateDetailsLetter template={baseAuthoringLetter} />);
 
     expect(screen.getByTestId('edit-name-link')).toBeInTheDocument();
     expect(screen.getByText('Sheets')).toBeInTheDocument();

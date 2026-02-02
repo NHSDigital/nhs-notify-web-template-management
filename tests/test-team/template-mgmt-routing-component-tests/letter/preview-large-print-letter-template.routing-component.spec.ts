@@ -54,6 +54,13 @@ function createTemplates(user: TestUser) {
       'PASSED',
       { letterType: 'x1' }
     ),
+    AUTHORING_LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'Authoring large print letter template name',
+      'SUBMITTED',
+      { letterType: 'x1' }
+    ),
   };
 }
 
@@ -169,6 +176,46 @@ test.describe('Routing - Preview large print letter template page', () => {
     await expect(
       page.getByText(templates.LARGE_PRINT_LETTER.files!.testDataCsv!.fileName)
     ).toBeVisible();
+  });
+
+  test('loads the AUTHORING large print letter template', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLargePrintLetterTemplatePage =
+      new RoutingPreviewLargePrintLetterTemplatePage(page);
+    await previewLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+      .setPathParam('templateId', templates.AUTHORING_LARGE_PRINT_LETTER.id)
+      .setSearchParam('lockNumber', '0')
+      .loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}?lockNumber=0`
+    );
+
+    await expect(
+      previewLargePrintLetterTemplatePage.templateCaption
+    ).toContainText('Template');
+
+    await expect(previewLargePrintLetterTemplatePage.pageHeading).toContainText(
+      templates.AUTHORING_LARGE_PRINT_LETTER.name
+    );
+
+    await expect(previewLargePrintLetterTemplatePage.templateId).toBeVisible();
+    await expect(previewLargePrintLetterTemplatePage.templateId).toContainText(
+      templates.AUTHORING_LARGE_PRINT_LETTER.id
+    );
+
+    await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
+
+    if (!templates.AUTHORING_LARGE_PRINT_LETTER.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
+    await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
+      templates.AUTHORING_LARGE_PRINT_LETTER.campaignId
+    );
   });
 
   test.describe('redirects to invalid template page', () => {

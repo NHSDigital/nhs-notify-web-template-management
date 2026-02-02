@@ -46,6 +46,11 @@ function createTemplates(user: TestUser) {
       user,
       'Letter template name'
     ),
+    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'Authoring letter template name'
+    ),
   };
 }
 
@@ -121,6 +126,39 @@ test.describe('Routing - Preview Letter template page', () => {
     await expect(
       page.getByText(templates.LETTER.files!.testDataCsv!.fileName)
     ).toBeVisible();
+  });
+
+  test('loads the AUTHORING letter template', async ({ page, baseURL }) => {
+    const previewLetterTemplatePage =
+      new RoutingPreviewStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
+        .setSearchParam('lockNumber', '0');
+
+    await previewLetterTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+    );
+
+    await expect(previewLetterTemplatePage.pageHeading).toContainText(
+      templates.AUTHORING_LETTER.name
+    );
+
+    if (!templates.AUTHORING_LETTER.campaignId) {
+      throw new Error('Test data misconfiguration');
+    }
+
+    await expect(previewLetterTemplatePage.campaignId).toContainText(
+      templates.AUTHORING_LETTER.campaignId
+    );
+
+    await expect(previewLetterTemplatePage.templateId).toBeVisible();
+    await expect(previewLetterTemplatePage.templateId).toContainText(
+      templates.AUTHORING_LETTER.id
+    );
+
+    await expect(previewLetterTemplatePage.summaryList).toBeVisible();
   });
 
   test.describe('redirects to invalid template page', () => {
