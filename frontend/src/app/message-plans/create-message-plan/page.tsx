@@ -10,7 +10,6 @@ import {
 } from '@forms/MessagePlan/MessagePlan';
 import { getCampaignIds } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
-
 import { createMessagePlanServerAction } from './server-action';
 
 const pageContent = content.pages.createMessagePlan;
