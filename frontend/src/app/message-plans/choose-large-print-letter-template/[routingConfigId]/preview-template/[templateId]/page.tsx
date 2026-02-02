@@ -2,14 +2,14 @@
 
 import {
   MessagePlanAndTemplatePageProps,
-  validateLargePrintPdfLetterTemplate,
+  validateLargePrintLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
+import PreviewTemplateDetailsLetterAdapter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetterAdapter';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.pages.previewLargePrintLetterTemplate;
@@ -37,7 +37,7 @@ const PreviewLargePrintLetterTemplateFromMessagePlan = async (
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateLargePrintPdfLetterTemplate(template);
+  const validatedTemplate = validateLargePrintLetterTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -46,7 +46,7 @@ const PreviewLargePrintLetterTemplateFromMessagePlan = async (
   return (
     <PreviewTemplateFromMessagePlan
       initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsLetter}
+      previewComponent={PreviewTemplateDetailsLetterAdapter}
       routingConfigId={routingConfigId}
       lockNumber={lockNumberResult.data}
     />

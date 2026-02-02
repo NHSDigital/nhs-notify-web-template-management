@@ -20,9 +20,11 @@ const { rowHeadings } = content.components.previewTemplateDetails;
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
   hideStatus,
+  hideActions,
 }: {
   template: AuthoringLetterTemplate;
   hideStatus?: boolean;
+  hideActions?: boolean;
 }) {
   const features = useFeatureFlags();
   const totalPages = Math.ceil(template.sidesCount / 2);
@@ -31,11 +33,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
     <>
       <DetailsHeader templateName={template.name} />
 
-      <p className='nhsuk-u-margin-bottom-4'>
-        <Link href='#' data-testid='edit-name-link'>
-          Edit name
-        </Link>
-      </p>
+      {!hideActions && (
+        <p className='nhsuk-u-margin-bottom-4'>
+          <Link href='#' data-testid='edit-name-link'>
+            Edit name
+          </Link>
+        </p>
+      )}
 
       {features.routing && template.templateStatus === 'SUBMITTED' && (
         <LockedTemplateWarning template={template} />
@@ -74,12 +78,16 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Row>
               <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
               <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link href='#' data-testid='campaign-action'>
-                  Edit
-                  <span className='nhsuk-u-visually-hidden'> campaign</span>
-                </Link>
-              </SummaryList.Actions>
+              {hideActions ? (
+                <SummaryList.Actions />
+              ) : (
+                <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+                  <Link href='#' data-testid='campaign-action'>
+                    Edit
+                    <span className='nhsuk-u-visually-hidden'> campaign</span>
+                  </Link>
+                </SummaryList.Actions>
+              )}
             </SummaryList.Row>
           )}
 
@@ -94,15 +102,19 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.sheets}</SummaryList.Key>
             <SummaryList.Value>{template.sidesCount}</SummaryList.Value>
-            <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-              <Link
-                href='https://notify.nhs.uk/pricing-and-commercial/letters'
-                data-testid='sheets-action'
-              >
-                Learn more
-                <span className='nhsuk-u-visually-hidden'> about sheets</span>
-              </Link>
-            </SummaryList.Actions>
+            {hideActions ? (
+              <SummaryList.Actions />
+            ) : (
+              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+                <Link
+                  href='https://notify.nhs.uk/pricing-and-commercial/letters'
+                  data-testid='sheets-action'
+                >
+                  Learn more
+                  <span className='nhsuk-u-visually-hidden'> about sheets</span>
+                </Link>
+              </SummaryList.Actions>
+            )}
           </SummaryList.Row>
 
           {/* Printing and postage */}
@@ -113,15 +125,19 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           >
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
-            <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-              <Link href='#' data-testid='printing-postage-action'>
-                Edit
-                <span className='nhsuk-u-visually-hidden'>
-                  {' '}
-                  printing and postage
-                </span>
-              </Link>
-            </SummaryList.Actions>
+            {hideActions ? (
+              <SummaryList.Actions />
+            ) : (
+              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+                <Link href='#' data-testid='printing-postage-action'>
+                  Edit
+                  <span className='nhsuk-u-visually-hidden'>
+                    {' '}
+                    printing and postage
+                  </span>
+                </Link>
+              </SummaryList.Actions>
+            )}
           </SummaryList.Row>
 
           {/* Status */}
@@ -137,15 +153,22 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                   {statusToDisplayMapping(template, features)}
                 </Tag>
               </SummaryList.Value>
-              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link
-                  href='https://notify.nhs.uk/templates/what-template-statuses-mean'
-                  data-testid='status-action'
-                >
-                  Learn more
-                  <span className='nhsuk-u-visually-hidden'> about status</span>
-                </Link>
-              </SummaryList.Actions>
+              {hideActions ? (
+                <SummaryList.Actions />
+              ) : (
+                <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+                  <Link
+                    href='https://notify.nhs.uk/templates/what-template-statuses-mean'
+                    data-testid='status-action'
+                  >
+                    Learn more
+                    <span className='nhsuk-u-visually-hidden'>
+                      {' '}
+                      about status
+                    </span>
+                  </Link>
+                </SummaryList.Actions>
+              )}
             </SummaryList.Row>
           )}
         </DetailSection>

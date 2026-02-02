@@ -1,5 +1,6 @@
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
+import PreviewTemplateDetailsLetterAdapter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetterAdapter';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
@@ -473,5 +474,253 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     expect(
       screen.getByText(/you cannot delete this template/i)
     ).toBeInTheDocument();
+  });
+
+  it('hides Edit name link when hideActions is true', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideActions
+      />
+    );
+
+    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+  });
+
+  it('hides all action links in summary list rows when hideActions is true', () => {
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 4,
+          language: 'en',
+          campaignId: 'campaign-123',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideActions
+      />
+    );
+
+    // All action links should be hidden
+    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('sheets-action')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('printing-postage-action')
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('status-action')).not.toBeInTheDocument();
+  });
+
+  it('matches snapshot when hideActions is true', () => {
+    const { asFragment } = render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{
+          id: 'template-id',
+          name: 'Example AUTHORING letter with hidden actions',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 4,
+          language: 'en',
+          campaignId: 'campaign-123',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideActions
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('PreviewTemplateDetailsLetterAdapter', () => {
+  it('renders PreviewTemplateDetailsPdfLetter for PDF letterVersion', () => {
+    render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'PDF Letter Template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'PDF',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    // PDF letter shows template file row
+    expect(screen.getByText('file.pdf')).toBeInTheDocument();
+    // PDF letter does NOT show Edit name link
+    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+  });
+
+  it('renders PreviewTemplateDetailsAuthoringLetter for AUTHORING letterVersion', () => {
+    render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'Authoring Letter Template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    // Authoring letter shows Edit name link (when hideActions is not set)
+    expect(screen.getByTestId('edit-name-link')).toBeInTheDocument();
+    // Authoring letter shows sheets row
+    expect(screen.getByText('Sheets')).toBeInTheDocument();
+  });
+
+  it('passes hideStatus prop to underlying components', () => {
+    render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'Authoring Letter Template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideStatus
+      />
+    );
+
+    // Status should be hidden
+    expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
+  });
+
+  it('passes hideActions prop to AuthoringLetter component', () => {
+    render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'Authoring Letter Template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 2,
+          language: 'en',
+          campaignId: 'campaign-123',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideActions
+      />
+    );
+
+    // Actions should be hidden
+    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('sheets-action')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('printing-postage-action')
+    ).not.toBeInTheDocument();
+  });
+
+  it('matches snapshot for PDF letter', () => {
+    const { asFragment } = render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'PDF Letter via Adapter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'PDF',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot for AUTHORING letter with hideActions', () => {
+    const { asFragment } = render(
+      <PreviewTemplateDetailsLetterAdapter
+        template={{
+          id: 'template-id',
+          name: 'Authoring Letter via Adapter',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          letterVersion: 'AUTHORING',
+          letterVariantId: 'variant-123',
+          sidesCount: 4,
+          language: 'en',
+          campaignId: 'campaign-123',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+          lockNumber: 1,
+        }}
+        hideActions
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
   });
 });

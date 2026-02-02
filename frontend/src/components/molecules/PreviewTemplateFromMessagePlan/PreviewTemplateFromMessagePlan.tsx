@@ -58,6 +58,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
             {previewComponent({
               template,
               hideStatus: true,
+              hideActions: true,
             })}
             <Link
               className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
