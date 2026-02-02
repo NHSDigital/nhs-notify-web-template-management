@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "fast-xml-parser": "^5.3.4"
+  },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
     "@types/jest": "^29.5.14",
@@ -28,6 +31,9 @@
   "name": "nhs-notify-web-template-management",
   "overrides": {
     "fast-xml-parser": "^5.3.4",
+    "nhsuk-react-components": {
+      "nhsuk-frontend": "^10.3.1"
+    },
     "pretty-format": {
       "react-is": "19.0.0"
     },
