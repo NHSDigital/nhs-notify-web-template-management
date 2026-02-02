@@ -40,7 +40,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-letter-template"
+            value="upload-standard-english-letter-template"
           />
           <input
             name="csrf_token"
@@ -314,7 +314,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-letter-template"
+            value="upload-standard-english-letter-template"
           />
           <input
             name="csrf_token"
@@ -579,7 +579,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-letter-template"
+            value="upload-standard-english-letter-template"
           />
           <input
             name="csrf_token"
@@ -840,7 +840,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-letter-template"
+            value="upload-standard-english-letter-template"
           />
           <input
             name="csrf_token"

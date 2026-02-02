@@ -10,96 +10,116 @@ import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyF
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createNhsNotifyFormContext } from '@providers/form-provider';
 import { DOCX_MIME, type UploadDocxLetterTemplateFormSchema } from './schema';
+import { PropsWithChildren } from 'react';
 
 const { useNHSNotifyForm, NHSNotifyFormProvider } =
   createNhsNotifyFormContext<UploadDocxLetterTemplateFormSchema>();
 
-export { NHSNotifyFormProvider };
+export const Provider = NHSNotifyFormProvider;
 
-type FormProps = { campaignIds: string[] };
+const content = copy.components.uploadDocxLetterTemplateForm;
 
-const { fields } = copy.components.uploadDocxLetterTemplateForm;
+export function NameField() {
+  const [state] = useNHSNotifyForm();
 
-export function UploadDocxLetterTemplateForm({ campaignIds }: FormProps) {
-  const [state, action] = useNHSNotifyForm();
-
-  const nameError = state.errorState?.fieldErrors?.name?.join(',');
-  const campaignIdError = state.errorState?.fieldErrors?.campaignId?.join(',');
-  const fileError = state.errorState?.fieldErrors?.file?.join(',');
+  const error = state.errorState?.fieldErrors?.name?.join(',');
 
   return (
-    <NHSNotifyFormWrapper
-      action={action}
-      formId='upload-standard-letter-template'
-    >
-      <NHSNotifyFormGroup error={Boolean(nameError)}>
-        <Label size='s' htmlFor='name'>
-          {fields.name.label}
-        </Label>
-        <HintText>{fields.name.hint}</HintText>
+    <NHSNotifyFormGroup error={Boolean(error)}>
+      <Label size='s' htmlFor='name'>
+        {content.fields.name.label}
+      </Label>
+      <HintText>{content.fields.name.hint}</HintText>
 
-        <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
-        {nameError && <ErrorMessage>{nameError}</ErrorMessage>}
-        <input
-          type='text'
-          id='name'
-          name='name'
-          className='nhsuk-input nhsuk-u-margin-bottom-2'
-          defaultValue={state.fields?.name}
-        />
-      </NHSNotifyFormGroup>
+      <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <input
+        type='text'
+        id='name'
+        name='name'
+        className='nhsuk-input nhsuk-u-margin-bottom-2'
+        defaultValue={state.fields?.name}
+      />
+    </NHSNotifyFormGroup>
+  );
+}
 
-      <NHSNotifyFormGroup error={Boolean(campaignIdError)}>
-        <Label size='s' htmlFor='campaignId'>
-          {fields.campaignId.label}
-        </Label>
-        {campaignIds.length === 1 ? (
-          <>
-            <HintText>{fields.campaignId.single.hint}</HintText>
-            <input
-              type='hidden'
-              name='campaignId'
-              value={campaignIds[0]}
-              readOnly
-            />
-            <p data-testid='single-campaign-id-text'>{campaignIds[0]}</p>
-          </>
-        ) : (
-          <>
-            <HintText>{fields.campaignId.select.hint}</HintText>
-            {campaignIdError && <ErrorMessage>{campaignIdError}</ErrorMessage>}
-            <select
-              id='campaignId'
-              name='campaignId'
-              defaultValue={state.fields?.campaignId}
-              key={state.fields?.campaignId}
-              className={classNames('nhsuk-select', {
-                'nhsuk-select--error': campaignIdError,
-              })}
-            >
-              <option />
-              {campaignIds.map((id) => (
-                <option key={id} value={id}>
-                  {id}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
-      </NHSNotifyFormGroup>
+export function CampaignIdField({ campaignIds }: { campaignIds: string[] }) {
+  const [state] = useNHSNotifyForm();
 
-      <NHSNotifyFormGroup error={Boolean(fileError)}>
-        <Label size='s' htmlFor='file'>
-          {fields.file.label}
-        </Label>
-        <HintText>
-          <ContentRenderer content={fields.file.hint} />
-        </HintText>
-        {fileError && <ErrorMessage>{fileError}</ErrorMessage>}
-        <FileUploadInput id='file' name='file' accept={DOCX_MIME} />
-      </NHSNotifyFormGroup>
+  const error = state.errorState?.fieldErrors?.campaignId?.join(',');
 
-      <Button type='submit'>{fields.submitButton.text}</Button>
+  return (
+    <NHSNotifyFormGroup error={Boolean(error)}>
+      <Label size='s' htmlFor='campaignId'>
+        {content.fields.campaignId.label}
+      </Label>
+      {campaignIds.length === 1 ? (
+        <>
+          <HintText>{content.fields.campaignId.single.hint}</HintText>
+          <input
+            type='hidden'
+            name='campaignId'
+            value={campaignIds[0]}
+            readOnly
+          />
+          <p data-testid='single-campaign-id-text'>{campaignIds[0]}</p>
+        </>
+      ) : (
+        <>
+          <HintText>{content.fields.campaignId.select.hint}</HintText>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <select
+            id='campaignId'
+            name='campaignId'
+            defaultValue={state.fields?.campaignId}
+            key={state.fields?.campaignId}
+            className={classNames('nhsuk-select', {
+              'nhsuk-select--error': error,
+            })}
+          >
+            <option />
+            {campaignIds.map((id) => (
+              <option key={id} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
+    </NHSNotifyFormGroup>
+  );
+}
+
+export function FileField() {
+  const [state] = useNHSNotifyForm();
+
+  const error = state.errorState?.fieldErrors?.file?.join(',');
+
+  return (
+    <NHSNotifyFormGroup error={Boolean(error)}>
+      <Label size='s' htmlFor='file'>
+        {content.fields.file.label}
+      </Label>
+      <HintText>
+        <ContentRenderer content={content.fields.file.hint} />
+      </HintText>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <FileUploadInput id='file' name='file' accept={DOCX_MIME} />
+    </NHSNotifyFormGroup>
+  );
+}
+
+export function Form({
+  children,
+  formId,
+}: PropsWithChildren<{ formId: string }>) {
+  const [, action] = useNHSNotifyForm();
+
+  return (
+    <NHSNotifyFormWrapper action={action} formId={formId}>
+      {children}
+      <Button type='submit'>{content.fields.submitButton.text}</Button>
     </NHSNotifyFormWrapper>
   );
 }
