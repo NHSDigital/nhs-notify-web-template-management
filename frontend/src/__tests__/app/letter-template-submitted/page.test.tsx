@@ -6,7 +6,7 @@ import LetterTemplateSubmittedPage, {
 } from '@app/letter-template-submitted/[templateId]/page';
 import content from '@content/content';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import { LETTER_TEMPLATE } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 
@@ -24,7 +24,7 @@ describe('LetterTemplateSubmittedPage', () => {
 
   test('should load page', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
     });
 
@@ -41,8 +41,8 @@ describe('LetterTemplateSubmittedPage', () => {
 
     expect(page).toEqual(
       <TemplateSubmitted
-        templateId={LETTER_TEMPLATE.id}
-        templateName={LETTER_TEMPLATE.name}
+        templateId={PDF_LETTER_TEMPLATE.id}
+        templateName={PDF_LETTER_TEMPLATE.name}
       />
     );
   });

@@ -11,7 +11,7 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -102,7 +102,7 @@ describe('RequestProofPage', () => {
     NHS_APP_TEMPLATE,
     EMAIL_TEMPLATE,
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       name: undefined as unknown as string,
     },
     AUTHORING_LETTER_TEMPLATE,

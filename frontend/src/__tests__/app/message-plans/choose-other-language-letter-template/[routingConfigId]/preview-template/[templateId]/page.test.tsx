@@ -1,7 +1,7 @@
 import PreviewOtherLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -14,7 +14,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 const FRENCH_LETTER_TEMPLATE = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'french-letter-id',
   name: 'French letter template',
   language: 'fr' as Language,

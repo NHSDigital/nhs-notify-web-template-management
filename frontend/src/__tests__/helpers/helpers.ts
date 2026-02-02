@@ -55,7 +55,7 @@ export const SMS_TEMPLATE: TemplateDto = {
   lockNumber: 1,
 } as const;
 
-export const LETTER_TEMPLATE: PdfLetterTemplate = {
+export const PDF_LETTER_TEMPLATE: PdfLetterTemplate = {
   id: 'letter-template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -142,7 +142,7 @@ export const ROUTING_CONFIG: RoutingConfig = {
       cascadeGroups: ['standard'],
       channel: 'LETTER',
       channelType: 'primary',
-      defaultTemplateId: LETTER_TEMPLATE.id,
+      defaultTemplateId: PDF_LETTER_TEMPLATE.id,
     },
   ],
   lockNumber: 0,

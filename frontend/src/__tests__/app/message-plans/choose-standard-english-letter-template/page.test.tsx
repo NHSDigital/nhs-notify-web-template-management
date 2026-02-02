@@ -1,7 +1,7 @@
 import ChooseStandardEnglishLetterTemplate, {
   generateMetadata,
 } from '@app/message-plans/choose-standard-english-letter-template/[routingConfigId]/page';
-import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
@@ -63,7 +63,7 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
 
   it('renders letter template selection', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
-    getTemplatesMock.mockResolvedValueOnce([LETTER_TEMPLATE]);
+    getTemplatesMock.mockResolvedValueOnce([PDF_LETTER_TEMPLATE]);
 
     const page = await ChooseStandardEnglishLetterTemplate({
       params: Promise.resolve({

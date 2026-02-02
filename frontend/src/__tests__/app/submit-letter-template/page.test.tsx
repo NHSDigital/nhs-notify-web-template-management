@@ -11,7 +11,7 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -35,7 +35,7 @@ describe('SubmitLetterTemplatePage', () => {
 
   test('should load page', async () => {
     getTemplateMock.mockResolvedValue({
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       createdAt: 'today',
       updatedAt: 'today',
     });
@@ -49,8 +49,8 @@ describe('SubmitLetterTemplatePage', () => {
 
     expect(page).toEqual(
       <SubmitLetterTemplate
-        templateName={LETTER_TEMPLATE.name}
-        templateId={LETTER_TEMPLATE.id}
+        templateName={PDF_LETTER_TEMPLATE.name}
+        templateId={PDF_LETTER_TEMPLATE.id}
         lockNumber={42}
       />
     );
@@ -74,11 +74,11 @@ describe('SubmitLetterTemplatePage', () => {
     NHS_APP_TEMPLATE,
     SMS_TEMPLATE,
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       files: undefined as unknown as PdfLetterTemplate['files'],
     } as TemplateDto,
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
