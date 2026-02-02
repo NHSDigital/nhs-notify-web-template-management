@@ -2,7 +2,7 @@ import { ChannelTemplates } from '@molecules/ChannelTemplates/ChannelTemplates';
 import { render } from '@testing-library/react';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -22,7 +22,7 @@ describe('ChannelTemplates', () => {
           NHS_APP_TEMPLATE,
           EMAIL_TEMPLATE,
           SMS_TEMPLATE,
-          LETTER_TEMPLATE,
+          PDF_LETTER_TEMPLATE,
         ]}
         errorState={null}
         selectedTemplate={null}
@@ -41,7 +41,7 @@ describe('ChannelTemplates', () => {
           NHS_APP_TEMPLATE,
           EMAIL_TEMPLATE,
           SMS_TEMPLATE,
-          LETTER_TEMPLATE,
+          PDF_LETTER_TEMPLATE,
         ]}
         errorState={null}
         selectedTemplate={EMAIL_TEMPLATE.id}
@@ -63,7 +63,7 @@ describe('ChannelTemplates', () => {
           NHS_APP_TEMPLATE,
           EMAIL_TEMPLATE,
           SMS_TEMPLATE,
-          LETTER_TEMPLATE,
+          PDF_LETTER_TEMPLATE,
         ]}
         errorState={{
           fieldErrors: {

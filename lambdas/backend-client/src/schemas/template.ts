@@ -1,22 +1,23 @@
 import { z } from 'zod/v4';
-import {
+import type {
+  AuthoringLetterProperties,
+  BaseCreatedTemplate,
   BaseTemplate,
-  UploadLetterProperties,
+  CreatePdfLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
-  VersionedFileDetails,
-  ProofFileDetails,
-  LetterFiles,
-  LetterProperties,
+  Language,
+  LetterType,
   NhsAppProperties,
+  PdfLetterFiles,
+  PdfLetterProperties,
+  ProofFileDetails,
   SmsProperties,
   TemplateDto,
-  LetterType,
-  Language,
-  BaseCreatedTemplate,
   TemplateStatus,
   TemplateStatusActive,
   TemplateType,
+  VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -53,7 +54,7 @@ const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
   })
 );
 
-export const $LetterFiles = schemaFor<LetterFiles>()(
+export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
@@ -89,22 +90,49 @@ export const $BaseLetterTemplateProperties = z.object({
   language: z.enum(LANGUAGE_LIST),
 });
 
-export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
-  z.object({
-    ...$BaseLetterTemplateProperties.shape,
-    campaignId: z.string(),
-  })
-);
+export const $CreatePdfLetterProperties =
+  schemaFor<CreatePdfLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('PDF'),
+    })
+  );
 
-export const $LetterProperties = schemaFor<LetterProperties>()(
+export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   z.object({
     ...$BaseLetterTemplateProperties.shape,
-    files: $LetterFiles,
+    files: $PdfLetterFiles,
+    letterVersion: z.literal('PDF'),
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
     supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
+
+export const $AuthoringLetterProperties =
+  schemaFor<AuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      letterVariantId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+      sidesCount: z.number().int(),
+    })
+  );
+
+const $LetterVersionWithDefault = z
+  .union([z.undefined(), z.literal('PDF')])
+  .transform((val) => val ?? ('PDF' as const));
+
+const $PdfLetterPropertiesWithDefaultVersion = z.object({
+  ...$PdfLetterProperties.shape,
+  letterVersion: $LetterVersionWithDefault,
+});
+
+export const $LetterProperties = z.discriminatedUnion('letterVersion', [
+  $PdfLetterPropertiesWithDefaultVersion,
+  $AuthoringLetterProperties,
+]);
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
@@ -128,7 +156,7 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($UploadLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
   ])
 );
 
@@ -176,15 +204,37 @@ const $BaseTemplateDto = schemaFor<
   })
 );
 
+const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
+  $AuthoringLetterProperties.shape
+);
+
+const $PdfLetterTemplateDto = $BaseTemplateDto.extend({
+  ...$PdfLetterProperties.shape,
+  letterVersion: $LetterVersionWithDefault,
+});
+
+const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
+  $PdfLetterTemplateDto,
+  $AuthoringLetterTemplateDto,
+]);
+
 export const $TemplateDto = schemaFor<
   TemplateDto,
-  Omit<TemplateDto, 'lockNumber'>
+  Omit<BaseCreatedTemplate, 'lockNumber'> & {
+    lockNumber?: unknown;
+  } & (
+      | SmsProperties
+      | EmailProperties
+      | NhsAppProperties
+      | AuthoringLetterProperties
+      | (Omit<PdfLetterProperties, 'letterVersion'> & { letterVersion?: 'PDF' })
+    )
 >()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateDto.extend($NhsAppProperties.shape),
     $BaseTemplateDto.extend($EmailProperties.shape),
     $BaseTemplateDto.extend($SmsProperties.shape),
-    $BaseTemplateDto.extend($LetterProperties.shape),
+    $LetterTemplateDto,
   ])
 );
 

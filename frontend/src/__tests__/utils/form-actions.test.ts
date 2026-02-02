@@ -20,7 +20,7 @@ import {
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { LETTER_TEMPLATE } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
@@ -128,6 +128,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -155,6 +156,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -188,6 +190,7 @@ describe('form-actions', () => {
       name: 'template-name',
       letterType: 'x1',
       language: 'ar',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
@@ -210,6 +213,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -251,6 +255,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -281,6 +286,7 @@ describe('form-actions', () => {
       letterType: 'x0',
       language: 'en',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const pdf = new File(['file contents'], 'template.pdf', {
@@ -566,7 +572,7 @@ describe('form-actions', () => {
   describe('getForeignLanguageLetterTemplates', () => {
     test('passes filters through to getTemplates', async () => {
       const polishTemplate: TemplateDto = {
-        ...LETTER_TEMPLATE,
+        ...PDF_LETTER_TEMPLATE,
         id: 'polish-1',
         name: 'Polish Template',
         language: 'pl',
@@ -774,6 +780,7 @@ describe('form-actions', () => {
         name: 'template-name',
         letterType: 'x1',
         language: 'ar',
+        letterVersion: 'PDF',
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',

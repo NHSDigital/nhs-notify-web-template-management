@@ -49,6 +49,7 @@ async function createTemplates() {
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: `CLIENT#${user.clientId}`,
+      letterVersion: 'PDF',
     } as Template,
     notYetSubmitted: TemplateFactory.uploadLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',

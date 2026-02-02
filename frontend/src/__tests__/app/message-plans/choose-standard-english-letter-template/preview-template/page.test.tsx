@@ -1,7 +1,7 @@
 import PreviewStandardEnglishLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-standard-english-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -65,14 +65,14 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
 
   it('renders letter template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
     });
 
     const page = await PreviewStandardEnglishLetterTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
-        templateId: LETTER_TEMPLATE.id,
+        templateId: PDF_LETTER_TEMPLATE.id,
       }),
       searchParams: Promise.resolve({
         lockNumber: '5',
@@ -81,7 +81,7 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
 
     const container = render(page);
 
-    expect(getTemplateMock).toHaveBeenCalledWith(LETTER_TEMPLATE.id);
+    expect(getTemplateMock).toHaveBeenCalledWith(PDF_LETTER_TEMPLATE.id);
 
     expect(await generateMetadata()).toEqual({
       title: 'Preview letter template - NHS Notify',

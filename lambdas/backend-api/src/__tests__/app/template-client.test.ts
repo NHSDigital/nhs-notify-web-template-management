@@ -2,7 +2,7 @@ import { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
 import type {
-  LetterFiles,
+  PdfLetterFiles,
   TemplateDto,
   CreateUpdateTemplate,
   ClientConfiguration,
@@ -17,6 +17,7 @@ import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-ut
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 import { RoutingConfigRepository } from '../../infra/routing-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+
 import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 
@@ -171,6 +172,7 @@ describe('templateClient', () => {
         letterType: 'x0',
         language: 'en',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const result = await templateClient.createTemplate(data, user);
@@ -350,6 +352,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -358,7 +361,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -372,7 +375,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -387,6 +390,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_UPLOAD',
         owner: `CLIENT#${user.clientId}`,
         version: 1,
+        letterVersion: 'PDF',
       };
 
       const updateTime = '2025-03-12T08:41:33.666Z';
@@ -491,6 +495,7 @@ describe('templateClient', () => {
           language: 'en',
           letterType: 'x0',
           campaignId: 'campaign-id',
+          letterVersion: 'PDF',
         };
 
         const pdf = new File(['pdf'], pdfFilename, {
@@ -499,7 +504,7 @@ describe('templateClient', () => {
 
         const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-        const filesWithVersions: LetterFiles = {
+        const filesWithVersions: PdfLetterFiles = {
           pdfTemplate: {
             fileName: pdfFilename,
             currentVersion: versionId,
@@ -513,10 +518,11 @@ describe('templateClient', () => {
           proofs: {},
         };
 
-        const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-          ...data,
-          files: filesWithVersions,
-        };
+        const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } =
+          {
+            ...data,
+            files: filesWithVersions,
+          };
 
         const creationTime = '2025-03-12T08:41:08.805Z';
 
@@ -529,6 +535,7 @@ describe('templateClient', () => {
           proofingEnabled: expected,
           owner: `CLIENT#${user.clientId}`,
           version: 1,
+          letterVersion: 'PDF',
         };
 
         const updateTime = '2025-03-12T08:41:33.666Z';
@@ -590,6 +597,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: undefined,
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       } as unknown as CreateUpdateTemplate;
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -644,6 +652,45 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
 
+    // temporary, until we implement support for AUTHORING letter version
+    test('should return a failure result, when letterVersion is not PDF', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+
+      const result = await templateClient.uploadLetterTemplate(
+        data as CreateUpdateTemplate,
+        user,
+        pdf
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        }),
+      });
+
+      expect(result.error?.errorMeta.details).toMatchObject({
+        letterVersion: expect.stringContaining('Invalid input: expected "PDF"'),
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
     const invalidPdfCases: { case: string; pdf: File }[] = [
       {
         case: 'no file type',
@@ -670,6 +717,7 @@ describe('templateClient', () => {
           language: 'en',
           letterType: 'x0',
           campaignId: 'campaign-id',
+          letterVersion: 'PDF',
         };
 
         const result = await templateClient.uploadLetterTemplate(
@@ -717,6 +765,7 @@ describe('templateClient', () => {
           language: 'en',
           letterType: 'x0',
           campaignId: 'campaign-id',
+          letterVersion: 'PDF',
         };
 
         const pdf = new File(['pdf'], 'template.pdf', {
@@ -752,6 +801,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -782,6 +832,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -817,13 +868,14 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -832,7 +884,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -882,6 +934,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -923,13 +976,14 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -938,7 +992,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -950,6 +1004,7 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
         lockNumber: 1,
+        letterVersion: 'PDF',
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1020,13 +1075,14 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
       });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: 'template.pdf',
           currentVersion: versionId,
@@ -1035,7 +1091,7 @@ describe('templateClient', () => {
         proofs: {},
       };
 
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: PdfLetterFiles } = {
         ...data,
         files: filesWithVersions,
       };
@@ -1047,6 +1103,7 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
         lockNumber: 1,
+        letterVersion: 'PDF',
       };
 
       const initialCreatedTemplate: DatabaseTemplate = {
@@ -1119,6 +1176,7 @@ describe('templateClient', () => {
         language: 'en',
         letterType: 'x0',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const pdf = new File(['pdf'], pdfFilename, {
@@ -1127,7 +1185,7 @@ describe('templateClient', () => {
 
       const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
-      const filesWithVersions: LetterFiles = {
+      const filesWithVersions: PdfLetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -1280,6 +1338,7 @@ describe('templateClient', () => {
         language: 'it',
         letterType: 'x1',
         campaignId: 'campaign-id',
+        letterVersion: 'PDF',
       };
 
       const result = await templateClient.updateTemplate(
@@ -1739,7 +1798,8 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          files: {} as LetterFiles,
+          letterVersion: 'PDF',
+          files: {} as PdfLetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: 'SUBMITTED',
@@ -1778,7 +1838,8 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          files: {} as LetterFiles,
+          letterVersion: 'PDF',
+          files: {} as PdfLetterFiles,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: 'SUBMITTED',
@@ -1995,6 +2056,7 @@ describe('templateClient', () => {
         lockNumber: 1,
         language: 'en',
         letterType: 'x0',
+        letterVersion: 'PDF',
         campaignId: 'campaign-id',
         files: {
           pdfTemplate: {
@@ -2053,6 +2115,7 @@ describe('templateClient', () => {
         lockNumber: 1,
         language: 'en',
         letterType: 'x0',
+        letterVersion: 'PDF',
         campaignId: 'campaign-id',
         files: {
           pdfTemplate: {
@@ -2413,6 +2476,7 @@ describe('templateClient', () => {
         id: templateId,
         language: 'en',
         letterType: 'x1',
+        letterVersion: 'PDF',
         name: templateName,
         personalisationParameters,
         templateStatus: 'SUBMITTED',
@@ -2499,6 +2563,7 @@ describe('templateClient', () => {
         id: templateId,
         language: 'en',
         letterType: 'x1',
+        letterVersion: 'PDF',
         name: templateName,
         personalisationParameters,
         templateStatus: 'SUBMITTED',

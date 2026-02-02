@@ -44,7 +44,11 @@ const RequestProofPage = async (props: TemplatePageProps) => {
 
   const validatedTemplate = validateLetterTemplate(template);
 
-  if (!validatedTemplate || !validatedTemplate.proofingEnabled) {
+  if (
+    !validatedTemplate ||
+    validatedTemplate.letterVersion !== 'PDF' ||
+    !validatedTemplate.proofingEnabled
+  ) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 

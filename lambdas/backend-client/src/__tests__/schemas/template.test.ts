@@ -1,7 +1,11 @@
 import {
-  $UploadLetterProperties,
+  $AuthoringLetterProperties,
+  $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
+  $LetterProperties,
+  $PdfLetterProperties,
+  $TemplateDto,
   $TemplateFilter,
 } from '../../schemas';
 import type { CreateUpdateTemplate } from '../../types/generated';
@@ -84,6 +88,7 @@ describe('Template schemas', () => {
         campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     },
   ])(
@@ -140,6 +145,7 @@ describe('Template schemas', () => {
         campaignId: 'campaign-id',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     },
   ])(
@@ -169,6 +175,7 @@ describe('Template schemas', () => {
       language: 'ar',
       name: 'letter',
       campaignId: 'campaign-id',
+      letterVersion: 'PDF',
     };
 
     const result = $CreateUpdateNonLetter.safeParse(letter);
@@ -199,11 +206,12 @@ describe('Template schemas', () => {
   });
 
   test('Letter template fields - should fail validation, when no letterType', async () => {
-    const result = $UploadLetterProperties.safeParse({
+    const result = $CreatePdfLetterProperties.safeParse({
       name: 'Test Template',
       campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
+      letterVersion: 'PDF',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -243,11 +251,150 @@ describe('Template schemas', () => {
         templateType: 'LETTER',
         letterType: 'x0',
         language: 'en',
+        letterVersion: 'PDF',
       },
     ])('should pass validation %p', async (template) => {
       const result = $CreateUpdateTemplate.safeParse(template);
 
       expect(result.data).toEqual(template);
+    });
+  });
+
+  describe('$PdfLetterProperties', () => {
+    const validPdfProofingLetter = {
+      templateType: 'LETTER',
+      letterType: 'x0',
+      language: 'en',
+      letterVersion: 'PDF',
+      files: {
+        pdfTemplate: {
+          fileName: 'test.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
+    };
+
+    test('should pass validation for valid PDF letter', () => {
+      const result = $PdfLetterProperties.safeParse(validPdfProofingLetter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(validPdfProofingLetter);
+    });
+
+    test('should fail validation when letterVersion is not PDF', () => {
+      const result = $PdfLetterProperties.safeParse({
+        ...validPdfProofingLetter,
+        letterVersion: 'AUTHORING',
+      });
+
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('$AuthoringLetterProperties', () => {
+    const validAuthoringLetter = {
+      templateType: 'LETTER',
+      letterType: 'x0',
+      language: 'en',
+      letterVersion: 'AUTHORING',
+      letterVariantId: 'variant-123',
+      sidesCount: 2,
+    };
+
+    test('should pass validation for valid AUTHORING letter', () => {
+      const result = $AuthoringLetterProperties.safeParse(validAuthoringLetter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(validAuthoringLetter);
+    });
+
+    test('should fail validation when letterVersion is not AUTHORING', () => {
+      const result = $AuthoringLetterProperties.safeParse({
+        ...validAuthoringLetter,
+        letterVersion: 'PDF',
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    test('should fail validation when required fields are missing', () => {
+      const result = $AuthoringLetterProperties.safeParse({
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error?.flatten().fieldErrors).toEqual(
+        expect.objectContaining({
+          letterVariantId: expect.any(Array),
+          sidesCount: expect.any(Array),
+        })
+      );
+    });
+  });
+
+  describe('$LetterProperties', () => {
+    const validLetterWithVersion = {
+      templateType: 'LETTER',
+      letterType: 'x0',
+      language: 'en',
+      letterVersion: 'PDF',
+      files: {
+        pdfTemplate: {
+          fileName: 'test.pdf',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+      },
+    };
+
+    test('should pass validation when letterVersion is provided', () => {
+      const result = $LetterProperties.safeParse(validLetterWithVersion);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(validLetterWithVersion);
+    });
+
+    test('should default letterVersion to PDF when not provided', () => {
+      const letterWithoutVersion = {
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        files: {
+          pdfTemplate: {
+            fileName: 'test.pdf',
+            currentVersion: '1',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const result = $LetterProperties.safeParse(letterWithoutVersion);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...letterWithoutVersion,
+        letterVersion: 'PDF',
+      });
+    });
+
+    test('should pass validation for AUTHORING letter', () => {
+      const authoringLetter = {
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        letterVariantId: 'variant-123',
+        sidesCount: 2,
+      };
+
+      const result = $LetterProperties.safeParse(authoringLetter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(authoringLetter);
     });
   });
 
@@ -340,6 +487,111 @@ describe('Template schemas', () => {
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(filter);
+    });
+  });
+
+  describe('$TemplateDto', () => {
+    test('should default letterVersion to PDF when not provided for LETTER template', () => {
+      const letterWithoutVersion = {
+        id: 'test-id',
+        name: 'Test Letter',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x0',
+        language: 'en',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        files: {
+          pdfTemplate: {
+            currentVersion: '1',
+            fileName: 'test.pdf',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const result = $TemplateDto.safeParse(letterWithoutVersion);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...letterWithoutVersion,
+        lockNumber: 0,
+        letterVersion: 'PDF',
+      });
+    });
+
+    test('should pass validation for LETTER template with letterVersion provided', () => {
+      const letterWithVersion = {
+        id: 'test-id',
+        name: 'Test Letter',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'PDF',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        files: {
+          pdfTemplate: {
+            currentVersion: '1',
+            fileName: 'test.pdf',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      const result = $TemplateDto.safeParse(letterWithVersion);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...letterWithVersion,
+        lockNumber: 0,
+      });
+    });
+
+    test('should pass validation for AUTHORING letter template', () => {
+      const authoringLetter = {
+        id: 'test-id',
+        name: 'Test Authoring Letter',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        letterVariantId: 'variant-123',
+        sidesCount: 2,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+      };
+
+      const result = $TemplateDto.safeParse(authoringLetter);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...authoringLetter,
+        lockNumber: 0,
+      });
+    });
+
+    test('should pass validation for non-LETTER templates', () => {
+      const emailTemplate = {
+        id: 'test-id',
+        name: 'Test Email',
+        templateType: 'EMAIL',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        subject: 'Test Subject',
+        message: 'Test message',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+      };
+
+      const result = $TemplateDto.safeParse(emailTemplate);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        ...emailTemplate,
+        lockNumber: 0,
+      });
     });
   });
 });

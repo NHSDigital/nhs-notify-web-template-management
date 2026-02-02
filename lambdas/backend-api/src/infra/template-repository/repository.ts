@@ -11,7 +11,7 @@ import {
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import {
   ErrorCase,
-  LetterFiles,
+  PdfLetterFiles,
   TemplateStatus,
   VirusScanStatus,
   ProofFileDetails,
@@ -29,8 +29,11 @@ import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
 
-export type WithAttachments<T> = T extends { templateType: 'LETTER' }
-  ? T & { files: LetterFiles }
+export type WithAttachments<T> = T extends {
+  templateType: 'LETTER';
+  letterVersion: 'PDF';
+}
+  ? T & { files: PdfLetterFiles }
   : T;
 
 export class TemplateRepository {
@@ -359,7 +362,7 @@ export class TemplateRepository {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
-        '#file': 'pdfTemplate' satisfies keyof LetterFiles,
+        '#file': 'pdfTemplate' satisfies keyof PdfLetterFiles,
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
@@ -580,7 +583,7 @@ export class TemplateRepository {
         '#file': (fileType === 'pdf-template'
           ? 'pdfTemplate'
           : 'testDataCsv') satisfies Extract<
-          keyof LetterFiles,
+          keyof PdfLetterFiles,
           'pdfTemplate' | 'testDataCsv'
         >,
         '#scanStatus': 'virusScanStatus',

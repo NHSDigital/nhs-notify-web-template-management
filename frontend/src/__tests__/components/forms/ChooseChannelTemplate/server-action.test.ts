@@ -5,7 +5,7 @@ import {
   NHS_APP_TEMPLATE,
   ROUTING_CONFIG,
   SMS_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { updateRoutingConfig } from '@utils/message-plans';
@@ -130,7 +130,7 @@ test('submit form - success updates config and redirects to choose templates for
       pageHeading: 'Choose an email template',
       templateList: [
         {
-          ...LETTER_TEMPLATE,
+          ...PDF_LETTER_TEMPLATE,
           supplierReferences: {
             MBA: 'mba-supplier-reference',
           },
@@ -139,8 +139,8 @@ test('submit form - success updates config and redirects to choose templates for
       cascadeIndex: 0,
     },
     getMockFormData({
-      channelTemplate: LETTER_TEMPLATE.id,
-      lockNumber: String(LETTER_TEMPLATE.lockNumber),
+      channelTemplate: PDF_LETTER_TEMPLATE.id,
+      lockNumber: String(PDF_LETTER_TEMPLATE.lockNumber),
     })
   );
 
@@ -152,13 +152,13 @@ test('submit form - success updates config and redirects to choose templates for
           cascadeGroups: ['standard'],
           channel: 'LETTER',
           channelType: 'primary',
-          defaultTemplateId: LETTER_TEMPLATE.id,
+          defaultTemplateId: PDF_LETTER_TEMPLATE.id,
           supplierReferences: { MBA: 'mba-supplier-reference' },
         },
       ],
       cascadeGroupOverrides: [],
     },
-    LETTER_TEMPLATE.lockNumber
+    PDF_LETTER_TEMPLATE.lockNumber
   );
 
   expect(redirect).toHaveBeenCalledWith(
@@ -187,7 +187,7 @@ test('submit form - success adds conditional template', async () => {
             cascadeGroups: ['standard'],
             channel: 'LETTER',
             channelType: 'primary',
-            defaultTemplateId: LETTER_TEMPLATE.id,
+            defaultTemplateId: PDF_LETTER_TEMPLATE.id,
           },
         ],
         cascadeGroupOverrides: [],
@@ -211,7 +211,7 @@ test('submit form - success adds conditional template', async () => {
           cascadeGroups: ['standard'],
           channel: 'LETTER',
           channelType: 'primary',
-          defaultTemplateId: LETTER_TEMPLATE.id,
+          defaultTemplateId: PDF_LETTER_TEMPLATE.id,
           conditionalTemplates: [
             {
               accessibleFormat: 'x1',

@@ -11,7 +11,7 @@ import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -78,7 +78,7 @@ describe('PreviewEmailTemplatePage', () => {
   test.each([
     SMS_TEMPLATE,
     NHS_APP_TEMPLATE,
-    LETTER_TEMPLATE,
+    PDF_LETTER_TEMPLATE,
     {
       ...EMAIL_TEMPLATE,
       name: undefined as unknown as string,

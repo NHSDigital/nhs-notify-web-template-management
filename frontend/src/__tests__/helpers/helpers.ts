@@ -1,6 +1,9 @@
 import { mockDeep } from 'jest-mock-extended';
 import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  AuthoringLetterTemplate,
+  PdfLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
 function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
   for (const item of list) {
@@ -52,12 +55,13 @@ export const SMS_TEMPLATE: TemplateDto = {
   lockNumber: 1,
 } as const;
 
-export const LETTER_TEMPLATE: LetterTemplate = {
+export const PDF_LETTER_TEMPLATE: PdfLetterTemplate = {
   id: 'letter-template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
   language: 'en',
+  letterVersion: 'PDF',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -71,12 +75,13 @@ export const LETTER_TEMPLATE: LetterTemplate = {
   lockNumber: 1,
 } as const;
 
-export const LARGE_PRINT_LETTER_TEMPLATE: LetterTemplate = {
+export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
   id: 'large-print-letter-template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x1',
   language: 'en',
+  letterVersion: 'PDF',
   files: {
     pdfTemplate: {
       fileName: 'large-print-template.pdf',
@@ -85,6 +90,21 @@ export const LARGE_PRINT_LETTER_TEMPLATE: LetterTemplate = {
     },
   },
   name: 'large print letter template name',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+} as const;
+
+export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
+  id: 'authoring-letter-template-id',
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  letterType: 'x0',
+  language: 'en',
+  letterVersion: 'AUTHORING',
+  letterVariantId: 'variant-123',
+  sidesCount: 2,
+  name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
@@ -122,7 +142,7 @@ export const ROUTING_CONFIG: RoutingConfig = {
       cascadeGroups: ['standard'],
       channel: 'LETTER',
       channelType: 'primary',
-      defaultTemplateId: LETTER_TEMPLATE.id,
+      defaultTemplateId: PDF_LETTER_TEMPLATE.id,
     },
   ],
   lockNumber: 0,

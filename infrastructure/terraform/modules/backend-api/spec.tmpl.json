@@ -1,6 +1,35 @@
 {
   "components": {
     "schemas": {
+      "AuthoringLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+          },
+          {
+            "properties": {
+              "letterVariantId": {
+                "type": "string"
+              },
+              "letterVersion": {
+                "enum": [
+                  "AUTHORING"
+                ],
+                "type": "string"
+              },
+              "sidesCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "letterVariantId",
+              "letterVersion",
+              "sidesCount"
+            ],
+            "type": "object"
+          }
+        ]
+      },
       "BaseCreatedTemplate": {
         "allOf": [
           {
@@ -52,9 +81,6 @@
       },
       "BaseLetterTemplateProperties": {
         "properties": {
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
-          },
           "language": {
             "$ref": "#/components/schemas/Language"
           },
@@ -417,6 +443,30 @@
         ],
         "type": "object"
       },
+      "CreatePdfLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+          },
+          {
+            "properties": {
+              "campaignId": {
+                "type": "string"
+              },
+              "letterVersion": {
+                "enum": [
+                  "PDF"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "campaignId",
+              "letterVersion"
+            ]
+          }
+        ]
+      },
       "CreateRoutingConfig": {
         "properties": {
           "campaignId": {
@@ -463,7 +513,7 @@
                 "$ref": "#/components/schemas/NhsAppProperties"
               },
               {
-                "$ref": "#/components/schemas/UploadLetterProperties"
+                "$ref": "#/components/schemas/CreatePdfLetterProperties"
               }
             ]
           }
@@ -542,56 +592,13 @@
         ],
         "type": "string"
       },
-      "LetterFiles": {
-        "properties": {
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "proofs": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ProofFileDetails"
-            },
-            "type": "object"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          }
-        },
-        "required": [
-          "pdfTemplate"
-        ],
-        "type": "object"
-      },
       "LetterProperties": {
-        "allOf": [
+        "oneOf": [
           {
-            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+            "$ref": "#/components/schemas/AuthoringLetterProperties"
           },
           {
-            "properties": {
-              "files": {
-                "$ref": "#/components/schemas/LetterFiles"
-              },
-              "personalisationParameters": {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              "proofingEnabled": {
-                "type": "boolean"
-              },
-              "supplierReferences": {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              }
-            },
-            "required": [
-              "files"
-            ],
-            "type": "object"
+            "$ref": "#/components/schemas/PdfLetterProperties"
           }
         ]
       },
@@ -600,6 +607,13 @@
           "q4",
           "x0",
           "x1"
+        ],
+        "type": "string"
+      },
+      "LetterVersion": {
+        "enum": [
+          "AUTHORING",
+          "PDF"
         ],
         "type": "string"
       },
@@ -620,6 +634,66 @@
           "templateType"
         ],
         "type": "object"
+      },
+      "PdfLetterFiles": {
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProofFileDetails"
+            },
+            "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          }
+        },
+        "required": [
+          "pdfTemplate"
+        ],
+        "type": "object"
+      },
+      "PdfLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+          },
+          {
+            "properties": {
+              "files": {
+                "$ref": "#/components/schemas/PdfLetterFiles"
+              },
+              "letterVersion": {
+                "enum": [
+                  "PDF"
+                ],
+                "type": "string"
+              },
+              "personalisationParameters": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "proofingEnabled": {
+                "type": "boolean"
+              },
+              "supplierReferences": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "files",
+              "letterVersion"
+            ],
+            "type": "object"
+          }
+        ]
       },
       "ProofFileDetails": {
         "properties": {
@@ -947,23 +1021,6 @@
           }
         },
         "type": "object"
-      },
-      "UploadLetterProperties": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
-          },
-          {
-            "properties": {
-              "campaignId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "campaignId"
-            ]
-          }
-        ]
       },
       "UploadLetterTemplate": {
         "properties": {

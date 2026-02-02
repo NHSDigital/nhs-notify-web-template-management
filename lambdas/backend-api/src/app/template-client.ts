@@ -6,7 +6,7 @@ import {
   TemplateDto,
   CreateUpdateTemplate,
   ErrorCase,
-  LetterFiles,
+  PdfLetterFiles,
   $CreateUpdateNonLetter,
   ClientConfiguration,
   $LockNumber,
@@ -18,7 +18,7 @@ import {
   $UploadLetterTemplate,
   DatabaseTemplate,
   User,
-  $LetterTemplate,
+  $PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -32,7 +32,7 @@ import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repos
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
-    $LetterTemplate,
+    $PdfLetterTemplate,
     z.object({
       templateType: z.literal('LETTER'),
       personalisationParameters: z.array(z.string()),
@@ -168,7 +168,7 @@ export class TemplateClient {
 
     const versionId = randomUUID();
 
-    const files: LetterFiles = {
+    const files: PdfLetterFiles = {
       pdfTemplate: {
         fileName: pdf.name,
         currentVersion: versionId,
