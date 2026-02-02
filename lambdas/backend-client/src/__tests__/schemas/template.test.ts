@@ -327,28 +327,12 @@ describe('Template schemas', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error?.flatten().fieldErrors).toEqual({
-        sidesCount: expect.any(Array),
-      });
-    });
-
-    test('should pass validation when letterVariantId is absent', () => {
-      const result = $AuthoringLetterProperties.safeParse({
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-        letterVersion: 'AUTHORING',
-        sidesCount: 2,
-      });
-
-      expect(result.success).toBe(true);
-      expect(result.data).toEqual({
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-        letterVersion: 'AUTHORING',
-        sidesCount: 2,
-      });
+      expect(result.error?.flatten().fieldErrors).toEqual(
+        expect.objectContaining({
+          letterVariantId: expect.any(Array),
+          sidesCount: expect.any(Array),
+        })
+      );
     });
   });
 
