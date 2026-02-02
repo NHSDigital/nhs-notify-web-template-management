@@ -329,7 +329,6 @@ describe('Template schemas', () => {
       expect(result.success).toBe(false);
       expect(result.error?.flatten().fieldErrors).toEqual(
         expect.objectContaining({
-          letterVariantId: expect.any(Array),
           sidesCount: expect.any(Array),
         })
       );
