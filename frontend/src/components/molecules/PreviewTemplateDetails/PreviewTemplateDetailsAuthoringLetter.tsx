@@ -35,6 +35,9 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const totalPages = Math.ceil(template.sidesCount / 2);
   const hasSingleCampaign = campaignIds.length === 1;
 
+  const showEditCampaignLink =
+    hideActions || (template.campaignId && hasSingleCampaign);
+
   return (
     <>
       <DetailsHeader templateName={template.name} />
@@ -89,7 +92,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           >
             <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
             <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-            {hideActions || (template.campaignId && hasSingleCampaign) ? (
+            {showEditCampaignLink ? (
               <SummaryList.Actions />
             ) : (
               <SummaryList.Actions className='nhsuk-u-padding-right-4'>
