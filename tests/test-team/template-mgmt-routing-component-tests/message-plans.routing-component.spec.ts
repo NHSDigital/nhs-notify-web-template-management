@@ -188,9 +188,7 @@ test.describe('Message plans Page', () => {
     const messagePlanPage = new RoutingMessagePlansPage(page);
     await messagePlanPage.loadPage();
 
-   await page
-      .context()
-      .clearPermissions();
+    await page.context().clearPermissions();
 
     await messagePlanPage.draftMessagePlansTable.click();
 
