@@ -109,10 +109,14 @@ export const TemplateFactory = {
       language?: Language;
       sidesCount?: number;
       letterVariantId?: string;
+      campaignId?: string | null;
     }
   ): Template => {
+    const campaignId =
+      options?.campaignId === null ? undefined : (options?.campaignId ?? 'campaign-id');
+
     return TemplateFactory.create({
-      campaignId: 'campaign-id',
+      ...(campaignId && { campaignId }),
       clientId: user.clientId,
       id,
       language: options?.language || 'en',

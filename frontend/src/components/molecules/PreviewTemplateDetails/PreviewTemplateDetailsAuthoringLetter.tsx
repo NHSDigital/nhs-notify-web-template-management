@@ -18,8 +18,41 @@ import Link from 'next/link';
 import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 
-const { rowHeadings, visuallyHidden } =
+const { rowHeadings, visuallyHidden, externalLinks } =
   content.components.previewTemplateDetails;
+
+function ActionLink({
+  href,
+  label,
+  visuallyHiddenText,
+  hidden,
+  testId,
+  external,
+}: {
+  href: string;
+  label: string;
+  visuallyHiddenText: string;
+  hidden?: boolean;
+  testId?: string;
+  external?: boolean;
+}) {
+  if (hidden) {
+    return <SummaryList.Actions />;
+  }
+
+  const externalProps = external
+    ? { target: '_blank' as const, rel: 'noopener noreferrer' }
+    : {};
+
+  return (
+    <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+      <Link href={href} data-testid={testId} {...externalProps}>
+        {label}
+        <span className='nhsuk-u-visually-hidden'> {visuallyHiddenText}</span>
+      </Link>
+    </SummaryList.Actions>
+  );
+}
 
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
@@ -35,7 +68,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const totalPages = Math.ceil(template.sidesCount / 2);
   const hasSingleCampaign = campaignIds.length === 1;
 
-  const showEditCampaignLink =
+  const hideEditCampaignLink =
     hideActions || (template.campaignId && hasSingleCampaign);
 
   return (
@@ -92,22 +125,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           >
             <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
             <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-            {showEditCampaignLink ? (
-              <SummaryList.Actions />
-            ) : (
-              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link
-                  href={`edit-template-campaign/${template.id}`}
-                  data-testid='campaign-action'
-                >
-                  Edit
-                  <span className='nhsuk-u-visually-hidden'>
-                    {' '}
-                    {visuallyHidden.campaign}
-                  </span>
-                </Link>
-              </SummaryList.Actions>
-            )}
+            <ActionLink
+              href={`edit-template-campaign/${template.id}`}
+              label='Edit'
+              visuallyHiddenText={visuallyHidden.campaign}
+              hidden={!!hideEditCampaignLink}
+              testId='campaign-action'
+            />
           </SummaryList.Row>
 
           {/* Total pages */}
@@ -121,22 +145,14 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.sheets}</SummaryList.Key>
             <SummaryList.Value>{template.sidesCount}</SummaryList.Value>
-            {hideActions ? (
-              <SummaryList.Actions />
-            ) : (
-              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link
-                  href='https://notify.nhs.uk/pricing-and-commercial/letters'
-                  data-testid='sheets-action'
-                >
-                  Learn more
-                  <span className='nhsuk-u-visually-hidden'>
-                    {' '}
-                    {visuallyHidden.sheets}
-                  </span>
-                </Link>
-              </SummaryList.Actions>
-            )}
+            <ActionLink
+              href={externalLinks.lettersPricing}
+              label='Learn more'
+              visuallyHiddenText={visuallyHidden.sheets}
+              hidden={hideActions}
+              testId='sheets-action'
+              external
+            />
           </SummaryList.Row>
 
           {/* Printing and postage */}
@@ -147,22 +163,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           >
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
-            {hideActions ? (
-              <SummaryList.Actions />
-            ) : (
-              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                <Link
-                  href={`choose-printing-and-postage/${template.id}`}
-                  data-testid='printing-postage-action'
-                >
-                  Edit
-                  <span className='nhsuk-u-visually-hidden'>
-                    {' '}
-                    {visuallyHidden.printingAndPostage}
-                  </span>
-                </Link>
-              </SummaryList.Actions>
-            )}
+            <ActionLink
+              href={`choose-printing-and-postage/${template.id}`}
+              label='Edit'
+              visuallyHiddenText={visuallyHidden.printingAndPostage}
+              hidden={hideActions}
+              testId='printing-postage-action'
+            />
           </SummaryList.Row>
 
           {/* Status */}
@@ -178,22 +185,14 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                   {statusToDisplayMapping(template, features)}
                 </Tag>
               </SummaryList.Value>
-              {hideActions ? (
-                <SummaryList.Actions />
-              ) : (
-                <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                  <Link
-                    href='https://notify.nhs.uk/templates/what-template-statuses-mean'
-                    data-testid='status-action'
-                  >
-                    Learn more
-                    <span className='nhsuk-u-visually-hidden'>
-                      {' '}
-                      {visuallyHidden.status}
-                    </span>
-                  </Link>
-                </SummaryList.Actions>
-              )}
+              <ActionLink
+                href={externalLinks.templateStatuses}
+                label='Learn more'
+                visuallyHiddenText={visuallyHidden.status}
+                hidden={hideActions}
+                testId='status-action'
+                external
+              />
             </SummaryList.Row>
           )}
         </DetailSection>

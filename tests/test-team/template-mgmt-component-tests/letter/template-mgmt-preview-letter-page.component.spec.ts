@@ -126,6 +126,13 @@ async function createTemplates() {
       'NOT_YET_SUBMITTED',
       { sidesCount: 4, letterVariantId: 'variant-123' }
     ),
+    authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
+      'B2C3D4E5-F6A7-8901-BCDE-F23456789012',
+      user,
+      'authoring-letter-no-campaign',
+      'NOT_YET_SUBMITTED',
+      { sidesCount: 4, letterVariantId: 'variant-456', campaignId: null }
+    ),
   };
 }
 
@@ -461,6 +468,35 @@ test.describe('Preview Letter template Page', () => {
       await previewPage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('shows campaign Edit link when template has no campaignId', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringNoCampaign.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.campaignAction).toBeVisible();
+      await expect(previewPage.campaignAction).toHaveText(/Edit/);
+    });
+
+    test('shows campaign Edit link when template has campaignId (multi-campaign client)', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      // authoringValid has campaignId set, and test user has multiple campaigns
+      // so Edit link should be visible
+      await expect(previewPage.campaignAction).toBeVisible();
     });
   });
 });

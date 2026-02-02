@@ -19,6 +19,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly editNameLink: Locator;
   public readonly sheetsAction: Locator;
   public readonly statusAction: Locator;
+  public readonly campaignAction: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -29,6 +30,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.editNameLink = page.getByTestId('edit-name-link');
     this.sheetsAction = page.getByTestId('sheets-action');
     this.statusAction = page.getByTestId('status-action');
+    this.campaignAction = page.getByTestId('campaign-action');
   }
 
   async clickContinueButton() {

@@ -561,6 +561,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
                 <a
                   data-testid="sheets-action"
                   href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more
                   <span
@@ -625,6 +627,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
                 <a
                   data-testid="status-action"
                   href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more
                   <span
@@ -1566,6 +1570,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
                 <a
                   data-testid="sheets-action"
                   href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more
                   <span
@@ -1630,6 +1636,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
                 <a
                   data-testid="status-action"
                   href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more
                   <span

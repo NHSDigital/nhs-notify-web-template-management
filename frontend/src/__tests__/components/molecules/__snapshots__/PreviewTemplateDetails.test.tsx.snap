@@ -132,6 +132,8 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
           <a
             data-testid="sheets-action"
             href="https://notify.nhs.uk/pricing-and-commercial/letters"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Learn more
             <span
@@ -196,6 +198,8 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
           <a
             data-testid="status-action"
             href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Learn more
             <span
@@ -498,6 +502,8 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
           <a
             data-testid="sheets-action"
             href="https://notify.nhs.uk/pricing-and-commercial/letters"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Learn more
             <span
@@ -560,6 +566,8 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
           <a
             data-testid="status-action"
             href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Learn more
             <span

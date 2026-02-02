@@ -621,6 +621,11 @@ const previewTemplateDetails = {
     printingAndPostage: 'printing and postage',
     status: 'about status',
   },
+  externalLinks: {
+    lettersPricing: 'https://notify.nhs.uk/pricing-and-commercial/letters',
+    templateStatuses:
+      'https://notify.nhs.uk/templates/what-template-statuses-mean',
+  },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
 };
