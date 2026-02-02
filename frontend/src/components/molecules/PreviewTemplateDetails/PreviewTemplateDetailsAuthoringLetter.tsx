@@ -10,7 +10,10 @@ import {
 import content from '@content/content';
 import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
 import concatClassNames from '@utils/concat-class-names';
-import { useFeatureFlags } from '@providers/client-config-provider';
+import {
+  useCampaignIds,
+  useFeatureFlags,
+} from '@providers/client-config-provider';
 import Link from 'next/link';
 import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
@@ -28,7 +31,9 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   hideActions?: boolean;
 }) {
   const features = useFeatureFlags();
+  const campaignIds = useCampaignIds();
   const totalPages = Math.ceil(template.sidesCount / 2);
+  const hasSingleCampaign = campaignIds.length === 1;
 
   return (
     <>
@@ -82,7 +87,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Row id='campaign-id'>
               <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
               <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-              {hideActions ? (
+              {hideActions || hasSingleCampaign ? (
                 <SummaryList.Actions />
               ) : (
                 <SummaryList.Actions className='nhsuk-u-padding-right-4'>

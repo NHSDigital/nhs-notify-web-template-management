@@ -1,6 +1,9 @@
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { render } from '@testing-library/react';
-import { useFeatureFlags } from '@providers/client-config-provider';
+import {
+  useCampaignIds,
+  useFeatureFlags,
+} from '@providers/client-config-provider';
 
 jest.mock('@providers/client-config-provider');
 
@@ -8,6 +11,7 @@ describe('PreviewLetterTemplate component', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
   });
 
   it('matches snapshot for AUTHORING letter version', () => {

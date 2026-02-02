@@ -5,7 +5,10 @@ import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/P
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { render, screen } from '@testing-library/react';
-import { useFeatureFlags } from '@providers/client-config-provider';
+import {
+  useCampaignIds,
+  useFeatureFlags,
+} from '@providers/client-config-provider';
 import {
   AuthoringLetterTemplate,
   PdfLetterTemplate,
@@ -16,6 +19,7 @@ jest.mock('@providers/client-config-provider');
 beforeEach(() => {
   jest.resetAllMocks();
   jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+  jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
 });
 
 const baseTemplate = {
@@ -244,6 +248,32 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     expect(
       screen.getByText(/you cannot delete this template/i)
     ).toBeInTheDocument();
+  });
+
+  it('hides campaign Edit link when client has single campaign', () => {
+    jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
+
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{ ...baseAuthoringLetter, campaignId: 'single-campaign' }}
+      />
+    );
+
+    expect(screen.getByText('single-campaign')).toBeInTheDocument();
+    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+  });
+
+  it('shows campaign Edit link when client has multiple campaigns', () => {
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+
+    render(
+      <PreviewTemplateDetailsAuthoringLetter
+        template={{ ...baseAuthoringLetter, campaignId: 'campaign-1' }}
+      />
+    );
+
+    expect(screen.getByText('campaign-1')).toBeInTheDocument();
+    expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
   });
 });
 

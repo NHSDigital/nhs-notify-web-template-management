@@ -4,7 +4,10 @@ import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/Previ
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { useFeatureFlags } from '@providers/client-config-provider';
+import {
+  useCampaignIds,
+  useFeatureFlags,
+} from '@providers/client-config-provider';
 import { render } from '@testing-library/react';
 
 jest.mock('@providers/client-config-provider');
@@ -14,6 +17,7 @@ describe('PreviewSubmittedTemplate component', () => {
     beforeEach(() => {
       jest.resetAllMocks();
       jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+      jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
     });
 
     it('should render app message', () => {
