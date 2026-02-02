@@ -1,22 +1,22 @@
 import { z } from 'zod/v4';
-import {
+import type {
   AuthoringLetterProperties,
+  BaseCreatedTemplate,
   BaseTemplate,
   CreatePdfLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
-  VersionedFileDetails,
-  ProofFileDetails,
-  LetterFiles,
-  PdfLetterProperties,
-  NhsAppProperties,
-  SmsProperties,
-  LetterType,
   Language,
-  BaseCreatedTemplate,
+  LetterType,
+  NhsAppProperties,
+  PdfLetterFiles,
+  PdfLetterProperties,
+  ProofFileDetails,
+  SmsProperties,
   TemplateStatus,
   TemplateStatusActive,
   TemplateType,
+  VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -53,7 +53,7 @@ const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
   })
 );
 
-export const $LetterFiles = schemaFor<LetterFiles>()(
+export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
@@ -101,7 +101,7 @@ export const $CreatePdfLetterProperties =
 export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   z.object({
     ...$BaseLetterTemplateProperties.shape,
-    files: $LetterFiles,
+    files: $PdfLetterFiles,
     letterVersion: z.literal('PDF'),
     personalisationParameters: z.array(z.string()).optional(),
     proofingEnabled: z.boolean().optional(),
@@ -119,17 +119,17 @@ export const $AuthoringLetterProperties =
     })
   );
 
-const $DefaultablePdfLetterVersion = z
+const $LetterVersionWithDefault = z
   .union([z.undefined(), z.literal('PDF')])
   .transform((val) => val ?? ('PDF' as const));
 
-const $PdfLetterPropertiesWithDefault = z.object({
+const $PdfLetterPropertiesWithDefaultVersion = z.object({
   ...$PdfLetterProperties.shape,
-  letterVersion: $DefaultablePdfLetterVersion,
+  letterVersion: $LetterVersionWithDefault,
 });
 
 export const $LetterProperties = z.discriminatedUnion('letterVersion', [
-  $PdfLetterPropertiesWithDefault,
+  $PdfLetterPropertiesWithDefaultVersion,
   $AuthoringLetterProperties,
 ]);
 
@@ -209,7 +209,7 @@ const $AuthoringLetterTemplateDto = $BaseTemplateDto.extend(
 
 const $PdfLetterTemplateDto = $BaseTemplateDto.extend({
   ...$PdfLetterProperties.shape,
-  letterVersion: $DefaultablePdfLetterVersion,
+  letterVersion: $LetterVersionWithDefault,
 });
 
 const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [

@@ -5,7 +5,7 @@ import {
   $CreateUpdateTemplate,
   $EmailProperties,
   $Language,
-  $LetterFiles,
+  $PdfLetterFiles,
   $PdfLetterProperties,
   $LetterType,
   $NhsAppProperties,
@@ -85,7 +85,7 @@ const $BaseLetterTemplateDto = $TemplateDto.and(
 );
 
 export const $PdfLetterTemplate = $BaseLetterTemplateDto.and(
-  $PdfLetterProperties.extend({ files: $LetterFiles })
+  $PdfLetterProperties.extend({ files: $PdfLetterFiles })
 );
 
 export const $AuthoringLetterTemplate = $BaseLetterTemplateDto.and(

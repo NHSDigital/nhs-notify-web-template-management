@@ -188,7 +188,7 @@ export type Language =
   | 'ur'
   | 'zh';
 
-export type LetterFiles = {
+export type PdfLetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
     [key: string]: ProofFileDetails;
@@ -208,7 +208,7 @@ export type NhsAppProperties = {
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
-  files: LetterFiles;
+  files: PdfLetterFiles;
   letterVersion: 'PDF';
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
