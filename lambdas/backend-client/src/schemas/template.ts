@@ -13,6 +13,7 @@ import type {
   PdfLetterProperties,
   ProofFileDetails,
   SmsProperties,
+  TemplateDto,
   TemplateStatus,
   TemplateStatusActive,
   TemplateType,
@@ -217,12 +218,25 @@ const $LetterTemplateDto = z.discriminatedUnion('letterVersion', [
   $AuthoringLetterTemplateDto,
 ]);
 
-export const $TemplateDto = z.discriminatedUnion('templateType', [
-  $BaseTemplateDto.extend($NhsAppProperties.shape),
-  $BaseTemplateDto.extend($EmailProperties.shape),
-  $BaseTemplateDto.extend($SmsProperties.shape),
-  $LetterTemplateDto,
-]);
+export const $TemplateDto = schemaFor<
+  TemplateDto,
+  Omit<BaseCreatedTemplate, 'lockNumber'> & {
+    lockNumber?: unknown;
+  } & (
+      | SmsProperties
+      | EmailProperties
+      | NhsAppProperties
+      | AuthoringLetterProperties
+      | (Omit<PdfLetterProperties, 'letterVersion'> & { letterVersion?: 'PDF' })
+    )
+>()(
+  z.discriminatedUnion('templateType', [
+    $BaseTemplateDto.extend($NhsAppProperties.shape),
+    $BaseTemplateDto.extend($EmailProperties.shape),
+    $BaseTemplateDto.extend($SmsProperties.shape),
+    $LetterTemplateDto,
+  ])
+);
 
 export const $TemplateFilter = z.object({
   templateStatus: $TemplateStatusFilter.optional(),
