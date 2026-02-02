@@ -42,7 +42,7 @@ const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
 
   const validatedTemplate = validateLetterTemplate(template);
 
-  if (!validatedTemplate) {
+  if (!validatedTemplate || validatedTemplate.letterVersion !== 'PDF') {
     return redirect('/invalid-template', RedirectType.replace);
   }
 

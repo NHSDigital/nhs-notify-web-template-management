@@ -10,7 +10,7 @@ import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -80,7 +80,7 @@ describe('SubmitSmsTemplatePage', () => {
   test.each([
     EMAIL_TEMPLATE,
     NHS_APP_TEMPLATE,
-    LETTER_TEMPLATE,
+    PDF_LETTER_TEMPLATE,
     {
       ...SMS_TEMPLATE,
       message: undefined as unknown as string,

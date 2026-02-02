@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import {
-  $UploadLetterProperties,
+  $AuthoringLetterProperties,
+  $CreatePdfLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
   $Language,
-  $LetterFiles,
-  $LetterProperties,
+  $PdfLetterFiles,
+  $PdfLetterProperties,
   $LetterType,
   $NhsAppProperties,
   $SmsProperties,
@@ -74,12 +75,32 @@ export const $SubmittedSMSTemplate = z.intersection(
 
 export const $UploadLetterTemplate = z.intersection(
   $CreateUpdateTemplate,
-  $UploadLetterProperties
+  $CreatePdfLetterProperties
 );
-export const $LetterTemplate = z.intersection(
+
+const $BaseLetterTemplateDto = z.intersection(
   $TemplateDto,
-  $LetterProperties.extend({ files: $LetterFiles })
+  z.object({
+    templateType: z.literal('LETTER'),
+  })
 );
+
+export const $PdfLetterTemplate = z.intersection(
+  $BaseLetterTemplateDto,
+  $PdfLetterProperties.extend({ files: $PdfLetterFiles })
+);
+
+export const $AuthoringLetterTemplate = z.intersection(
+  $BaseLetterTemplateDto,
+  $AuthoringLetterProperties
+);
+
+// zod.discriminatedUnion not used here due to default letter version
+export const $LetterTemplate = z.union([
+  $PdfLetterTemplate,
+  $AuthoringLetterTemplate,
+]);
+
 export const $SubmittedLetterTemplate = z.intersection(
   $SubmittedTemplate,
   $LetterTemplate

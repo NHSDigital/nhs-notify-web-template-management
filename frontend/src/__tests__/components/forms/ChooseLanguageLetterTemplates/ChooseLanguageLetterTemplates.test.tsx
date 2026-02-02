@@ -1,6 +1,6 @@
 import { ChooseLanguageLetterTemplates } from '@forms/ChooseLanguageLetterTemplates/ChooseLanguageLetterTemplates';
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { useActionState } from 'react';
 import { ChooseLanguageLetterTemplatesFormState } from '@forms/ChooseLanguageLetterTemplates/server-action';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -26,21 +26,21 @@ jest.mock('react', () => {
 });
 
 const FRENCH_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'french-letter-id',
   name: 'French letter template',
   language: 'fr',
 };
 
 const POLISH_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'polish-letter-id',
   name: 'Polish letter template',
   language: 'pl',
 };
 
 const SPANISH_LETTER_TEMPLATE: LetterTemplate = {
-  ...LETTER_TEMPLATE,
+  ...PDF_LETTER_TEMPLATE,
   id: 'spanish-letter-id',
   name: 'Spanish letter template',
   language: 'es',

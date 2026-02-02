@@ -72,6 +72,7 @@ test('throws error for unsupported template type', () => {
     id: '',
     lockNumber: 0,
     name: '',
+    letterVersion: 'PDF',
     templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'LETTER',
     updatedAt: '',

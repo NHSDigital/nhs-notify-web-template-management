@@ -12,7 +12,7 @@ import {
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
-  LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
@@ -42,6 +42,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       id: 'template-id',
       language: 'en',
       letterType: 'x0',
+      letterVersion: 'PDF',
       name: 'template-name',
       templateStatus: 'SUBMITTED',
       templateType: 'LETTER',
@@ -97,12 +98,12 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       templateStatus: 'SUBMITTED' as const,
     },
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       name: undefined as unknown as string,
       templateStatus: 'SUBMITTED' as const,
     },
     {
-      ...LETTER_TEMPLATE,
+      ...PDF_LETTER_TEMPLATE,
       templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
   ])(

@@ -47,6 +47,7 @@ type TypeSpecificProperties = {
   message?: string;
   subject?: string;
   letterType?: string;
+  letterVersion?: string;
   language?: string;
   files?: {
     pdfTemplate?: File;

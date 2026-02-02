@@ -4,6 +4,12 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  letterVariantId: string;
+  letterVersion: 'AUTHORING';
+  sidesCount: number;
+};
+
 export type BaseCreatedTemplate = BaseTemplate & {
   campaignId?: string;
   clientId?: string;
@@ -17,7 +23,6 @@ export type BaseCreatedTemplate = BaseTemplate & {
 };
 
 export type BaseLetterTemplateProperties = {
-  files?: LetterFiles;
   language: Language;
   letterType: LetterType;
   templateType: 'LETTER';
@@ -120,6 +125,11 @@ export type CountSuccess = {
   statusCode: number;
 };
 
+export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
+  letterVersion: 'PDF';
+};
+
 export type CreateRoutingConfig = {
   campaignId: string;
   cascade: Array<CascadeItem>;
@@ -128,7 +138,12 @@ export type CreateRoutingConfig = {
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
-  (SmsProperties | EmailProperties | NhsAppProperties | UploadLetterProperties);
+  (
+    | SmsProperties
+    | EmailProperties
+    | NhsAppProperties
+    | CreatePdfLetterProperties
+  );
 
 export type EmailProperties = {
   message: string;
@@ -173,7 +188,18 @@ export type Language =
   | 'ur'
   | 'zh';
 
-export type LetterFiles = {
+export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
+
+export type LetterType = 'q4' | 'x0' | 'x1';
+
+export type LetterVersion = 'AUTHORING' | 'PDF';
+
+export type NhsAppProperties = {
+  message: string;
+  templateType: 'NHS_APP';
+};
+
+export type PdfLetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
     [key: string]: ProofFileDetails;
@@ -181,20 +207,14 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = BaseLetterTemplateProperties & {
-  files: LetterFiles;
+export type PdfLetterProperties = BaseLetterTemplateProperties & {
+  files: PdfLetterFiles;
+  letterVersion: 'PDF';
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
   supplierReferences?: {
     [key: string]: string;
   };
-};
-
-export type LetterType = 'q4' | 'x0' | 'x1';
-
-export type NhsAppProperties = {
-  message: string;
-  templateType: 'NHS_APP';
 };
 
 export type ProofFileDetails = {
@@ -280,10 +300,6 @@ export type UpdateRoutingConfig = unknown & {
   cascade?: Array<CascadeItem>;
   cascadeGroupOverrides?: Array<CascadeGroup>;
   name?: string;
-};
-
-export type UploadLetterProperties = BaseLetterTemplateProperties & {
-  campaignId: string;
 };
 
 export type UploadLetterTemplate = {

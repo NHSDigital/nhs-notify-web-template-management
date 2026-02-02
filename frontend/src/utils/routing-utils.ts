@@ -208,7 +208,7 @@ export function addDefaultTemplateToCascade(
     defaultTemplateId: selectedTemplateId,
     ...(selectedTemplate &&
       isLetterTemplate(selectedTemplate) &&
-      selectedTemplate.supplierReferences && {
+      selectedTemplate.letterVersion === 'PDF' && {
         supplierReferences: selectedTemplate.supplierReferences,
       }),
   };
@@ -226,7 +226,9 @@ export function addAccessibleFormatLetterTemplateToCascadeItem(
   const newConditionalTemplate: ConditionalTemplateAccessible = {
     accessibleFormat: selectedTemplate.letterType,
     templateId: selectedTemplate.id,
-    supplierReferences: selectedTemplate.supplierReferences,
+    ...(selectedTemplate.letterVersion === 'PDF' && {
+      supplierReferences: selectedTemplate.supplierReferences,
+    }),
   };
 
   const conditionalTemplates = [...(cascadeItem.conditionalTemplates ?? [])];
@@ -284,7 +286,9 @@ export function addLanguageLetterTemplatesToCascadeItem(
       return {
         language: template.language,
         templateId: template.id,
-        supplierReferences: template.supplierReferences,
+        ...(template.letterVersion === 'PDF' && {
+          supplierReferences: template.supplierReferences,
+        }),
       };
     });
 

@@ -20,6 +20,10 @@ type ButtonDetails = { text: string; href: string };
 export function PreviewLetterTemplate({
   template,
 }: Readonly<{ template: LetterTemplate }>) {
+  if (template.letterVersion !== 'PDF') {
+    throw new Error('AUTHORING letter version is not supported');
+  }
+
   const {
     approveProofText,
     backLinkText,

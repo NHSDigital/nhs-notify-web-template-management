@@ -33,6 +33,7 @@ describe('upload-letter', () => {
     letterType: 'x0',
     language: 'en',
     campaignId: 'campaign-id',
+    letterVersion: 'PDF',
   };
 
   const pdf = Buffer.from('letterPdf');
@@ -87,6 +88,7 @@ describe('upload-letter', () => {
       updatedAt: now,
       lockNumber: 1,
       templateStatus: 'PENDING_VALIDATION',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: pdfFilename,
@@ -179,6 +181,7 @@ describe('upload-letter', () => {
       lockNumber: 1,
       clientId,
       templateStatus: 'PENDING_VALIDATION',
+      letterVersion: 'PDF',
       files: {
         pdfTemplate: {
           fileName: pdfFilename,
