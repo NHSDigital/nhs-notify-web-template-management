@@ -77,6 +77,22 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               />
             </div>
             <div
+              class="nhsuk-summary-list__row missingValue"
+              id="campaign-id"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Campaign
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              />
+              <dd
+                class="nhsuk-summary-list__actions"
+              />
+            </div>
+            <div
               class="nhsuk-summary-list__row"
             >
               <dt

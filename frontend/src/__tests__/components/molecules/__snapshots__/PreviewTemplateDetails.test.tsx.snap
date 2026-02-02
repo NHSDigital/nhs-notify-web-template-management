@@ -69,6 +69,34 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
         />
       </div>
       <div
+        class="nhsuk-summary-list__row missingValue"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        />
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="campaign-action"
+            href="edit-template-campaign/template-id"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               campaign
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
         class="nhsuk-summary-list__row"
       >
         <dt
@@ -405,6 +433,34 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
         <dd
           class="nhsuk-summary-list__actions"
         />
+      </div>
+      <div
+        class="nhsuk-summary-list__row missingValue"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        />
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="campaign-action"
+            href="edit-template-campaign/template-id"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               campaign
+            </span>
+          </a>
+        </dd>
       </div>
       <div
         class="nhsuk-summary-list__row"

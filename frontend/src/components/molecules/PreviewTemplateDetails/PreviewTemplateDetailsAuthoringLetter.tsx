@@ -83,28 +83,29 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           </SummaryList.Row>
 
           {/* Campaign */}
-          {template.campaignId && (
-            <SummaryList.Row id='campaign-id'>
-              <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
-              <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-              {hideActions || hasSingleCampaign ? (
-                <SummaryList.Actions />
-              ) : (
-                <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-                  <Link
-                    href={`edit-template-campaign/${template.id}`}
-                    data-testid='campaign-action'
-                  >
-                    Edit
-                    <span className='nhsuk-u-visually-hidden'>
-                      {' '}
-                      {visuallyHidden.campaign}
-                    </span>
-                  </Link>
-                </SummaryList.Actions>
-              )}
-            </SummaryList.Row>
-          )}
+          <SummaryList.Row
+            id='campaign-id'
+            className={template.campaignId ? undefined : styles.missingValue}
+          >
+            <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
+            <SummaryList.Value>{template.campaignId}</SummaryList.Value>
+            {hideActions || (template.campaignId && hasSingleCampaign) ? (
+              <SummaryList.Actions />
+            ) : (
+              <SummaryList.Actions className='nhsuk-u-padding-right-4'>
+                <Link
+                  href={`edit-template-campaign/${template.id}`}
+                  data-testid='campaign-action'
+                >
+                  Edit
+                  <span className='nhsuk-u-visually-hidden'>
+                    {' '}
+                    {visuallyHidden.campaign}
+                  </span>
+                </Link>
+              </SummaryList.Actions>
+            )}
+          </SummaryList.Row>
 
           {/* Total pages */}
           <SummaryList.Row>
