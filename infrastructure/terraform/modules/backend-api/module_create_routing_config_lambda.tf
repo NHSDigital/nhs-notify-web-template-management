@@ -17,7 +17,7 @@ module "create_routing_config_lambda" {
 
   memory  = 2048
   timeout = 3
-  runtime = "nodejs24.x"
+  runtime = "nodejs22.x"
 
   log_retention_in_days = var.log_retention_in_days
 
