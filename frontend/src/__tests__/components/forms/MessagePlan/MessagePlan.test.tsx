@@ -1,88 +1,84 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
-import { NHSNotifyFormProvider } from '@providers/form-provider';
+import { useNHSNotifyForm } from '@providers/form-provider';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 
+jest.mock('@providers/form-provider');
+const mockAction = jest.fn();
+jest.mocked(useNHSNotifyForm).mockReturnValue([{}, mockAction, false]);
+
 jest.mock('@utils/csrf-utils');
+jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 beforeEach(() => {
-  jest.resetAllMocks();
-  jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+  jest.clearAllMocks();
 });
 
 test('renders form with single campaign id displayed', () => {
   const container = render(
-    <NHSNotifyFormProvider serverAction={jest.fn()}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-id']}
-      />
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    />
   );
   expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('renders form with select for multiple campaign ids', () => {
   const container = render(
-    <NHSNotifyFormProvider serverAction={jest.fn()}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-1', 'campaign-2']}
-      />
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-1', 'campaign-2']}
+    />
   );
   expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('renders form with children', () => {
   const container = render(
-    <NHSNotifyFormProvider serverAction={jest.fn()}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-id']}
-      >
-        <input type='hidden' name='messagePlanId' value='abc-123' />
-      </MessagePlanForm>
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    >
+      <input type='hidden' name='messagePlanId' value='abc-123' />
+    </MessagePlanForm>
   );
   expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('renders errors', async () => {
-  const user = userEvent.setup();
-
-  const action = jest.fn().mockResolvedValueOnce({
-    errorState: {
-      fieldErrors: {
-        name: ['Name error'],
-        campaignId: ['CampaignId error'],
+  jest.mocked(useNHSNotifyForm).mockReturnValueOnce([
+    {
+      errorState: {
+        fieldErrors: {
+          name: ['Name error'],
+          campaignId: ['CampaignId error'],
+        },
       },
     },
-  });
+    jest.fn(),
+    false,
+  ]);
 
   const container = render(
-    <NHSNotifyFormProvider serverAction={action}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-id', 'campaign-2']}
-      />
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id', 'campaign-2']}
+    />
   );
-
-  await user.click(screen.getByRole('button', { name: 'Save and continue' }));
 
   expect(container.asFragment()).toMatchSnapshot();
 });
@@ -90,20 +86,16 @@ test('renders errors', async () => {
 test('invokes the action with the form data when the form is submitted - single campaign id', async () => {
   const user = userEvent.setup();
 
-  const action = jest.fn().mockResolvedValue({});
-
   render(
-    <NHSNotifyFormProvider serverAction={action}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-id']}
-      >
-        <input type='hidden' name='messageOrder' value='NHSAPP' />
-      </MessagePlanForm>
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id']}
+    >
+      <input type='hidden' name='messageOrder' value='NHSAPP' />
+    </MessagePlanForm>
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -112,14 +104,11 @@ test('invokes the action with the form data when the form is submitted - single 
 
   await user.click(screen.getByTestId('submit-button'));
 
-  expect(action).toHaveBeenCalledTimes(1);
+  expect(mockAction).toHaveBeenCalledTimes(1);
 
-  expect(action).toHaveBeenLastCalledWith(
-    expect.any(Object),
-    expect.any(FormData)
-  );
+  expect(mockAction).toHaveBeenLastCalledWith(expect.any(FormData));
 
-  const formData = action.mock.lastCall?.at(1) as FormData;
+  const formData = mockAction.mock.lastCall?.at(0) as FormData;
 
   expect(Object.fromEntries(formData.entries())).toMatchObject({
     campaignId: 'campaign-id',
@@ -131,20 +120,16 @@ test('invokes the action with the form data when the form is submitted - single 
 test('invokes the action with the form data when the form is submitted - multiple campaign id', async () => {
   const user = userEvent.setup();
 
-  const action = jest.fn().mockResolvedValue({});
-
   render(
-    <NHSNotifyFormProvider serverAction={action}>
-      <MessagePlanForm
-        backLink={{
-          href: '/message-plans/choose-message-order',
-          text: 'Go back',
-        }}
-        campaignIds={['campaign-id', 'campaign-id-2']}
-      >
-        <input type='hidden' name='messagePlanId' value='abc-123' />
-      </MessagePlanForm>
-    </NHSNotifyFormProvider>
+    <MessagePlanForm
+      backLink={{
+        href: '/message-plans/choose-message-order',
+        text: 'Go back',
+      }}
+      campaignIds={['campaign-id', 'campaign-id-2']}
+    >
+      <input type='hidden' name='messagePlanId' value='abc-123' />
+    </MessagePlanForm>
   );
 
   await user.click(screen.getByTestId('name-field'));
@@ -158,14 +143,11 @@ test('invokes the action with the form data when the form is submitted - multipl
 
   await user.click(screen.getByTestId('submit-button'));
 
-  expect(action).toHaveBeenCalledTimes(1);
+  expect(mockAction).toHaveBeenCalledTimes(1);
 
-  expect(action).toHaveBeenLastCalledWith(
-    expect.any(Object),
-    expect.any(FormData)
-  );
+  expect(mockAction).toHaveBeenLastCalledWith(expect.any(FormData));
 
-  const formData = action.mock.lastCall?.at(1) as FormData;
+  const formData = mockAction.mock.lastCall?.at(0) as FormData;
 
   expect(Object.fromEntries(formData.entries())).toMatchObject({
     campaignId: 'campaign-id-2',

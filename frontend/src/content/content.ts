@@ -1,8 +1,8 @@
 import type {
   LetterType,
+  RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
-  RoutingConfigStatusActive,
 } from 'nhs-notify-backend-client';
 
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';

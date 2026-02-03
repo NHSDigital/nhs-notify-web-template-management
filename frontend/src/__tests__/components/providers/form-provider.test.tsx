@@ -12,8 +12,8 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {
-  useNHSNotifyForm,
   NHSNotifyFormProvider,
+  useNHSNotifyForm,
 } from '@providers/form-provider';
 import { startTransition } from 'react';
 

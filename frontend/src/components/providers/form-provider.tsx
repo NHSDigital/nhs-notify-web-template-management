@@ -1,6 +1,6 @@
 'use client';
 
-import React, {
+import {
   type PropsWithChildren,
   createContext,
   useActionState,
@@ -17,11 +17,11 @@ const FormContext = createContext<NHSNotifyFormActionState | null>(null);
 
 export function useNHSNotifyForm() {
   const context = useContext(FormContext);
-  if (!context) {
+  if (!context)
     throw new Error(
       'useNHSNotifyForm must be used within NHSNotifyFormProvider'
     );
-  }
+
   return context;
 }
 
@@ -43,8 +43,8 @@ export function NHSNotifyFormProvider({
   return (
     <FormContext.Provider value={[state, action, isPending]}>
       <NhsNotifyErrorSummary
-        errorState={state.errorState}
         hint={errorSummaryHint}
+        errorState={state.errorState}
       />
       {children}
     </FormContext.Provider>

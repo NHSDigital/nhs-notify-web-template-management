@@ -74,9 +74,7 @@ test.describe('Upload Large Print Letter Template Page', () => {
       await uploadPage.nameInput.fill('New Large Print Letter Template');
 
       await uploadPage.fileInput.click();
-      await uploadPage.fileInput.setInputFiles(
-        docxFixtures.largePrint.filepath
-      );
+      await uploadPage.fileInput.setInputFiles(docxFixtures.standard.filepath);
 
       await uploadPage.submitButton.click();
 
@@ -127,9 +125,7 @@ test.describe('Upload Large Print Letter Template Page', () => {
       );
 
       await uploadPage.fileInput.click();
-      await uploadPage.fileInput.setInputFiles(
-        docxFixtures.largePrint.filepath
-      );
+      await uploadPage.fileInput.setInputFiles(docxFixtures.standard.filepath);
 
       await uploadPage.submitButton.click();
 
