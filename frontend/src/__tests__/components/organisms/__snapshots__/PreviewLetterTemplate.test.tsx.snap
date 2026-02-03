@@ -43,6 +43,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for test-template-letter
+            </span>
           </a>
         </p>
         <div
@@ -87,7 +92,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt
@@ -318,6 +323,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for test-template-letter
+            </span>
           </a>
         </p>
         <div
@@ -362,7 +372,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt
@@ -593,6 +603,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for test-template-letter
+            </span>
           </a>
         </p>
         <div
@@ -637,7 +652,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt
@@ -836,6 +851,11 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for test-template-letter
+            </span>
           </a>
         </p>
         <div
@@ -880,7 +900,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt

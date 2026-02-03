@@ -454,6 +454,11 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for Example authoring letter
+            </span>
           </a>
         </p>
         <div
@@ -498,7 +503,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt
@@ -1451,6 +1456,11 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
             href="edit-template-name/template-id"
           >
             Edit name
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               for Example authoring letter
+            </span>
           </a>
         </p>
         <div
@@ -1507,7 +1517,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt

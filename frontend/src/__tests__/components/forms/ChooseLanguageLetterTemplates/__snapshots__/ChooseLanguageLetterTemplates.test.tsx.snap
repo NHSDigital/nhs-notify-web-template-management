@@ -974,7 +974,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
 </DocumentFragment>
 `;
 
-exports[`ChooseLanguageLetterTemplates when templates are available renders mixed PDF and authoring letter templates 1`] = `
+exports[`ChooseLanguageLetterTemplates when templates are available renders authoring letter templates 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -1110,104 +1110,6 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mixe
                             <input
                               class="nhsuk-checkboxes__input"
                               data-checkbox-exclusive-group="language-templates"
-                              data-testid="french-letter-id-checkbox"
-                              id="template-french-letter-id"
-                              name="template_french-letter-id"
-                              type="checkbox"
-                              value="french-letter-id:fr"
-                            />
-                            <label
-                              class="nhsuk-label nhsuk-checkboxes__label"
-                              for="template-french-letter-id"
-                              id="template-french-letter-id--label"
-                            >
-                               
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Name 
-                          </span>
-                          <label
-                            class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
-                            for="template-french-letter-id"
-                          >
-                            French letter template
-                          </label>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Type 
-                          </span>
-                          Standard letter - French
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Last edited 
-                          </span>
-                          13th Jan 2025
-                          <br />
-                          10:19
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                             
-                          </span>
-                          <a
-                            aria-label="Preview French letter template"
-                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
-                            data-testid="french-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
-                            id="preview-template-link-0"
-                          >
-                            Preview
-                          </a>
-                        </td>
-                      </tr>
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Select 
-                          </span>
-                          <div
-                            class="nhsuk-checkboxes__item"
-                          >
-                            <input
-                              class="nhsuk-checkboxes__input"
-                              data-checkbox-exclusive-group="language-templates"
                               data-testid="german-authoring-letter-id-checkbox"
                               id="template-german-authoring-letter-id"
                               name="template_german-authoring-letter-id"
@@ -1281,105 +1183,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mixe
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
                             data-testid="german-authoring-letter-id-preview-link"
                             href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/german-authoring-letter-id?lockNumber=42"
-                            id="preview-template-link-1"
-                          >
-                            Preview
-                          </a>
-                        </td>
-                      </tr>
-                      <tr
-                        class="nhsuk-table__row"
-                      >
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Select 
-                          </span>
-                          <div
-                            class="nhsuk-checkboxes__item"
-                          >
-                            <input
-                              class="nhsuk-checkboxes__input"
-                              data-checkbox-exclusive-group="language-templates"
-                              data-testid="spanish-letter-id-checkbox"
-                              id="template-spanish-letter-id"
-                              name="template_spanish-letter-id"
-                              type="checkbox"
-                              value="spanish-letter-id:es"
-                            />
-                            <label
-                              class="nhsuk-label nhsuk-checkboxes__label"
-                              for="template-spanish-letter-id"
-                              id="template-spanish-letter-id--label"
-                            >
-                               
-                            </label>
-                          </div>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Name 
-                          </span>
-                          <label
-                            class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
-                            for="template-spanish-letter-id"
-                          >
-                            Spanish letter template
-                          </label>
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Type 
-                          </span>
-                          Standard letter - Spanish
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                            Last edited 
-                          </span>
-                          13th Jan 2025
-                          <br />
-                          10:19
-                        </td>
-                        <td
-                          class="nhsuk-table__cell"
-                          role="cell"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="nhsuk-table-responsive__heading"
-                          >
-                             
-                          </span>
-                          <a
-                            aria-label="Preview Spanish letter template"
-                            class="nhsuk-u-margin-bottom-2 nhsuk-link"
-                            data-testid="spanish-letter-id-preview-link"
-                            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/spanish-letter-id?lockNumber=42"
-                            id="preview-template-link-2"
+                            id="preview-template-link-0"
                           >
                             Preview
                           </a>

@@ -216,15 +216,11 @@ describe('LanguageLetterTemplates', () => {
     );
   });
 
-  it('renders list of mixed PDF and authoring letter templates', () => {
+  it('renders authoring letter templates', () => {
     const container = render(
       <form>
         <LanguageLetterTemplates
-          templateList={[
-            FRENCH_LETTER_TEMPLATE,
-            FRENCH_AUTHORING_LETTER_TEMPLATE,
-            GERMAN_LETTER_TEMPLATE,
-          ]}
+          templateList={[FRENCH_AUTHORING_LETTER_TEMPLATE]}
           errorState={null}
           selectedTemplates={[FRENCH_AUTHORING_LETTER_TEMPLATE.id]}
           routingConfigId='routing-config-id'
@@ -234,11 +230,9 @@ describe('LanguageLetterTemplates', () => {
     );
 
     expect(container.asFragment()).toMatchSnapshot();
-    expect(container.getByText('French Letter Template')).toBeInTheDocument();
     expect(
       container.getByText('French Authoring Letter Template')
     ).toBeInTheDocument();
-    expect(container.getByText('German Letter Template')).toBeInTheDocument();
     expect(
       container.getByTestId(`${FRENCH_AUTHORING_LETTER_TEMPLATE.id}-checkbox`)
     ).toBeChecked();

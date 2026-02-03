@@ -8,13 +8,9 @@ exports[`statusToColourMapping status=DELETED type=LETTER routing=false letterVe
 
 exports[`statusToColourMapping status=DELETED type=LETTER routing=false letterVersion=PDF 1`] = `undefined`;
 
-exports[`statusToColourMapping status=DELETED type=LETTER routing=false letterVersion=undefined 1`] = `undefined`;
-
 exports[`statusToColourMapping status=DELETED type=LETTER routing=true letterVersion=AUTHORING 1`] = `undefined`;
 
 exports[`statusToColourMapping status=DELETED type=LETTER routing=true letterVersion=PDF 1`] = `undefined`;
-
-exports[`statusToColourMapping status=DELETED type=LETTER routing=true letterVersion=undefined 1`] = `undefined`;
 
 exports[`statusToColourMapping status=DELETED type=NHS_APP routing=false letterVersion=undefined 1`] = `undefined`;
 
@@ -32,13 +28,9 @@ exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=fals
 
 exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=false letterVersion=PDF 1`] = `undefined`;
 
-exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=false letterVersion=undefined 1`] = `undefined`;
-
 exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"yellow"`;
 
 exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `undefined`;
-
-exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=undefined 1`] = `undefined`;
 
 exports[`statusToColourMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"green"`;
 
@@ -56,13 +48,9 @@ exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=
 
 exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false letterVersion=PDF 1`] = `"blue"`;
 
-exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false letterVersion=undefined 1`] = `"blue"`;
-
 exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=AUTHORING 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=PDF 1`] = `"blue"`;
-
-exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=undefined 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=false letterVersion=undefined 1`] = `"blue"`;
 
@@ -80,13 +68,9 @@ exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=false l
 
 exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=false letterVersion=PDF 1`] = `"blue"`;
 
-exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=false letterVersion=undefined 1`] = `"blue"`;
-
 exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=AUTHORING 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=PDF 1`] = `"blue"`;
-
-exports[`statusToColourMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=undefined 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_UPLOAD type=NHS_APP routing=false letterVersion=undefined 1`] = `"blue"`;
 
@@ -104,13 +88,9 @@ exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=fal
 
 exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=false letterVersion=PDF 1`] = `"blue"`;
 
-exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=false letterVersion=undefined 1`] = `"blue"`;
-
 exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=AUTHORING 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=PDF 1`] = `"blue"`;
-
-exports[`statusToColourMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=undefined 1`] = `"blue"`;
 
 exports[`statusToColourMapping status=PENDING_VALIDATION type=NHS_APP routing=false letterVersion=undefined 1`] = `"blue"`;
 
@@ -128,13 +108,9 @@ exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false l
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=PDF 1`] = `"green"`;
 
-exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=undefined 1`] = `"green"`;
-
 exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=PDF 1`] = `"green"`;
-
-exports[`statusToColourMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=undefined 1`] = `"green"`;
 
 exports[`statusToColourMapping status=PROOF_APPROVED type=NHS_APP routing=false letterVersion=undefined 1`] = `"green"`;
 
@@ -152,13 +128,9 @@ exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=false 
 
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=false letterVersion=PDF 1`] = `"orange"`;
 
-exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=false letterVersion=undefined 1`] = `"orange"`;
-
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=AUTHORING 1`] = `"orange"`;
 
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=PDF 1`] = `"orange"`;
-
-exports[`statusToColourMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=undefined 1`] = `"orange"`;
 
 exports[`statusToColourMapping status=PROOF_AVAILABLE type=NHS_APP routing=false letterVersion=undefined 1`] = `"orange"`;
 
@@ -176,13 +148,9 @@ exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false letter
 
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false letterVersion=PDF 1`] = `"grey"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false letterVersion=undefined 1`] = `"grey"`;
-
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"pink"`;
-
-exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=undefined 1`] = `"pink"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"grey"`;
 
@@ -200,13 +168,9 @@ exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=fals
 
 exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=false letterVersion=PDF 1`] = `"red"`;
 
-exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=false letterVersion=undefined 1`] = `"red"`;
-
 exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"red"`;
 
 exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=PDF 1`] = `"red"`;
-
-exports[`statusToColourMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=undefined 1`] = `"red"`;
 
 exports[`statusToColourMapping status=VALIDATION_FAILED type=NHS_APP routing=false letterVersion=undefined 1`] = `"red"`;
 
@@ -224,13 +188,9 @@ exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=fals
 
 exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false letterVersion=PDF 1`] = `"red"`;
 
-exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false letterVersion=undefined 1`] = `"red"`;
-
 exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"red"`;
 
 exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=PDF 1`] = `"red"`;
-
-exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=undefined 1`] = `"red"`;
 
 exports[`statusToColourMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=false letterVersion=undefined 1`] = `"red"`;
 
@@ -248,13 +208,9 @@ exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=fals
 
 exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=false letterVersion=PDF 1`] = `"yellow"`;
 
-exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=false letterVersion=undefined 1`] = `"yellow"`;
-
 exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=AUTHORING 1`] = `"yellow"`;
 
 exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=PDF 1`] = `"yellow"`;
-
-exports[`statusToColourMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=undefined 1`] = `"yellow"`;
 
 exports[`statusToColourMapping status=WAITING_FOR_PROOF type=NHS_APP routing=false letterVersion=undefined 1`] = `"yellow"`;
 
@@ -272,13 +228,9 @@ exports[`statusToDisplayMapping status=DELETED type=LETTER routing=false letterV
 
 exports[`statusToDisplayMapping status=DELETED type=LETTER routing=false letterVersion=PDF 1`] = `""`;
 
-exports[`statusToDisplayMapping status=DELETED type=LETTER routing=false letterVersion=undefined 1`] = `""`;
-
 exports[`statusToDisplayMapping status=DELETED type=LETTER routing=true letterVersion=AUTHORING 1`] = `""`;
 
 exports[`statusToDisplayMapping status=DELETED type=LETTER routing=true letterVersion=PDF 1`] = `""`;
-
-exports[`statusToDisplayMapping status=DELETED type=LETTER routing=true letterVersion=undefined 1`] = `""`;
 
 exports[`statusToDisplayMapping status=DELETED type=NHS_APP routing=false letterVersion=undefined 1`] = `""`;
 
@@ -296,13 +248,9 @@ exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=fal
 
 exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=false letterVersion=PDF 1`] = `"Not yet submitted"`;
 
-exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=false letterVersion=undefined 1`] = `"Not yet submitted"`;
-
 exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Approval needed"`;
 
 exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"Not yet submitted"`;
-
-exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=LETTER routing=true letterVersion=undefined 1`] = `"Not yet submitted"`;
 
 exports[`statusToDisplayMapping status=NOT_YET_SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Draft"`;
 
@@ -320,13 +268,9 @@ exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing
 
 exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false letterVersion=PDF 1`] = `"Files uploaded"`;
 
-exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=false letterVersion=undefined 1`] = `"Files uploaded"`;
-
 exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Files uploaded"`;
 
 exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=PDF 1`] = `"Files uploaded"`;
-
-exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=LETTER routing=true letterVersion=undefined 1`] = `"Files uploaded"`;
 
 exports[`statusToDisplayMapping status=PENDING_PROOF_REQUEST type=NHS_APP routing=false letterVersion=undefined 1`] = `"Files uploaded"`;
 
@@ -344,13 +288,9 @@ exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=false 
 
 exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=false letterVersion=PDF 1`] = `"Checking files"`;
 
-exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=false letterVersion=undefined 1`] = `"Checking files"`;
-
 exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Checking files"`;
 
 exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=PDF 1`] = `"Checking files"`;
-
-exports[`statusToDisplayMapping status=PENDING_UPLOAD type=LETTER routing=true letterVersion=undefined 1`] = `"Checking files"`;
 
 exports[`statusToDisplayMapping status=PENDING_UPLOAD type=NHS_APP routing=false letterVersion=undefined 1`] = `"Checking files"`;
 
@@ -368,13 +308,9 @@ exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=fa
 
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=false letterVersion=PDF 1`] = `"Checking files"`;
 
-exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=false letterVersion=undefined 1`] = `"Checking files"`;
-
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Checking files"`;
 
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=PDF 1`] = `"Checking files"`;
-
-exports[`statusToDisplayMapping status=PENDING_VALIDATION type=LETTER routing=true letterVersion=undefined 1`] = `"Checking files"`;
 
 exports[`statusToDisplayMapping status=PENDING_VALIDATION type=NHS_APP routing=false letterVersion=undefined 1`] = `"Checking files"`;
 
@@ -392,13 +328,9 @@ exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false 
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=PDF 1`] = `"Proof approved"`;
 
-exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=undefined 1`] = `"Proof approved"`;
-
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=PDF 1`] = `"Proof approved"`;
-
-exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=undefined 1`] = `"Proof approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Proof approved"`;
 
@@ -416,13 +348,9 @@ exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=false
 
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=false letterVersion=PDF 1`] = `"Proof available"`;
 
-exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=false letterVersion=undefined 1`] = `"Proof available"`;
-
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Proof available"`;
 
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=PDF 1`] = `"Proof available"`;
-
-exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=LETTER routing=true letterVersion=undefined 1`] = `"Proof available"`;
 
 exports[`statusToDisplayMapping status=PROOF_AVAILABLE type=NHS_APP routing=false letterVersion=undefined 1`] = `"Proof available"`;
 
@@ -440,13 +368,9 @@ exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=false lette
 
 exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=false letterVersion=PDF 1`] = `"Submitted"`;
 
-exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=false letterVersion=undefined 1`] = `"Submitted"`;
-
 exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Locked"`;
 
 exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"Locked"`;
-
-exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=undefined 1`] = `"Locked"`;
 
 exports[`statusToDisplayMapping status=SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Submitted"`;
 
@@ -464,13 +388,9 @@ exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=fal
 
 exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=false letterVersion=PDF 1`] = `"Checks failed"`;
 
-exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=false letterVersion=undefined 1`] = `"Checks failed"`;
-
 exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Checks failed"`;
 
 exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=PDF 1`] = `"Checks failed"`;
-
-exports[`statusToDisplayMapping status=VALIDATION_FAILED type=LETTER routing=true letterVersion=undefined 1`] = `"Checks failed"`;
 
 exports[`statusToDisplayMapping status=VALIDATION_FAILED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Checks failed"`;
 
@@ -488,13 +408,9 @@ exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=fal
 
 exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false letterVersion=PDF 1`] = `"Checks failed"`;
 
-exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=false letterVersion=undefined 1`] = `"Checks failed"`;
-
 exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Checks failed"`;
 
 exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=PDF 1`] = `"Checks failed"`;
-
-exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=LETTER routing=true letterVersion=undefined 1`] = `"Checks failed"`;
 
 exports[`statusToDisplayMapping status=VIRUS_SCAN_FAILED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Checks failed"`;
 
@@ -512,13 +428,9 @@ exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=fal
 
 exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=false letterVersion=PDF 1`] = `"Waiting for proof"`;
 
-exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=false letterVersion=undefined 1`] = `"Waiting for proof"`;
-
 exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Waiting for proof"`;
 
 exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=PDF 1`] = `"Waiting for proof"`;
-
-exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=LETTER routing=true letterVersion=undefined 1`] = `"Waiting for proof"`;
 
 exports[`statusToDisplayMapping status=WAITING_FOR_PROOF type=NHS_APP routing=false letterVersion=undefined 1`] = `"Waiting for proof"`;
 

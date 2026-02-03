@@ -77,7 +77,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missingValue"
+              class="nhsuk-summary-list__row missing-value"
               id="campaign-id"
             >
               <dt

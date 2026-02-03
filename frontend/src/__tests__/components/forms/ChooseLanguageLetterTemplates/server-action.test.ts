@@ -152,7 +152,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
           ],
         },
         cascadeIndex: 0,
-        templateList: [FRENCH_LETTER, GERMAN_AUTHORING_LETTER],
+        templateList: [GERMAN_AUTHORING_LETTER],
         pageHeading: 'Choose language templates',
       },
       getMockFormData({

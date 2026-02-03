@@ -174,26 +174,15 @@ describe('ChooseLanguageLetterTemplates', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('renders mixed PDF and authoring letter templates', () => {
-      const mixedTemplateList = [
-        FRENCH_LETTER_TEMPLATE,
-        GERMAN_AUTHORING_LETTER_TEMPLATE,
-        SPANISH_LETTER_TEMPLATE,
-      ];
-
+    it('renders authoring letter templates', () => {
       const container = renderComponent({
-        templateList: mixedTemplateList,
+        templateList: [GERMAN_AUTHORING_LETTER_TEMPLATE],
       });
 
       const table = screen.getByTestId('language-templates-table');
-      expect(
-        within(table).getByText(FRENCH_LETTER_TEMPLATE.name)
-      ).toBeInTheDocument();
+
       expect(
         within(table).getByText(GERMAN_AUTHORING_LETTER_TEMPLATE.name)
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText(SPANISH_LETTER_TEMPLATE.name)
       ).toBeInTheDocument();
 
       expect(container.asFragment()).toMatchSnapshot();

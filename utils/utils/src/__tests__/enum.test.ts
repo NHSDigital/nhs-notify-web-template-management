@@ -2,11 +2,11 @@
 import {
   Language,
   LetterType,
-  TEMPLATE_TYPE_LIST,
   TEMPLATE_STATUS_LIST,
   TemplateStatus,
   TemplateType,
   LetterVersion,
+  TEMPLATE_TYPE_LIST,
 } from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
@@ -120,16 +120,20 @@ describe('alphabeticalLanguageList', () => {
 });
 
 type StatusCase = [
-  TemplateStatus,
-  TemplateType,
-  boolean,
-  LetterVersion | undefined,
+  status: TemplateStatus,
+  type: TemplateType,
+  routing: boolean,
+  letterVersion: LetterVersion | undefined,
 ];
+
+const letterVersions = ['PDF', 'AUTHORING'] as const;
+const routingOptions = [true, false] as const;
+const digitalChannels = TEMPLATE_TYPE_LIST.filter((t) => t !== 'LETTER');
 
 const LETTER_STATUS_CASES: StatusCase[] = TEMPLATE_STATUS_LIST.flatMap(
   (status) =>
-    (['PDF', 'AUTHORING'] as const).flatMap((version) =>
-      ([true, false] as const).map(
+    letterVersions.flatMap((version) =>
+      routingOptions.map(
         (routingFlag): StatusCase => [
           status,
           'LETTER' as const,
@@ -142,8 +146,8 @@ const LETTER_STATUS_CASES: StatusCase[] = TEMPLATE_STATUS_LIST.flatMap(
 
 const TEMPLATE_STATUS_CASES: StatusCase[] = [
   ...TEMPLATE_STATUS_LIST.flatMap((status) =>
-    TEMPLATE_TYPE_LIST.flatMap((type) =>
-      ([true, false] as const).map(
+    digitalChannels.flatMap((type) =>
+      routingOptions.map(
         (routingFlag): StatusCase => [status, type, routingFlag, undefined]
       )
     )

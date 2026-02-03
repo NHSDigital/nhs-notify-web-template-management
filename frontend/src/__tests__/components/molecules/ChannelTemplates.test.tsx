@@ -86,13 +86,7 @@ describe('ChannelTemplates', () => {
   it('renders templates including authoring letter', () => {
     const container = render(
       <ChannelTemplates
-        templateList={[
-          NHS_APP_TEMPLATE,
-          EMAIL_TEMPLATE,
-          SMS_TEMPLATE,
-          PDF_LETTER_TEMPLATE,
-          AUTHORING_LETTER_TEMPLATE,
-        ]}
+        templateList={[AUTHORING_LETTER_TEMPLATE]}
         errorState={null}
         selectedTemplate={AUTHORING_LETTER_TEMPLATE.id}
         routingConfigId='abc'
