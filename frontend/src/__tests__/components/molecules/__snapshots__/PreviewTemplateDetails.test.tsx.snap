@@ -293,6 +293,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
           campaign-123
         </dd>
         <dd
+          aria-hidden="true"
           class="nhsuk-summary-list__actions"
         />
       </div>
@@ -358,6 +359,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
           variant-123
         </dd>
         <dd
+          aria-hidden="true"
           class="nhsuk-summary-list__actions"
         />
       </div>

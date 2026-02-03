@@ -89,6 +89,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
                 class="nhsuk-summary-list__value"
               />
               <dd
+                aria-hidden="true"
                 class="nhsuk-summary-list__actions"
               />
             </div>
@@ -123,8 +124,22 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
                 2
               </dd>
               <dd
-                class="nhsuk-summary-list__actions"
-              />
+                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+              >
+                <a
+                  data-testid="sheets-action"
+                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                     about sheets
+                  </span>
+                </a>
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -140,6 +155,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
                 variant-123
               </dd>
               <dd
+                aria-hidden="true"
                 class="nhsuk-summary-list__actions"
               />
             </div>
