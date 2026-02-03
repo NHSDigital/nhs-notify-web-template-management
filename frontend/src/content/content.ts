@@ -537,6 +537,19 @@ const previewLetterTemplate = {
       'After you submit your template, our service team will send you a proof by email instead.',
     text3: 'This email will tell you what to do next.',
   },
+  links: {
+    messageTemplates: '/message-templates',
+    submitLetterTemplate: (
+      basePath: string,
+      templateId: string,
+      lockNumber: number
+    ) => `${basePath}/submit-letter-template/${templateId}?lockNumber=${lockNumber}`,
+    requestProofOfTemplate: (
+      basePath: string,
+      templateId: string,
+      lockNumber: number
+    ) => `${basePath}/request-proof-of-template/${templateId}?lockNumber=${lockNumber}`,
+  },
 };
 
 const previewNHSAppTemplate = {
@@ -625,6 +638,13 @@ const previewTemplateDetails = {
     lettersPricing: 'https://notify.nhs.uk/pricing-and-commercial/letters',
     templateStatuses:
       'https://notify.nhs.uk/templates/what-template-statuses-mean',
+  },
+  links: {
+    editTemplateName: (templateId: string) => `edit-template-name/${templateId}`,
+    editTemplateCampaign: (templateId: string) =>
+      `edit-template-campaign/${templateId}`,
+    choosePrintingAndPostage: (templateId: string) =>
+      `choose-printing-and-postage/${templateId}`,
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',

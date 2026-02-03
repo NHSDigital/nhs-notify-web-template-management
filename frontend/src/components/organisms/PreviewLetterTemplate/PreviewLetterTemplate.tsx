@@ -39,6 +39,7 @@ function PreviewPdfLetterTemplate({
     approveProofText,
     backLinkText,
     footer,
+    links,
     preSubmissionText,
     requestProofText,
     rtlWarning,
@@ -55,15 +56,15 @@ function PreviewPdfLetterTemplate({
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
       text: submitText,
-      href: `${basePath}/submit-letter-template/${template.id}?lockNumber=${template.lockNumber}`,
+      href: links.submitLetterTemplate(basePath, template.id, template.lockNumber),
     },
     PROOF_AVAILABLE: {
       text: routing ? approveProofText : submitText,
-      href: `${basePath}/submit-letter-template/${template.id}?lockNumber=${template.lockNumber}`,
+      href: links.submitLetterTemplate(basePath, template.id, template.lockNumber),
     },
     PENDING_PROOF_REQUEST: {
       text: requestProofText,
-      href: `${basePath}/request-proof-of-template/${template.id}?lockNumber=${template.lockNumber}`,
+      href: links.requestProofOfTemplate(basePath, template.id, template.lockNumber),
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
@@ -82,7 +83,7 @@ function PreviewPdfLetterTemplate({
 
   return (
     <>
-      <Link href='/message-templates' passHref legacyBehavior>
+      <Link href={links.messageTemplates} passHref legacyBehavior>
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
@@ -170,7 +171,7 @@ function PreviewPdfLetterTemplate({
               </NHSNotifyButton>
             )}
             <p>
-              <Link href='/message-templates'>{backLinkText}</Link>
+              <Link href={links.messageTemplates}>{backLinkText}</Link>
             </p>
           </div>
         </div>
@@ -184,6 +185,7 @@ function PreviewAuthoringLetterTemplate({
 }: Readonly<{ template: AuthoringLetterTemplate }>) {
   const {
     backLinkText,
+    links,
     validationError,
     validationErrorAction,
     virusScanError,
@@ -201,7 +203,7 @@ function PreviewAuthoringLetterTemplate({
 
   return (
     <>
-      <Link href='/message-templates' passHref legacyBehavior>
+      <Link href={links.messageTemplates} passHref legacyBehavior>
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
       <NHSNotifyMain>
@@ -216,7 +218,7 @@ function PreviewAuthoringLetterTemplate({
             )}
             <PreviewTemplateDetailsAuthoringLetter template={template} />
             <p>
-              <Link href='/message-templates'>{backLinkText}</Link>
+              <Link href={links.messageTemplates}>{backLinkText}</Link>
             </p>
           </div>
         </div>

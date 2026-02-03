@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 
-const { rowHeadings, visuallyHidden, externalLinks, actions } =
+const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsAuthoringLetter({
@@ -46,7 +46,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
       {!hideEditActions && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link
-            href={`edit-template-name/${template.id}`}
+            href={links.editTemplateName(template.id)}
             data-testid='edit-name-link'
           >
             {actions.editName}
@@ -98,7 +98,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
             <SummaryList.Value>{template.campaignId}</SummaryList.Value>
             <ActionLink
-              href={`edit-template-campaign/${template.id}`}
+              href={links.editTemplateCampaign(template.id)}
               label={actions.edit}
               visuallyHiddenText={visuallyHidden.campaign}
               hidden={!!hideEditCampaignLink}
@@ -133,7 +133,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
             <ActionLink
-              href={`choose-printing-and-postage/${template.id}`}
+              href={links.choosePrintingAndPostage(template.id)}
               label={actions.edit}
               visuallyHiddenText={visuallyHidden.printingAndPostage}
               hidden={hideEditActions}
