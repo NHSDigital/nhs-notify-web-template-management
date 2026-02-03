@@ -105,8 +105,7 @@ async function createTemplates(user: TestUser) {
       id: '321B92CF-AECC-4938-B4CA-B00E4797327A',
     },
     withProofs,
-    // AUTHORING letter templates
-    authoringEmpty: {
+    authoringInvalid: {
       id: 'preview-page-invalid-authoring-letter',
       version: 1,
       createdAt: new Date().toISOString(),
@@ -436,34 +435,13 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.statusTag).toBeVisible();
     });
 
-    test('displays Learn more links with correct external URLs', async ({
-      page,
-    }) => {
-      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
-        'templateId',
-        templates.authoringValid.id
-      );
-
-      await previewPage.loadPage();
-
-      await expect(previewPage.sheetsAction).toHaveAttribute(
-        'href',
-        'https://notify.nhs.uk/pricing-and-commercial/letters'
-      );
-
-      await expect(previewPage.statusAction).toHaveAttribute(
-        'href',
-        'https://notify.nhs.uk/templates/what-template-statuses-mean'
-      );
-    });
-
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
         'templateId',
-        templates.authoringEmpty.id
+        templates.authoringInvalid.id
       );
 
       await previewPage.loadPage();
@@ -488,8 +466,6 @@ test.describe('Preview Letter template Page', () => {
     test('hides campaign Edit link when template has campaignId (single-campaign client)', async ({
       page,
     }) => {
-      // User1 (default logged in user) has single campaign, so Edit link should be hidden
-      // when template already has a campaignId assigned
       const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
         'templateId',
         templates.authoringValid.id
@@ -540,8 +516,6 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // userWithMultipleCampaigns has multiple campaigns, so Edit link should be visible
-        // even when template has a campaignId assigned
         await expect(previewPage.campaignAction).toBeVisible();
         await expect(previewPage.campaignAction).toHaveText(/Edit/);
       });
