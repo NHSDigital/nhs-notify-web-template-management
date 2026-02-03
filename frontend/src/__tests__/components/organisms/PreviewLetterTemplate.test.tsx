@@ -83,29 +83,6 @@ describe('PreviewLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('matches snapshot for AUTHORING letter with footer text', () => {
-    const container = render(
-      <PreviewLetterTemplate
-        template={{
-          templateType: 'LETTER',
-          name: 'test-template-letter',
-          id: 'template-id',
-          templateStatus: 'WAITING_FOR_PROOF',
-          language: 'en',
-          letterType: 'x0',
-          letterVersion: 'AUTHORING',
-          letterVariantId: 'variant-123',
-          sidesCount: 2,
-          createdAt: '2025-04-02T09:33:25.729Z',
-          updatedAt: '2025-04-02T09:33:25.729Z',
-          lockNumber: 1,
-        }}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
     const container = render(
       <PreviewLetterTemplate

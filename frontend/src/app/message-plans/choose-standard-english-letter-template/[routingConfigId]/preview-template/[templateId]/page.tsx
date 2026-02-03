@@ -39,11 +39,7 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 
   const validatedTemplate = validateLetterTemplate(template);
 
-  if (
-    !validatedTemplate ||
-    validatedTemplate.letterType !== 'x0' ||
-    validatedTemplate.language !== 'en'
-  ) {
+  if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 

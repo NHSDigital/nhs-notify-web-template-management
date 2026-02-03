@@ -25,7 +25,7 @@ export function ActionLink({
   }
 
   const externalProps = external
-    ? { target: '_blank' as const, rel: 'noopener noreferrer' }
+    ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};
 
   return (
