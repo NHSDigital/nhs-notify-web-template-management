@@ -25,6 +25,11 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
       href="edit-template-name/template-id"
     >
       Edit name
+      <span
+        class="nhsuk-u-visually-hidden"
+      >
+         for Authoring Letter
+      </span>
     </a>
   </p>
   <div
@@ -69,7 +74,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
         />
       </div>
       <div
-        class="nhsuk-summary-list__row missingValue"
+        class="nhsuk-summary-list__row missing-value"
         id="campaign-id"
       >
         <dt
@@ -395,6 +400,11 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
       href="edit-template-name/template-id"
     >
       Edit name
+      <span
+        class="nhsuk-u-visually-hidden"
+      >
+         for Authoring Letter
+      </span>
     </a>
   </p>
   <div
@@ -439,7 +449,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
         />
       </div>
       <div
-        class="nhsuk-summary-list__row missingValue"
+        class="nhsuk-summary-list__row missing-value"
         id="campaign-id"
       >
         <dt
@@ -515,7 +525,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVa
         </dd>
       </div>
       <div
-        class="nhsuk-summary-list__row missingValue"
+        class="nhsuk-summary-list__row missing-value"
       >
         <dt
           class="nhsuk-summary-list__key"

@@ -9,6 +9,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
+import { ActionLink } from './ActionLink';
 import concatClassNames from '@utils/concat-class-names';
 import {
   useCampaignIds,
@@ -18,41 +19,8 @@ import Link from 'next/link';
 import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 
-const { rowHeadings, visuallyHidden, externalLinks } =
+const { rowHeadings, visuallyHidden, externalLinks, actions } =
   content.components.previewTemplateDetails;
-
-function ActionLink({
-  href,
-  label,
-  visuallyHiddenText,
-  hidden,
-  testId,
-  external,
-}: {
-  href: string;
-  label: string;
-  visuallyHiddenText: string;
-  hidden?: boolean;
-  testId?: string;
-  external?: boolean;
-}) {
-  if (hidden) {
-    return <SummaryList.Actions />;
-  }
-
-  const externalProps = external
-    ? { target: '_blank' as const, rel: 'noopener noreferrer' }
-    : {};
-
-  return (
-    <SummaryList.Actions className='nhsuk-u-padding-right-4'>
-      <Link href={href} data-testid={testId} {...externalProps}>
-        {label}
-        <span className='nhsuk-u-visually-hidden'> {visuallyHiddenText}</span>
-      </Link>
-    </SummaryList.Actions>
-  );
-}
 
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
@@ -81,7 +49,11 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             href={`edit-template-name/${template.id}`}
             data-testid='edit-name-link'
           >
-            Edit name
+            {actions.editName}
+            <span className='nhsuk-u-visually-hidden'>
+              {' '}
+              for {template.name}
+            </span>
           </Link>
         </p>
       )}
@@ -121,13 +93,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {/* Campaign */}
           <SummaryList.Row
             id='campaign-id'
-            className={template.campaignId ? undefined : styles.missingValue}
+            className={template.campaignId ? undefined : 'missing-value'}
           >
             <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
             <SummaryList.Value>{template.campaignId}</SummaryList.Value>
             <ActionLink
               href={`edit-template-campaign/${template.id}`}
-              label='Edit'
+              label={actions.edit}
               visuallyHiddenText={visuallyHidden.campaign}
               hidden={!!hideEditCampaignLink}
               testId='campaign-action'
@@ -147,7 +119,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Value>{template.sidesCount}</SummaryList.Value>
             <ActionLink
               href={externalLinks.lettersPricing}
-              label='Learn more'
+              label={actions.learnMore}
               visuallyHiddenText={visuallyHidden.sheets}
               hidden={hideActions}
               testId='sheets-action'
@@ -158,14 +130,14 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {/* Printing and postage */}
           <SummaryList.Row
             className={
-              template.letterVariantId ? undefined : styles.missingValue
+              template.letterVariantId ? undefined : 'missing-value'
             }
           >
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
             <ActionLink
               href={`choose-printing-and-postage/${template.id}`}
-              label='Edit'
+              label={actions.edit}
               visuallyHiddenText={visuallyHidden.printingAndPostage}
               hidden={hideActions}
               testId='printing-postage-action'
@@ -187,7 +159,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
               </SummaryList.Value>
               <ActionLink
                 href={externalLinks.templateStatuses}
-                label='Learn more'
+                label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.status}
                 hidden={hideActions}
                 testId='status-action'

@@ -20,15 +20,10 @@
   }
 }
 
-.missingValue {
-  background-color: #fff9c4;
-  box-shadow: inset 0 0 0 3px #ffeb3b;
-}
-
 .proofs {
   list-style: none;
   padding-left: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px; // nhsuk-spacing(2) equivalent
 }

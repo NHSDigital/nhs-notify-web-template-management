@@ -1,3 +1,4 @@
+import { ActionLink } from '@molecules/PreviewTemplateDetails/ActionLink';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
@@ -208,7 +209,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
     expect(
-      container.container.querySelector('.missingValue')
+      container.container.querySelector('.missing-value')
     ).toBeInTheDocument();
   });
 
@@ -285,7 +286,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
     expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
     expect(
-      screen.getByTestId('campaign-action').closest('.missingValue')
+      screen.getByTestId('campaign-action').closest('.missing-value')
     ).toBeInTheDocument();
   });
 });
@@ -317,5 +318,72 @@ describe('PreviewTemplateDetailsLetter', () => {
     expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
     expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
     expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+  });
+});
+
+describe('ActionLink', () => {
+  it('renders link with label and visually hidden text', () => {
+    render(
+      <ActionLink
+        href='/edit/123'
+        label='Edit'
+        visuallyHiddenText='template name'
+        testId='test-link'
+      />
+    );
+
+    const link = screen.getByTestId('test-link');
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/edit/123');
+    expect(link).toHaveTextContent('Edit');
+    expect(link).toHaveTextContent('template name');
+  });
+
+  it('renders empty SummaryList.Actions when hidden is true', () => {
+    const { container } = render(
+      <ActionLink
+        href='/edit/123'
+        label='Edit'
+        visuallyHiddenText='template name'
+        testId='test-link'
+        hidden
+      />
+    );
+
+    expect(screen.queryByTestId('test-link')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('.nhsuk-summary-list__actions')
+    ).toBeInTheDocument();
+  });
+
+  it('adds external link attributes when external is true', () => {
+    render(
+      <ActionLink
+        href='https://example.com'
+        label='Learn more'
+        visuallyHiddenText='about templates'
+        testId='external-link'
+        external
+      />
+    );
+
+    const link = screen.getByTestId('external-link');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('does not add external link attributes when external is false', () => {
+    render(
+      <ActionLink
+        href='/internal'
+        label='Edit'
+        visuallyHiddenText='template'
+        testId='internal-link'
+      />
+    );
+
+    const link = screen.getByTestId('internal-link');
+    expect(link).not.toHaveAttribute('target');
+    expect(link).not.toHaveAttribute('rel');
   });
 });

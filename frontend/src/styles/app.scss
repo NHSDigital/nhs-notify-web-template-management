@@ -141,3 +141,8 @@ a.nhsuk-link--no-visited-state {
 .fit-content {
   width: fit-content;
 }
+
+.missing-value {
+  background-color: nhsuk.$nhsuk-pale-yellow-colour;
+  box-shadow: inset 0 0 0 3px nhsuk.$nhsuk-yellow-colour;
+}
