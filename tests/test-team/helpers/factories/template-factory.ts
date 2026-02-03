@@ -113,7 +113,9 @@ export const TemplateFactory = {
     }
   ): Template => {
     const campaignId =
-      options?.campaignId === null ? undefined : (options?.campaignId ?? 'campaign-id');
+      options?.campaignId === null
+        ? undefined
+        : (options?.campaignId ?? 'campaign-id');
 
     return TemplateFactory.create({
       ...(campaignId && { campaignId }),

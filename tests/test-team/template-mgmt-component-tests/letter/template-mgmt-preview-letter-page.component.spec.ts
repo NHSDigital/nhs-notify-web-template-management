@@ -512,14 +512,13 @@ test.describe('Preview Letter template Page', () => {
           testUsers.UserWithMultipleCampaigns.userId
         );
 
-        multiCampaignTemplate =
-          TemplateFactory.createAuthoringLetterTemplate(
-            'C3D4E5F6-A7B8-9012-CDEF-345678901234',
-            userWithMultipleCampaigns,
-            'authoring-letter-multi-campaign',
-            'NOT_YET_SUBMITTED',
-            { sidesCount: 4, letterVariantId: 'variant-789' }
-          );
+        multiCampaignTemplate = TemplateFactory.createAuthoringLetterTemplate(
+          'C3D4E5F6-A7B8-9012-CDEF-345678901234',
+          userWithMultipleCampaigns,
+          'authoring-letter-multi-campaign',
+          'NOT_YET_SUBMITTED',
+          { sidesCount: 4, letterVariantId: 'variant-789' }
+        );
 
         await multiCampaignTemplateStorageHelper.seedTemplateData([
           multiCampaignTemplate,
