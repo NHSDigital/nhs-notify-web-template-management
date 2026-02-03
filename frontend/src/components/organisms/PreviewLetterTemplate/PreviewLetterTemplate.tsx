@@ -56,15 +56,27 @@ function PreviewPdfLetterTemplate({
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
       text: submitText,
-      href: links.submitLetterTemplate(basePath, template.id, template.lockNumber),
+      href: links.submitLetterTemplate(
+        basePath,
+        template.id,
+        template.lockNumber
+      ),
     },
     PROOF_AVAILABLE: {
       text: routing ? approveProofText : submitText,
-      href: links.submitLetterTemplate(basePath, template.id, template.lockNumber),
+      href: links.submitLetterTemplate(
+        basePath,
+        template.id,
+        template.lockNumber
+      ),
     },
     PENDING_PROOF_REQUEST: {
       text: requestProofText,
-      href: links.requestProofOfTemplate(basePath, template.id, template.lockNumber),
+      href: links.requestProofOfTemplate(
+        basePath,
+        template.id,
+        template.lockNumber
+      ),
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
