@@ -95,12 +95,10 @@ test.describe('Preview submitted Letter message template Page', () => {
         previewSubmittedLetterTemplatePage.pageHeading
       ).toContainText(templates.valid.name);
 
-      if (!templates.valid.campaignId) {
-        throw new Error('Test data misconfiguration');
-      }
+      expect(templates.valid.campaignId).toBeTruthy();
 
       await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
-        templates.valid.campaignId
+        templates.valid.campaignId!
       );
 
       await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
@@ -132,12 +130,10 @@ test.describe('Preview submitted Letter message template Page', () => {
         previewSubmittedLetterTemplatePage.pageHeading
       ).toContainText(templates.authoringValid.name);
 
-      if (!templates.authoringValid.campaignId) {
-        throw new Error('Test data misconfiguration');
-      }
+      expect(templates.authoringValid.campaignId).toBeTruthy();
 
       await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
-        templates.authoringValid.campaignId
+        templates.authoringValid.campaignId!
       );
 
       await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
