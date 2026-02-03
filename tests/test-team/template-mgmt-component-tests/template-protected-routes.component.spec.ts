@@ -54,6 +54,7 @@ import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/let
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
+import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -80,6 +81,7 @@ const protectedPages = [
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
