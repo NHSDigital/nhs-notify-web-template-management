@@ -9,7 +9,7 @@
 }
 
 .authoringLetterDetails {
-  @media (min-width: 40.0625em) {
+  @media (min-width: 768px) {
     :global(.nhsuk-summary-list__key) {
       width: 30%;
     }
@@ -25,5 +25,5 @@
   padding-left: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px; // nhsuk-spacing(2) equivalent
+  gap: 8px;
 }
