@@ -138,7 +138,7 @@ describe('client has one campaign id', () => {
     );
 
     expect(
-      screen.queryByRole('alert', { name: 'There is a problem' })
+      await screen.findByRole('alert', { name: 'There is a problem' })
     ).toBeInTheDocument();
 
     expect(page.asFragment()).toMatchSnapshot();
@@ -270,7 +270,7 @@ describe('client has multiple campaign ids', () => {
     expect(uploadOtherLanguageLetterTemplate).toHaveBeenCalledTimes(1);
 
     expect(
-      screen.queryByRole('alert', { name: 'There is a problem' })
+      await screen.findByRole('alert', { name: 'There is a problem' })
     ).toBeInTheDocument();
 
     expect(page.asFragment()).toMatchSnapshot();
