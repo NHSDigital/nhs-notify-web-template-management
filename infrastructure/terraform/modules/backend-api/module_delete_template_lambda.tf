@@ -17,7 +17,7 @@ module "delete_template_lambda" {
 
   memory  = 2048
   timeout = 20
-  runtime = "nodejs24.x"
+  runtime = "nodejs22.x"
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {

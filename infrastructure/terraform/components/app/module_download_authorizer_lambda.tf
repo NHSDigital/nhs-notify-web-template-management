@@ -26,7 +26,7 @@ module "download_authorizer_lambda" {
   function_code_base_path = local.lambdas_source_code_dir
   function_code_dir       = "download-authorizer/dist"
   handler_function_name   = "handler"
-  runtime                 = "nodejs24.x"
+  runtime                 = "nodejs22.x"
   memory                  = 128
   timeout                 = 3
   lambda_at_edge          = true

@@ -3,38 +3,38 @@
   "type": "object",
   "properties": {
     "id": {
-      "description": "Unique ID for this event",
       "type": "string",
-      "maxLength": 1000
+      "maxLength": 1000,
+      "description": "Unique ID for this event"
     },
     "time": {
-      "description": "Time the event was generated",
       "type": "string",
-      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$",
+      "description": "Time the event was generated"
     },
     "type": {
       "type": "string",
       "const": "uk.nhs.notify.template-management.RoutingConfigDrafted.v1"
     },
     "source": {
-      "description": "Source of the event",
-      "type": "string"
+      "type": "string",
+      "description": "Source of the event"
     },
     "specversion": {
-      "description": "Version of the envelope event schema",
       "type": "string",
-      "const": "1.0"
+      "const": "1.0",
+      "description": "Version of the envelope event schema"
     },
     "datacontenttype": {
-      "description": "Always application/json",
       "type": "string",
-      "const": "application/json"
+      "const": "application/json",
+      "description": "Always application/json"
     },
     "subject": {
-      "description": "Unique identifier for the item in the event data",
       "type": "string",
       "format": "uuid",
-      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+      "description": "Unique identifier for the item in the event data"
     },
     "dataschema": {
       "type": "string",
@@ -52,43 +52,44 @@
       "type": "object",
       "properties": {
         "clientId": {
-          "description": "The client that owns the routing config",
-          "type": "string"
+          "type": "string",
+          "description": "The client that owns the routing config"
         },
         "campaignId": {
-          "description": "The campaign that is associated with the routing config",
-          "type": "string"
+          "type": "string",
+          "description": "The campaign that is associated with the routing config"
         },
         "id": {
           "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+          "description": "Unique identifier of the routing config"
         },
         "name": {
-          "description": "User-provided name identifying the routing config",
-          "type": "string"
+          "type": "string",
+          "description": "User-provided name identifying the routing config"
         },
         "defaultCascadeGroup": {
-          "description": "Default cascade group name",
-          "type": "string"
+          "type": "string",
+          "description": "Default cascade group name"
         },
         "createdAt": {
-          "description": "Timestamp for when the routing config was created",
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+          "description": "Timestamp for when the routing config was created"
         },
         "cascade": {
-          "description": "Array defining the order of channels for the routing config and how they are configured",
           "type": "array",
           "items": {
             "$ref": "#/$defs/NullableCascadeItem"
-          }
+          },
+          "description": "Array defining the order of channels for the routing config and how they are configured"
         },
         "cascadeGroupOverrides": {
-          "description": "Config defining non-default cascade groups and the conditons under which they will be used",
           "type": "array",
           "items": {
             "$ref": "#/$defs/CascadeGroupOverride"
-          }
+          },
+          "description": "Config defining non-default cascade groups and the conditons under which they will be used"
         }
       },
       "required": [
@@ -121,22 +122,22 @@
       "type": "object",
       "properties": {
         "channel": {
-          "description": "Communication type for this cascade item",
           "type": "string",
           "enum": [
             "NHSAPP",
             "EMAIL",
             "SMS",
             "LETTER"
-          ]
+          ],
+          "description": "Communication type for this cascade item"
         },
         "channelType": {
-          "description": "Channel type for this cascade item",
           "type": "string",
           "enum": [
             "primary",
             "secondary"
-          ]
+          ],
+          "description": "Channel type for this cascade item"
         },
         "supplierReferences": {
           "description": "Supplier references that identify the template",
@@ -155,11 +156,11 @@
           }
         },
         "cascadeGroups": {
-          "description": "List of cascade groups that the cascade item will be included in",
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "List of cascade groups that the cascade item will be included in"
         },
         "defaultTemplateId": {
           "description": "Unique identifier for the template to use if no conditions for conditionalTemplates are satisfied",
@@ -236,9 +237,9 @@
           }
         },
         "templateId": {
-          "description": "Unique identifier for the template",
           "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$"
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+          "description": "Unique identifier for the template"
         }
       },
       "required": [
