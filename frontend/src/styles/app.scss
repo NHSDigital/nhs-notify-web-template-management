@@ -143,6 +143,6 @@ a.nhsuk-link--no-visited-state {
 }
 
 .missing-value {
-  background-color: nhsuk.$nhsuk-pale-yellow-colour;
-  box-shadow: inset 0 0 0 3px nhsuk.$nhsuk-yellow-colour;
+  background-color: var(--nhsuk-pale-yellow-colour);
+  box-shadow: inset 0 0 0 3px var(--nhsuk-yellow-colour);
 }

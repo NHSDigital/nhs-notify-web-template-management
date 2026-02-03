@@ -446,21 +446,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
             Example authoring letter
           </h1>
         </div>
-        <p
-          class="nhsuk-u-margin-bottom-4"
-        >
-          <a
-            data-testid="edit-name-link"
-            href="edit-template-name/template-id"
-          >
-            Edit name
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-               for Example authoring letter
-            </span>
-          </a>
-        </p>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -515,20 +500,9 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
                 class="nhsuk-summary-list__value"
               />
               <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="campaign-action"
-                  href="edit-template-campaign/template-id"
-                >
-                  Edit
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     campaign
-                  </span>
-                </a>
-              </dd>
+                aria-hidden="true"
+                class="nhsuk-summary-list__actions"
+              />
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -592,20 +566,9 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
                 first-class
               </dd>
               <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="printing-postage-action"
-                  href="choose-printing-and-postage/template-id"
-                >
-                  Edit
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     printing and postage
-                  </span>
-                </a>
-              </dd>
+                aria-hidden="true"
+                class="nhsuk-summary-list__actions"
+              />
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1448,21 +1411,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
             Example authoring letter
           </h1>
         </div>
-        <p
-          class="nhsuk-u-margin-bottom-4"
-        >
-          <a
-            data-testid="edit-name-link"
-            href="edit-template-name/template-id"
-          >
-            Edit name
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-               for Example authoring letter
-            </span>
-          </a>
-        </p>
         <div
           class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
@@ -1529,20 +1477,9 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
                 class="nhsuk-summary-list__value"
               />
               <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="campaign-action"
-                  href="edit-template-campaign/template-id"
-                >
-                  Edit
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     campaign
-                  </span>
-                </a>
-              </dd>
+                aria-hidden="true"
+                class="nhsuk-summary-list__actions"
+              />
             </div>
             <div
               class="nhsuk-summary-list__row"
@@ -1606,20 +1543,9 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
                 first-class
               </dd>
               <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="printing-postage-action"
-                  href="choose-printing-and-postage/template-id"
-                >
-                  Edit
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     printing and postage
-                  </span>
-                </a>
-              </dd>
+                aria-hidden="true"
+                class="nhsuk-summary-list__actions"
+              />
             </div>
             <div
               class="nhsuk-summary-list__row"
