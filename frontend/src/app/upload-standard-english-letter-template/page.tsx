@@ -18,6 +18,11 @@ export const metadata: Metadata = {
 
 export default async function UploadStandardLetterTemplatePage() {
   const client = await fetchClient();
+
+  if (!client?.features.letterAuthoring) {
+    return redirect('/choose-a-template-type', RedirectType.replace);
+  }
+
   const campaignIds = getCampaignIds(client);
 
   if (campaignIds.length === 0) {

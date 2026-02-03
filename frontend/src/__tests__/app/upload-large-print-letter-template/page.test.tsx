@@ -23,11 +23,33 @@ test('metadata', () => {
   });
 });
 
+describe('client has letter authoring feature flag disabled', () => {
+  beforeEach(() => {
+    jest.mocked(fetchClient).mockResolvedValue({
+      campaignIds: [],
+      features: {
+        letterAuthoring: false,
+      },
+    });
+  });
+
+  it('redirects to campaign id required page', async () => {
+    await Page();
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/choose-a-template-type',
+      RedirectType.replace
+    );
+  });
+});
+
 describe('client has no campaign ids', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: [],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 
@@ -45,7 +67,9 @@ describe('client has one campaign id', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: ['Campaign 1'],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 
@@ -115,7 +139,9 @@ describe('client has multiple campaign ids', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 

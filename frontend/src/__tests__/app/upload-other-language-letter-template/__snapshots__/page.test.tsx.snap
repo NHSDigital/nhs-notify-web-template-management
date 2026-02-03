@@ -161,142 +161,142 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
               <option
                 value="ar"
               >
-                ar
+                Arabic
               </option>
               <option
                 value="bg"
               >
-                bg
+                Bulgarian
               </option>
               <option
                 value="bn"
               >
-                bn
+                Bengali
               </option>
               <option
                 value="de"
               >
-                de
+                German
               </option>
               <option
                 value="el"
               >
-                el
+                Greek
               </option>
               <option
                 value="es"
               >
-                es
+                Spanish
               </option>
               <option
                 value="fa"
               >
-                fa
+                Persian
               </option>
               <option
                 value="fr"
               >
-                fr
+                French
               </option>
               <option
                 value="gu"
               >
-                gu
+                Gujurati
               </option>
               <option
                 value="hi"
               >
-                hi
+                Hindi
               </option>
               <option
                 value="hu"
               >
-                hu
+                Hungarian
               </option>
               <option
                 value="it"
               >
-                it
+                Italian
               </option>
               <option
                 value="ku"
               >
-                ku
+                Kurdish
               </option>
               <option
                 value="lt"
               >
-                lt
+                Lithuanian
               </option>
               <option
                 value="lv"
               >
-                lv
+                Latvian
               </option>
               <option
                 value="ne"
               >
-                ne
+                Nepali
               </option>
               <option
                 value="pa"
               >
-                pa
+                Punjabi
               </option>
               <option
                 value="pl"
               >
-                pl
+                Polish
               </option>
               <option
                 value="pt"
               >
-                pt
+                Portuguese
               </option>
               <option
                 value="ro"
               >
-                ro
+                Romanian
               </option>
               <option
                 value="ru"
               >
-                ru
+                Russian
               </option>
               <option
                 value="sk"
               >
-                sk
+                Slovak
               </option>
               <option
                 value="so"
               >
-                so
+                Somali
               </option>
               <option
                 value="sq"
               >
-                sq
+                Albanian
               </option>
               <option
                 value="ta"
               >
-                ta
+                Tamil
               </option>
               <option
                 value="tr"
               >
-                tr
+                Turkish
               </option>
               <option
                 value="ur"
               >
-                ur
+                Urdu
               </option>
               <option
                 value="zh"
               >
-                zh
+                Chinese
               </option>
             </select>
           </div>
@@ -634,142 +634,142 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
               <option
                 value="ar"
               >
-                ar
+                Arabic
               </option>
               <option
                 value="bg"
               >
-                bg
+                Bulgarian
               </option>
               <option
                 value="bn"
               >
-                bn
+                Bengali
               </option>
               <option
                 value="de"
               >
-                de
+                German
               </option>
               <option
                 value="el"
               >
-                el
+                Greek
               </option>
               <option
                 value="es"
               >
-                es
+                Spanish
               </option>
               <option
                 value="fa"
               >
-                fa
+                Persian
               </option>
               <option
                 value="fr"
               >
-                fr
+                French
               </option>
               <option
                 value="gu"
               >
-                gu
+                Gujurati
               </option>
               <option
                 value="hi"
               >
-                hi
+                Hindi
               </option>
               <option
                 value="hu"
               >
-                hu
+                Hungarian
               </option>
               <option
                 value="it"
               >
-                it
+                Italian
               </option>
               <option
                 value="ku"
               >
-                ku
+                Kurdish
               </option>
               <option
                 value="lt"
               >
-                lt
+                Lithuanian
               </option>
               <option
                 value="lv"
               >
-                lv
+                Latvian
               </option>
               <option
                 value="ne"
               >
-                ne
+                Nepali
               </option>
               <option
                 value="pa"
               >
-                pa
+                Punjabi
               </option>
               <option
                 value="pl"
               >
-                pl
+                Polish
               </option>
               <option
                 value="pt"
               >
-                pt
+                Portuguese
               </option>
               <option
                 value="ro"
               >
-                ro
+                Romanian
               </option>
               <option
                 value="ru"
               >
-                ru
+                Russian
               </option>
               <option
                 value="sk"
               >
-                sk
+                Slovak
               </option>
               <option
                 value="so"
               >
-                so
+                Somali
               </option>
               <option
                 value="sq"
               >
-                sq
+                Albanian
               </option>
               <option
                 value="ta"
               >
-                ta
+                Tamil
               </option>
               <option
                 value="tr"
               >
-                tr
+                Turkish
               </option>
               <option
                 value="ur"
               >
-                ur
+                Urdu
               </option>
               <option
                 value="zh"
               >
-                zh
+                Chinese
               </option>
             </select>
           </div>
@@ -1035,142 +1035,142 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
               <option
                 value="ar"
               >
-                ar
+                Arabic
               </option>
               <option
                 value="bg"
               >
-                bg
+                Bulgarian
               </option>
               <option
                 value="bn"
               >
-                bn
+                Bengali
               </option>
               <option
                 value="de"
               >
-                de
+                German
               </option>
               <option
                 value="el"
               >
-                el
+                Greek
               </option>
               <option
                 value="es"
               >
-                es
+                Spanish
               </option>
               <option
                 value="fa"
               >
-                fa
+                Persian
               </option>
               <option
                 value="fr"
               >
-                fr
+                French
               </option>
               <option
                 value="gu"
               >
-                gu
+                Gujurati
               </option>
               <option
                 value="hi"
               >
-                hi
+                Hindi
               </option>
               <option
                 value="hu"
               >
-                hu
+                Hungarian
               </option>
               <option
                 value="it"
               >
-                it
+                Italian
               </option>
               <option
                 value="ku"
               >
-                ku
+                Kurdish
               </option>
               <option
                 value="lt"
               >
-                lt
+                Lithuanian
               </option>
               <option
                 value="lv"
               >
-                lv
+                Latvian
               </option>
               <option
                 value="ne"
               >
-                ne
+                Nepali
               </option>
               <option
                 value="pa"
               >
-                pa
+                Punjabi
               </option>
               <option
                 value="pl"
               >
-                pl
+                Polish
               </option>
               <option
                 value="pt"
               >
-                pt
+                Portuguese
               </option>
               <option
                 value="ro"
               >
-                ro
+                Romanian
               </option>
               <option
                 value="ru"
               >
-                ru
+                Russian
               </option>
               <option
                 value="sk"
               >
-                sk
+                Slovak
               </option>
               <option
                 value="so"
               >
-                so
+                Somali
               </option>
               <option
                 value="sq"
               >
-                sq
+                Albanian
               </option>
               <option
                 value="ta"
               >
-                ta
+                Tamil
               </option>
               <option
                 value="tr"
               >
-                tr
+                Turkish
               </option>
               <option
                 value="ur"
               >
-                ur
+                Urdu
               </option>
               <option
                 value="zh"
               >
-                zh
+                Chinese
               </option>
             </select>
           </div>
@@ -1485,142 +1485,142 @@ exports[`client has one campaign id renders errors when blank form is submitted 
               <option
                 value="ar"
               >
-                ar
+                Arabic
               </option>
               <option
                 value="bg"
               >
-                bg
+                Bulgarian
               </option>
               <option
                 value="bn"
               >
-                bn
+                Bengali
               </option>
               <option
                 value="de"
               >
-                de
+                German
               </option>
               <option
                 value="el"
               >
-                el
+                Greek
               </option>
               <option
                 value="es"
               >
-                es
+                Spanish
               </option>
               <option
                 value="fa"
               >
-                fa
+                Persian
               </option>
               <option
                 value="fr"
               >
-                fr
+                French
               </option>
               <option
                 value="gu"
               >
-                gu
+                Gujurati
               </option>
               <option
                 value="hi"
               >
-                hi
+                Hindi
               </option>
               <option
                 value="hu"
               >
-                hu
+                Hungarian
               </option>
               <option
                 value="it"
               >
-                it
+                Italian
               </option>
               <option
                 value="ku"
               >
-                ku
+                Kurdish
               </option>
               <option
                 value="lt"
               >
-                lt
+                Lithuanian
               </option>
               <option
                 value="lv"
               >
-                lv
+                Latvian
               </option>
               <option
                 value="ne"
               >
-                ne
+                Nepali
               </option>
               <option
                 value="pa"
               >
-                pa
+                Punjabi
               </option>
               <option
                 value="pl"
               >
-                pl
+                Polish
               </option>
               <option
                 value="pt"
               >
-                pt
+                Portuguese
               </option>
               <option
                 value="ro"
               >
-                ro
+                Romanian
               </option>
               <option
                 value="ru"
               >
-                ru
+                Russian
               </option>
               <option
                 value="sk"
               >
-                sk
+                Slovak
               </option>
               <option
                 value="so"
               >
-                so
+                Somali
               </option>
               <option
                 value="sq"
               >
-                sq
+                Albanian
               </option>
               <option
                 value="ta"
               >
-                ta
+                Tamil
               </option>
               <option
                 value="tr"
               >
-                tr
+                Turkish
               </option>
               <option
                 value="ur"
               >
-                ur
+                Urdu
               </option>
               <option
                 value="zh"
               >
-                zh
+                Chinese
               </option>
             </select>
           </div>
@@ -1886,142 +1886,142 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
               <option
                 value="ar"
               >
-                ar
+                Arabic
               </option>
               <option
                 value="bg"
               >
-                bg
+                Bulgarian
               </option>
               <option
                 value="bn"
               >
-                bn
+                Bengali
               </option>
               <option
                 value="de"
               >
-                de
+                German
               </option>
               <option
                 value="el"
               >
-                el
+                Greek
               </option>
               <option
                 value="es"
               >
-                es
+                Spanish
               </option>
               <option
                 value="fa"
               >
-                fa
+                Persian
               </option>
               <option
                 value="fr"
               >
-                fr
+                French
               </option>
               <option
                 value="gu"
               >
-                gu
+                Gujurati
               </option>
               <option
                 value="hi"
               >
-                hi
+                Hindi
               </option>
               <option
                 value="hu"
               >
-                hu
+                Hungarian
               </option>
               <option
                 value="it"
               >
-                it
+                Italian
               </option>
               <option
                 value="ku"
               >
-                ku
+                Kurdish
               </option>
               <option
                 value="lt"
               >
-                lt
+                Lithuanian
               </option>
               <option
                 value="lv"
               >
-                lv
+                Latvian
               </option>
               <option
                 value="ne"
               >
-                ne
+                Nepali
               </option>
               <option
                 value="pa"
               >
-                pa
+                Punjabi
               </option>
               <option
                 value="pl"
               >
-                pl
+                Polish
               </option>
               <option
                 value="pt"
               >
-                pt
+                Portuguese
               </option>
               <option
                 value="ro"
               >
-                ro
+                Romanian
               </option>
               <option
                 value="ru"
               >
-                ru
+                Russian
               </option>
               <option
                 value="sk"
               >
-                sk
+                Slovak
               </option>
               <option
                 value="so"
               >
-                so
+                Somali
               </option>
               <option
                 value="sq"
               >
-                sq
+                Albanian
               </option>
               <option
                 value="ta"
               >
-                ta
+                Tamil
               </option>
               <option
                 value="tr"
               >
-                tr
+                Turkish
               </option>
               <option
                 value="ur"
               >
-                ur
+                Urdu
               </option>
               <option
                 value="zh"
               >
-                zh
+                Chinese
               </option>
             </select>
           </div>

@@ -14,6 +14,7 @@ import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
 import {
   isLanguage,
   isRightToLeft,
+  languageMapping,
 } from 'nhs-notify-web-template-management-utils';
 import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
 import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
@@ -164,7 +165,7 @@ export function LanguageField() {
           <option />
           {OTHER_LANGUAGES.map((language) => (
             <option key={language} value={language}>
-              {language}
+              {languageMapping(language)}
             </option>
           ))}
         </select>

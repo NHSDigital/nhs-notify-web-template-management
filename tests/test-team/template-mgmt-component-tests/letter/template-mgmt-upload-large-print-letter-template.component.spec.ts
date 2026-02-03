@@ -19,36 +19,46 @@ import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/tem
 let userNoCampaignId: TestUser;
 let userSingleCampaign: TestUser;
 let userMultipleCampaigns: TestUser;
+let userAuthoringDisabled: TestUser;
 
 test.beforeAll(async () => {
   const authHelper = createAuthHelper();
 
-  userSingleCampaign = await authHelper.getTestUser(testUsers.User1.userId);
+  userSingleCampaign = await authHelper.getTestUser(
+    testUsers.UserLetterAuthoringEnabled.userId
+  );
   userNoCampaignId = await authHelper.getTestUser(testUsers.User6.userId);
   userMultipleCampaigns = await authHelper.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
+  userAuthoringDisabled = await authHelper.getTestUser(testUsers.User3.userId);
 });
 
 test.describe('Upload Large Print Letter Template Page', () => {
-  test('common page tests', async ({ page, baseURL }) => {
-    const props = {
-      page: new TemplateMgmtUploadLargePrintLetterTemplatePage(page),
-      baseURL,
-    };
-
-    await assertSkipToMainContent(props);
-    await assertHeaderLogoLink(props);
-    await assertSignOutLink(props);
-    await assertFooterLinks(props);
-    await assertBackLinkBottomNotPresent(props);
-    await assertAndClickBackLinkTop({
-      ...props,
-      expectedUrl: 'templates/choose-a-template-type',
-    });
-  });
-
   test.describe('single campaign client', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ page }) => {
+      await loginAsUser(userSingleCampaign, page);
+    });
+
+    test('common page tests', async ({ page, baseURL }) => {
+      const props = {
+        page: new TemplateMgmtUploadLargePrintLetterTemplatePage(page),
+        baseURL,
+      };
+
+      await assertSkipToMainContent(props);
+      await assertHeaderLogoLink(props);
+      await assertSignOutLink(props);
+      await assertFooterLinks(props);
+      await assertBackLinkBottomNotPresent(props);
+      await assertAndClickBackLinkTop({
+        ...props,
+        expectedUrl: 'templates/choose-a-template-type',
+      });
+    });
+
     test('no validation errors when form is submitted', async ({ page }) => {
       const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
         page
@@ -166,6 +176,24 @@ test.describe('Upload Large Print Letter Template Page', () => {
       await expect(page).toHaveURL(
         '/templates/upload-letter-template/client-id-and-campaign-id-required'
       );
+    });
+  });
+
+  test.describe('client has letter authoring flag disabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ page }) => {
+      await loginAsUser(userAuthoringDisabled, page);
+    });
+
+    test('redirects to choose template type page', async ({ page }) => {
+      const uploadPage = new TemplateMgmtUploadLargePrintLetterTemplatePage(
+        page
+      );
+
+      await uploadPage.loadPage();
+
+      await expect(page).toHaveURL('/templates/choose-a-template-type');
     });
   });
 });

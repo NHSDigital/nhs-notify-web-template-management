@@ -34,7 +34,7 @@ export const testClients: TestClients = {
     },
   },
   /**
-   * Client2 has proofing and routing disabled
+   * Client2 has all feature flags disabled
    */
   Client2: {
     campaignIds: ['Campaign2'],
@@ -56,8 +56,8 @@ export const testClients: TestClients = {
     name: 'NHS Test Client 4',
     features: {
       proofing: true,
-      routing: false,
-      letterAuthoring: false,
+      routing: true,
+      letterAuthoring: true,
     },
   },
   /**
@@ -90,7 +90,7 @@ export const testClients: TestClients = {
     features: {
       proofing: true,
       routing: true,
-      letterAuthoring: false,
+      letterAuthoring: true,
     },
   },
 

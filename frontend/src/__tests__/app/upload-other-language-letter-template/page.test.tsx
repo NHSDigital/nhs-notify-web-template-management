@@ -25,11 +25,33 @@ test('metadata', () => {
   });
 });
 
+describe('client has letter authoring feature flag disabled', () => {
+  beforeEach(() => {
+    jest.mocked(fetchClient).mockResolvedValue({
+      campaignIds: [],
+      features: {
+        letterAuthoring: false,
+      },
+    });
+  });
+
+  it('redirects to campaign id required page', async () => {
+    await Page();
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/choose-a-template-type',
+      RedirectType.replace
+    );
+  });
+});
+
 describe('client has no campaign ids', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: [],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 
@@ -47,7 +69,9 @@ describe('client has one campaign id', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: ['Campaign 1'],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 
@@ -63,7 +87,10 @@ describe('client has one campaign id', () => {
     await user.click(screen.getByLabelText('Template name'));
     await user.keyboard('A new template');
 
-    await user.selectOptions(screen.getByLabelText('Template language'), 'sk');
+    await user.selectOptions(
+      screen.getByLabelText('Template language'),
+      'Slovak'
+    );
 
     const file = new File(['hello'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -128,7 +155,10 @@ describe('client has one campaign id', () => {
       })
     ).not.toBeInTheDocument();
 
-    await user.selectOptions(screen.getByLabelText('Template language'), 'sk');
+    await user.selectOptions(
+      screen.getByLabelText('Template language'),
+      'Slovak'
+    );
 
     expect(
       page.queryByRole('link', {
@@ -136,7 +166,10 @@ describe('client has one campaign id', () => {
       })
     ).not.toBeInTheDocument();
 
-    await user.selectOptions(screen.getByLabelText('Template language'), 'ar');
+    await user.selectOptions(
+      screen.getByLabelText('Template language'),
+      'Arabic'
+    );
 
     expect(
       page.getByRole('link', {
@@ -146,7 +179,10 @@ describe('client has one campaign id', () => {
 
     expect(page.asFragment()).toMatchSnapshot();
 
-    await user.selectOptions(screen.getByLabelText('Template language'), 'sk');
+    await user.selectOptions(
+      screen.getByLabelText('Template language'),
+      'Slovak'
+    );
 
     expect(
       page.queryByRole('link', {
@@ -160,7 +196,9 @@ describe('client has multiple campaign ids', () => {
   beforeEach(() => {
     jest.mocked(fetchClient).mockResolvedValue({
       campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {},
+      features: {
+        letterAuthoring: true,
+      },
     });
   });
 
@@ -178,7 +216,10 @@ describe('client has multiple campaign ids', () => {
 
     await user.selectOptions(screen.getByLabelText('Campaign'), 'Campaign 2');
 
-    await user.selectOptions(screen.getByLabelText('Template language'), 'sk');
+    await user.selectOptions(
+      screen.getByLabelText('Template language'),
+      'Slovak'
+    );
 
     const file = new File(['hello'], 'template.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
