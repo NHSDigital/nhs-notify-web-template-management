@@ -539,16 +539,10 @@ const previewLetterTemplate = {
   },
   links: {
     messageTemplates: '/message-templates',
-    submitLetterTemplate: (
-      basePath: string,
-      templateId: string,
-      lockNumber: number
-    ) => `${basePath}/submit-letter-template/${templateId}?lockNumber=${lockNumber}`,
-    requestProofOfTemplate: (
-      basePath: string,
-      templateId: string,
-      lockNumber: number
-    ) => `${basePath}/request-proof-of-template/${templateId}?lockNumber=${lockNumber}`,
+    submitLetterTemplate:
+      '{{basePath}}/submit-letter-template/{{templateId}}?lockNumber={{lockNumber}}',
+    requestProofOfTemplate:
+      '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
   },
 };
 
@@ -640,7 +634,8 @@ const previewTemplateDetails = {
       'https://notify.nhs.uk/templates/what-template-statuses-mean',
   },
   links: {
-    editTemplateName: (templateId: string) => `edit-template-name/${templateId}`,
+    editTemplateName: (templateId: string) =>
+      `edit-template-name/${templateId}`,
     editTemplateCampaign: (templateId: string) =>
       `edit-template-campaign/${templateId}`,
     choosePrintingAndPostage: (templateId: string) =>

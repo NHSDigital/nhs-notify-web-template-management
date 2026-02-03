@@ -19,6 +19,7 @@ import classNames from 'classnames';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { interpolate } from '@utils/interpolate';
 
 type ButtonDetails = { text: string; href: string };
 
@@ -56,27 +57,27 @@ function PreviewPdfLetterTemplate({
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
       text: submitText,
-      href: links.submitLetterTemplate(
+      href: interpolate(links.submitLetterTemplate, {
         basePath,
-        template.id,
-        template.lockNumber
-      ),
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
     },
     PROOF_AVAILABLE: {
       text: routing ? approveProofText : submitText,
-      href: links.submitLetterTemplate(
+      href: interpolate(links.submitLetterTemplate, {
         basePath,
-        template.id,
-        template.lockNumber
-      ),
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
     },
     PENDING_PROOF_REQUEST: {
       text: requestProofText,
-      href: links.requestProofOfTemplate(
+      href: interpolate(links.requestProofOfTemplate, {
         basePath,
-        template.id,
-        template.lockNumber
-      ),
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
