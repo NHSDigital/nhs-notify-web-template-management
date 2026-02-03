@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"
@@ -220,7 +220,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot with hideActions 1`] = `
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with hideActions 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"
@@ -375,7 +375,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot with hideActions
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsAuthoringLetter matches snapshot without letterVariantId (shows missing value styling) 1`] = `
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without letterVariantId (shows missing value styling) 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"

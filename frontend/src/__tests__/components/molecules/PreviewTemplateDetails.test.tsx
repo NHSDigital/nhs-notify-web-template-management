@@ -1,4 +1,3 @@
-import { ActionLink } from '@molecules/PreviewTemplateDetails/ActionLink';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
@@ -190,104 +189,116 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
 });
 
 describe('PreviewTemplateDetailsAuthoringLetter', () => {
-  it('matches snapshot', () => {
-    const container = render(
-      <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-    );
+  describe('snapshots', () => {
+    it('matches snapshot', () => {
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+        />
+      );
 
-    expect(container.asFragment()).toMatchSnapshot();
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('matches snapshot without letterVariantId (shows missing value styling)', () => {
+      const { letterVariantId: _, ...templateWithoutVariant } =
+        baseAuthoringLetter;
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={templateWithoutVariant}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+      expect(
+        container.container.querySelector('.missing-value')
+      ).toBeInTheDocument();
+    });
+
+    it('matches snapshot with hideActions', () => {
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...baseAuthoringLetter, campaignId: 'campaign-123' }}
+          hideActions
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+    });
   });
 
-  it('matches snapshot without letterVariantId (shows missing value styling)', () => {
-    const { letterVariantId: _, ...templateWithoutVariant } =
-      baseAuthoringLetter;
-    const container = render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={templateWithoutVariant}
-      />
-    );
+  describe('hideStatus', () => {
+    it('hides status when hideStatus is true', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          hideStatus
+        />
+      );
 
-    expect(container.asFragment()).toMatchSnapshot();
-    expect(
-      container.container.querySelector('.missing-value')
-    ).toBeInTheDocument();
+      expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
+    });
   });
 
-  it('matches snapshot with hideActions', () => {
-    const container = render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={{ ...baseAuthoringLetter, campaignId: 'campaign-123' }}
-        hideActions
-      />
-    );
+  describe('locked template warning', () => {
+    it('displays warning when routing enabled and status is SUBMITTED', () => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
 
-    expect(container.asFragment()).toMatchSnapshot();
-    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...baseAuthoringLetter, templateStatus: 'SUBMITTED' }}
+        />
+      );
+
+      expect(
+        screen.getByText(/you cannot delete this template/i)
+      ).toBeInTheDocument();
+    });
   });
 
-  it('hides status when hideStatus is true', () => {
-    render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={baseAuthoringLetter}
-        hideStatus
-      />
-    );
+  describe('campaign Edit link', () => {
+    it('hides link when client has single campaign', () => {
+      jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
 
-    expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
-  });
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...baseAuthoringLetter, campaignId: 'single-campaign' }}
+        />
+      );
 
-  it('displays locked template warning when routing enabled and status is SUBMITTED', () => {
-    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+      expect(screen.getByText('single-campaign')).toBeInTheDocument();
+      expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+    });
 
-    render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={{ ...baseAuthoringLetter, templateStatus: 'SUBMITTED' }}
-      />
-    );
+    it('shows link when client has multiple campaigns', () => {
+      jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
 
-    expect(
-      screen.getByText(/you cannot delete this template/i)
-    ).toBeInTheDocument();
-  });
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...baseAuthoringLetter, campaignId: 'campaign-1' }}
+        />
+      );
 
-  it('hides campaign Edit link when client has single campaign', () => {
-    jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
+      expect(screen.getByText('campaign-1')).toBeInTheDocument();
+      expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
+    });
 
-    render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={{ ...baseAuthoringLetter, campaignId: 'single-campaign' }}
-      />
-    );
+    it('shows link when campaignId is missing', () => {
+      jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
 
-    expect(screen.getByText('single-campaign')).toBeInTheDocument();
-    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
-  });
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+        />
+      );
 
-  it('shows campaign Edit link when client has multiple campaigns', () => {
-    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
-
-    render(
-      <PreviewTemplateDetailsAuthoringLetter
-        template={{ ...baseAuthoringLetter, campaignId: 'campaign-1' }}
-      />
-    );
-
-    expect(screen.getByText('campaign-1')).toBeInTheDocument();
-    expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
-  });
-
-  it('shows campaign Edit link when campaignId is missing', () => {
-    jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
-
-    render(
-      <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-    );
-
-    expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
-    expect(
-      screen.getByTestId('campaign-action').closest('.missing-value')
-    ).toBeInTheDocument();
+      expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('campaign-action').closest('.missing-value')
+      ).toBeInTheDocument();
+    });
   });
 });
 
@@ -318,72 +329,5 @@ describe('PreviewTemplateDetailsLetter', () => {
     expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
     expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
     expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
-  });
-});
-
-describe('ActionLink', () => {
-  it('renders link with label and visually hidden text', () => {
-    render(
-      <ActionLink
-        href='/edit/123'
-        label='Edit'
-        visuallyHiddenText='template name'
-        testId='test-link'
-      />
-    );
-
-    const link = screen.getByTestId('test-link');
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/edit/123');
-    expect(link).toHaveTextContent('Edit');
-    expect(link).toHaveTextContent('template name');
-  });
-
-  it('renders empty SummaryList.Actions when hidden is true', () => {
-    const { container } = render(
-      <ActionLink
-        href='/edit/123'
-        label='Edit'
-        visuallyHiddenText='template name'
-        testId='test-link'
-        hidden
-      />
-    );
-
-    expect(screen.queryByTestId('test-link')).not.toBeInTheDocument();
-    expect(
-      container.querySelector('.nhsuk-summary-list__actions')
-    ).toBeInTheDocument();
-  });
-
-  it('adds external link attributes when external is true', () => {
-    render(
-      <ActionLink
-        href='https://example.com'
-        label='Learn more'
-        visuallyHiddenText='about templates'
-        testId='external-link'
-        external
-      />
-    );
-
-    const link = screen.getByTestId('external-link');
-    expect(link).toHaveAttribute('target', '_blank');
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-  });
-
-  it('does not add external link attributes when external is false', () => {
-    render(
-      <ActionLink
-        href='/internal'
-        label='Edit'
-        visuallyHiddenText='template'
-        testId='internal-link'
-      />
-    );
-
-    const link = screen.getByTestId('internal-link');
-    expect(link).not.toHaveAttribute('target');
-    expect(link).not.toHaveAttribute('rel');
   });
 });
