@@ -7,11 +7,11 @@ import PreviewTemplateDetailsAuthoringLetter from './PreviewTemplateDetailsAutho
 export default function PreviewTemplateDetailsLetter({
   template,
   hideStatus,
-  hideActions,
+  hideEditActions,
 }: {
   template: LetterTemplate;
   hideStatus?: boolean;
-  hideActions?: boolean;
+  hideEditActions?: boolean;
 }) {
   return template.letterVersion === 'PDF' ? (
     <PreviewTemplateDetailsPdfLetter
@@ -22,7 +22,7 @@ export default function PreviewTemplateDetailsLetter({
     <PreviewTemplateDetailsAuthoringLetter
       template={template}
       hideStatus={hideStatus}
-      hideActions={hideActions}
+      hideEditActions={hideEditActions}
     />
   );
 }

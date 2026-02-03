@@ -18,11 +18,11 @@ import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotif
 export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
   hideStatus,
-  hideActions,
+  hideEditActions,
 }: {
   template: T;
   hideStatus?: boolean;
-  hideActions?: boolean;
+  hideEditActions?: boolean;
 }) => JSX.Element;
 
 type ContentPreviewField = {

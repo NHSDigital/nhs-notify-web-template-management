@@ -192,9 +192,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
   describe('snapshots', () => {
     it('matches snapshot', () => {
       const container = render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={baseAuthoringLetter}
-        />
+        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -215,17 +213,20 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot with hideActions', () => {
+    it('matches snapshot with hideEditActions', () => {
       const container = render(
         <PreviewTemplateDetailsAuthoringLetter
           template={{ ...baseAuthoringLetter, campaignId: 'campaign-123' }}
-          hideActions
+          hideEditActions
         />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
       expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
       expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
+      // Learn more links should still be visible
+      expect(screen.getByTestId('sheets-action')).toBeInTheDocument();
+      expect(screen.getByTestId('status-action')).toBeInTheDocument();
     });
   });
 
@@ -289,9 +290,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
 
       render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={baseAuthoringLetter}
-        />
+        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
       );
 
       expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
@@ -317,12 +316,12 @@ describe('PreviewTemplateDetailsLetter', () => {
     expect(screen.getByText('Sheets')).toBeInTheDocument();
   });
 
-  it('passes hideStatus and hideActions props through', () => {
+  it('passes hideStatus and hideEditActions props through', () => {
     render(
       <PreviewTemplateDetailsLetter
         template={{ ...baseAuthoringLetter, campaignId: 'campaign-123' }}
         hideStatus
-        hideActions
+        hideEditActions
       />
     );
 

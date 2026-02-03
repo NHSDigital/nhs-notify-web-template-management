@@ -25,11 +25,11 @@ const { rowHeadings, visuallyHidden, externalLinks, actions } =
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
   hideStatus,
-  hideActions,
+  hideEditActions,
 }: {
   template: AuthoringLetterTemplate;
   hideStatus?: boolean;
-  hideActions?: boolean;
+  hideEditActions?: boolean;
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
@@ -37,13 +37,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const hasSingleCampaign = campaignIds.length === 1;
 
   const hideEditCampaignLink =
-    hideActions || (template.campaignId && hasSingleCampaign);
+    hideEditActions || (template.campaignId && hasSingleCampaign);
 
   return (
     <>
       <DetailsHeader templateName={template.name} />
 
-      {!hideActions && (
+      {!hideEditActions && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link
             href={`edit-template-name/${template.id}`}
@@ -121,7 +121,6 @@ export default function PreviewTemplateDetailsAuthoringLetter({
               href={externalLinks.lettersPricing}
               label={actions.learnMore}
               visuallyHiddenText={visuallyHidden.sheets}
-              hidden={hideActions}
               testId='sheets-action'
               external
             />
@@ -129,9 +128,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
           {/* Printing and postage */}
           <SummaryList.Row
-            className={
-              template.letterVariantId ? undefined : 'missing-value'
-            }
+            className={template.letterVariantId ? undefined : 'missing-value'}
           >
             <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
             <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
@@ -139,7 +136,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
               href={`choose-printing-and-postage/${template.id}`}
               label={actions.edit}
               visuallyHiddenText={visuallyHidden.printingAndPostage}
-              hidden={hideActions}
+              hidden={hideEditActions}
               testId='printing-postage-action'
             />
           </SummaryList.Row>
@@ -161,7 +158,6 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 href={externalLinks.templateStatuses}
                 label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.status}
-                hidden={hideActions}
                 testId='status-action'
                 external
               />
