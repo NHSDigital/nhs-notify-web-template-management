@@ -634,12 +634,9 @@ const previewTemplateDetails = {
       'https://notify.nhs.uk/templates/what-template-statuses-mean',
   },
   links: {
-    editTemplateName: (templateId: string) =>
-      `edit-template-name/${templateId}`,
-    editTemplateCampaign: (templateId: string) =>
-      `edit-template-campaign/${templateId}`,
-    choosePrintingAndPostage: (templateId: string) =>
-      `choose-printing-and-postage/${templateId}`,
+    editTemplateName: 'edit-template-name/{{templateId}}',
+    editTemplateCampaign: 'edit-template-campaign/{{templateId}}',
+    choosePrintingAndPostage: 'choose-printing-and-postage/{{templateId}}',
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
