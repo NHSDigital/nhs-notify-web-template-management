@@ -21,7 +21,7 @@ export function ActionLink({
   external,
 }: ActionLinkProps) {
   if (hidden) {
-    return <SummaryList.Actions />;
+    return <SummaryList.Actions aria-hidden='true' />;
   }
 
   const externalProps = external

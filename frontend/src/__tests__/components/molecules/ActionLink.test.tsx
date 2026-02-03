@@ -19,7 +19,7 @@ describe('ActionLink', () => {
     expect(link).toHaveTextContent('template name');
   });
 
-  it('renders empty SummaryList.Actions when hidden is true', () => {
+  it('renders aria-hidden SummaryList.Actions when hidden is true', () => {
     const { container } = render(
       <ActionLink
         href='/edit/123'
@@ -31,9 +31,9 @@ describe('ActionLink', () => {
     );
 
     expect(screen.queryByTestId('test-link')).not.toBeInTheDocument();
-    expect(
-      container.querySelector('.nhsuk-summary-list__actions')
-    ).toBeInTheDocument();
+    const actions = container.querySelector('.nhsuk-summary-list__actions');
+    expect(actions).toBeInTheDocument();
+    expect(actions).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('adds external link attributes when external is true', () => {
