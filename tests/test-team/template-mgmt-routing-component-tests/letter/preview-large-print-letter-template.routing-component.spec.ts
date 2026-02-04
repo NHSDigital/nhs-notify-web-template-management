@@ -157,16 +157,10 @@ test.describe('Routing - Preview large print letter template page', () => {
 
     await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
 
-    if (
-      !templates.LARGE_PRINT_LETTER.campaignId ||
-      !templates.LARGE_PRINT_LETTER.files?.pdfTemplate?.fileName ||
-      !templates.LARGE_PRINT_LETTER.files?.testDataCsv?.fileName
-    ) {
-      throw new Error('Test data misconfiguration');
-    }
+    expect(templates.LARGE_PRINT_LETTER.campaignId).toBeTruthy();
 
     await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
-      templates.LARGE_PRINT_LETTER.campaignId
+      templates.LARGE_PRINT_LETTER.campaignId!
     );
 
     await expect(
@@ -209,12 +203,10 @@ test.describe('Routing - Preview large print letter template page', () => {
 
     await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
 
-    if (!templates.AUTHORING_LARGE_PRINT_LETTER.campaignId) {
-      throw new Error('Test data misconfiguration');
-    }
+    expect(!templates.AUTHORING_LARGE_PRINT_LETTER.campaignId).toBeTruthy();
 
     await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_LARGE_PRINT_LETTER.campaignId
+      templates.AUTHORING_LARGE_PRINT_LETTER.campaignId!
     );
   });
 
