@@ -15,10 +15,10 @@ const $FormSchema = z.object({
     .nonempty(errors.campaignId.empty),
   language: z.enum(LANGUAGE_LIST, errors.language.empty).exclude(['en']),
   file: z
-    .file('Not instanceof File')
+    .file(errors.language.empty)
     .mime(
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'Wrong file type'
+      errors.language.empty
     ),
 });
 
@@ -26,20 +26,7 @@ export async function uploadOtherLanguageLetterTemplate(
   _: FormState,
   form: FormData
 ): Promise<FormState> {
-  const data = Object.fromEntries(form.entries());
-
-  console.log('Data', data);
-
-  z.any()
-    .superRefine((obj) => {
-      console.log('obj', obj);
-      console.log('obj.file instanceof File', obj.file instanceof File);
-      console.log('obj.file.type', obj.file?.type);
-      console.log('obj.file.type.length', obj.file?.type?.length);
-    })
-    .safeParse(data);
-
-  const validation = $FormSchema.safeParse(data);
+  const validation = $FormSchema.safeParse(Object.fromEntries(form.entries()));
 
   const fields = formDataToFormStateFields(form);
 
