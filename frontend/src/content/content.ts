@@ -1587,7 +1587,7 @@ const uploadDocxLetterTemplateForm = {
         { type: 'text', text: '**Right-to-left language selected**' },
         {
           type: 'text',
-          text: "You've selected a language that reads right-to-left. Make sure you use the [other language (right-aligned) letter template file](https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language-right-aligned.docx).",
+          text: "You've selected a language that reads right-to-left. Make sure you use the [other language (right-aligned) letter template file (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter).",
         },
       ] satisfies ContentBlock[],
     },
@@ -1620,57 +1620,20 @@ const uploadDocxLetterTemplateForm = {
   },
 };
 
-type DocxTemplateType = Extract<LetterType, 'x0' | 'x1'> | 'language';
+type DocxTemplateType = LetterType | 'language';
 
-const uploadDocxLetterTemplateSideBarMappings: Record<
-  DocxTemplateType,
-  [string, string]
-> = {
-  x0: [
-    'standard English',
-    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify.docx',
-  ],
-  x1: [
-    'large print',
-    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx',
-  ],
-  language: [
-    'other language',
-    'https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx',
-  ],
+const docxLetterDisplayMappings: Record<DocxTemplateType, string> = {
+  x0: 'standard English',
+  x1: 'large print',
+  q4: 'British Sign Language',
+  language: 'other language',
 };
 
 const article = (noun: string) => (/^[aeiou]/i.test(noun) ? 'an' : 'a');
 
-const uploadDocxLetterTemplateSideBar = (
-  type: DocxTemplateType
-): ContentBlock[] => {
-  const [display, templateLink] = uploadDocxLetterTemplateSideBarMappings[type];
-
-  return [
-    {
-      type: 'text',
-      text: `## How to create ${article(display)} ${display} letter template`,
-      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
-    },
-    {
-      type: 'text',
-      text: markdownList('ol', [
-        `Download the blank [${display} letter template file](${templateLink}).`,
-        'Add [formatting (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/formatting).',
-        'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/personalisation).',
-        'Save your Microsoft Word file and upload it to this page.',
-      ]),
-      overrides: {
-        ol: { props: { className: 'nhsuk-list nhsuk-list--number' } },
-        li: { props: { className: 'nhsuk-u-margin-bottom-4' } },
-      },
-    },
-  ];
-};
-
 const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
-  const [display] = uploadDocxLetterTemplateSideBarMappings[type];
+  const display = docxLetterDisplayMappings[type];
+
   return {
     pageTitle: generatePageTitle(
       `Upload ${article(display)} ${display} letter template`
@@ -1680,7 +1643,26 @@ const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
       text: 'Back to choose a template type',
     },
     heading: `Upload ${article(display)} ${display} letter template`,
-    sideBar: uploadDocxLetterTemplateSideBar(type),
+    sideBar: [
+      {
+        type: 'text',
+        text: `## How to create ${article(display)} ${display} letter template`,
+        overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+      },
+      {
+        type: 'text',
+        text: markdownList('ol', [
+          'Download the relevant [blank letter template file (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter).',
+          'Add [formatting (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/formatting).',
+          'Add any [personalisation (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/personalisation).',
+          'Save your Microsoft Word file and upload it to this page.',
+        ]),
+        overrides: {
+          ol: { props: { className: 'nhsuk-list nhsuk-list--number' } },
+          li: { props: { className: 'nhsuk-u-margin-bottom-4' } },
+        },
+      },
+    ] satisfies ContentBlock[] as ContentBlock[],
   };
 };
 

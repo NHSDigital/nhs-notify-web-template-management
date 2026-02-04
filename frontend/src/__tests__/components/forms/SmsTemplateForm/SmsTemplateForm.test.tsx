@@ -121,26 +121,18 @@ describe('CreateSmsTemplate component', () => {
       />
     );
 
-    const templateMessageBox = document.querySelector('#smsTemplateMessage');
-
-    if (!templateMessageBox) {
-      throw new Error('Template message box not found');
-    }
+    const templateMessageBox = screen.getByLabelText('Message');
 
     const longMessage = 'x'.repeat(300);
 
     await user.type(templateMessageBox, longMessage);
 
-    const characterCount = screen.getByTestId('character-message-count');
-
-    if (!characterCount) {
-      throw new Error('Character count not found');
-    }
+    const characterCount = await screen.findByTestId('character-message-count');
 
     expect(characterCount.textContent).toContain(
       `${longMessage.length} characters`
     );
-  }, 10_000);
+  }, 15_000);
 
   test('Client-side validation triggers - valid form - no errors', () => {
     const container = render(

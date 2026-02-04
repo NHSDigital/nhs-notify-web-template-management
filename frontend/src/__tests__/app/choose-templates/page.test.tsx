@@ -772,7 +772,7 @@ describe('ChooseTemplatesPage', () => {
       );
       await user.click(moveToProductionButton);
 
-      const errorSummary = screen.getByRole('alert');
+      const errorSummary = await screen.findByRole('alert');
 
       expect(
         within(errorSummary).getByTestId('error-summary')
@@ -811,7 +811,7 @@ describe('ChooseTemplatesPage', () => {
       );
       await user.click(moveToProductionButton);
 
-      const errorLinks = screen.getAllByRole('link', {
+      const errorLinks = await screen.findAllByRole('link', {
         name: /You have not chosen a template for your/,
       });
       expect(errorLinks).toHaveLength(4);

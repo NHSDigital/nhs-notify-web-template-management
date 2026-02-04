@@ -351,13 +351,13 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              other language letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -836,13 +836,13 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              other language letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -1229,13 +1229,13 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              other language letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -1691,13 +1691,13 @@ exports[`client has one campaign id renders errors when blank form is submitted 
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              other language letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -2051,11 +2051,11 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
             <p>
               You've selected a language that reads right-to-left. Make sure you use the 
               <a
-                href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language-right-aligned.docx"
+                href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                other language (right-aligned) letter template file
+                other language (right-aligned) letter template file (opens in a new tab)
               </a>
               .
             </p>
@@ -2109,13 +2109,13 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-other-language.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              other language letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>

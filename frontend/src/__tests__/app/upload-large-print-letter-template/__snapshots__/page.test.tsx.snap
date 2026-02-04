@@ -187,13 +187,13 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              large print letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -491,13 +491,13 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              large print letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -720,13 +720,13 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              large print letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>
@@ -1001,13 +1001,13 @@ exports[`client has one campaign id renders errors when blank form is submitted 
           <li
             class="nhsuk-u-margin-bottom-4"
           >
-            Download the blank 
+            Download the relevant 
             <a
-              href="https://notify.nhs.uk/assets/worddocs/letter-template-nhs-notify-large-print.docx"
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
               rel="noopener noreferrer"
               target="_blank"
             >
-              large print letter template file
+              blank letter template file (opens in a new tab)
             </a>
             .
           </li>

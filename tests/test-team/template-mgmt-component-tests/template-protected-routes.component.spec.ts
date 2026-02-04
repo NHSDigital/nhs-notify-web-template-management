@@ -33,9 +33,10 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
-import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
+import { TemplateMgmtUploadBSLLetterTemplatePage } from 'pages/letter/template-mgmt-upload-bsl-letter-template-page';
 import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/template-mgmt-upload-large-print-letter-template-page';
 import { TemplateMgmtUploadOtherLanguageLetterTemplatePage } from 'pages/letter/template-mgmt-upload-other-language-letter-template-page';
+import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
 import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
@@ -114,9 +115,10 @@ const protectedPages = [
   TemplateMgmtTemplateSubmittedSmsPage,
   TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtUploadLetterPage,
-  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtUploadBSLLetterTemplatePage,
   TemplateMgmtUploadLargePrintLetterTemplatePage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
+  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

@@ -23,7 +23,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a British Sign Language letter template
         </h1>
       </div>
     </div>
@@ -40,7 +40,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-english-letter-template"
+            value="upload-large-print-letter-template"
           />
           <input
             name="csrf_token"
@@ -176,9 +176,9 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-british-sign-language-letter-template"
         >
-          How to create a standard English letter template
+          How to create a British Sign Language letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -297,7 +297,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a British Sign Language letter template
         </h1>
       </div>
     </div>
@@ -314,7 +314,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-english-letter-template"
+            value="upload-large-print-letter-template"
           />
           <input
             name="csrf_token"
@@ -480,9 +480,9 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-british-sign-language-letter-template"
         >
-          How to create a standard English letter template
+          How to create a British Sign Language letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -562,7 +562,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a British Sign Language letter template
         </h1>
       </div>
     </div>
@@ -579,7 +579,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-english-letter-template"
+            value="upload-large-print-letter-template"
           />
           <input
             name="csrf_token"
@@ -709,9 +709,9 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-british-sign-language-letter-template"
         >
-          How to create a standard English letter template
+          How to create a British Sign Language letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
@@ -823,7 +823,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
         <h1
           class="nhsuk-heading-xl"
         >
-          Upload a standard English letter template
+          Upload a British Sign Language letter template
         </h1>
       </div>
     </div>
@@ -840,7 +840,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
             name="form-id"
             readonly=""
             type="hidden"
-            value="upload-standard-english-letter-template"
+            value="upload-large-print-letter-template"
           />
           <input
             name="csrf_token"
@@ -990,9 +990,9 @@ exports[`client has one campaign id renders errors when blank form is submitted 
       >
         <h2
           class="nhsuk-heading-m"
-          id="how-to-create-a-standard-english-letter-template"
+          id="how-to-create-a-british-sign-language-letter-template"
         >
-          How to create a standard English letter template
+          How to create a British Sign Language letter template
         </h2>
         <ol
           class="nhsuk-list nhsuk-list--number"
