@@ -18,9 +18,11 @@ import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotif
 export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
   hideStatus,
+  hideEditActions,
 }: {
   template: T;
   hideStatus?: boolean;
+  hideEditActions?: boolean;
 }) => JSX.Element;
 
 type ContentPreviewField = {
@@ -32,11 +34,21 @@ type ContentPreviewField = {
 const { rowHeadings, previewTemplateStatusFootnote, headerCaption } =
   content.components.previewTemplateDetails;
 
-export function DetailSection({ children }: { children: React.ReactNode }) {
+export function DetailSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <SummaryList
       noBorder={false}
-      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+      className={concatClassNames(
+        'nhsuk-u-margin-bottom-4',
+        styles.preview,
+        className
+      )}
     >
       {children}
     </SummaryList>
@@ -68,6 +80,7 @@ export function ContentPreview({
   ));
 }
 
+// Once PDF letters are removed, this should become DigitalChannelDetailRows
 export function StandardDetailRows({
   template,
   templateTypeText,
@@ -80,6 +93,7 @@ export function StandardDetailRows({
   hideStatus?: boolean;
 }>): JSX.Element {
   const features = useFeatureFlags();
+
   return (
     <>
       <SummaryList.Row>

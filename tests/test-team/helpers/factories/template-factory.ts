@@ -107,10 +107,18 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
+      sidesCount?: number;
+      letterVariantId?: string;
+      campaignId?: string | null;
     }
   ): Template => {
+    const campaignId =
+      options?.campaignId === null
+        ? undefined
+        : (options?.campaignId ?? 'campaign-id');
+
     return TemplateFactory.create({
-      campaignId: 'campaign-id',
+      ...(campaignId && { campaignId }),
       clientId: user.clientId,
       id,
       language: options?.language || 'en',
@@ -121,6 +129,8 @@ export const TemplateFactory = {
       templateStatus,
       templateType: 'LETTER',
       proofingEnabled: true,
+      sidesCount: options?.sidesCount ?? 2,
+      letterVariantId: options?.letterVariantId,
     });
   },
 

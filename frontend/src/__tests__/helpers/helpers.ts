@@ -1,8 +1,11 @@
 import { mockDeep } from 'jest-mock-extended';
-import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import { RoutingConfig } from 'nhs-notify-backend-client';
 import {
   AuthoringLetterTemplate,
+  EmailTemplate,
+  NHSAppTemplate,
   PdfLetterTemplate,
+  SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
 function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
@@ -21,7 +24,7 @@ export const getMockFormData = (formData: Record<string, string | File>) =>
     get: (key: string) => formData[key],
   });
 
-export const NHS_APP_TEMPLATE: TemplateDto = {
+export const NHS_APP_TEMPLATE: NHSAppTemplate = {
   id: 'app-template-id',
   templateType: 'NHS_APP',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -32,7 +35,7 @@ export const NHS_APP_TEMPLATE: TemplateDto = {
   lockNumber: 1,
 } as const;
 
-export const EMAIL_TEMPLATE: TemplateDto = {
+export const EMAIL_TEMPLATE: EmailTemplate = {
   id: 'email-template-id',
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -44,7 +47,7 @@ export const EMAIL_TEMPLATE: TemplateDto = {
   lockNumber: 1,
 } as const;
 
-export const SMS_TEMPLATE: TemplateDto = {
+export const SMS_TEMPLATE: SMSTemplate = {
   id: 'sms-template-id',
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',

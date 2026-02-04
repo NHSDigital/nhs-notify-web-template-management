@@ -1,5 +1,8 @@
 import { LanguageLetterTemplates } from '@molecules/LanguageLetterTemplates/LanguageLetterTemplates';
-import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
+import {
+  AUTHORING_LETTER_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
+} from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -31,6 +34,13 @@ const GERMAN_LETTER_TEMPLATE: LetterTemplate = {
   id: 'german-template-id',
   name: 'German Letter Template',
   language: 'de',
+};
+
+const FRENCH_AUTHORING_LETTER_TEMPLATE: LetterTemplate = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  id: 'french-authoring-template-id',
+  name: 'French Authoring Letter Template',
+  language: 'fr',
 };
 
 describe('LanguageLetterTemplates', () => {
@@ -204,5 +214,27 @@ describe('LanguageLetterTemplates', () => {
       'name',
       `template_${POLISH_LETTER_TEMPLATE.id}`
     );
+  });
+
+  it('renders authoring letter templates', () => {
+    const container = render(
+      <form>
+        <LanguageLetterTemplates
+          templateList={[FRENCH_AUTHORING_LETTER_TEMPLATE]}
+          errorState={null}
+          selectedTemplates={[FRENCH_AUTHORING_LETTER_TEMPLATE.id]}
+          routingConfigId='routing-config-id'
+          lockNumber={5}
+        />
+      </form>
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+    expect(
+      container.getByText('French Authoring Letter Template')
+    ).toBeInTheDocument();
+    expect(
+      container.getByTestId(`${FRENCH_AUTHORING_LETTER_TEMPLATE.id}-checkbox`)
+    ).toBeChecked();
   });
 });

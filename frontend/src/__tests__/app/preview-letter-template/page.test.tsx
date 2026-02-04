@@ -13,6 +13,7 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
@@ -63,7 +64,7 @@ describe('PreviewLetterTemplatePage', () => {
     jest.resetAllMocks();
   });
 
-  it('should load page', async () => {
+  it('should load page with PDF letter template', async () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewLetterTemplatePage({
@@ -77,6 +78,20 @@ describe('PreviewLetterTemplatePage', () => {
     });
 
     expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);
+  });
+
+  it('should load page with authoring letter template', async () => {
+    getTemplateMock.mockResolvedValueOnce(AUTHORING_LETTER_TEMPLATE);
+
+    const page = await PreviewLetterTemplatePage({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+    });
+
+    expect(page).toEqual(
+      <PreviewLetterTemplate template={AUTHORING_LETTER_TEMPLATE} />
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
