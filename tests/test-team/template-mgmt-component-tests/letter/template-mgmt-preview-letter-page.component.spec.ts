@@ -5,14 +5,14 @@ import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   testUsers,
+  type TestUser,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
+import { loginAsUser } from '../../helpers/auth/login-as-user';
 
-async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-
+async function createTemplates(user: TestUser) {
   const withProofsBase = TemplateFactory.uploadLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
     user,
@@ -105,6 +105,33 @@ async function createTemplates() {
       id: '321B92CF-AECC-4938-B4CA-B00E4797327A',
     },
     withProofs,
+    authoringInvalid: {
+      id: 'preview-page-invalid-authoring-letter',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      owner: `CLIENT#${user.clientId}`,
+      letterVersion: 'AUTHORING',
+      lockNumber: 0,
+      name: 'empty-authoring-letter',
+      // Missing sidesCount - should be invalid
+    } as Template,
+    authoringValid: TemplateFactory.createAuthoringLetterTemplate(
+      'A1B2C3D4-E5F6-7890-ABCD-EF1234567890',
+      user,
+      'authoring-letter-valid',
+      'NOT_YET_SUBMITTED',
+      { sidesCount: 4, letterVariantId: 'variant-123' }
+    ),
+    authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
+      'B2C3D4E5-F6A7-8901-BCDE-F23456789012',
+      user,
+      'authoring-letter-no-campaign',
+      'NOT_YET_SUBMITTED',
+      { sidesCount: 4, letterVariantId: 'variant-456', campaignId: null }
+    ),
   };
 }
 
@@ -114,7 +141,8 @@ test.describe('Preview Letter template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    templates = await createTemplates();
+    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
@@ -375,6 +403,122 @@ test.describe('Preview Letter template Page', () => {
           `^/templates/files/[^/]+/proofs/${templates.withProofs.id}/b.pdf$`
         )
       );
+    });
+  });
+
+  test.describe('AUTHORING letter', () => {
+    test('when user visits page, then page is loaded with template details', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${templates.authoringValid.id}`
+      );
+
+      await expect(previewPage.pageHeading).toContainText(
+        templates.authoringValid.name
+      );
+
+      await expect(previewPage.templateId).toContainText(
+        templates.authoringValid.id
+      );
+
+      await expect(previewPage.editNameLink).toBeVisible();
+
+      await expect(previewPage.statusTag).toBeVisible();
+    });
+
+    test('when user visits page with missing data, then an invalid template error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringInvalid.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('shows campaign Edit link when template has no campaignId', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringNoCampaign.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.campaignAction).toBeVisible();
+      await expect(previewPage.campaignAction).toHaveText(/Edit/);
+    });
+
+    test('hides campaign Edit link when template has campaignId (single-campaign client)', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.campaignAction).toBeHidden();
+    });
+
+    test.describe('multi-campaign client', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
+
+      const multiCampaignTemplateStorageHelper = new TemplateStorageHelper();
+      let userWithMultipleCampaigns: TestUser;
+      let multiCampaignTemplate: Template;
+
+      test.beforeAll(async () => {
+        userWithMultipleCampaigns = await createAuthHelper().getTestUser(
+          testUsers.UserWithMultipleCampaigns.userId
+        );
+
+        multiCampaignTemplate = TemplateFactory.createAuthoringLetterTemplate(
+          'C3D4E5F6-A7B8-9012-CDEF-345678901234',
+          userWithMultipleCampaigns,
+          'authoring-letter-multi-campaign',
+          'NOT_YET_SUBMITTED',
+          { sidesCount: 4, letterVariantId: 'variant-789' }
+        );
+
+        await multiCampaignTemplateStorageHelper.seedTemplateData([
+          multiCampaignTemplate,
+        ]);
+      });
+
+      test.afterAll(async () => {
+        await multiCampaignTemplateStorageHelper.deleteSeededTemplates();
+      });
+
+      test('shows campaign Edit link when template has campaignId', async ({
+        page,
+      }) => {
+        await loginAsUser(userWithMultipleCampaigns, page);
+
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', multiCampaignTemplate.id);
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.campaignAction).toBeVisible();
+        await expect(previewPage.campaignAction).toHaveText(/Edit/);
+      });
     });
   });
 });

@@ -7,6 +7,7 @@ import type {
   Channel,
   RoutingConfigStatus,
   ClientFeatures,
+  LetterVersion,
 } from 'nhs-notify-backend-client';
 
 /**
@@ -22,6 +23,12 @@ import type {
 type LanguageMetadata = {
   name: string;
   rtl: boolean;
+};
+
+type PartialTemplate = {
+  templateType: TemplateType;
+  templateStatus: TemplateStatus;
+  letterVersion?: LetterVersion;
 };
 
 const languageMap: Record<Language, LanguageMetadata> = {
@@ -128,13 +135,22 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
   })[type];
 
 export const statusToDisplayMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  template: PartialTemplate,
   featureFlags: Pick<ClientFeatures, 'routing'>
 ): string => {
+  const notYetSubmittedLetter =
+    template.letterVersion === 'AUTHORING'
+      ? 'Approval needed'
+      : 'Not yet submitted';
+
+  const notYetSubmitted =
+    template.templateType === 'LETTER' ? notYetSubmittedLetter : 'Draft';
+
+  const submitted = featureFlags.routing ? 'Locked' : 'Submitted';
+
   const statusToDisplayMappings: Record<TemplateStatus, string> = {
-    NOT_YET_SUBMITTED:
-      template.templateType === 'LETTER' ? 'Not yet submitted' : 'Draft',
-    SUBMITTED: featureFlags.routing ? 'Locked' : 'Submitted',
+    NOT_YET_SUBMITTED: notYetSubmitted,
+    SUBMITTED: submitted,
     DELETED: '', // will not be shown in the UI
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Checking files',
@@ -163,12 +179,20 @@ type Colour =
   | undefined;
 
 export const statusToColourMapping = (
-  template: Pick<TemplateDto, 'templateType' | 'templateStatus'>,
+  template: PartialTemplate,
   featureFlags: Pick<ClientFeatures, 'routing'>
 ) => {
+  const notYetSubmittedLetter =
+    template.letterVersion === 'AUTHORING' ? 'yellow' : undefined;
+
+  const notYetSubmitted =
+    template.templateType === 'LETTER' ? notYetSubmittedLetter : 'green';
+
+  const submitted = featureFlags.routing ? 'pink' : 'grey';
+
   const colourMappings: Record<TemplateStatus, Colour> = {
-    NOT_YET_SUBMITTED: template.templateType === 'LETTER' ? undefined : 'green',
-    SUBMITTED: featureFlags.routing ? 'pink' : 'grey',
+    NOT_YET_SUBMITTED: notYetSubmitted,
+    SUBMITTED: submitted,
     DELETED: undefined,
     PENDING_PROOF_REQUEST: 'blue',
     PENDING_UPLOAD: 'blue',

@@ -33,6 +33,7 @@ export function PreviewSubmittedTemplate<T extends TemplateDto>({
           <div className='nhsuk-grid-column-full'>
             {previewComponent({
               template: initialState,
+              hideEditActions: true,
             })}
 
             {!routing && (

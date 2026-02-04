@@ -448,6 +448,179 @@ exports[`ChannelTemplates renders templates 1`] = `
 </DocumentFragment>
 `;
 
+exports[`ChannelTemplates renders templates including authoring letter 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-full"
+    >
+      <div
+        class="nhsuk-hint nhsuk-u-reading-width"
+        data-testid="table-hint"
+      >
+        Choose one option
+      </div>
+      <div
+        class="nhsuk-form-group"
+      >
+        <div
+          class="nhsuk-radios"
+          id="channelTemplate"
+        >
+          <table
+            class="nhsuk-table-responsive"
+            data-testid="channel-templates-table"
+            id="channel-templates-table"
+          >
+            <thead
+              class="nhsuk-table__head"
+              role="rowgroup"
+            >
+              <tr
+                class="nhsuk-table__row"
+              >
+                <th
+                  class="nhsuk-table__header"
+                  data-testid="channel-templates-table-header-template-select"
+                  scope="col"
+                >
+                  Select
+                </th>
+                <th
+                  class="nhsuk-table__header"
+                  data-testid="channel-templates-table-header-template-name"
+                  scope="col"
+                >
+                  Name
+                </th>
+                <th
+                  class="nhsuk-table__header"
+                  data-testid="channel-templates-table-header-template-type"
+                  scope="col"
+                >
+                  Type
+                </th>
+                <th
+                  class="nhsuk-table__header"
+                  data-testid="channel-templates-table-header-template-last-edited"
+                  scope="col"
+                >
+                  Last edited
+                </th>
+                <th
+                  class="nhsuk-table__header"
+                  data-testid="channel-templates-table-header-template-action"
+                  scope="col"
+                />
+              </tr>
+            </thead>
+            <tbody
+              class="nhsuk-table__body"
+            >
+              <tr
+                class="nhsuk-table__row"
+              >
+                <td
+                  class="nhsuk-table__cell"
+                  role="cell"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="nhsuk-table-responsive__heading"
+                  >
+                    Select 
+                  </span>
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      checked=""
+                      class="nhsuk-radios__input"
+                      data-testid="authoring-letter-template-id-radio"
+                      id="channelTemplate-authoring-letter-template-id"
+                      name="channelTemplate"
+                      type="radio"
+                      value="authoring-letter-template-id"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="channelTemplate-authoring-letter-template-id"
+                      id="channelTemplate-authoring-letter-template-id--label"
+                    >
+                       
+                    </label>
+                  </div>
+                </td>
+                <td
+                  class="nhsuk-table__cell"
+                  role="cell"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="nhsuk-table-responsive__heading"
+                  >
+                    Name 
+                  </span>
+                  authoring letter template name
+                </td>
+                <td
+                  class="nhsuk-table__cell"
+                  role="cell"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="nhsuk-table-responsive__heading"
+                  >
+                    Type 
+                  </span>
+                  Standard letter
+                </td>
+                <td
+                  class="nhsuk-table__cell"
+                  role="cell"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="nhsuk-table-responsive__heading"
+                  >
+                    Last edited 
+                  </span>
+                  13th Jan 2025
+                  <br />
+                  10:19
+                </td>
+                <td
+                  class="nhsuk-table__cell"
+                  role="cell"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="nhsuk-table-responsive__heading"
+                  >
+                     
+                  </span>
+                  <a
+                    aria-label="Preview"
+                    class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                    data-testid="authoring-letter-template-id-preview-link"
+                    href="/message-plans/choose-standard-english-letter-template/abc/preview-template/authoring-letter-template-id?lockNumber=5"
+                    id="preview-template-link-0"
+                  >
+                    Preview
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`ChannelTemplates renders templates with error state 1`] = `
 <DocumentFragment>
   <div

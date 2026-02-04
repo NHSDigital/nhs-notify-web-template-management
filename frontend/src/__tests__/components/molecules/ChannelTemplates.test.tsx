@@ -1,6 +1,7 @@
 import { ChannelTemplates } from '@molecules/ChannelTemplates/ChannelTemplates';
 import { render } from '@testing-library/react';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
@@ -80,5 +81,22 @@ describe('ChannelTemplates', () => {
     expect(
       container.getByText('You must select a template')
     ).toBeInTheDocument();
+  });
+
+  it('renders templates including authoring letter', () => {
+    const container = render(
+      <ChannelTemplates
+        templateList={[AUTHORING_LETTER_TEMPLATE]}
+        errorState={null}
+        selectedTemplate={AUTHORING_LETTER_TEMPLATE.id}
+        routingConfigId='abc'
+        lockNumber={5}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+    expect(
+      container.getByTestId(`${AUTHORING_LETTER_TEMPLATE.id}-radio`)
+    ).toHaveAttribute('checked');
   });
 });

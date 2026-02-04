@@ -9,6 +9,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
@@ -29,7 +30,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('PreviewSubmittedLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should load page', async () => {
+  it('should load page with PDF letter template', async () => {
     const templateDTO = {
       createdAt: '2025-01-13T10:19:25.579Z',
       files: {
@@ -74,6 +75,28 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     );
   });
 
+  it('should load page with authoring letter template', async () => {
+    const templateDTO = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    } satisfies TemplateDto;
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
+
+    const page = await PreviewSubmittedLetterTemplatePage({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+    });
+
+    expect(page).toEqual(
+      <PreviewSubmittedTemplate
+        initialState={templateDTO}
+        previewComponent={PreviewTemplateDetailsLetter}
+      />
+    );
+  });
+
   it('should redirect to invalid-template when no template is found', async () => {
     await PreviewSubmittedLetterTemplatePage({
       params: Promise.resolve({
@@ -104,6 +127,10 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     },
     {
       ...PDF_LETTER_TEMPLATE,
+      templateStatus: 'NOT_YET_SUBMITTED' as const,
+    },
+    {
+      ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
   ])(

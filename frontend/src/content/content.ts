@@ -539,6 +539,13 @@ const previewLetterTemplate = {
       'After you submit your template, our service team will send you a proof by email instead.',
     text3: 'This email will tell you what to do next.',
   },
+  links: {
+    messageTemplates: '/message-templates',
+    submitLetterTemplate:
+      '{{basePath}}/submit-letter-template/{{templateId}}?lockNumber={{lockNumber}}',
+    requestProofOfTemplate:
+      '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
+  },
 };
 
 const previewNHSAppTemplate = {
@@ -604,8 +611,34 @@ const previewTemplateDetails = {
     campaignId: 'Campaign',
     templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
-    templateType: 'Type',
+    templateType: 'Template type',
     examplePersonalisationFile: 'Example personalisation file',
+    letterType: 'Letter type',
+    sidesCount: 'Number of sides',
+    totalPages: 'Total pages',
+    sheets: 'Sheets',
+    printingAndPostage: 'Printing and postage',
+  },
+  actions: {
+    editName: 'Edit name',
+    edit: 'Edit',
+    learnMore: 'Learn more',
+  },
+  visuallyHidden: {
+    campaign: 'campaign',
+    sheets: 'about sheets',
+    printingAndPostage: 'printing and postage',
+    status: 'about status',
+  },
+  externalLinks: {
+    lettersPricing: 'https://notify.nhs.uk/pricing-and-commercial/letters',
+    templateStatuses:
+      'https://notify.nhs.uk/templates/what-template-statuses-mean',
+  },
+  links: {
+    editTemplateName: '/edit-template-name/{{templateId}}',
+    editTemplateCampaign: '/edit-template-campaign/{{templateId}}',
+    choosePrintingAndPostage: '/choose-printing-and-postage/{{templateId}}',
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',

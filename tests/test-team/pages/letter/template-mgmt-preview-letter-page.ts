@@ -10,17 +10,27 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
-  public readonly pdfLinks: Locator;
-  public readonly campaignId: Locator;
   public readonly statusTag: Locator;
+
+  // PDF letter specific
+  public readonly pdfLinks: Locator;
+
+  // AUTHORING letter specific
+  public readonly editNameLink: Locator;
+  public readonly sheetsAction: Locator;
+  public readonly statusAction: Locator;
+  public readonly campaignAction: Locator;
 
   constructor(page: Page) {
     super(page);
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
+    this.statusTag = page.getByTestId('status-tag');
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
-    this.campaignId = page.locator('[id="campaign-id"]');
-    this.statusTag = page.locator('[data-testid="status-tag"]');
+    this.editNameLink = page.getByTestId('edit-name-link');
+    this.sheetsAction = page.getByTestId('sheets-action');
+    this.statusAction = page.getByTestId('status-action');
+    this.campaignAction = page.getByTestId('campaign-action');
   }
 
   async clickContinueButton() {

@@ -62,7 +62,7 @@ exports[`PreviewLargePrintLetterTemplateFromMessagePlan page renders large print
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Type
+                Template type
               </dt>
               <dd
                 class="nhsuk-summary-list__value"

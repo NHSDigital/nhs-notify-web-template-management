@@ -3,6 +3,7 @@ import {
   $ChooseLanguageLetterTemplates,
 } from '@forms/ChooseLanguageLetterTemplates/server-action';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   getMockFormData,
   ROUTING_CONFIG,
   PDF_LETTER_TEMPLATE,
@@ -36,6 +37,13 @@ const SPANISH_LETTER: LetterTemplate = {
   id: 'spanish-id',
   language: 'es',
   name: 'Spanish Letter',
+};
+
+const GERMAN_AUTHORING_LETTER: LetterTemplate = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  id: 'german-authoring-id',
+  language: 'de',
+  name: 'German Authoring Letter',
 };
 
 describe('chooseLanguageLetterTemplatesAction', () => {
@@ -129,6 +137,50 @@ describe('chooseLanguageLetterTemplatesAction', () => {
         ],
       }),
       42
+    );
+  });
+
+  test('should update message plan with authoring letter template selection', async () => {
+    await chooseLanguageLetterTemplatesAction(
+      {
+        messagePlan: {
+          ...ROUTING_CONFIG,
+          cascade: [
+            {
+              ...ROUTING_CONFIG.cascade[0],
+            },
+          ],
+        },
+        cascadeIndex: 0,
+        templateList: [GERMAN_AUTHORING_LETTER],
+        pageHeading: 'Choose language templates',
+      },
+      getMockFormData({
+        [`template_${GERMAN_AUTHORING_LETTER.id}`]: `${GERMAN_AUTHORING_LETTER.id}:de`,
+        lockNumber: '42',
+      })
+    );
+
+    expect(mockUpdateRoutingConfig).toHaveBeenCalledWith(
+      ROUTING_CONFIG.id,
+      expect.objectContaining({
+        cascade: [
+          expect.objectContaining({
+            conditionalTemplates: [
+              expect.objectContaining({
+                language: 'de',
+                templateId: GERMAN_AUTHORING_LETTER.id,
+              }),
+            ],
+          }),
+        ],
+      }),
+      42
+    );
+
+    expect(mockRedirect).toHaveBeenCalledWith(
+      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      RedirectType.push
     );
   });
 

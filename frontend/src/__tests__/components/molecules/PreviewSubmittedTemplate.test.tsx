@@ -1,9 +1,13 @@
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { useFeatureFlags } from '@providers/client-config-provider';
+import {
+  useCampaignIds,
+  useFeatureFlags,
+} from '@providers/client-config-provider';
 import { render } from '@testing-library/react';
 
 jest.mock('@providers/client-config-provider');
@@ -13,6 +17,7 @@ describe('PreviewSubmittedTemplate component', () => {
     beforeEach(() => {
       jest.resetAllMocks();
       jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+      jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
     });
 
     it('should render app message', () => {
@@ -76,7 +81,7 @@ describe('PreviewSubmittedTemplate component', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('should render letter', () => {
+    it('should render PDF letter', () => {
       const container = render(
         <PreviewSubmittedTemplate
           initialState={{
@@ -121,7 +126,31 @@ describe('PreviewSubmittedTemplate component', () => {
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,
           }}
-          previewComponent={PreviewTemplateDetailsLetter}
+          previewComponent={PreviewTemplateDetailsPdfLetter}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('should render authoring letter', () => {
+      const container = render(
+        <PreviewSubmittedTemplate
+          initialState={{
+            id: 'template-id',
+            name: 'Example authoring letter',
+            templateStatus: 'SUBMITTED',
+            templateType: 'LETTER',
+            letterType: 'x0',
+            letterVersion: 'AUTHORING',
+            language: 'en',
+            sidesCount: 4,
+            letterVariantId: 'first-class',
+            createdAt: '2025-01-13T10:19:25.579Z',
+            updatedAt: '2025-01-13T10:19:25.579Z',
+            lockNumber: 1,
+          }}
+          previewComponent={PreviewTemplateDetailsAuthoringLetter}
         />
       );
 
