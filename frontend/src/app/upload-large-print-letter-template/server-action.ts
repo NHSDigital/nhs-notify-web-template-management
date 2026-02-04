@@ -13,7 +13,9 @@ const $FormSchema = z.object({
   campaignId: z
     .string(errors.campaignId.empty)
     .nonempty(errors.campaignId.empty),
-  file: z.file(errors.file.empty).mime(DOCX_MIME, errors.file.empty),
+  file: z
+    .instanceof(File, { error: errors.file.empty })
+    .refine((file) => file.type === DOCX_MIME, errors.file.empty),
 });
 
 export async function uploadLargePrintLetterTemplate(

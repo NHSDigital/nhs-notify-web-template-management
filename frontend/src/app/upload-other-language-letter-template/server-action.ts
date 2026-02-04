@@ -15,28 +15,20 @@ const $FormSchema = z.object({
     .string(errors.campaignId.empty)
     .nonempty(errors.campaignId.empty),
   language: z.enum(LANGUAGE_LIST, errors.language.empty).exclude(['en']),
-  file: z.file(errors.file.empty).mime(DOCX_MIME, errors.file.empty),
+  file: z
+    .instanceof(File, { error: errors.file.empty })
+    .refine((file) => file.type === DOCX_MIME, errors.file.empty),
 });
 
 export async function uploadOtherLanguageLetterTemplate(
   _: FormState,
   form: FormData
 ): Promise<FormState> {
-  const obj = Object.fromEntries(form.entries());
-  const fileFromGet = form.get('file');
-
-  console.log('obj.file ->', obj.file);
-  console.log('fileFromGet ->', fileFromGet);
-  console.log('fileFromGet instanceof File ->', fileFromGet instanceof File);
-  console.log('typeof obj.file ->', typeof obj.file);
-
-  const validation = $FormSchema.safeParse(obj);
+  const validation = $FormSchema.safeParse(Object.fromEntries(form.entries()));
 
   const fields = formDataToFormStateFields(form);
 
   if (validation.error) {
-    console.log(validation.error);
-
     return {
       errorState: z.flattenError(validation.error),
       fields,
