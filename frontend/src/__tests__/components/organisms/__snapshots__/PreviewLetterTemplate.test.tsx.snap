@@ -40,7 +40,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
         >
           <a
             data-testid="edit-name-link"
-            href="edit-template-name/template-id"
+            href="/edit-template-name/template-id"
           >
             Edit name
             <span
@@ -108,7 +108,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
               >
                 <a
                   data-testid="campaign-action"
-                  href="edit-template-campaign/template-id"
+                  href="/edit-template-campaign/template-id"
                 >
                   Edit
                   <span
@@ -185,7 +185,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter v
               >
                 <a
                   data-testid="printing-postage-action"
-                  href="choose-printing-and-postage/template-id"
+                  href="/choose-printing-and-postage/template-id"
                 >
                   Edit
                   <span
@@ -320,7 +320,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
         >
           <a
             data-testid="edit-name-link"
-            href="edit-template-name/template-id"
+            href="/edit-template-name/template-id"
           >
             Edit name
             <span
@@ -388,7 +388,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="campaign-action"
-                  href="edit-template-campaign/template-id"
+                  href="/edit-template-campaign/template-id"
                 >
                   Edit
                   <span
@@ -465,7 +465,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="printing-postage-action"
-                  href="choose-printing-and-postage/template-id"
+                  href="/choose-printing-and-postage/template-id"
                 >
                   Edit
                   <span
@@ -600,7 +600,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
         >
           <a
             data-testid="edit-name-link"
-            href="edit-template-name/template-id"
+            href="/edit-template-name/template-id"
           >
             Edit name
             <span
@@ -668,7 +668,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="campaign-action"
-                  href="edit-template-campaign/template-id"
+                  href="/edit-template-campaign/template-id"
                 >
                   Edit
                   <span
@@ -745,7 +745,7 @@ exports[`PreviewLetterTemplate component matches snapshot for AUTHORING letter w
               >
                 <a
                   data-testid="printing-postage-action"
-                  href="choose-printing-and-postage/template-id"
+                  href="/choose-printing-and-postage/template-id"
                 >
                   Edit
                   <span

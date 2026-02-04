@@ -22,7 +22,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
   >
     <a
       data-testid="edit-name-link"
-      href="edit-template-name/template-id"
+      href="/edit-template-name/template-id"
     >
       Edit name
       <span
@@ -90,7 +90,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         >
           <a
             data-testid="campaign-action"
-            href="edit-template-campaign/template-id"
+            href="/edit-template-campaign/template-id"
           >
             Edit
             <span
@@ -167,7 +167,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         >
           <a
             data-testid="printing-postage-action"
-            href="choose-printing-and-postage/template-id"
+            href="/choose-printing-and-postage/template-id"
           >
             Edit
             <span
@@ -427,7 +427,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
   >
     <a
       data-testid="edit-name-link"
-      href="edit-template-name/template-id"
+      href="/edit-template-name/template-id"
     >
       Edit name
       <span
@@ -495,7 +495,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         >
           <a
             data-testid="campaign-action"
-            href="edit-template-campaign/template-id"
+            href="/edit-template-campaign/template-id"
           >
             Edit
             <span
@@ -570,7 +570,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         >
           <a
             data-testid="printing-postage-action"
-            href="choose-printing-and-postage/template-id"
+            href="/choose-printing-and-postage/template-id"
           >
             Edit
             <span
