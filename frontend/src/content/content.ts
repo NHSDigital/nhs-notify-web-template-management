@@ -1582,6 +1582,7 @@ const uploadDocxLetterTemplateForm = {
     language: {
       label: 'Template language',
       hint: 'Choose the language used in this template.',
+      placeholder: 'Please select',
       rtl: [
         { type: 'text', text: '**Right-to-left language selected**' },
         {

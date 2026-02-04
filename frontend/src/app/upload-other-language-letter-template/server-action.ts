@@ -22,11 +22,15 @@ export async function uploadOtherLanguageLetterTemplate(
   _: FormState,
   form: FormData
 ): Promise<FormState> {
-  const file = form.get('file') as File;
+  const obj = Object.fromEntries(form.entries());
+  const fileFromGet = form.get('file');
 
-  console.log(file.name, file.type);
+  console.log('obj.file ->', obj.file);
+  console.log('fileFromGet ->', fileFromGet);
+  console.log('fileFromGet instanceof File ->', fileFromGet instanceof File);
+  console.log('typeof obj.file ->', typeof obj.file);
 
-  const validation = $FormSchema.safeParse(Object.fromEntries(form.entries()));
+  const validation = $FormSchema.safeParse(obj);
 
   const fields = formDataToFormStateFields(form);
 

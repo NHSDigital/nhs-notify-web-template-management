@@ -162,7 +162,7 @@ export function LanguageField() {
           })}
           onChange={(e) => setLanguage(e.target.value)}
         >
-          <option />
+          <option>{content.fields.language.placeholder}</option>
           {OTHER_LANGUAGES.map((language) => (
             <option key={language} value={language}>
               {languageMapping(language)}

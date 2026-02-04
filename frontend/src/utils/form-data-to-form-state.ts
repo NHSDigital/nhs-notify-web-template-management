@@ -1,5 +1,3 @@
-// TODO: CCM-13489: unit tests
-
 import { FormStateFields } from 'nhs-notify-web-template-management-utils';
 
 /**

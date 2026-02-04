@@ -157,7 +157,9 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
               id="language"
               name="language"
             >
-              <option />
+              <option>
+                Please select
+              </option>
               <option
                 value="ar"
               >
@@ -630,7 +632,9 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
               id="language"
               name="language"
             >
-              <option />
+              <option>
+                Please select
+              </option>
               <option
                 value="ar"
               >
@@ -1031,7 +1035,9 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
               id="language"
               name="language"
             >
-              <option />
+              <option>
+                Please select
+              </option>
               <option
                 value="ar"
               >
@@ -1481,7 +1487,9 @@ exports[`client has one campaign id renders errors when blank form is submitted 
               id="language"
               name="language"
             >
-              <option />
+              <option>
+                Please select
+              </option>
               <option
                 value="ar"
               >
@@ -1882,7 +1890,9 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
               id="language"
               name="language"
             >
-              <option />
+              <option>
+                Please select
+              </option>
               <option
                 value="ar"
               >
