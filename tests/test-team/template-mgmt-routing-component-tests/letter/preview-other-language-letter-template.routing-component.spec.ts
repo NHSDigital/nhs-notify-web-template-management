@@ -176,17 +176,11 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       previewForeignLanguageLetterTemplatePage.summaryList
     ).toBeVisible();
 
-    if (
-      !templates.FRENCH_LETTER.campaignId ||
-      !templates.FRENCH_LETTER.files?.pdfTemplate?.fileName ||
-      !templates.FRENCH_LETTER.files?.testDataCsv?.fileName
-    ) {
-      throw new Error('Test data misconfiguration');
-    }
+    expect(templates.FRENCH_LETTER.campaignId).toBeTruthy();
 
     await expect(
       previewForeignLanguageLetterTemplatePage.campaignId
-    ).toContainText(templates.FRENCH_LETTER.campaignId);
+    ).toContainText(templates.FRENCH_LETTER.campaignId!);
 
     await expect(
       page.getByText(templates.FRENCH_LETTER.files!.pdfTemplate!.fileName)
@@ -233,13 +227,11 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       previewForeignLanguageLetterTemplatePage.summaryList
     ).toBeVisible();
 
-    if (!templates.AUTHORING_FRENCH_LETTER.campaignId) {
-      throw new Error('Test data misconfiguration');
-    }
+    expect(templates.AUTHORING_FRENCH_LETTER.campaignId).toBeTruthy();
 
     await expect(
       previewForeignLanguageLetterTemplatePage.campaignId
-    ).toContainText(templates.AUTHORING_FRENCH_LETTER.campaignId);
+    ).toContainText(templates.AUTHORING_FRENCH_LETTER.campaignId!);
   });
 
   test.describe('redirects to invalid template page', () => {
