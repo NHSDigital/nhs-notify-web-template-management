@@ -55,6 +55,8 @@ data "aws_iam_policy_document" "submit_routing_config_lambda_policy" {
     effect = "Allow"
 
     actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:UpdateItem",
       "dynamodb:ConditionCheckItem",
     ]
 

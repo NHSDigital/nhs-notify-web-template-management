@@ -284,7 +284,7 @@ export class RoutingConfigRepository {
               ConditionExpression:
                 'attribute_exists(id) AND lockNumber = :lockNumber AND templateStatus = :submitted',
               ExpressionAttributeValues: {
-                ':lockNumber': template.lockNumber ?? 0,
+                ':lockNumber': template.lockNumber,
                 ':submitted': 'SUBMITTED',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -300,7 +300,7 @@ export class RoutingConfigRepository {
             )
               .setStatus('SUBMITTED')
               .expectStatus(template.templateStatus)
-              .expectLockNumber(template.lockNumber ?? 0)
+              .expectLockNumber(template.lockNumber)
               .incrementLockNumber()
               .setUpdatedByUserAt(this.internalUserKey(user))
               .build(),
@@ -346,11 +346,6 @@ export class RoutingConfigRepository {
     templateIds: string[],
     clientId: string
   ): Promise<ApplicationResult<TemplateDto[]>> {
-    // istanbul ignore next -- defensive check; $SubmittableCascade validation ensures at least one template
-    if (templateIds.length === 0) {
-      return success([]);
-    }
-
     try {
       const result = await this.client.send(
         new BatchGetCommand({
