@@ -279,16 +279,16 @@ describe('RoutingConfigRepository', () => {
       expect(result).toEqual({ data: completed });
 
       expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
-        TransactItems: expect.arrayContaining([
+        TransactItems: [
           {
-            Update: expect.objectContaining({
+            Update: {
               ConditionExpression:
                 '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
               ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
                 '#status': 'status',
                 '#updatedAt': 'updatedAt',
                 '#updatedBy': 'updatedBy',
-                '#lockNumber': 'lockNumber',
               },
               ExpressionAttributeValues: {
                 ':condition_1_status': 'DRAFT',
@@ -303,12 +303,31 @@ describe('RoutingConfigRepository', () => {
                 owner: clientOwnerKey,
               },
               ReturnValues: 'ALL_NEW',
-              TableName: TABLE_NAME,
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+              TableName: 'routing-config-table-name',
               UpdateExpression:
                 'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
-            }),
+            },
           },
-        ]),
+          {
+            ConditionCheck: {
+              ConditionExpression:
+                'attribute_exists(id) AND templateStatus <> :deleted AND (templateType <> :letterType OR templateStatus IN (:proofApproved, :submitted))',
+              ExpressionAttributeValues: {
+                ':deleted': 'DELETED',
+                ':letterType': 'LETTER',
+                ':proofApproved': 'PROOF_APPROVED',
+                ':submitted': 'SUBMITTED',
+              },
+              Key: {
+                id: routingConfig.cascade[0].defaultTemplateId!,
+                owner: clientOwnerKey,
+              },
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+              TableName: 'template-table-name',
+            },
+          },
+        ],
       });
     });
 
