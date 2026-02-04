@@ -203,7 +203,7 @@ test.describe('Routing - Preview large print letter template page', () => {
 
     await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
 
-    expect(!templates.AUTHORING_LARGE_PRINT_LETTER.campaignId).toBeTruthy();
+    expect(templates.AUTHORING_LARGE_PRINT_LETTER.campaignId).toBeTruthy();
 
     await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
       templates.AUTHORING_LARGE_PRINT_LETTER.campaignId!
