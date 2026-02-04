@@ -16,8 +16,8 @@ const $FormSchema = z.object({
     .nonempty(errors.campaignId.empty),
   language: z.enum(LANGUAGE_LIST, errors.language.empty).exclude(['en']),
   file: z
-    .instanceof(File, { error: errors.file.empty })
-    .refine((file) => file.type === DOCX_MIME, errors.file.empty),
+    .instanceof(File, { error: 'Not instanceof File' })
+    .refine((file) => file.type === DOCX_MIME, 'Wrong file type'),
 });
 
 export async function uploadOtherLanguageLetterTemplate(
@@ -28,12 +28,18 @@ export async function uploadOtherLanguageLetterTemplate(
 
   console.log('Data', data);
 
+  console.log('DOCX_MIME ->', DOCX_MIME);
+  console.log('typeof DOCX_MIME ->', typeof DOCX_MIME);
+  console.log('JSON.stringify(DOCX_MIME) ->', JSON.stringify(DOCX_MIME));
+  console.log('DOCX_MIME length ->', DOCX_MIME.length);
+
   z.any()
     .superRefine((obj) => {
       console.log('obj', obj);
       console.log('obj.file instanceof File', obj.file instanceof File);
       console.log('obj.file.type', obj.file?.type);
       console.log('obj.file.type === DOCX_MIME', obj.file?.type === DOCX_MIME);
+      console.log('obj.file.length', obj.file?.length);
     })
     .safeParse(data);
 
