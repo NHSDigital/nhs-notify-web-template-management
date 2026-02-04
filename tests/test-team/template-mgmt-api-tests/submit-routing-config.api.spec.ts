@@ -707,4 +707,385 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     const responseBody = await response.json();
     expect(responseBody.data.status).toBe('COMPLETED');
   });
+
+  test.describe('template status updates on submit', () => {
+    test('updates NHSAPP template status to SUBMITTED after routing config submit', async ({
+      request,
+    }) => {
+      const templateId = randomUUID();
+
+      // Create a template with NOT_YET_SUBMITTED status
+      const template = TemplateFactory.createNhsAppTemplate(
+        templateId,
+        user1,
+        'Test Template for Status Update'
+      );
+      template.templateStatus = 'NOT_YET_SUBMITTED';
+      template.lockNumber = 5;
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify template was updated to SUBMITTED
+      const updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId,
+      });
+
+      expect(updatedTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedTemplate.lockNumber).toBe(6);
+    });
+
+    test('updates EMAIL template status to SUBMITTED after routing config submit', async ({
+      request,
+    }) => {
+      const templateId = randomUUID();
+
+      // Create an EMAIL template with NOT_YET_SUBMITTED status
+      const template = TemplateFactory.createEmailTemplate(
+        templateId,
+        user1,
+        'Test Email Template for Status Update'
+      );
+      template.templateStatus = 'NOT_YET_SUBMITTED';
+      template.lockNumber = 3;
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'primary',
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify template was updated to SUBMITTED
+      const updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId,
+      });
+
+      expect(updatedTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedTemplate.lockNumber).toBe(4);
+    });
+
+    test('updates SMS template status to SUBMITTED after routing config submit', async ({
+      request,
+    }) => {
+      const templateId = randomUUID();
+
+      // Create an SMS template with NOT_YET_SUBMITTED status
+      const template = TemplateFactory.createSmsTemplate(
+        templateId,
+        user1,
+        'Test SMS Template for Status Update'
+      );
+      template.templateStatus = 'NOT_YET_SUBMITTED';
+      template.lockNumber = 1;
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify template was updated to SUBMITTED
+      const updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId,
+      });
+
+      expect(updatedTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedTemplate.lockNumber).toBe(2);
+    });
+
+    test('updates LETTER template lockNumber without changing SUBMITTED status', async ({
+      request,
+    }) => {
+      const templateId = randomUUID();
+
+      // Create a LETTER template that is already SUBMITTED
+      const template = TemplateFactory.uploadLetterTemplate(
+        templateId,
+        user1,
+        'Test Letter Template Already Submitted',
+        'SUBMITTED'
+      );
+      template.lockNumber = 10;
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: templateId,
+          },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify template lockNumber was incremented but status remains SUBMITTED
+      const updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId,
+      });
+
+      expect(updatedTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedTemplate.lockNumber).toBe(11);
+    });
+
+    test('updates multiple templates to SUBMITTED after routing config submit', async ({
+      request,
+    }) => {
+      const nhsAppTemplateId = randomUUID();
+      const emailTemplateId = randomUUID();
+      const smsTemplateId = randomUUID();
+
+      // Create multiple templates with NOT_YET_SUBMITTED status
+      const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
+        nhsAppTemplateId,
+        user1,
+        'NHS App Template'
+      );
+      nhsAppTemplate.templateStatus = 'NOT_YET_SUBMITTED';
+      nhsAppTemplate.lockNumber = 1;
+
+      const emailTemplate = TemplateFactory.createEmailTemplate(
+        emailTemplateId,
+        user1,
+        'Email Template'
+      );
+      emailTemplate.templateStatus = 'NOT_YET_SUBMITTED';
+      emailTemplate.lockNumber = 2;
+
+      const smsTemplate = TemplateFactory.createSmsTemplate(
+        smsTemplateId,
+        user1,
+        'SMS Template'
+      );
+      smsTemplate.templateStatus = 'NOT_YET_SUBMITTED';
+      smsTemplate.lockNumber = 3;
+
+      await templateStorageHelper.seedTemplateData([
+        nhsAppTemplate,
+        emailTemplate,
+        smsTemplate,
+      ]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: nhsAppTemplateId,
+          },
+          {
+            cascadeGroups: ['standard'],
+            channel: 'EMAIL',
+            channelType: 'secondary',
+            defaultTemplateId: emailTemplateId,
+          },
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'secondary',
+            defaultTemplateId: smsTemplateId,
+          },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify all templates were updated to SUBMITTED
+      const updatedNhsAppTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId: nhsAppTemplateId,
+      });
+      const updatedEmailTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId: emailTemplateId,
+      });
+      const updatedSmsTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId: smsTemplateId,
+      });
+
+      expect(updatedNhsAppTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedNhsAppTemplate.lockNumber).toBe(2);
+
+      expect(updatedEmailTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedEmailTemplate.lockNumber).toBe(3);
+
+      expect(updatedSmsTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedSmsTemplate.lockNumber).toBe(4);
+    });
+
+    test('updates conditionalTemplates to SUBMITTED after routing config submit', async ({
+      request,
+    }) => {
+      const englishTemplateId = randomUUID();
+      const frenchTemplateId = randomUUID();
+
+      // Create conditional templates
+      const englishTemplate = TemplateFactory.createNhsAppTemplate(
+        englishTemplateId,
+        user1,
+        'English Template'
+      );
+      englishTemplate.templateStatus = 'NOT_YET_SUBMITTED';
+      englishTemplate.lockNumber = 1;
+
+      const frenchTemplate = TemplateFactory.createNhsAppTemplate(
+        frenchTemplateId,
+        user1,
+        'French Template'
+      );
+      frenchTemplate.templateStatus = 'NOT_YET_SUBMITTED';
+      frenchTemplate.lockNumber = 2;
+
+      await templateStorageHelper.seedTemplateData([
+        englishTemplate,
+        frenchTemplate,
+      ]);
+
+      const { dbEntry } = RoutingConfigFactory.create(user1, {
+        cascade: [
+          {
+            cascadeGroups: ['translations'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            conditionalTemplates: [
+              { language: 'en', templateId: englishTemplateId },
+              { language: 'fr', templateId: frenchTemplateId },
+            ],
+          },
+        ],
+        cascadeGroupOverrides: [
+          { name: 'translations', language: ['en', 'fr'] },
+        ],
+      });
+
+      await storageHelper.seed([dbEntry]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(dbEntry.lockNumber),
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      // Verify both conditional templates were updated to SUBMITTED
+      const updatedEnglishTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId: englishTemplateId,
+      });
+      const updatedFrenchTemplate = await templateStorageHelper.getTemplate({
+        clientId: user1.clientId,
+        templateId: frenchTemplateId,
+      });
+
+      expect(updatedEnglishTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedEnglishTemplate.lockNumber).toBe(2);
+
+      expect(updatedFrenchTemplate.templateStatus).toBe('SUBMITTED');
+      expect(updatedFrenchTemplate.lockNumber).toBe(3);
+    });
+  });
 });

@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import {
+  BatchGetCommand,
   GetCommand,
   PutCommand,
   TransactWriteCommand,
@@ -14,17 +15,22 @@ import {
 import {
   $RoutingConfig,
   $SubmittableCascade,
+  $TemplateDto,
   CascadeItem,
   type CreateRoutingConfig,
   ErrorCase,
   type RoutingConfig,
   type RoutingConfigReference,
   RoutingConfigStatus,
+  type TemplateDto,
   type UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
-import { RoutingConfigUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
+import {
+  RoutingConfigUpdateBuilder,
+  TemplateUpdateBuilder,
+} from 'nhs-notify-entity-update-command-builder';
 import {
   ConditionalCheckFailedException,
   ReturnValuesOnConditionCheckFailure,
@@ -182,7 +188,6 @@ export class RoutingConfigRepository {
       lockNumber: currentLockNumber,
     } = existingConfig.data;
 
-    // Check status before cascade validation
     if (status === 'DELETED') {
       return failure(ErrorCase.NOT_FOUND, 'Routing configuration not found');
     }
@@ -194,7 +199,6 @@ export class RoutingConfigRepository {
       );
     }
 
-    // Check lock number before cascade validation
     if (currentLockNumber !== lockNumber) {
       return failure(
         ErrorCase.CONFLICT,
@@ -214,7 +218,47 @@ export class RoutingConfigRepository {
 
     const templateIds = this.extractTemplateIds(cascade);
 
-    const update = new RoutingConfigUpdateBuilder(
+    const templatesResult = await this.getTemplates(templateIds, user.clientId);
+
+    if (templatesResult.error) {
+      return templatesResult;
+    }
+
+    const templates = templatesResult.data;
+
+    const missingTemplateIds = templateIds.filter(
+      (tid) =>
+        !templates.some((t) => t.id === tid && t.templateStatus !== 'DELETED')
+    );
+
+    if (missingTemplateIds.length > 0) {
+      return failure(
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
+        'Some templates not found',
+        undefined,
+        { templateIds: missingTemplateIds.join(',') }
+      );
+    }
+
+    const invalidLetterTemplateIds = templates
+      .filter(
+        (t) =>
+          t.templateType === 'LETTER' &&
+          t.templateStatus !== 'PROOF_APPROVED' &&
+          t.templateStatus !== 'SUBMITTED'
+      )
+      .map((t) => t.id);
+
+    if (invalidLetterTemplateIds.length > 0) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Letter templates must have status PROOF_APPROVED or SUBMITTED',
+        undefined,
+        { templateIds: invalidLetterTemplateIds.join(',') }
+      );
+    }
+
+    const routingConfigUpdate = new RoutingConfigUpdateBuilder(
       this.tableName,
       user.clientId,
       id,
@@ -227,34 +271,50 @@ export class RoutingConfigRepository {
       .incrementLockNumber()
       .build();
 
+    // add an update to each template to set status to SUBMITTED, or a condition check if already SUBMITTED
+    const templateUpdatesAndChecks = templates.map((template) =>
+      template.templateStatus === 'SUBMITTED'
+        ? {
+            ConditionCheck: {
+              TableName: this.templateTableName,
+              Key: {
+                id: template.id,
+                owner: this.clientOwnerKey(user.clientId),
+              },
+              ConditionExpression:
+                'attribute_exists(id) AND lockNumber = :lockNumber AND templateStatus = :submitted',
+              ExpressionAttributeValues: {
+                ':lockNumber': template.lockNumber ?? 0,
+                ':submitted': 'SUBMITTED',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
+            },
+          }
+        : {
+            Update: new TemplateUpdateBuilder(
+              this.templateTableName,
+              user.clientId,
+              template.id,
+              this.updateCmdOpts
+            )
+              .setStatus('SUBMITTED')
+              .expectStatus(template.templateStatus)
+              .expectLockNumber(template.lockNumber ?? 0)
+              .incrementLockNumber()
+              .setUpdatedByUserAt(this.internalUserKey(user))
+              .build(),
+          }
+    );
+
     try {
       await this.client.send(
         new TransactWriteCommand({
           TransactItems: [
             {
-              Update: update,
+              Update: routingConfigUpdate,
             },
-            // Template existence & ownership check + For LETTER templates, check they have PROOF_APPROVED or SUBMITTED status
-            // Also exclude DELETED templates for all template types
-            ...templateIds.map((templateId) => ({
-              ConditionCheck: {
-                TableName: this.templateTableName,
-                Key: {
-                  id: templateId,
-                  owner: this.clientOwnerKey(user.clientId),
-                },
-                ConditionExpression:
-                  'attribute_exists(id) AND templateStatus <> :deleted AND (templateType <> :letterType OR templateStatus IN (:proofApproved, :submitted))',
-                ExpressionAttributeValues: {
-                  ':deleted': 'DELETED',
-                  ':letterType': 'LETTER',
-                  ':proofApproved': 'PROOF_APPROVED',
-                  ':submitted': 'SUBMITTED',
-                },
-                ReturnValuesOnConditionCheckFailure:
-                  ReturnValuesOnConditionCheckFailure.ALL_OLD,
-              },
-            })),
+            ...templateUpdatesAndChecks,
           ],
         })
       );
@@ -279,6 +339,53 @@ export class RoutingConfigRepository {
       return success(parsed.data);
     } catch (error) {
       return this.handleSubmitTransactionError(error, lockNumber, templateIds);
+    }
+  }
+
+  private async getTemplates(
+    templateIds: string[],
+    clientId: string
+  ): Promise<ApplicationResult<TemplateDto[]>> {
+    // istanbul ignore next -- defensive check; $SubmittableCascade validation ensures at least one template
+    if (templateIds.length === 0) {
+      return success([]);
+    }
+
+    try {
+      const result = await this.client.send(
+        new BatchGetCommand({
+          RequestItems: {
+            [this.templateTableName]: {
+              Keys: templateIds.map((tid) => ({
+                id: tid,
+                owner: this.clientOwnerKey(clientId),
+              })),
+            },
+          },
+        })
+      );
+
+      const rawTemplates = result.Responses?.[this.templateTableName] ?? [];
+
+      const templates: TemplateDto[] = [];
+
+      for (const item of rawTemplates) {
+        const parsed = $TemplateDto.safeParse(item);
+
+        if (!parsed.success) {
+          return failure(
+            ErrorCase.INTERNAL,
+            'Error parsing template from database',
+            parsed.error
+          );
+        }
+
+        templates.push(parsed.data);
+      }
+
+      return success(templates);
+    } catch (error) {
+      return failure(ErrorCase.INTERNAL, 'Failed to retrieve templates', error);
     }
   }
 
@@ -493,56 +600,38 @@ export class RoutingConfigRepository {
       return this.handleUpdateError(err, lockNumber);
     }
 
-    // Note: The first item will always be the update
+    // Note: The first item will always be the routing config update
     // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CancellationReason.html
-    const [updateReason, ...templateReasons] = err.CancellationReasons ?? [];
+    const [routingConfigReason, ...templateReasons] =
+      err.CancellationReasons ?? [];
 
-    if (updateReason && updateReason.Code !== 'None') {
+    if (routingConfigReason && routingConfigReason.Code !== 'None') {
       return this.handleUpdateError(
         new ConditionalCheckFailedException({
-          message: updateReason.Message!,
-          Item: updateReason.Item,
+          message: routingConfigReason.Message!,
+          Item: routingConfigReason.Item,
           $metadata: err.$metadata,
         }),
         lockNumber
       );
     }
 
-    // Find which templates failed the condition check
-    const missingTemplateIds: string[] = [];
-    const invalidLetterTemplateIds: string[] = [];
+    // Find which template updates failed - likely due to lock number mismatch
+    const failedTemplateIds: string[] = [];
 
     for (const [index, reason] of templateReasons.entries()) {
       if (reason.Code === 'ConditionalCheckFailed') {
         const templateId = templateIds[index];
-
-        if (
-          !reason.Item ||
-          reason.Item.templateStatus?.S ===
-            ('DELETED' satisfies RoutingConfigStatus)
-        ) {
-          missingTemplateIds.push(templateId);
-        } else {
-          invalidLetterTemplateIds.push(templateId);
-        }
+        failedTemplateIds.push(templateId);
       }
     }
 
-    if (missingTemplateIds.length > 0) {
+    if (failedTemplateIds.length > 0) {
       return failure(
-        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
-        'Some templates not found',
+        ErrorCase.CONFLICT,
+        'Some templates have been modified since they were retrieved',
         err,
-        { templateIds: missingTemplateIds.join(',') }
-      );
-    }
-
-    if (invalidLetterTemplateIds.length > 0) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Letter templates must have status PROOF_APPROVED or SUBMITTED',
-        err,
-        { templateIds: invalidLetterTemplateIds.join(',') }
+        { templateIds: failedTemplateIds.join(',') }
       );
     }
 
