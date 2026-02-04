@@ -452,7 +452,7 @@ describe('$SubmittableCascadeItem', () => {
     expect(res.success).toBe(false);
   });
 
-  test('invalid with empty conditionalTemplates and no defaultTemplateId', () => {
+  test('invalid with empty conditionalTemplates without defaultTemplateId', () => {
     const res = $SubmittableCascadeItem.safeParse({
       cascadeGroups: ['standard'],
       channel: 'LETTER',
@@ -468,6 +468,22 @@ describe('$SubmittableCascadeItem', () => {
       channel: 'LETTER',
       channelType: 'primary',
       defaultTemplateId: '',
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
+    });
+    expect(res.success).toBe(false);
+  });
+
+  test('invalid with null defaultTemplateId', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: null,
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
     });
     expect(res.success).toBe(false);
   });

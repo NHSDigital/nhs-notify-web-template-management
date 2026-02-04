@@ -345,7 +345,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 500,
-            description: 'Error retrieving Routing Config',
+            description: 'Error retrieving routing configuration',
           },
         },
       });
@@ -419,7 +419,7 @@ describe('RoutingConfigRepository', () => {
       });
     });
 
-    test('returns 404 failure if routing config does not exist', async () => {
+    test('returns 404 failure if routing config does not exist on get', async () => {
       const { repo, mocks } = setup();
 
       mocks.dynamo.on(GetCommand).resolvesOnce({ Item: undefined });
@@ -436,7 +436,7 @@ describe('RoutingConfigRepository', () => {
       });
     });
 
-    test('returns 404 failure if transaction fails because routing config does not exist', async () => {
+    test('returns 404 failure if routing config does not exist on write', async () => {
       const { repo, mocks } = setup();
 
       const routingConfigWithLock: RoutingConfig = {
@@ -535,7 +535,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Lock number mismatch - Routing configuration has been modified since last read',
           },
         },
       });
@@ -543,7 +543,7 @@ describe('RoutingConfigRepository', () => {
       expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
     });
 
-    test('returns validation failure if cascade item has no defaultTemplateId or conditionalTemplates', async () => {
+    test('returns validation failure if cascade item conditionalTemplates is empty with no defaultTemplateId', async () => {
       const { repo, mocks } = setup();
 
       const invalidRoutingConfig: RoutingConfig = {
@@ -577,7 +577,7 @@ describe('RoutingConfigRepository', () => {
       expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
     });
 
-    test('returns validation failure if defaultTemplateId is null with no conditionalTemplates', async () => {
+    test('returns validation failure if defaultTemplateId is null', async () => {
       const { repo, mocks } = setup();
 
       const invalidRoutingConfig: RoutingConfig = {
@@ -1047,7 +1047,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Lock number mismatch - Routing configuration has been modified since last read',
           },
         },
       });
@@ -1911,7 +1911,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Lock number mismatch - Routing configuration has been modified since last read',
           },
         },
       });

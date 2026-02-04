@@ -198,14 +198,18 @@ export class RoutingConfigRepository {
     if (currentLockNumber !== lockNumber) {
       return failure(
         ErrorCase.CONFLICT,
-        'Lock number mismatch - Message Plan has been modified since last read'
+        'Lock number mismatch - Routing configuration has been modified since last read'
       );
     }
 
-    const submittableValidationError =
-      this.parseSubmittableRoutingConfig(cascade);
-    if (submittableValidationError) {
-      return submittableValidationError;
+    const submittableCascadeValidation = $SubmittableCascade.safeParse(cascade);
+
+    if (!submittableCascadeValidation.success) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Routing config is not ready for submission: all cascade items must have templates assigned',
+        submittableCascadeValidation.error
+      );
     }
 
     const templateIds = this.extractTemplateIds(cascade);
@@ -230,7 +234,7 @@ export class RoutingConfigRepository {
             {
               Update: update,
             },
-            // Template existence check + For LETTER templates, check they have PROOF_APPROVED or SUBMITTED status
+            // Template existence & ownership check + For LETTER templates, check they have PROOF_APPROVED or SUBMITTED status
             // Also exclude DELETED templates for all template types
             ...templateIds.map((templateId) => ({
               ConditionCheck: {
@@ -341,7 +345,7 @@ export class RoutingConfigRepository {
     } catch (error) {
       return failure(
         ErrorCase.INTERNAL,
-        'Error retrieving Routing Config',
+        'Error retrieving routing configuration',
         error
       );
     }
@@ -376,7 +380,7 @@ export class RoutingConfigRepository {
       if (item.lockNumber !== expectedLockNumber) {
         return failure(
           ErrorCase.CONFLICT,
-          'Lock number mismatch - Message Plan has been modified since last read',
+          'Lock number mismatch - Routing configuration has been modified since last read',
           err
         );
       }
@@ -478,18 +482,6 @@ export class RoutingConfigRepository {
         ...(r.conditionalTemplates?.map((a) => a.templateId) ?? []),
       ])
       .filter((id): id is string => id != null);
-  }
-
-  private parseSubmittableRoutingConfig(cascade: CascadeItem[]) {
-    const result = $SubmittableCascade.safeParse(cascade);
-
-    if (!result.success) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Routing config is not ready for submission: all cascade items must have templates assigned',
-        result.error
-      );
-    }
   }
 
   private handleSubmitTransactionError(
