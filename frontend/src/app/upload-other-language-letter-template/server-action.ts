@@ -26,7 +26,16 @@ export async function uploadOtherLanguageLetterTemplate(
 ): Promise<FormState> {
   const data = Object.fromEntries(form.entries());
 
-  console.log(data);
+  console.log('Data', data);
+
+  z.any()
+    .superRefine((obj) => {
+      console.log('obj', obj);
+      console.log('obj.file instanceof File', obj.file instanceof File);
+      console.log('obj.file.type', obj.file?.type);
+      console.log('obj.file.type === DOCX_MIME', obj.file?.type === DOCX_MIME);
+    })
+    .safeParse(data);
 
   const validation = $FormSchema.safeParse(data);
 
