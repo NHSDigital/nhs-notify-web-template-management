@@ -454,56 +454,6 @@ describe('RoutingConfigRepository', () => {
       });
     });
 
-    test('uses ConditionCheck with default lockNumber 0 for SUBMITTED template without lockNumber', async () => {
-      const { repo, mocks } = setup();
-
-      const routingConfigWithLock: RoutingConfig = {
-        ...routingConfig,
-        lockNumber: 2,
-      };
-
-      const completed: RoutingConfig = {
-        ...routingConfig,
-        status: 'COMPLETED',
-        lockNumber: 3,
-      };
-
-      const template = makeTemplateMock({
-        id: routingConfig.cascade[0].defaultTemplateId!,
-        templateType: 'SMS',
-        templateStatus: 'SUBMITTED',
-        lockNumber: undefined, // intentionally omitted
-      });
-
-      mocks.dynamo
-        .on(GetCommand)
-        .resolvesOnce({ Item: routingConfigWithLock })
-        .resolvesOnce({ Item: completed });
-      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
-        Responses: {
-          [TEMPLATE_TABLE_NAME]: [template],
-        },
-      });
-      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
-
-      const result = await repo.submit(routingConfig.id, user, 2);
-
-      expect(result).toEqual({ data: completed });
-
-      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
-        TransactItems: expect.arrayContaining([
-          expect.objectContaining({
-            ConditionCheck: expect.objectContaining({
-              ExpressionAttributeValues: {
-                ':lockNumber': 0, // defaults to 0 when lockNumber is undefined
-                ':submitted': 'SUBMITTED',
-              },
-            }),
-          }),
-        ]),
-      });
-    });
-
     test('returns failure on client error during initial get', async () => {
       const { repo, mocks } = setup();
 
@@ -614,6 +564,47 @@ describe('RoutingConfigRepository', () => {
           },
         },
       });
+    });
+
+    test('returns failure if template from database is invalid', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      // Invalid template - missing required fields like name, createdAt, etc.
+      const invalidTemplate = {
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        owner: clientOwnerKey,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+        // Missing: name, message, createdAt, updatedAt
+      };
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [invalidTemplate],
+        },
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(Error),
+          errorMeta: {
+            code: 500,
+            description: 'Error parsing template from database',
+            details: undefined,
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
     });
 
     test('returns 404 failure if routing config does not exist on get', async () => {
@@ -882,13 +873,12 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(BatchGetCommand).resolvesOnce({
         Responses: {
           [TEMPLATE_TABLE_NAME]: [
-            {
+            makeTemplateMock({
               id: 'deleted-template-id',
-              owner: clientOwnerKey,
               templateType: 'SMS',
               templateStatus: 'DELETED',
               lockNumber: 1,
-            },
+            }),
           ],
         },
       });
@@ -934,9 +924,22 @@ describe('RoutingConfigRepository', () => {
             {
               id: 'letter-template-id',
               owner: clientOwnerKey,
+              name: 'Test Letter Template',
               templateType: 'LETTER',
               templateStatus: 'NOT_YET_SUBMITTED',
               lockNumber: 1,
+              letterType: 'x0',
+              language: 'en',
+              letterVersion: 'PDF',
+              files: {
+                pdfTemplate: {
+                  fileName: 'test.pdf',
+                  currentVersion: '1',
+                  virusScanStatus: 'PASSED',
+                },
+              },
+              createdAt: date.toISOString(),
+              updatedAt: date.toISOString(),
             },
           ],
         },
