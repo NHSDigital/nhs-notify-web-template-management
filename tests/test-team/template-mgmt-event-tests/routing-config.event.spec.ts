@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -7,10 +8,13 @@ import {
 import { EventCacheHelper } from '../helpers/events/event-cache-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 
 test.describe('Event publishing - Routing Config', () => {
   const authHelper = createAuthHelper();
   const storageHelper = new RoutingConfigStorageHelper();
+  const templateStorageHelper = new TemplateStorageHelper();
   const eventCacheHelper = new EventCacheHelper();
 
   let user: TestUser;
@@ -170,13 +174,23 @@ test.describe('Event publishing - Routing Config', () => {
   });
 
   test('Expect a draft event and a completed event', async ({ request }) => {
+    const templateId = randomUUID();
+
+    const template = TemplateFactory.createNhsAppTemplate(
+      templateId,
+      user,
+      'Test Template for Submit'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
         {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
           channelType: 'primary',
-          defaultTemplateId: 'b1854a33-fc1b-4e7d-99d0-6f7b92b8c530',
+          defaultTemplateId: templateId,
         },
       ],
     }).apiPayload;

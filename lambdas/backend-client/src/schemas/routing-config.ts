@@ -58,14 +58,14 @@ const $CascadeGroup = schemaFor<CascadeGroup>()(
   ])
 );
 
-export const $Channel = schemaFor<Channel>()(z.enum(CHANNEL_LIST));
+const $Channel = schemaFor<Channel>()(z.enum(CHANNEL_LIST));
 
 const $ChannelType = schemaFor<ChannelType>()(z.enum(CHANNEL_TYPE_LIST));
 
 const $ConditionalTemplateLanguage = schemaFor<ConditionalTemplateLanguage>()(
   z.object({
     language: $Language,
-    templateId: z.string().nonempty().nullable(),
+    templateId: z.string().nonempty(),
     supplierReferences: z.record(z.string(), z.string()).optional(),
   })
 );
@@ -74,7 +74,7 @@ const $ConditionalTemplateAccessible =
   schemaFor<ConditionalTemplateAccessible>()(
     z.object({
       accessibleFormat: $LetterType,
-      templateId: z.string().nonempty().nullable(),
+      templateId: z.string().nonempty(),
       supplierReferences: z.record(z.string(), z.string()).optional(),
     })
   );
@@ -114,6 +114,35 @@ const $CascadeItem = schemaFor<CascadeItem>()(
     ])
   )
 );
+
+export const $SubmittableCascadeItem = $CascadeItemBase.and(
+  z.union([
+    z.object({
+      defaultTemplateId: z.string().nonempty(),
+      conditionalTemplates: z
+        .array(
+          z.union([
+            $ConditionalTemplateAccessible,
+            $ConditionalTemplateLanguage,
+          ])
+        )
+        .optional(),
+    }),
+    z.object({
+      defaultTemplateId: z.string().nonempty().optional(),
+      conditionalTemplates: z
+        .array(
+          z.union([
+            $ConditionalTemplateAccessible,
+            $ConditionalTemplateLanguage,
+          ])
+        )
+        .nonempty(),
+    }),
+  ])
+);
+
+export const $SubmittableCascade = z.array($SubmittableCascadeItem).nonempty();
 
 export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
   z.object({
