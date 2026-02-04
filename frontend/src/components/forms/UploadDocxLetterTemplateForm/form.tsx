@@ -9,7 +9,6 @@ import {
   InsetText,
   Label,
 } from 'nhsuk-react-components';
-import { z } from 'zod';
 import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
 import {
   isLanguage,
@@ -25,9 +24,6 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
 const content = copy.components.uploadDocxLetterTemplateForm;
-
-export const DOCX_MIME: z.core.util.MimeTypes =
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
 export function Form({
   children,
@@ -129,7 +125,11 @@ export function FileField() {
         <ContentRenderer content={content.fields.file.hint} />
       </HintText>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <FileUploadInput id='file' name='file' accept={DOCX_MIME} />
+      <FileUploadInput
+        id='file'
+        name='file'
+        accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      />
     </NHSNotifyFormGroup>
   );
 }

@@ -3,7 +3,6 @@
 import { z } from 'zod/v4';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
-import { DOCX_MIME } from '@forms/UploadDocxLetterTemplateForm/form';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
 
 const { errors } = copy.components.uploadDocxLetterTemplateForm;
@@ -14,8 +13,11 @@ const $FormSchema = z.object({
     .string(errors.campaignId.empty)
     .nonempty(errors.campaignId.empty),
   file: z
-    .instanceof(File, { error: errors.file.empty })
-    .refine((file) => file.type === DOCX_MIME, errors.file.empty),
+    .file(errors.file.empty)
+    .mime(
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      errors.file.empty
+    ),
 });
 
 export async function uploadLargePrintLetterTemplate(
