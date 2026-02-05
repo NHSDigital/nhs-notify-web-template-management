@@ -49,7 +49,13 @@ export class EventCacheHelper {
 
     const results = await Promise.all(eventPromises);
 
-    return results.flat();
+    // Filter events by their 'time' field (CloudEvent timestamp)
+    // This ensures we only return events generated after the 'from' timestamp,
+    // excluding events from seeded data that may have been written before 'start'
+    return results.flat().filter((event) => {
+      const eventTime = new Date(event.time);
+      return eventTime >= from;
+    });
   }
 
   private async queryFileForEvents(

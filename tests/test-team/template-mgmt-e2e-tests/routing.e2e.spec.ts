@@ -1,5 +1,4 @@
-/* eslint-disable security/detect-non-literal-regexp */
-import { expect, test } from '@playwright/test';
+import { expect, test, Locator } from '@playwright/test';
 import {
   createAuthHelper,
   TestUser,
@@ -15,9 +14,82 @@ import {
   RoutingMessagePlansPage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseNhsAppTemplatePage,
+  RoutingChooseEmailTemplatePage,
+  RoutingChooseTextMessageTemplatePage,
+  RoutingPreviewSmsTemplatePage,
+  RoutingChooseStandardLetterTemplatePage,
+  RoutingGetReadyToMovePage,
+  RoutingReviewAndMoveToProductionPage,
 } from '../pages/routing';
+import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
+import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from '../pages/template-mgmt-choose-template-base-page';
+import type { Channel } from 'nhs-notify-backend-client';
 
 const templateStorageHelper = new TemplateStorageHelper();
+
+type Template = { id: string; name: string };
+
+async function selectTemplate(
+  chooseTemplateLink: Locator,
+  chooseTemplatePage: TemplateMgmtChooseTemplateForMessagePlanBasePage,
+  template: Template,
+  templateNameLocator: Locator
+) {
+  return test.step(`select template: ${template.name}`, async () => {
+    await chooseTemplateLink.click();
+
+    const radio = chooseTemplatePage.getRadioButton(template.id);
+
+    await radio.click();
+
+    await chooseTemplatePage.saveAndContinueButton.click();
+
+    await expect(templateNameLocator).toHaveText(template.name);
+  });
+}
+
+async function assertTemplateStatuses(
+  messageTemplatesPage: TemplateMgmtMessageTemplatesPage,
+  expectations: Array<{ template: Template; expectedStatus: string }>
+) {
+  return test.step('assert template statuses', async () => {
+    for (const { template, expectedStatus } of expectations) {
+      expect(
+        await messageTemplatesPage.getTemplateStatus(template.id),
+        `Expected ${template.name} to have status "${expectedStatus}"`
+      ).toBe(expectedStatus);
+    }
+  });
+}
+
+async function assertReviewPageTemplates(
+  reviewPage: RoutingReviewAndMoveToProductionPage,
+  expectations: Array<{ channel: Channel; template: Template }>
+) {
+  return test.step('assert review page template names', async () => {
+    for (const { channel, template } of expectations) {
+      await expect(
+        reviewPage.getTemplateBlock(channel).defaultTemplateCard.templateName,
+        `Expected ${channel} template to be "${template.name}"`
+      ).toHaveText(template.name);
+    }
+  });
+}
+
+async function assertMessagePlanInTable(
+  table: Locator,
+  messagePlanName: string
+) {
+  return test.step(`assert message plan "${messagePlanName}" is in table`, async () => {
+    await table.click();
+
+    const row = table.getByRole('row', { name: messagePlanName });
+
+    await expect(row).toBeVisible();
+
+    await row.getByRole('link', { name: messagePlanName }).click();
+  });
+}
 
 function createTemplates(user: TestUser) {
   const templateIds = {
@@ -25,7 +97,6 @@ function createTemplates(user: TestUser) {
     EMAIL: randomUUID(),
     SMS: randomUUID(),
     LETTER: randomUUID(),
-    LARGE_PRINT_LETTER: randomUUID(),
     ARABIC_LETTER: randomUUID(),
     POLISH_LETTER: randomUUID(),
   };
@@ -41,26 +112,19 @@ function createTemplates(user: TestUser) {
       templateIds.EMAIL,
       user,
       `E2E Email template - ${templateIds.EMAIL}`,
-      'SUBMITTED'
+      'NOT_YET_SUBMITTED'
     ),
     SMS: TemplateFactory.createSmsTemplate(
       templateIds.SMS,
       user,
       `E2E SMS template - ${templateIds.SMS}`,
-      'SUBMITTED'
+      'NOT_YET_SUBMITTED'
     ),
     LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
       `E2E Letter template - ${templateIds.LETTER}`,
       'PROOF_APPROVED'
-    ),
-    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      templateIds.LARGE_PRINT_LETTER,
-      user,
-      `E2E Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
-      'SUBMITTED',
-      { letterType: 'x1' }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.ARABIC_LETTER,
@@ -97,107 +161,225 @@ test.describe('Routing', () => {
   test('templates are added to the routing config, and the routing config is completed', async ({
     page,
   }) => {
-    const rcName = 'E2E test RC';
+    const rcName = 'E2E TEST RC';
 
+    const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     const messagePlansPage = new RoutingMessagePlansPage(page);
-
-    await messagePlansPage.loadPage();
-
-    await messagePlansPage.clickNewMessagePlanButton();
-
-    const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
-
-    await chooseMessageOrderPage.checkRadioButton(
-      'NHS App, Email, Text message, Letter'
-    );
-
-    await chooseMessageOrderPage.clickContinueButton();
-
-    const createMessagePlanPage = new RoutingCreateMessagePlanPage(page);
-
-    await createMessagePlanPage.nameField.fill(rcName);
-
-    await createMessagePlanPage.clickSubmit();
-
     const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
 
-    await chooseTemplatesPage.letter.language.chooseTemplateLink.click();
+    await test.step('check initial template statuses', async () => {
+      await messageTemplatesPage.loadPage();
 
-    const chooseOtherLanguageTemplatesPage =
-      new RoutingChooseOtherLanguageLetterTemplatePage(page);
+      await expect(messageTemplatesPage.pageHeading).toBeVisible();
 
-    await expect(
-      chooseOtherLanguageTemplatesPage.tableRows.filter({
-        hasText: templates.ARABIC_LETTER.name,
-      })
-    ).toBeVisible();
+      await assertTemplateStatuses(messageTemplatesPage, [
+        { template: templates.NHSAPP, expectedStatus: 'Locked' },
+        { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
+        { template: templates.EMAIL, expectedStatus: 'Draft' },
+        { template: templates.SMS, expectedStatus: 'Draft' },
+        { template: templates.LETTER, expectedStatus: 'Proof approved' },
+        { template: templates.ARABIC_LETTER, expectedStatus: 'Proof approved' },
+      ]);
+    });
 
-    await expect(
-      chooseOtherLanguageTemplatesPage.tableRows.filter({
-        hasText: templates.POLISH_LETTER.name,
-      })
-    ).toBeVisible();
+    await test.step('create routing config', async () => {
+      await messageTemplatesPage.clickMessagePlansHeaderLink();
 
-    await expect(
-      chooseOtherLanguageTemplatesPage.tableRows.filter({
-        hasText: templates.LETTER.name,
-      })
-    ).toBeHidden();
+      await expect(messagePlansPage.pageHeading).toBeVisible();
 
-    const plCheck = await chooseOtherLanguageTemplatesPage.getCheckbox(
-      templates.POLISH_LETTER.id
-    );
+      await messagePlansPage.clickNewMessagePlanButton();
 
-    const arCheck = await chooseOtherLanguageTemplatesPage.getCheckbox(
-      templates.ARABIC_LETTER.id
-    );
+      const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
 
-    await arCheck.click();
-    await plCheck.click();
+      await chooseMessageOrderPage.checkRadioButton(
+        'NHS App, Email, Text message, Letter'
+      );
 
-    await chooseOtherLanguageTemplatesPage.saveAndContinueButton.click();
+      await chooseMessageOrderPage.clickContinueButton();
 
-    const otherLanguageNames =
-      chooseTemplatesPage.letter.language.templateNames;
+      const createMessagePlanPage = new RoutingCreateMessagePlanPage(page);
 
-    await expect(otherLanguageNames).toHaveCount(2);
+      await createMessagePlanPage.nameField.fill(rcName);
 
-    await expect(
-      otherLanguageNames.filter({
-        hasText: templates.ARABIC_LETTER.name,
-      })
-    ).toBeVisible();
+      await createMessagePlanPage.clickSubmit();
+    });
 
-    await expect(
-      otherLanguageNames.filter({
-        hasText: templates.POLISH_LETTER.name,
-      })
-    ).toBeVisible();
+    await test.step('add other language letter templates', async () => {
+      await chooseTemplatesPage.letter.language.chooseTemplateLink.click();
 
-    await chooseTemplatesPage.nhsApp.chooseTemplateLink.click();
+      const chooseOtherLanguageTemplatesPage =
+        new RoutingChooseOtherLanguageLetterTemplatePage(page);
 
-    const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(page);
+      await expect(
+        chooseOtherLanguageTemplatesPage.tableRows.filter({
+          hasText: templates.ARABIC_LETTER.name,
+        })
+      ).toBeVisible();
 
-    const nhsAppRadio = chooseNhsAppTemplatePage.getRadioButton(
-      templates.NHSAPP.id
-    );
+      await expect(
+        chooseOtherLanguageTemplatesPage.tableRows.filter({
+          hasText: templates.POLISH_LETTER.name,
+        })
+      ).toBeVisible();
 
-    await nhsAppRadio.click();
+      await expect(
+        chooseOtherLanguageTemplatesPage.tableRows.filter({
+          hasText: templates.LETTER.name,
+        })
+      ).toBeHidden();
 
-    await chooseNhsAppTemplatePage.saveAndContinueButton.click();
+      const plCheck = await chooseOtherLanguageTemplatesPage.getCheckbox(
+        templates.POLISH_LETTER.id
+      );
 
-    await expect(chooseTemplatesPage.nhsApp.templateName).toHaveText(
-      templates.NHSAPP.name
-    );
+      const arCheck = await chooseOtherLanguageTemplatesPage.getCheckbox(
+        templates.ARABIC_LETTER.id
+      );
 
-    await chooseTemplatesPage.clickMoveToProduction();
+      await arCheck.click();
+      await plCheck.click();
 
-    await expect(chooseTemplatesPage.errorSummary).toContainText([
-      'There is a problem',
-      'You must choose a template for each message',
-      'You have not chosen a template for your second message',
-      'You have not chosen a template for your third message',
-      'You have not chosen a template for your fourth message',
-    ]);
+      await chooseOtherLanguageTemplatesPage.saveAndContinueButton.click();
+
+      const otherLanguageNames =
+        chooseTemplatesPage.letter.language.templateNames;
+
+      await expect(otherLanguageNames).toHaveCount(2);
+
+      await expect(
+        otherLanguageNames.filter({
+          hasText: templates.ARABIC_LETTER.name,
+        })
+      ).toBeVisible();
+
+      await expect(
+        otherLanguageNames.filter({
+          hasText: templates.POLISH_LETTER.name,
+        })
+      ).toBeVisible();
+    });
+
+    await test.step('check draft message plan exists', async () => {
+      await chooseTemplatesPage.clickMessagePlansHeaderLink();
+
+      await expect(messagePlansPage.pageHeading).toBeVisible();
+
+      await assertMessagePlanInTable(
+        messagePlansPage.draftMessagePlansTable,
+        rcName
+      );
+    });
+
+    await test.step('add NHS App and Email templates', async () => {
+      await selectTemplate(
+        chooseTemplatesPage.nhsApp.chooseTemplateLink,
+        new RoutingChooseNhsAppTemplatePage(page),
+        templates.NHSAPP,
+        chooseTemplatesPage.nhsApp.templateName
+      );
+
+      await selectTemplate(
+        chooseTemplatesPage.email.chooseTemplateLink,
+        new RoutingChooseEmailTemplatePage(page),
+        templates.EMAIL,
+        chooseTemplatesPage.email.templateName
+      );
+    });
+
+    await test.step('preview and add SMS template', async () => {
+      await chooseTemplatesPage.sms.chooseTemplateLink.click();
+
+      const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+        page
+      );
+
+      const smsPreviewLink = chooseSmsTemplatePage.getPreviewLink(
+        templates.SMS.id
+      );
+
+      await smsPreviewLink.click();
+
+      const previewSmsTemplatePage = new RoutingPreviewSmsTemplatePage(page);
+
+      await expect(previewSmsTemplatePage.templateId).toHaveText(
+        templates.SMS.id
+      );
+
+      await previewSmsTemplatePage.clickBackLinkTop();
+
+      const smsRadio = chooseSmsTemplatePage.getRadioButton(templates.SMS.id);
+
+      await smsRadio.click();
+
+      await chooseSmsTemplatePage.saveAndContinueButton.click();
+
+      await expect(chooseTemplatesPage.sms.templateName).toHaveText(
+        templates.SMS.name
+      );
+    });
+
+    await test.step('verify validation error for missing letter template', async () => {
+      await chooseTemplatesPage.clickMoveToProduction();
+
+      await expect(chooseTemplatesPage.errorSummaryList).toContainText([
+        'You have not chosen a template for your fourth message',
+      ]);
+    });
+
+    await test.step('add standard letter template', async () => {
+      await selectTemplate(
+        chooseTemplatesPage.letter.standard.chooseTemplateLink,
+        new RoutingChooseStandardLetterTemplatePage(page),
+        templates.LETTER,
+        chooseTemplatesPage.letter.standard.templateName
+      );
+    });
+
+    await test.step('review and move to production', async () => {
+      await chooseTemplatesPage.clickMoveToProduction();
+
+      const getReadyToMovePage = new RoutingGetReadyToMovePage(page);
+
+      await expect(getReadyToMovePage.pageHeading).toBeVisible();
+
+      await getReadyToMovePage.continueLink.click();
+
+      const reviewPage = new RoutingReviewAndMoveToProductionPage(page);
+
+      await expect(reviewPage.pageHeading).toBeVisible();
+
+      await assertReviewPageTemplates(reviewPage, [
+        { channel: 'NHSAPP', template: templates.NHSAPP },
+        { channel: 'EMAIL', template: templates.EMAIL },
+        { channel: 'SMS', template: templates.SMS },
+        { channel: 'LETTER', template: templates.LETTER },
+      ]);
+
+      await reviewPage.moveToProductionButton.click();
+    });
+
+    await test.step('verify message plan is in production', async () => {
+      await expect(messagePlansPage.pageHeading).toBeVisible();
+
+      await assertMessagePlanInTable(
+        messagePlansPage.productionMessagePlansTable,
+        rcName
+      );
+    });
+
+    await test.step('verify all templates are locked', async () => {
+      await messagePlansPage.clickTemplatesHeaderLink();
+
+      await expect(messageTemplatesPage.pageHeading).toBeVisible();
+
+      await assertTemplateStatuses(messageTemplatesPage, [
+        { template: templates.NHSAPP, expectedStatus: 'Locked' },
+        { template: templates.EMAIL, expectedStatus: 'Locked' },
+        { template: templates.SMS, expectedStatus: 'Locked' },
+        { template: templates.LETTER, expectedStatus: 'Locked' },
+        { template: templates.ARABIC_LETTER, expectedStatus: 'Locked' },
+        { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
+      ]);
+    });
   });
 });

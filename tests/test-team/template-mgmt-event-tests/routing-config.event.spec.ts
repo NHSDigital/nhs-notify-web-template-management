@@ -174,16 +174,33 @@ test.describe('Event publishing - Routing Config', () => {
     }).toPass({ timeout: 60_000 });
   });
 
-  test('Expect a draft event and a completed event', async ({ request }) => {
-    const templateId = randomUUID();
+  test('Expect routing config and template completed events on submit', async ({
+    request,
+  }) => {
+    const nhsAppTemplateId = randomUUID();
+    const emailTemplateId = randomUUID();
 
-    const template = TemplateFactory.createNhsAppTemplate(
-      templateId,
+    // NHS App template - NOT_YET_SUBMITTED, should trigger TemplateCompleted.v1
+    const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
+      nhsAppTemplateId,
       user,
-      'Test Template for Submit'
+      'NHS App Template for Submit'
     );
+    nhsAppTemplate.templateStatus = 'NOT_YET_SUBMITTED';
 
-    await templateStorageHelper.seedTemplateData([template]);
+    // Email template - already SUBMITTED, should NOT trigger TemplateCompleted.v1
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      emailTemplateId,
+      user,
+      'Email Template for Submit'
+    );
+    emailTemplate.templateStatus = 'SUBMITTED';
+
+    await templateStorageHelper.seedTemplateData([nhsAppTemplate, emailTemplate]);
+
+    // Wait for DynamoDB stream events from seeding to be processed
+    // This ensures any events triggered by seeding have timestamps before 'start'
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
@@ -191,7 +208,13 @@ test.describe('Event publishing - Routing Config', () => {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
           channelType: 'primary',
-          defaultTemplateId: templateId,
+          defaultTemplateId: nhsAppTemplateId,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: emailTemplateId,
         },
       ],
     }).apiPayload;
@@ -232,8 +255,13 @@ test.describe('Event publishing - Routing Config', () => {
     expect(submitResponse.status()).toBe(200);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [id]);
+      const events = await eventCacheHelper.findEvents(start, [
+        id,
+        nhsAppTemplateId,
+        emailTemplateId,
+      ]);
 
+      // Routing config events
       expect(events).toContainEqual(
         expect.objectContaining({
           type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
@@ -252,7 +280,28 @@ test.describe('Event publishing - Routing Config', () => {
         })
       );
 
-      expect(events).toHaveLength(2);
+      // Template completed events - NHS App (was NOT_YET_SUBMITTED)
+      expect(events).toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+          data: expect.objectContaining({
+            id: nhsAppTemplateId,
+          }),
+        })
+      );
+
+      // Email template should NOT have a TemplateCompleted event (was already SUBMITTED)
+      expect(events).not.toContainEqual(
+        expect.objectContaining({
+          type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+          data: expect.objectContaining({
+            id: emailTemplateId,
+          }),
+        })
+      );
+
+      // Total: 2 routing config events + 1 template completed event = 3
+      expect(events).toHaveLength(3);
     }).toPass({ timeout: 60_000 });
   });
 });
