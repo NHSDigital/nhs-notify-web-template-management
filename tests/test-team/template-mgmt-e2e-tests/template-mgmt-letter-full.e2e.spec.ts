@@ -6,7 +6,7 @@ import {
   testUsers,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';

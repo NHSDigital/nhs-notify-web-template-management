@@ -28,8 +28,13 @@ export type ErrorState = {
   fieldErrors?: Record<string, string[]>;
 };
 
+type FormStateFieldValue = string | undefined;
+
+export type FormStateFields = Record<string, FormStateFieldValue>;
+
 export type FormState = {
   errorState?: ErrorState;
+  fields?: FormStateFields;
 };
 
 export type CreateUpdateNHSAppTemplate = Extract<
