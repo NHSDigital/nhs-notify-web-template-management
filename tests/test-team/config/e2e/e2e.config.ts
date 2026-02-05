@@ -32,7 +32,7 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
-        headless: false,
+        headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['e2e:setup'],

@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   testWithEventSubscriber as test,
   expect,
@@ -16,12 +15,8 @@ import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { setTimeout } from 'node:timers/promises';
 import { Template } from 'helpers/types';
-
-const eventWithDataId = (id: string) =>
-  z.object({
-    type: z.string(),
-    data: z.object({ id: z.literal(id) }),
-  });
+import { eventWithId } from '../helpers/events/matchers';
+import z from 'zod';
 
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
@@ -85,7 +80,7 @@ test.describe('Event publishing - Letters', () => {
 
     const events = await eventSubscriber.receive({
       since: start,
-      match: eventWithDataId(templateId),
+      match: eventWithId(templateId),
     });
 
     expect(events).toHaveLength(0);
@@ -127,7 +122,7 @@ test.describe('Event publishing - Letters', () => {
 
     const events = await eventSubscriber.receive({
       since: start,
-      match: eventWithDataId(templateId),
+      match: eventWithId(templateId),
     });
 
     expect(events).toHaveLength(0);
@@ -228,7 +223,12 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataId(templateId),
+        match: z.object({
+          data: z.object({
+            type: z.string(),
+            id: z.literal(template.id),
+          }),
+        }),
       });
 
       // Note: This is weird, But sometimes the tests find all relevant events within
@@ -252,9 +252,8 @@ test.describe('Event publishing - Letters', () => {
 
       const drafts = events.filter(
         (e) =>
-          e.record.type ===
-            'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
-          e.record.data.id === templateId
+          e.record.data.type ===
+          'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
@@ -306,16 +305,20 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataId(templateId),
+        match: z.object({
+          data: z.object({
+            type: z.string(),
+            id: z.literal(template.id),
+          }),
+        }),
       });
 
       expect(events).toHaveLength(2);
 
       const drafts = events.filter(
         (e) =>
-          e.record.type ===
-            'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
-          e.record.data.id === templateId
+          e.record.data.type ===
+          'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts).toHaveLength(2);
@@ -359,7 +362,7 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataId(templateId),
+        match: eventWithId(templateId),
       });
 
       expect(events).toHaveLength(2);

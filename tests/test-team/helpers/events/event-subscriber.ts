@@ -147,7 +147,6 @@ export class EventSubscriber {
     }
 
     const filtered = [...this.messages.values()].filter(({ record }) => {
-      // Use the event's actual time field (CloudEvents format) for filtering
       const eventTime = record.time ? new Date(record.time as string) : null;
       if (since && eventTime && eventTime <= since) return false;
 

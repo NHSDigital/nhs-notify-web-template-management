@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import { z } from 'zod';
 import {
   testWithEventSubscriber as test,
   expect,
@@ -13,12 +12,7 @@ import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-he
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
-
-const eventWithDataId = (id: string) =>
-  z.object({ data: z.object({ id: z.literal(id) }) });
-
-const eventWithDataIdIn = (ids: string[]) =>
-  z.object({ data: z.object({ id: z.enum(ids as [string, ...string[]]) }) });
+import { eventWithId, eventWithIdIn } from '../helpers/events/matchers';
 
 test.describe('Event publishing - Routing Config', () => {
   const authHelper = createAuthHelper();
@@ -89,7 +83,7 @@ test.describe('Event publishing - Routing Config', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataId(id),
+        match: eventWithId(id),
       });
 
       expect(events).toContainEqual(
@@ -171,7 +165,7 @@ test.describe('Event publishing - Routing Config', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataId(id),
+        match: eventWithId(id),
       });
 
       expect(events).toContainEqual(
@@ -207,7 +201,6 @@ test.describe('Event publishing - Routing Config', () => {
     const nhsAppTemplateId = randomUUID();
     const emailTemplateId = randomUUID();
 
-    // NHS App template - NOT_YET_SUBMITTED, should trigger TemplateCompleted.v1 on submit
     const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
       nhsAppTemplateId,
       user,
@@ -215,7 +208,6 @@ test.describe('Event publishing - Routing Config', () => {
     );
     nhsAppTemplate.templateStatus = 'NOT_YET_SUBMITTED';
 
-    // Email template - already SUBMITTED, should NOT trigger TemplateCompleted.v1 on submit
     const emailTemplate = TemplateFactory.createEmailTemplate(
       emailTemplateId,
       user,
@@ -230,12 +222,10 @@ test.describe('Event publishing - Routing Config', () => {
       emailTemplate,
     ]);
 
-    // Wait for seeding events to be processed before proceeding.
-    // Seeding triggers: TemplateDrafted (NHS App) + TemplateCompleted (Email, since SUBMITTED)
     await expect(async () => {
       const seedEvents = await eventSubscriber.receive({
         since: seedStart,
-        match: eventWithDataIdIn([nhsAppTemplateId, emailTemplateId]),
+        match: eventWithIdIn([nhsAppTemplateId, emailTemplateId]),
       });
       expect(seedEvents).toHaveLength(2);
     }).toPass({ timeout: 60_000 });
@@ -292,18 +282,12 @@ test.describe('Event publishing - Routing Config', () => {
 
     expect(submitResponse.status()).toBe(200);
 
-    // After submit, expect:
-    // - RoutingConfigDrafted (from create)
-    // - RoutingConfigCompleted (from submit)
-    // - TemplateCompleted for NHS App (was NOT_YET_SUBMITTED, now SUBMITTED)
-    // - NO additional TemplateCompleted for Email (was already SUBMITTED)
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithDataIdIn([id, nhsAppTemplateId, emailTemplateId]),
+        match: eventWithIdIn([id, nhsAppTemplateId, emailTemplateId]),
       });
 
-      // Routing config events
       expect(events).toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
@@ -326,7 +310,6 @@ test.describe('Event publishing - Routing Config', () => {
         })
       );
 
-      // Template completed events - NHS App (was NOT_YET_SUBMITTED)
       expect(events).toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
@@ -338,7 +321,6 @@ test.describe('Event publishing - Routing Config', () => {
         })
       );
 
-      // Email template should NOT have a TemplateCompleted event (was already SUBMITTED)
       expect(events).not.toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
@@ -350,7 +332,6 @@ test.describe('Event publishing - Routing Config', () => {
         })
       );
 
-      // Total: 2 routing config events + 1 template completed event = 3
       expect(events).toHaveLength(3);
     }).toPass({ timeout: 60_000 });
   });

@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   testWithEventSubscriber as test,
   expect,
@@ -10,9 +9,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-
-const eventWithDataId = (id: string) =>
-  z.object({ data: z.object({ id: z.literal(id) }) });
+import { eventWithId } from '../helpers/events/matchers';
 
 const DIGITAL_CHANNELS = ['NHS_APP', 'SMS', 'EMAIL'] as const;
 
@@ -98,7 +95,7 @@ test.describe('Event publishing - Digital', () => {
         await expect(async () => {
           const events = await eventSubscriber.receive({
             since: start,
-            match: eventWithDataId(templateId),
+            match: eventWithId(templateId),
           });
 
           expect(events).toHaveLength(3);
@@ -187,7 +184,7 @@ test.describe('Event publishing - Digital', () => {
         await expect(async () => {
           const events = await eventSubscriber.receive({
             since: start,
-            match: eventWithDataId(templateId),
+            match: eventWithId(templateId),
           });
 
           expect(events).toHaveLength(2);

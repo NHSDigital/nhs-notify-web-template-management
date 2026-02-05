@@ -13,7 +13,6 @@ setup('event test setup', async () => {
 
   await createAuthHelper().setup();
 
-  // Cleanup stale SQS queues and SNS subscriptions from previous test runs
   await EventSubscriber.cleanup(
     'event',
     backendConfig.environment,
