@@ -1566,6 +1566,26 @@ const previewMessagePlan = {
   languageFormatsCardHeading: 'Other language letters (optional)',
 };
 
+const reviewAndMoveToProduction = {
+  pageTitle: generatePageTitle('Review and move message plan to production'),
+  headerCaption: 'Step 2 of 2',
+  pageHeading: 'Review and move message plan to production',
+  summaryTable: {
+    rowHeadings: {
+      name: 'Name',
+    },
+  },
+  detailsOpenButton: {
+    openText: 'Close all template previews',
+    closedText: 'Open all template previews',
+  },
+  languageFormatsCardHeading: 'Other language letters (optional)',
+  buttons: {
+    moveToProduction: 'Move to production',
+    keepInDraft: 'Keep in draft',
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1627,6 +1647,7 @@ const content = {
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
     previewMessagePlan,
+    reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
   },
 };

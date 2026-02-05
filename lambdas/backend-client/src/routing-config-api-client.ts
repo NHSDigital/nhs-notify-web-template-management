@@ -154,4 +154,31 @@ export const routingConfigurationApiClient = {
 
     return { ...data };
   },
+
+  async submit(
+    token: string,
+    id: RoutingConfig['id'],
+    lockNumber: number
+  ): Promise<Result<RoutingConfig>> {
+    const url = `/v1/routing-configuration/${encodeURIComponent(id)}/submit`;
+
+    const { data, error } = await catchAxiosError(
+      httpClient.patch<RoutingConfigSuccess>(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: token,
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (error) {
+      return { error };
+    }
+
+    return { ...data };
+  },
 };

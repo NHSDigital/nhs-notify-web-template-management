@@ -225,3 +225,34 @@ export async function getRoutingConfigReferencesByTemplateId(
 
   return data;
 }
+
+/**
+ * Submits a routing configuration to move it from DRAFT to COMPLETED status.
+ */
+export async function submitRoutingConfig(
+  routingConfigId: string,
+  lockNumber: number
+): Promise<RoutingConfig> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await routingConfigurationApiClient.submit(
+    accessToken,
+    routingConfigId,
+    lockNumber
+  );
+
+  if (error) {
+    logger.error('Failed to submit message plan', error);
+    throw new Error('Failed to submit message plan');
+  }
+
+  if (!data) {
+    throw new Error('No data returned from submit');
+  }
+
+  return data;
+}
