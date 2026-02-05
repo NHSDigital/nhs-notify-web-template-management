@@ -21,6 +21,7 @@ export function useNHSNotifyForm() {
     throw new Error(
       'useNHSNotifyForm must be used within NHSNotifyFormProvider'
     );
+
   return context;
 }
 

@@ -87,7 +87,7 @@ test.describe('Upload letter Template Page', () => {
     await page.locator('input[name="letterTemplatePdf"]').click();
     await page
       .locator('input[name="letterTemplatePdf"]')
-      .setInputFiles('./fixtures/pdf-upload/with-personalisation/template.pdf');
+      .setInputFiles('./fixtures/letters/with-personalisation/template.pdf');
 
     await createTemplatePage.clickSaveAndPreviewButton();
 
@@ -149,9 +149,7 @@ test.describe('Upload letter Template Page', () => {
       });
       await page
         .locator('input[name="letterTemplatePdf"]')
-        .setInputFiles(
-          './fixtures/pdf-upload/with-personalisation/template.pdf'
-        );
+        .setInputFiles('./fixtures/letters/with-personalisation/template.pdf');
 
       await createTemplatePage.clickSaveAndPreviewButton();
 
@@ -187,7 +185,7 @@ test.describe('Upload letter Template Page', () => {
     ).toHaveText(['Select a letter template PDF']);
   });
 
-  const detailsSections = ['how-to-name-your-template'];
+  const detailsSections = ['Naming your templates'];
 
   for (const section of detailsSections) {
     // eslint-disable-next-line no-loop-func
@@ -197,18 +195,20 @@ test.describe('Upload letter Template Page', () => {
       const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
       await createTemplatePage.loadPage();
 
-      await page.getByTestId(`${section}-summary`).click();
-      await expect(page.getByTestId(`${section}-details`)).toHaveAttribute(
-        'open',
-        ''
-      );
-      await expect(page.getByTestId(`${section}-text`)).toBeVisible();
+      const details = await page
+        .getByRole('group')
+        .filter({ hasText: section });
 
-      await page.getByTestId(`${section}-summary`).click();
-      await expect(page.getByTestId(`${section}-details`)).not.toHaveAttribute(
-        'open'
-      );
-      await expect(page.getByTestId(`${section}-text`)).toBeHidden();
+      const summary = details.locator('summary');
+      const text = details.locator('.nhsuk-details__text');
+
+      await summary.click();
+      await expect(details).toHaveAttribute('open');
+      await expect(text).toBeVisible();
+
+      await summary.click();
+      await expect(details).not.toHaveAttribute('open');
+      await expect(text).toBeHidden();
     });
   }
 

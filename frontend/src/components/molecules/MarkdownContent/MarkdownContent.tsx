@@ -5,7 +5,6 @@ import Markdown, { type MarkdownToJSX } from 'markdown-to-jsx';
 type MarkdownContentProps = {
   content: string | string[];
   variables?: Record<string, string | number>;
-  testId?: string;
   mode?: 'block' | 'inline';
   overrides?: MarkdownToJSX.Overrides;
 };
@@ -13,7 +12,6 @@ type MarkdownContentProps = {
 export function MarkdownContent({
   content,
   variables,
-  testId,
   mode = 'block',
   overrides,
 }: MarkdownContentProps) {
@@ -59,7 +57,6 @@ export function MarkdownContent({
       {rendered.map((item, index) => (
         <Markdown
           key={index}
-          data-testid={testId ? `${testId}-${index}` : undefined}
           options={mode === 'block' ? blockOptions : inlineOptions}
         >
           {item}

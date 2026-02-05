@@ -106,7 +106,7 @@ export const NhsAppTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={'NHS_APP'} />
+                <TemplateNameGuidance templateType={'NHS_APP'} />
                 <TextInput
                   id='nhsAppTemplateName'
                   defaultValue={nhsAppTemplateName}
@@ -131,9 +131,11 @@ export const NhsAppTemplateForm: FC<
                 />
                 <JsEnabled>
                   <MarkdownContent
-                    testId='character-count'
                     content={characterCountText}
                     variables={{ characters: nhsAppTemplateMessage.length }}
+                    overrides={{
+                      p: { props: { 'data-testid': 'character-count' } },
+                    }}
                   />
                 </JsEnabled>
               </div>

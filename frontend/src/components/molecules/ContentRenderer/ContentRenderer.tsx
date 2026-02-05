@@ -2,21 +2,19 @@ import type { MarkdownToJSX } from 'markdown-to-jsx';
 import CodeExample from '@atoms/CodeExample/CodeExample';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
-type StandardBlock = { testId?: string };
-
-export type MarkdownTextBlock = StandardBlock & {
+export type MarkdownTextBlock = {
   type: 'text';
   text: string;
   overrides?: MarkdownToJSX.Overrides;
 };
 
-export type MarkdownInlineBlock = StandardBlock & {
+export type MarkdownInlineBlock = {
   type: 'inline-text';
   text: string;
   overrides?: MarkdownToJSX.Overrides;
 };
 
-export type CodeBlock = StandardBlock & {
+export type CodeBlock = {
   type: 'code';
   code: string;
   aria: { text: string; id: string };
@@ -50,14 +48,11 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
           );
         }
 
-        const key = block.testId ?? index;
-
         switch (block.type) {
           case 'text': {
             return (
               <MarkdownContent
-                key={key}
-                testId={block.testId}
+                key={index}
                 content={block.text}
                 variables={variables}
                 overrides={block.overrides}
@@ -68,8 +63,7 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
           case 'inline-text': {
             return (
               <MarkdownContent
-                key={key}
-                testId={block.testId}
+                key={index}
                 content={block.text}
                 variables={variables}
                 overrides={block.overrides}
@@ -80,8 +74,7 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
           case 'code': {
             return (
               <CodeExample
-                data-testid={block.testId}
-                key={key}
+                key={index}
                 ariaText={block.aria?.text}
                 ariaId={block.aria?.id}
               >
