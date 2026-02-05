@@ -118,7 +118,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             <div
               class="nhsuk-hint"
             >
-              Choose which campaign this letter is for
+              Choose which campaign this letter is for.
             </div>
             <select
               class="nhsuk-select"
@@ -402,7 +402,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             <div
               class="nhsuk-hint"
             >
-              Choose which campaign this letter is for
+              Choose which campaign this letter is for.
             </div>
             <span
               class="nhsuk-error-message"

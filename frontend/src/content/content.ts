@@ -1609,7 +1609,7 @@ const uploadDocxLetterTemplateForm = {
         hint: 'This message plan will link to your only campaign:',
       },
       select: {
-        hint: 'Choose which campaign this letter is for',
+        hint: 'Choose which campaign this letter is for.',
       },
     },
     language: {
