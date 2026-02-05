@@ -5,15 +5,20 @@ import {
   ListQueuesCommand,
   Message,
   ReceiveMessageCommand,
+  SQSClient,
 } from '@aws-sdk/client-sqs';
 import {
   ListSubscriptionsByTopicCommand,
+  SNSClient,
   SubscribeCommand,
   UnsubscribeCommand,
 } from '@aws-sdk/client-sns';
-import { snsClient, sqsClient } from '@comms/util-aws';
-import { sleep } from '@comms/util-retry';
 import { ZodType } from 'zod';
+
+const sleep = (seconds: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  });
 
 type Event<T> = {
   sentTime: Date;
@@ -24,7 +29,7 @@ type Event<T> = {
   Class instances must be created as worker-scoped playwright fixtures.
   Each worker owns its queue and subscription and runs tests in serial internally.
   Each fixture should only be used in a single suite.
-  The cleanup static method should be called in a suite's global setup
+  The cleanup static method should be called in a suite's global setup.
 
   This util assumes that the event JSON has a unique 'id' property. Use of
   non-unique IDs will lead to non-deterministic behaviour in tests.
@@ -37,11 +42,11 @@ type Event<T> = {
 */
 
 export class EventSubscriber {
-  static readonly sns = snsClient;
+  static readonly sns = new SNSClient({ region: 'eu-west-2' });
 
-  static readonly sqs = sqsClient;
+  static readonly sqs = new SQSClient({ region: 'eu-west-2' });
 
-  static readonly rootNamespace = 'comms-e2e-es';
+  static readonly rootNamespace = 'tm-e2e-es';
 
   private readonly queueName: string;
 
@@ -141,24 +146,25 @@ export class EventSubscriber {
       });
     }
 
-    const filtered = Array.from(this.messages.values()).filter(
-      ({ sentTime, record }) => {
-        if (since && sentTime <= since) return false;
+    const filtered = [...this.messages.values()].filter(({ record }) => {
+      // Use the event's actual time field (CloudEvents format) for filtering
+      const eventTime = record.time ? new Date(record.time as string) : null;
+      if (since && eventTime && eventTime <= since) return false;
 
-        if (match) {
-          return match.safeParse(record).success;
-        }
-
-        return true;
+      if (match) {
+        return match.safeParse(record).success;
       }
-    ) as Event<T>[];
+
+      return true;
+    }) as Event<T>[];
 
     return filtered.sort((a, b) => a.sentTime.getTime() - b.sentTime.getTime());
   }
 
   private trimCached(since: Date) {
-    for (const [id, { sentTime }] of this.messages) {
-      if (sentTime < since) {
+    for (const [id, { record }] of this.messages) {
+      const eventTime = record.time ? new Date(record.time as string) : null;
+      if (eventTime && eventTime < since) {
         this.messages.delete(id);
       }
     }
@@ -208,20 +214,20 @@ export class EventSubscriber {
           })
         );
         break;
-      } catch (err) {
+      } catch (error) {
         if (
-          err instanceof Error &&
-          // err instancecof QueueDeletedRecently does not work as expected
-          (err.name === 'QueueDeletedRecently' ||
-            ('Code' in err &&
-              err.Code === 'AWS.SimpleQueueService.QueueDeletedRecently'))
+          error instanceof Error &&
+          // error instanceof QueueDeletedRecently does not work as expected
+          (error.name === 'QueueDeletedRecently' ||
+            ('Code' in error &&
+              error.Code === 'AWS.SimpleQueueService.QueueDeletedRecently'))
         ) {
           console.log(
             `Queue deleted recently, retrying creation (attempt ${attempt})`
           );
           await sleep(10);
         } else {
-          throw err;
+          throw error;
         }
       }
     }
@@ -252,17 +258,14 @@ export class EventSubscriber {
     return subscription.SubscriptionArn;
   }
 
-  private static deleteQueue(
-    url: string,
-    { warn }: { warn?: boolean } = { warn: true }
-  ) {
+  private static deleteQueue(url: string, warn = true) {
     console.log(`Deleting queue with URL: ${url}`);
 
     return EventSubscriber.sqs
       .send(new DeleteQueueCommand({ QueueUrl: url }))
-      .catch((err) => {
+      .catch((error) => {
         if (warn) {
-          console.warn(`Failed to delete queue at ${url}: ${err}`);
+          console.warn(`Failed to delete queue at ${url}: ${error}`);
         }
       });
   }
@@ -272,8 +275,8 @@ export class EventSubscriber {
 
     return EventSubscriber.sns
       .send(new UnsubscribeCommand({ SubscriptionArn: arn }))
-      .catch((err) => {
-        console.warn(`Failed to delete subscription with ARN ${arn}: ${err}`);
+      .catch((error) => {
+        console.warn(`Failed to delete subscription with ARN ${arn}: ${error}`);
       });
   }
 

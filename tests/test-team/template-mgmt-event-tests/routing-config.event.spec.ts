@@ -1,21 +1,29 @@
 import { randomUUID } from 'node:crypto';
-import { test, expect } from '@playwright/test';
+import { z } from 'zod';
+import {
+  testWithEventSubscriber as test,
+  expect,
+} from '../fixtures/event-subscriber.fixture';
 import {
   createAuthHelper,
   type TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
-import { EventCacheHelper } from '../helpers/events/event-cache-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 
+const eventWithDataId = (id: string) =>
+  z.object({ data: z.object({ id: z.literal(id) }) });
+
+const eventWithDataIdIn = (ids: string[]) =>
+  z.object({ data: z.object({ id: z.enum(ids as [string, ...string[]]) }) });
+
 test.describe('Event publishing - Routing Config', () => {
   const authHelper = createAuthHelper();
   const storageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const eventCacheHelper = new EventCacheHelper();
 
   let user: TestUser;
 
@@ -30,6 +38,7 @@ test.describe('Event publishing - Routing Config', () => {
 
   test('Expect a draft event and a deleted event when some template IDs are null', async ({
     request,
+    eventSubscriber,
   }) => {
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
@@ -78,22 +87,29 @@ test.describe('Event publishing - Routing Config', () => {
     expect(deleteResponse.status()).toBe(204);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [id]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithDataId(id),
+      });
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
@@ -102,7 +118,10 @@ test.describe('Event publishing - Routing Config', () => {
     }).toPass({ timeout: 60_000 });
   });
 
-  test('Expect a draft event and a deleted event', async ({ request }) => {
+  test('Expect a draft event and a deleted event', async ({
+    request,
+    eventSubscriber,
+  }) => {
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
         {
@@ -150,22 +169,29 @@ test.describe('Event publishing - Routing Config', () => {
     expect(deleteResponse.status()).toBe(204);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [id]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithDataId(id),
+      });
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigDeleted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
@@ -176,11 +202,12 @@ test.describe('Event publishing - Routing Config', () => {
 
   test('Expect routing config and template completed events on submit', async ({
     request,
+    eventSubscriber,
   }) => {
     const nhsAppTemplateId = randomUUID();
     const emailTemplateId = randomUUID();
 
-    // NHS App template - NOT_YET_SUBMITTED, should trigger TemplateCompleted.v1
+    // NHS App template - NOT_YET_SUBMITTED, should trigger TemplateCompleted.v1 on submit
     const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
       nhsAppTemplateId,
       user,
@@ -188,7 +215,7 @@ test.describe('Event publishing - Routing Config', () => {
     );
     nhsAppTemplate.templateStatus = 'NOT_YET_SUBMITTED';
 
-    // Email template - already SUBMITTED, should NOT trigger TemplateCompleted.v1
+    // Email template - already SUBMITTED, should NOT trigger TemplateCompleted.v1 on submit
     const emailTemplate = TemplateFactory.createEmailTemplate(
       emailTemplateId,
       user,
@@ -196,11 +223,22 @@ test.describe('Event publishing - Routing Config', () => {
     );
     emailTemplate.templateStatus = 'SUBMITTED';
 
-    await templateStorageHelper.seedTemplateData([nhsAppTemplate, emailTemplate]);
+    const seedStart = new Date();
 
-    // Wait for DynamoDB stream events from seeding to be processed
-    // This ensures any events triggered by seeding have timestamps before 'start'
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await templateStorageHelper.seedTemplateData([
+      nhsAppTemplate,
+      emailTemplate,
+    ]);
+
+    // Wait for seeding events to be processed before proceeding.
+    // Seeding triggers: TemplateDrafted (NHS App) + TemplateCompleted (Email, since SUBMITTED)
+    await expect(async () => {
+      const seedEvents = await eventSubscriber.receive({
+        since: seedStart,
+        match: eventWithDataIdIn([nhsAppTemplateId, emailTemplateId]),
+      });
+      expect(seedEvents).toHaveLength(2);
+    }).toPass({ timeout: 60_000 });
 
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
@@ -254,28 +292,36 @@ test.describe('Event publishing - Routing Config', () => {
 
     expect(submitResponse.status()).toBe(200);
 
+    // After submit, expect:
+    // - RoutingConfigDrafted (from create)
+    // - RoutingConfigCompleted (from submit)
+    // - TemplateCompleted for NHS App (was NOT_YET_SUBMITTED, now SUBMITTED)
+    // - NO additional TemplateCompleted for Email (was already SUBMITTED)
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [
-        id,
-        nhsAppTemplateId,
-        emailTemplateId,
-      ]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithDataIdIn([id, nhsAppTemplateId, emailTemplateId]),
+      });
 
       // Routing config events
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
-          data: expect.objectContaining({
-            id,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
+            data: expect.objectContaining({
+              id,
+            }),
           }),
         })
       );
@@ -283,9 +329,11 @@ test.describe('Event publishing - Routing Config', () => {
       // Template completed events - NHS App (was NOT_YET_SUBMITTED)
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
-          data: expect.objectContaining({
-            id: nhsAppTemplateId,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+            data: expect.objectContaining({
+              id: nhsAppTemplateId,
+            }),
           }),
         })
       );
@@ -293,9 +341,11 @@ test.describe('Event publishing - Routing Config', () => {
       // Email template should NOT have a TemplateCompleted event (was already SUBMITTED)
       expect(events).not.toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
-          data: expect.objectContaining({
-            id: emailTemplateId,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+            data: expect.objectContaining({
+              id: emailTemplateId,
+            }),
           }),
         })
       );

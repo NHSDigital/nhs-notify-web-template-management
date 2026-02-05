@@ -73,3 +73,7 @@ output "event_cache_bucket_name" {
 output "routing_config_table_name" {
   value = module.backend_api.routing_config_table_name
 }
+
+output "events_sns_topic_arn" {
+  value = module.eventpub.sns_topic.arn
+}
