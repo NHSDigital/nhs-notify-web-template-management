@@ -7,6 +7,7 @@ import {
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs';
+import { setTimeout } from 'node:timers/promises';
 import {
   ListSubscriptionsByTopicCommand,
   SNSClient,
@@ -14,11 +15,6 @@ import {
   UnsubscribeCommand,
 } from '@aws-sdk/client-sns';
 import { ZodType } from 'zod';
-
-const sleep = (seconds: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  });
 
 type Event<T> = {
   sentTime: Date;
@@ -224,7 +220,7 @@ export class EventSubscriber {
           console.log(
             `Queue deleted recently, retrying creation (attempt ${attempt})`
           );
-          await sleep(10);
+          await setTimeout(10_000);
         } else {
           throw error;
         }
