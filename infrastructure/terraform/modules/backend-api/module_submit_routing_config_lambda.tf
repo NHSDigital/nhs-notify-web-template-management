@@ -41,11 +41,27 @@ data "aws_iam_policy_document" "submit_routing_config_lambda_policy" {
     effect = "Allow"
 
     actions = [
+      "dynamodb:GetItem",
       "dynamodb:UpdateItem",
     ]
 
     resources = [
       aws_dynamodb_table.routing_configuration.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowConditionCheckDynamoAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:ConditionCheckItem",
+    ]
+
+    resources = [
+      aws_dynamodb_table.templates.arn,
     ]
   }
 

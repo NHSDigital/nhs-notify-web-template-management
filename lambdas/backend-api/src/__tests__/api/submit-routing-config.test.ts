@@ -173,7 +173,7 @@ describe('Submit Routing Config Handler', () => {
         errorMeta: {
           code: 409,
           description:
-            'Lock number mismatch - Message Plan has been modified since last read',
+            'Lock number mismatch - Routing configuration has been modified since last read',
         },
       },
     });
@@ -196,7 +196,7 @@ describe('Submit Routing Config Handler', () => {
       body: JSON.stringify({
         statusCode: 409,
         technicalMessage:
-          'Lock number mismatch - Message Plan has been modified since last read',
+          'Lock number mismatch - Routing configuration has been modified since last read',
       }),
     });
 

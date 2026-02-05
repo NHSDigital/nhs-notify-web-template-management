@@ -3,6 +3,8 @@ import {
   $ListRoutingConfigFilters,
   $RoutingConfig,
   $UpdateRoutingConfig,
+  $SubmittableCascade,
+  $SubmittableCascadeItem,
 } from '../../schemas/routing-config';
 
 const cascadeItemDefault = {
@@ -86,33 +88,6 @@ describe.each([
     const res = $Schema.safeParse({
       ...baseInput,
       cascade: [cascadeCondAcc],
-    });
-    expect(res.success).toBe(true);
-  });
-
-  test('valid with conditional template ids set to null', () => {
-    const res = $Schema.safeParse({
-      ...baseInput,
-      cascade: [
-        {
-          ...cascadeCondAcc,
-          conditionalTemplates: [
-            {
-              accessibleFormat: 'x1',
-              templateId: null,
-            },
-          ],
-        },
-        {
-          ...cascadeCondLang,
-          conditionalTemplates: [
-            {
-              language: 'ar',
-              templateId: null,
-            },
-          ],
-        },
-      ],
     });
     expect(res.success).toBe(true);
   });
@@ -414,5 +389,150 @@ describe('UpdateRoutingConfig', () => {
     expect(res.success).toBe(false);
 
     expect(res.error).toMatchSnapshot();
+  });
+});
+
+describe('$SubmittableCascadeItem', () => {
+  test('valid with defaultTemplateId', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+    });
+    expect(res.success).toBe(true);
+  });
+
+  test('valid with defaultTemplateId and conditionalTemplates', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard', 'translations'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
+    });
+    expect(res.success).toBe(true);
+  });
+
+  test('valid with conditionalTemplates only (non-empty)', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['translations'],
+      channel: 'LETTER',
+      channelType: 'secondary',
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
+    });
+    expect(res.success).toBe(true);
+  });
+
+  test('valid with accessible conditional templates only', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['accessible'],
+      channel: 'LETTER',
+      channelType: 'secondary',
+      conditionalTemplates: [
+        {
+          accessibleFormat: 'x1',
+          templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+        },
+      ],
+    });
+    expect(res.success).toBe(true);
+  });
+
+  test('invalid without defaultTemplateId and without conditionalTemplates', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+    });
+    expect(res.success).toBe(false);
+  });
+
+  test('invalid with empty conditionalTemplates without defaultTemplateId', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      conditionalTemplates: [],
+    });
+    expect(res.success).toBe(false);
+  });
+
+  test('invalid with empty defaultTemplateId', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: '',
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
+    });
+    expect(res.success).toBe(false);
+  });
+
+  test('invalid with null defaultTemplateId', () => {
+    const res = $SubmittableCascadeItem.safeParse({
+      cascadeGroups: ['standard'],
+      channel: 'LETTER',
+      channelType: 'primary',
+      defaultTemplateId: null,
+      conditionalTemplates: [
+        { language: 'ar', templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09' },
+      ],
+    });
+    expect(res.success).toBe(false);
+  });
+});
+
+describe('$SubmittableCascade', () => {
+  const validCascadeItem = {
+    cascadeGroups: ['standard'],
+    channel: 'LETTER',
+    channelType: 'primary',
+    defaultTemplateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+  };
+
+  test('valid with single item', () => {
+    const res = $SubmittableCascade.safeParse([validCascadeItem]);
+    expect(res.success).toBe(true);
+  });
+
+  test('valid with multiple items', () => {
+    const res = $SubmittableCascade.safeParse([
+      validCascadeItem,
+      {
+        cascadeGroups: ['translations'],
+        channel: 'EMAIL',
+        channelType: 'secondary',
+        conditionalTemplates: [
+          {
+            language: 'ar',
+            templateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
+          },
+        ],
+      },
+    ]);
+    expect(res.success).toBe(true);
+  });
+
+  test('invalid with empty array', () => {
+    const res = $SubmittableCascade.safeParse([]);
+    expect(res.success).toBe(false);
+  });
+
+  test('invalid with invalid cascade item in array', () => {
+    const res = $SubmittableCascade.safeParse([
+      {
+        cascadeGroups: ['standard'],
+        channel: 'LETTER',
+        channelType: 'primary',
+      },
+    ]);
+    expect(res.success).toBe(false);
   });
 });

@@ -102,7 +102,10 @@ describe('RoutingConfigClient', () => {
 
       expect(result).toEqual({
         error: {
-          errorMeta: { code: 404, description: 'Routing Config not found' },
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
         },
       });
 
@@ -516,6 +519,7 @@ describe('RoutingConfigClient', () => {
 
       const completed: RoutingConfig = {
         ...routingConfig,
+        id,
         status: 'COMPLETED',
       };
 
@@ -533,6 +537,36 @@ describe('RoutingConfigClient', () => {
 
       expect(result).toEqual({
         data: completed,
+      });
+    });
+
+    test('returns failures from repository', async () => {
+      const { client, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { routing: true } },
+      });
+
+      mocks.routingConfigRepository.submit.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'All cascade items must have either a defaultTemplateId or conditionalTemplates',
+          },
+        },
+      });
+
+      const result = await client.submitRoutingConfig('some-id', user, '42');
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'All cascade items must have either a defaultTemplateId or conditionalTemplates',
+          },
+        },
       });
     });
 
