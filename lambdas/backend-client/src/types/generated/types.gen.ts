@@ -107,7 +107,7 @@ export type ConditionalTemplateAccessible = {
   supplierReferences?: {
     [key: string]: string;
   };
-  templateId: string | null;
+  templateId: string;
 };
 
 export type ConditionalTemplateLanguage = {
@@ -115,7 +115,7 @@ export type ConditionalTemplateLanguage = {
   supplierReferences?: {
     [key: string]: string;
   };
-  templateId: string | null;
+  templateId: string;
 };
 
 export type CountSuccess = {

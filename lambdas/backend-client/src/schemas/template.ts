@@ -85,7 +85,7 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-export const $BaseLetterTemplateProperties = z.object({
+const $BaseLetterTemplateProperties = z.object({
   templateType: z.literal('LETTER'),
   letterType: z.enum(LETTER_TYPE_LIST),
   language: z.enum(LANGUAGE_LIST),
@@ -137,7 +137,7 @@ export const $LetterProperties = z.discriminatedUnion('letterVersion', [
 
 const $TemplateName = z.string().trim().min(1);
 
-export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
+const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
     name: $TemplateName,
     templateType: z.enum(TEMPLATE_TYPE_LIST),

@@ -51,7 +51,7 @@ export function getConditionalTemplatesForItem(
 
   return Object.fromEntries(
     conditionalTemplateIds
-      .filter((id): id is string => id != null && id in templates)
+      .filter((id) => id in templates)
       .map((id) => [id, templates[id]])
   );
 }
@@ -90,10 +90,8 @@ export function getSelectedLanguageTemplateIds(
 
   return cascadeItem.conditionalTemplates
     .filter(
-      (
-        template
-      ): template is ConditionalTemplateLanguage & { templateId: string } =>
-        'language' in template && template.templateId !== null
+      (template): template is ConditionalTemplateLanguage =>
+        'language' in template
     )
     .map(({ language, templateId }) => ({
       language,
@@ -137,10 +135,10 @@ export function buildCascadeGroupsForItem(
     cascadeItem.conditionalTemplates.length > 0
   ) {
     const hasAccessibleFormat = cascadeItem.conditionalTemplates.some(
-      (template) => 'accessibleFormat' in template && template.templateId
+      (template) => 'accessibleFormat' in template
     );
     const hasLanguage = cascadeItem.conditionalTemplates.some(
-      (template) => 'language' in template && template.templateId
+      (template) => 'language' in template
     );
 
     if (hasAccessibleFormat) {
@@ -190,7 +188,6 @@ export function removeTemplatesFromCascadeItem(
 
   return updatedCascadeItem;
 }
-
 /**
  * Add default template to cascade at specific index
  */
