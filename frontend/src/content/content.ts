@@ -1601,7 +1601,7 @@ const uploadDocxLetterTemplateForm = {
   fields: {
     name: {
       label: 'Template name',
-      hint: 'This will not be visible to recipients.',
+      hint: 'This will not be visible to recipients',
     },
     campaignId: {
       label: 'Campaign',
@@ -1609,12 +1609,12 @@ const uploadDocxLetterTemplateForm = {
         hint: 'This message plan will link to your only campaign:',
       },
       select: {
-        hint: 'Choose which campaign this letter is for.',
+        hint: 'Choose which campaign this letter is for',
       },
     },
     language: {
       label: 'Template language',
-      hint: 'Choose the language used in this template.',
+      hint: 'Choose the language used in this template',
       placeholder: 'Please select',
       rtl: [
         { type: 'text', text: '**Right-to-left language selected**' },
