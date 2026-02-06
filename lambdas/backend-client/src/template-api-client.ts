@@ -3,6 +3,7 @@ import {
   TemplateSuccess,
   TemplateSuccessList,
   TemplateDto,
+  PatchTemplate,
 } from './types/generated';
 import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
@@ -75,6 +76,36 @@ export const templateApiClient = {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.put<TemplateSuccess>(
+        `/v1/template/${encodeURIComponent(templateId)}`,
+        template,
+        {
+          headers: {
+            Authorization: token,
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async patchTemplate(
+    templateId: string,
+    template: PatchTemplate,
+    token: string,
+    lockNumber: number
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      httpClient.patch<TemplateSuccess>(
         `/v1/template/${encodeURIComponent(templateId)}`,
         template,
         {

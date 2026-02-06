@@ -5,7 +5,13 @@
 'use client';
 
 import { Details, SummaryList } from 'nhsuk-react-components';
-export { Details, SummaryList, Tag } from 'nhsuk-react-components';
+export {
+  Details,
+  HintText,
+  Label,
+  SummaryList,
+  Tag,
+} from 'nhsuk-react-components';
 
 export const DetailsSummary = Details.Summary;
 export const DetailsText = Details.Text;

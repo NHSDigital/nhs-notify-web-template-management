@@ -61,6 +61,7 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
       module.get_template_lambda.function_arn,
       module.list_routing_configs_lambda.function_arn,
       module.list_template_lambda.function_arn,
+      module.patch_template_lambda.function_arn,
       module.request_proof_lambda.function_arn,
       module.submit_template_lambda.function_arn,
       module.submit_routing_config_lambda.function_arn,

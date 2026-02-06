@@ -243,6 +243,74 @@ describe('TemplateAPIClient', () => {
     expect(headers ? headers['X-Lock-Number'] : null).toEqual('1');
   });
 
+  test('patchTemplate - should return error', async () => {
+    axiosMock.onPatch('/v1/template/real-id').reply(400, {
+      statusCode: 400,
+      technicalMessage: 'Bad request',
+      details: {
+        message: 'Invalid patch data',
+      },
+    });
+
+    const result = await client.patchTemplate(
+      'real-id',
+      {
+        name: 'Updated Name',
+      },
+      testToken,
+      5
+    );
+
+    expect(result.error).toEqual({
+      errorMeta: {
+        code: 400,
+        description: 'Bad request',
+        details: {
+          message: 'Invalid patch data',
+        },
+      },
+    });
+
+    expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.patch.length).toBe(1);
+  });
+
+  test('patchTemplate - should return template', async () => {
+    const data = {
+      id: 'real-id',
+      name: 'Updated Template Name',
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      letterType: 'x1',
+      language: 'en',
+      letterVersion: 'AUTHORING',
+      lockNumber: 6,
+    };
+
+    axiosMock.onPatch('/v1/template/real-id').reply(200, {
+      statusCode: 200,
+      data,
+    });
+
+    const result = await client.patchTemplate(
+      'real-id',
+      {
+        name: 'Updated Template Name',
+      },
+      testToken,
+      5
+    );
+
+    expect(result.data).toEqual(data);
+
+    expect(result.error).toBeUndefined();
+
+    const headers = axiosMock.history.at(0)?.headers;
+
+    expect(headers ? headers['X-Lock-Number'] : null).toEqual('5');
+  });
+
   test('getTemplate - should return error', async () => {
     axiosMock.onGet('/v1/template/real-id').reply(404, {
       statusCode: 404,

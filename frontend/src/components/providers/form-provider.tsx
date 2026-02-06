@@ -7,7 +7,6 @@ import {
   useContext,
 } from 'react';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
-import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 
 type NHSNotifyFormActionState = ReturnType<
   typeof useActionState<FormState, FormData>
@@ -27,11 +26,9 @@ export function useNHSNotifyForm() {
 
 export function NHSNotifyFormProvider({
   children,
-  errorSummaryHint,
   initialState = {},
   serverAction,
 }: PropsWithChildren<{
-  errorSummaryHint?: string;
   initialState?: FormState;
   serverAction: (state: FormState, data: FormData) => Promise<FormState>;
 }>) {
@@ -42,10 +39,6 @@ export function NHSNotifyFormProvider({
 
   return (
     <FormContext.Provider value={[state, action, isPending]}>
-      <NhsNotifyErrorSummary
-        hint={errorSummaryHint}
-        errorState={state.errorState}
-      />
       {children}
     </FormContext.Provider>
   );
