@@ -128,7 +128,6 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
       templateType: 'LETTER',
-      proofingEnabled: true,
       sidesCount: options?.sidesCount ?? 2,
       letterVariantId: options?.letterVariantId,
     });
