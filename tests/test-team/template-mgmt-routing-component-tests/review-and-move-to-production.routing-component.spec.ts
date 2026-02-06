@@ -292,8 +292,8 @@ test.describe('Routing - Review and Move to Production page', () => {
       );
 
       const languagesCard = templateBlock.getLanguagesCard();
-      const languageNames = await languagesCard.templateNames.all();
-      const languageLinks = await languagesCard.templateLinks.all();
+      const languageNames = await languagesCard.templateName.all();
+      const languageLinks = await languagesCard.templateLink.all();
 
       for (const [index, language] of (
         ['FRENCH_LETTER', 'SPANISH_LETTER'] satisfies (keyof ReturnType<

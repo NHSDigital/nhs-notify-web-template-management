@@ -385,7 +385,7 @@ test.describe('Routing', () => {
 
       const languageTemplateNames = await letterBlock
         .getLanguagesCard()
-        .templateNames.allTextContents();
+        .templateName.allTextContents();
 
       expect(languageTemplateNames).toHaveLength(2);
       expect(languageTemplateNames).toContain(templates.ARABIC_LETTER.name);

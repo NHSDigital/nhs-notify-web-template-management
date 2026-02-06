@@ -45,15 +45,9 @@ export class RoutingReviewAndMoveToProductionPage extends TemplateMgmtBasePage {
         );
       },
       getLanguagesCard: () => {
-        const { templateName, templateLink, ...card } = this.getCard(
+        return this.getCard(
           conditionalTemplates.getByTestId('conditional-template-languages')
         );
-
-        return {
-          ...card,
-          templateNames: templateName,
-          templateLinks: templateLink,
-        };
       },
     };
   }
