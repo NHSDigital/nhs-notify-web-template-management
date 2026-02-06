@@ -29,54 +29,6 @@ import type { Channel } from 'nhs-notify-backend-client';
 
 const templateStorageHelper = new TemplateStorageHelper();
 
-async function selectTemplateRadio(
-  chooseTemplateLink: Locator,
-  chooseTemplatePage: TemplateMgmtChooseTemplateForMessagePlanBasePage,
-  template: Template,
-  templateNameLocator: Locator
-) {
-  return test.step(`select template: ${template.name}`, async () => {
-    await chooseTemplateLink.click();
-
-    const radio = chooseTemplatePage.getRadioButton(template.id);
-
-    await radio.click();
-
-    await chooseTemplatePage.saveAndContinueButton.click();
-
-    await expect(templateNameLocator).toHaveText(template.name);
-  });
-}
-
-async function assertTemplateStatuses(
-  messageTemplatesPage: TemplateMgmtMessageTemplatesPage,
-  expectations: Array<{ template: Template; expectedStatus: string }>
-) {
-  return test.step('assert template statuses', async () => {
-    for (const { template, expectedStatus } of expectations) {
-      expect(
-        await messageTemplatesPage.getTemplateStatus(template.id),
-        `Expected ${template.name} to have status "${expectedStatus}"`
-      ).toBe(expectedStatus);
-    }
-  });
-}
-
-async function assertMessagePlanInTable(
-  table: Locator,
-  messagePlanName: string
-) {
-  return test.step(`assert message plan "${messagePlanName}" is in table`, async () => {
-    await table.click();
-
-    const row = table.getByRole('row', { name: messagePlanName });
-
-    await expect(row).toBeVisible();
-
-    await row.getByRole('link', { name: messagePlanName }).click();
-  });
-}
-
 function createTemplates(user: TestUser) {
   const templateIds = {
     NHSAPP: randomUUID(),
@@ -135,6 +87,54 @@ function createTemplates(user: TestUser) {
       { language: 'pl' }
     ),
   };
+}
+
+async function selectTemplateRadio(
+  chooseTemplateLink: Locator,
+  chooseTemplatePage: TemplateMgmtChooseTemplateForMessagePlanBasePage,
+  template: Template,
+  templateNameLocator: Locator
+) {
+  return test.step(`select template: ${template.name}`, async () => {
+    await chooseTemplateLink.click();
+
+    const radio = chooseTemplatePage.getRadioButton(template.id);
+
+    await radio.click();
+
+    await chooseTemplatePage.saveAndContinueButton.click();
+
+    await expect(templateNameLocator).toHaveText(template.name);
+  });
+}
+
+async function assertTemplateStatuses(
+  messageTemplatesPage: TemplateMgmtMessageTemplatesPage,
+  expectations: Array<{ template: Template; expectedStatus: string }>
+) {
+  return test.step('assert template statuses', async () => {
+    for (const { template, expectedStatus } of expectations) {
+      expect(
+        await messageTemplatesPage.getTemplateStatus(template.id),
+        `Expected ${template.name} to have status "${expectedStatus}"`
+      ).toBe(expectedStatus);
+    }
+  });
+}
+
+async function assertMessagePlanInTable(
+  table: Locator,
+  messagePlanName: string
+) {
+  return test.step(`assert message plan "${messagePlanName}" is in table`, async () => {
+    await table.click();
+
+    const row = table.getByRole('row', { name: messagePlanName });
+
+    await expect(row).toBeVisible();
+
+    await row.getByRole('link', { name: messagePlanName }).click();
+  });
 }
 
 test.describe('Routing', () => {
@@ -268,14 +268,16 @@ test.describe('Routing', () => {
       );
     });
 
-    await test.step('add NHS App and Email templates', async () => {
+    await test.step('add NHS App template', async () => {
       await selectTemplateRadio(
         chooseTemplatesPage.nhsApp.chooseTemplateLink,
         new RoutingChooseNhsAppTemplatePage(page),
         templates.NHSAPP,
         chooseTemplatesPage.nhsApp.templateName
       );
+    });
 
+    await test.step('add Email template', async () => {
       await selectTemplateRadio(
         chooseTemplatesPage.email.chooseTemplateLink,
         new RoutingChooseEmailTemplatePage(page),
@@ -417,6 +419,7 @@ test.describe('Routing', () => {
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
         {
           template: templates.LARGE_PRINT_LETTER,
+          // this was removed before going to production
           expectedStatus: 'Proof approved',
         },
       ]);

@@ -320,7 +320,7 @@ test.describe('Event publishing - Letters', () => {
       );
 
       expect(drafts).toHaveLength(2);
-    }).toPass({ intervals: [1000, 3000, 5000] });
+    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
   });
 
   test('Expect Deleted.v1 event when deleting templates', async ({
