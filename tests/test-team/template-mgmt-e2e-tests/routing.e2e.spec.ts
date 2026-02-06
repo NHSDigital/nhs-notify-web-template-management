@@ -18,6 +18,7 @@ import {
   RoutingChooseTextMessageTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
+  RoutingChooseLargePrintLetterTemplatePage,
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
 } from '../pages/routing';
@@ -82,6 +83,7 @@ function createTemplates(user: TestUser) {
     EMAIL: randomUUID(),
     SMS: randomUUID(),
     LETTER: randomUUID(),
+    LARGE_PRINT_LETTER: randomUUID(),
     ARABIC_LETTER: randomUUID(),
     POLISH_LETTER: randomUUID(),
   };
@@ -110,6 +112,13 @@ function createTemplates(user: TestUser) {
       user,
       `E2E Letter template - ${templateIds.LETTER}`,
       'PROOF_APPROVED'
+    ),
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER,
+      user,
+      `E2E Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
+      'PROOF_APPROVED',
+      { letterType: 'x1' }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.ARABIC_LETTER,
@@ -163,6 +172,10 @@ test.describe('Routing', () => {
         { template: templates.EMAIL, expectedStatus: 'Draft' },
         { template: templates.SMS, expectedStatus: 'Draft' },
         { template: templates.LETTER, expectedStatus: 'Proof approved' },
+        {
+          template: templates.LARGE_PRINT_LETTER,
+          expectedStatus: 'Proof approved',
+        },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Proof approved' },
       ]);
     });
@@ -320,6 +333,23 @@ test.describe('Routing', () => {
       );
     });
 
+    await test.step('add large print letter template', async () => {
+      await selectTemplateRadio(
+        chooseTemplatesPage.letter.largePrint.chooseTemplateLink,
+        new RoutingChooseLargePrintLetterTemplatePage(page),
+        templates.LARGE_PRINT_LETTER,
+        chooseTemplatesPage.letter.largePrint.templateName
+      );
+    });
+
+    await test.step('remove large print letter template', async () => {
+      await chooseTemplatesPage.letter.largePrint.removeTemplateLink.click();
+
+      await expect(
+        chooseTemplatesPage.letter.largePrint.chooseTemplateLink
+      ).toBeVisible();
+    });
+
     await test.step('review and move to production', async () => {
       await chooseTemplatesPage.clickMoveToProduction();
 
@@ -346,8 +376,14 @@ test.describe('Routing', () => {
         ).toHaveText(defaultTemplate.name);
       }
 
-      const languageTemplateNames = await reviewPage
-        .getTemplateBlock('LETTER')
+      const letterBlock = reviewPage.getTemplateBlock('LETTER');
+
+      // this template was removed
+      await expect(
+        letterBlock.getAccessibilityFormatCard('x1').locator
+      ).toBeHidden();
+
+      const languageTemplateNames = await letterBlock
         .getLanguagesCard()
         .templateNames.allTextContents();
 
@@ -367,7 +403,7 @@ test.describe('Routing', () => {
       );
     });
 
-    await test.step('verify all templates are locked', async () => {
+    await test.step('verify all templates are locked (except removed large print letter)', async () => {
       await messagePlansPage.clickTemplatesHeaderLink();
 
       await expect(messageTemplatesPage.pageHeading).toBeVisible();
@@ -379,6 +415,10 @@ test.describe('Routing', () => {
         { template: templates.LETTER, expectedStatus: 'Locked' },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Locked' },
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
+        {
+          template: templates.LARGE_PRINT_LETTER,
+          expectedStatus: 'Proof approved',
+        },
       ]);
     });
   });
