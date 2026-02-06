@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import {
-  testWithEventSubscriber as test,
+  templateManagementEventSubscriber as test,
   expect,
-} from '../fixtures/event-subscriber.fixture';
+} from '../fixtures/template-management-event-subscriber';
 import {
   createAuthHelper,
   type TestUser,

@@ -5,7 +5,7 @@ type EventSubscriberFixture = {
   eventSubscriber: EventSubscriber;
 };
 
-export const testWithEventSubscriber = base.extend<
+export const templateManagementEventSubscriber = base.extend<
   object,
   EventSubscriberFixture
 >({
@@ -32,4 +32,4 @@ export const testWithEventSubscriber = base.extend<
   ],
 });
 
-export const { expect } = testWithEventSubscriber;
+export const { expect } = templateManagementEventSubscriber;

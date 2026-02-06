@@ -1,7 +1,7 @@
 import {
-  testWithEventSubscriber as test,
+  templateManagementEventSubscriber as test,
   expect,
-} from '../fixtures/event-subscriber.fixture';
+} from '../fixtures/template-management-event-subscriber';
 import {
   createAuthHelper,
   type TestUser,
@@ -224,8 +224,8 @@ test.describe('Event publishing - Letters', () => {
       const events = await eventSubscriber.receive({
         since: start,
         match: z.object({
+          type: z.string(),
           data: z.object({
-            type: z.string(),
             id: z.literal(template.id),
           }),
         }),
@@ -251,9 +251,8 @@ test.describe('Event publishing - Letters', () => {
       expect(events.length).toBeLessThanOrEqual(7);
 
       const drafts = events.filter(
-        (e) =>
-          e.record.data.type ===
-          'uk.nhs.notify.template-management.TemplateDrafted.v1'
+        ({ record }) =>
+          record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
@@ -306,8 +305,8 @@ test.describe('Event publishing - Letters', () => {
       const events = await eventSubscriber.receive({
         since: start,
         match: z.object({
+          type: z.string(),
           data: z.object({
-            type: z.string(),
             id: z.literal(template.id),
           }),
         }),
@@ -316,9 +315,8 @@ test.describe('Event publishing - Letters', () => {
       expect(events).toHaveLength(2);
 
       const drafts = events.filter(
-        (e) =>
-          e.record.data.type ===
-          'uk.nhs.notify.template-management.TemplateDrafted.v1'
+        ({ record }) =>
+          record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts).toHaveLength(2);
