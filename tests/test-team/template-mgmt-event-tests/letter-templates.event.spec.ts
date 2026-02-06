@@ -16,7 +16,6 @@ import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { setTimeout } from 'node:timers/promises';
 import { Template } from 'helpers/types';
 import { eventWithId } from '../helpers/events/matchers';
-import z from 'zod';
 
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
@@ -223,12 +222,7 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: z.object({
-          type: z.string(),
-          data: z.object({
-            id: z.literal(template.id),
-          }),
-        }),
+        match: eventWithId(templateId),
       });
 
       // Note: This is weird, But sometimes the tests find all relevant events within
@@ -304,12 +298,7 @@ test.describe('Event publishing - Letters', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: z.object({
-          type: z.string(),
-          data: z.object({
-            id: z.literal(template.id),
-          }),
-        }),
+        match: eventWithId(templateId),
       });
 
       expect(events).toHaveLength(2);

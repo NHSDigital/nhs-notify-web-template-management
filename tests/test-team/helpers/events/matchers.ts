@@ -1,7 +1,11 @@
 import z from 'zod';
 
+const $PartialCloudEvent = z.object({ type: z.string() });
+
 export const eventWithId = (id: string) =>
-  z.object({ data: z.object({ id: z.literal(id) }) });
+  $PartialCloudEvent.extend(
+    z.object({ data: z.object({ id: z.literal(id) }) })
+  );
 
 export const eventWithIdIn = (ids: [string, ...string[]]) =>
-  z.object({ data: z.object({ id: z.enum(ids) }) });
+  $PartialCloudEvent.extend(z.object({ data: z.object({ id: z.enum(ids) }) }));
