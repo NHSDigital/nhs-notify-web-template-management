@@ -39,7 +39,6 @@
 | <a name="output_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#output\_cognito\_user\_pool\_id) | n/a |
 | <a name="output_deployment"></a> [deployment](#output\_deployment) | Deployment details used for post-deployment scripts |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
-| <a name="output_event_cache_bucket_name"></a> [event\_cache\_bucket\_name](#output\_event\_cache\_bucket\_name) | n/a |
 | <a name="output_events_sns_topic_arn"></a> [events\_sns\_topic\_arn](#output\_events\_sns\_topic\_arn) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |

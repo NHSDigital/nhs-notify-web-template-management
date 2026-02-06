@@ -7,7 +7,6 @@ declare global {
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
       ENVIRONMENT: string;
-      EVENT_CACHE_BUCKET_NAME: string;
       EVENTS_SNS_TOPIC_ARN: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;

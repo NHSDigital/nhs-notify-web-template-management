@@ -7,7 +7,6 @@ export type BackendConfig = {
   awsAccountId: string;
   clientSsmPathPrefix: string;
   environment: string;
-  eventCacheBucketName: string;
   eventsSnsTopicArn: string;
   requestProofQueueUrl: string;
   routingConfigTableName: string;
@@ -31,7 +30,6 @@ export const BackendConfigHelper = {
       awsAccountId: process.env.AWS_ACCOUNT_ID ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
       environment: process.env.ENVIRONMENT ?? '',
-      eventCacheBucketName: process.env.EVENT_CACHE_BUCKET_NAME ?? '',
       eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
@@ -57,7 +55,6 @@ export const BackendConfigHelper = {
     process.env.AWS_ACCOUNT_ID = config.awsAccountId;
     process.env.CLIENT_SSM_PATH_PREFIX = config.clientSsmPathPrefix;
     process.env.ENVIRONMENT = config.environment;
-    process.env.EVENT_CACHE_BUCKET_NAME = config.eventCacheBucketName;
     process.env.EVENTS_SNS_TOPIC_ARN = config.eventsSnsTopicArn;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
@@ -87,8 +84,6 @@ export const BackendConfigHelper = {
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
       environment: deployment.environment ?? '',
-      eventCacheBucketName:
-        outputsFileContent.event_cache_bucket_name?.value ?? '',
       eventsSnsTopicArn: outputsFileContent.events_sns_topic_arn?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
