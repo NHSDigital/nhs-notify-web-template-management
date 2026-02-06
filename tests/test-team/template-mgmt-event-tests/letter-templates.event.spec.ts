@@ -269,7 +269,7 @@ test.describe('Event publishing - Letters', () => {
       );
 
       console.log(`Events found: ${events.length}. Expected: 6 or 7`);
-    }).toPass({ timeout: 90_000, intervals: [1000, 3000, 5000] });
+    }).toPass({ intervals: [1000, 3000, 5000] });
   });
 
   test('Expect Draft event when routing is enabled and proof is approved', async ({
@@ -320,7 +320,7 @@ test.describe('Event publishing - Letters', () => {
       );
 
       expect(drafts).toHaveLength(2);
-    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
+    }).toPass({ intervals: [1000, 3000, 5000] });
   });
 
   test('Expect Deleted.v1 event when deleting templates', async ({
@@ -386,6 +386,6 @@ test.describe('Event publishing - Letters', () => {
           }),
         })
       );
-    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
+    }).toPass({ intervals: [1000, 3000, 5000] });
   });
 });

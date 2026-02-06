@@ -17,7 +17,7 @@ import {
 import { ZodType } from 'zod';
 
 type Event<T> = {
-  sentTime: Date;
+  time: Date;
   record: T extends undefined ? Record<string, unknown> : T;
 };
 
@@ -54,7 +54,7 @@ export class EventSubscriber {
 
   private messages = new Map<
     string,
-    { record: Record<string, unknown>; sentTime: Date }
+    { record: Record<string, unknown>; time: Date }
   >();
 
   constructor(
@@ -95,7 +95,6 @@ export class EventSubscriber {
         new ReceiveMessageCommand({
           QueueUrl: this.queueUrl,
           MaxNumberOfMessages: 10,
-          MessageSystemAttributeNames: ['SentTimestamp'],
         })
       );
 
@@ -116,9 +115,8 @@ export class EventSubscriber {
       received.push(...polled);
     } while (polledCount > 0);
 
-    const parsed = received.flatMap(({ Body, Attributes }) => {
-      if (Body && Attributes?.SentTimestamp) {
-        const sentTime = new Date(Number(Attributes.SentTimestamp));
+    const parsed = received.flatMap(({ Body }) => {
+      if (Body) {
         const snsEvent = JSON.parse(Body);
 
         const record = JSON.parse(snsEvent.Message);
@@ -129,7 +127,15 @@ export class EventSubscriber {
           throw new Error('Event record is missing id field');
         }
 
-        return [{ sentTime, record, envelopeId }];
+        const eventTime = record.time;
+
+        if (!eventTime) {
+          throw new Error('Event record is missing time field');
+        }
+
+        const time = new Date(eventTime);
+
+        return [{ time, record, envelopeId }];
       }
 
       return [];
@@ -138,28 +144,26 @@ export class EventSubscriber {
     for (const event of parsed) {
       this.messages.set(event.envelopeId, {
         record: event.record,
-        sentTime: event.sentTime,
+        time: event.time,
       });
     }
 
-    const filtered = [...this.messages.values()].filter(
-      ({ sentTime, record }) => {
-        if (since && sentTime <= since) return false;
+    const filtered = [...this.messages.values()].filter(({ time, record }) => {
+      if (since && time <= since) return false;
 
-        if (match) {
-          return match.safeParse(record).success;
-        }
-
-        return true;
+      if (match) {
+        return match.safeParse(record).success;
       }
-    ) as Event<T>[];
 
-    return filtered.sort((a, b) => a.sentTime.getTime() - b.sentTime.getTime());
+      return true;
+    }) as Event<T>[];
+
+    return filtered.sort((a, b) => a.time.getTime() - b.time.getTime());
   }
 
   private trimCached(since: Date) {
-    for (const [id, { sentTime }] of this.messages) {
-      if (sentTime < since) {
+    for (const [id, { time }] of this.messages) {
+      if (time < since) {
         this.messages.delete(id);
       }
     }

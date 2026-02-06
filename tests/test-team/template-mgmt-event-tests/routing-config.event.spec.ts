@@ -14,9 +14,38 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { eventWithId, eventWithIdIn } from '../helpers/events/matchers';
 
+function createTemplates(user: TestUser) {
+  const templateIds = {
+    NHSAPP: randomUUID(),
+    EMAIL: randomUUID(),
+    LETTER: randomUUID(),
+  };
+
+  return {
+    NHSAPP: TemplateFactory.createNhsAppTemplate(
+      templateIds.NHSAPP,
+      user,
+      `Event NHS App Template - ${templateIds.NHSAPP}`,
+      'NOT_YET_SUBMITTED'
+    ),
+    EMAIL: TemplateFactory.createEmailTemplate(
+      templateIds.EMAIL,
+      user,
+      `Event Email Template - ${templateIds.EMAIL}`,
+      'SUBMITTED'
+    ),
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER,
+      user,
+      `Event Letter Template - ${templateIds.LETTER}`,
+      'PROOF_APPROVED'
+    ),
+  };
+}
+
 test.describe('Event publishing - Routing Config', () => {
   const authHelper = createAuthHelper();
-  const storageHelper = new RoutingConfigStorageHelper();
+  const routingConfigStorageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
 
   let user: TestUser;
@@ -26,7 +55,7 @@ test.describe('Event publishing - Routing Config', () => {
   });
 
   test.afterAll(async () => {
-    await storageHelper.deleteSeeded();
+    await routingConfigStorageHelper.deleteSeeded();
     await templateStorageHelper.deleteSeededTemplates();
   });
 
@@ -63,7 +92,7 @@ test.describe('Event publishing - Routing Config', () => {
       data: { id, lockNumber },
     } = await createResponse.json();
 
-    storageHelper.addAdHocKey({
+    routingConfigStorageHelper.addAdHocKey({
       id,
       clientId: user.clientId,
     });
@@ -145,7 +174,7 @@ test.describe('Event publishing - Routing Config', () => {
       data: { id, lockNumber },
     } = await createResponse.json();
 
-    storageHelper.addAdHocKey({
+    routingConfigStorageHelper.addAdHocKey({
       id,
       clientId: user.clientId,
     });
@@ -198,37 +227,21 @@ test.describe('Event publishing - Routing Config', () => {
     request,
     eventSubscriber,
   }) => {
-    const nhsAppTemplateId = randomUUID();
-    const emailTemplateId = randomUUID();
-
-    const nhsAppTemplate = TemplateFactory.createNhsAppTemplate(
-      nhsAppTemplateId,
-      user,
-      'NHS App Template for Submit'
-    );
-    nhsAppTemplate.templateStatus = 'NOT_YET_SUBMITTED';
-
-    const emailTemplate = TemplateFactory.createEmailTemplate(
-      emailTemplateId,
-      user,
-      'Email Template for Submit'
-    );
-    emailTemplate.templateStatus = 'SUBMITTED';
-
+    const templates = createTemplates(user);
     const seedStart = new Date();
+    await templateStorageHelper.seedTemplateData(Object.values(templates));
 
-    await templateStorageHelper.seedTemplateData([
-      nhsAppTemplate,
-      emailTemplate,
-    ]);
-
+    // Wait for seeding events to arrive before proceeding
     await expect(async () => {
       const seedEvents = await eventSubscriber.receive({
         since: seedStart,
-        match: eventWithIdIn([nhsAppTemplateId, emailTemplateId]),
+        // Authoring letters don't produce events yet
+        match: eventWithIdIn([templates.NHSAPP.id, templates.EMAIL.id]),
       });
-      expect(seedEvents).toHaveLength(2);
+      expect(seedEvents.length).toBe(2);
     }).toPass({ timeout: 60_000 });
+
+    const start = new Date();
 
     const payload = RoutingConfigFactory.create(user, {
       cascade: [
@@ -236,18 +249,22 @@ test.describe('Event publishing - Routing Config', () => {
           cascadeGroups: ['standard'],
           channel: 'NHSAPP',
           channelType: 'primary',
-          defaultTemplateId: nhsAppTemplateId,
+          defaultTemplateId: templates.NHSAPP.id,
         },
         {
           cascadeGroups: ['standard'],
           channel: 'EMAIL',
           channelType: 'primary',
-          defaultTemplateId: emailTemplateId,
+          defaultTemplateId: templates.EMAIL.id,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: templates.LETTER.id,
         },
       ],
     }).apiPayload;
-
-    const start = new Date();
 
     const createResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/routing-configuration`,
@@ -262,16 +279,16 @@ test.describe('Event publishing - Routing Config', () => {
     expect(createResponse.status()).toBe(201);
 
     const {
-      data: { id, lockNumber },
+      data: { id: routingConfigId, lockNumber },
     } = await createResponse.json();
 
-    storageHelper.addAdHocKey({
-      id,
+    routingConfigStorageHelper.addAdHocKey({
+      id: routingConfigId,
       clientId: user.clientId,
     });
 
     const submitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${id}/submit`,
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${routingConfigId}/submit`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -285,15 +302,22 @@ test.describe('Event publishing - Routing Config', () => {
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
-        match: eventWithIdIn([id, nhsAppTemplateId, emailTemplateId]),
+        match: eventWithIdIn([
+          routingConfigId,
+          templates.EMAIL.id,
+          templates.NHSAPP.id,
+          templates.LETTER.id,
+        ]),
       });
+
+      expect(events).toHaveLength(3);
 
       expect(events).toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
             type: 'uk.nhs.notify.template-management.RoutingConfigDrafted.v1',
             data: expect.objectContaining({
-              id,
+              id: routingConfigId,
             }),
           }),
         })
@@ -304,7 +328,7 @@ test.describe('Event publishing - Routing Config', () => {
           record: expect.objectContaining({
             type: 'uk.nhs.notify.template-management.RoutingConfigCompleted.v1',
             data: expect.objectContaining({
-              id,
+              id: routingConfigId,
             }),
           }),
         })
@@ -315,24 +339,35 @@ test.describe('Event publishing - Routing Config', () => {
           record: expect.objectContaining({
             type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
             data: expect.objectContaining({
-              id: nhsAppTemplateId,
+              id: templates.NHSAPP.id,
             }),
           }),
         })
       );
 
+      // This was already submitted
       expect(events).not.toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
             type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
             data: expect.objectContaining({
-              id: emailTemplateId,
+              id: templates.EMAIL.id,
             }),
           }),
         })
       );
 
-      expect(events).toHaveLength(3);
+      // AUTHORING letters don't produce events yet
+      expect(events).not.toContainEqual(
+        expect.objectContaining({
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+            data: expect.objectContaining({
+              id: templates.LETTER.id,
+            }),
+          }),
+        })
+      );
     }).toPass({ timeout: 60_000 });
   });
 });
