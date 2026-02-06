@@ -1,23 +1,24 @@
 import { z } from 'zod/v4';
-import type {
-  AuthoringLetterProperties,
-  BaseCreatedTemplate,
-  BaseTemplate,
-  CreatePdfLetterProperties,
-  CreateUpdateTemplate,
-  EmailProperties,
-  Language,
-  LetterType,
-  NhsAppProperties,
-  PdfLetterFiles,
-  PdfLetterProperties,
-  ProofFileDetails,
-  SmsProperties,
-  TemplateDto,
-  TemplateStatus,
-  TemplateStatusActive,
-  TemplateType,
-  VersionedFileDetails,
+import {
+  PatchTemplate,
+  type AuthoringLetterProperties,
+  type BaseCreatedTemplate,
+  type BaseTemplate,
+  type CreatePdfLetterProperties,
+  type CreateUpdateTemplate,
+  type EmailProperties,
+  type Language,
+  type LetterType,
+  type NhsAppProperties,
+  type PdfLetterFiles,
+  type PdfLetterProperties,
+  type ProofFileDetails,
+  type SmsProperties,
+  type TemplateDto,
+  type TemplateStatus,
+  type TemplateStatusActive,
+  type TemplateType,
+  type VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -134,9 +135,11 @@ export const $LetterProperties = z.discriminatedUnion('letterVersion', [
   $AuthoringLetterProperties,
 ]);
 
+const $TemplateName = z.string().trim().min(1);
+
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
-    name: z.string().trim().min(1),
+    name: $TemplateName,
     templateType: z.enum(TEMPLATE_TYPE_LIST),
   })
 );
@@ -158,6 +161,17 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
     $BaseTemplateSchema.extend($SmsProperties.shape),
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
   ])
+);
+
+export const $PatchTemplate = schemaFor<PatchTemplate>()(
+  z
+    .object({
+      name: $TemplateName.optional(),
+    })
+    .refine(
+      (data) => Object.values(data).some((value) => value !== undefined),
+      { error: 'Unexpected empty object' }
+    )
 );
 
 export const $LockNumber = z.coerce

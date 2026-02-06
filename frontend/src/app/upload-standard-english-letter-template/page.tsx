@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
-import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm/form';
+import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
@@ -39,6 +41,7 @@ export default async function UploadStandardLetterTemplatePage() {
       </NHSNotifyBackLink>
       <NHSNotifyMain>
         <NHSNotifyFormProvider serverAction={uploadStandardLetterTemplate}>
+          <NHSNotifyForm.ErrorSummary />
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
               <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
@@ -46,13 +49,16 @@ export default async function UploadStandardLetterTemplatePage() {
           </div>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
-              <UploadDocxLetterTemplateForm.Form formId='upload-standard-english-letter-template'>
+              <NHSNotifyForm.Form formId='upload-standard-english-letter-template'>
                 <UploadDocxLetterTemplateForm.NameField />
                 <UploadDocxLetterTemplateForm.CampaignIdField
                   campaignIds={campaignIds}
                 />
                 <UploadDocxLetterTemplateForm.FileField />
-              </UploadDocxLetterTemplateForm.Form>
+                <NHSNotifyButton type='submit'>
+                  {content.submitButton.text}
+                </NHSNotifyButton>
+              </NHSNotifyForm.Form>
             </div>
 
             <div className='nhsuk-grid-column-one-third'>

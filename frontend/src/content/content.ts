@@ -1633,9 +1633,6 @@ const uploadDocxLetterTemplateForm = {
         },
       ] satisfies ContentBlock[],
     },
-    submitButton: {
-      text: 'Upload letter template file',
-    },
   },
   errors: {
     name: {
@@ -1696,7 +1693,30 @@ const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
         },
       },
     ] satisfies ContentBlock[] as ContentBlock[],
+    submitButton: {
+      text: 'Upload letter template file',
+    },
   };
+};
+
+const editTemplateNamePage = {
+  pageTitle: generatePageTitle('Edit template name'),
+  form: {
+    name: {
+      label: 'Edit template name',
+      hint: 'This will not be visible to recipients',
+      errors: {
+        empty: 'Enter a template name',
+      },
+    },
+    submit: {
+      text: 'Save changes',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (templateId: string) => `/preview-letter-template/${templateId}`,
+  },
 };
 
 const content = {
@@ -1751,6 +1771,7 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlanSettings,
+    editTemplateNamePage,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,

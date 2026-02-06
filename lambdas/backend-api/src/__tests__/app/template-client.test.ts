@@ -1538,6 +1538,272 @@ describe('templateClient', () => {
     });
   });
 
+  describe('patchTemplate', () => {
+    test('should return patched template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        name: 'Updated Template Name',
+      };
+
+      const template: TemplateDto = {
+        id: templateId,
+        name: 'Updated Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        sidesCount: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      mocks.templateRepository.patch.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
+
+    test('should return a failure result, when patch data is invalid', async () => {
+      const { templateClient } = setup();
+
+      const updates = {
+        name: '',
+      };
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        }),
+      });
+    });
+
+    test('should return a failure result when no fields are provided', async () => {
+      const { templateClient } = setup();
+
+      const updates = {};
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        }),
+      });
+    });
+
+    describe('lock number parsing', () => {
+      const errorCases: [string, string | number][] = [
+        ['empty', ''],
+        ['negative', -1],
+        ['negative stringified', -1],
+        ['non-number string', 'a'],
+        ['NaN', Number.NaN],
+        ['NaN stringified', 'NaN'],
+      ];
+      test.each(errorCases)(
+        'should return a failure result when lockNumber is invalid: %s',
+        async (_, lockNumber) => {
+          const { templateClient } = setup();
+
+          const updates = {
+            name: 'Updated Name',
+          };
+
+          const result = await templateClient.patchTemplate(
+            templateId,
+            updates,
+            user,
+            lockNumber
+          );
+
+          expect(result).toEqual({
+            error: expect.objectContaining({
+              errorMeta: {
+                code: 400,
+                description: 'Invalid lock number provided',
+              },
+            }),
+          });
+        }
+      );
+
+      test('coerces stringified lock number to number', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          name: 'Updated Name',
+        };
+
+        const template: TemplateDto = {
+          id: templateId,
+          name: 'Updated Name',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x1',
+          language: 'en',
+          letterVersion: 'AUTHORING',
+          sidesCount: 1,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 11,
+        };
+
+        mocks.templateRepository.patch.mockResolvedValueOnce({
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        const result = await templateClient.patchTemplate(
+          templateId,
+          updates,
+          user,
+          '10'
+        );
+
+        expect(result).toEqual({ data: template });
+
+        expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+          templateId,
+          updates,
+          user,
+          10
+        );
+      });
+    });
+
+    test('should return a failure result when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        name: 'Updated Name',
+      };
+
+      mocks.templateRepository.patch.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+    });
+
+    test('should return a failure result when patched database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        name: 'Updated Name',
+      };
+
+      const expectedTemplateDto: TemplateDto = {
+        id: templateId,
+        name: 'Updated Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        sidesCount: 1,
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.templateRepository.patch.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+    });
+  });
+
   describe('getTemplate', () => {
     test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
