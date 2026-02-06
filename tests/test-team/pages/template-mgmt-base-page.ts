@@ -121,6 +121,18 @@ export abstract class TemplateMgmtBasePage {
     await this.backLinkTop.click();
   }
 
+  async clickTemplatesHeaderLink() {
+    await this.headerNavigationLinks
+      .getByRole('link', { name: 'Templates' })
+      .click();
+  }
+
+  async clickMessagePlansHeaderLink() {
+    await this.headerNavigationLinks
+      .getByRole('link', { name: 'Message plans' })
+      .click();
+  }
+
   /**
    * Sets the value of a path parameter which will be interpolated into the pathTemplate when calling `getUrl` or `loadPage`
    * @param key The name of the path parameter to set

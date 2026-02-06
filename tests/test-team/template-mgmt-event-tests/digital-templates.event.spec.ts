@@ -1,4 +1,7 @@
-import { test, expect } from '@playwright/test';
+import {
+  templateManagementEventSubscriber as test,
+  expect,
+} from '../fixtures/template-management-event-subscriber';
 import {
   createAuthHelper,
   type TestUser,
@@ -6,14 +9,13 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { EventCacheHelper } from '../helpers/events/event-cache-helper';
+import { eventWithId } from '../helpers/events/matchers';
 
 const DIGITAL_CHANNELS = ['NHS_APP', 'SMS', 'EMAIL'] as const;
 
 test.describe('Event publishing - Digital', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const eventCacheHelper = new EventCacheHelper();
 
   let userRoutingEnabled: TestUser;
   let userRoutingDisabled: TestUser;
@@ -31,6 +33,7 @@ test.describe('Event publishing - Digital', () => {
     test.describe(`${digitalChannel} template events`, () => {
       test('Expect Draft.v1 event When Creating And Updating templates And Completed.v1 event When submitting templates (routing disabled)', async ({
         request,
+        eventSubscriber,
       }) => {
         const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
           templateType: digitalChannel,
@@ -55,7 +58,7 @@ test.describe('Event publishing - Digital', () => {
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
-          templateId: templateId,
+          templateId,
           clientId: userRoutingDisabled.clientId,
         });
 
@@ -90,36 +93,45 @@ test.describe('Event publishing - Digital', () => {
         expect(submitResponse.status()).toBe(200);
 
         await expect(async () => {
-          const events = await eventCacheHelper.findEvents(start, [templateId]);
+          const events = await eventSubscriber.receive({
+            since: start,
+            match: eventWithId(templateId),
+          });
 
           expect(events).toHaveLength(3);
 
           expect(events).toContainEqual(
             expect.objectContaining({
-              type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-              data: expect.objectContaining({
-                id: templateId,
-                name,
+              record: expect.objectContaining({
+                type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
+                data: expect.objectContaining({
+                  id: templateId,
+                  name,
+                }),
               }),
             })
           );
 
           expect(events).toContainEqual(
             expect.objectContaining({
-              type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-              data: expect.objectContaining({
-                id: templateId,
-                name: 'UPDATED',
+              record: expect.objectContaining({
+                type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
+                data: expect.objectContaining({
+                  id: templateId,
+                  name: 'UPDATED',
+                }),
               }),
             })
           );
 
           expect(events).toContainEqual(
             expect.objectContaining({
-              type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
-              data: expect.objectContaining({
-                id: templateId,
-                name: 'UPDATED',
+              record: expect.objectContaining({
+                type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+                data: expect.objectContaining({
+                  id: templateId,
+                  name: 'UPDATED',
+                }),
               }),
             })
           );
@@ -128,6 +140,7 @@ test.describe('Event publishing - Digital', () => {
 
       test('Expect Deleted.v1 event When deleting templates', async ({
         request,
+        eventSubscriber,
       }) => {
         const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
           templateType: digitalChannel,
@@ -152,11 +165,11 @@ test.describe('Event publishing - Digital', () => {
         } = await createResponse.json();
 
         templateStorageHelper.addAdHocTemplateKey({
-          templateId: templateId,
+          templateId,
           clientId: userRoutingEnabled.clientId,
         });
 
-        const updateResponse = await request.delete(
+        const deleteResponse = await request.delete(
           `${process.env.API_BASE_URL}/v1/template/${templateId}`,
           {
             headers: {
@@ -166,27 +179,34 @@ test.describe('Event publishing - Digital', () => {
           }
         );
 
-        expect(updateResponse.status()).toBe(204);
+        expect(deleteResponse.status()).toBe(204);
 
         await expect(async () => {
-          const events = await eventCacheHelper.findEvents(start, [templateId]);
+          const events = await eventSubscriber.receive({
+            since: start,
+            match: eventWithId(templateId),
+          });
 
           expect(events).toHaveLength(2);
 
           expect(events).toContainEqual(
             expect.objectContaining({
-              type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-              data: expect.objectContaining({
-                id: templateId,
+              record: expect.objectContaining({
+                type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
+                data: expect.objectContaining({
+                  id: templateId,
+                }),
               }),
             })
           );
 
           expect(events).toContainEqual(
             expect.objectContaining({
-              type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
-              data: expect.objectContaining({
-                id: templateId,
+              record: expect.objectContaining({
+                type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
+                data: expect.objectContaining({
+                  id: templateId,
+                }),
               }),
             })
           );

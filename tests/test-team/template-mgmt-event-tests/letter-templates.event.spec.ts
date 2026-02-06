@@ -1,11 +1,13 @@
-import { test, expect } from '@playwright/test';
+import {
+  templateManagementEventSubscriber as test,
+  expect,
+} from '../fixtures/template-management-event-subscriber';
 import {
   createAuthHelper,
   type TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { EventCacheHelper } from '../helpers/events/event-cache-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { readFileSync } from 'node:fs';
@@ -13,11 +15,11 @@ import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { setTimeout } from 'node:timers/promises';
 import { Template } from 'helpers/types';
+import { eventWithId } from '../helpers/events/matchers';
 
 test.describe('Event publishing - Letters', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const eventCacheHelper = new EventCacheHelper();
   const sftpHelper = new SftpHelper();
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
@@ -41,6 +43,7 @@ test.describe('Event publishing - Letters', () => {
 
   test('Expect no events when proofingEnabled is false', async ({
     request,
+    eventSubscriber,
   }) => {
     const templateId = randomUUID();
 
@@ -74,13 +77,17 @@ test.describe('Event publishing - Letters', () => {
     // 5 seconds seems to largest delay when testing locally
     await setTimeout(5000);
 
-    const events = await eventCacheHelper.findEvents(start, [templateId]);
+    const events = await eventSubscriber.receive({
+      since: start,
+      match: eventWithId(templateId),
+    });
 
     expect(events).toHaveLength(0);
   });
 
   test('expect no events when deleting a letter when previous status is not publishable', async ({
     request,
+    eventSubscriber,
   }) => {
     const templateId = randomUUID();
 
@@ -112,13 +119,17 @@ test.describe('Event publishing - Letters', () => {
     // Note: not ideal - but we are expecting 0 events and there can be a delay
     await setTimeout(5000);
 
-    const events = await eventCacheHelper.findEvents(start, [templateId]);
+    const events = await eventSubscriber.receive({
+      since: start,
+      match: eventWithId(templateId),
+    });
 
     expect(events).toHaveLength(0);
   });
 
   test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates (routing disabled)', async ({
     request,
+    eventSubscriber,
   }) => {
     const templateId = randomUUID();
 
@@ -209,7 +220,10 @@ test.describe('Event publishing - Letters', () => {
     expect(submitResponse.status()).toBe(200);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithId(templateId),
+      });
 
       // Note: This is weird, But sometimes the tests find all relevant events within
       // 6 events and can never find the 7th event before the test times out.
@@ -231,18 +245,19 @@ test.describe('Event publishing - Letters', () => {
       expect(events.length).toBeLessThanOrEqual(7);
 
       const drafts = events.filter(
-        (e) =>
-          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
-          e.data.id === templateId
+        ({ record }) =>
+          record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
-          data: expect.objectContaining({
-            id: templateId,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
+            data: expect.objectContaining({
+              id: templateId,
+            }),
           }),
         })
       );
@@ -253,6 +268,7 @@ test.describe('Event publishing - Letters', () => {
 
   test('Expect Draft event when routing is enabled and proof is approved', async ({
     request,
+    eventSubscriber,
   }) => {
     const templateId = randomUUID();
 
@@ -280,14 +296,16 @@ test.describe('Event publishing - Letters', () => {
     expect(submitResponse.status()).toBe(200);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithId(templateId),
+      });
 
       expect(events).toHaveLength(2);
 
       const drafts = events.filter(
-        (e) =>
-          e.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1' &&
-          e.data.id === templateId
+        ({ record }) =>
+          record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
       expect(drafts).toHaveLength(2);
@@ -296,6 +314,7 @@ test.describe('Event publishing - Letters', () => {
 
   test('Expect Deleted.v1 event when deleting templates', async ({
     request,
+    eventSubscriber,
   }) => {
     const templateId = randomUUID();
 
@@ -328,24 +347,31 @@ test.describe('Event publishing - Letters', () => {
     expect(deletedResponse.status()).toBe(204);
 
     await expect(async () => {
-      const events = await eventCacheHelper.findEvents(start, [templateId]);
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithId(templateId),
+      });
 
       expect(events).toHaveLength(2);
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-          data: expect.objectContaining({
-            id: templateId,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
+            data: expect.objectContaining({
+              id: templateId,
+            }),
           }),
         })
       );
 
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
-          data: expect.objectContaining({
-            id: templateId,
+          record: expect.objectContaining({
+            type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
+            data: expect.objectContaining({
+              id: templateId,
+            }),
           }),
         })
       );
