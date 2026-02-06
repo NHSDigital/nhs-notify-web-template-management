@@ -154,7 +154,7 @@ export function MessagePlanCascadePreview({
                           )} (optional)`}
                           data-testid='channel-card'
                         >
-                          <p>
+                          <p data-testid='template-name'>
                             <Link
                               href={interpolate(
                                 '/preview-submitted-letter-template/{{id}}',
@@ -178,6 +178,7 @@ export function MessagePlanCascadePreview({
                             <p
                               key={template.id}
                               className='nhsuk-u-margin-bottom-0'
+                              data-testid='template-name'
                             >
                               <Link
                                 href={interpolate(

@@ -142,24 +142,24 @@ export class EventSubscriber {
       });
     }
 
-    const filtered = [...this.messages.values()].filter(({ record }) => {
-      const eventTime = record.time ? new Date(record.time as string) : null;
-      if (since && eventTime && eventTime <= since) return false;
+    const filtered = [...this.messages.values()].filter(
+      ({ sentTime, record }) => {
+        if (since && sentTime <= since) return false;
 
-      if (match) {
-        return match.safeParse(record).success;
+        if (match) {
+          return match.safeParse(record).success;
+        }
+
+        return true;
       }
-
-      return true;
-    }) as Event<T>[];
+    ) as Event<T>[];
 
     return filtered.sort((a, b) => a.sentTime.getTime() - b.sentTime.getTime());
   }
 
   private trimCached(since: Date) {
-    for (const [id, { record }] of this.messages) {
-      const eventTime = record.time ? new Date(record.time as string) : null;
-      if (eventTime && eventTime < since) {
+    for (const [id, { sentTime }] of this.messages) {
+      if (sentTime < since) {
         this.messages.delete(id);
       }
     }

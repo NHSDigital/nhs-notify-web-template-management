@@ -23,13 +23,12 @@ import {
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from '../pages/template-mgmt-choose-template-base-page';
+import type { Template } from '../helpers/types';
 import type { Channel } from 'nhs-notify-backend-client';
 
 const templateStorageHelper = new TemplateStorageHelper();
 
-type Template = { id: string; name: string };
-
-async function selectTemplate(
+async function selectTemplateRadio(
   chooseTemplateLink: Locator,
   chooseTemplatePage: TemplateMgmtChooseTemplateForMessagePlanBasePage,
   template: Template,
@@ -58,20 +57,6 @@ async function assertTemplateStatuses(
         await messageTemplatesPage.getTemplateStatus(template.id),
         `Expected ${template.name} to have status "${expectedStatus}"`
       ).toBe(expectedStatus);
-    }
-  });
-}
-
-async function assertReviewPageTemplates(
-  reviewPage: RoutingReviewAndMoveToProductionPage,
-  expectations: Array<{ channel: Channel; template: Template }>
-) {
-  return test.step('assert review page template names', async () => {
-    for (const { channel, template } of expectations) {
-      await expect(
-        reviewPage.getTemplateBlock(channel).defaultTemplateCard.templateName,
-        `Expected ${channel} template to be "${template.name}"`
-      ).toHaveText(template.name);
     }
   });
 }
@@ -271,14 +256,14 @@ test.describe('Routing', () => {
     });
 
     await test.step('add NHS App and Email templates', async () => {
-      await selectTemplate(
+      await selectTemplateRadio(
         chooseTemplatesPage.nhsApp.chooseTemplateLink,
         new RoutingChooseNhsAppTemplatePage(page),
         templates.NHSAPP,
         chooseTemplatesPage.nhsApp.templateName
       );
 
-      await selectTemplate(
+      await selectTemplateRadio(
         chooseTemplatesPage.email.chooseTemplateLink,
         new RoutingChooseEmailTemplatePage(page),
         templates.EMAIL,
@@ -327,7 +312,7 @@ test.describe('Routing', () => {
     });
 
     await test.step('add standard letter template', async () => {
-      await selectTemplate(
+      await selectTemplateRadio(
         chooseTemplatesPage.letter.standard.chooseTemplateLink,
         new RoutingChooseStandardLetterTemplatePage(page),
         templates.LETTER,
@@ -348,12 +333,27 @@ test.describe('Routing', () => {
 
       await expect(reviewPage.pageHeading).toBeVisible();
 
-      await assertReviewPageTemplates(reviewPage, [
-        { channel: 'NHSAPP', template: templates.NHSAPP },
-        { channel: 'EMAIL', template: templates.EMAIL },
-        { channel: 'SMS', template: templates.SMS },
-        { channel: 'LETTER', template: templates.LETTER },
-      ]);
+      const defaults: [Channel, Template][] = [
+        ['NHSAPP', templates.NHSAPP],
+        ['EMAIL', templates.EMAIL],
+        ['SMS', templates.SMS],
+        ['LETTER', templates.LETTER],
+      ];
+
+      for (const [channel, defaultTemplate] of defaults) {
+        await expect(
+          reviewPage.getTemplateBlock(channel).defaultTemplateCard.templateName
+        ).toHaveText(defaultTemplate.name);
+      }
+
+      const languageTemplateNames = await reviewPage
+        .getTemplateBlock('LETTER')
+        .getLanguagesCard()
+        .templateNames.allTextContents();
+
+      expect(languageTemplateNames).toHaveLength(2);
+      expect(languageTemplateNames).toContain(templates.ARABIC_LETTER.name);
+      expect(languageTemplateNames).toContain(templates.POLISH_LETTER.name);
 
       await reviewPage.moveToProductionButton.click();
     });

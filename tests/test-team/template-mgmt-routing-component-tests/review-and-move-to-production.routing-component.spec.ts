@@ -291,15 +291,20 @@ test.describe('Routing - Review and Move to Production page', () => {
         `/templates/preview-submitted-letter-template/${templates.LARGE_PRINT_LETTER.id}`
       );
 
+      const languagesCard = templateBlock.getLanguagesCard();
+      const languageNames = await languagesCard.templateName.all();
+      const languageLinks = await languagesCard.templateLink.all();
+
       for (const [index, language] of (
         ['FRENCH_LETTER', 'SPANISH_LETTER'] satisfies (keyof ReturnType<
           typeof createTemplates
         >)[]
       ).entries()) {
-        const links = await templateBlock.getLanguagesCard().templateLink.all();
-        await expect(links[index]).toHaveText(templates[language].name);
+        await expect(languageNames[index]).toHaveText(
+          templates[language].name
+        );
 
-        await expect(links[index]).toHaveAttribute(
+        await expect(languageLinks[index]).toHaveAttribute(
           'href',
           `/templates/preview-submitted-letter-template/${templates[language].id}`
         );
