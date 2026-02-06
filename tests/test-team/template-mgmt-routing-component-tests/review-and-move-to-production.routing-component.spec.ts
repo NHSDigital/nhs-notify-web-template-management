@@ -300,9 +300,7 @@ test.describe('Routing - Review and Move to Production page', () => {
           typeof createTemplates
         >)[]
       ).entries()) {
-        await expect(languageNames[index]).toHaveText(
-          templates[language].name
-        );
+        await expect(languageNames[index]).toHaveText(templates[language].name);
 
         await expect(languageLinks[index]).toHaveAttribute(
           'href',
