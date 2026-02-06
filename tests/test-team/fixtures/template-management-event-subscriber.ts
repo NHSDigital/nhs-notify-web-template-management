@@ -12,7 +12,7 @@ export const templateManagementEventSubscriber = base.extend<
   eventSubscriber: [
     // eslint-disable-next-line no-empty-pattern
     async ({}, use, workerInfo) => {
-      const eventSource = `//notify.nhs.uk/${process.env.COMPONENT}/${process.env.GROUP}/${process.env.ENVIRONMENT}`;
+      const eventSource = `//notify.nhs.uk/sbx/nhs-notify-template-management-dev/${process.env.ENVIRONMENT}`;
 
       const subscriber = new EventSubscriber(
         process.env.EVENTS_SNS_TOPIC_ARN,

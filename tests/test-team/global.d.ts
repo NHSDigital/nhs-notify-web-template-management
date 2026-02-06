@@ -6,11 +6,9 @@ declare global {
       CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
-      COMPONENT: string;
       ENVIRONMENT: string;
       EVENT_CACHE_BUCKET_NAME: string;
       EVENTS_SNS_TOPIC_ARN: string;
-      GROUP: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
       ROUTING_CONFIG_TABLE_NAME: string;
