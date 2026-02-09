@@ -9,16 +9,16 @@ import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-ut
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
 
-test.describe('PUT /v1/template/:templateId', () => {
+test.describe('PATCH /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user2: TestUser;
+  let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userDifferentClient = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
@@ -79,7 +79,7 @@ test.describe('PUT /v1/template/:templateId', () => {
       `${process.env.API_BASE_URL}/v1/template/${template.id}`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await userDifferentClient.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
         data: {
