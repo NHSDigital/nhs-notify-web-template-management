@@ -26,7 +26,10 @@ describe('actions: moveToProductionAction', () => {
 
     await moveToProductionAction({}, formData);
     expect(submitRoutingConfig).toHaveBeenCalledWith('rc-123', 5);
-    expect(redirectMock).toHaveBeenCalledWith('/message-plans', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/templates/message-plans',
+      'replace'
+    );
   });
 
   it('returns error state when routingConfigId is missing', async () => {

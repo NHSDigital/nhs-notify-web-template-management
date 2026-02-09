@@ -752,17 +752,17 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
             >
               Move to production
             </button>
+            <a
+              aria-disabled="false"
+              class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+              data-testid="keep-in-draft-link"
+              draggable="false"
+              href="/templates/message-plans/choose-templates/rc-123"
+              role="button"
+            >
+              Keep in draft
+            </a>
           </form>
-          <a
-            aria-disabled="false"
-            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
-            data-testid="keep-in-draft-link"
-            draggable="false"
-            href="/message-plans/choose-templates/rc-123"
-            role="button"
-          >
-            Keep in draft
-          </a>
         </div>
       </div>
     </div>

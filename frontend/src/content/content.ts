@@ -1607,11 +1607,6 @@ const previewMessagePlan = {
       status: 'Status',
     },
   },
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
 };
 
 const uploadDocxLetterTemplateForm = {
@@ -1725,19 +1720,14 @@ const reviewAndMoveToProduction = {
       name: 'Name',
     },
   },
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
   buttons: {
     moveToProduction: {
       text: 'Move to production',
-      href: '/message-plans',
+      href: '{{basePath}}/message-plans',
     },
     keepInDraft: {
       text: 'Keep in draft',
-      href: '/message-plans/choose-templates/{{routingConfigId}}',
+      href: '{{basePath}}/message-plans/choose-templates/{{routingConfigId}}',
     },
   },
 };

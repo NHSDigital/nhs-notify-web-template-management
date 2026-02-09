@@ -38,7 +38,10 @@ export default async function ReviewAndMoveMessagePlanPage({
   }
 
   if (messagePlan.status !== 'DRAFT') {
-    return redirect('/message-plans', RedirectType.replace);
+    return redirect(
+      `/message-plans/preview-message-plan/${routingConfigId}`,
+      RedirectType.replace
+    );
   }
 
   const templates = await getMessagePlanTemplates(messagePlan);

@@ -6,6 +6,8 @@ import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { $LockNumber } from 'nhs-notify-backend-client';
 import { submitRoutingConfig } from '@utils/message-plans';
 import content from '@content/content';
+import { interpolate } from '@utils/interpolate';
+import { getBasePath } from '@utils/get-base-path';
 
 const $MoveToProductionFormData = z.object({
   routingConfigId: z.string({ error: 'Invalid message plan id' }),
@@ -35,5 +37,10 @@ export async function moveToProductionAction(
     parsed.data.routingConfigId,
     parsed.data.lockNumber
   );
-  redirect(pageContent.buttons.moveToProduction.href, RedirectType.replace);
+  redirect(
+    interpolate(pageContent.buttons.moveToProduction.href, {
+      basePath: getBasePath(),
+    }),
+    RedirectType.replace
+  );
 }

@@ -105,7 +105,7 @@ describe('Review and move to production page', () => {
     await renderPage(routingConfig);
 
     expect(redirect).toHaveBeenCalledWith(
-      '/message-plans',
+      '/message-plans/preview-message-plan/rc-123',
       RedirectType.replace
     );
   });
@@ -201,7 +201,7 @@ describe('Review and move to production page', () => {
     expect(keepInDraftLink).toHaveTextContent('Keep in draft');
     expect(keepInDraftLink).toHaveAttribute(
       'href',
-      '/message-plans/choose-templates/rc-123'
+      '/templates/message-plans/choose-templates/rc-123'
     );
   });
 
