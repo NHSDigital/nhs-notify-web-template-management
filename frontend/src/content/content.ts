@@ -548,6 +548,31 @@ const previewLetterTemplate = {
   },
 };
 
+const letterPreviewSection = {
+  heading: 'Letter preview',
+  guidance:
+    'Check how your personalisation fields will appear in your letter.',
+  learnMoreLink: {
+    href: 'https://notify.nhs.uk/using-nhs-notify/personalisation',
+    text: 'Learn more about personalising your letters (opens in a new tab)',
+  },
+  tabTitle: 'Example personalisation data',
+  tabs: {
+    short: 'Short examples',
+    long: 'Long examples',
+  },
+  pdsSection: {
+    heading: 'PDS personalisation fields',
+    hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
+    recipientLabel: 'Example recipient',
+    recipientPlaceholder: 'Select a recipient',
+  },
+  customSection: {
+    heading: 'Custom personalisation fields',
+  },
+  updatePreviewButton: 'Update preview',
+};
+
 const previewNHSAppTemplate = {
   pageTitle: generatePageTitle('Preview NHS App message template'),
   sectionHeading: 'Template saved',
@@ -1712,6 +1737,7 @@ const content = {
     errorSummary,
     footer,
     header,
+    letterPreviewSection,
     lockedTemplateWarning,
     logoutWarning,
     messageFormatting,

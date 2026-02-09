@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
+import { LetterPreviewSection } from '@molecules/LetterPreviewSection';
 import content from '@content/content';
 import type {
   AuthoringLetterTemplate,
@@ -230,6 +231,7 @@ function PreviewAuthoringLetterTemplate({
               />
             )}
             <PreviewTemplateDetailsAuthoringLetter template={template} />
+            <LetterPreviewSection template={template} />
             <p>
               <Link href={links.messageTemplates}>{backLinkText}</Link>
             </p>
