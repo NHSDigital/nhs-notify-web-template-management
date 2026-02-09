@@ -160,7 +160,7 @@ export function MessagePlanCascadePreview({
                           )}
                           data-testid='channel-card'
                         >
-                          <p>
+                          <p data-testid='template-name'>
                             <Link href={getLetterTemplatePreviewHref(template)}>
                               {template.name}
                             </Link>
@@ -179,6 +179,7 @@ export function MessagePlanCascadePreview({
                             <p
                               key={template.id}
                               className='nhsuk-u-margin-bottom-0'
+                              data-testid='template-name'
                             >
                               <Link
                                 href={getLetterTemplatePreviewHref(template)}

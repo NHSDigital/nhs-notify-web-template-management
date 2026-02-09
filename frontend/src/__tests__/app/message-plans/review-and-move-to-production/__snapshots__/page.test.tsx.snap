@@ -664,7 +664,9 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                     >
                       Large print letter (optional)
                     </h3>
-                    <p>
+                    <p
+                      data-testid="template-name"
+                    >
                       <a
                         href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
                       >
@@ -692,6 +694,7 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                     </h3>
                     <p
                       class="nhsuk-u-margin-bottom-0"
+                      data-testid="template-name"
                     >
                       <a
                         href="/preview-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
@@ -701,6 +704,7 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                     </p>
                     <p
                       class="nhsuk-u-margin-bottom-0"
+                      data-testid="template-name"
                     >
                       <a
                         href="/preview-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
