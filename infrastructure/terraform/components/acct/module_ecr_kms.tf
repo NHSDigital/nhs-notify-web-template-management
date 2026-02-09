@@ -51,8 +51,7 @@ data "aws_iam_policy_document" "kms" {
       variable = "kms:EncryptionContext:aws:ecr:repositoryArn"
 
       values = [
-        aws_ecr_repository.main.arn,
-      ]
+        "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/${local.csi}-ecr",      ]
     }
   }
 }
