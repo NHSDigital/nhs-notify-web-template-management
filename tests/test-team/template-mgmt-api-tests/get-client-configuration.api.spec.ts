@@ -4,7 +4,6 @@ import {
   type TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('GET /v1/client-configuration', () => {
   const authHelper = createAuthHelper();
