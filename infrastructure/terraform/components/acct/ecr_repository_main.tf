@@ -11,3 +11,67 @@ resource "aws_ecr_repository" "main" {
     scan_on_push = true
   }
 }
+
+resource "aws_ecr_lifecycle_policy" "main" {
+  repository = aws_ecr_repository.main.name
+
+  policy = <<EOF
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Archive commit images after 30 days (commit tags use suffix '-sha-')",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPatternList": ["*-sha-*"],
+        "countType": "sinceImagePushed",
+        "countNumber": 30
+      },
+      "action": {
+        "type": "transition",
+        "targetStorageClass": "archive"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Expire (delete) commit images 60 days after push (only those matched as commit images)",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPatternList": ["*-sha-*"],
+        "countType": "sinceImagePushed",
+        "countNumber": 60
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 3,
+      "description": "Expire (delete) untagged images 7 days after push",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countNumber": 7
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 10,
+      "description": "Archive tagged images (semantic-version tags) after 90 days — do not expire them (no delete)",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPatternList": ["*-tag-*"],
+        "countType": "sinceImagePushed",
+        "countNumber": 90
+      },
+      "action": {
+        "type": "transition",
+        "targetStorageClass": "archive"
+      }
+    }
+  ]
+}
+EOF
+}

@@ -31,7 +31,7 @@ jobs:
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
             --targetEnvironment "pr${{ inputs.pr_number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --targetComponent "sandbox" \
+            --targetComponent "sbx" \
             --terraformAction "apply"
 
       - name: Trigger Acceptance Tests
@@ -46,4 +46,4 @@ jobs:
             --targetWorkflow "dispatch-contextual-tests-dynamic-env.yaml" \
             --targetEnvironment "pr${{ inputs.pr_number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --targetComponent "sandbox"
+            --targetComponent "sbx"
