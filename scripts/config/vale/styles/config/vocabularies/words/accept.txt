@@ -1,4 +1,4 @@
-AGENTS
+[A-Z]+s
 Bitwarden
 bot
 Cognito
@@ -15,7 +15,6 @@ Gitleaks
 Grype
 idempotence
 Jira
-Lambdas
 npm
 OAuth
 Octokit
