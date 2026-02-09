@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { type MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import {
   NHSNotifySummaryList,
   NHSNotifySummaryListKey,
@@ -10,12 +9,16 @@ import {
   NHSNotifySummaryListValue,
 } from '@atoms/NHSNotifySummaryList/NHSNotifySummaryList';
 import content from '@content/content';
+import {
+  moveToProductionAction,
+  ReviewAndMoveToProductionForm,
+} from '@forms/ReviewAndMoveToProductionForm';
 import { MessagePlanCascadePreview } from '@molecules/MessagePlanCascadePreview/MessagePlanCascadePreview';
 import {
   getMessagePlanTemplates,
   getRoutingConfig,
 } from '@utils/message-plans';
-import { moveToProduction as moveToProductionAction } from './actions';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 
 const pageContent = content.pages.reviewAndMoveToProduction;
 
@@ -63,32 +66,12 @@ export default async function ReviewAndMoveMessagePlanPage({
             templates={templates}
           />
 
-          <div className='nhsuk-form-group'>
-            <form
-              action={moveToProductionAction.bind(
-                null,
-                routingConfigId,
-                messagePlan.lockNumber
-              )}
-            >
-              <NHSNotifyButton
-                warning
-                type='submit'
-                data-testid='move-to-production-button'
-              >
-                {pageContent.buttons.moveToProduction}
-              </NHSNotifyButton>
-            </form>
-
-            <NHSNotifyButton
-              secondary
-              href={`/message-plans/choose-templates/${routingConfigId}`}
-              className='nhsuk-u-margin-left-3'
-              data-testid='keep-in-draft-link'
-            >
-              {pageContent.buttons.keepInDraft}
-            </NHSNotifyButton>
-          </div>
+          <NHSNotifyFormProvider serverAction={moveToProductionAction}>
+            <ReviewAndMoveToProductionForm
+              routingConfigId={routingConfigId}
+              lockNumber={messagePlan.lockNumber}
+            />
+          </NHSNotifyFormProvider>
         </div>
       </div>
     </NHSNotifyMain>

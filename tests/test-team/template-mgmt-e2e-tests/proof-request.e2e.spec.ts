@@ -5,7 +5,7 @@ import {
   testUsers,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
-import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';

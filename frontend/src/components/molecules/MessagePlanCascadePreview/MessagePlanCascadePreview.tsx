@@ -2,12 +2,13 @@
 
 import { Fragment } from 'react';
 import Link from 'next/link';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
+import type { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
 import {
   accessibleFormatDisplayMappings,
   channelDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { DetailsSummary, DetailsText } from '@atoms/nhsuk-components';
+import content from '@content/content';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanChannelList } from '@molecules/MessagePlanChannelList/MessagePlanChannelList';
 import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
@@ -33,13 +34,15 @@ import {
   type MessagePlanTemplates,
 } from '@utils/routing-utils';
 
-const content = {
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
-};
+const pageContent = content.components.messagePlanCascadePreview;
+
+function getLetterTemplatePreviewHref(template: TemplateDto): string {
+  const linkTemplate =
+    template.templateStatus === 'SUBMITTED'
+      ? pageContent.letterTemplateLinks.previewSubmitted
+      : pageContent.letterTemplateLinks.preview;
+  return interpolate(linkTemplate, { id: template.id });
+}
 
 export type MessagePlanCascadePreviewProps = {
   messagePlan: RoutingConfig;
@@ -56,8 +59,8 @@ export function MessagePlanCascadePreview({
         <p>
           <DetailsOpenButton
             secondary
-            openText={content.detailsOpenButton.openText}
-            closedText={content.detailsOpenButton.closedText}
+            openText={pageContent.detailsOpenButton.openText}
+            closedText={pageContent.detailsOpenButton.closedText}
           />
         </p>
       ) : null}
@@ -103,10 +106,7 @@ export function MessagePlanCascadePreview({
                   {cascadeItem.channel === 'LETTER' ? (
                     <p data-testid='template-name'>
                       <Link
-                        href={interpolate(
-                          '/preview-submitted-letter-template/{{id}}',
-                          { id: defaultTemplate.id }
-                        )}
+                        href={getLetterTemplatePreviewHref(defaultTemplate)}
                       >
                         {defaultTemplate.name}
                       </Link>
@@ -116,11 +116,11 @@ export function MessagePlanCascadePreview({
                       <p data-testid='template-name'>{defaultTemplate.name}</p>
                       <ControlledDetails className='nhsuk-u-margin-bottom-0'>
                         <DetailsSummary data-testid='preview-template-summary'>
-                          Preview{' '}
+                          {pageContent.previewTemplateSummary.prefix}{' '}
                           <span className='nhsuk-u-visually-hidden'>
                             {channelDisplayName}
                           </span>{' '}
-                          template
+                          {pageContent.previewTemplateSummary.suffix}
                         </DetailsSummary>
                         <DetailsText data-testid='preview-template-text'>
                           <div
@@ -149,18 +149,19 @@ export function MessagePlanCascadePreview({
                         data-testid={`conditional-template-${accessibleFormat}`}
                       >
                         <MessagePlanChannelCard
-                          heading={`${accessibleFormatDisplayMappings(
-                            accessibleFormat
-                          )} (optional)`}
+                          heading={interpolate(
+                            pageContent.accessibleFormatCardHeading,
+                            {
+                              format:
+                                accessibleFormatDisplayMappings(
+                                  accessibleFormat
+                                ),
+                            }
+                          )}
                           data-testid='channel-card'
                         >
-                          <p data-testid='template-name'>
-                            <Link
-                              href={interpolate(
-                                '/preview-submitted-letter-template/{{id}}',
-                                { id: template.id }
-                              )}
-                            >
+                          <p>
+                            <Link href={getLetterTemplatePreviewHref(template)}>
                               {template.name}
                             </Link>
                           </p>
@@ -171,20 +172,16 @@ export function MessagePlanCascadePreview({
                     {languageTemplates.length > 0 && (
                       <MessagePlanConditionalTemplatesListItem data-testid='conditional-template-languages'>
                         <MessagePlanChannelCard
-                          heading={content.languageFormatsCardHeading}
+                          heading={pageContent.languageFormatsCardHeading}
                           data-testid='channel-card'
                         >
                           {languageTemplates.map((template) => (
                             <p
                               key={template.id}
                               className='nhsuk-u-margin-bottom-0'
-                              data-testid='template-name'
                             >
                               <Link
-                                href={interpolate(
-                                  '/preview-submitted-letter-template/{{id}}',
-                                  { id: template.id }
-                                )}
+                                href={getLetterTemplatePreviewHref(template)}
                               >
                                 {template.name}
                               </Link>

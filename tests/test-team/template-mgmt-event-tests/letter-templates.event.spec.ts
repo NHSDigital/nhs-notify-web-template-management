@@ -149,7 +149,7 @@ test.describe('Event publishing - Letters', () => {
     const start = new Date();
 
     const pdfContent = readFileSync(
-      './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
+      './fixtures/letters/no-custom-personalisation/template.pdf'
     );
 
     const supplierReference = [

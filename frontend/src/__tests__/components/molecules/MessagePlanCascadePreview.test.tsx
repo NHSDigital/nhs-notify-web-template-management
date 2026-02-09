@@ -141,9 +141,43 @@ describe('MessagePlanCascadePreview', () => {
     const link = letterBlock.querySelector('a');
     expect(link).toHaveAttribute(
       'href',
-      `/preview-submitted-letter-template/${PDF_LETTER_TEMPLATE.id}`
+      `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
     );
     expect(link).toHaveTextContent(PDF_LETTER_TEMPLATE.name);
+  });
+
+  it('renders submitted letter template with submitted link', () => {
+    const submittedTemplate = {
+      ...PDF_LETTER_TEMPLATE,
+      id: 'submitted-letter-id',
+      templateStatus: 'SUBMITTED' as const,
+    };
+    const templatesWithSubmitted = {
+      ...templates,
+      [submittedTemplate.id]: submittedTemplate,
+    };
+    const routingConfigWithSubmitted = {
+      ...ROUTING_CONFIG,
+      cascade: ROUTING_CONFIG.cascade.map((item) =>
+        item.channel === 'LETTER'
+          ? { ...item, defaultTemplateId: submittedTemplate.id }
+          : item
+      ),
+    };
+
+    render(
+      <MessagePlanCascadePreview
+        messagePlan={routingConfigWithSubmitted}
+        templates={templatesWithSubmitted}
+      />
+    );
+
+    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
+    const link = letterBlock.querySelector('a');
+    expect(link).toHaveAttribute(
+      'href',
+      `/preview-submitted-letter-template/${submittedTemplate.id}`
+    );
   });
 
   it('renders non-letter templates with preview details', () => {

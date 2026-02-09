@@ -287,15 +287,15 @@ test.describe('Edit NHS App Template Page', () => {
   });
 
   const detailsSections = [
-    'pds-personalisation-fields',
-    'custom-personalisation-fields',
-    'line-breaks-and-paragraphs',
-    'headings',
-    'bold-text',
-    'bullet-points',
-    'numbered-lists',
-    'links-and-urls',
-    'how-to-name-your-template',
+    'PDS personalisation fields',
+    'Custom personalisation fields',
+    'Line breaks and paragraphs',
+    'Headings',
+    'Bold text',
+    'Bullet points',
+    'Numbered lists',
+    'Links and urls',
+    'Naming your templates',
   ];
 
   for (const section of detailsSections) {
@@ -313,18 +313,20 @@ test.describe('Edit NHS App Template Page', () => {
         `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
       );
 
-      await page.getByTestId(`${section}-summary`).click();
-      await expect(page.getByTestId(`${section}-details`)).toHaveAttribute(
-        'open',
-        ''
-      );
-      await expect(page.getByTestId(`${section}-text`)).toBeVisible();
+      const details = await page
+        .getByRole('group')
+        .filter({ hasText: section });
 
-      await page.getByTestId(`${section}-summary`).click();
-      await expect(page.getByTestId(`${section}-details`)).not.toHaveAttribute(
-        'open'
-      );
-      await expect(page.getByTestId(`${section}-text`)).toBeHidden();
+      const summary = details.locator('summary');
+      const text = details.locator('.nhsuk-details__text');
+
+      await summary.click();
+      await expect(details).toHaveAttribute('open');
+      await expect(text).toBeVisible();
+
+      await summary.click();
+      await expect(details).not.toHaveAttribute('open');
+      await expect(text).toBeHidden();
     });
   }
 

@@ -514,7 +514,7 @@ exports[`MessagePlanCascadePreview matches snapshot 1`] = `
             data-testid="template-name"
           >
             <a
-              href="/preview-submitted-letter-template/letter-template-id"
+              href="/preview-letter-template/letter-template-id"
             >
               letter template name
             </a>
