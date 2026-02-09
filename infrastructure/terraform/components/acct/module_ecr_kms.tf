@@ -1,4 +1,4 @@
-module "kms" {
+module "kms_ecr" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip"
   providers = {
     aws           = aws
@@ -11,9 +11,9 @@ module "kms" {
   project        = var.project
   region         = var.region
 
-  name                 = "main"
+  name                 = "ecr"
   deletion_window      = var.kms_deletion_window
-  alias                = "alias/${local.csi}"
+  alias                = "alias/${local.csi}-ecr"
   key_policy_documents = [data.aws_iam_policy_document.kms.json]
   iam_delegation       = true
 }
