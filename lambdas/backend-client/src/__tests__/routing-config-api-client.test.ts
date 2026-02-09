@@ -378,4 +378,64 @@ describe('RoutingConfigurationApiClient', () => {
       expect(axiosMock.history.get.length).toBe(1);
     });
   });
+
+  describe('submit', () => {
+    it('should return error when failing to submit', async () => {
+      axiosMock
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}/submit`)
+        .reply(400, {
+          statusCode: 400,
+          technicalMessage: 'Bad request',
+          details: {
+            message: 'Cannot submit routing configuration',
+          },
+        });
+
+      const response = await client.submit('token', validRoutingConfigId, 1);
+
+      expect(response.error).toEqual({
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Cannot submit routing configuration',
+          },
+        },
+      });
+      expect(response.data).toBeUndefined();
+      expect(axiosMock.history.patch.length).toBe(1);
+    });
+
+    it('should return routing configuration on successful submit', async () => {
+      const data: RoutingConfig = {
+        id: validRoutingConfigId,
+        name: 'Test message plan',
+        status: 'COMPLETED',
+        clientId: 'client-1',
+        campaignId: 'campaign-1',
+        createdAt: '2025-01-01T00:00:00.000Z',
+        updatedAt: '2025-01-01T00:00:00.000Z',
+        cascade: [],
+        cascadeGroupOverrides: [],
+        lockNumber: 2,
+        defaultCascadeGroup: 'standard',
+      };
+
+      axiosMock
+        .onPatch(`/v1/routing-configuration/${validRoutingConfigId}/submit`)
+        .reply(200, {
+          data,
+        });
+
+      const response = await client.submit('token', validRoutingConfigId, 1);
+
+      expect(response.data).toEqual(data);
+      expect(response.error).toBeUndefined();
+      expect(axiosMock.history.patch.length).toBe(1);
+      expect(axiosMock.history.patch[0].headers).toMatchObject({
+        Authorization: 'token',
+        'X-Lock-Number': '1',
+      });
+    });
+  });
 });
