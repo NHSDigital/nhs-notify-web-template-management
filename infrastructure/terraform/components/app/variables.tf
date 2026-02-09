@@ -173,6 +173,12 @@ variable "event_delivery_logging_success_sample_percentage" {
   default     = 0
 }
 
+variable "letter_preview_renderer_ecr_repo" {
+  type        = string
+  description = "ECR repository name for the letter-preview-renderer container image"
+  default     = "nhs-notify-main-acct"
+}
+
 variable "data_plane_bus_arn" {
   type        = string
   description = "Data plane event bus arn"
