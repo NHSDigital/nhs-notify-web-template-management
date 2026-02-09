@@ -312,7 +312,7 @@ describe('Review and move to production page', () => {
       expect(link).toHaveTextContent(templates[letterTemplateId].name);
       expect(link).toHaveAttribute(
         'href',
-        `/preview-submitted-letter-template/${letterTemplateId}`
+        `/preview-letter-template/${letterTemplateId}`
       );
     });
 
