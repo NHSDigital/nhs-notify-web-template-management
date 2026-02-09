@@ -616,7 +616,8 @@ describe('templateRepository', () => {
         ExpressionAttributeValues: {
           ':condition_2_1_templateStatus': 'DELETED',
           ':condition_2_2_templateStatus': 'SUBMITTED',
-          ':condition_3_1_lockNumber': 5,
+          ':condition_3_1_templateStatus': 'PROOF_APPROVED',
+          ':condition_4_1_lockNumber': 5,
           ':lockNumber': 1,
           ':name': 'Updated Template Name',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
@@ -625,7 +626,7 @@ describe('templateRepository', () => {
         UpdateExpression:
           'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
         ConditionExpression:
-          'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND (#lockNumber = :condition_3_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND NOT #templateStatus IN (:condition_3_1_templateStatus) AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
       });
 
       expect(response).toEqual({
@@ -652,6 +653,19 @@ describe('templateRepository', () => {
           errorCode: 400,
           errorMeta: {
             description: 'Template with status SUBMITTED cannot be updated',
+          },
+        },
+        {
+          testName: 'when templateStatus is already PROOF_APPROVED',
+          Item: {
+            templateType: { S: 'LETTER' },
+            templateStatus: { S: 'PROOF_APPROVED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 400,
+          errorMeta: {
+            description:
+              'Template with status PROOF_APPROVED cannot be updated',
           },
         },
         {

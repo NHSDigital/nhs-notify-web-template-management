@@ -1,6 +1,6 @@
-export { NHSNotifyErrorMessage as ErrorMessage } from './ErrorMessage';
-export { NHSNotifyErrorSummary as ErrorSummary } from './ErrorSummary';
+export { NHSNotifyFormErrorMessage as ErrorMessage } from './ErrorMessage';
+export { NHSNotifyFormErrorSummary as ErrorSummary } from './ErrorSummary';
 export { NHSNotifyForm as Form } from './Form';
 export { NHSNotifyFormGroup as FormGroup } from './FormGroup';
-export { NHSNotifyInput as Input } from './Input';
-export { NHSNotifySelect as Select } from './Select';
+export { NHSNotifyFormInput as Input } from './Input';
+export { NHSNotifyFormSelect as Select } from './Select';

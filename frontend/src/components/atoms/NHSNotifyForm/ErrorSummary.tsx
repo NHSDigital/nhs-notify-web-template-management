@@ -6,7 +6,7 @@ import {
 } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
-export function NHSNotifyErrorSummary(
+export function NHSNotifyFormErrorSummary(
   props: Omit<NhsNotifyErrorSummaryProps, 'errorState'>
 ) {
   const [state] = useNHSNotifyForm();

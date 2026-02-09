@@ -200,6 +200,41 @@ test.describe('PUT /v1/template/:templateId', () => {
     expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
   });
 
+  test('returns 400 - cannot update an approved template', async ({
+    request,
+  }) => {
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user1,
+      'Old template name',
+      'PROOF_APPROVED'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          name: 'New template name',
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    const body = await response.json();
+
+    expect(body).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Template with status PROOF_APPROVED cannot be updated',
+    });
+  });
+
   test('returns 400 - cannot update a submitted template', async ({
     request,
   }) => {

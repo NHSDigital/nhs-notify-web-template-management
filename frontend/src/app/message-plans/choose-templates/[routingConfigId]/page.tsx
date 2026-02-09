@@ -19,7 +19,7 @@ import {
   SummaryListValue,
   Tag,
 } from '@atoms/nhsuk-components';
-import { NHSNotifyErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
+import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
 import { MessagePlanChooseTemplatesMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
@@ -79,7 +79,9 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-three-quarters'>
           <NHSNotifyFormProvider serverAction={moveToProduction}>
-            <NHSNotifyErrorSummary hint={content.validationError.hintText} />
+            <NHSNotifyFormErrorSummary
+              hint={content.validationError.hintText}
+            />
             <span className='nhsuk-caption-l'>{content.headerCaption}</span>
             <h1 className='nhsuk-heading-l' data-testid='routing-config-name'>
               {messagePlan.name}

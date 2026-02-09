@@ -176,9 +176,12 @@ export class TemplateRepository {
       update.setName(updates.name);
     }
 
+    const bannedStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
+
     update
       .expectTemplateExists()
       .expectNotFinalStatus()
+      .expectNotStatus(bannedStatuses)
       .expectLockNumber(lockNumber)
       .setUpdatedByUserAt(this.internalUserKey(user))
       .incrementLockNumber();
@@ -190,7 +193,12 @@ export class TemplateRepository {
 
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
-      return this._handleUpdateError(error, updates, lockNumber);
+      return this._handleUpdateError(
+        error,
+        updates,
+        lockNumber,
+        bannedStatuses
+      );
     }
   }
 
@@ -811,7 +819,8 @@ export class TemplateRepository {
   private _handleUpdateError(
     error: unknown,
     updates: Partial<TemplateDto>,
-    lockNumber: number
+    lockNumber: number,
+    blockedStatuses: TemplateStatus[] = []
   ) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
@@ -820,7 +829,7 @@ export class TemplateRepository {
 
       const oldItem = unmarshall(error.Item);
 
-      if (oldItem.templateStatus === 'SUBMITTED') {
+      if (['SUBMITTED', ...blockedStatuses].includes(oldItem.templateStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
           `Template with status ${oldItem.templateStatus} cannot be updated`,

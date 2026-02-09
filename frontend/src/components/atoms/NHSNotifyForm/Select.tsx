@@ -4,7 +4,7 @@ import type { HTMLProps } from 'react';
 import classNames from 'classnames';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
-export function NHSNotifySelect({
+export function NHSNotifyFormSelect({
   children,
   className,
   name,

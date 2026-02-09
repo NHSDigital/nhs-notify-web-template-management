@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import { ErrorMessage } from 'nhsuk-react-components';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
-export function NHSNotifyErrorMessage({
+export function NHSNotifyFormErrorMessage({
   className,
   htmlFor,
   ...props
