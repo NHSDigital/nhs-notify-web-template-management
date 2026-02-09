@@ -54,17 +54,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const libPath = `${getBasePath()}/lib`;
+
   return (
     <html lang='en'>
-      <head>
-        <script
-          src={`${getBasePath()}/lib/nhsuk-frontend-10.3.1.min.js`}
-          defer
-          type='module'
-        />
-      </head>
       <body suppressHydrationWarning>
-        <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
+        <script src={`${libPath}/nhs-frontend-js-check.js`} />
         <CookiesProvider>
           <AuthProvider>
             <ClientConfigProviderServer>
@@ -79,6 +74,7 @@ export default function RootLayout({
             </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
+        <script type='module' src={`${libPath}/nhsuk-frontend-init.js`} />
       </body>
     </html>
   );
