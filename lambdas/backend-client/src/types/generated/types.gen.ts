@@ -4,10 +4,32 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterFiles = {
+  initialRender?: AuthoringRenderDetails;
+  longFormRender?: AuthoringPersonalisedRenderDetails;
+  shortFormRender?: AuthoringPersonalisedRenderDetails;
+};
+
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  customPersonalisation?: Array<string>;
+  files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
+  pdsPersonalisation: Array<string>;
   sidesCount: number;
+};
+
+export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
+  pdsPersonalisationPackId: string;
+  personalisationParameters: {
+    [key: string]: string;
+  };
+};
+
+export type AuthoringRenderDetails = {
+  currentVersion: string;
+  fileName: string;
+  status: RenderStatus;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -222,6 +244,8 @@ export type ProofFileDetails = {
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
+
+export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
 
 export type RoutingConfig = {
   campaignId: string;

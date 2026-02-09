@@ -1,0 +1,151 @@
+User Story
+
+As an Integrator team member
+
+I want to be able to preview my letter template in the browser with short and long form data
+
+So that I can see how my template will look when printed and approve it for use
+
+
+Business Rationale / Context
+
+One of the main reasons for adopting Carbone for PDF letter generation is that it will allow Notify to move from supplier generated letter proofs, to browser rendered letter previews/proofs. This story introduces PDF preview functionality onto the letter template preview screen which allows the user to input test data and view a rendered PDF proof to validate that their template displays correctly.
+
+
+Details
+
+The image below shows the letter template preview screen. Changes to the details table at the top of the screen are being implemented via CCM-13493 and so are out of scope for this ticket.
+
+The changes to be implemented are in the bottom half of the screen (the "Letter preview" section).
+
+The bottom part of the screen is the "Letter preview" section.
+
+At the top of this section is:
+
+    Some guidance and a link, Learn more about personalising your letters (opens in a new tab), that provides the user with additional information about personalising their letters
+        Link: https://notify.nhs.uk/using-nhs-notify/personalisation
+
+Beneath this is a tabbed area with two tabs - "Short examples" and "Long examples".
+
+On the right hand side of the tabbed area is:
+
+    A preview of the generated PDF. Initially this will just be a render of the letter template without any personalisation substitutions.
+
+On the left hand side of the tabbed area is:
+
+    Several fields used to enter personalisation test data
+        The same fields are displayed on both the "Short examples" and "Long examples" tabs but different data can be entered for each.
+        When the user returns to this screen after the preview has been updated, any test data they input will be automatically pre-populated within these fields
+        Fields displayed in this area are split into two sections
+            Within the "PDS personalisation fields" section there is a single field
+                Example recipient (Select list)
+                    This allows the user to select one of the provided example recipients, the chosen example recipient will have their own test PDS data which will be used to replace any PDS personalisation fields in the preview when the Update preview button is clicked (outside scope of this story).
+                    There will be a separate set of short-form and long-form example recipients that can be selected
+            Within the "Custom personalisation fields" section there will be a field dynamically generated for each custom personalisation field identified within the letter template
+                Each field will be a text field allowing a maximum input length of 500 characters
+                If no custom fields are present in the template then the "Custom personalisation fields" section is hidden
+        At the bottom of the tabbed area beneath the personalisation fields is an Update preview button
+            The update preview functionality is outside the scope of this ticket and will be implemented under CCM-13495
+        When the user clicks between the short/long examples tabs, the preview refreshes to display the short form or long form PDF as appropriate
+            If the user has not generated a short-form or long-form PDF then they will just see the template version containing the substitution fields
+
+Beneath the tabbed area is:
+
+        An Approve template button
+            When clicked this navigates the user to the "Approve letter template" screen (once implemented)
+            Validation will take place at this point but this is outside the scope of this ticket and will be covered under a separate story.
+        A Back to all templates link
+            When clicked this will navigate the user back to the template library screen
+
+NHS Design System Components
+
+    https://service-manual.nhs.uk/design-system/components/tabs
+
+
+Acceptance Criteria
+
+1. Overall look and feel of the screen
+
+    The screen conforms to the design shown in the details section above
+    All fields and components from the design are visible on the screen
+    The screen uses any specified NHS Design System Components where appropriate
+
+
+
+2. Preview section
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I click the Approve template button
+Then I am navigated to the "Approve Letter Template" screen
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I click the Save and close button
+Then I am navigated to the template library screen and my changes are saved
+
+
+
+3. Personalisation section
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I view the letter template preview screen
+Then there is a Example recipient select list in the "PDS personalisation fields" section
+And the select list contains pre-defined values for selection by the user (either short or long form values depending on current tab as specified in the details section above)
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I view the letter template preview screen
+Then there is a text field shown for each non-PDS personalisation field that was included within the template
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And my template does not include any custom personalisation fields
+When I view the letter template preview screen
+Then the custom personalisation fields section is not displayed
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have not previously entered any example test data for this template
+When the screen loads
+Then all of the fields in the personalisation section are blank
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have previously entered some example test data for this template
+When the screen loads
+Then all of the fields in the personalisation section are populated with the previously entered data
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have entered data in both the short and long example data fields
+And I am viewing the "Short examples" tab
+When I click the "Long examples" tab
+Then the PDF preview refreshes to show the PDF with long form example data substitutions
+And the personalisation fields are populated with the saved long form example data
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have entered data in both the short and long example data fields
+And I am viewing the "Long examples" tab
+When I click the "Short examples" tab
+Then the PDF preview refreshes to show the PDF with short form example data substitutions
+And the personalisation fields are populated with the saved long form example data
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I am viewing the "Short examples" tab
+Then I see the short-form Example recipient data in the select list
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+When I am viewing the "Long examples" tab
+Then I see the long-form Example recipient data in the select list
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"And I have previously generated a short-form example PDF
+When I am viewing the "Short examples" tab
+Then the short-form example PDF is displayed in the preview
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"And I have previously generated a long-form example PDF
+When I am viewing the "Long examples" tab
+Then the long-form example PDF is displayed in the preview
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have not previously generated a short-form example PDF
+When I am viewing the "Short examples" tab
+Then the initial PDF render containing the substitution fields is displayed in the preview
+
+Given my letter template has successfully uploaded and has a status of "Approval needed"
+And I have not previously generated a long-form example PDF
+When I am viewing the "Long examples" tab
+Then the initial PDF render containing the substitution fields is displayed in the preview

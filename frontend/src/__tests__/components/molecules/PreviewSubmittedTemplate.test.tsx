@@ -146,6 +146,8 @@ describe('PreviewSubmittedTemplate component', () => {
             language: 'en',
             sidesCount: 4,
             letterVariantId: 'first-class',
+            files: {},
+            pdsPersonalisation: [],
             createdAt: '2025-01-13T10:19:25.579Z',
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,

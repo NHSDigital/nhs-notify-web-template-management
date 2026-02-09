@@ -1,5 +1,6 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import type {
+  AuthoringLetterFiles,
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   CreateUpdateTemplate,
@@ -129,16 +130,20 @@ export type DatabaseTemplate = {
   clientId?: string;
   createdAt: string;
   createdBy?: string;
-  files?: PdfLetterFiles;
+  customPersonalisation?: string[];
+  files?: PdfLetterFiles | AuthoringLetterFiles;
   id: string;
   language?: Language;
   letterType?: LetterType;
+  letterVariantId?: string;
   letterVersion?: LetterVersion;
   lockNumber?: number;
   message?: string;
   name: string;
+  pdsPersonalisation?: string[];
   proofingEnabled?: boolean;
   sftpSendLockTime?: number;
+  sidesCount?: number;
   subject?: string;
   supplier?: string;
   templateStatus: TemplateStatus;

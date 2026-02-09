@@ -10,6 +10,7 @@ import {
   ChannelType,
   Language,
   LetterType,
+  RenderStatus,
   RoutingConfigStatus,
   TemplateStatus,
   TemplateType,
@@ -91,6 +92,12 @@ export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([
   'PENDING',
   'FAILED',
   'PASSED',
+]);
+
+export const RENDER_STATUS_LIST = arrayOfAll<RenderStatus>()([
+  'FAILED',
+  'PENDING',
+  'RENDERED',
 ]);
 
 export const ROUTING_CONFIG_STATUS_LIST = arrayOfAll<RoutingConfigStatus>()([

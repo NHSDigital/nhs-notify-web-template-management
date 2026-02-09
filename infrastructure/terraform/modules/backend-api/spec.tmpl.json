@@ -1,6 +1,20 @@
 {
   "components": {
     "schemas": {
+      "AuthoringLetterFiles": {
+        "properties": {
+          "initialRender": {
+            "$ref": "#/components/schemas/AuthoringRenderDetails"
+          },
+          "longFormRender": {
+            "$ref": "#/components/schemas/AuthoringPersonalisedRenderDetails"
+          },
+          "shortFormRender": {
+            "$ref": "#/components/schemas/AuthoringPersonalisedRenderDetails"
+          }
+        },
+        "type": "object"
+      },
       "AuthoringLetterProperties": {
         "allOf": [
           {
@@ -8,6 +22,15 @@
           },
           {
             "properties": {
+              "customPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "files": {
+                "$ref": "#/components/schemas/AuthoringLetterFiles"
+              },
               "letterVariantId": {
                 "type": "string"
               },
@@ -17,17 +40,69 @@
                 ],
                 "type": "string"
               },
+              "pdsPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "sidesCount": {
                 "type": "integer"
               }
             },
             "required": [
+              "files",
               "letterVersion",
+              "pdsPersonalisation",
               "sidesCount"
             ],
             "type": "object"
           }
         ]
+      },
+      "AuthoringPersonalisedRenderDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuthoringRenderDetails"
+          },
+          {
+            "properties": {
+              "pdsPersonalisationPackId": {
+                "type": "string"
+              },
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "pdsPersonalisationPackId",
+              "personalisationParameters"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "AuthoringRenderDetails": {
+        "properties": {
+          "currentVersion": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RenderStatus"
+          }
+        },
+        "required": [
+          "currentVersion",
+          "fileName",
+          "status"
+        ],
+        "type": "object"
       },
       "BaseCreatedTemplate": {
         "allOf": [
@@ -710,6 +785,14 @@
           "virusScanStatus"
         ],
         "type": "object"
+      },
+      "RenderStatus": {
+        "enum": [
+          "FAILED",
+          "PENDING",
+          "RENDERED"
+        ],
+        "type": "string"
       },
       "RoutingConfig": {
         "properties": {

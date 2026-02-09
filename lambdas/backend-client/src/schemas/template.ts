@@ -1,6 +1,9 @@
 import { z } from 'zod/v4';
 import type {
+  AuthoringLetterFiles,
   AuthoringLetterProperties,
+  AuthoringPersonalisedRenderDetails,
+  AuthoringRenderDetails,
   BaseCreatedTemplate,
   BaseTemplate,
   CreatePdfLetterProperties,
@@ -12,6 +15,7 @@ import type {
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
+  RenderStatus,
   SmsProperties,
   TemplateDto,
   TemplateStatus,
@@ -28,6 +32,7 @@ import { schemaFor } from './schema-for';
 import {
   LANGUAGE_LIST,
   LETTER_TYPE_LIST,
+  RENDER_STATUS_LIST,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
@@ -59,6 +64,35 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
     proofs: z.record(z.string(), $ProofFileDetails).optional(),
+  })
+);
+
+const $RenderStatus = schemaFor<RenderStatus>()(z.enum(RENDER_STATUS_LIST));
+
+const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
+  z.object({
+    currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    status: $RenderStatus,
+  })
+);
+
+const $AuthoringPersonalisedRenderDetails =
+  schemaFor<AuthoringPersonalisedRenderDetails>()(
+    z.object({
+      currentVersion: z.string(),
+      fileName: z.string().trim().min(1),
+      personalisationParameters: z.record(z.string(), z.string()),
+      pdsPersonalisationPackId: z.string(),
+      status: $RenderStatus,
+    })
+  );
+
+export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
+  z.object({
+    initialRender: $AuthoringRenderDetails.optional(),
+    longFormRender: $AuthoringPersonalisedRenderDetails.optional(),
+    shortFormRender: $AuthoringPersonalisedRenderDetails.optional(),
   })
 );
 
@@ -114,8 +148,11 @@ export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      customPersonalisation: z.array(z.string()).optional(),
+      files: $AuthoringLetterFiles,
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
+      pdsPersonalisation: z.array(z.string()),
       sidesCount: z.number().int(),
     })
   );

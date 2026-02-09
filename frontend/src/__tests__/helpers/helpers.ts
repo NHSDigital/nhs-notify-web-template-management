@@ -107,6 +107,8 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
   sidesCount: 2,
+  files: {},
+  pdsPersonalisation: [],
   name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',

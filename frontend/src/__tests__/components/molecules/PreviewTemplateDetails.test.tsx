@@ -56,6 +56,8 @@ const baseAuthoringLetter: AuthoringLetterTemplate = {
   letterVariantId: 'variant-123',
   sidesCount: 4,
   language: 'en',
+  files: {},
+  pdsPersonalisation: [],
 };
 
 describe('PreviewTemplateDetailsNhsApp', () => {

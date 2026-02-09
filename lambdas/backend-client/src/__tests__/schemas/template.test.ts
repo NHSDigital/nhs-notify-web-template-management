@@ -1,4 +1,5 @@
 import {
+  $AuthoringLetterFiles,
   $AuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
@@ -300,6 +301,8 @@ describe('Template schemas', () => {
       letterVersion: 'AUTHORING',
       letterVariantId: 'variant-123',
       sidesCount: 2,
+      files: {},
+      pdsPersonalisation: [],
     };
 
     test('should pass validation for valid AUTHORING letter', () => {
@@ -330,8 +333,82 @@ describe('Template schemas', () => {
       expect(result.error?.flatten().fieldErrors).toEqual(
         expect.objectContaining({
           sidesCount: expect.any(Array),
+          files: expect.any(Array),
+          pdsPersonalisation: expect.any(Array),
         })
       );
+    });
+  });
+
+  describe('$AuthoringLetterFiles', () => {
+    test.each([
+      { description: 'empty files object', files: {} },
+      {
+        description: 'initialRender only',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+          },
+        },
+      },
+      {
+        description: 'all render types',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+          },
+          shortFormRender: {
+            fileName: 'short.pdf',
+            currentVersion: 'v2',
+            status: 'RENDERED',
+            personalisationParameters: { firstName: 'John' },
+            pdsPersonalisationPackId: 'pack-123',
+          },
+          longFormRender: {
+            fileName: 'long.pdf',
+            currentVersion: 'v3',
+            status: 'PENDING',
+            personalisationParameters: { firstName: 'Jane' },
+            pdsPersonalisationPackId: 'pack-456',
+          },
+        },
+      },
+    ])('should pass validation for $description', ({ files }) => {
+      const result = $AuthoringLetterFiles.safeParse(files);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(files);
+    });
+
+    test.each([
+      {
+        description: 'invalid render status',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'INVALID_STATUS',
+          },
+        },
+      },
+      {
+        description: 'shortFormRender missing required fields',
+        files: {
+          shortFormRender: {
+            fileName: 'short.pdf',
+            currentVersion: 'v2',
+            status: 'RENDERED',
+          },
+        },
+      },
+    ])('should fail validation for $description', ({ files }) => {
+      const result = $AuthoringLetterFiles.safeParse(files);
+
+      expect(result.success).toBe(false);
     });
   });
 
@@ -388,6 +465,8 @@ describe('Template schemas', () => {
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
         sidesCount: 2,
+        files: {},
+        pdsPersonalisation: [],
       };
 
       const result = $LetterProperties.safeParse(authoringLetter);
@@ -559,6 +638,8 @@ describe('Template schemas', () => {
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
         sidesCount: 2,
+        files: {},
+        pdsPersonalisation: [],
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
       };

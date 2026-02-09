@@ -3,6 +3,7 @@ import {
   guardDutyEventValidator,
   isRightToLeft,
 } from 'nhs-notify-web-template-management-utils';
+import type { PdfLetterFiles } from 'nhs-notify-backend-client';
 import { LetterUploadRepository, TemplateRepository } from '../infra';
 import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
@@ -69,13 +70,15 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Unable to load template data');
     }
 
-    if (!template.files) {
-      log.error("Can't process non-letter template");
+    if (template.letterVersion === 'AUTHORING' || !template.files) {
+      log.error("Can't process non-PDF letter template");
       return;
     }
 
-    const pdfData = template.files.pdfTemplate;
-    const csvData = template.files.testDataCsv;
+    const { pdfTemplate: pdfData, testDataCsv: csvData } =
+      // template is type DatabaseTemplate, which lacks letterVersion specific properties
+      // however, this will be deleted soon anyway
+      template.files as PdfLetterFiles;
 
     if (
       pdfData.currentVersion !== versionId ||
