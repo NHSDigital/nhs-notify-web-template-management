@@ -18,7 +18,7 @@ module "kms_ecr" {
   iam_delegation       = true
 }
 
-data "aws_iam_policy_document" "kms" {
+data "aws_iam_policy_document" "kms_ecr" {
   # '*' resource scope is permitted in access policies as as the resource is itself
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
 
