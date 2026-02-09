@@ -524,6 +524,10 @@ export class CognitoAuthHelper {
     return id;
   }
 
+  public async getClient(clientId: string) {
+    return this.notifyClientHelper.getClient(clientId);
+  }
+
   public async getStaticClient(clientKey: ClientKey) {
     const id = this.notifyClientHelper.clientIdFromKey(clientKey);
     return this.notifyClientHelper.getClient(id);
