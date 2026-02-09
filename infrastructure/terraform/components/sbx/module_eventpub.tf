@@ -17,6 +17,7 @@ module "eventpub" {
   enable_event_cache                   = true
   enable_sns_delivery_logging          = false
   enable_firehose_raw_message_delivery = true
+  event_cache_buffer_interval          = 0
   sns_success_logging_sample_percent   = 0
   force_destroy                        = true
 

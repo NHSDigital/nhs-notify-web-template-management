@@ -66,10 +66,10 @@ output "test_email_bucket_prefix" {
   value = "emails-${var.environment}"
 }
 
-output "routing_config_table_name" {
-  value = module.backend_api.routing_config_table_name
+output "event_cache_bucket_name" {
+  value = module.eventpub.s3_bucket_event_cache.bucket
 }
 
-output "events_sns_topic_arn" {
-  value = module.eventpub.sns_topic.arn
+output "routing_config_table_name" {
+  value = module.backend_api.routing_config_table_name
 }
