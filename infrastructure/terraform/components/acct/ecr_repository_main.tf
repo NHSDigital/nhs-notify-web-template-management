@@ -40,3 +40,37 @@ resource "aws_ecr_repository_policy" "main" {
   repository = aws_ecr_repository.main.name
   policy     = data.aws_iam_policy_document.ecr_lambda_pull.json
 }
+
+resource "aws_ecr_lifecycle_policy" "main" {
+  repository = aws_ecr_repository.main.name
+
+  policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Retain last 30 tagged images"
+        selection = {
+          tagStatus   = "tagged"
+          countType   = "imageCountMoreThan"
+          countNumber = 30
+        }
+        action = {
+          type = "expire"
+        }
+      },
+      {
+        rulePriority = 2
+        description  = "Expire untagged images older than 7 days"
+        selection = {
+          tagStatus   = "untagged"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = 7
+        }
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+}
