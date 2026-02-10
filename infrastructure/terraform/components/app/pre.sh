@@ -13,6 +13,9 @@ npm run generate-dependencies --workspaces --if-present
 export AWS_REGION="${AWS_REGION:-${TF_VAR_region:-}}"
 export AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-${TF_VAR_aws_account_id:-}}"
 export ECR_REPO="${ECR_REPO:-${TF_VAR_letter_preview_renderer_ecr_repo:-nhs-notify-main-acct}}"
+export CSI="${CSI:-${TF_VAR_project:-}-${TF_VAR_environment:-}-${TF_VAR_component:-}}"
+CSI="${CSI//_/}"
+export CSI
 
 npm run lambda-build --workspaces --if-present
 
