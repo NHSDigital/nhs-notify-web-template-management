@@ -1625,7 +1625,7 @@ const uploadDocxLetterTemplateForm = {
   fields: {
     name: {
       label: 'Template name',
-      hint: 'This will not be visible to recipients.',
+      hint: 'This will not be visible to recipients',
     },
     campaignId: {
       label: 'Campaign',
@@ -1633,12 +1633,12 @@ const uploadDocxLetterTemplateForm = {
         hint: 'This message plan will link to your only campaign:',
       },
       select: {
-        hint: 'Choose which campaign this letter is for.',
+        hint: 'Choose which campaign this letter is for',
       },
     },
     language: {
       label: 'Template language',
-      hint: 'Choose the language used in this template.',
+      hint: 'Choose the language used in this template',
       placeholder: 'Please select',
       rtl: [
         { type: 'text', text: '**Right-to-left language selected**' },
@@ -1656,9 +1656,6 @@ const uploadDocxLetterTemplateForm = {
           text: 'Only upload your final letter template file.  \nMake sure you use one of our blank template files to create the letter.',
         },
       ] satisfies ContentBlock[],
-    },
-    submitButton: {
-      text: 'Upload letter template file',
     },
   },
   errors: {
@@ -1720,7 +1717,30 @@ const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
         },
       },
     ] satisfies ContentBlock[] as ContentBlock[],
+    submitButton: {
+      text: 'Upload letter template file',
+    },
   };
+};
+
+const editTemplateNamePage = {
+  pageTitle: generatePageTitle('Edit template name'),
+  form: {
+    name: {
+      label: 'Edit template name',
+      hint: 'This will not be visible to recipients',
+      errors: {
+        empty: 'Enter a template name',
+      },
+    },
+    submit: {
+      text: 'Save changes',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (templateId: string) => `/preview-letter-template/${templateId}`,
+  },
 };
 
 const content = {
@@ -1776,6 +1796,7 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlanSettings,
+    editTemplateNamePage,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,

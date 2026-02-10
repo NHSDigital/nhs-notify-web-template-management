@@ -16,6 +16,8 @@ import {
   VirusScanStatus,
   ProofFileDetails,
   CreateUpdateTemplate,
+  PatchTemplate,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
@@ -151,6 +153,52 @@ export class TemplateRepository {
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
       return this._handleUpdateError(error, template, lockNumber);
+    }
+  }
+
+  async patch(
+    templateId: string,
+    updates: PatchTemplate,
+    user: User,
+    lockNumber: number
+  ): Promise<ApplicationResult<DatabaseTemplate>> {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      user.clientId,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    );
+
+    if (updates.name) {
+      update.setName(updates.name);
+    }
+
+    const bannedStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
+
+    update
+      .expectTemplateExists()
+      .expectNotFinalStatus()
+      .expectNotStatus(bannedStatuses)
+      .expectLockNumber(lockNumber)
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .incrementLockNumber();
+
+    try {
+      const response = await this.client.send(
+        new UpdateCommand(update.build())
+      );
+
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      return this._handleUpdateError(
+        error,
+        updates,
+        lockNumber,
+        bannedStatuses
+      );
     }
   }
 
@@ -770,8 +818,9 @@ export class TemplateRepository {
 
   private _handleUpdateError(
     error: unknown,
-    template: Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
-    lockNumber: number
+    updates: Partial<TemplateDto>,
+    lockNumber: number,
+    blockedStatuses: TemplateStatus[] = []
   ) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
@@ -780,7 +829,7 @@ export class TemplateRepository {
 
       const oldItem = unmarshall(error.Item);
 
-      if (oldItem.templateStatus === 'SUBMITTED') {
+      if (['SUBMITTED', ...blockedStatuses].includes(oldItem.templateStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
           `Template with status ${oldItem.templateStatus} cannot be updated`,
@@ -788,13 +837,16 @@ export class TemplateRepository {
         );
       }
 
-      if (oldItem.templateType !== template.templateType) {
+      if (
+        updates.templateType &&
+        oldItem.templateType !== updates.templateType
+      ) {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
           'Can not change template templateType',
           error,
           {
-            templateType: `Expected ${oldItem.templateType} but got ${template.templateType}`,
+            templateType: `Expected ${oldItem.templateType} but got ${updates.templateType}`,
           }
         );
       }

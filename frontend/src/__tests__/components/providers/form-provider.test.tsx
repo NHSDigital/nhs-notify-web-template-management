@@ -10,22 +10,11 @@ import type {
   ErrorState,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
-import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
 } from '@providers/form-provider';
 import { startTransition } from 'react';
-
-jest.mock('@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary');
-
-jest
-  .mocked(NhsNotifyErrorSummary)
-  .mockImplementation(() => <div data-testid='error-summary' />);
-
-beforeEach(() => {
-  jest.mocked(NhsNotifyErrorSummary).mockClear();
-});
 
 function TestForm() {
   const [, action] = useNHSNotifyForm();
@@ -39,7 +28,7 @@ function TestForm() {
 }
 
 describe('NHSNotifyFormProvider', () => {
-  it('renders the child form with the error summary before children', async () => {
+  it('renders the child form', async () => {
     const container = render(
       <NHSNotifyFormProvider serverAction={jest.fn()}>
         <h1>Page Heading</h1>
@@ -73,28 +62,6 @@ describe('NHSNotifyFormProvider', () => {
     );
     const formData = serverAction.mock.lastCall?.at(1) as FormData;
     expect(formData.get('name')).toEqual('Foo');
-  });
-
-  it('renders the error summary with the errors returned from the server action', async () => {
-    const user = await userEvent.setup();
-
-    const errorState: ErrorState = { fieldErrors: { name: ['Name is empty'] } };
-
-    const serverAction = jest.fn().mockResolvedValue({ errorState });
-    render(
-      <NHSNotifyFormProvider serverAction={serverAction}>
-        <h1>Page Heading</h1>
-        <TestForm />
-      </NHSNotifyFormProvider>
-    );
-
-    await user.click(await screen.findByTestId('submit'));
-
-    const lastErrorSummaryProps = jest
-      .mocked(NhsNotifyErrorSummary)
-      .mock.lastCall?.at(0);
-
-    expect(lastErrorSummaryProps).toEqual({ errorState });
   });
 
   it('calls the server action with the given initial state when the form is submitted', async () => {

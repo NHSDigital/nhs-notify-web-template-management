@@ -4,7 +4,6 @@ import {
   type TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
-import { testClients } from '../helpers/client/client-helper';
 
 test.describe('GET /v1/client-configuration', () => {
   const authHelper = createAuthHelper();
@@ -53,12 +52,14 @@ test.describe('GET /v1/client-configuration', () => {
       },
     });
 
+    const client = await authHelper.getClient(userWithClientConfig.clientId);
+
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({
       statusCode: 200,
       clientConfiguration: {
-        campaignIds: userWithClientConfig.campaignIds,
-        features: testClients[userWithClientConfig.clientKey]?.features,
+        campaignIds: client?.campaignIds,
+        features: client?.features,
       },
     });
   });

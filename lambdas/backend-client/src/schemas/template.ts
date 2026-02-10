@@ -12,6 +12,7 @@ import type {
   Language,
   LetterType,
   NhsAppProperties,
+  PatchTemplate,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
@@ -171,9 +172,11 @@ export const $LetterProperties = z.discriminatedUnion('letterVersion', [
   $AuthoringLetterProperties,
 ]);
 
+const $TemplateName = z.string().trim().min(1);
+
 const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
-    name: z.string().trim().min(1),
+    name: $TemplateName,
     templateType: z.enum(TEMPLATE_TYPE_LIST),
   })
 );
@@ -195,6 +198,17 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
     $BaseTemplateSchema.extend($SmsProperties.shape),
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
   ])
+);
+
+export const $PatchTemplate = schemaFor<PatchTemplate>()(
+  z
+    .object({
+      name: $TemplateName.optional(),
+    })
+    .refine(
+      (data) => Object.values(data).some((value) => value !== undefined),
+      { error: 'Unexpected empty object' }
+    )
 );
 
 export const $LockNumber = z.coerce

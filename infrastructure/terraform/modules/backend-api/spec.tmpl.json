@@ -707,6 +707,15 @@
         ],
         "type": "object"
       },
+      "PatchTemplate": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "PdfLetterFiles": {
         "properties": {
           "pdfTemplate": {
@@ -1947,8 +1956,91 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
         }
       },
+      "patch": {
+        "description": "Partial update of a template by Id",
+        "parameters": [
+          {
+            "description": "ID of template to update",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTemplate"
+              }
+            }
+          },
+          "description": "Updates to apply",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${PATCH_TEMPLATE_LAMBDA_ARN}/invocations"
+        }
+      },
       "put": {
-        "description": "Update a template template by Id",
+        "description": "Update a template by Id",
         "parameters": [
           {
             "description": "ID of template to update",
