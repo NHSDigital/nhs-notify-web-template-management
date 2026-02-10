@@ -1,7 +1,3 @@
-locals {
-  letter_preview_renderer_image_tag = var.environment == "dev" ? substr(var.commit_id, 0, 7) : var.letter_preview_renderer_git_tag
-}
-
 module "letter_preview_renderer_lambda" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=feature/CCM-14149_Support_Container_Based_Lambdas"
 
@@ -18,7 +14,7 @@ module "letter_preview_renderer_lambda" {
   kms_key_arn = module.kms.key_arn
 
   package_type           = "Image"
-  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.letter_preview_renderer_ecr_repo}:${local.letter_preview_renderer_image_tag}"
+  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.letter_preview_renderer_ecr_repo}:main-${substr(var.commit_id, 0, 7)}"
   image_repository_names = [var.letter_preview_renderer_ecr_repo]
 
   memory  = 1024
