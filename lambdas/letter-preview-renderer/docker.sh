@@ -24,7 +24,7 @@ fi
 
 # Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}--${SHORT_SHA}-latest"
+IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${SHORT_SHA}-latest"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
