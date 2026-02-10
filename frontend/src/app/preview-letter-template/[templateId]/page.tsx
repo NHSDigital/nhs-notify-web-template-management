@@ -8,11 +8,11 @@ import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
-import { PreviewLetterContent } from '@organisms/PreviewLetterTemplate/PreviewLetterContent';
+import { PreviewPdfLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
 import { getTemplateStatusErrors } from '@utils/get-template-status-errors';
-import { noOpServerAction, submitAuthoringLetterAction } from './server-action';
+import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -38,32 +38,9 @@ export default async function PreviewLetterTemplatePage({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  // PDF letter version - will be removed soon, keeping separate
+  // PDF letter version - uses original component unchanged from main
   if (validatedTemplate.letterVersion === 'PDF') {
-    return (
-      <NHSNotifyContainer>
-        <NHSNotifyFormProvider
-          initialState={{
-            errorState: {
-              formErrors: getTemplateStatusErrors(validatedTemplate),
-            },
-          }}
-          serverAction={noOpServerAction}
-        >
-          <NHSNotifyBackLink href={links.messageTemplates}>
-            {backLinkText}
-          </NHSNotifyBackLink>
-          <NHSNotifyForm.ErrorSummary />
-          <NHSNotifyMain>
-            <div className='nhsuk-grid-row'>
-              <div className='nhsuk-grid-column-full'>
-                <PreviewLetterContent template={validatedTemplate} />
-              </div>
-            </div>
-          </NHSNotifyMain>
-        </NHSNotifyFormProvider>
-      </NHSNotifyContainer>
-    );
+    return <PreviewPdfLetterTemplate template={validatedTemplate} />;
   }
 
   // Authoring letter version

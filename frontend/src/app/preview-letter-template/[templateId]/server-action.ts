@@ -4,14 +4,6 @@ import { redirect, RedirectType } from 'next/navigation';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 
 /**
- * No-op server action for pages that display errors but don't submit forms.
- * Used by PDF letter preview which shows template status errors but has no submit action.
- */
-export async function noOpServerAction(state: FormState): Promise<FormState> {
-  return state;
-}
-
-/**
  * Server action for submitting an authoring letter template.
  *
  * TD: CCM-XXXXX - Implement actual submission logic:
