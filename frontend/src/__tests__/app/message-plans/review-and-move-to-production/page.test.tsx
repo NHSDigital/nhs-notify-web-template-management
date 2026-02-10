@@ -23,9 +23,12 @@ import ReviewAndMoveMessagePlanPage, {
 
 jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
-jest.mock('@forms/ReviewAndMoveToProductionForm/server-action', () => ({
-  moveToProductionAction: jest.fn(),
-}));
+jest.mock(
+  '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action',
+  () => ({
+    moveToProductionAction: jest.fn(),
+  })
+);
 jest.mock('@providers/form-provider', () => ({
   NHSNotifyFormProvider: ({ children }: { children: React.ReactNode }) =>
     children,

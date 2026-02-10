@@ -1,6 +1,6 @@
-import { submitRoutingConfig } from '@utils/message-plans';
-import { moveToProductionAction } from '@forms/ReviewAndMoveToProductionForm';
 import { redirect } from 'next/navigation';
+import { moveToProductionAction } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action';
+import { submitRoutingConfig } from '@utils/message-plans';
 
 jest.mock('@utils/message-plans');
 jest.mock('next/navigation');
@@ -26,10 +26,7 @@ describe('actions: moveToProductionAction', () => {
 
     await moveToProductionAction({}, formData);
     expect(submitRoutingConfig).toHaveBeenCalledWith('rc-123', 5);
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/templates/message-plans',
-      'replace'
-    );
+    expect(redirectMock).toHaveBeenCalledWith('/message-plans', 'replace');
   });
 
   it('returns error state when routingConfigId is missing', async () => {

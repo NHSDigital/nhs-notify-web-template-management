@@ -1723,7 +1723,7 @@ const reviewAndMoveToProduction = {
   buttons: {
     moveToProduction: {
       text: 'Move to production',
-      href: '{{basePath}}/message-plans',
+      href: '/message-plans',
     },
     keepInDraft: {
       text: 'Keep in draft',

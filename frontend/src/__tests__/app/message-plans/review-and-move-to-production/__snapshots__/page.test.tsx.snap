@@ -714,36 +714,36 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
             </ul>
           </li>
         </ul>
-        <div
-          class="nhsuk-form-group"
+        <form
+          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
         >
-          <form
-            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="review-and-move-to-production"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="routingConfigId"
+            readonly=""
+            type="hidden"
+            value="rc-123"
+          />
+          <input
+            name="lockNumber"
+            readonly=""
+            type="hidden"
+            value="5"
+          />
+          <div
+            class="nhsuk-form-group"
           >
-            <input
-              name="form-id"
-              readonly=""
-              type="hidden"
-              value="review-and-move-to-production"
-            />
-            <input
-              name="csrf_token"
-              readonly=""
-              type="hidden"
-              value="no_token"
-            />
-            <input
-              name="routingConfigId"
-              readonly=""
-              type="hidden"
-              value="rc-123"
-            />
-            <input
-              name="lockNumber"
-              readonly=""
-              type="hidden"
-              value="5"
-            />
             <button
               aria-disabled="false"
               class="nhsuk-button nhsuk-button--warning"
@@ -762,8 +762,8 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
             >
               Keep in draft
             </a>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   </main>
