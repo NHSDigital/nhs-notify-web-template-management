@@ -173,10 +173,15 @@ variable "event_delivery_logging_success_sample_percentage" {
   default     = 0
 }
 
-variable "letter_preview_renderer_ecr_repo" {
+variable "container_lambda_ecr_repo" {
   type        = string
-  description = "ECR repository name for the letter-preview-renderer container image"
+  description = "ECR repository name for container-based lambda images"
   default     = "nhs-notify-main-acct"
+}
+
+variable "letter_preview_renderer_image_tag" {
+  type        = string
+  description = "Full ECR image tag for the letter-preview-renderer container image (e.g. <csi>-letter-preview-renderer-<short_sha>-latest)"
 }
 
 variable "data_plane_bus_arn" {

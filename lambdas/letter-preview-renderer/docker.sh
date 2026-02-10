@@ -12,6 +12,7 @@ set -euo pipefail
 : "${ECR_REPO:?ECR_REPO is required}"
 : "${CSI:?CSI is required}"
 LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
+SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
 aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
@@ -23,7 +24,7 @@ fi
 
 # Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-latest"
+IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}--${SHORT_SHA}-latest"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"

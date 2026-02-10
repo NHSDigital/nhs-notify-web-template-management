@@ -14,8 +14,8 @@ module "letter_preview_renderer_lambda" {
   kms_key_arn = module.kms.key_arn
 
   package_type           = "Image"
-  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.letter_preview_renderer_ecr_repo}:${local.csi}-letter-preview-renderer-latest"
-  image_repository_names = [var.letter_preview_renderer_ecr_repo]
+  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.container_lambda_ecr_repo}:${var.letter_preview_renderer_image_tag}"
+  image_repository_names = [var.container_lambda_ecr_repo]
 
   memory  = 1024
   timeout = 30
