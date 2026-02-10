@@ -5,7 +5,7 @@ import type { LetterPreviewVariant, UpdatePreviewResult } from './types';
 type UpdateLetterPreviewInput = {
   templateId: string;
   variant: LetterPreviewVariant;
-  pdsPersonalisationPackId: string;
+  systemPersonalisationPackId: string;
   personalisationParameters: Record<string, string>;
 };
 
@@ -22,7 +22,7 @@ export async function updateLetterPreview(
   // const response = await backendClient.triggerLetterRender({
   //   templateId: input.templateId,
   //   variant: input.variant,
-  //   pdsPersonalisationPackId: input.pdsPersonalisationPackId,
+  //   systemPersonalisationPackId: input.systemPersonalisationPackId,
   //   personalisationParameters: input.personalisationParameters,
   // });
   //

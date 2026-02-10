@@ -1,0 +1,59 @@
+{
+  "campaignId": "campaign-id",
+  "clientId": "21d8beea-e15c-489a-8327-15dbb303c9d2",
+  "createdAt": "2026-01-30T12:00:00.000Z",
+  "customPersonalisation": [
+    "appointmentDate",
+    "clinicName"
+  ],
+  "files": {
+    "initialRender": {
+      "currentVersion": "v1-abc123",
+      "fileName": "initial-render.pdf",
+      "status": "RENDERED"
+    },
+    "longFormRender": {
+      "currentVersion": "v3-ghi789",
+      "fileName": "long-form-render.pdf",
+      "personalisationParameters": {
+        "appointmentDate": "22 February 2026",
+        "clinicName": "Royal Victoria Infirmary, Newcastle upon Tyne"
+      },
+      "status": "RENDERED",
+      "systemPersonalisationPackId": "long-2"
+    },
+    "shortFormRender": {
+      "currentVersion": "v2-def456",
+      "fileName": "short-form-render.pdf",
+      "personalisationParameters": {
+        "appointmentDate": "15 January 2026",
+        "clinicName": "Leeds General Infirmary"
+      },
+      "status": "RENDERED",
+      "systemPersonalisationPackId": "short-1"
+    }
+  },
+  "id": "45c27398-f171-5d79-c4c9-3ceg2626b6d4",
+  "language": "en",
+  "letterType": "x0",
+  "letterVariantId": "variant-456",
+  "letterVersion": "AUTHORING",
+  "lockNumber": 3,
+  "name": "Test Authoring Letter - All Renders",
+  "owner": "CLIENT#21d8beea-e15c-489a-8327-15dbb303c9d2",
+  "sidesCount": 4,
+  "systemPersonalisation": [
+    "firstName",
+    "lastName",
+    "nhsNumber",
+    "address_line_1",
+    "address_line_2",
+    "address_line_3",
+    "address_line_4",
+    "address_line_5"
+  ],
+  "templateStatus": "NOT_YET_SUBMITTED",
+  "templateType": "LETTER",
+  "updatedAt": "2026-02-05T14:30:00.000Z",
+  "version": 4
+}

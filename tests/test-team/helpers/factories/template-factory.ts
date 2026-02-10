@@ -110,6 +110,11 @@ export const TemplateFactory = {
       sidesCount?: number;
       letterVariantId?: string;
       campaignId?: string | null;
+      initialRender?: {
+        fileName: string;
+        currentVersion: string;
+        status: string;
+      };
     }
   ): Template => {
     const campaignId =
@@ -117,9 +122,14 @@ export const TemplateFactory = {
         ? undefined
         : (options?.campaignId ?? 'campaign-id');
 
+    const files = options?.initialRender
+      ? { initialRender: options.initialRender }
+      : {};
+
     return TemplateFactory.create({
       ...(campaignId && { campaignId }),
       clientId: user.clientId,
+      files,
       id,
       language: options?.language || 'en',
       letterType: options?.letterType || 'x0',

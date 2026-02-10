@@ -84,7 +84,7 @@ const $AuthoringPersonalisedRenderDetails =
       currentVersion: z.string(),
       fileName: z.string().trim().min(1),
       personalisationParameters: z.record(z.string(), z.string()),
-      pdsPersonalisationPackId: z.string(),
+      systemPersonalisationPackId: z.string(),
       status: $RenderStatus,
     })
   );
@@ -153,8 +153,8 @@ export const $AuthoringLetterProperties =
       files: $AuthoringLetterFiles,
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
-      pdsPersonalisation: z.array(z.string()),
-      sidesCount: z.number().int(),
+      sidesCount: z.number().int().optional(),
+      systemPersonalisation: z.array(z.string()).optional(),
     })
   );
 

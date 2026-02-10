@@ -10,7 +10,7 @@ describe('updateLetterPreview', () => {
       const result = await updateLetterPreview({
         templateId: 'template-123',
         variant: 'short',
-        pdsPersonalisationPackId: 'short-1',
+        systemPersonalisationPackId: 'short-1',
         personalisationParameters: { appointmentDate: '2025-01-15' },
       });
 
@@ -21,18 +21,18 @@ describe('updateLetterPreview', () => {
       const result = await updateLetterPreview({
         templateId: 'template-123',
         variant: 'long',
-        pdsPersonalisationPackId: 'long-1',
+        systemPersonalisationPackId: 'long-1',
         personalisationParameters: { clinicName: 'Test Clinic' },
       });
 
       expect(result.success).toBe(true);
     });
 
-    it('handles empty pdsPersonalisationPackId', async () => {
+    it('handles empty systemPersonalisationPackId', async () => {
       const result = await updateLetterPreview({
         templateId: 'template-123',
         variant: 'short',
-        pdsPersonalisationPackId: '',
+        systemPersonalisationPackId: '',
         personalisationParameters: {},
       });
 
@@ -43,7 +43,7 @@ describe('updateLetterPreview', () => {
       const result = await updateLetterPreview({
         templateId: 'template-123',
         variant: 'short',
-        pdsPersonalisationPackId: 'short-1',
+        systemPersonalisationPackId: 'short-1',
         personalisationParameters: {
           appointmentDate: '2025-01-15',
           clinicName: 'Test Clinic',

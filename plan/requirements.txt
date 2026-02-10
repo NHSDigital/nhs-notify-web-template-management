@@ -1,0 +1,90 @@
+# Letter Template Preview - Requirements (CCM-13493)
+
+## Functional Requirements
+
+### FR1: Page Layout
+- Page uses full-width container (`nhsuk-width-container-fluid`) to allow PDF preview to use maximum screen space
+- Back link at top constrained to standard width (960px)
+- Template details section constrained to standard width (960px)
+- Letter preview section (heading, tabs, form, iframe) spans full width
+- Submit button and bottom back link span full width
+
+### FR2: Letter Preview Section
+- Displays "Letter preview" heading with guidance text
+- Contains tabbed interface with "Short examples" and "Long examples" tabs
+- Each tab displays a form (left) and PDF preview iframe (right)
+
+### FR3: Personalisation Form
+- **PDS Personalisation Fields section:**
+  - Single "Example recipient" select dropdown
+  - Pre-populated with test recipients (short-form or long-form depending on active tab)
+  - PDS fields auto-fill when recipient selected
+- **Custom Personalisation Fields section:**
+  - Dynamically generated text input for each custom field in the template
+  - Maximum 500 characters per field
+  - Section hidden if template has no custom personalisation fields
+- "Update preview" button to regenerate PDF with entered data
+
+### FR4: PDF Preview
+- Displays rendered PDF in iframe
+- Initially shows template with substitution placeholders (initialRender)
+- Shows variant-specific render (shortFormRender/longFormRender) when previously generated
+- Refreshes when switching between tabs
+
+### FR5: Form State Persistence
+- Each tab (short/long) maintains independent form state
+- State persists when switching between tabs
+- Previously entered data pre-populates on return visits (via API)
+
+### FR6: Navigation
+- "Approve template" / "Submit template" button navigates to submit page
+- "Back to all templates" links navigate to template library
+
+---
+
+## Technical Requirements
+
+### TR1: Component Architecture
+- `LetterRender` - Client component (molecule) managing tab state and form submissions
+- `LetterRenderForm` - Renders personalisation form for a single variant
+- `LetterRenderIframe` - Renders PDF preview iframe
+- `LetterRenderTabContent` - Combines form and iframe with CSS module layout
+- Page component handles layout containers and error boundaries
+
+### TR2: State Management
+- Uses React `useState` with lifted state pattern (not `NHSNotifyFormProvider`)
+- Rationale: Two independent forms (short/long) need separate state that persists across tab switches
+- State shape: `{ short: VariantState, long: VariantState }`
+- Each `VariantState` contains: `formData`, `previewState`, `pdfUrl`, `errors`
+
+### TR3: Form Implementation
+- Uses plain HTML form elements with NHS UK classes (`nhsuk-form-group`, `nhsuk-select`, `nhsuk-input`)
+- Error styling via `nhsuk-form-group--error` class applied conditionally
+- Does NOT use `NHSNotifyForm.FormGroup` (incompatible with lifted state pattern)
+
+### TR4: Server Action
+- `updateLetterPreview` server action handles form submission
+- Accepts: `templateId`, `variant`, `pdsPersonalisationPackId`, `personalisationParameters`
+- Returns: `{ success, pdfUrl?, errors? }`
+
+### TR5: PDF URL Construction
+- Format: `{basePath}/files/{clientId}/renders/{templateId}/{fileName}`
+- Priority: variant-specific render > initialRender > null
+
+### TR6: Layout CSS
+- Uses CSS modules for tab content layout (`LetterRenderTabContent.module.scss`)
+- Flexbox layout: form column (fixed width) + iframe column (flex grow)
+- Responsive considerations for smaller viewports
+
+### TR7: Type Safety
+- Uses `AuthoringLetterTemplate` type from `nhs-notify-web-template-management-utils`
+- Template must have `letterVersion: 'AUTHORING'`
+- Required properties: `files`, `pdsPersonalisation`, `customPersonalisation?`
+
+---
+
+## Out of Scope
+- Update preview server-side PDF generation (CCM-13495)
+- Template details table changes (separate ticket)
+- Validation on submit
+- "Save and close" functionality

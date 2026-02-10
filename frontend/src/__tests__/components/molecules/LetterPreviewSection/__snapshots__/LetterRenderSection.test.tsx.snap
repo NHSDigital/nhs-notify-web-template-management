@@ -13,15 +13,6 @@ exports[`LetterRender matches snapshot 1`] = `
     <p>
       Check how your personalisation fields will appear in your letter.
     </p>
-    <p>
-      <a
-        href="https://notify.nhs.uk/using-nhs-notify/personalisation"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more about personalising your letters (opens in a new tab)
-      </a>
-    </p>
     <div
       class="nhsuk-tabs nhsuk-u-margin-top-6"
       data-module="nhsuk-tabs"
@@ -75,10 +66,10 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="tabContent"
         >
           <div
-            class="nhsuk-grid-column-one-third"
+            class="formColumn"
           >
             <form
               id="letter-preview-short"
@@ -94,18 +85,18 @@ exports[`LetterRender matches snapshot 1`] = `
                 The PDS fields will be pre-filled with example data when you choose a test recipient.
               </p>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
-                  for="pdsPersonalisationPackId-short"
+                  for="systemPersonalisationPackId-short"
                 >
                   Example recipient
                 </label>
                 <select
-                  class="nhsuk-select"
-                  id="pdsPersonalisationPackId-short"
-                  name="pdsPersonalisationPackId"
+                  class="nhsuk-select recipientSelect"
+                  id="systemPersonalisationPackId-short"
+                  name="systemPersonalisationPackId"
                 >
                   <option
                     value=""
@@ -135,7 +126,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 Custom personalisation fields
               </h3>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
@@ -153,7 +144,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
@@ -180,13 +171,11 @@ exports[`LetterRender matches snapshot 1`] = `
             </form>
           </div>
           <div
-            class="nhsuk-grid-column-two-thirds"
+            class="iframeColumn"
           >
             <iframe
-              class="nhsuk-u-margin-bottom-4"
               referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
-              style="width: 100%; height: 1200px;"
               title="Letter preview - short examples"
             />
           </div>
@@ -199,10 +188,10 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="tabContent"
         >
           <div
-            class="nhsuk-grid-column-one-third"
+            class="formColumn"
           >
             <form
               id="letter-preview-long"
@@ -218,18 +207,18 @@ exports[`LetterRender matches snapshot 1`] = `
                 The PDS fields will be pre-filled with example data when you choose a test recipient.
               </p>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
-                  for="pdsPersonalisationPackId-long"
+                  for="systemPersonalisationPackId-long"
                 >
                   Example recipient
                 </label>
                 <select
-                  class="nhsuk-select"
-                  id="pdsPersonalisationPackId-long"
-                  name="pdsPersonalisationPackId"
+                  class="nhsuk-select recipientSelect"
+                  id="systemPersonalisationPackId-long"
+                  name="systemPersonalisationPackId"
                 >
                   <option
                     value=""
@@ -259,7 +248,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 Custom personalisation fields
               </h3>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
@@ -277,7 +266,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+                class="nhsuk-form-group"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
@@ -304,13 +293,11 @@ exports[`LetterRender matches snapshot 1`] = `
             </form>
           </div>
           <div
-            class="nhsuk-grid-column-two-thirds"
+            class="iframeColumn"
           >
             <iframe
-              class="nhsuk-u-margin-bottom-4"
               referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
-              style="width: 100%; height: 1200px;"
               title="Letter preview - long examples"
             />
           </div>

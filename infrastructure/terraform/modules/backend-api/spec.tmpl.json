@@ -40,21 +40,19 @@
                 ],
                 "type": "string"
               },
-              "pdsPersonalisation": {
+              "sidesCount": {
+                "type": "integer"
+              },
+              "systemPersonalisation": {
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
-              },
-              "sidesCount": {
-                "type": "integer"
               }
             },
             "required": [
               "files",
-              "letterVersion",
-              "pdsPersonalisation",
-              "sidesCount"
+              "letterVersion"
             ],
             "type": "object"
           }
@@ -67,19 +65,19 @@
           },
           {
             "properties": {
-              "pdsPersonalisationPackId": {
-                "type": "string"
-              },
               "personalisationParameters": {
                 "additionalProperties": {
                   "type": "string"
                 },
                 "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
               }
             },
             "required": [
-              "pdsPersonalisationPackId",
-              "personalisationParameters"
+              "personalisationParameters",
+              "systemPersonalisationPackId"
             ],
             "type": "object"
           }

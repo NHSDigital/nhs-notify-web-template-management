@@ -31,13 +31,13 @@ function buildInitialVariantState(
       ? template.files.shortFormRender
       : template.files.longFormRender;
 
-  // Determine PDF URL: prefer variant-specific render, fall back to initialRender
   const fileName =
     renderDetails?.fileName ?? template.files.initialRender?.fileName ?? null;
 
   return {
     formData: {
-      pdsPersonalisationPackId: renderDetails?.pdsPersonalisationPackId ?? '',
+      systemPersonalisationPackId:
+        renderDetails?.systemPersonalisationPackId ?? '',
       personalisationParameters: renderDetails?.personalisationParameters ?? {},
     },
     previewState: 'idle',
@@ -89,8 +89,8 @@ export function LetterRender({
       const result = await updateLetterPreview({
         templateId: template.id,
         variant,
-        pdsPersonalisationPackId:
-          variantState.formData.pdsPersonalisationPackId,
+        systemPersonalisationPackId:
+          variantState.formData.systemPersonalisationPackId,
         personalisationParameters:
           variantState.formData.personalisationParameters,
       });
@@ -122,19 +122,8 @@ export function LetterRender({
 
   return (
     <section className='nhsuk-u-margin-top-6'>
-      <div className='nhsuk-width-container'>
-        <h2 className='nhsuk-heading-m'>{copy.heading}</h2>
-        <p>{copy.guidance}</p>
-        <p>
-          <a
-            href={copy.learnMoreLink.href}
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            {copy.learnMoreLink.text}
-          </a>
-        </p>
-      </div>
+      <h2 className='nhsuk-heading-m'>{copy.heading}</h2>
+      <p>{copy.guidance}</p>
 
       <Tabs className='nhsuk-u-margin-top-6'>
         <Tabs.Title>{copy.tabTitle}</Tabs.Title>

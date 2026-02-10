@@ -5,6 +5,7 @@ import {
   UploadLetterTemplate,
   CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
+  AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import {
   createTemplate,
@@ -397,7 +398,7 @@ describe('form-actions', () => {
   });
 
   test('patchTemplate', async () => {
-    const responseData: TemplateDto = {
+    const responseData: AuthoringLetterTemplate = {
       id: 'template-123',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -409,6 +410,8 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 6,
       sidesCount: 2,
+      files: {},
+      systemPersonalisation: [],
     };
 
     mockedTemplateClient.patchTemplate.mockResolvedValueOnce({

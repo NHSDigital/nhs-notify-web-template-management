@@ -28,7 +28,7 @@ const baseTemplate: AuthoringLetterTemplate = {
       status: 'RENDERED',
     },
   },
-  pdsPersonalisation: ['firstName', 'lastName'],
+  systemPersonalisation: ['firstName', 'lastName'],
   customPersonalisation: ['appointmentDate', 'clinicName'],
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
@@ -45,20 +45,6 @@ describe('LetterRender', () => {
         'Check how your personalisation fields will appear in your letter.'
       )
     ).toBeInTheDocument();
-  });
-
-  it('renders the learn more link', () => {
-    render(<LetterRender template={baseTemplate} />);
-
-    const link = screen.getByText(
-      'Learn more about personalising your letters (opens in a new tab)'
-    );
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute(
-      'href',
-      'https://notify.nhs.uk/using-nhs-notify/personalisation'
-    );
-    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('renders tabs for short and long examples', () => {
@@ -83,13 +69,12 @@ describe('LetterRender', () => {
   });
 
   it('handles template without shortFormRender or longFormRender', () => {
-    const templateWithoutRenders: AuthoringLetterTemplate = {
-      ...baseTemplate,
-      files: {},
-    };
+    // Note: The page component controls whether LetterRender is rendered based on initialRender.
+    // This test verifies the component renders correctly when it only has initialRender
+    // (no short/long variant renders yet).
+    render(<LetterRender template={baseTemplate} />);
 
-    render(<LetterRender template={templateWithoutRenders} />);
-
+    // Component should render with tabs and content
     expect(screen.getByText('Letter preview')).toBeInTheDocument();
     expect(screen.getByText('Short examples')).toBeInTheDocument();
     expect(screen.getByText('Long examples')).toBeInTheDocument();
@@ -125,7 +110,7 @@ describe('LetterRender', () => {
           fileName: 'short-render.pdf',
           currentVersion: 'version-2',
           status: 'RENDERED',
-          pdsPersonalisationPackId: 'short-1',
+          systemPersonalisationPackId: 'short-1',
           personalisationParameters: { appointmentDate: '2025-01-15' },
         },
       },

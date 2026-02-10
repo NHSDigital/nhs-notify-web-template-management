@@ -15,14 +15,14 @@ const baseTemplate: AuthoringLetterTemplate = {
   sidesCount: 4,
   language: 'en',
   files: {},
-  pdsPersonalisation: ['firstName', 'lastName'],
+  systemPersonalisation: ['firstName', 'lastName'],
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
 };
 
 const defaultFormData: LetterRenderFormData = {
-  pdsPersonalisationPackId: '',
+  systemPersonalisationPackId: '',
   personalisationParameters: {},
 };
 
@@ -93,7 +93,9 @@ describe('LetterRenderForm', () => {
       render(
         <LetterRenderForm
           {...defaultProps}
-          errors={{ pdsPersonalisationPackId: ['Please select a recipient'] }}
+          errors={{
+            systemPersonalisationPackId: ['Please select a recipient'],
+          }}
         />
       );
 
@@ -112,7 +114,7 @@ describe('LetterRenderForm', () => {
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
 
       expect(onFormChange).toHaveBeenCalledWith({
-        pdsPersonalisationPackId: 'short-1',
+        systemPersonalisationPackId: 'short-1',
         personalisationParameters: {},
       });
     });
@@ -205,7 +207,7 @@ describe('LetterRenderForm', () => {
       fireEvent.change(input, { target: { value: '2025-01-15' } });
 
       expect(onFormChange).toHaveBeenCalledWith({
-        pdsPersonalisationPackId: '',
+        systemPersonalisationPackId: '',
         personalisationParameters: { appointmentDate: '2025-01-15' },
       });
     });
@@ -217,7 +219,7 @@ describe('LetterRenderForm', () => {
         <LetterRenderForm
           {...defaultProps}
           formData={{
-            pdsPersonalisationPackId: 'short-1',
+            systemPersonalisationPackId: 'short-1',
             personalisationParameters: {},
           }}
         />
@@ -240,7 +242,7 @@ describe('LetterRenderForm', () => {
           {...defaultProps}
           template={templateWithCustom}
           formData={{
-            pdsPersonalisationPackId: '',
+            systemPersonalisationPackId: '',
             personalisationParameters: { appointmentDate: '2025-01-15' },
           }}
         />

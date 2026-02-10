@@ -4,7 +4,7 @@ export type LetterPreviewVariant = 'short' | 'long';
  * Form data for a single variant (short or long)
  */
 export type LetterRenderFormData = {
-  pdsPersonalisationPackId: string;
+  systemPersonalisationPackId: string;
   personalisationParameters: Record<string, string>;
 };
 

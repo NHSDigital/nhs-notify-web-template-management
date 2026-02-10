@@ -4,13 +4,13 @@ import type { ChangeEvent, FormEvent } from 'react';
 import classNames from 'classnames';
 import { Button, ErrorMessage, Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
 import content from '@content/content';
 import {
-  SHORT_PDS_RECIPIENTS,
-  LONG_PDS_RECIPIENTS,
-} from './pds-test-recipients';
+  SHORT_SYSTEM_RECIPIENTS,
+  LONG_SYSTEM_RECIPIENTS,
+} from './system-test-recipients';
 import type { LetterPreviewVariant, LetterRenderFormData } from './types';
+import styles from './LetterRenderForm.module.scss';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
@@ -33,17 +33,17 @@ export function LetterRenderForm({
 }: LetterRenderFormProps) {
   const { letterPreviewSection: copy } = content.components;
 
-  const pdsRecipients =
-    variant === 'short' ? SHORT_PDS_RECIPIENTS : LONG_PDS_RECIPIENTS;
+  const systemRecipients =
+    variant === 'short' ? SHORT_SYSTEM_RECIPIENTS : LONG_SYSTEM_RECIPIENTS;
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;
 
-  const pdsError = errors.pdsPersonalisationPackId?.join(', ');
+  const systemError = errors.systemPersonalisationPackId?.join(', ');
 
   const handlePdsChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onFormChange({
       ...formData,
-      pdsPersonalisationPackId: e.target.value,
+      systemPersonalisationPackId: e.target.value,
     });
   };
 
@@ -68,29 +68,33 @@ export function LetterRenderForm({
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyFormGroup error={Boolean(pdsError)}>
-        <Label size='s' htmlFor={`pdsPersonalisationPackId-${variant}`}>
+      <div
+        className={classNames('nhsuk-form-group', {
+          'nhsuk-form-group--error': systemError,
+        })}
+      >
+        <Label size='s' htmlFor={`systemPersonalisationPackId-${variant}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        {pdsError && <ErrorMessage>{pdsError}</ErrorMessage>}
+        {systemError && <ErrorMessage>{systemError}</ErrorMessage>}
         <select
-          id={`pdsPersonalisationPackId-${variant}`}
-          name='pdsPersonalisationPackId'
-          className={classNames('nhsuk-select', {
-            'nhsuk-select--error': pdsError,
+          id={`systemPersonalisationPackId-${variant}`}
+          name='systemPersonalisationPackId'
+          className={classNames('nhsuk-select', styles.recipientSelect, {
+            'nhsuk-select--error': systemError,
           })}
-          value={formData.pdsPersonalisationPackId}
+          value={formData.systemPersonalisationPackId}
           onChange={handlePdsChange}
           disabled={isLoading}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
-          {pdsRecipients.map((recipient) => (
+          {systemRecipients.map((recipient) => (
             <option key={recipient.id} value={recipient.id}>
               {recipient.name}
             </option>
           ))}
         </select>
-      </NHSNotifyFormGroup>
+      </div>
 
       {/* Custom Personalisation Section (conditional) */}
       {hasCustomFields && (
@@ -101,7 +105,12 @@ export function LetterRenderForm({
           {template.customPersonalisation!.map((fieldName) => {
             const fieldError = errors[`custom_${fieldName}`]?.join(', ');
             return (
-              <NHSNotifyFormGroup key={fieldName} error={Boolean(fieldError)}>
+              <div
+                key={fieldName}
+                className={classNames('nhsuk-form-group', {
+                  'nhsuk-form-group--error': fieldError,
+                })}
+              >
                 <Label size='s' htmlFor={`custom-${fieldName}-${variant}`}>
                   {fieldName}
                 </Label>
@@ -120,7 +129,7 @@ export function LetterRenderForm({
                   }
                   disabled={isLoading}
                 />
-              </NHSNotifyFormGroup>
+              </div>
             );
           })}
         </>

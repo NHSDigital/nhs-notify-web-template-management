@@ -34,7 +34,9 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
-  const totalPages = Math.ceil(template.sidesCount / 2);
+  const totalPages = template.sidesCount
+    ? Math.ceil(template.sidesCount / 2)
+    : undefined;
   const hasSingleCampaign = campaignIds.length === 1;
 
   const hideEditCampaignLink =

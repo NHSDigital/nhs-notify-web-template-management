@@ -28,8 +28,6 @@ export function LetterRenderIframe({
     <iframe
       src={pdfUrl}
       title={`Letter preview - ${variant} examples`}
-      className='nhsuk-u-margin-bottom-4'
-      style={{ width: '100%', height: '1200px', border: 'none' }}
       referrerPolicy='no-referrer'
     />
   );

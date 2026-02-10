@@ -16,18 +16,18 @@ exports[`LetterRenderForm snapshots matches snapshot for long variant 1`] = `
       The PDS fields will be pre-filled with example data when you choose a test recipient.
     </p>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="pdsPersonalisationPackId-long"
+        for="systemPersonalisationPackId-long"
       >
         Example recipient
       </label>
       <select
-        class="nhsuk-select"
-        id="pdsPersonalisationPackId-long"
-        name="pdsPersonalisationPackId"
+        class="nhsuk-select recipientSelect"
+        id="systemPersonalisationPackId-long"
+        name="systemPersonalisationPackId"
       >
         <option
           value=""
@@ -57,7 +57,7 @@ exports[`LetterRenderForm snapshots matches snapshot for long variant 1`] = `
       Custom personalisation fields
     </h3>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -101,18 +101,18 @@ exports[`LetterRenderForm snapshots matches snapshot for short variant 1`] = `
       The PDS fields will be pre-filled with example data when you choose a test recipient.
     </p>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="pdsPersonalisationPackId-short"
+        for="systemPersonalisationPackId-short"
       >
         Example recipient
       </label>
       <select
-        class="nhsuk-select"
-        id="pdsPersonalisationPackId-short"
-        name="pdsPersonalisationPackId"
+        class="nhsuk-select recipientSelect"
+        id="systemPersonalisationPackId-short"
+        name="systemPersonalisationPackId"
       >
         <option
           value=""
@@ -142,7 +142,7 @@ exports[`LetterRenderForm snapshots matches snapshot for short variant 1`] = `
       Custom personalisation fields
     </h3>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -160,7 +160,7 @@ exports[`LetterRenderForm snapshots matches snapshot for short variant 1`] = `
       />
     </div>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -204,18 +204,18 @@ exports[`LetterRenderForm snapshots matches snapshot without custom personalisat
       The PDS fields will be pre-filled with example data when you choose a test recipient.
     </p>
     <div
-      class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+      class="nhsuk-form-group"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="pdsPersonalisationPackId-short"
+        for="systemPersonalisationPackId-short"
       >
         Example recipient
       </label>
       <select
-        class="nhsuk-select"
-        id="pdsPersonalisationPackId-short"
-        name="pdsPersonalisationPackId"
+        class="nhsuk-select recipientSelect"
+        id="systemPersonalisationPackId-short"
+        name="systemPersonalisationPackId"
       >
         <option
           value=""

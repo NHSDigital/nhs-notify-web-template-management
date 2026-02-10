@@ -132,6 +132,21 @@ async function createTemplates(user: TestUser) {
       'NOT_YET_SUBMITTED',
       { sidesCount: 4, letterVariantId: 'variant-456', campaignId: null }
     ),
+    authoringWithInitialRender: TemplateFactory.createAuthoringLetterTemplate(
+      'D4E5F6A7-B8C9-0123-DEFA-456789012345',
+      user,
+      'authoring-letter-with-render',
+      'NOT_YET_SUBMITTED',
+      {
+        sidesCount: 4,
+        letterVariantId: 'variant-render',
+        initialRender: {
+          fileName: 'initial-render.pdf',
+          currentVersion: 'v1-test',
+          status: 'RENDERED',
+        },
+      }
+    ),
   };
 }
 
@@ -474,6 +489,103 @@ test.describe('Preview Letter template Page', () => {
       await previewPage.loadPage();
 
       await expect(previewPage.campaignAction).toBeHidden();
+    });
+
+    test.describe('Letter preview section', () => {
+      test('displays letter preview section with tabs when initialRender exists', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Letter preview section should be visible
+        await expect(previewPage.letterPreviewSection).toBeVisible();
+
+        // Both tabs should be visible
+        await expect(previewPage.shortExamplesTab).toBeVisible();
+        await expect(previewPage.longExamplesTab).toBeVisible();
+
+        // Short examples tab should be selected by default
+        await expect(previewPage.shortExamplesTab).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+
+        // Form elements should be visible (short tab is default)
+        await expect(previewPage.shortRecipientSelect).toBeVisible();
+        await expect(previewPage.shortUpdatePreviewButton).toBeVisible();
+
+        // Preview iframe should be visible
+        await expect(previewPage.shortPreviewIframe).toBeVisible();
+      });
+
+      test('hides letter preview section when no initialRender', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringValid.id);
+
+        await previewPage.loadPage();
+
+        // Letter preview section should not be visible
+        await expect(previewPage.letterPreviewSection).toBeHidden();
+      });
+
+      test('can switch between short and long example tabs', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Short tab should be selected initially
+        await expect(previewPage.shortExamplesTab).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        await expect(previewPage.longExamplesTab).toHaveAttribute(
+          'aria-selected',
+          'false'
+        );
+
+        // Click long examples tab
+        await previewPage.longExamplesTab.click();
+
+        // Long tab should now be selected
+        await expect(previewPage.longExamplesTab).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        await expect(previewPage.shortExamplesTab).toHaveAttribute(
+          'aria-selected',
+          'false'
+        );
+      });
+
+      test('can select an example recipient from dropdown', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Recipient select should have placeholder option selected initially
+        await expect(previewPage.shortRecipientSelect).toHaveValue('');
+
+        // Select a recipient (first non-placeholder option)
+        await previewPage.shortRecipientSelect.selectOption({ index: 1 });
+
+        // Value should have changed
+        await expect(previewPage.shortRecipientSelect).not.toHaveValue('');
+      });
     });
 
     test.describe('multi-campaign client', () => {

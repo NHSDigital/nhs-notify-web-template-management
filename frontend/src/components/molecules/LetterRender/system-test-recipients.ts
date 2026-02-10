@@ -1,12 +1,12 @@
 /**
- * PDS Test Recipients for letter preview personalisation.
+ * System Test Recipients for letter preview personalisation.
  *
  * These are predefined example recipients with short and long form data
  * that users can select to preview how their letter will look with
  * different lengths of personalisation data.
  */
 
-export interface PdsTestRecipient {
+export interface SystemTestRecipient {
   id: string;
   name: string;
   data: Record<string, string>;
@@ -15,7 +15,7 @@ export interface PdsTestRecipient {
 /**
  * Short form example recipients - shorter names and data
  */
-export const SHORT_PDS_RECIPIENTS: PdsTestRecipient[] = [
+export const SHORT_SYSTEM_RECIPIENTS: SystemTestRecipient[] = [
   {
     id: 'short-1',
     name: 'Jo Blogs',
@@ -81,7 +81,7 @@ export const SHORT_PDS_RECIPIENTS: PdsTestRecipient[] = [
 /**
  * Long form example recipients - longer names and data to test edge cases
  */
-export const LONG_PDS_RECIPIENTS: PdsTestRecipient[] = [
+export const LONG_SYSTEM_RECIPIENTS: SystemTestRecipient[] = [
   {
     id: 'long-1',
     name: 'Joseph Anthony Hendrington-Bloggs',

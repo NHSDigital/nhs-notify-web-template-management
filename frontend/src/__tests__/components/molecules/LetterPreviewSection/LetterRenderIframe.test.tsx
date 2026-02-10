@@ -70,7 +70,7 @@ describe('LetterRenderIframe', () => {
   });
 
   describe('iframe attributes', () => {
-    it('applies correct sizing styles', () => {
+    it('renders iframe without inline styles (styles applied via CSS)', () => {
       render(
         <LetterRenderIframe
           variant='short'
@@ -80,14 +80,8 @@ describe('LetterRenderIframe', () => {
       );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
-      expect(iframe).toHaveAttribute(
-        'style',
-        expect.stringContaining('width: 100%')
-      );
-      expect(iframe).toHaveAttribute(
-        'style',
-        expect.stringContaining('height: 1200px')
-      );
+      // Styles are now applied via CSS module, not inline
+      expect(iframe).not.toHaveAttribute('style');
     });
 
     it('has referrerPolicy set to no-referrer', () => {

@@ -4,19 +4,19 @@ import type { Metadata } from 'next';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { NHSNotifyMainFluid } from '@atoms/NHSNotifyMainFluid/NHSNotifyMainFluid';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { PreviewLetterContent } from '@organisms/PreviewLetterTemplate/PreviewLetterContent';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
 import { getTemplateStatusErrors } from '@utils/get-template-status-errors';
-import { submitAuthoringLetterAction } from './server-action';
+import { noOpServerAction, submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle, backLinkText, links } =
+const { pageTitle, backLinkText, submitText, links } =
   content.components.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,11 +48,12 @@ export default async function PreviewLetterTemplatePage({
               formErrors: getTemplateStatusErrors(validatedTemplate),
             },
           }}
-          serverAction={async (state) => state} // PDF version doesn't have submit action on this page
+          serverAction={noOpServerAction}
         >
           <NHSNotifyBackLink href={links.messageTemplates}>
             {backLinkText}
           </NHSNotifyBackLink>
+          <NHSNotifyForm.ErrorSummary />
           <NHSNotifyMain>
             <div className='nhsuk-grid-row'>
               <div className='nhsuk-grid-column-full'>
@@ -66,8 +67,12 @@ export default async function PreviewLetterTemplatePage({
   }
 
   // Authoring letter version
+  const showRenderer =
+    validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED' &&
+    Boolean(validatedTemplate.files.initialRender);
+
   return (
-    <NHSNotifyContainer>
+    <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
         initialState={{
           errorState: {
@@ -76,10 +81,13 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <NHSNotifyBackLink href={links.messageTemplates}>
-          {backLinkText}
-        </NHSNotifyBackLink>
-        <NHSNotifyMainFluid>
+        <div className='nhsuk-width-container'>
+          <NHSNotifyBackLink href={links.messageTemplates}>
+            {backLinkText}
+          </NHSNotifyBackLink>
+          <NHSNotifyForm.ErrorSummary />
+        </div>
+        <NHSNotifyMain>
           <div className='nhsuk-width-container'>
             <div className='nhsuk-grid-row'>
               <div className='nhsuk-grid-column-full'>
@@ -89,13 +97,35 @@ export default async function PreviewLetterTemplatePage({
               </div>
             </div>
           </div>
-          <LetterRender template={validatedTemplate} />
-          <div className='nhsuk-width-container nhsuk-u-margin-top-6'>
-            <p>
-              <Link href={links.messageTemplates}>{backLinkText}</Link>
-            </p>
-          </div>
-        </NHSNotifyMainFluid>
+          {showRenderer && (
+            <>
+              <LetterRender template={validatedTemplate} />
+              <NHSNotifyForm.Form formId='preview-letter-template'>
+                <input
+                  type='hidden'
+                  name='templateId'
+                  value={validatedTemplate.id}
+                />
+                <input
+                  type='hidden'
+                  name='lockNumber'
+                  value={validatedTemplate.lockNumber}
+                />
+                <button
+                  type='submit'
+                  className='nhsuk-button'
+                  data-testid='preview-letter-template-cta'
+                  id='preview-letter-template-cta'
+                >
+                  {submitText}
+                </button>
+              </NHSNotifyForm.Form>
+            </>
+          )}
+          <p>
+            <Link href={links.messageTemplates}>{backLinkText}</Link>
+          </p>
+        </NHSNotifyMain>
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>
   );

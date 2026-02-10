@@ -303,7 +303,7 @@ describe('Template schemas', () => {
       letterVariantId: 'variant-123',
       sidesCount: 2,
       files: {},
-      pdsPersonalisation: [],
+      systemPersonalisation: [],
     };
 
     test('should pass validation for valid AUTHORING letter', () => {
@@ -331,13 +331,9 @@ describe('Template schemas', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error?.flatten().fieldErrors).toEqual(
-        expect.objectContaining({
-          sidesCount: expect.any(Array),
-          files: expect.any(Array),
-          pdsPersonalisation: expect.any(Array),
-        })
-      );
+      expect(result.error?.flatten().fieldErrors).toEqual({
+        files: expect.any(Array),
+      });
     });
   });
 
@@ -367,14 +363,14 @@ describe('Template schemas', () => {
             currentVersion: 'v2',
             status: 'RENDERED',
             personalisationParameters: { firstName: 'John' },
-            pdsPersonalisationPackId: 'pack-123',
+            systemPersonalisationPackId: 'pack-123',
           },
           longFormRender: {
             fileName: 'long.pdf',
             currentVersion: 'v3',
             status: 'PENDING',
             personalisationParameters: { firstName: 'Jane' },
-            pdsPersonalisationPackId: 'pack-456',
+            systemPersonalisationPackId: 'pack-456',
           },
         },
       },
@@ -467,7 +463,7 @@ describe('Template schemas', () => {
         letterVariantId: 'variant-123',
         sidesCount: 2,
         files: {},
-        pdsPersonalisation: [],
+        systemPersonalisation: [],
       };
 
       const result = $LetterProperties.safeParse(authoringLetter);
@@ -640,7 +636,7 @@ describe('Template schemas', () => {
         letterVariantId: 'variant-123',
         sidesCount: 2,
         files: {},
-        pdsPersonalisation: [],
+        systemPersonalisation: [],
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
       };

@@ -43,6 +43,12 @@ export type ProofFile = {
   virusScanStatus: string;
 };
 
+export type AuthoringRenderFile = {
+  fileName: string;
+  currentVersion: string;
+  status: string;
+};
+
 type TypeSpecificProperties = {
   message?: string;
   subject?: string;
@@ -50,9 +56,14 @@ type TypeSpecificProperties = {
   letterVersion?: string;
   language?: string;
   files?: {
+    // PDF letter files
     pdfTemplate?: File;
     testDataCsv?: File;
     proofs?: Record<string, ProofFile>;
+    // Authoring letter files
+    initialRender?: AuthoringRenderFile;
+    shortFormRender?: AuthoringRenderFile;
+    longFormRender?: AuthoringRenderFile;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];

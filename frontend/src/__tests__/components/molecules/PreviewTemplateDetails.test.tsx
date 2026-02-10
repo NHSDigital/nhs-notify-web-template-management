@@ -57,7 +57,7 @@ const baseAuthoringLetter: AuthoringLetterTemplate = {
   sidesCount: 4,
   language: 'en',
   files: {},
-  pdsPersonalisation: [],
+  systemPersonalisation: [],
 };
 
 describe('PreviewTemplateDetailsNhsApp', () => {

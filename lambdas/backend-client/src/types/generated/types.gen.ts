@@ -15,15 +15,15 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
-  pdsPersonalisation: Array<string>;
-  sidesCount: number;
+  sidesCount?: number;
+  systemPersonalisation?: Array<string>;
 };
 
 export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
-  pdsPersonalisationPackId: string;
   personalisationParameters: {
     [key: string]: string;
   };
+  systemPersonalisationPackId: string;
 };
 
 export type AuthoringRenderDetails = {
