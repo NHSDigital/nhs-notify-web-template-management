@@ -39,5 +39,5 @@ docker build \
   -t "${ECR_IMAGE_LATEST}" \
   .
 
-# Push the image tag to ECR.
+# Push the image tag to ECR. The Terraform configuration will reference this tag for the lambda image.
 docker push "${ECR_IMAGE_LATEST}"
