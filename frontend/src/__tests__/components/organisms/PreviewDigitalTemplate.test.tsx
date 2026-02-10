@@ -15,9 +15,10 @@ beforeEach(() => {
 });
 
 describe('PreviewDigitalTemplate', () => {
-  describe('Routing disabled', () => {
+  describe('Routing disabled with letter authoring disabled', () => {
     beforeEach(() => {
       jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+      jest.mocked(useFeatureFlags).mockReturnValue({ letterAuthoring: false });
     });
 
     it('matches snapshot', () => {
@@ -117,9 +118,10 @@ describe('PreviewDigitalTemplate', () => {
     });
   });
 
-  describe('Routing enabled', () => {
+  describe('Routing enabled with letter authoring disabled', () => {
     beforeEach(() => {
       jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+      jest.mocked(useFeatureFlags).mockReturnValue({ letterAuthoring: false });
     });
 
     it('matches snapshot', () => {

@@ -2,6 +2,7 @@ import { Radios, Fieldset } from 'nhsuk-react-components';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import content from '@content/content';
 import { DetailedHTMLProps, FormHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 
@@ -33,7 +34,10 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
     url: string;
   };
+  isLetterAuthoringEnabled?: boolean;
 };
+
+const { warningCalloutContent } = content.components.chooseTemplateType;
 
 const normaliseId = (id: string) =>
   id.toLowerCase().replaceAll('_', '').replaceAll(',', '-');
@@ -52,6 +56,7 @@ export const NHSNotifyRadioButtonForm = ({
   learnMoreLink = '',
   learnMoreText = '',
   backLink,
+  isLetterAuthoringEnabled = false,
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper
     action={action}
@@ -93,6 +98,28 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
+    {isLetterAuthoringEnabled ? null : (
+      <div className='nhsuk-card nhsuk-card--warning nhsuk-u-reading-width'>
+        <div className='nhsuk-card__content'>
+          <h4 className='nhsuk-card__heading'>
+            {warningCalloutContent.headingLabel}
+          </h4>
+          <p className='nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6'>
+            {warningCalloutContent.firstParagraph}
+          </p>
+          <p className='nhsuk-card__description'>
+            {warningCalloutContent.secondParagraph}
+            <a
+              href={warningCalloutContent.link.href}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {warningCalloutContent.link.text}
+            </a>
+          </p>
+        </div>
+      </div>
+    )}
     <NHSNotifyButton
       type='submit'
       data-testid='submit-button'

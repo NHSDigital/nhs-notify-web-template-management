@@ -219,6 +219,285 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`PreviewDigitalTemplate Routing disabled with letter authoring disabled matches error snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    NHS app message template
+  </div>
+  <div
+    aria-labelledby="error-summary-title"
+    class="nhsuk-error-summary"
+    role="alert"
+    tabindex="-1"
+  >
+    <h2
+      class="nhsuk-error-summary__title"
+      data-testid="error-summary"
+      id="error-summary-title"
+    >
+      There is a problem
+    </h2>
+    <ul
+      class="nhsuk-list nhsuk-error-summary__list"
+    >
+      <li>
+        <a
+          href="#exampleError"
+        >
+          Example error
+        </a>
+      </li>
+    </ul>
+  </div>
+  Preview
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="preview-form"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="preview-example-form__legend"
+        >
+          Example heading
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-option-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-1"
+                id="preview-example-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-option-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-2"
+                id="preview-example-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+    >
+      <div
+        class="nhsuk-card__content"
+      >
+        <h4
+          class="nhsuk-card__heading"
+        >
+          To create a letter template
+        </h4>
+        <p
+          class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+        >
+          You cannot upload a letter template using this service.
+        </p>
+        <p
+          class="nhsuk-card__description"
+        >
+          Follow our guidance to 
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            upload a letter template (opens in a new tab)
+          </a>
+        </p>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="preview-form-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplate Routing disabled with letter authoring disabled matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    NHS app message template
+  </div>
+  Preview
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="preview-form"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="preview-example-form__legend"
+        >
+          Example heading
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-option-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-1"
+                id="preview-example-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-option-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-2"
+                id="preview-example-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+    >
+      <div
+        class="nhsuk-card__content"
+      >
+        <h4
+          class="nhsuk-card__heading"
+        >
+          To create a letter template
+        </h4>
+        <p
+          class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+        >
+          You cannot upload a letter template using this service.
+        </p>
+        <p
+          class="nhsuk-card__description"
+        >
+          Follow our guidance to 
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            upload a letter template (opens in a new tab)
+          </a>
+        </p>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="preview-form-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
 exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
 <DocumentFragment>
   Preview
@@ -232,5 +511,127 @@ exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
   >
     Edit template
   </a>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplate Routing enabled with letter authoring disabled matches snapshot 1`] = `
+<DocumentFragment>
+  Preview
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="preview-form"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="preview-example-form__legend"
+        >
+          Example heading
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-option-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-1"
+                id="preview-example-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-option-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-2"
+                id="preview-example-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+    >
+      <div
+        class="nhsuk-card__content"
+      >
+        <h4
+          class="nhsuk-card__heading"
+        >
+          To create a letter template
+        </h4>
+        <p
+          class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+        >
+          You cannot upload a letter template using this service.
+        </p>
+        <p
+          class="nhsuk-card__description"
+        >
+          Follow our guidance to 
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            upload a letter template (opens in a new tab)
+          </a>
+        </p>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="preview-form-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
 </DocumentFragment>
 `;
