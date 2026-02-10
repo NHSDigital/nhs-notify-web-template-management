@@ -1,27 +1,36 @@
 'use client';
 
+import type { ChangeEvent, FormEvent } from 'react';
 import classNames from 'classnames';
-import { Button, ErrorMessage, HintText, Label } from 'nhsuk-react-components';
+import { Button, ErrorMessage, Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { useNHSNotifyForm } from '@providers/form-provider';
 import content from '@content/content';
 import {
   SHORT_PDS_RECIPIENTS,
   LONG_PDS_RECIPIENTS,
 } from './pds-test-recipients';
-import type { LetterPreviewVariant, LetterPreviewFormState } from './types';
+import type { LetterPreviewVariant, LetterRenderFormData } from './types';
 
-export function LetterPreviewForm({
-  template,
-  variant,
-}: {
+type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
   variant: LetterPreviewVariant;
-}) {
-  const [state, action] = useNHSNotifyForm();
-  const formState = state as LetterPreviewFormState;
+  formData: LetterRenderFormData;
+  errors: Record<string, string[]>;
+  isLoading: boolean;
+  onFormChange: (formData: LetterRenderFormData) => void;
+  onSubmit: () => void;
+};
+
+export function LetterRenderForm({
+  template,
+  variant,
+  formData,
+  errors,
+  isLoading,
+  onFormChange,
+  onSubmit,
+}: LetterRenderFormProps) {
   const { letterPreviewSection: copy } = content.components;
 
   const pdsRecipients =
@@ -29,24 +38,32 @@ export function LetterPreviewForm({
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;
 
-  const pdsError =
-    formState.errorState?.fieldErrors?.pdsPersonalisationPackId?.join(', ');
+  const pdsError = errors.pdsPersonalisationPackId?.join(', ');
+
+  const handlePdsChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onFormChange({
+      ...formData,
+      pdsPersonalisationPackId: e.target.value,
+    });
+  };
+
+  const handleCustomFieldChange = (fieldName: string, value: string) => {
+    onFormChange({
+      ...formData,
+      personalisationParameters: {
+        ...formData.personalisationParameters,
+        [fieldName]: value,
+      },
+    });
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit();
+  };
 
   return (
-    <NHSNotifyFormWrapper
-      action={action}
-      formId={`letter-preview-${variant}`}
-    >
-      {/* Hidden fields */}
-      <input type='hidden' name='templateId' value={template.id} readOnly />
-      <input type='hidden' name='variant' value={variant} readOnly />
-      <input
-        type='hidden'
-        name='lockNumber'
-        value={template.lockNumber}
-        readOnly
-      />
-
+    <form onSubmit={handleSubmit} id={`letter-preview-${variant}`}>
       {/* PDS Personalisation Section */}
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
@@ -62,7 +79,9 @@ export function LetterPreviewForm({
           className={classNames('nhsuk-select', {
             'nhsuk-select--error': pdsError,
           })}
-          defaultValue={formState.pdsPersonalisationPackId}
+          value={formData.pdsPersonalisationPackId}
+          onChange={handlePdsChange}
+          disabled={isLoading}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
           {pdsRecipients.map((recipient) => (
@@ -80,10 +99,7 @@ export function LetterPreviewForm({
             {copy.customSection.heading}
           </h3>
           {template.customPersonalisation!.map((fieldName) => {
-            const fieldError =
-              formState.errorState?.fieldErrors?.[`custom_${fieldName}`]?.join(
-                ', '
-              );
+            const fieldError = errors[`custom_${fieldName}`]?.join(', ');
             return (
               <NHSNotifyFormGroup key={fieldName} error={Boolean(fieldError)}>
                 <Label size='s' htmlFor={`custom-${fieldName}-${variant}`}>
@@ -98,9 +114,11 @@ export function LetterPreviewForm({
                     'nhsuk-input--error': fieldError,
                   })}
                   maxLength={500}
-                  defaultValue={
-                    formState.personalisationParameters?.[fieldName]
+                  value={formData.personalisationParameters[fieldName] ?? ''}
+                  onChange={(e) =>
+                    handleCustomFieldChange(fieldName, e.target.value)
                   }
+                  disabled={isLoading}
                 />
               </NHSNotifyFormGroup>
             );
@@ -108,9 +126,14 @@ export function LetterPreviewForm({
         </>
       )}
 
-      <Button type='submit' secondary className='nhsuk-u-margin-top-4'>
+      <Button
+        type='submit'
+        secondary
+        className='nhsuk-u-margin-top-4'
+        disabled={isLoading}
+      >
         {copy.updatePreviewButton}
       </Button>
-    </NHSNotifyFormWrapper>
+    </form>
   );
 }

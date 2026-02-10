@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LetterPreviewIframe snapshots matches snapshot with PDF URL 1`] = `
+exports[`LetterRenderIframe snapshots matches snapshot with PDF URL 1`] = `
 <DocumentFragment>
   <iframe
     class="nhsuk-u-margin-bottom-4"
@@ -12,7 +12,7 @@ exports[`LetterPreviewIframe snapshots matches snapshot with PDF URL 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LetterPreviewIframe snapshots matches snapshot without PDF file 1`] = `
+exports[`LetterRenderIframe snapshots matches snapshot without PDF file 1`] = `
 <DocumentFragment>
   <p
     class="nhsuk-body"

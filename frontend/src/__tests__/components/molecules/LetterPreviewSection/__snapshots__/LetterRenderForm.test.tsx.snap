@@ -1,40 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LetterPreviewForm snapshots matches snapshot for long variant 1`] = `
+exports[`LetterRenderForm snapshots matches snapshot for long variant 1`] = `
 <DocumentFragment>
   <form
-    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+    id="letter-preview-long"
   >
-    <input
-      name="form-id"
-      readonly=""
-      type="hidden"
-      value="letter-preview-long"
-    />
-    <input
-      name="csrf_token"
-      readonly=""
-      type="hidden"
-      value="no_token"
-    />
-    <input
-      name="templateId"
-      readonly=""
-      type="hidden"
-      value="template-123"
-    />
-    <input
-      name="variant"
-      readonly=""
-      type="hidden"
-      value="long"
-    />
-    <input
-      name="lockNumber"
-      readonly=""
-      type="hidden"
-      value="1"
-    />
     <h3
       class="nhsuk-heading-s"
     >
@@ -60,7 +30,6 @@ exports[`LetterPreviewForm snapshots matches snapshot for long variant 1`] = `
         name="pdsPersonalisationPackId"
       >
         <option
-          selected=""
           value=""
         >
           Select a recipient
@@ -102,6 +71,7 @@ exports[`LetterPreviewForm snapshots matches snapshot for long variant 1`] = `
         maxlength="500"
         name="custom_appointmentDate"
         type="text"
+        value=""
       />
     </div>
     <button
@@ -115,41 +85,11 @@ exports[`LetterPreviewForm snapshots matches snapshot for long variant 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LetterPreviewForm snapshots matches snapshot for short variant 1`] = `
+exports[`LetterRenderForm snapshots matches snapshot for short variant 1`] = `
 <DocumentFragment>
   <form
-    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+    id="letter-preview-short"
   >
-    <input
-      name="form-id"
-      readonly=""
-      type="hidden"
-      value="letter-preview-short"
-    />
-    <input
-      name="csrf_token"
-      readonly=""
-      type="hidden"
-      value="no_token"
-    />
-    <input
-      name="templateId"
-      readonly=""
-      type="hidden"
-      value="template-123"
-    />
-    <input
-      name="variant"
-      readonly=""
-      type="hidden"
-      value="short"
-    />
-    <input
-      name="lockNumber"
-      readonly=""
-      type="hidden"
-      value="1"
-    />
     <h3
       class="nhsuk-heading-s"
     >
@@ -175,7 +115,6 @@ exports[`LetterPreviewForm snapshots matches snapshot for short variant 1`] = `
         name="pdsPersonalisationPackId"
       >
         <option
-          selected=""
           value=""
         >
           Select a recipient
@@ -217,6 +156,7 @@ exports[`LetterPreviewForm snapshots matches snapshot for short variant 1`] = `
         maxlength="500"
         name="custom_appointmentDate"
         type="text"
+        value=""
       />
     </div>
     <div
@@ -234,6 +174,7 @@ exports[`LetterPreviewForm snapshots matches snapshot for short variant 1`] = `
         maxlength="500"
         name="custom_clinicName"
         type="text"
+        value=""
       />
     </div>
     <button
@@ -247,41 +188,11 @@ exports[`LetterPreviewForm snapshots matches snapshot for short variant 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LetterPreviewForm snapshots matches snapshot without custom personalisation 1`] = `
+exports[`LetterRenderForm snapshots matches snapshot without custom personalisation 1`] = `
 <DocumentFragment>
   <form
-    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+    id="letter-preview-short"
   >
-    <input
-      name="form-id"
-      readonly=""
-      type="hidden"
-      value="letter-preview-short"
-    />
-    <input
-      name="csrf_token"
-      readonly=""
-      type="hidden"
-      value="no_token"
-    />
-    <input
-      name="templateId"
-      readonly=""
-      type="hidden"
-      value="template-123"
-    />
-    <input
-      name="variant"
-      readonly=""
-      type="hidden"
-      value="short"
-    />
-    <input
-      name="lockNumber"
-      readonly=""
-      type="hidden"
-      value="1"
-    />
     <h3
       class="nhsuk-heading-s"
     >
@@ -307,7 +218,6 @@ exports[`LetterPreviewForm snapshots matches snapshot without custom personalisa
         name="pdsPersonalisationPackId"
       >
         <option
-          selected=""
           value=""
         >
           Select a recipient

@@ -1,0 +1,146 @@
+'use client';
+
+import Link from 'next/link';
+import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+import { TemplateStatus } from 'nhs-notify-backend-client';
+import { Details, WarningCallout } from 'nhsuk-react-components';
+import classNames from 'classnames';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { useFeatureFlags } from '@providers/client-config-provider';
+import { getBasePath } from '@utils/get-base-path';
+import { interpolate } from '@utils/interpolate';
+import content from '@content/content';
+
+type ButtonDetails = { text: string; href: string };
+
+export function PreviewLetterContent({
+  template,
+}: Readonly<{ template: PdfLetterTemplate }>) {
+  const {
+    approveProofText,
+    backLinkText,
+    footer,
+    links,
+    preSubmissionText,
+    requestProofText,
+    rtlWarning,
+    submitText,
+  } = content.components.previewLetterTemplate;
+
+  const basePath = getBasePath();
+  const { routing } = useFeatureFlags();
+
+  const buttonMap: Record<string, ButtonDetails> = {
+    NOT_YET_SUBMITTED: {
+      text: submitText,
+      href: interpolate(links.submitLetterTemplate, {
+        basePath,
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
+    },
+    PROOF_AVAILABLE: {
+      text: routing ? approveProofText : submitText,
+      href: interpolate(links.submitLetterTemplate, {
+        basePath,
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
+    },
+    PENDING_PROOF_REQUEST: {
+      text: requestProofText,
+      href: interpolate(links.requestProofOfTemplate, {
+        basePath,
+        templateId: template.id,
+        lockNumber: template.lockNumber,
+      }),
+    },
+  } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
+
+  const continueButton = buttonMap[template.templateStatus];
+  const footerText = footer[template.templateStatus] ?? [];
+
+  return (
+    <>
+      <PreviewTemplateDetailsLetter template={template} />
+
+      {template.templateStatus === 'PROOF_AVAILABLE' ? (
+        <section className='nhsuk-u-reading-width'>
+          <Details>
+            <Details.Summary>
+              {preSubmissionText.ifDoesNotMatch.summary}
+            </Details.Summary>
+            <Details.Text>
+              {(routing
+                ? preSubmissionText.ifDoesNotMatch.paragraphsApproval
+                : preSubmissionText.ifDoesNotMatch.paragraphsSubmit
+              ).map((text, i) => (
+                <p key={i}>{text}</p>
+              ))}
+            </Details.Text>
+          </Details>
+          <Details>
+            <Details.Summary>
+              {preSubmissionText.ifNeedsEdit.summary}
+            </Details.Summary>
+            <Details.Text>
+              <p>{preSubmissionText.ifNeedsEdit.paragraph}</p>
+            </Details.Text>
+          </Details>
+          <p>
+            {routing
+              ? preSubmissionText.ifYouAreHappyParagraphApproval
+              : preSubmissionText.ifYouAreHappyParagraphSubmit}
+          </p>
+        </section>
+      ) : null}
+
+      {footerText.length > 0 ? (
+        <div
+          className={classNames(
+            'preview-letter-footer',
+            'nhsuk-u-margin-bottom-6'
+          )}
+        >
+          {footerText.map((item, i) => (
+            <p key={`footer-${i}`}>{item}</p>
+          ))}
+        </div>
+      ) : null}
+
+      {isRightToLeft(template.language) && (
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-two-thirds'>
+            <WarningCallout
+              data-testid='rtl-language-warning'
+              aria-live='polite'
+              className='nhsuk-u-margin-top-3'
+            >
+              <WarningCallout.Label headingLevel='h2'>
+                {rtlWarning.heading}
+              </WarningCallout.Label>
+              <p>{rtlWarning.text1}</p>
+              <p>{rtlWarning.text2}</p>
+              <p>{rtlWarning.text3}</p>
+            </WarningCallout>
+          </div>
+        </div>
+      )}
+
+      {continueButton && (
+        <NHSNotifyButton
+          data-testid='preview-letter-template-cta'
+          id='preview-letter-template-cta'
+          href={continueButton.href}
+        >
+          {continueButton.text}
+        </NHSNotifyButton>
+      )}
+      <p>
+        <Link href={links.messageTemplates}>{backLinkText}</Link>
+      </p>
+    </>
+  );
+}

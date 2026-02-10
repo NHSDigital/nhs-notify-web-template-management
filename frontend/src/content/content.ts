@@ -550,8 +550,7 @@ const previewLetterTemplate = {
 
 const letterPreviewSection = {
   heading: 'Letter preview',
-  guidance:
-    'Check how your personalisation fields will appear in your letter.',
+  guidance: 'Check how your personalisation fields will appear in your letter.',
   learnMoreLink: {
     href: 'https://notify.nhs.uk/using-nhs-notify/personalisation',
     text: 'Learn more about personalising your letters (opens in a new tab)',

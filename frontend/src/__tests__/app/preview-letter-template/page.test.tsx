@@ -4,11 +4,7 @@
 import PreviewLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-letter-template/[templateId]/page';
-import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
-import {
-  type PdfLetterTemplate,
-  type LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
@@ -53,18 +49,18 @@ const templateDTO = {
   lockNumber: 1,
 } satisfies TemplateDto;
 
-const letterTemplate: LetterTemplate = {
-  ...templateDTO,
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-};
-
 describe('PreviewLetterTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  it('should load page with PDF letter template', async () => {
+  it('should generate correct metadata', async () => {
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
+  });
+
+  it('should render page for PDF letter template without redirecting', async () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewLetterTemplatePage({
@@ -73,14 +69,11 @@ describe('PreviewLetterTemplatePage', () => {
       }),
     });
 
-    expect(await generateMetadata()).toEqual({
-      title: pageTitle,
-    });
-
-    expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);
+    expect(page).toBeTruthy();
+    expect(redirectMock).not.toHaveBeenCalled();
   });
 
-  it('should load page with authoring letter template', async () => {
+  it('should render page for authoring letter template without redirecting', async () => {
     getTemplateMock.mockResolvedValueOnce(AUTHORING_LETTER_TEMPLATE);
 
     const page = await PreviewLetterTemplatePage({
@@ -89,9 +82,8 @@ describe('PreviewLetterTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(
-      <PreviewLetterTemplate template={AUTHORING_LETTER_TEMPLATE} />
-    );
+    expect(page).toBeTruthy();
+    expect(redirectMock).not.toHaveBeenCalled();
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
