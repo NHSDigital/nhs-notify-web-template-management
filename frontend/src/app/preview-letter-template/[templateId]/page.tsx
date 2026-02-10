@@ -41,25 +41,27 @@ export default async function PreviewLetterTemplatePage({
   // PDF letter version - will be removed soon, keeping separate
   if (validatedTemplate.letterVersion === 'PDF') {
     return (
-      <NHSNotifyFormProvider
-        initialState={{
-          errorState: {
-            formErrors: getTemplateStatusErrors(validatedTemplate),
-          },
-        }}
-        serverAction={async (state) => state} // PDF version doesn't have submit action on this page
-      >
-        <NHSNotifyBackLink href={links.messageTemplates}>
-          {backLinkText}
-        </NHSNotifyBackLink>
-        <NHSNotifyMain>
-          <div className='nhsuk-grid-row'>
-            <div className='nhsuk-grid-column-full'>
-              <PreviewLetterContent template={validatedTemplate} />
+      <NHSNotifyContainer>
+        <NHSNotifyFormProvider
+          initialState={{
+            errorState: {
+              formErrors: getTemplateStatusErrors(validatedTemplate),
+            },
+          }}
+          serverAction={async (state) => state} // PDF version doesn't have submit action on this page
+        >
+          <NHSNotifyBackLink href={links.messageTemplates}>
+            {backLinkText}
+          </NHSNotifyBackLink>
+          <NHSNotifyMain>
+            <div className='nhsuk-grid-row'>
+              <div className='nhsuk-grid-column-full'>
+                <PreviewLetterContent template={validatedTemplate} />
+              </div>
             </div>
-          </div>
-        </NHSNotifyMain>
-      </NHSNotifyFormProvider>
+          </NHSNotifyMain>
+        </NHSNotifyFormProvider>
+      </NHSNotifyContainer>
     );
   }
 
