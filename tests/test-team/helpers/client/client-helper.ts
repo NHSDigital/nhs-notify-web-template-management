@@ -3,6 +3,7 @@ import {
   PutParameterCommand,
   SSMClient,
 } from '@aws-sdk/client-ssm';
+import type { AuthContextFile } from 'helpers/auth/auth-context-file';
 
 export type ClientConfiguration = {
   campaignIds?: string[];
@@ -17,9 +18,7 @@ export type ClientConfiguration = {
 export type ClientKey =
   `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled'}`;
 
-type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
-
-export const testClients: TestClients = {
+export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
   /**
    * Client1 has proofing and routing enabled
    * This is the default client for the component tests.
@@ -130,29 +129,27 @@ export class ClientConfigurationHelper {
 
   constructor(
     private readonly clientSSMKeyPrefix: string,
-    private readonly runId: string
+    private readonly runId: string,
+    private authContextFile: AuthContextFile
   ) {}
 
   async setup() {
     return Promise.all(
       Object.entries(testClients).map(async ([clientKey, value]) => {
-        const id = `${clientKey}--${this.runId}`;
-
         if (value !== undefined) {
-          await this.ssmClient.send(
-            new PutParameterCommand({
-              Name: this.ssmKey(id),
-              Value: JSON.stringify(value),
-              Type: 'String',
-              Overwrite: true,
-            })
+          await this.createClient(
+            this.clientIdFromKey(clientKey as ClientKey),
+            value
           );
         }
       })
     );
   }
 
-  async teardown(ids: string[]) {
+  async teardown() {
+    const values = await this.authContextFile.clientValues(this.runId);
+    const ids = Object.keys(values);
+
     if (ids.length > 0) {
       await this.ssmClient.send(
         new DeleteParametersCommand({
@@ -160,6 +157,27 @@ export class ClientConfigurationHelper {
         })
       );
     }
+  }
+
+  async createClient(id: string, value: ClientConfiguration) {
+    await this.ssmClient.send(
+      new PutParameterCommand({
+        Name: this.ssmKey(id),
+        Value: JSON.stringify(value),
+        Type: 'String',
+        Overwrite: true,
+      })
+    );
+
+    await this.authContextFile.setClient(this.runId, id, value);
+  }
+
+  getClient(clientId: string) {
+    return this.authContextFile.getClient(this.runId, clientId);
+  }
+
+  clientIdFromKey(clientKey: ClientKey) {
+    return `${clientKey}--${this.runId}`;
   }
 
   private ssmKey(clientId: string) {

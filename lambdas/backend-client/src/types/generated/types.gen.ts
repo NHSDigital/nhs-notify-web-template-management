@@ -199,6 +199,10 @@ export type NhsAppProperties = {
   templateType: 'NHS_APP';
 };
 
+export type PatchTemplate = {
+  name?: string;
+};
+
 export type PdfLetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
@@ -715,6 +719,47 @@ export type GetV1TemplateByTemplateIdResponses = {
 
 export type GetV1TemplateByTemplateIdResponse =
   GetV1TemplateByTemplateIdResponses[keyof GetV1TemplateByTemplateIdResponses];
+
+export type PatchV1TemplateByTemplateIdData = {
+  /**
+   * Updates to apply
+   */
+  body: PatchTemplate;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}';
+};
+
+export type PatchV1TemplateByTemplateIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdError =
+  PatchV1TemplateByTemplateIdErrors[keyof PatchV1TemplateByTemplateIdErrors];
+
+export type PatchV1TemplateByTemplateIdResponses = {
+  /**
+   * 200 response
+   */
+  200: TemplateSuccess;
+};
+
+export type PatchV1TemplateByTemplateIdResponse =
+  PatchV1TemplateByTemplateIdResponses[keyof PatchV1TemplateByTemplateIdResponses];
 
 export type PutV1TemplateByTemplateIdData = {
   /**

@@ -125,14 +125,15 @@ describe('CreateSmsTemplate component', () => {
 
     const longMessage = 'x'.repeat(300);
 
-    await user.type(templateMessageBox, longMessage);
+    await user.click(templateMessageBox);
+    await user.paste(longMessage);
 
     const characterCount = await screen.findByTestId('character-message-count');
 
     expect(characterCount.textContent).toContain(
       `${longMessage.length} characters`
     );
-  }, 15_000);
+  });
 
   test('Client-side validation triggers - valid form - no errors', () => {
     const container = render(

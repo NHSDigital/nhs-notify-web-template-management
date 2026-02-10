@@ -60,7 +60,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients.
+              This will not be visible to recipients
             </div>
             <details
               class="nhsuk-details nhsuk-u-margin-top-3"
@@ -118,7 +118,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             <div
               class="nhsuk-hint"
             >
-              Choose which campaign this letter is for.
+              Choose which campaign this letter is for
             </div>
             <select
               class="nhsuk-select"
@@ -150,7 +150,7 @@ exports[`client has multiple campaign ids matches snapshot on initial render 1`]
             <div
               class="nhsuk-hint"
             >
-              Choose the language used in this template.
+              Choose the language used in this template
             </div>
             <select
               class="nhsuk-select"
@@ -505,7 +505,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients.
+              This will not be visible to recipients
             </div>
             <details
               class="nhsuk-details nhsuk-u-margin-top-3"
@@ -573,7 +573,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             <div
               class="nhsuk-hint"
             >
-              Choose which campaign this letter is for.
+              Choose which campaign this letter is for
             </div>
             <span
               class="nhsuk-error-message"
@@ -615,7 +615,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
             <div
               class="nhsuk-hint"
             >
-              Choose the language used in this template.
+              Choose the language used in this template
             </div>
             <span
               class="nhsuk-error-message"
@@ -944,7 +944,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients.
+              This will not be visible to recipients
             </div>
             <details
               class="nhsuk-details nhsuk-u-margin-top-3"
@@ -1028,7 +1028,7 @@ exports[`client has one campaign id matches snapshot on initial render 1`] = `
             <div
               class="nhsuk-hint"
             >
-              Choose the language used in this template.
+              Choose the language used in this template
             </div>
             <select
               class="nhsuk-select"
@@ -1376,7 +1376,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients.
+              This will not be visible to recipients
             </div>
             <details
               class="nhsuk-details nhsuk-u-margin-top-3"
@@ -1470,7 +1470,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
             <div
               class="nhsuk-hint"
             >
-              Choose the language used in this template.
+              Choose the language used in this template
             </div>
             <span
               class="nhsuk-error-message"
@@ -1799,7 +1799,7 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients.
+              This will not be visible to recipients
             </div>
             <details
               class="nhsuk-details nhsuk-u-margin-top-3"
@@ -1883,7 +1883,7 @@ exports[`client has one campaign id renders the rtl template link if an rtl lang
             <div
               class="nhsuk-hint"
             >
-              Choose the language used in this template.
+              Choose the language used in this template
             </div>
             <select
               class="nhsuk-select"
