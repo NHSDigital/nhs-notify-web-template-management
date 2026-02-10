@@ -4,6 +4,7 @@
 import NhsAppTemplateSubmittedPage, {
   generateMetadata,
 } from '@app/nhs-app-template-submitted/[templateId]/page';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -50,10 +51,12 @@ describe('NhsAppTemplateSubmittedPage', () => {
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(
-      <TemplateSubmitted
-        templateId={template.id}
-        templateName={template.name}
-      />
+      <NHSNotifyContainer>
+        <TemplateSubmitted
+          templateId={template.id}
+          templateName={template.name}
+        />
+      </NHSNotifyContainer>
     );
   });
 

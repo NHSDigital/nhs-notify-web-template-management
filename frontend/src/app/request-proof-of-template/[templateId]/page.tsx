@@ -11,6 +11,7 @@ import { getTemplate } from '@utils/form-actions';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import { $LockNumber } from 'nhs-notify-backend-client';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.requestProof;
 
@@ -53,12 +54,14 @@ const RequestProofPage = async (props: TemplatePageProps) => {
   }
 
   return (
-    <RequestProof
-      templateName={validatedTemplate.name}
-      templateId={validatedTemplate.id}
-      channel={validatedTemplate.templateType}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <RequestProof
+        templateName={validatedTemplate.name}
+        templateId={validatedTemplate.id}
+        channel={validatedTemplate.templateType}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 

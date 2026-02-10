@@ -6,6 +6,7 @@ import PreviewNhsAppTemplatePage, {
 } from '@app/preview-nhs-app-template/[templateId]/page';
 import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -61,7 +62,9 @@ describe('PreviewNhsAppTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
+      <NHSNotifyContainer>
+        <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
+      </NHSNotifyContainer>
     );
   });
 

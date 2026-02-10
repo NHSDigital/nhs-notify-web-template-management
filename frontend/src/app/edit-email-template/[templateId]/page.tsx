@@ -1,4 +1,5 @@
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import {
   TemplatePageProps,
   validateEmailTemplate,
@@ -27,7 +28,11 @@ const CreateEmailTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <EmailTemplateForm initialState={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <EmailTemplateForm initialState={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default CreateEmailTemplatePage;

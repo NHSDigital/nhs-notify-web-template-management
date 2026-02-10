@@ -1,42 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage when one campaignId is available 1`] = `
-<LetterTemplateForm
-  campaignIds={
-    [
-      "campaign-id",
-    ]
-  }
-  initialState={
-    {
-      "campaignId": "campaign-id",
-      "language": "en",
-      "letterType": "x0",
-      "letterVersion": "PDF",
-      "name": "",
-      "templateType": "LETTER",
+<NHSNotifyContainer>
+  <LetterTemplateForm
+    campaignIds={
+      [
+        "campaign-id",
+      ]
     }
-  }
-/>
+    initialState={
+      {
+        "campaignId": "campaign-id",
+        "language": "en",
+        "letterType": "x0",
+        "letterVersion": "PDF",
+        "name": "",
+        "templateType": "LETTER",
+      }
+    }
+  />
+</NHSNotifyContainer>
 `;
 
 exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with multiple campaignIds available 1`] = `
-<LetterTemplateForm
-  campaignIds={
-    [
-      "campaign-id",
-      "other-campaign-id",
-    ]
-  }
-  initialState={
-    {
-      "campaignId": "",
-      "language": "en",
-      "letterType": "x0",
-      "letterVersion": "PDF",
-      "name": "",
-      "templateType": "LETTER",
+<NHSNotifyContainer>
+  <LetterTemplateForm
+    campaignIds={
+      [
+        "campaign-id",
+        "other-campaign-id",
+      ]
     }
-  }
-/>
+    initialState={
+      {
+        "campaignId": "",
+        "language": "en",
+        "letterType": "x0",
+        "letterVersion": "PDF",
+        "name": "",
+        "templateType": "LETTER",
+      }
+    }
+  />
+</NHSNotifyContainer>
 `;

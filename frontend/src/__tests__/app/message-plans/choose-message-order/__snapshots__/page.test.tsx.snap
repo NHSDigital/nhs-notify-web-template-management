@@ -2,229 +2,233 @@
 
 exports[`ChooseMessageOrderPage 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <form
-      action="/action"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
-      <input
-        name="form-id"
-        readonly=""
-        type="hidden"
-        value="choose-message-order"
-      />
-      <input
-        name="csrf_token"
-        readonly=""
-        type="hidden"
-        value="no_token"
-      />
-      <div
-        class="nhsuk-form-group"
+      <form
+        action="/action"
       >
-        <fieldset
-          class="nhsuk-fieldset"
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="choose-message-order"
+        />
+        <input
+          name="csrf_token"
+          readonly=""
+          type="hidden"
+          value="no_token"
+        />
+        <div
+          class="nhsuk-form-group"
         >
-          <legend
-            class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
-            data-testid="messageOrder-form__legend"
+          <fieldset
+            class="nhsuk-fieldset"
           >
-            <h1
-              class="nhsuk-fieldset__heading"
+            <legend
+              class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+              data-testid="messageOrder-form__legend"
             >
-              Choose a message order
-            </h1>
-          </legend>
-          <div
-            class="nhsuk-form-group"
-          >
+              <h1
+                class="nhsuk-fieldset__heading"
+              >
+                Choose a message order
+              </h1>
+            </legend>
             <div
-              class="nhsuk-hint"
-              id="messageOrder--hint"
-            >
-              Select one option
-            </div>
-            <div
-              aria-describedby="messageOrder--hint"
-              class="nhsuk-radios"
-              id="messageOrder"
+              class="nhsuk-form-group"
             >
               <div
-                class="nhsuk-radios__item"
+                class="nhsuk-hint"
+                id="messageOrder--hint"
               >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-radio"
-                  id="messageOrder-nhsapp"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp"
-                  id="messageOrder-nhsapp--label"
-                >
-                  NHS App only
-                </label>
+                Select one option
               </div>
               <div
-                class="nhsuk-radios__item"
+                aria-describedby="messageOrder--hint"
+                class="nhsuk-radios"
+                id="messageOrder"
               >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-email-radio"
-                  id="messageOrder-nhsapp-email"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,EMAIL"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-email"
-                  id="messageOrder-nhsapp-email--label"
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Email
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-sms-radio"
-                  id="messageOrder-nhsapp-sms"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,SMS"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-sms"
-                  id="messageOrder-nhsapp-sms--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-radio"
+                    id="messageOrder-nhsapp"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp"
+                    id="messageOrder-nhsapp--label"
+                  >
+                    NHS App only
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Text message
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-email-sms-radio"
-                  id="messageOrder-nhsapp-email-sms"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,EMAIL,SMS"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-email-sms"
-                  id="messageOrder-nhsapp-email-sms--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-email-radio"
+                    id="messageOrder-nhsapp-email"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,EMAIL"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-email"
+                    id="messageOrder-nhsapp-email--label"
+                  >
+                    NHS App, Email
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Email, Text message
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-sms-email-radio"
-                  id="messageOrder-nhsapp-sms-email"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,SMS,EMAIL"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-sms-email"
-                  id="messageOrder-nhsapp-sms-email--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-sms-radio"
+                    id="messageOrder-nhsapp-sms"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,SMS"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-sms"
+                    id="messageOrder-nhsapp-sms--label"
+                  >
+                    NHS App, Text message
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Text message, Email
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-sms-letter-radio"
-                  id="messageOrder-nhsapp-sms-letter"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,SMS,LETTER"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-sms-letter"
-                  id="messageOrder-nhsapp-sms-letter--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-email-sms-radio"
+                    id="messageOrder-nhsapp-email-sms"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,EMAIL,SMS"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-email-sms"
+                    id="messageOrder-nhsapp-email-sms--label"
+                  >
+                    NHS App, Email, Text message
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Text message, Letter
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-email-sms-letter-radio"
-                  id="messageOrder-nhsapp-email-sms-letter"
-                  name="messageOrder"
-                  type="radio"
-                  value="NHSAPP,EMAIL,SMS,LETTER"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-nhsapp-email-sms-letter"
-                  id="messageOrder-nhsapp-email-sms-letter--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-sms-email-radio"
+                    id="messageOrder-nhsapp-sms-email"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,SMS,EMAIL"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-sms-email"
+                    id="messageOrder-nhsapp-sms-email--label"
+                  >
+                    NHS App, Text message, Email
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  NHS App, Email, Text message, Letter
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="letter-radio"
-                  id="messageOrder-letter"
-                  name="messageOrder"
-                  type="radio"
-                  value="LETTER"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="messageOrder-letter"
-                  id="messageOrder-letter--label"
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-sms-letter-radio"
+                    id="messageOrder-nhsapp-sms-letter"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,SMS,LETTER"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-sms-letter"
+                    id="messageOrder-nhsapp-sms-letter--label"
+                  >
+                    NHS App, Text message, Letter
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
                 >
-                  Letter only
-                </label>
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-email-sms-letter-radio"
+                    id="messageOrder-nhsapp-email-sms-letter"
+                    name="messageOrder"
+                    type="radio"
+                    value="NHSAPP,EMAIL,SMS,LETTER"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-nhsapp-email-sms-letter"
+                    id="messageOrder-nhsapp-email-sms-letter--label"
+                  >
+                    NHS App, Email, Text message, Letter
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="letter-radio"
+                    id="messageOrder-letter"
+                    name="messageOrder"
+                    type="radio"
+                    value="LETTER"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="messageOrder-letter"
+                    id="messageOrder-letter--label"
+                  >
+                    Letter only
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        </fieldset>
-      </div>
-      <button
-        aria-disabled="false"
-        class="nhsuk-button"
-        data-testid="submit-button"
-        id="choose-message-order-submit-button"
-        type="submit"
-      >
-        Save and continue
-      </button>
-      <a
-        class="inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
-        data-testid="back-link-bottom"
-        href="/message-plans"
-      >
-        Go back
-      </a>
-    </form>
-  </main>
+          </fieldset>
+        </div>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          id="choose-message-order-submit-button"
+          type="submit"
+        >
+          Save and continue
+        </button>
+        <a
+          class="inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+          data-testid="back-link-bottom"
+          href="/message-plans"
+        >
+          Go back
+        </a>
+      </form>
+    </main>
+  </div>
 </DocumentFragment>
 `;
