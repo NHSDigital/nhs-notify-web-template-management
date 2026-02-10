@@ -51,6 +51,21 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 }'
 ```
 
+### PATCH - /v1/template/:templateId - Apply a partial update of a template
+
+Only supports `name` attribute
+
+```bash
+curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \
+--data '{
+  "name": "<string>"
+}'
+```
+
 ### GET - /v1/templates - Get all templates
 
 currently limited to 50 items

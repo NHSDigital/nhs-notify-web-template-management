@@ -619,4 +619,47 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectNotStatus', () => {
+    test('adds condition that status is not the given status', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(builder.expectNotStatus('PENDING_UPLOAD').build()).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_templateStatus': 'PENDING_UPLOAD',
+        },
+        ConditionExpression:
+          'NOT #templateStatus = :condition_1_templateStatus',
+      });
+    });
+
+    test('adds condition that status is not in the given status list', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      expect(
+        builder.expectNotStatus(['PENDING_UPLOAD', 'VIRUS_SCAN_FAILED']).build()
+      ).toMatchObject({
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_1_templateStatus': 'PENDING_UPLOAD',
+          ':condition_1_2_templateStatus': 'VIRUS_SCAN_FAILED',
+        },
+        ConditionExpression:
+          'NOT #templateStatus IN (:condition_1_1_templateStatus, :condition_1_2_templateStatus)',
+      });
+    });
+  });
 });
