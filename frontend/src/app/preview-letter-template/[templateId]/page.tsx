@@ -14,6 +14,7 @@ import { getTemplate } from '@utils/form-actions';
 import { getTemplateStatusErrors } from '@utils/get-template-status-errors';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle, backLinkText, links } =
   content.components.previewLetterTemplate;
@@ -64,32 +65,36 @@ export default async function PreviewLetterTemplatePage({
 
   // Authoring letter version
   return (
-    <NHSNotifyFormProvider
-      initialState={{
-        errorState: { formErrors: getTemplateStatusErrors(validatedTemplate) },
-      }}
-      serverAction={submitAuthoringLetterAction}
-    >
-      <NHSNotifyBackLink href={links.messageTemplates}>
-        {backLinkText}
-      </NHSNotifyBackLink>
-      <NHSNotifyMainFluid>
-        <div className='nhsuk-width-container'>
-          <div className='nhsuk-grid-row'>
-            <div className='nhsuk-grid-column-full'>
-              <PreviewTemplateDetailsAuthoringLetter
-                template={validatedTemplate}
-              />
+    <NHSNotifyContainer>
+      <NHSNotifyFormProvider
+        initialState={{
+          errorState: {
+            formErrors: getTemplateStatusErrors(validatedTemplate),
+          },
+        }}
+        serverAction={submitAuthoringLetterAction}
+      >
+        <NHSNotifyBackLink href={links.messageTemplates}>
+          {backLinkText}
+        </NHSNotifyBackLink>
+        <NHSNotifyMainFluid>
+          <div className='nhsuk-width-container'>
+            <div className='nhsuk-grid-row'>
+              <div className='nhsuk-grid-column-full'>
+                <PreviewTemplateDetailsAuthoringLetter
+                  template={validatedTemplate}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <LetterRender template={validatedTemplate} />
-        <div className='nhsuk-width-container nhsuk-u-margin-top-6'>
-          <p>
-            <Link href={links.messageTemplates}>{backLinkText}</Link>
-          </p>
-        </div>
-      </NHSNotifyMainFluid>
-    </NHSNotifyFormProvider>
+          <LetterRender template={validatedTemplate} />
+          <div className='nhsuk-width-container nhsuk-u-margin-top-6'>
+            <p>
+              <Link href={links.messageTemplates}>{backLinkText}</Link>
+            </p>
+          </div>
+        </NHSNotifyMainFluid>
+      </NHSNotifyFormProvider>
+    </NHSNotifyContainer>
   );
 }

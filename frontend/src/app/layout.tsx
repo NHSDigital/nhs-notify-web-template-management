@@ -8,7 +8,7 @@ import { AuthProvider } from '@providers/auth-provider';
 import { ClientConfigProviderServer } from '@providers/client-config-provider-server';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { NhsNotifyHeader } from '@molecules/Header/Header';
-import { NHSNotifyContainer } from '@layouts/container/container';
+
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
 
@@ -66,7 +66,7 @@ export default function RootLayout({
             <ClientConfigProviderServer>
               <NHSNotifySkipLink />
               <NhsNotifyHeader />
-              <NHSNotifyContainer>{children}</NHSNotifyContainer>
+              {children}
               <NHSNotifyFooter />
               <LogoutWarningModal
                 logoutInSeconds={config.logoutInSeconds}

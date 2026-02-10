@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import EditNhsAppTemplatePage, {
   generateMetadata,
 } from '@app/edit-nhs-app-template/[templateId]/page';
@@ -55,7 +56,11 @@ describe('EditNhsAppTemplatePage', () => {
     });
 
     expect(await generateMetadata()).toEqual({ title: editPageTitle });
-    expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <NhsAppTemplateForm initialState={nhsAppTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 
   test('should render invalid template, when template is not found', async () => {

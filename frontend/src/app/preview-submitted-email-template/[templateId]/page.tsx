@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -31,10 +32,12 @@ const PreviewSubmittedEmailTemplatePage = async (props: TemplatePageProps) => {
   }
 
   return (
-    <PreviewSubmittedTemplate
-      initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsEmail}
-    />
+    <NHSNotifyContainer>
+      <PreviewSubmittedTemplate
+        initialState={validatedTemplate}
+        previewComponent={PreviewTemplateDetailsEmail}
+      />
+    </NHSNotifyContainer>
   );
 };
 

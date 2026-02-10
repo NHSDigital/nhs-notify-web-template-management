@@ -7,6 +7,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const DeleteTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
@@ -23,7 +24,11 @@ const DeleteTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <DeleteTemplate template={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <DeleteTemplate template={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default DeleteTemplatePage;

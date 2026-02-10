@@ -2,121 +2,125 @@
 
 exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page renders foreign language letter template preview 1`] = `
 <DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+  <div
+    class="nhsuk-width-container"
   >
-    Go back
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+    >
+      Go back
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-full"
+        class="nhsuk-grid-row"
       >
         <div
-          class="nhsuk-u-reading-width"
+          class="nhsuk-grid-column-full"
         >
-          <span
-            class="nhsuk-caption-l"
+          <div
+            class="nhsuk-u-reading-width"
           >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
+            <span
+              class="nhsuk-caption-l"
+            >
+              Template
+            </span>
+            <h1
+              class="preview__heading"
+              data-testid="preview-message__heading"
+            >
+              French letter template
+            </h1>
+          </div>
+          <div
+            class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
           >
-            French letter template
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
+            <dl
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-summary-list__row"
               >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                french-letter-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Standard letter - French
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template file
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="container"
+                <dt
+                  class="nhsuk-summary-list__key"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="icon"
-                    fill="none"
-                    height="26"
-                    viewBox="0 0 20 26"
-                    width="20"
-                    xmlns="http://www.w3.org/2000/svg"
+                  Template ID
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value monospace-font"
+                  data-testid="preview-template-id"
+                >
+                  french-letter-id
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template type
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Standard letter - French
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template file
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <div
+                    class="container"
                   >
-                    <path
-                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                      fill="#4C6272"
-                    />
-                  </svg>
-                  <p
-                    class="text"
-                  >
-                    template.pdf
-                  </p>
-                </div>
-              </dd>
-            </div>
-          </dl>
+                    <svg
+                      aria-hidden="true"
+                      class="icon"
+                      fill="none"
+                      height="26"
+                      viewBox="0 0 20 26"
+                      width="20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                        fill="#4C6272"
+                      />
+                    </svg>
+                    <p
+                      class="text"
+                    >
+                      template.pdf
+                    </p>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <a
+            class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+            data-testid="back-link-bottom"
+            href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+          >
+            Go back
+          </a>
         </div>
-        <a
-          class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
-          data-testid="back-link-bottom"
-          href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
-        >
-          Go back
-        </a>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;

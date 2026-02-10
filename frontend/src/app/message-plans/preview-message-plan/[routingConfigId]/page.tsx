@@ -9,6 +9,7 @@ import {
   messagePlanStatusToTagColour,
   type MessagePlanPageProps,
 } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
 import { DetailsSummary, DetailsText, Tag } from '@atoms/nhsuk-components';
@@ -75,7 +76,7 @@ export default async function PreviewMessagePlanPage({
   const templates = await getMessagePlanTemplates(messagePlan);
 
   return (
-    <>
+    <NHSNotifyContainer>
       <Link
         href={pageContent.backLink.href}
         className='nhsuk-back-link'
@@ -317,6 +318,6 @@ export default async function PreviewMessagePlanPage({
           </div>
         </div>
       </NHSNotifyMain>
-    </>
+    </NHSNotifyContainer>
   );
 }

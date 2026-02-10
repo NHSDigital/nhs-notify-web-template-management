@@ -1,7 +1,13 @@
 export function NHSNotifyContainer({
   children,
+  fullWidth = false,
 }: {
   children: React.ReactNode;
+  fullWidth?: boolean;
 }) {
-  return <div className='nhsuk-width-container'>{children}</div>;
+  const className = fullWidth
+    ? 'nhsuk-width-container-fluid'
+    : 'nhsuk-width-container';
+
+  return <div className={className}>{children}</div>;
 }
