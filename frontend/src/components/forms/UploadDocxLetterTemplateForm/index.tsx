@@ -1,14 +1,7 @@
 'use client';
 
-import { useState, type PropsWithChildren } from 'react';
-import classNames from 'classnames';
-import {
-  Button,
-  ErrorMessage,
-  HintText,
-  InsetText,
-  Label,
-} from 'nhsuk-react-components';
+import { useState } from 'react';
+import { HintText, InsetText, Label } from 'nhsuk-react-components';
 import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
 import {
   isLanguage,
@@ -16,43 +9,26 @@ import {
   languageMapping,
 } from 'nhs-notify-web-template-management-utils';
 import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
-import { NHSNotifyFormGroup } from '@atoms/NHSNotifyFormGroup/NHSNotifyFormGroup';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
 const content = copy.components.uploadDocxLetterTemplateForm;
 
-export function Form({
-  children,
-  formId,
-}: PropsWithChildren<{ formId: string }>) {
-  const [, action] = useNHSNotifyForm();
-
-  return (
-    <NHSNotifyFormWrapper action={action} formId={formId}>
-      {children}
-      <Button type='submit'>{content.fields.submitButton.text}</Button>
-    </NHSNotifyFormWrapper>
-  );
-}
-
 export function NameField() {
   const [state] = useNHSNotifyForm();
 
-  const error = state.errorState?.fieldErrors?.name?.join(',');
-
   return (
-    <NHSNotifyFormGroup error={Boolean(error)}>
+    <NHSNotifyForm.FormGroup className='nhsuk-u-margin-bottom-6' htmlFor='name'>
       <Label size='s' htmlFor='name'>
         {content.fields.name.label}
       </Label>
       <HintText>{content.fields.name.hint}</HintText>
 
       <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <NHSNotifyForm.ErrorMessage htmlFor='name' />
       <input
         type='text'
         id='name'
@@ -60,17 +36,16 @@ export function NameField() {
         className='nhsuk-input nhsuk-u-margin-bottom-2'
         defaultValue={state.fields?.name}
       />
-    </NHSNotifyFormGroup>
+    </NHSNotifyForm.FormGroup>
   );
 }
 
 export function CampaignIdField({ campaignIds }: { campaignIds: string[] }) {
-  const [state] = useNHSNotifyForm();
-
-  const error = state.errorState?.fieldErrors?.campaignId?.join(',');
-
   return (
-    <NHSNotifyFormGroup error={Boolean(error)}>
+    <NHSNotifyForm.FormGroup
+      className='nhsuk-u-margin-bottom-6'
+      htmlFor='campaignId'
+    >
       <Label size='s' htmlFor='campaignId'>
         {content.fields.campaignId.label}
       </Label>
@@ -88,49 +63,37 @@ export function CampaignIdField({ campaignIds }: { campaignIds: string[] }) {
       ) : (
         <>
           <HintText>{content.fields.campaignId.select.hint}</HintText>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          <select
-            id='campaignId'
-            name='campaignId'
-            defaultValue={state.fields?.campaignId}
-            key={state.fields?.campaignId}
-            className={classNames('nhsuk-select', {
-              'nhsuk-select--error': error,
-            })}
-          >
+          <NHSNotifyForm.ErrorMessage htmlFor='campaignId' />
+          <NHSNotifyForm.Select id='campaignId' name='campaignId'>
             <option />
             {campaignIds.map((id) => (
               <option key={id} value={id}>
                 {id}
               </option>
             ))}
-          </select>
+          </NHSNotifyForm.Select>
         </>
       )}
-    </NHSNotifyFormGroup>
+    </NHSNotifyForm.FormGroup>
   );
 }
 
 export function FileField() {
-  const [state] = useNHSNotifyForm();
-
-  const error = state.errorState?.fieldErrors?.file?.join(',');
-
   return (
-    <NHSNotifyFormGroup error={Boolean(error)}>
+    <NHSNotifyForm.FormGroup className='nhsuk-u-margin-bottom-6' htmlFor='file'>
       <Label size='s' htmlFor='file'>
         {content.fields.file.label}
       </Label>
       <HintText>
         <ContentRenderer content={content.fields.file.hint} />
       </HintText>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <NHSNotifyForm.ErrorMessage htmlFor='file' />
       <FileUploadInput
         id='file'
         name='file'
         accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       />
-    </NHSNotifyFormGroup>
+    </NHSNotifyForm.FormGroup>
   );
 }
 
@@ -141,25 +104,21 @@ export function LanguageField() {
 
   const [selectedLanguage, setLanguage] = useState(state.fields?.language);
 
-  const error = state.errorState?.fieldErrors?.language?.join(',');
-
   return (
     <>
-      <NHSNotifyFormGroup error={Boolean(error)}>
+      <NHSNotifyForm.FormGroup
+        className='nhsuk-u-margin-bottom-6'
+        htmlFor='language'
+      >
         <Label size='s' htmlFor='language'>
           {content.fields.language.label}
         </Label>
 
         <HintText>{content.fields.language.hint}</HintText>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <select
+        <NHSNotifyForm.ErrorMessage htmlFor='language' />
+        <NHSNotifyForm.Select
           id='language'
           name='language'
-          defaultValue={state.fields?.language}
-          key={state.fields?.language}
-          className={classNames('nhsuk-select', {
-            'nhsuk-select--error': error,
-          })}
           onChange={(e) => setLanguage(e.target.value)}
         >
           <option>{content.fields.language.placeholder}</option>
@@ -168,8 +127,8 @@ export function LanguageField() {
               {languageMapping(language)}
             </option>
           ))}
-        </select>
-      </NHSNotifyFormGroup>
+        </NHSNotifyForm.Select>
+      </NHSNotifyForm.FormGroup>
       {isLanguage(selectedLanguage) && isRightToLeft(selectedLanguage) && (
         <InsetText>
           <ContentRenderer content={content.fields.language.rtl} />

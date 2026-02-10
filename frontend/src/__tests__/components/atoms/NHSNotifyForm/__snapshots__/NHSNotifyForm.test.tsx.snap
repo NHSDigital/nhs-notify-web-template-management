@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NHSNotifyForm components User Registration Form renders the complete form with all fields 1`] = `
+<DocumentFragment>
+  <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="user-registration"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <label
+        class="nhsuk-label"
+        for="firstName"
+      >
+        First name
+      </label>
+      <input
+        class="nhsuk-input"
+        id="firstName"
+        name="firstName"
+        type="text"
+      />
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <label
+        class="nhsuk-label"
+        for="lastName"
+      >
+        Last name
+      </label>
+      <input
+        class="nhsuk-input"
+        id="lastName"
+        name="lastName"
+        type="text"
+      />
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <label
+        class="nhsuk-label"
+        for="email"
+      >
+        Email address
+      </label>
+      <input
+        class="nhsuk-input"
+        id="email"
+        name="email"
+        type="email"
+      />
+    </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <label
+        class="nhsuk-label"
+        for="role"
+      >
+        Role
+      </label>
+      <select
+        class="nhsuk-select"
+        id="role"
+        name="role"
+      >
+        <option
+          value=""
+        >
+          Please select
+        </option>
+        <option
+          value="admin"
+        >
+          Administrator
+        </option>
+        <option
+          value="editor"
+        >
+          Editor
+        </option>
+        <option
+          value="viewer"
+        >
+          Viewer
+        </option>
+      </select>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      type="submit"
+    >
+      Create user
+    </button>
+  </form>
+</DocumentFragment>
+`;

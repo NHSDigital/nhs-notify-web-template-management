@@ -12,6 +12,8 @@ import {
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
+  PatchTemplate,
+  $PatchTemplate,
 } from 'nhs-notify-backend-client';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
@@ -313,6 +315,66 @@ export class TemplateClient {
     }
 
     const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
+  }
+
+  async patchTemplate(
+    templateId: string,
+    updates: PatchTemplate,
+    user: User,
+    lockNumber: number | string
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({
+      templateId,
+      updates,
+      user,
+    });
+
+    const validationResult = await validate($PatchTemplate, updates);
+
+    if (validationResult.error) {
+      log
+        .child(validationResult.error.errorMeta)
+        .error('Invalid template updates', validationResult.error.actualError);
+
+      return validationResult;
+    }
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    const patchResult = await this.templateRepository.patch(
+      templateId,
+      validationResult.data,
+      user,
+      lockNumberValidation.data
+    );
+
+    if (patchResult.error) {
+      log
+        .child(patchResult.error.errorMeta)
+        .error('Failed to update template', patchResult.error.actualError);
+
+      return patchResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(patchResult.data);
 
     if (!templateDTO) {
       return failure(ErrorCase.INTERNAL, 'Error retrieving template');
