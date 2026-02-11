@@ -24,6 +24,8 @@ echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 echo "SHORT_SHA: ${SHORT_SHA:-<unset>}"
+echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
+echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
 aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
