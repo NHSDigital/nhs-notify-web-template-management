@@ -5,6 +5,11 @@ ENVIRONMENT=$2
 ACTION=$3
 
 echo "Running app pre.sh"
+echo "REGION=$REGION"
+echo "ENVIRONMENT=$ENVIRONMENT"
+echo "ACTION=$ACTION"
+export TF_REGION="$REGION"
+export TF_ENVIRONMENT="$ENVIRONMENT"
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)

@@ -7,10 +7,10 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
-
-AWS_REGION="${REGION}"
+# Set Variables. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
+AWS_REGION="${TF_REGION}"
 COMPONENT="${COMPONENT}"
-CSI="nhs-notify-${ENVIRONMENT}-${COMPONENT}"
+CSI="nhs-notify-${TF_ENVIRONMENT}-${COMPONENT}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
