@@ -179,9 +179,9 @@ variable "container_lambda_ecr_repo" {
   default     = "nhs-notify-main-acct"
 }
 
-variable "short_sha" {
+variable "image_tag_suffix" {
   type        = string
-  description = "Short SHA of the commit used to identify the lambda image tag. This is expected to be set by pre.sh at deploy time using git rev-parse --short HEAD"
+  description = "The short SHA or Release Tag to append to the container lambda image tag"
 }
 
 variable "data_plane_bus_arn" {

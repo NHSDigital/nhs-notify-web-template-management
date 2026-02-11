@@ -10,7 +10,26 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-export TF_VAR_short_sha="$(git rev-parse --short HEAD)"
+
+echo "Checking if current commit is a tag..."
+GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+if [ -n "$GIT_TAG" ]; then
+  echo "On tag: $GIT_TAG, exporting TF_VAR_image_tag_suffix as tag"
+  export TF_VAR_image_tag_suffix="$GIT_TAG"
+else
+  SHORT_SHA="$(git rev-parse --short HEAD)"
+  echo "Not on a tag, exporting TF_VAR_image_tag_suffix as short SHA: $SHORT_SHA"
+  export TF_VAR_image_tag_suffix="$SHORT_SHA"
+fi
+
+echo "Checking if TF_ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
+if [ "$TF_ACTION" = "apply" ]; then
+  echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
+  export PUBLISH_LAMBDA_IMAGE="true"
+else
+  echo "Not setting PUBLISH_LAMBDA_IMAGE for non-apply action (e.g. plan)"
+fi
+
 
 if [ "$TF_ACTION" = "apply" ]; then
   echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
