@@ -8,7 +8,7 @@ chmod +x ./build.sh
 ./build.sh
 
 # Set Variables. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
-CSI="${project-name}-${environment}-${component_name}"
+CSI="${project}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"

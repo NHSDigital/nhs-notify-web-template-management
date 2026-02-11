@@ -1,16 +1,14 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, any change of directory will persist once this script exits and returns control to terraform.sh
-REGION=$1
-ENVIRONMENT=$2
 ACTION=$3
 
 echo "Running app pre.sh"
-echo "REGION=$REGION"
-echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 echo "component_name=$component_name"
-echo "project-name=$project_name"
+echo "project=$project"
 echo "aws_account_id=$aws_account_id"
+echo "environment=$environment"
+echo "region=$region"
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
