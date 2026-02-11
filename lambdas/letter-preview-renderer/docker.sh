@@ -13,6 +13,8 @@ ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 CSI="nhs-notify-${ENVIRONMENT}"
 LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
+GHCR_LOGIN_USER="${GITHUB_ACTOR:-}"
+GHCR_LOGIN_TOKEN="${GITHUB_TOKEN:-}"
 
 # Ensure required AWS/ECR configuration is present.
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
