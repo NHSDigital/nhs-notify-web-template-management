@@ -27,10 +27,7 @@ jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
 jest.mock('@utils/csrf-utils');
 jest.mock(
-  '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action',
-  () => ({
-    moveToProductionAction: jest.fn(),
-  })
+  '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action'
 );
 
 const moveToProductionActionMock = jest.mocked(moveToProductionAction);
