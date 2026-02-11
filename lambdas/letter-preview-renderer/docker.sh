@@ -7,7 +7,16 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
+
 # Ensure required AWS/ECR configuration is present.
+echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
+echo "AWS_REGION: ${AWS_REGION:-<unset>}"
+echo "ECR_REPO: ${ECR_REPO:-<unset>}"
+echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
+echo "CSI: ${CSI:-<unset>}"
+echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
+echo "SHORT_SHA: ${SHORT_SHA:-<unset>}"
+
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
@@ -18,6 +27,15 @@ if [ -z "$CSI" ]; then
 fi
 LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
+
+# Ensure required AWS/ECR configuration is present.
+echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
+echo "AWS_REGION: ${AWS_REGION:-<unset>}"
+echo "ECR_REPO: ${ECR_REPO:-<unset>}"
+echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
+echo "CSI: ${CSI:-<unset>}"
+echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
+echo "SHORT_SHA: ${SHORT_SHA:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
 aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
