@@ -90,7 +90,7 @@ export const LANGUAGE_LIST = arrayOfAll<Language>()([
 export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()(['q4', 'x0', 'x1']);
 
 export const LETTER_VALIDATION_ERROR_LIST = arrayOfAll<LetterValidationError>()(
-  ['VIRUS_SCAN_FAILED']
+  ['MISSING_ADDRESS_LINES', 'VIRUS_SCAN_FAILED']
 );
 
 export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([

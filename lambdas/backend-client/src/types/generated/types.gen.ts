@@ -215,7 +215,7 @@ export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
-export type LetterValidationError = 'VIRUS_SCAN_FAILED';
+export type LetterValidationError = 'MISSING_ADDRESS_LINES' | 'VIRUS_SCAN_FAILED';
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
 

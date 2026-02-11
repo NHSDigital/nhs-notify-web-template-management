@@ -10,10 +10,13 @@ type LetterRenderIframeProps = {
 export function LetterRenderIframe({ tab, pdfUrl }: LetterRenderIframeProps) {
   if (!pdfUrl) return <p className='nhsuk-body'>No preview available</p>;
 
+  const tabLabel = tab === 'short' ? 'short' : 'long';
+
   return (
     <iframe
       src={pdfUrl}
-      title={`Letter preview - ${tab} examples`}
+      title={`Letter preview - ${tabLabel} examples`}
+      aria-label={`PDF preview of letter template with ${tabLabel} example personalisation data`}
       referrerPolicy='no-referrer'
     />
   );

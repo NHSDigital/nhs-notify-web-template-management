@@ -1,17 +1,4 @@
-.tabContent {
-  display: flex;
-  gap: 24px;
-}
-
-.formColumn {
-  flex: 0 0 320px;
-  min-width: 320px;
-}
-
 .iframeColumn {
-  flex: 1;
-  min-width: 0;
-
   iframe {
     width: 100%;
     height: 1200px;

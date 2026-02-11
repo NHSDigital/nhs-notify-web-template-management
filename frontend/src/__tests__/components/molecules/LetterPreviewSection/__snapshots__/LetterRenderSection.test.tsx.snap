@@ -66,10 +66,10 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="tabContent"
+          class="nhsuk-grid-row"
         >
           <div
-            class="formColumn"
+            class="nhsuk-grid-column-one-third"
           >
             <form
               id="letter-preview-short"
@@ -106,17 +106,57 @@ exports[`LetterRender matches snapshot 1`] = `
                   <option
                     value="short-1"
                   >
-                    Jo Blogs
+                    Jo Bloggs
                   </option>
                   <option
                     value="short-2"
                   >
-                    Dr Li Wei
+                    Mr John Smith
                   </option>
                   <option
                     value="short-3"
                   >
-                    Mx Ana Kim
+                    Ms Sarah Jones
+                  </option>
+                  <option
+                    value="short-4"
+                  >
+                    Dr Li Wei
+                  </option>
+                  <option
+                    value="short-5"
+                  >
+                    Mrs Mary Brown
+                  </option>
+                  <option
+                    value="short-6"
+                  >
+                    Rev Mia Dao
+                  </option>
+                  <option
+                    value="short-7"
+                  >
+                    Miss Lucy Taylor
+                  </option>
+                  <option
+                    value="short-8"
+                  >
+                    Mx Alex Chen
+                  </option>
+                  <option
+                    value="short-9"
+                  >
+                    Prof Ola Fye
+                  </option>
+                  <option
+                    value="short-10"
+                  >
+                    Dr James Patel
+                  </option>
+                  <option
+                    value="short-11"
+                  >
+                    Ms Claire Davies
                   </option>
                 </select>
               </div>
@@ -171,9 +211,10 @@ exports[`LetterRender matches snapshot 1`] = `
             </form>
           </div>
           <div
-            class="iframeColumn"
+            class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
+              aria-label="PDF preview of letter template with short example personalisation data"
               referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - short examples"
@@ -188,10 +229,10 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="tabContent"
+          class="nhsuk-grid-row"
         >
           <div
-            class="formColumn"
+            class="nhsuk-grid-column-one-third"
           >
             <form
               id="letter-preview-long"
@@ -228,17 +269,57 @@ exports[`LetterRender matches snapshot 1`] = `
                   <option
                     value="long-1"
                   >
-                    Joseph Anthony Hendrington-Bloggs
+                    Mr Michael James Richardson-Clarke
                   </option>
                   <option
                     value="long-2"
                   >
-                    Dr Alejandro Ruiz Fernandez
+                    Dr Elizabeth Anne Thompson
                   </option>
                   <option
                     value="long-3"
                   >
-                    Prof Catherine Montgomery-Harrington
+                    Dame Catherine Elizabeth Montgomery
+                  </option>
+                  <option
+                    value="long-4"
+                  >
+                    Mr Rajesh Kumar Chandrasekaran
+                  </option>
+                  <option
+                    value="long-5"
+                  >
+                    Ms Aminatou Diallo Kouyaté
+                  </option>
+                  <option
+                    value="long-6"
+                  >
+                    Sir William Alexander Fitzgerald
+                  </option>
+                  <option
+                    value="long-7"
+                  >
+                    Dr Priya Sharma-Williamson
+                  </option>
+                  <option
+                    value="long-8"
+                  >
+                    Rev Emmanuel Kwabena Adomako
+                  </option>
+                  <option
+                    value="long-9"
+                  >
+                    Prof Franziska Vogel-Bernhardt
+                  </option>
+                  <option
+                    value="long-10"
+                  >
+                    Mrs Margaret Anne O'Sullivan
+                  </option>
+                  <option
+                    value="long-11"
+                  >
+                    Dr Christopher James Harrington
                   </option>
                 </select>
               </div>
@@ -293,9 +374,10 @@ exports[`LetterRender matches snapshot 1`] = `
             </form>
           </div>
           <div
-            class="iframeColumn"
+            class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
+              aria-label="PDF preview of letter template with long example personalisation data"
               referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - long examples"

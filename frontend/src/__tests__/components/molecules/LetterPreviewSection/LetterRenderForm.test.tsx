@@ -30,7 +30,6 @@ const defaultProps = {
   template: baseTemplate,
   tab: 'short' as const,
   formData: defaultFormData,
-  errors: {},
   onFormChange: jest.fn(),
   onSubmit: jest.fn(),
 };
@@ -63,9 +62,9 @@ describe('LetterRenderForm', () => {
       expect(dropdown).toBeInTheDocument();
 
       // Check for short recipient options
-      expect(screen.getByText('Jo Blogs')).toBeInTheDocument();
-      expect(screen.getByText('Dr Li Wei')).toBeInTheDocument();
-      expect(screen.getByText('Mx Ana Kim')).toBeInTheDocument();
+      expect(screen.getByText('Jo Bloggs')).toBeInTheDocument();
+      expect(screen.getByText('Mr John Smith')).toBeInTheDocument();
+      expect(screen.getByText('Ms Sarah Jones')).toBeInTheDocument();
     });
 
     it('renders PDS recipient dropdown with long recipients for long tab', () => {
@@ -78,27 +77,14 @@ describe('LetterRenderForm', () => {
 
       // Check for long recipient options
       expect(
-        screen.getByText('Joseph Anthony Hendrington-Bloggs')
+        screen.getByText('Mr Michael James Richardson-Clarke')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('Dr Alejandro Ruiz Fernandez')
+        screen.getByText('Dr Elizabeth Anne Thompson')
       ).toBeInTheDocument();
       expect(
-        screen.getByText('Prof Catherine Montgomery-Harrington')
+        screen.getByText('Dame Catherine Elizabeth Montgomery')
       ).toBeInTheDocument();
-    });
-
-    it('displays error message when PDS field has error', () => {
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          errors={{
-            systemPersonalisationPackId: ['Please select a recipient'],
-          }}
-        />
-      );
-
-      expect(screen.getByText('Please select a recipient')).toBeInTheDocument();
     });
 
     it('calls onFormChange when PDS dropdown changes', () => {
@@ -168,23 +154,6 @@ describe('LetterRenderForm', () => {
       expect(
         screen.queryByText('Custom personalisation fields')
       ).not.toBeInTheDocument();
-    });
-
-    it('displays error for custom field', () => {
-      const templateWithCustom: AuthoringLetterTemplate = {
-        ...baseTemplate,
-        customPersonalisation: ['appointmentDate'],
-      };
-
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          template={templateWithCustom}
-          errors={{ custom_appointmentDate: ['Field is required'] }}
-        />
-      );
-
-      expect(screen.getByText('Field is required')).toBeInTheDocument();
     });
 
     it('calls onFormChange when custom field changes', () => {

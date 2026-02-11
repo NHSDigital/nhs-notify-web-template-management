@@ -532,6 +532,10 @@ const previewLetterTemplate = {
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   validationErrorMessages: {
+    MISSING_ADDRESS_LINES: [
+      'The template file you uploaded does not contain the address fields.',
+      'Add the address fields to the template file and upload it.',
+    ],
     VIRUS_SCAN_FAILED: [
       'The file(s) you uploaded may contain a virus.',
       'Create a new letter template to upload your file(s) again or upload different file(s).',

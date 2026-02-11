@@ -6,6 +6,10 @@ import { getBasePath } from '@utils/get-base-path';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
+import {
+  SHORT_EXAMPLE_RECIPIENTS,
+  LONG_EXAMPLE_RECIPIENTS,
+} from './example-recipients';
 import type { RenderTab, RenderFormData } from './types';
 import styles from './LetterRenderTab.module.scss';
 
@@ -46,32 +50,46 @@ export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
   const initial = getInitialState(template, tab);
 
   const [formData, setFormData] = useState<RenderFormData>(initial.formData);
+  // setPdfUrl omitted - will be used for CCM-13495 (polling for render status)
   const [pdfUrl] = useState<string | null>(initial.pdfUrl);
-  const [errors] = useState<Record<string, string[]>>({});
+
+  const { systemPersonalisationPackId, personalisationParameters } = formData;
 
   const handleSubmit = async () => {
+    const exampleRecipients =
+      tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;
+
+    const recipient = exampleRecipients.find(
+      (r) => r.id === systemPersonalisationPackId
+    );
+
+    const personalisation = {
+      ...recipient?.data,
+      ...personalisationParameters,
+    };
+
+    // TODO: CCM-13495 - Implement polling for render status
     await updateLetterPreview({
       templateId: template.id,
       tab,
-      systemPersonalisationPackId: formData.systemPersonalisationPackId,
-      personalisationParameters: formData.personalisationParameters,
+      systemPersonalisationPackId,
+      personalisation,
     });
   };
 
   return (
-    <div className={styles.tabContent}>
-      <div className={styles.formColumn}>
+    <div className='nhsuk-grid-row'>
+      <div className='nhsuk-grid-column-one-third'>
         <LetterRenderForm
           template={template}
           tab={tab}
           formData={formData}
-          errors={errors}
           onFormChange={setFormData}
           onSubmit={handleSubmit}
         />
       </div>
 
-      <div className={styles.iframeColumn}>
+      <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
         <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
       </div>
     </div>

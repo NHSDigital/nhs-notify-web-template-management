@@ -1,7 +1,5 @@
-import {
-  updateLetterPreview,
-  type UpdateLetterPreviewInput,
-} from '@molecules/LetterRender/server-action';
+import { updateLetterPreview } from '@molecules/LetterRender/server-action';
+import type { UpdateLetterPreviewInput } from '@molecules/LetterRender/types';
 
 describe('updateLetterPreview', () => {
   it('accepts the expected input shape', async () => {
@@ -9,7 +7,11 @@ describe('updateLetterPreview', () => {
       templateId: 'template-123',
       tab: 'short',
       systemPersonalisationPackId: 'short-1',
-      personalisationParameters: { appointmentDate: '2025-01-15' },
+      personalisation: {
+        firstName: 'Jo',
+        lastName: 'Blogs',
+        appointmentDate: '2025-01-15',
+      },
     };
 
     await expect(updateLetterPreview(input)).resolves.toBeUndefined();

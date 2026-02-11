@@ -688,6 +688,7 @@
       },
       "LetterValidationError": {
         "enum": [
+          "MISSING_ADDRESS_LINES",
           "VIRUS_SCAN_FAILED"
         ],
         "type": "string"

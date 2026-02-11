@@ -1,13 +1,6 @@
 'use server';
 
-import type { RenderTab } from './types';
-
-export type UpdateLetterPreviewInput = {
-  templateId: string;
-  tab: RenderTab;
-  systemPersonalisationPackId: string;
-  personalisationParameters: Record<string, string>;
-};
+import type { UpdateLetterPreviewInput } from './types';
 
 /**
  * Server action for updating the letter preview with personalisation data.
@@ -15,7 +8,18 @@ export type UpdateLetterPreviewInput = {
  * TODO: CCM-13495 - Implement actual PDF re-render functionality
  */
 export async function updateLetterPreview(
-  _input: UpdateLetterPreviewInput
+  input: UpdateLetterPreviewInput
 ): Promise<void> {
-  // no-op
+  const date = new Date().toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const _personalisationWithDate = {
+    ...input.personalisation,
+    date,
+  };
+
+  // no-op - personalisationWithDate will be sent to backend in CCM-13495
 }

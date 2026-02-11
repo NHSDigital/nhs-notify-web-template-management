@@ -1,8 +1,7 @@
 'use client';
 
-import type { ChangeEvent, FormEvent } from 'react';
-import classNames from 'classnames';
-import { Button, ErrorMessage, Label } from 'nhsuk-react-components';
+import type { ChangeEvent } from 'react';
+import { Button, Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
@@ -16,7 +15,6 @@ type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
   tab: RenderTab;
   formData: RenderFormData;
-  errors: Record<string, string[]>;
   onFormChange: (formData: RenderFormData) => void;
   onSubmit: () => void;
 };
@@ -25,7 +23,6 @@ export function LetterRenderForm({
   template,
   tab,
   formData,
-  errors,
   onFormChange,
   onSubmit,
 }: LetterRenderFormProps) {
@@ -37,9 +34,7 @@ export function LetterRenderForm({
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;
 
-  const systemError = errors.systemPersonalisationPackId?.join(', ');
-
-  const handlePdsChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleExampleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onFormChange({
       ...formData,
       systemPersonalisationPackId: e.target.value,
@@ -56,7 +51,7 @@ export function LetterRenderForm({
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit();
   };
@@ -67,23 +62,16 @@ export function LetterRenderForm({
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <div
-        className={classNames('nhsuk-form-group', {
-          'nhsuk-form-group--error': systemError,
-        })}
-      >
+      <div className='nhsuk-form-group'>
         <Label size='s' htmlFor={`systemPersonalisationPackId-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        {systemError && <ErrorMessage>{systemError}</ErrorMessage>}
         <select
           id={`systemPersonalisationPackId-${tab}`}
           name='systemPersonalisationPackId'
-          className={classNames('nhsuk-select', styles.recipientSelect, {
-            'nhsuk-select--error': systemError,
-          })}
+          className={`nhsuk-select ${styles.recipientSelect}`}
           value={formData.systemPersonalisationPackId}
-          onChange={handlePdsChange}
+          onChange={handleExampleChange}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
           {exampleRecipients.map((recipient) => (
@@ -94,41 +82,30 @@ export function LetterRenderForm({
         </select>
       </div>
 
-      {/* Custom Personalisation Section (conditional) */}
+      {/* Custom Personalisation Section */}
       {hasCustomFields && (
         <>
           <h3 className='nhsuk-heading-s nhsuk-u-padding-top-4'>
             {copy.customSection.heading}
           </h3>
-          {template.customPersonalisation!.map((fieldName) => {
-            const fieldError = errors[`custom_${fieldName}`]?.join(', ');
-            return (
-              <div
-                key={fieldName}
-                className={classNames('nhsuk-form-group', {
-                  'nhsuk-form-group--error': fieldError,
-                })}
-              >
-                <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
-                  {fieldName}
-                </Label>
-                {fieldError && <ErrorMessage>{fieldError}</ErrorMessage>}
-                <input
-                  type='text'
-                  id={`custom-${fieldName}-${tab}`}
-                  name={`custom_${fieldName}`}
-                  className={classNames('nhsuk-input', {
-                    'nhsuk-input--error': fieldError,
-                  })}
-                  maxLength={500}
-                  value={formData.personalisationParameters[fieldName] ?? ''}
-                  onChange={(e) =>
-                    handleCustomFieldChange(fieldName, e.target.value)
-                  }
-                />
-              </div>
-            );
-          })}
+          {template.customPersonalisation!.map((fieldName) => (
+            <div key={fieldName} className='nhsuk-form-group'>
+              <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
+                {fieldName}
+              </Label>
+              <input
+                type='text'
+                id={`custom-${fieldName}-${tab}`}
+                name={`custom_${fieldName}`}
+                className='nhsuk-input'
+                maxLength={500}
+                value={formData.personalisationParameters[fieldName] ?? ''}
+                onChange={(e) =>
+                  handleCustomFieldChange(fieldName, e.target.value)
+                }
+              />
+            </div>
+          ))}
         </>
       )}
 
