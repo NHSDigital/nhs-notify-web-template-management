@@ -32,7 +32,12 @@ aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AW
 
 # Optionally authenticate to GitHub Container Registry for base images.
 if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
-  echo "${GHCR_LOGIN_TOKEN}" | docker login ghcr.io --username "${GHCR_LOGIN_USER}" --password-stdin
+  echo "Attempting GHCR login as ${GHCR_LOGIN_USER}..."
+  if echo "${GHCR_LOGIN_TOKEN}" | docker login ghcr.io --username "${GHCR_LOGIN_USER}" --password-stdin; then
+    echo "GHCR login successful."
+  else
+    echo "GHCR login failed!" >&2
+  fi
 fi
 
 # Resolve git references for image tags.
