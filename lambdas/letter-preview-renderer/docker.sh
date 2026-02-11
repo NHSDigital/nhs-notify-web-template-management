@@ -57,9 +57,9 @@ docker build \
   -t "${ECR_IMAGE_LATEST}" \
   .
 
-# Push the image tag to ECR. The Terraform configuration will reference this tag for the lambda image.
+# Push the image tag to ECR on apply only. The Terraform configuration will reference this tag for the lambda image.
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
-  echo "Pushing Docker image to ECR: ${ECR_IMAGE_LATEST}"
+  echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker image to ECR: ${ECR_IMAGE_LATEST}"
   docker push "${ECR_IMAGE_LATEST}"
 else
   echo "PUBLISH_LAMBDA_IMAGE is not set to true (we are most likely running in the context of a TF Plan). Skipping Docker push."

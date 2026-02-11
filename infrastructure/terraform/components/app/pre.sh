@@ -13,9 +13,11 @@ npm run generate-dependencies --workspaces --if-present
 export TF_VAR_short_sha="$(git rev-parse --short HEAD)"
 
 if [ "$TF_ACTION" = "apply" ]; then
+  echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
   export PUBLISH_LAMBDA_IMAGE="true"
+else
+  echo "Not setting PUBLISH_LAMBDA_IMAGE for non-apply action (e.g. plan)"
 fi
-
 
 npm run lambda-build --workspaces --if-present
 
