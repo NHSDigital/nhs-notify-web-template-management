@@ -11,7 +11,7 @@ chmod +x ./build.sh
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 CSI="nhs-notify-${ENVIRONMENT}"
-LAMBDA_NAME="${LAMBDA_NAME:-$(basename $(cd "$(dirname "$0")/.." && pwd))}"
+LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR:-}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN:-}"
