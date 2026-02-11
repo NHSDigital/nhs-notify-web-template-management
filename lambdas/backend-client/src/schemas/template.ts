@@ -11,6 +11,7 @@ import type {
   EmailProperties,
   Language,
   LetterType,
+  LetterValidationError,
   NhsAppProperties,
   PatchTemplate,
   PdfLetterFiles,
@@ -33,6 +34,7 @@ import { schemaFor } from './schema-for';
 import {
   LANGUAGE_LIST,
   LETTER_TYPE_LIST,
+  LETTER_VALIDATION_ERROR_LIST,
   RENDER_STATUS_LIST,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
@@ -145,6 +147,10 @@ export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   })
 );
 
+const $LetterValidationError = schemaFor<LetterValidationError>()(
+  z.enum(LETTER_VALIDATION_ERROR_LIST)
+);
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
@@ -155,6 +161,7 @@ export const $AuthoringLetterProperties =
       letterVersion: z.literal('AUTHORING'),
       sidesCount: z.number().int().optional(),
       systemPersonalisation: z.array(z.string()).optional(),
+      validationErrors: z.array($LetterValidationError).optional(),
     })
   );
 

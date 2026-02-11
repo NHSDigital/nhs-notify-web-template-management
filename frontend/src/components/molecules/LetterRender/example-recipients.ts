@@ -1,21 +1,10 @@
-/**
- * System Test Recipients for letter preview personalisation.
- *
- * These are predefined example recipients with short and long form data
- * that users can select to preview how their letter will look with
- * different lengths of personalisation data.
- */
-
-export interface SystemTestRecipient {
+export type ExampleRecipient = {
   id: string;
   name: string;
   data: Record<string, string>;
-}
+};
 
-/**
- * Short form example recipients - shorter names and data
- */
-export const SHORT_SYSTEM_RECIPIENTS: SystemTestRecipient[] = [
+export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
   {
     id: 'short-1',
     name: 'Jo Blogs',
@@ -78,10 +67,7 @@ export const SHORT_SYSTEM_RECIPIENTS: SystemTestRecipient[] = [
   },
 ];
 
-/**
- * Long form example recipients - longer names and data to test edge cases
- */
-export const LONG_SYSTEM_RECIPIENTS: SystemTestRecipient[] = [
+export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
   {
     id: 'long-1',
     name: 'Joseph Anthony Hendrington-Bloggs',

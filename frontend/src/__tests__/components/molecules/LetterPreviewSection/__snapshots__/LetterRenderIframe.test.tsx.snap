@@ -15,7 +15,7 @@ exports[`LetterRenderIframe snapshots matches snapshot without PDF file 1`] = `
   <p
     class="nhsuk-body"
   >
-    No preview available. Upload a letter template to see a preview.
+    No preview available
   </p>
 </DocumentFragment>
 `;

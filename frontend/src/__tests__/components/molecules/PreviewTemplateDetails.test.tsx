@@ -301,6 +301,135 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
   });
+
+  describe('PENDING_VALIDATION status', () => {
+    const pendingValidationTemplate = {
+      ...baseAuthoringLetter,
+      templateStatus: 'PENDING_VALIDATION' as const,
+    };
+
+    it('hides edit name link', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={pendingValidationTemplate}
+        />
+      );
+
+      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+    });
+
+    it('hides campaign row completely', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...pendingValidationTemplate, campaignId: 'campaign-1' }}
+        />
+      );
+
+      expect(screen.queryByText('Campaign')).not.toBeInTheDocument();
+      expect(screen.queryByText('campaign-1')).not.toBeInTheDocument();
+    });
+
+    it('hides printing and postage row completely', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={pendingValidationTemplate}
+        />
+      );
+
+      expect(screen.queryByText('Printing and postage')).not.toBeInTheDocument();
+      expect(screen.queryByText('variant-123')).not.toBeInTheDocument();
+    });
+
+    it('hides total pages and sheets rows', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={pendingValidationTemplate}
+        />
+      );
+
+      expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
+    });
+
+    it('still shows template ID and type rows', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={pendingValidationTemplate}
+        />
+      );
+
+      expect(screen.getByText('Template ID')).toBeInTheDocument();
+      expect(screen.getByText('Template type')).toBeInTheDocument();
+    });
+  });
+
+  describe('VALIDATION_FAILED status', () => {
+    const validationFailedTemplate = {
+      ...baseAuthoringLetter,
+      templateStatus: 'VALIDATION_FAILED' as const,
+    };
+
+    it('hides edit name link', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={validationFailedTemplate}
+        />
+      );
+
+      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
+    });
+
+    it('hides campaign row completely', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...validationFailedTemplate, campaignId: 'campaign-1' }}
+        />
+      );
+
+      expect(screen.queryByText('Campaign')).not.toBeInTheDocument();
+    });
+
+    it('hides printing and postage row completely', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={validationFailedTemplate}
+        />
+      );
+
+      expect(screen.queryByText('Printing and postage')).not.toBeInTheDocument();
+    });
+
+    it('hides total pages and sheets when no initialRender', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...validationFailedTemplate, files: {} }}
+        />
+      );
+
+      expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
+    });
+
+    it('shows total pages and sheets when initialRender exists', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{
+            ...validationFailedTemplate,
+            files: {
+              initialRender: {
+                fileName: 'render.pdf',
+                currentVersion: 'v1',
+                status: 'RENDERED',
+              },
+            },
+          }}
+        />
+      );
+
+      expect(screen.getByText('Total pages')).toBeInTheDocument();
+      expect(screen.getByText('Sheets')).toBeInTheDocument();
+    });
+  });
 });
 
 describe('PreviewTemplateDetailsLetter', () => {

@@ -17,6 +17,7 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   letterVersion: 'AUTHORING';
   sidesCount?: number;
   systemPersonalisation?: Array<string>;
+  validationErrors?: Array<LetterValidationError>;
 };
 
 export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
@@ -213,6 +214,8 @@ export type Language =
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
+
+export type LetterValidationError = 'VIRUS_SCAN_FAILED';
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
 

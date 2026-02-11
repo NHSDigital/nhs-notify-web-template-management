@@ -6,35 +6,34 @@ import { Button, ErrorMessage, Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
-  SHORT_SYSTEM_RECIPIENTS,
-  LONG_SYSTEM_RECIPIENTS,
-} from './system-test-recipients';
-import type { LetterPreviewVariant, LetterRenderFormData } from './types';
+  SHORT_EXAMPLE_RECIPIENTS,
+  LONG_EXAMPLE_RECIPIENTS,
+} from './example-recipients';
+import type { RenderFormData, RenderTab } from './types';
 import styles from './LetterRenderForm.module.scss';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
-  variant: LetterPreviewVariant;
-  formData: LetterRenderFormData;
+  tab: RenderTab;
+  formData: RenderFormData;
   errors: Record<string, string[]>;
-  isLoading: boolean;
-  onFormChange: (formData: LetterRenderFormData) => void;
+  onFormChange: (formData: RenderFormData) => void;
   onSubmit: () => void;
 };
 
 export function LetterRenderForm({
   template,
-  variant,
+  tab,
   formData,
   errors,
-  isLoading,
   onFormChange,
   onSubmit,
 }: LetterRenderFormProps) {
   const { letterPreviewSection: copy } = content.components;
 
-  const systemRecipients =
-    variant === 'short' ? SHORT_SYSTEM_RECIPIENTS : LONG_SYSTEM_RECIPIENTS;
+  const exampleRecipients =
+    tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;
+
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;
 
@@ -63,7 +62,7 @@ export function LetterRenderForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} id={`letter-preview-${variant}`}>
+    <form onSubmit={handleSubmit} id={`letter-preview-${tab}`}>
       {/* PDS Personalisation Section */}
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
@@ -73,22 +72,21 @@ export function LetterRenderForm({
           'nhsuk-form-group--error': systemError,
         })}
       >
-        <Label size='s' htmlFor={`systemPersonalisationPackId-${variant}`}>
+        <Label size='s' htmlFor={`systemPersonalisationPackId-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
         {systemError && <ErrorMessage>{systemError}</ErrorMessage>}
         <select
-          id={`systemPersonalisationPackId-${variant}`}
+          id={`systemPersonalisationPackId-${tab}`}
           name='systemPersonalisationPackId'
           className={classNames('nhsuk-select', styles.recipientSelect, {
             'nhsuk-select--error': systemError,
           })}
           value={formData.systemPersonalisationPackId}
           onChange={handlePdsChange}
-          disabled={isLoading}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
-          {systemRecipients.map((recipient) => (
+          {exampleRecipients.map((recipient) => (
             <option key={recipient.id} value={recipient.id}>
               {recipient.name}
             </option>
@@ -111,13 +109,13 @@ export function LetterRenderForm({
                   'nhsuk-form-group--error': fieldError,
                 })}
               >
-                <Label size='s' htmlFor={`custom-${fieldName}-${variant}`}>
+                <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
                   {fieldName}
                 </Label>
                 {fieldError && <ErrorMessage>{fieldError}</ErrorMessage>}
                 <input
                   type='text'
-                  id={`custom-${fieldName}-${variant}`}
+                  id={`custom-${fieldName}-${tab}`}
                   name={`custom_${fieldName}`}
                   className={classNames('nhsuk-input', {
                     'nhsuk-input--error': fieldError,
@@ -127,7 +125,6 @@ export function LetterRenderForm({
                   onChange={(e) =>
                     handleCustomFieldChange(fieldName, e.target.value)
                   }
-                  disabled={isLoading}
                 />
               </div>
             );
@@ -135,12 +132,7 @@ export function LetterRenderForm({
         </>
       )}
 
-      <Button
-        type='submit'
-        secondary
-        className='nhsuk-u-margin-top-4'
-        disabled={isLoading}
-      >
+      <Button type='submit' secondary className='nhsuk-u-margin-top-4'>
         {copy.updatePreviewButton}
       </Button>
     </form>

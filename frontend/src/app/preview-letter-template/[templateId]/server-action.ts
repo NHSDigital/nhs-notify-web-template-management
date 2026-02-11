@@ -1,38 +1,28 @@
 'use server';
 
-import { redirect, RedirectType } from 'next/navigation';
+import { z } from 'zod/v4';
+import { $LockNumber } from 'nhs-notify-backend-client';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
+import { redirect } from 'next/navigation';
 
-/**
- * Server action for submitting an authoring letter template.
- *
- * TD: CCM-XXXXX - Implement actual submission logic:
- * - Validate that short/long form renders have been created
- * - Call backend API to submit the template
- * - Handle errors and return appropriate error state
- */
+const $FormSchema = z.object({
+  templateId: z.string().nonempty(),
+  lockNumber: $LockNumber,
+});
+
 export async function submitAuthoringLetterAction(
-  formState: FormState,
-  formData: FormData
+  _: FormState,
+  form: FormData
 ): Promise<FormState> {
-  const templateId = formData.get('templateId') as string;
-  const lockNumber = formData.get('lockNumber') as string;
+  const result = $FormSchema.safeParse(Object.fromEntries(form.entries()));
 
-  // TD: Implement validation
-  // - Check if renders have been created
-  // const template = await getTemplate(templateId);
-  // if (!template.files.shortFormRender || !template.files.longFormRender) {
-  //   return {
-  //     ...formState,
-  //     errorState: {
-  //       formErrors: ['You must preview your letter with both short and long examples before submitting'],
-  //     },
-  //   };
-  // }
+  if (result.error) {
+    return {
+      errorState: z.flattenError(result.error),
+    };
+  }
 
-  // Redirect to submit page on success
-  redirect(
-    `/submit-letter-template/${templateId}?lockNumber=${lockNumber}`,
-    RedirectType.push
-  );
+  const { templateId, lockNumber } = result.data;
+
+  redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
 }

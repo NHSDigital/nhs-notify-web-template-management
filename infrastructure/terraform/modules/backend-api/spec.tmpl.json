@@ -48,6 +48,12 @@
                   "type": "string"
                 },
                 "type": "array"
+              },
+              "validationErrors": {
+                "items": {
+                  "$ref": "#/components/schemas/LetterValidationError"
+                },
+                "type": "array"
               }
             },
             "required": [
@@ -677,6 +683,12 @@
           "q4",
           "x0",
           "x1"
+        ],
+        "type": "string"
+      },
+      "LetterValidationError": {
+        "enum": [
+          "VIRUS_SCAN_FAILED"
         ],
         "type": "string"
       },

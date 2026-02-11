@@ -206,6 +206,7 @@ describe('Template API - Patch', () => {
       language: 'en',
       letterVersion: 'AUTHORING',
       sidesCount: 1,
+      files: {},
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lockNumber: 6,

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { LetterRenderForm } from '@molecules/LetterRender/LetterRenderForm';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { LetterRenderFormData } from '@molecules/LetterRender/types';
+import type { RenderFormData } from '@molecules/LetterRender/types';
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -21,17 +21,16 @@ const baseTemplate: AuthoringLetterTemplate = {
   lockNumber: 1,
 };
 
-const defaultFormData: LetterRenderFormData = {
+const defaultFormData: RenderFormData = {
   systemPersonalisationPackId: '',
   personalisationParameters: {},
 };
 
 const defaultProps = {
   template: baseTemplate,
-  variant: 'short' as const,
+  tab: 'short' as const,
   formData: defaultFormData,
   errors: {},
-  isLoading: false,
   onFormChange: jest.fn(),
   onSubmit: jest.fn(),
 };
@@ -55,8 +54,8 @@ describe('LetterRenderForm', () => {
       ).toBeInTheDocument();
     });
 
-    it('renders PDS recipient dropdown with short recipients for short variant', () => {
-      render(<LetterRenderForm {...defaultProps} variant='short' />);
+    it('renders PDS recipient dropdown with short recipients for short tab', () => {
+      render(<LetterRenderForm {...defaultProps} tab='short' />);
 
       const dropdown = screen.getByRole('combobox', {
         name: /example recipient/i,
@@ -69,8 +68,8 @@ describe('LetterRenderForm', () => {
       expect(screen.getByText('Mx Ana Kim')).toBeInTheDocument();
     });
 
-    it('renders PDS recipient dropdown with long recipients for long variant', () => {
-      render(<LetterRenderForm {...defaultProps} variant='long' />);
+    it('renders PDS recipient dropdown with long recipients for long tab', () => {
+      render(<LetterRenderForm {...defaultProps} tab='long' />);
 
       const dropdown = screen.getByRole('combobox', {
         name: /example recipient/i,
@@ -271,22 +270,10 @@ describe('LetterRenderForm', () => {
 
       expect(onSubmit).toHaveBeenCalled();
     });
-
-    it('disables form elements when isLoading is true', () => {
-      render(<LetterRenderForm {...defaultProps} isLoading={true} />);
-
-      const dropdown = screen.getByRole('combobox', {
-        name: /example recipient/i,
-      });
-      const button = screen.getByRole('button', { name: 'Update preview' });
-
-      expect(dropdown).toBeDisabled();
-      expect(button).toBeDisabled();
-    });
   });
 
   describe('snapshots', () => {
-    it('matches snapshot for short variant', () => {
+    it('matches snapshot for short tab', () => {
       const templateWithCustom: AuthoringLetterTemplate = {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate', 'clinicName'],
@@ -299,7 +286,7 @@ describe('LetterRenderForm', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('matches snapshot for long variant', () => {
+    it('matches snapshot for long tab', () => {
       const templateWithCustom: AuthoringLetterTemplate = {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate'],
@@ -309,7 +296,7 @@ describe('LetterRenderForm', () => {
         <LetterRenderForm
           {...defaultProps}
           template={templateWithCustom}
-          variant='long'
+          tab='long'
         />
       );
 

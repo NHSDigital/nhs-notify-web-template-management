@@ -531,6 +531,12 @@ const previewLetterTemplate = {
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
+  validationErrorMessages: {
+    VIRUS_SCAN_FAILED: [
+      'The file(s) you uploaded may contain a virus.',
+      'Create a new letter template to upload your file(s) again or upload different file(s).',
+    ],
+  } as Record<string, string[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',

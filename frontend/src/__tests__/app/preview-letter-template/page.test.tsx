@@ -152,4 +152,44 @@ describe('PreviewLetterTemplatePage', () => {
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  describe('validation errors for authoring letters', () => {
+    it('should render page for authoring letter with VALIDATION_FAILED status', async () => {
+      const templateWithValidationErrors = {
+        ...AUTHORING_LETTER_TEMPLATE,
+        templateStatus: 'VALIDATION_FAILED' as const,
+        validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      };
+
+      getTemplateMock.mockResolvedValueOnce(templateWithValidationErrors);
+
+      const page = await PreviewLetterTemplatePage({
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
+      });
+
+      expect(page).toBeTruthy();
+      expect(redirectMock).not.toHaveBeenCalled();
+    });
+
+    it('should render page for authoring letter with VALIDATION_FAILED status and empty validationErrors', async () => {
+      const templateWithEmptyErrors = {
+        ...AUTHORING_LETTER_TEMPLATE,
+        templateStatus: 'VALIDATION_FAILED' as const,
+        validationErrors: [] as 'VIRUS_SCAN_FAILED'[],
+      };
+
+      getTemplateMock.mockResolvedValueOnce(templateWithEmptyErrors);
+
+      const page = await PreviewLetterTemplatePage({
+        params: Promise.resolve({
+          templateId: templateWithEmptyErrors.id,
+        }),
+      });
+
+      expect(page).toBeTruthy();
+      expect(redirectMock).not.toHaveBeenCalled();
+    });
+  });
 });

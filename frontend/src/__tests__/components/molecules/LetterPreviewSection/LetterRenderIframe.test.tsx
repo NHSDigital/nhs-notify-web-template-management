@@ -6,9 +6,8 @@ describe('LetterRenderIframe', () => {
     it('renders iframe with provided pdfUrl', () => {
       render(
         <LetterRenderIframe
-          variant='short'
+          tab='short'
           pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
-          _previewState='idle'
         />
       );
 
@@ -19,28 +18,16 @@ describe('LetterRenderIframe', () => {
       );
     });
 
-    it('renders correct title for short variant', () => {
-      render(
-        <LetterRenderIframe
-          variant='short'
-          pdfUrl='/test.pdf'
-          _previewState='idle'
-        />
-      );
+    it('renders correct title for short tab', () => {
+      render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
 
       expect(
         screen.getByTitle('Letter preview - short examples')
       ).toBeInTheDocument();
     });
 
-    it('renders correct title for long variant', () => {
-      render(
-        <LetterRenderIframe
-          variant='long'
-          pdfUrl='/test.pdf'
-          _previewState='idle'
-        />
-      );
+    it('renders correct title for long tab', () => {
+      render(<LetterRenderIframe tab='long' pdfUrl='/test.pdf' />);
 
       expect(
         screen.getByTitle('Letter preview - long examples')
@@ -50,19 +37,9 @@ describe('LetterRenderIframe', () => {
 
   describe('missing file handling', () => {
     it('shows message when pdfUrl is null', () => {
-      render(
-        <LetterRenderIframe
-          variant='short'
-          pdfUrl={null}
-          _previewState='idle'
-        />
-      );
+      render(<LetterRenderIframe tab='short' pdfUrl={null} />);
 
-      expect(
-        screen.getByText(
-          'No preview available. Upload a letter template to see a preview.'
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText('No preview available')).toBeInTheDocument();
       expect(
         screen.queryByTitle('Letter preview - short examples')
       ).not.toBeInTheDocument();
@@ -71,13 +48,7 @@ describe('LetterRenderIframe', () => {
 
   describe('iframe attributes', () => {
     it('renders iframe without inline styles (styles applied via CSS)', () => {
-      render(
-        <LetterRenderIframe
-          variant='short'
-          pdfUrl='/test.pdf'
-          _previewState='idle'
-        />
-      );
+      render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
 
       const iframe = screen.getByTitle('Letter preview - short examples');
       // Styles are now applied via CSS module, not inline
@@ -85,13 +56,7 @@ describe('LetterRenderIframe', () => {
     });
 
     it('has referrerPolicy set to no-referrer', () => {
-      render(
-        <LetterRenderIframe
-          variant='short'
-          pdfUrl='/test.pdf'
-          _previewState='idle'
-        />
-      );
+      render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
 
       const iframe = screen.getByTitle('Letter preview - short examples');
       expect(iframe).toHaveAttribute('referrerPolicy', 'no-referrer');
@@ -102,9 +67,8 @@ describe('LetterRenderIframe', () => {
     it('matches snapshot with PDF URL', () => {
       const container = render(
         <LetterRenderIframe
-          variant='short'
+          tab='short'
           pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
-          _previewState='idle'
         />
       );
 
@@ -113,11 +77,7 @@ describe('LetterRenderIframe', () => {
 
     it('matches snapshot without PDF file', () => {
       const container = render(
-        <LetterRenderIframe
-          variant='short'
-          pdfUrl={null}
-          _previewState='idle'
-        />
+        <LetterRenderIframe tab='short' pdfUrl={null} />
       );
 
       expect(container.asFragment()).toMatchSnapshot();

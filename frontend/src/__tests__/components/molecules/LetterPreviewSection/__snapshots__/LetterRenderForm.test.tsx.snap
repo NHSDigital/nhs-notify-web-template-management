@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LetterRenderForm snapshots matches snapshot for long variant 1`] = `
+exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
 <DocumentFragment>
   <form
     id="letter-preview-long"
@@ -85,7 +85,7 @@ exports[`LetterRenderForm snapshots matches snapshot for long variant 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LetterRenderForm snapshots matches snapshot for short variant 1`] = `
+exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
 <DocumentFragment>
   <form
     id="letter-preview-short"

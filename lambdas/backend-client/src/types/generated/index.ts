@@ -78,6 +78,7 @@ export type {
   Language,
   LetterProperties,
   LetterType,
+  LetterValidationError,
   LetterVersion,
   NhsAppProperties,
   PatchTemplate,
