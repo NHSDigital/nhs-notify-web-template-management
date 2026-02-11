@@ -12,6 +12,11 @@ npm run generate-dependencies --workspaces --if-present
 
 export TF_VAR_short_sha="$(git rev-parse --short HEAD)"
 
+if [ "$TF_ACTION" = "apply" ]; then
+  export PUBLISH_LAMBDA_IMAGE="true"
+fi
+
+
 npm run lambda-build --workspaces --if-present
 
 lambdas/layers/pdfjs/build.sh
