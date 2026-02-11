@@ -10,6 +10,8 @@ echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 export TF_REGION="$REGION"
 export TF_ENVIRONMENT="$ENVIRONMENT"
+echo "COMPONENT_NAME=${component_name}"
+echo "AWS_ACCOUNT_ID=${aws_account_id}"
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
