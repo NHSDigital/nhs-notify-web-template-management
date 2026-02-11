@@ -1,5 +1,7 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, any change of directory will persist once this script exits and returns control to terraform.sh
+REGION=$1
+ENVIRONMENT=$2
 ACTION=$3
 
 echo "Running app pre.sh"
@@ -9,6 +11,9 @@ echo "project=$project"
 echo "aws_account_id=$aws_account_id"
 echo "environment=$environment"
 echo "region=$region"
+
+# Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
+export component_name project aws_account_id environment region
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
