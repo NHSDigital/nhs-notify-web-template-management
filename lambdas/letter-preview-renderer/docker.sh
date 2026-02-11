@@ -8,30 +8,27 @@ chmod +x ./build.sh
 ./build.sh
 
 # Set Variables. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
-AWS_REGION="${TF_REGION}"
-COMPONENT="${COMPONENT}"
-CSI="nhs-notify-${TF_ENVIRONMENT}-${COMPONENT}"
+CSI="${project-name}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
-ENVIRONMENT="${TF_ENVIRONMENT}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
 IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 
 # Ensure required AWS/ECR configuration is present.
-echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
-echo "AWS_REGION: ${AWS_REGION:-<unset>}"
-echo "COMPONENT: ${COMPONENT:-<unset>}"
+echo "aws_account_id: ${aws_account_id:-<unset>}"
+echo "aws_region: ${region:-<unset>}"
+echo "component_name: ${component_name:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
 echo "ECR_REPO: ${ECR_REPO:-<unset>}"
-echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
+echo "environment: ${environment:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
 echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
-aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
+aws ecr get-login-password --region "${region}" | docker login --username AWS --password-stdin "${aws_account_id}".dkr.ecr."${region}".amazonaws.com
 
 # Optionally authenticate to GitHub Container Registry for base images.
 if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
@@ -48,7 +45,7 @@ fi
 IMAGE_TAG="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
 
 # Compose the full ECR image references.
-ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+ECR_REPO_URI="${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO}"
 ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
 BASE_IMAGE_ARG="$1"
