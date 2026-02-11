@@ -9,9 +9,9 @@ chmod +x ./build.sh
 
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
-CSI="nhs-notify-${ENVIRONMENT}"
+CSI="nhs-notify-${ENVIRONMENT}-${COMPONENT}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
-SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
+IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 
@@ -22,7 +22,7 @@ echo "ECR_REPO: ${ECR_REPO:-<unset>}"
 echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
-echo "SHORT_SHA: ${SHORT_SHA:-<unset>}"
+echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 
@@ -41,7 +41,7 @@ fi
 
 # Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${SHORT_SHA}"
+IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
@@ -51,7 +51,7 @@ ECR_IMAGE_LATEST="${ECR_REPO_URI}:${IMAGE_TAG_LATEST}"
 BASE_IMAGE_ARG="$1"
 
 # Build and tag the Docker image for the lambda.
-docker build \
+docker buildx build \
   -f docker/lambda/Dockerfile \
   --build-arg BASE_IMAGE="${BASE_IMAGE_ARG}" \
   -t "${ECR_IMAGE_LATEST}" \
