@@ -147,7 +147,9 @@ describe('PreviewPdfLetterTemplate', () => {
   it('does not show RTL warning for left-to-right languages', () => {
     render(<PreviewPdfLetterTemplate template={baseTemplate} />);
 
-    expect(screen.queryByTestId('rtl-language-warning')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('rtl-language-warning')
+    ).not.toBeInTheDocument();
   });
 
   it('shows footer text when available for the status', () => {

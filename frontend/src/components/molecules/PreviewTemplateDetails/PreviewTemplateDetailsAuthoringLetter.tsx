@@ -160,7 +160,9 @@ export default function PreviewTemplateDetailsAuthoringLetter({
             <SummaryList.Row
               className={template.letterVariantId ? undefined : 'missing-value'}
             >
-              <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
+              <SummaryList.Key>
+                {rowHeadings.printingAndPostage}
+              </SummaryList.Key>
               <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
               <ActionLink
                 href={interpolate(links.choosePrintingAndPostage, {

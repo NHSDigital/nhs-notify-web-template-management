@@ -348,7 +348,9 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
         />
       );
 
-      expect(screen.queryByText('Printing and postage')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Printing and postage')
+      ).not.toBeInTheDocument();
       expect(screen.queryByText('variant-123')).not.toBeInTheDocument();
     });
 
@@ -408,7 +410,9 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
         />
       );
 
-      expect(screen.queryByText('Printing and postage')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Printing and postage')
+      ).not.toBeInTheDocument();
     });
 
     it('hides total pages and sheets when no initialRender', () => {
