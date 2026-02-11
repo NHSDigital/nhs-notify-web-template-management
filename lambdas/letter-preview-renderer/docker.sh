@@ -41,12 +41,11 @@ fi
 
 # Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
+IMAGE_TAG="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
-ECR_IMAGE_LATEST="${ECR_REPO_URI}:${IMAGE_TAG_LATEST}"
-
+ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
 BASE_IMAGE_ARG="$1"
 
@@ -54,13 +53,13 @@ BASE_IMAGE_ARG="$1"
 docker buildx build \
   -f docker/lambda/Dockerfile \
   --build-arg BASE_IMAGE="${BASE_IMAGE_ARG}" \
-  -t "${ECR_IMAGE_LATEST}" \
+  -t "${ECR_IMAGE}" \
   .
 
 # Push the image tag to ECR on apply only. The Terraform configuration will reference this tag for the lambda image.
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
-  echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker image to ECR: ${ECR_IMAGE_LATEST}"
-  docker push "${ECR_IMAGE_LATEST}"
+  echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker image to ECR: ${ECR_IMAGE}"
+  docker push "${ECR_IMAGE}"
 else
   echo "PUBLISH_LAMBDA_IMAGE is not set to true (we are most likely running in the context of a TF Plan). Skipping Docker push."
   exit 0

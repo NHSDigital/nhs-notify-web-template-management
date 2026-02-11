@@ -14,7 +14,7 @@ module "letter_preview_renderer_lambda" {
   kms_key_arn = module.kms.key_arn
 
   package_type           = "Image"
-  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.container_lambda_ecr_repo}:${var.project}-${var.environment}-letter-preview-renderer-${var.image_tag_suffix}"
+  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.container_lambda_ecr_repo}:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-${var.image_tag_suffix}"
   image_repository_names = [var.container_lambda_ecr_repo]
 
   memory  = 1024
