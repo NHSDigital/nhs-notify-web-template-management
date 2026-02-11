@@ -3,7 +3,8 @@
 # Fail fast on errors, unset variables, and pipeline failures.
 set -euo pipefail
 
-# Build the lambda artifacts before producing the Docker image.
+# Ensure build.sh is executable and build the lambda artifacts before producing the Docker image.
+chmod +x ./build.sh
 ./build.sh
 
 # Ensure required AWS/ECR configuration is present.
