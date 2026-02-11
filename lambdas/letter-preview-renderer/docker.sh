@@ -7,25 +7,26 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
+
 AWS_REGION="${AWS_REGION:-eu-west-2}"
-ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 CSI="nhs-notify-${ENVIRONMENT}-${COMPONENT}"
-LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
-IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
-GHCR_LOGIN_USER="${GITHUB_ACTOR}"
+ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
+GHCR_LOGIN_USER="${GITHUB_ACTOR}"
+IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
+LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 
 # Ensure required AWS/ECR configuration is present.
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
 echo "AWS_REGION: ${AWS_REGION:-<unset>}"
-echo "ECR_REPO: ${ECR_REPO:-<unset>}"
-echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "COMPONENT: ${COMPONENT:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
-echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
-echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
-echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
+echo "ECR_REPO: ${ECR_REPO:-<unset>}"
+echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
+echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
+echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
+echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
 aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
