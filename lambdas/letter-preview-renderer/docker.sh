@@ -11,7 +11,11 @@ chmod +x ./build.sh
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
-: "${CSI:?CSI is required}"
+CSI="${CSI:-nhs-notify-${ENVIRONMENT:-}}"
+if [ -z "$CSI" ]; then
+  echo "CSI is required (set CSI or ENVIRONMENT)" >&2
+  exit 1
+fi
 LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
