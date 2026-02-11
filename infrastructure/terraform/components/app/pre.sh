@@ -8,6 +8,9 @@ echo "Running app pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
+echo "component_name=$component_name"
+echo "project-name=$project_name"
+echo "aws_account_id=$aws_account_id"
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)

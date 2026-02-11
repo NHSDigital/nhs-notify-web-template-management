@@ -40,7 +40,6 @@ if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
   fi
 fi
 
-# Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
 IMAGE_TAG="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
 
