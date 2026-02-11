@@ -71,6 +71,11 @@ type TypeSpecificProperties = {
   supplierReferences?: Record<string, string>;
   sidesCount?: number;
   letterVariantId?: string;
+  // Authoring letter custom personalisation
+  customPersonalisation?: string[];
+  systemPersonalisation?: string[];
+  // Validation errors for authoring letters
+  validationErrors?: string[];
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

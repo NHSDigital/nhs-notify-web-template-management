@@ -115,6 +115,9 @@ export const TemplateFactory = {
         currentVersion: string;
         status: string;
       };
+      customPersonalisation?: string[];
+      systemPersonalisation?: string[];
+      validationErrors?: string[];
     }
   ): Template => {
     const campaignId =
@@ -141,6 +144,15 @@ export const TemplateFactory = {
       proofingEnabled: true,
       sidesCount: options?.sidesCount ?? 2,
       letterVariantId: options?.letterVariantId,
+      ...(options?.customPersonalisation && {
+        customPersonalisation: options.customPersonalisation,
+      }),
+      ...(options?.systemPersonalisation && {
+        systemPersonalisation: options.systemPersonalisation,
+      }),
+      ...(options?.validationErrors && {
+        validationErrors: options.validationErrors,
+      }),
     });
   },
 

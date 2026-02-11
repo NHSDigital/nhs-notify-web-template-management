@@ -147,6 +147,61 @@ async function createTemplates(user: TestUser) {
         },
       }
     ),
+    authoringVirusScanFailed: TemplateFactory.createAuthoringLetterTemplate(
+      'E5F6A7B8-C9D0-1234-EFAB-567890123456',
+      user,
+      'authoring-virus-scan-failed',
+      'VALIDATION_FAILED',
+      {
+        sidesCount: 4,
+        letterVariantId: 'variant-virus',
+        validationErrors: ['VIRUS_SCAN_FAILED'],
+      }
+    ),
+    authoringMissingAddressLines: TemplateFactory.createAuthoringLetterTemplate(
+      'F6A7B8C9-D0E1-2345-FABC-678901234567',
+      user,
+      'authoring-missing-address-lines',
+      'VALIDATION_FAILED',
+      {
+        sidesCount: 4,
+        letterVariantId: 'variant-address',
+        validationErrors: ['MISSING_ADDRESS_LINES'],
+      }
+    ),
+    authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
+      'A7B8C9D0-E1F2-3456-ABCD-789012345678',
+      user,
+      'authoring-with-custom-fields',
+      'NOT_YET_SUBMITTED',
+      {
+        sidesCount: 4,
+        letterVariantId: 'variant-custom',
+        customPersonalisation: ['appointmentDate', 'clinicName', 'doctorName'],
+        initialRender: {
+          fileName: 'custom-render.pdf',
+          currentVersion: 'v1-custom',
+          status: 'RENDERED',
+        },
+      }
+    ),
+    authoringValidationFailedWithRender:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'B8C9D0E1-F2A3-4567-BCDE-890123456789',
+        user,
+        'authoring-validation-failed-with-render',
+        'VALIDATION_FAILED',
+        {
+          sidesCount: 4,
+          letterVariantId: 'variant-fail-render',
+          validationErrors: ['VIRUS_SCAN_FAILED'],
+          initialRender: {
+            fileName: 'failed-render.pdf',
+            currentVersion: 'v1-failed',
+            status: 'RENDERED',
+          },
+        }
+      ),
   };
 }
 
@@ -585,6 +640,259 @@ test.describe('Preview Letter template Page', () => {
 
         // Value should have changed
         await expect(previewPage.shortRecipientSelect).not.toHaveValue('');
+      });
+
+      test('long tab has its own form elements', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Click long examples tab
+        await previewPage.longExamplesTab.click();
+
+        // Long tab form elements should be visible
+        await expect(previewPage.longRecipientSelect).toBeVisible();
+        await expect(previewPage.longUpdatePreviewButton).toBeVisible();
+        await expect(previewPage.longPreviewIframe).toBeVisible();
+
+        // Recipient select should have placeholder option selected initially
+        await expect(previewPage.longRecipientSelect).toHaveValue('');
+
+        // Select a recipient (first non-placeholder option)
+        await previewPage.longRecipientSelect.selectOption({ index: 1 });
+
+        // Value should have changed
+        await expect(previewPage.longRecipientSelect).not.toHaveValue('');
+      });
+
+      test('short tab has correct number of example recipients', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Get all options (including placeholder)
+        const options = previewPage.getShortRecipientOptions();
+
+        // Should have placeholder + 11 short example recipients = 12 options
+        await expect(options).toHaveCount(12);
+      });
+
+      test('long tab has correct number of example recipients', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Click long examples tab
+        await previewPage.longExamplesTab.click();
+
+        // Get all options (including placeholder)
+        const options = previewPage.getLongRecipientOptions();
+
+        // Should have placeholder + 11 long example recipients = 12 options
+        await expect(options).toHaveCount(12);
+      });
+
+      test('clicking Update preview button does not navigate away', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+        const url = previewPage.getUrl();
+
+        // Select a recipient first
+        await previewPage.shortRecipientSelect.selectOption({ index: 1 });
+
+        // Click Update preview button
+        await previewPage.shortUpdatePreviewButton.click();
+
+        // Should stay on the same page
+        await expect(page).toHaveURL(url);
+
+        // Form elements should still be visible
+        await expect(previewPage.shortRecipientSelect).toBeVisible();
+        await expect(previewPage.shortUpdatePreviewButton).toBeVisible();
+      });
+    });
+
+    test.describe('Custom personalisation fields', () => {
+      test('displays custom personalisation section when template has custom fields', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithCustomFields.id);
+
+        await previewPage.loadPage();
+
+        // Custom fields heading should be visible in short tab
+        await expect(previewPage.shortCustomFieldsHeading).toBeVisible();
+
+        // Custom field inputs should be visible
+        const appointmentDateInput =
+          previewPage.getShortCustomFieldInput('appointmentDate');
+        const clinicNameInput =
+          previewPage.getShortCustomFieldInput('clinicName');
+        const doctorNameInput =
+          previewPage.getShortCustomFieldInput('doctorName');
+
+        await expect(appointmentDateInput).toBeVisible();
+        await expect(clinicNameInput).toBeVisible();
+        await expect(doctorNameInput).toBeVisible();
+      });
+
+      test('custom fields are editable', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithCustomFields.id);
+
+        await previewPage.loadPage();
+
+        // Fill in custom field values
+        const appointmentDateInput =
+          previewPage.getShortCustomFieldInput('appointmentDate');
+        await appointmentDateInput.fill('15 March 2025');
+
+        await expect(appointmentDateInput).toHaveValue('15 March 2025');
+      });
+
+      test('custom fields are present in long tab too', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithCustomFields.id);
+
+        await previewPage.loadPage();
+
+        // Click long examples tab
+        await previewPage.longExamplesTab.click();
+
+        // Custom fields heading should be visible in long tab
+        await expect(previewPage.longCustomFieldsHeading).toBeVisible();
+
+        // Custom field inputs should be visible in long tab
+        const appointmentDateInput =
+          previewPage.getLongCustomFieldInput('appointmentDate');
+        await expect(appointmentDateInput).toBeVisible();
+      });
+
+      test('hides custom personalisation section when template has no custom fields', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
+
+        await previewPage.loadPage();
+
+        // Custom fields heading should not be visible
+        await expect(previewPage.shortCustomFieldsHeading).toBeHidden();
+      });
+    });
+
+    test.describe('Validation errors for AUTHORING letters', () => {
+      test('displays virus scan failed error when status is VALIDATION_FAILED with VIRUS_SCAN_FAILED', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringVirusScanFailed.id);
+
+        await previewPage.loadPage();
+
+        // Error summary should be visible
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        // Should contain virus scan error message
+        await expect(previewPage.errorSummary).toContainText(
+          'The file(s) you uploaded may contain a virus'
+        );
+
+        // Submit button should be hidden for validation failed templates
+        await expect(previewPage.continueButton).toBeHidden();
+
+        // Edit name link should be hidden for validation failed templates
+        await expect(previewPage.editNameLink).toBeHidden();
+      });
+
+      test('displays missing address lines error when status is VALIDATION_FAILED with MISSING_ADDRESS_LINES', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringMissingAddressLines.id);
+
+        await previewPage.loadPage();
+
+        // Error summary should be visible
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        // Should contain address lines error message
+        await expect(previewPage.errorSummary).toContainText(
+          'The template file you uploaded does not contain the address fields'
+        );
+
+        // Submit button should be hidden
+        await expect(previewPage.continueButton).toBeHidden();
+      });
+
+      test('hides letter preview section when VALIDATION_FAILED with no initialRender', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringVirusScanFailed.id);
+
+        await previewPage.loadPage();
+
+        // Letter preview section should be hidden (no initialRender)
+        await expect(previewPage.letterPreviewSection).toBeHidden();
+      });
+
+      test('shows letter preview section when VALIDATION_FAILED but has initialRender', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringValidationFailedWithRender.id
+        );
+
+        await previewPage.loadPage();
+
+        // Error summary should be visible
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        // Letter preview section should still be visible (has initialRender)
+        await expect(previewPage.letterPreviewSection).toBeVisible();
+      });
+
+      test('hides campaign and postage rows when VALIDATION_FAILED', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringVirusScanFailed.id);
+
+        await previewPage.loadPage();
+
+        // Campaign row should be hidden
+        await expect(page.getByText('Campaign')).toBeHidden();
+
+        // Printing and postage row should be hidden
+        await expect(page.getByText('Printing and postage')).toBeHidden();
       });
     });
 
