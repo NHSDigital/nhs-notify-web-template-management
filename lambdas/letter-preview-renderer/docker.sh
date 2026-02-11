@@ -9,8 +9,8 @@ chmod +x ./build.sh
 
 # Ensure required AWS/ECR configuration is present.
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
-: "${AWS_REGION:?AWS_REGION is required}"
-: "${ECR_REPO:?ECR_REPO is required}"
+AWS_REGION="${AWS_REGION:-eu-west-2}"
+ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 : "${CSI:?CSI is required}"
 LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
