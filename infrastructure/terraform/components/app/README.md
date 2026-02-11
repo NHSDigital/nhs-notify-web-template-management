@@ -45,7 +45,7 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_retention_period"></a> [retention\_period](#input\_retention\_period) | Backup Vault Retention Period | `number` | `31` | no |
-| <a name="input_short_sha"></a> [short\_sha](#input\_short\_sha) | Short SHA of the commit used to identify the lambda image tag. This is expected to be set from CI variables and not committed to any codebase | `string` | n/a | yes |
+| <a name="input_short_sha"></a> [short\_sha](#input\_short\_sha) | Short SHA of the commit used to identify the lambda image tag. This is expected to be set by pre.sh at deploy time using git rev-parse --short HEAD | `string` | n/a | yes |
 | <a name="input_url_prefix"></a> [url\_prefix](#input\_url\_prefix) | The url prefix to use for the deployed branch | `string` | `"main"` | no |
 ## Modules
 

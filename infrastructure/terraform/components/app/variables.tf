@@ -181,7 +181,7 @@ variable "container_lambda_ecr_repo" {
 
 variable "short_sha" {
   type        = string
-  description = "Short SHA of the commit used to identify the lambda image tag. This is expected to be set from CI variables and not committed to any codebase"
+  description = "Short SHA of the commit used to identify the lambda image tag. This is expected to be set by pre.sh at deploy time using git rev-parse --short HEAD"
 }
 
 variable "data_plane_bus_arn" {
