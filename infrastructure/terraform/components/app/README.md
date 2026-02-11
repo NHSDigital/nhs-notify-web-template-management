@@ -38,7 +38,6 @@
 | <a name="input_external_email_domain"></a> [external\_email\_domain](#input\_external\_email\_domain) | Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider. | `string` | `null` | no |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonymous with account short-name) | `string` | n/a | yes |
 | <a name="input_kms_deletion_window"></a> [kms\_deletion\_window](#input\_kms\_deletion\_window) | When a kms key is deleted, how long should it wait in the pending deletion state? | `string` | `"30"` | no |
-| <a name="input_letter_preview_renderer_image_tag"></a> [letter\_preview\_renderer\_image\_tag](#input\_letter\_preview\_renderer\_image\_tag) | Full ECR image tag for the letter-preview-renderer container image (e.g. <csi>-letter-preview-renderer-<short\_sha>-latest) | `string` | n/a | yes |
 | <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br/>    email_addresses  = list(string)<br/>    enable_polling   = bool<br/>    default_supplier = optional(bool)<br/>  }))</pre> | `{}` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
 | <a name="input_observability_account_id"></a> [observability\_account\_id](#input\_observability\_account\_id) | The Observability Account ID that needs access | `string` | n/a | yes |
@@ -46,6 +45,7 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_retention_period"></a> [retention\_period](#input\_retention\_period) | Backup Vault Retention Period | `number` | `31` | no |
+| <a name="input_short_sha"></a> [short\_sha](#input\_short\_sha) | Short SHA of the commit used to identify the lambda image tag. This is expected to be set from CI variables and not committed to any codebase | `string` | n/a | yes |
 | <a name="input_url_prefix"></a> [url\_prefix](#input\_url\_prefix) | The url prefix to use for the deployed branch | `string` | `"main"` | no |
 ## Modules
 

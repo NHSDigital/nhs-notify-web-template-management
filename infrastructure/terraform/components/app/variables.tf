@@ -179,9 +179,9 @@ variable "container_lambda_ecr_repo" {
   default     = "nhs-notify-main-acct"
 }
 
-variable "letter_preview_renderer_image_tag" {
+variable "short_sha" {
   type        = string
-  description = "Full ECR image tag for the letter-preview-renderer container image (e.g. <csi>-letter-preview-renderer-<short_sha>-latest)"
+  description = "Short SHA of the commit used to identify the lambda image tag. This is expected to be set from CI variables and not committed to any codebase"
 }
 
 variable "data_plane_bus_arn" {
