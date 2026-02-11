@@ -10,9 +10,7 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-# export CSI="${CSI:-${TF_VAR_project:-}-${TF_VAR_environment:-}}"
-# export SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
-# export TF_VAR_letter_preview_renderer_image_tag="${TF_VAR_letter_preview_renderer_image_tag:-${CSI}-letter-preview-renderer-${SHORT_SHA}}"
+export TF_VAR_SHORT_SHA="$(git rev-parse --short HEAD)"
 
 npm run lambda-build --workspaces --if-present
 

@@ -7,14 +7,13 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
-: "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 CSI="nhs-notify-${ENVIRONMENT}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
-GHCR_LOGIN_USER="${GITHUB_ACTOR:-}"
-GHCR_LOGIN_TOKEN="${GITHUB_TOKEN:-}"
+GHCR_LOGIN_USER="${GITHUB_ACTOR}"
+GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 
 # Ensure required AWS/ECR configuration is present.
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
@@ -60,5 +59,3 @@ docker build \
 
 # Push the image tag to ECR. The Terraform configuration will reference this tag for the lambda image.
 docker push "${ECR_IMAGE_LATEST}"
-
-export TF_VAR_letter_preview_renderer_image_tag="${ECR_IMAGE_LATEST}"
