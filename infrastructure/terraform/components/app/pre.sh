@@ -39,6 +39,10 @@ else
 fi
 
 npm run lambda-build --workspaces --if-present
+if [ $? -ne 0 ]; then
+  echo "npm run lambda-build failed!" >&2
+  exit 1
+fi
 
 lambdas/layers/pdfjs/build.sh
 
