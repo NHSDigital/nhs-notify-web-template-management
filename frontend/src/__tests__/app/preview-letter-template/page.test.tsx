@@ -191,5 +191,24 @@ describe('PreviewLetterTemplatePage', () => {
       expect(page).toBeTruthy();
       expect(redirectMock).not.toHaveBeenCalled();
     });
+
+    it('should render page for authoring letter with VALIDATION_FAILED status and undefined validationErrors', async () => {
+      const templateWithUndefinedErrors = {
+        ...AUTHORING_LETTER_TEMPLATE,
+        templateStatus: 'VALIDATION_FAILED' as const,
+        // validationErrors is intentionally omitted to test the default [] value
+      };
+
+      getTemplateMock.mockResolvedValueOnce(templateWithUndefinedErrors);
+
+      const page = await PreviewLetterTemplatePage({
+        params: Promise.resolve({
+          templateId: templateWithUndefinedErrors.id,
+        }),
+      });
+
+      expect(page).toBeTruthy();
+      expect(redirectMock).not.toHaveBeenCalled();
+    });
   });
 });

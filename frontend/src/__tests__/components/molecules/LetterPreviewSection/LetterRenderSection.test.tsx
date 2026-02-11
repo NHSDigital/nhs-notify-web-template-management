@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LetterRender } from '@molecules/LetterRender';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { updateLetterPreview } from '@molecules/LetterRender/server-action';
 
 jest.mock('@molecules/LetterRender/server-action', () => ({
   updateLetterPreview: jest.fn(),
@@ -9,6 +10,10 @@ jest.mock('@molecules/LetterRender/server-action', () => ({
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
 }));
+
+const mockUpdateLetterPreview = updateLetterPreview as jest.MockedFunction<
+  typeof updateLetterPreview
+>;
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -36,6 +41,10 @@ const baseTemplate: AuthoringLetterTemplate = {
 };
 
 describe('LetterRender', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders the section heading and guidance', () => {
     render(<LetterRender template={baseTemplate} />);
 
@@ -97,6 +106,22 @@ describe('LetterRender', () => {
     );
   });
 
+  it('handles template without any render files (pdfUrl is null)', () => {
+    const templateWithoutRenders: AuthoringLetterTemplate = {
+      ...baseTemplate,
+      files: {},
+    };
+
+    render(<LetterRender template={templateWithoutRenders} />);
+
+    // Component should still render with tabs
+    expect(screen.getByText('Letter preview')).toBeInTheDocument();
+
+    // When there's no PDF, the "No preview available" message should be shown
+    const noPreviewMessages = screen.getAllByText('No preview available');
+    expect(noPreviewMessages.length).toBe(2); // One for each tab
+  });
+
   it('uses variant-specific render when available', () => {
     const templateWithVariantRender: AuthoringLetterTemplate = {
       ...baseTemplate,
@@ -127,5 +152,130 @@ describe('LetterRender', () => {
       'src',
       expect.stringContaining('short-render.pdf')
     );
+  });
+
+  describe('form submission', () => {
+    it('calls updateLetterPreview when form is submitted for short tab', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRender template={baseTemplate} />);
+
+      // Select a recipient
+      const dropdown = screen.getAllByRole('combobox', {
+        name: /example recipient/i,
+      })[0];
+      fireEvent.change(dropdown, { target: { value: 'short-1' } });
+
+      // Click the submit button
+      const submitButtons = screen.getAllByRole('button', {
+        name: 'Update preview',
+      });
+      fireEvent.click(submitButtons[0]);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            templateId: 'template-123',
+            tab: 'short',
+            systemPersonalisationPackId: 'short-1',
+          })
+        );
+      });
+    });
+
+    it('calls updateLetterPreview when form is submitted for long tab', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRender template={baseTemplate} />);
+
+      // Click the long tab
+      const longTab = screen.getByRole('tab', { name: 'Long examples' });
+      fireEvent.click(longTab);
+
+      // Select a recipient in the long tab
+      const dropdowns = screen.getAllByRole('combobox', {
+        name: /example recipient/i,
+      });
+      const longDropdown = dropdowns[1];
+      fireEvent.change(longDropdown, { target: { value: 'long-1' } });
+
+      // Click the submit button in the long tab
+      const submitButtons = screen.getAllByRole('button', {
+        name: 'Update preview',
+      });
+      fireEvent.click(submitButtons[1]);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            templateId: 'template-123',
+            tab: 'long',
+            systemPersonalisationPackId: 'long-1',
+          })
+        );
+      });
+    });
+
+    it('includes custom personalisation parameters in submission', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRender template={baseTemplate} />);
+
+      // Fill in a custom personalisation field
+      const appointmentInput = screen.getAllByLabelText('appointmentDate')[0];
+      fireEvent.change(appointmentInput, { target: { value: '2025-03-15' } });
+
+      // Click the submit button
+      const submitButtons = screen.getAllByRole('button', {
+        name: 'Update preview',
+      });
+      fireEvent.click(submitButtons[0]);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            personalisation: expect.objectContaining({
+              appointmentDate: '2025-03-15',
+            }),
+          })
+        );
+      });
+    });
+
+    it('merges recipient data with custom personalisation', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRender template={baseTemplate} />);
+
+      // Select a recipient
+      const dropdown = screen.getAllByRole('combobox', {
+        name: /example recipient/i,
+      })[0];
+      fireEvent.change(dropdown, { target: { value: 'short-1' } });
+
+      // Fill in a custom personalisation field
+      const appointmentInput = screen.getAllByLabelText('appointmentDate')[0];
+      fireEvent.change(appointmentInput, { target: { value: '2025-03-15' } });
+
+      // Click the submit button
+      const submitButtons = screen.getAllByRole('button', {
+        name: 'Update preview',
+      });
+      fireEvent.click(submitButtons[0]);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            personalisation: expect.objectContaining({
+              // From recipient data
+              firstName: 'Jo',
+              lastName: 'Bloggs',
+              // From custom input
+              appointmentDate: '2025-03-15',
+            }),
+          })
+        );
+      });
+    });
   });
 });

@@ -215,6 +215,18 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
+    it('matches snapshot without sidesCount (totalPages is undefined)', () => {
+      const { sidesCount: _, ...templateWithoutSidesCount } =
+        baseAuthoringLetter;
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={templateWithoutSidesCount}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
     it('matches snapshot with hideEditActions', () => {
       const container = render(
         <PreviewTemplateDetailsAuthoringLetter
