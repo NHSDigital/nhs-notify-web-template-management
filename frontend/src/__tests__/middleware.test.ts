@@ -79,7 +79,7 @@ describe('middleware function', () => {
     expect(csp).toEqual([
       "base-uri 'self'",
       "default-src 'none'",
-      "frame-ancestors 'self'",
+      "frame-ancestors 'none'",
       "font-src 'self' https://assets.nhs.uk",
       "form-action 'self'",
       "frame-src 'self'",

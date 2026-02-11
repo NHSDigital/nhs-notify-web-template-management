@@ -75,7 +75,7 @@ export default function RootLayout({
             </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
-        <script src={`$lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
+        <script src={`${lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
         <script type='module' src={`${lib}/nhsuk-frontend-init.js`} />
       </body>
     </html>

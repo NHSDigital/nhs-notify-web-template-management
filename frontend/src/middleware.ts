@@ -77,7 +77,7 @@ function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective: Record<string, string[]> = {
     'base-uri': [`'self'`],
     'default-src': [`'none'`],
-    'frame-ancestors': [`'self'`],
+    'frame-ancestors': [`'none'`],
     'font-src': [`'self'`, 'https://assets.nhs.uk'],
     'form-action': [`'self'`],
     'frame-src': [`'self'`],
