@@ -10,7 +10,7 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-export TF_VAR_SHORT_SHA="$(git rev-parse --short HEAD)"
+export TF_VAR_short_sha="$(git rev-parse --short HEAD)"
 
 npm run lambda-build --workspaces --if-present
 
