@@ -11,7 +11,7 @@ chmod +x ./build.sh
 AWS_REGION="${AWS_REGION:-eu-west-2}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 CSI="nhs-notify-${ENVIRONMENT}"
-LAMBDA_NAME="${LAMBDA_NAME:-letter-preview-renderer}"
+LAMBDA_NAME="${LAMBDA_NAME:-$(basename $(cd "$(dirname "$0")/.." && pwd))}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR:-}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN:-}"
@@ -42,14 +42,14 @@ fi
 
 # Resolve git references for image tags.
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${SHORT_SHA}-latest"
+IMAGE_TAG_LATEST="${CSI}-${LAMBDA_NAME}-${SHORT_SHA}"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
 ECR_IMAGE_LATEST="${ECR_REPO_URI}:${IMAGE_TAG_LATEST}"
 
-# Allow an override for the base image used in the Docker build.
-BASE_IMAGE_ARG=${BASE_IMAGE:-ghcr.io/nhsdigital/nhs-notify/letter-renderer-node-22:latest}
+# Use only the first input argument for BASE_IMAGE_ARG (no fallback)
+BASE_IMAGE_ARG="$1"
 
 # Build and tag the Docker image for the lambda.
 docker build \
