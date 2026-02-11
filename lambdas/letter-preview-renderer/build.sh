@@ -14,3 +14,6 @@ npx esbuild \
   --entry-names=[name] \
   --outdir=dist \
   src/index.ts
+
+cp ./node_modules/carbone/lib/converter.py ./dist/converter.py
+cp ./doc.docx ./dist/doc.docx

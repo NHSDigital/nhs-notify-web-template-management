@@ -8,6 +8,8 @@ module "letter_preview_renderer_lambda" {
   region         = var.region
   group          = var.group
 
+  lambda_env_vars = {}
+
   function_name = "letter-preview-renderer"
   description   = "Letter preview renderer Lambda"
 
