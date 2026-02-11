@@ -1,5 +1,8 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, any change of directory will persist once this script exits and returns control to terraform.sh
+REGION=$1
+ENVIRONMENT=$2
+ACTION=$3
 
 echo "Running app pre.sh"
 
@@ -22,8 +25,8 @@ else
   export TF_VAR_image_tag_suffix="$SHORT_SHA"
 fi
 
-echo "Checking if TF_ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
-if [ "$TF_ACTION" = "apply" ]; then
+echo "Checking if ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
+if [ "$ACTION" = "apply" ]; then
   echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
   export PUBLISH_LAMBDA_IMAGE="true"
 else
@@ -31,7 +34,7 @@ else
 fi
 
 
-if [ "$TF_ACTION" = "apply" ]; then
+if [ "$ACTION" = "apply" ]; then
   echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
   export PUBLISH_LAMBDA_IMAGE="true"
 else

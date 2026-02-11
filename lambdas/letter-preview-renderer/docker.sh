@@ -8,7 +8,8 @@ chmod +x ./build.sh
 ./build.sh
 
 
-AWS_REGION="${AWS_REGION:-eu-west-2}"
+AWS_REGION="${REGION}"
+COMPONENT="${COMPONENT}"
 CSI="nhs-notify-${ENVIRONMENT}-${COMPONENT}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
