@@ -205,8 +205,14 @@ describe('Template API - Patch', () => {
       letterType: 'x1',
       language: 'en',
       letterVersion: 'AUTHORING',
-      sidesCount: 1,
-      files: {},
+      files: {
+        initialRender: {
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 1,
+        },
+      },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lockNumber: 6,

@@ -76,6 +76,7 @@ const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
   z.object({
     currentVersion: z.string(),
     fileName: z.string().trim().min(1),
+    pageCount: z.number().int(),
     status: $RenderStatus,
   })
 );
@@ -85,6 +86,7 @@ const $AuthoringPersonalisedRenderDetails =
     z.object({
       currentVersion: z.string(),
       fileName: z.string().trim().min(1),
+      pageCount: z.number().int(),
       personalisationParameters: z.record(z.string(), z.string()),
       systemPersonalisationPackId: z.string(),
       status: $RenderStatus,
@@ -159,7 +161,6 @@ export const $AuthoringLetterProperties =
       files: $AuthoringLetterFiles,
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
-      sidesCount: z.number().int().optional(),
       systemPersonalisation: z.array(z.string()).optional(),
       validationErrors: z.array($LetterValidationError).optional(),
     })

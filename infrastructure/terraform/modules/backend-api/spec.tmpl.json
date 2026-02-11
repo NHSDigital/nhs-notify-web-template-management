@@ -40,9 +40,6 @@
                 ],
                 "type": "string"
               },
-              "sidesCount": {
-                "type": "integer"
-              },
               "systemPersonalisation": {
                 "items": {
                   "type": "string"
@@ -97,6 +94,9 @@
           "fileName": {
             "type": "string"
           },
+          "pageCount": {
+            "type": "integer"
+          },
           "status": {
             "$ref": "#/components/schemas/RenderStatus"
           }
@@ -104,6 +104,7 @@
         "required": [
           "currentVersion",
           "fileName",
+          "pageCount",
           "status"
         ],
         "type": "object"

@@ -24,13 +24,13 @@ const baseTemplate: AuthoringLetterTemplate = {
   letterType: 'x0',
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
-  sidesCount: 4,
   language: 'en',
   files: {
     initialRender: {
       fileName: 'initial.pdf',
       currentVersion: 'version-1',
       status: 'RENDERED',
+      pageCount: 4,
     },
   },
   systemPersonalisation: ['firstName', 'lastName'],
@@ -130,6 +130,7 @@ describe('LetterRender', () => {
           fileName: 'initial.pdf',
           currentVersion: 'version-1',
           status: 'RENDERED',
+          pageCount: 4,
         },
         shortFormRender: {
           fileName: 'short-render.pdf',
@@ -137,6 +138,7 @@ describe('LetterRender', () => {
           status: 'RENDERED',
           systemPersonalisationPackId: 'short-1',
           personalisationParameters: { appointmentDate: '2025-01-15' },
+          pageCount: 4,
         },
       },
     };

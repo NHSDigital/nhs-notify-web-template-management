@@ -301,8 +301,14 @@ describe('Template schemas', () => {
       language: 'en',
       letterVersion: 'AUTHORING',
       letterVariantId: 'variant-123',
-      sidesCount: 2,
-      files: {},
+      files: {
+        initialRender: {
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 2,
+        },
+      },
       systemPersonalisation: [],
     };
 
@@ -347,6 +353,7 @@ describe('Template schemas', () => {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
             status: 'RENDERED',
+            pageCount: 2,
           },
         },
       },
@@ -357,6 +364,7 @@ describe('Template schemas', () => {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
             status: 'RENDERED',
+            pageCount: 2,
           },
           shortFormRender: {
             fileName: 'short.pdf',
@@ -364,6 +372,7 @@ describe('Template schemas', () => {
             status: 'RENDERED',
             personalisationParameters: { firstName: 'John' },
             systemPersonalisationPackId: 'pack-123',
+            pageCount: 2,
           },
           longFormRender: {
             fileName: 'long.pdf',
@@ -371,6 +380,7 @@ describe('Template schemas', () => {
             status: 'PENDING',
             personalisationParameters: { firstName: 'Jane' },
             systemPersonalisationPackId: 'pack-456',
+            pageCount: 2,
           },
         },
       },
@@ -389,6 +399,7 @@ describe('Template schemas', () => {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
             status: 'INVALID_STATUS',
+            pageCount: 2,
           },
         },
       },
@@ -398,6 +409,17 @@ describe('Template schemas', () => {
           shortFormRender: {
             fileName: 'short.pdf',
             currentVersion: 'v2',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
+      },
+      {
+        description: 'initialRender missing pageCount',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
             status: 'RENDERED',
           },
         },
@@ -461,8 +483,14 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
-        files: {},
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
         systemPersonalisation: [],
       };
 
@@ -634,8 +662,14 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
-        files: {},
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
         systemPersonalisation: [],
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',

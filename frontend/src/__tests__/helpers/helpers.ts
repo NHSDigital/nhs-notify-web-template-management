@@ -106,8 +106,14 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   language: 'en',
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
-  sidesCount: 2,
-  files: {},
+  files: {
+    initialRender: {
+      fileName: 'render.pdf',
+      currentVersion: 'v1',
+      status: 'RENDERED',
+      pageCount: 2,
+    },
+  },
   systemPersonalisation: [],
   name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',

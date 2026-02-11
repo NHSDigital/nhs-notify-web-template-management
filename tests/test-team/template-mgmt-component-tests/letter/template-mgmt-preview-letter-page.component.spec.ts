@@ -116,21 +116,38 @@ async function createTemplates(user: TestUser) {
       letterVersion: 'AUTHORING',
       lockNumber: 0,
       name: 'empty-authoring-letter',
-      // Missing sidesCount - should be invalid
+      // Missing initialRender with pageCount - should be invalid
     } as Template,
     authoringValid: TemplateFactory.createAuthoringLetterTemplate(
       'A1B2C3D4-E5F6-7890-ABCD-EF1234567890',
       user,
       'authoring-letter-valid',
       'NOT_YET_SUBMITTED',
-      { sidesCount: 4, letterVariantId: 'variant-123' }
+      {
+        letterVariantId: 'variant-123',
+        initialRender: {
+          fileName: 'initial-render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 4,
+        },
+      }
     ),
     authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
       'B2C3D4E5-F6A7-8901-BCDE-F23456789012',
       user,
       'authoring-letter-no-campaign',
       'NOT_YET_SUBMITTED',
-      { sidesCount: 4, letterVariantId: 'variant-456', campaignId: null }
+      {
+        letterVariantId: 'variant-456',
+        campaignId: null,
+        initialRender: {
+          fileName: 'initial-render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 4,
+        },
+      }
     ),
     authoringWithInitialRender: TemplateFactory.createAuthoringLetterTemplate(
       'D4E5F6A7-B8C9-0123-DEFA-456789012345',
@@ -138,12 +155,12 @@ async function createTemplates(user: TestUser) {
       'authoring-letter-with-render',
       'NOT_YET_SUBMITTED',
       {
-        sidesCount: 4,
         letterVariantId: 'variant-render',
         initialRender: {
           fileName: 'initial-render.pdf',
           currentVersion: 'v1-test',
           status: 'RENDERED',
+          pageCount: 4,
         },
       }
     ),
@@ -153,7 +170,6 @@ async function createTemplates(user: TestUser) {
       'authoring-virus-scan-failed',
       'VALIDATION_FAILED',
       {
-        sidesCount: 4,
         letterVariantId: 'variant-virus',
         validationErrors: ['VIRUS_SCAN_FAILED'],
       }
@@ -164,7 +180,6 @@ async function createTemplates(user: TestUser) {
       'authoring-missing-address-lines',
       'VALIDATION_FAILED',
       {
-        sidesCount: 4,
         letterVariantId: 'variant-address',
         validationErrors: ['MISSING_ADDRESS_LINES'],
       }
@@ -175,13 +190,13 @@ async function createTemplates(user: TestUser) {
       'authoring-with-custom-fields',
       'NOT_YET_SUBMITTED',
       {
-        sidesCount: 4,
         letterVariantId: 'variant-custom',
         customPersonalisation: ['appointmentDate', 'clinicName', 'doctorName'],
         initialRender: {
           fileName: 'custom-render.pdf',
           currentVersion: 'v1-custom',
           status: 'RENDERED',
+          pageCount: 4,
         },
       }
     ),
@@ -192,13 +207,13 @@ async function createTemplates(user: TestUser) {
         'authoring-validation-failed-with-render',
         'VALIDATION_FAILED',
         {
-          sidesCount: 4,
           letterVariantId: 'variant-fail-render',
           validationErrors: ['VIRUS_SCAN_FAILED'],
           initialRender: {
             fileName: 'failed-render.pdf',
             currentVersion: 'v1-failed',
             status: 'RENDERED',
+            pageCount: 4,
           },
         }
       ),
@@ -913,7 +928,15 @@ test.describe('Preview Letter template Page', () => {
           userWithMultipleCampaigns,
           'authoring-letter-multi-campaign',
           'NOT_YET_SUBMITTED',
-          { sidesCount: 4, letterVariantId: 'variant-789' }
+          {
+            letterVariantId: 'variant-789',
+            initialRender: {
+              fileName: 'multi-campaign-render.pdf',
+              currentVersion: 'v1',
+              status: 'RENDERED',
+              pageCount: 4,
+            },
+          }
         );
 
         await multiCampaignTemplateStorageHelper.seedTemplateData([

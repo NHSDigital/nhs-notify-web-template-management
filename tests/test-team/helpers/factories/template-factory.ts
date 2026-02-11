@@ -107,13 +107,25 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
-      sidesCount?: number;
       letterVariantId?: string;
       campaignId?: string | null;
       initialRender?: {
         fileName: string;
         currentVersion: string;
         status: string;
+        pageCount: number;
+      };
+      shortFormRender?: {
+        fileName: string;
+        currentVersion: string;
+        status: string;
+        pageCount: number;
+      };
+      longFormRender?: {
+        fileName: string;
+        currentVersion: string;
+        status: string;
+        pageCount: number;
       };
       customPersonalisation?: string[];
       systemPersonalisation?: string[];
@@ -125,9 +137,16 @@ export const TemplateFactory = {
         ? undefined
         : (options?.campaignId ?? 'campaign-id');
 
-    const files = options?.initialRender
-      ? { initialRender: options.initialRender }
-      : {};
+    const files: Record<string, unknown> = {};
+    if (options?.initialRender) {
+      files.initialRender = options.initialRender;
+    }
+    if (options?.shortFormRender) {
+      files.shortFormRender = options.shortFormRender;
+    }
+    if (options?.longFormRender) {
+      files.longFormRender = options.longFormRender;
+    }
 
     return TemplateFactory.create({
       ...(campaignId && { campaignId }),
@@ -142,7 +161,6 @@ export const TemplateFactory = {
       templateStatus,
       templateType: 'LETTER',
       proofingEnabled: true,
-      sidesCount: options?.sidesCount ?? 2,
       letterVariantId: options?.letterVariantId,
       ...(options?.customPersonalisation && {
         customPersonalisation: options.customPersonalisation,

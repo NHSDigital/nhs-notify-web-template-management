@@ -648,7 +648,6 @@ const previewTemplateDetails = {
     templateType: 'Template type',
     examplePersonalisationFile: 'Example personalisation file',
     letterType: 'Letter type',
-    sidesCount: 'Number of sides',
     totalPages: 'Total pages',
     sheets: 'Sheets',
     printingAndPostage: 'Printing and postage',

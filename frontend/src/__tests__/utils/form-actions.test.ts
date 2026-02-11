@@ -409,8 +409,14 @@ describe('form-actions', () => {
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 6,
-      sidesCount: 2,
-      files: {},
+      files: {
+        initialRender: {
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 2,
+        },
+      },
       systemPersonalisation: [],
     };
 

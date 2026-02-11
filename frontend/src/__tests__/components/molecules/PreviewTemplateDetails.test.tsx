@@ -54,9 +54,15 @@ const baseAuthoringLetter: AuthoringLetterTemplate = {
   letterType: 'x0',
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
-  sidesCount: 4,
   language: 'en',
-  files: {},
+  files: {
+    initialRender: {
+      fileName: 'render.pdf',
+      currentVersion: 'v1',
+      status: 'RENDERED',
+      pageCount: 4,
+    },
+  },
   systemPersonalisation: [],
 };
 
@@ -215,12 +221,14 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot without sidesCount (totalPages is undefined)', () => {
-      const { sidesCount: _, ...templateWithoutSidesCount } =
-        baseAuthoringLetter;
+    it('matches snapshot without initialRender (pageCount is undefined)', () => {
+      const templateWithoutInitialRender = {
+        ...baseAuthoringLetter,
+        files: {},
+      };
       const container = render(
         <PreviewTemplateDetailsAuthoringLetter
-          template={templateWithoutSidesCount}
+          template={templateWithoutInitialRender}
         />
       );
 
@@ -436,6 +444,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
                 fileName: 'render.pdf',
                 currentVersion: 'v1',
                 status: 'RENDERED',
+                pageCount: 4,
               },
             },
           }}

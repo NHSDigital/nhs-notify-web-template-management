@@ -12,7 +12,6 @@ const baseTemplate: AuthoringLetterTemplate = {
   letterType: 'x0',
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
-  sidesCount: 4,
   language: 'en',
   files: {},
   systemPersonalisation: ['firstName', 'lastName'],

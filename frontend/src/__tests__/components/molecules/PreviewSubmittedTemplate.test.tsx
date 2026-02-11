@@ -144,9 +144,15 @@ describe('PreviewSubmittedTemplate component', () => {
             letterType: 'x0',
             letterVersion: 'AUTHORING',
             language: 'en',
-            sidesCount: 4,
             letterVariantId: 'first-class',
-            files: {},
+            files: {
+              initialRender: {
+                fileName: 'render.pdf',
+                currentVersion: 'v1',
+                status: 'RENDERED',
+                pageCount: 4,
+              },
+            },
             systemPersonalisation: [],
             createdAt: '2025-01-13T10:19:25.579Z',
             updatedAt: '2025-01-13T10:19:25.579Z',

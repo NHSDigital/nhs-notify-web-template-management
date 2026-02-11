@@ -23,11 +23,17 @@ const mockTemplate: AuthoringLetterTemplate = {
   lockNumber: 5,
   language: 'en',
   letterType: 'x0',
-  sidesCount: 2,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
   clientId: 'client-123',
-  files: {},
+  files: {
+    initialRender: {
+      fileName: 'render.pdf',
+      currentVersion: 'v1',
+      status: 'RENDERED',
+      pageCount: 2,
+    },
+  },
   systemPersonalisation: [],
 };
 

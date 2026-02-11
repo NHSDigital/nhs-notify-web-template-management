@@ -15,7 +15,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
-  sidesCount?: number;
   systemPersonalisation?: Array<string>;
   validationErrors?: Array<LetterValidationError>;
 };
@@ -30,6 +29,7 @@ export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
 export type AuthoringRenderDetails = {
   currentVersion: string;
   fileName: string;
+  pageCount: number;
   status: RenderStatus;
 };
 

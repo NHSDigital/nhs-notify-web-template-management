@@ -47,6 +47,7 @@ export type AuthoringRenderFile = {
   fileName: string;
   currentVersion: string;
   status: string;
+  pageCount: number;
 };
 
 type TypeSpecificProperties = {
@@ -69,7 +70,6 @@ type TypeSpecificProperties = {
   testDataCsvHeaders?: string[];
   campaignId?: string;
   supplierReferences?: Record<string, string>;
-  sidesCount?: number;
   letterVariantId?: string;
   // Authoring letter custom personalisation
   customPersonalisation?: string[];

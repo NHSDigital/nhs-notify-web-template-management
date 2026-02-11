@@ -143,7 +143,6 @@ export type DatabaseTemplate = {
   pdsPersonalisation?: string[];
   proofingEnabled?: boolean;
   sftpSendLockTime?: number;
-  sidesCount?: number;
   subject?: string;
   supplier?: string;
   templateStatus: TemplateStatus;

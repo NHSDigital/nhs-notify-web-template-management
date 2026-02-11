@@ -34,9 +34,8 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
-  const totalPages = template.sidesCount
-    ? Math.ceil(template.sidesCount / 2)
-    : undefined;
+  const pageCount = template.files.initialRender?.pageCount;
+  const sheets = pageCount ? Math.ceil(pageCount / 2) : undefined;
   const hasSingleCampaign = campaignIds.length === 1;
 
   const isPendingValidation = template.templateStatus === 'PENDING_VALIDATION';
@@ -135,7 +134,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {!hideSidesAndPages && (
             <SummaryList.Row>
               <SummaryList.Key>{rowHeadings.totalPages}</SummaryList.Key>
-              <SummaryList.Value>{totalPages}</SummaryList.Value>
+              <SummaryList.Value>{pageCount}</SummaryList.Value>
               <SummaryList.Actions />
             </SummaryList.Row>
           )}
@@ -144,7 +143,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {!hideSidesAndPages && (
             <SummaryList.Row>
               <SummaryList.Key>{rowHeadings.sheets}</SummaryList.Key>
-              <SummaryList.Value>{template.sidesCount}</SummaryList.Value>
+              <SummaryList.Value>{sheets}</SummaryList.Value>
               <ActionLink
                 href={externalLinks.lettersPricing}
                 label={actions.learnMore}
