@@ -172,7 +172,13 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -208,7 +214,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -258,7 +268,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -300,7 +310,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Second template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -350,7 +364,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -392,7 +406,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Third template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -442,7 +460,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -619,7 +637,13 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -655,7 +679,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -705,7 +733,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -747,7 +775,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Second template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -797,7 +829,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -839,7 +871,11 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Third template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -889,7 +925,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -1066,7 +1102,13 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -1102,7 +1144,11 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                               for="channelTemplate-email-template-id"
                               id="channelTemplate-email-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template email template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -1152,7 +1198,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -1352,7 +1398,13 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -1387,7 +1439,11 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -1437,7 +1493,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -1595,7 +1651,13 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -1630,7 +1692,11 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                               for="channelTemplate-large-print-letter-template-id"
                               id="channelTemplate-large-print-letter-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template large print letter template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -1680,7 +1746,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -1857,7 +1923,13 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -1893,7 +1965,11 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                               for="channelTemplate-letter-template-id"
                               id="channelTemplate-letter-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template letter template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -1943,7 +2019,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -2120,7 +2196,13 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -2156,7 +2238,11 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -2206,7 +2292,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -2383,7 +2469,13 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -2419,7 +2511,11 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                               for="channelTemplate-sms-template-id"
                               id="channelTemplate-sms-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template sms template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -2469,7 +2565,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -2646,7 +2742,13 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -2682,7 +2784,11 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -2732,7 +2838,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -2774,7 +2880,11 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Second template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -2824,7 +2934,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -2866,7 +2976,11 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Third template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -2916,7 +3030,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3172,7 +3286,13 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -3207,7 +3327,11 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               for="channelTemplate-large-print-template-2"
                               id="channelTemplate-large-print-template-2--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Second large print template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3257,7 +3381,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3300,7 +3424,11 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               for="channelTemplate-large-print-letter-template-id"
                               id="channelTemplate-large-print-letter-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template large print letter template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3350,7 +3478,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3392,7 +3520,11 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               for="channelTemplate-large-print-template-3"
                               id="channelTemplate-large-print-template-3--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Third large print template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3442,7 +3574,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3619,7 +3751,13 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -3655,7 +3793,11 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3705,7 +3847,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3747,7 +3889,11 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Second template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3797,7 +3943,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -3839,7 +3985,11 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template Third template
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -3889,7 +4039,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"
@@ -4047,7 +4197,13 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                           class="nhsuk-table__header"
                           data-testid="channel-templates-table-header-template-action"
                           scope="col"
-                        />
+                        >
+                          <span
+                            class="nhsuk-u-visually-hidden"
+                          >
+                            Template action
+                          </span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -4082,7 +4238,11 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
                             >
-                               
+                              <span
+                                class="nhsuk-u-visually-hidden"
+                              >
+                                Select template app template name
+                              </span>
                             </label>
                           </div>
                         </td>
@@ -4132,7 +4292,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                             aria-hidden="true"
                             class="nhsuk-table-responsive__heading"
                           >
-                             
+                            [object Object] 
                           </span>
                           <a
                             aria-label="Preview"

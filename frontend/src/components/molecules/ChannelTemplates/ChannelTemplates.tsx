@@ -68,7 +68,9 @@ export function ChannelTemplates({
                   {tableContent.lastEditedHeading}
                 </Table.Cell>
                 <Table.Cell data-testid='channel-templates-table-header-template-action'>
-                  {tableContent.action.heading}
+                  <span className='nhsuk-u-visually-hidden'>
+                    Template action
+                  </span>
                 </Table.Cell>
               </Table.Row>
             </Table.Head>
@@ -84,7 +86,9 @@ export function ChannelTemplates({
                       key={`${template.id}-radio`}
                       defaultChecked={template.id === selectedTemplate}
                     >
-                      {' '}
+                      <span className='nhsuk-u-visually-hidden'>
+                        Select template {template.name}
+                      </span>
                     </Radios.Radio>
                   </Table.Cell>
                   <Table.Cell>{template.name}</Table.Cell>
