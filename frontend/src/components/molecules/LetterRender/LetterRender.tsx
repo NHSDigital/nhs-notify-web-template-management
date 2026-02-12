@@ -2,7 +2,10 @@
 
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { NHSNotifyTabs, type TabItem } from '@atoms/NHSNotifyTabs';
+import {
+  NHSNotifyTabs,
+  type TabItem,
+} from '@atoms/NHSNotifyTabs/NHSNotifyTabs';
 import { LetterRenderTab } from './LetterRenderTab';
 
 export function LetterRender({

@@ -1,5 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { NHSNotifyTabs, type TabItem } from '@atoms/NHSNotifyTabs';
+import {
+  NHSNotifyTabs,
+  type TabItem,
+} from '@atoms/NHSNotifyTabs/NHSNotifyTabs';
 
 const mockTabs: TabItem[] = [
   { id: 'tab-one', label: 'Tab One', content: <div>Content One</div> },
