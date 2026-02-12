@@ -6,6 +6,7 @@ import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
 import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
@@ -35,7 +36,7 @@ export default async function UploadLargePrintLetterTemplatePage() {
   }
 
   return (
-    <>
+    <NHSNotifyContainer>
       <NHSNotifyBackLink href={content.backLink.href}>
         {content.backLink.text}
       </NHSNotifyBackLink>
@@ -67,6 +68,6 @@ export default async function UploadLargePrintLetterTemplatePage() {
           </div>
         </NHSNotifyFormProvider>
       </NHSNotifyMain>
-    </>
+    </NHSNotifyContainer>
   );
 }

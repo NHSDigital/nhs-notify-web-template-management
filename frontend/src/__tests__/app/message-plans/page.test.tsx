@@ -9,6 +9,7 @@ import {
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import MessagePlansPage, { generateMetadata } from '@app/message-plans/page';
 import { ReactElement } from 'react';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { RoutingConfig } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/message-plans');
@@ -72,9 +73,11 @@ describe('MessagePlansPage', () => {
     countRoutingConfigsMock.mockResolvedValueOnce(1).mockResolvedValueOnce(2);
 
     const page = (await MessagePlansPage()) as ReactElement<
-      MessagePlansProps,
-      typeof MessagePlans
+      { children: ReactElement<MessagePlansProps, typeof MessagePlans> },
+      typeof NHSNotifyContainer
     >;
+
+    const messagePlansComponent = page.props.children;
 
     expect(getRoutingConfigsMock).toHaveBeenCalledTimes(1);
 
@@ -82,7 +85,7 @@ describe('MessagePlansPage', () => {
 
     expect(countRoutingConfigsMock).toHaveBeenNthCalledWith(2, 'COMPLETED');
 
-    expect(page.props.draft).toEqual({
+    expect(messagePlansComponent.props.draft).toEqual({
       plans: [
         {
           id: '1',
@@ -94,7 +97,7 @@ describe('MessagePlansPage', () => {
       count: 1,
     });
 
-    expect(page.props.production).toEqual({
+    expect(messagePlansComponent.props.production).toEqual({
       plans: [
         {
           id: '2',

@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import DeleteTemplateErrorPage, {
   generateMetadata,
 } from '@app/delete-template-error/[templateId]/page';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { getTemplate } from '@utils/form-actions';
 import { getRoutingConfigReferencesByTemplateId } from '@utils/message-plans';
 import type {
@@ -110,10 +111,12 @@ describe('DeleteTemplateError page', () => {
     expect(redirectMock).not.toHaveBeenCalled();
 
     expect(result).toEqual(
-      <DeleteTemplateError
-        templateName='Test Template'
-        messagePlans={messagePlans}
-      />
+      <NHSNotifyContainer>
+        <DeleteTemplateError
+          templateName='Test Template'
+          messagePlans={messagePlans}
+        />
+      </NHSNotifyContainer>
     );
   });
 

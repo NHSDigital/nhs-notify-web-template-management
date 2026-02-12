@@ -9,6 +9,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
@@ -29,7 +30,11 @@ const PreviewEmailTemplatePage = async (props: TemplatePageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewEmailTemplate initialState={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <PreviewEmailTemplate initialState={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default PreviewEmailTemplatePage;

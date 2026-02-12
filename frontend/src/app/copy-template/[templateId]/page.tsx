@@ -7,6 +7,7 @@ import {
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const CopyTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
@@ -23,7 +24,11 @@ const CopyTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <CopyTemplate template={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <CopyTemplate template={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default CopyTemplatePage;

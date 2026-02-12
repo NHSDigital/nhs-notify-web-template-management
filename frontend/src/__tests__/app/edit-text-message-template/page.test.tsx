@@ -8,6 +8,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
@@ -83,6 +84,10 @@ describe('EditSmsTemplatePage', () => {
     expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toEqual(<SmsTemplateForm initialState={smsTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <SmsTemplateForm initialState={smsTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 });

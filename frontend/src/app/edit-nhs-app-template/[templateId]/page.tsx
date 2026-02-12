@@ -2,6 +2,7 @@
 
 import { Metadata } from 'next';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import {
   TemplatePageProps,
   validateNHSAppTemplate,
@@ -29,7 +30,11 @@ const CreateNhsAppTemplatePage = async (props: TemplatePageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <NhsAppTemplateForm initialState={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <NhsAppTemplateForm initialState={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default CreateNhsAppTemplatePage;

@@ -1,6 +1,7 @@
 'use server';
 
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import {
   TemplatePageProps,
   validateSMSTemplate,
@@ -29,7 +30,11 @@ const CreateSmsTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <SmsTemplateForm initialState={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <SmsTemplateForm initialState={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default CreateSmsTemplatePage;

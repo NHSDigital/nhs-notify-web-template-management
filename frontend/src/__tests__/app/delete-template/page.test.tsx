@@ -3,6 +3,7 @@
  */
 import DeleteTemplatePage from '@app/delete-template/[templateId]/page';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -45,7 +46,11 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<DeleteTemplate template={emailTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <DeleteTemplate template={emailTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {

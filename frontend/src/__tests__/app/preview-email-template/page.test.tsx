@@ -6,6 +6,7 @@ import PreviewEmailTemplatePage, {
 } from '@app/preview-email-template/[templateId]/page';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -62,7 +63,11 @@ describe('PreviewEmailTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <PreviewEmailTemplate initialState={emailTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
