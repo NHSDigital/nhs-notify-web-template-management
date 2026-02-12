@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NHSNotifyTabs matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-tabs"
+  >
+    <h2
+      class="nhsuk-tabs__title"
+    >
+      Test Tabs
+    </h2>
+    <ul
+      class="nhsuk-tabs__list"
+      role="tablist"
+    >
+      <li
+        class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+        role="presentation"
+      >
+        <a
+          aria-controls="tab-one"
+          aria-selected="true"
+          class="nhsuk-tabs__tab"
+          href="#tab-one"
+          id="tab_tab-one"
+          role="tab"
+          tabindex="0"
+        >
+          Tab One
+        </a>
+      </li>
+      <li
+        class="nhsuk-tabs__list-item"
+        role="presentation"
+      >
+        <a
+          aria-controls="tab-two"
+          aria-selected="false"
+          class="nhsuk-tabs__tab"
+          href="#tab-two"
+          id="tab_tab-two"
+          role="tab"
+          tabindex="-1"
+        >
+          Tab Two
+        </a>
+      </li>
+      <li
+        class="nhsuk-tabs__list-item"
+        role="presentation"
+      >
+        <a
+          aria-controls="tab-three"
+          aria-selected="false"
+          class="nhsuk-tabs__tab"
+          href="#tab-three"
+          id="tab_tab-three"
+          role="tab"
+          tabindex="-1"
+        >
+          Tab Three
+        </a>
+      </li>
+    </ul>
+    <div
+      aria-labelledby="tab_tab-one"
+      class="nhsuk-tabs__panel"
+      id="tab-one"
+      role="tabpanel"
+    >
+      <div>
+        Content One
+      </div>
+    </div>
+    <div
+      aria-labelledby="tab_tab-two"
+      class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+      id="tab-two"
+      role="tabpanel"
+    >
+      <div>
+        Content Two
+      </div>
+    </div>
+    <div
+      aria-labelledby="tab_tab-three"
+      class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+      id="tab-three"
+      role="tabpanel"
+    >
+      <div>
+        Content Three
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

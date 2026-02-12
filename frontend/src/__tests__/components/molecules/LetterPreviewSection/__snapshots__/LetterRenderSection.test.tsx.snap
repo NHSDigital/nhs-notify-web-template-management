@@ -15,7 +15,6 @@ exports[`LetterRender matches snapshot 1`] = `
     </p>
     <div
       class="nhsuk-tabs nhsuk-u-margin-top-6"
-      data-module="nhsuk-tabs"
     >
       <h2
         class="nhsuk-tabs__title"
