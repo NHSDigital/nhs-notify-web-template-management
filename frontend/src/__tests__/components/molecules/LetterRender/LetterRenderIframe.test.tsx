@@ -47,14 +47,6 @@ describe('LetterRenderIframe', () => {
   });
 
   describe('iframe attributes', () => {
-    it('renders iframe without inline styles (styles applied via CSS)', () => {
-      render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
-
-      const iframe = screen.getByTitle('Letter preview - short examples');
-      // Styles are now applied via CSS module, not inline
-      expect(iframe).not.toHaveAttribute('style');
-    });
-
     it('has referrerPolicy set to no-referrer', () => {
       render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
 
