@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@styles/app.scss';
 import content from '@content/content';
@@ -55,16 +54,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const lib = `${getBasePath()}/lib`;
-
   return (
     <html lang='en'>
-      <head></head>
-      <body suppressHydrationWarning>
-        <Script
-          src={`${lib}/nhs-frontend-js-check.js`}
-          strategy='beforeInteractive'
+      <head>
+        <script
+          src={`${getBasePath()}/lib/nhsuk-frontend-10.3.1.min.js`}
+          defer
+          type='module'
         />
+      </head>
+      <body
+        className='js-enabled nhsuk-frontend-supported'
+        suppressHydrationWarning
+      >
         <CookiesProvider>
           <AuthProvider>
             <ClientConfigProviderServer>
@@ -79,7 +81,6 @@ export default function RootLayout({
             </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
-        <Script src={`${lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
       </body>
     </html>
   );
