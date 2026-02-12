@@ -145,3 +145,15 @@ variable "enable_api_data_trace" {
   description = "Enable API Gateway data trace logging"
   default     = false
 }
+
+variable "container_lambda_ecr_repo" {
+  type        = string
+  description = "ECR repository name for container-based lambda images"
+  default     = "nhs-notify-main-acct"
+}
+
+variable "image_tag_suffix" {
+  type        = string
+  description = "The short SHA or Release Tag to append to the container lambda image tag"
+  default     = ""
+}

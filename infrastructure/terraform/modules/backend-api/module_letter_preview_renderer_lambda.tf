@@ -20,8 +20,7 @@ module "letter_preview_renderer_lambda" {
   memory  = 1024
   timeout = 30
 
-  log_retention_in_days = var.log_retention_in_days
-
-  log_destination_arn       = ""
-  log_subscription_role_arn = ""
+  log_retention_in_days     = var.log_retention_in_days
+  log_destination_arn       = var.log_destination_arn
+  log_subscription_role_arn = var.log_subscription_role_arn
 }
