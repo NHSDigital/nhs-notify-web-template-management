@@ -200,8 +200,8 @@ export type NhsAppProperties = {
 };
 
 export type PatchTemplate = {
-  name?: string;
   campaignId?: string;
+  name?: string;
 };
 
 export type PdfLetterFiles = {
