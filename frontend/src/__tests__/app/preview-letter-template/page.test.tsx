@@ -274,21 +274,6 @@ describe('valid authoring letter template', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('renders the submit form with templateId and lockNumber', async () => {
-    const { container } = render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
-
-    const templateIdInput = container.querySelector('input[name="templateId"]');
-    const lockNumberInput = container.querySelector('input[name="lockNumber"]');
-
-    expect(templateIdInput).toHaveValue(AUTHORING_LETTER_TEMPLATE.id);
-    expect(lockNumberInput).toHaveValue(
-      String(AUTHORING_LETTER_TEMPLATE.lockNumber)
-    );
-  });
 
   it('submits the form with correct data', async () => {
     const user = userEvent.setup();
@@ -346,7 +331,7 @@ describe('authoring letter template does not show submit form when already submi
 });
 
 describe('authoring letter with validation errors', () => {
-  it('renders page with VALIDATION_FAILED status and validation errors', async () => {
+  it('renders page with VALIDATION_FAILED status and displays error summary with virus scan message', async () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
@@ -355,15 +340,27 @@ describe('authoring letter with validation errors', () => {
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
 
-    const page = await Page({
-      params: Promise.resolve({ templateId: templateWithValidationErrors.id }),
-    });
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: templateWithValidationErrors.id }),
+      })
+    );
 
-    expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole('alert', { name: 'There is a problem' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('The file(s) you uploaded may contain a virus.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Create a new letter template to upload your file(s) again or upload different file(s).'
+      )
+    ).toBeInTheDocument();
   });
 
-  it('renders page with VALIDATION_FAILED status and empty validationErrors', async () => {
+  it('renders page with VALIDATION_FAILED status and empty validationErrors without error summary', async () => {
     const templateWithEmptyErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
@@ -372,15 +369,20 @@ describe('authoring letter with validation errors', () => {
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithEmptyErrors);
 
-    const page = await Page({
-      params: Promise.resolve({ templateId: templateWithEmptyErrors.id }),
-    });
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: templateWithEmptyErrors.id }),
+      })
+    );
 
-    expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
   });
 
-  it('renders page with VALIDATION_FAILED status and undefined validationErrors', async () => {
+  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary', async () => {
     const templateWithUndefinedErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
@@ -388,15 +390,20 @@ describe('authoring letter with validation errors', () => {
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithUndefinedErrors);
 
-    const page = await Page({
-      params: Promise.resolve({ templateId: templateWithUndefinedErrors.id }),
-    });
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: templateWithUndefinedErrors.id }),
+      })
+    );
 
-    expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
   });
 
-  it('displays validation error message in error summary', async () => {
+  it('does not display submit button when validation has failed', async () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
@@ -414,8 +421,8 @@ describe('authoring letter with validation errors', () => {
     );
 
     expect(
-      screen.getByRole('alert', { name: 'There is a problem' })
-    ).toBeInTheDocument();
+      screen.queryByRole('button', { name: 'Submit template' })
+    ).not.toBeInTheDocument();
   });
 
   it('matches snapshot with validation errors', async () => {
