@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@styles/app.scss';
 import content from '@content/content';
@@ -61,7 +61,10 @@ export default function RootLayout({
     <html lang='en'>
       <head></head>
       <body suppressHydrationWarning>
-        <script src={`${lib}/nhs-frontend-js-check.js`} />
+        <Script
+          src={`${lib}/nhs-frontend-js-check.js`}
+          strategy='beforeInteractive'
+        />
         <CookiesProvider>
           <AuthProvider>
             <ClientConfigProviderServer>
@@ -76,7 +79,7 @@ export default function RootLayout({
             </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
-        <script src={`${lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
+        <Script src={`${lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
       </body>
     </html>
   );
