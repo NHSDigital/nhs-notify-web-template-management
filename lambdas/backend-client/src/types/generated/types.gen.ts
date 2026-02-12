@@ -201,6 +201,7 @@ export type NhsAppProperties = {
 
 export type PatchTemplate = {
   name?: string;
+  campaignId?: string;
 };
 
 export type PdfLetterFiles = {

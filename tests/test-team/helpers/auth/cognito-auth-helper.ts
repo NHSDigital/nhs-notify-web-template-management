@@ -524,13 +524,23 @@ export class CognitoAuthHelper {
     return id;
   }
 
-  public async getClient(clientId: string) {
-    return this.notifyClientHelper.getClient(clientId);
+  public async getClient(
+    clientId: string
+  ): Promise<ClientConfiguration & { id: string }> {
+    const client = await this.notifyClientHelper.getClient(clientId);
+
+    if (client === null) {
+      throw new Error(`Client "${clientId}" not found`);
+    }
+
+    return { ...client, id: clientId };
   }
 
-  public async getStaticClient(clientKey: ClientKey) {
+  public async getStaticClient(
+    clientKey: ClientKey
+  ): Promise<ClientConfiguration & { id: string }> {
     const id = this.notifyClientHelper.clientIdFromKey(clientKey);
-    return this.notifyClientHelper.getClient(id);
+    return this.getClient(id);
   }
 
   public async createAdHocUser(clientId: string) {

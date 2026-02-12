@@ -48,60 +48,34 @@ exports[`valid template matches snapshot on initial render 1`] = `
             >
               <label
                 class="nhsuk-label nhsuk-label--l"
-                for="name"
+                for="campaignId"
               >
-                Edit template name
+                Edit template campaign
               </label>
             </h1>
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients
+              Choose which campaign this letter is for
             </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
+            <select
+              class="nhsuk-select"
+              id="campaignId"
+              name="campaignId"
             >
-              <summary
-                class="nhsuk-details__summary"
+              <option />
+              <option
+                selected=""
+                value="Campaign 1"
               >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your templates
-                </span>
-              </summary>
-              <div
-                class="nhsuk-details__text"
+                Campaign 1
+              </option>
+              <option
+                value="Campaign 2"
               >
-                <p>
-                  You should name your templates in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common template names include the:
-                </p>
-                <ul>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the template
-                  </li>
-                  <li>
-                    version number of the template
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Covid19 2025 - over 65s - version 3'
-                </p>
-              </div>
-            </details>
-            <input
-              class="nhsuk-input nhsuk-u-margin-bottom-2"
-              id="name"
-              name="name"
-              type="text"
-              value="Original Template Name"
-            />
+                Campaign 2
+              </option>
+            </select>
           </div>
           <div
             class="nhsuk-form-group"
@@ -153,9 +127,9 @@ exports[`valid template renders errors when blank form is submitted and error st
       >
         <li>
           <a
-            href="#name"
+            href="#campaignId"
           >
-            Enter a template name
+            Choose a campaign
           </a>
         </li>
       </ul>
@@ -201,53 +175,16 @@ exports[`valid template renders errors when blank form is submitted and error st
             >
               <label
                 class="nhsuk-label nhsuk-label--l"
-                for="name"
+                for="campaignId"
               >
-                Edit template name
+                Edit template campaign
               </label>
             </h1>
             <div
               class="nhsuk-hint"
             >
-              This will not be visible to recipients
+              Choose which campaign this letter is for
             </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
-            >
-              <summary
-                class="nhsuk-details__summary"
-              >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your templates
-                </span>
-              </summary>
-              <div
-                class="nhsuk-details__text"
-              >
-                <p>
-                  You should name your templates in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common template names include the:
-                </p>
-                <ul>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the template
-                  </li>
-                  <li>
-                    version number of the template
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Covid19 2025 - over 65s - version 3'
-                </p>
-              </div>
-            </details>
             <span
               class="nhsuk-error-message"
             >
@@ -256,14 +193,25 @@ exports[`valid template renders errors when blank form is submitted and error st
               >
                 Error: 
               </span>
-              Enter a template name
+              Choose a campaign
             </span>
-            <input
-              class="nhsuk-input nhsuk-u-margin-bottom-2"
-              id="name"
-              name="name"
-              type="text"
-            />
+            <select
+              class="nhsuk-select nhsuk-select--error"
+              id="campaignId"
+              name="campaignId"
+            >
+              <option />
+              <option
+                value="Campaign 1"
+              >
+                Campaign 1
+              </option>
+              <option
+                value="Campaign 2"
+              >
+                Campaign 2
+              </option>
+            </select>
           </div>
           <div
             class="nhsuk-form-group"

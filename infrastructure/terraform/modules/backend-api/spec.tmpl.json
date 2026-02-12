@@ -635,6 +635,9 @@
       "PatchTemplate": {
         "additionalProperties": false,
         "properties": {
+          "campaignId": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           }

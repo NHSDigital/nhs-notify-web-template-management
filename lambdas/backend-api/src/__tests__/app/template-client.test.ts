@@ -1802,6 +1802,171 @@ describe('templateClient', () => {
         },
       });
     });
+
+    test('should return a failure result when fetching client configuration fails during campaignId update', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        campaignId: 'campaign-id',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { errorMeta: { description: 'err', code: 500 } },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+        user.clientId
+      );
+
+      expect(result).toEqual({
+        error: { errorMeta: { description: 'err', code: 500 } },
+      });
+
+      expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result if campaign ID is not valid during patch', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        campaignId: 'campaign-id',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['fish-campaign'] },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+        user.clientId
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            description: 'Invalid campaign ID in request',
+            code: 400,
+          },
+        },
+      });
+
+      expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+    });
+
+    test('should successfully patch when campaign ID is valid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        campaignId: 'campaign-id',
+      };
+
+      const template: TemplateDto = {
+        id: templateId,
+        name: 'Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        sidesCount: 1,
+        campaignId: 'campaign-id',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: {},
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+        },
+      });
+
+      mocks.templateRepository.patch.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+        user.clientId
+      );
+
+      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
+
+    test('should not fetch client configuration when campaignId is not in updates', async () => {
+      const { templateClient, mocks } = setup();
+
+      const updates = {
+        name: 'Updated Name',
+      };
+
+      const template: TemplateDto = {
+        id: templateId,
+        name: 'Updated Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        sidesCount: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      mocks.templateRepository.patch.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      const result = await templateClient.patchTemplate(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+        templateId,
+        updates,
+        user,
+        5
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
   });
 
   describe('getTemplate', () => {

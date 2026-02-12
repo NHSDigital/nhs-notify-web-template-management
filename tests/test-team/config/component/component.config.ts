@@ -2,10 +2,7 @@ import path from 'node:path';
 import { defineConfig, devices } from '@playwright/test';
 import baseConfig from '../playwright.config';
 
-const buildCommand = [
-  'INCLUDE_AUTH_PAGES=true',
-  'npm run build && npm run start',
-].join(' ');
+const buildCommand = ['npm run start'].join(' ');
 
 export default defineConfig({
   ...baseConfig,
