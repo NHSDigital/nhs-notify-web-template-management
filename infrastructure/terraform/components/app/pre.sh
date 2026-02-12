@@ -1,5 +1,7 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, any change of directory will persist once this script exits and returns control to terraform.sh
+REGION=$1
+ENVIRONMENT=$2
 ACTION=$3
 
 echo "Running app pre.sh"
@@ -10,6 +12,9 @@ echo "aws_account_id=$aws_account_id"
 echo "environment=$environment"
 echo "region=$region"
 
+# Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
+export component_name project aws_account_id environment region
+
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 
@@ -17,14 +22,17 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-
+## Set TF_VAR_image_tag_suffix based on git tag or short SHA for unique lambda image tagging in ECR.
+#This ensures that each build produces a uniquely identifiable image, and tagged releases are easily traceable.
 echo "Checking if current commit is a tag..."
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
 if [ -n "$GIT_TAG" ]; then
-  echo "On tag: $GIT_TAG, exporting TF_VAR_image_tag_suffix as tag"
-  export TF_VAR_image_tag_suffix="$GIT_TAG"
+  TAGGED="tag-$GIT_TAG"
+  echo "On tag: $GIT_TAG, exporting TF_VAR_image_tag_suffix as tag: $TAGGED"
+  export TF_VAR_image_tag_suffix="$TAGGED"
+
 else
-  SHORT_SHA="$(git rev-parse --short HEAD)"
+  SHORT_SHA="sha-$(git rev-parse --short HEAD)"
   echo "Not on a tag, exporting TF_VAR_image_tag_suffix as short SHA: $SHORT_SHA"
   export TF_VAR_image_tag_suffix="$SHORT_SHA"
 fi
