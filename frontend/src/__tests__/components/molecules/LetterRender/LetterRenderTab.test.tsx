@@ -72,7 +72,9 @@ describe('LetterRenderTab', () => {
         },
       };
 
-      render(<LetterRenderTab template={templateWithShortRender} tab='short' />);
+      render(
+        <LetterRenderTab template={templateWithShortRender} tab='short' />
+      );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
       expect(iframe).toHaveAttribute(
@@ -144,7 +146,9 @@ describe('LetterRenderTab', () => {
         },
       };
 
-      render(<LetterRenderTab template={templateWithShortRender} tab='short' />);
+      render(
+        <LetterRenderTab template={templateWithShortRender} tab='short' />
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -194,7 +198,9 @@ describe('LetterRenderTab', () => {
       });
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
 
-      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      const submitButton = screen.getByRole('button', {
+        name: 'Update preview',
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -219,7 +225,9 @@ describe('LetterRenderTab', () => {
       });
       fireEvent.change(dropdown, { target: { value: 'long-1' } });
 
-      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      const submitButton = screen.getByRole('button', {
+        name: 'Update preview',
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -250,7 +258,9 @@ describe('LetterRenderTab', () => {
       fireEvent.change(appointmentInput, { target: { value: '2025-05-20' } });
 
       // Submit
-      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      const submitButton = screen.getByRole('button', {
+        name: 'Update preview',
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -278,7 +288,9 @@ describe('LetterRenderTab', () => {
       fireEvent.change(dropdown, { target: { value: 'long-1' } });
 
       // Submit
-      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      const submitButton = screen.getByRole('button', {
+        name: 'Update preview',
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -299,7 +311,9 @@ describe('LetterRenderTab', () => {
       render(<LetterRenderTab template={baseTemplate} tab='short' />);
 
       // Submit without selecting recipient
-      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      const submitButton = screen.getByRole('button', {
+        name: 'Update preview',
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {

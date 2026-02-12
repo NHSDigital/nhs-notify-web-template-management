@@ -512,50 +512,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         <dt
           class="nhsuk-summary-list__key"
         >
-          Total pages
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        />
-        <dd
-          class="nhsuk-summary-list__actions"
-        />
-      </div>
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
-          Sheets
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        />
-        <dd
-          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-        >
-          <a
-            data-testid="sheets-action"
-            href="https://notify.nhs.uk/pricing-and-commercial/letters"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Learn more
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-               about sheets
-            </span>
-          </a>
-        </dd>
-      </div>
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
           Printing and postage
         </dt>
         <dd
