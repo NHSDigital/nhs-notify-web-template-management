@@ -34,28 +34,28 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
+
   const pageCount = template.files.initialRender?.pageCount;
   const sheets = pageCount ? Math.ceil(pageCount / 2) : undefined;
+
   const hasSingleCampaign = campaignIds.length === 1;
 
-  const isPendingValidation = template.templateStatus === 'PENDING_VALIDATION';
-  const isValidationFailed = template.templateStatus === 'VALIDATION_FAILED';
+  const pendingValidation = template.templateStatus === 'PENDING_VALIDATION';
+  const validationFailed = template.templateStatus === 'VALIDATION_FAILED';
+
   const hasInitialRender = Boolean(template.files.initialRender);
 
-  // Hide edit name, postage and campaign when status is PENDING_VALIDATION or VALIDATION_FAILED
-  const hideEditElements =
-    hideEditActions || isPendingValidation || isValidationFailed;
+  const unvalidated = pendingValidation || validationFailed;
+
+  const hideEditElements = hideEditActions || unvalidated;
 
   const hideEditCampaignLink =
     hideEditElements || (template.campaignId && hasSingleCampaign);
 
-  // Hide campaign and postage rows completely when PENDING_VALIDATION or VALIDATION_FAILED
-  const hideCampaignRow = isPendingValidation || isValidationFailed;
-  const hidePostageRow = isPendingValidation || isValidationFailed;
+  const hideCampaignRow = unvalidated;
+  const hidePostageRow = unvalidated;
 
-  // Hide sides/pages when PENDING_VALIDATION, or when VALIDATION_FAILED with no initialRender
-  const hideSidesAndPages =
-    isPendingValidation || (isValidationFailed && !hasInitialRender);
+  const hideSidesAndPages = pendingValidation || !hasInitialRender;
 
   return (
     <>

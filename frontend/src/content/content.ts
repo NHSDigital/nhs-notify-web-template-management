@@ -558,7 +558,7 @@ const previewLetterTemplate = {
   },
 };
 
-const letterPreviewSection = {
+const letterRender = {
   heading: 'Letter preview',
   guidance: 'Check how your personalisation fields will appear in your letter.',
   learnMoreLink: {
@@ -1765,7 +1765,7 @@ const content = {
     errorSummary,
     footer,
     header,
-    letterPreviewSection,
+    letterRender,
     lockedTemplateWarning,
     logoutWarning,
     messageFormatting,

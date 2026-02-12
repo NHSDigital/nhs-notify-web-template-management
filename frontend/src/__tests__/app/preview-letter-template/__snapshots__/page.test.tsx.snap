@@ -2,153 +2,157 @@
 
 exports[`valid PDF letter template matches snapshot 1`] = `
 <DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
+  <div
+    class="nhsuk-width-container"
   >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-templates"
+    >
+      Back to all templates
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-full"
+        class="nhsuk-grid-row"
       >
         <div
-          class="nhsuk-u-reading-width"
+          class="nhsuk-grid-column-full"
         >
-          <span
-            class="nhsuk-caption-l"
+          <div
+            class="nhsuk-u-reading-width"
           >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
+            <span
+              class="nhsuk-caption-l"
+            >
+              Template
+            </span>
+            <h1
+              class="preview__heading"
+              data-testid="preview-message__heading"
+            >
+              letter template name
+            </h1>
+          </div>
+          <div
+            class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
           >
-            letter template name
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-          >
-            <div
-              class="nhsuk-summary-list__row"
+            <dl
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-summary-list__row"
               >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                letter-template-id
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Standard letter
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag"
-                  data-status="not-yet-submitted"
-                  data-testid="status-tag"
+                <dt
+                  class="nhsuk-summary-list__key"
                 >
-                  Not yet submitted
-                </strong>
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template file
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <div
-                  class="container"
+                  Template ID
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value monospace-font"
+                  data-testid="preview-template-id"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="icon"
-                    fill="none"
-                    height="26"
-                    viewBox="0 0 20 26"
-                    width="20"
-                    xmlns="http://www.w3.org/2000/svg"
+                  letter-template-id
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template type
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Standard letter
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Status
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <strong
+                    class="nhsuk-tag"
+                    data-status="not-yet-submitted"
+                    data-testid="status-tag"
                   >
-                    <path
-                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                      fill="#4C6272"
-                    />
-                  </svg>
-                  <p
-                    class="text"
+                    Not yet submitted
+                  </strong>
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template file
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <div
+                    class="container"
                   >
-                    template.pdf
-                  </p>
-                </div>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <a
-          aria-disabled="false"
-          class="nhsuk-button"
-          data-testid="preview-letter-template-cta"
-          draggable="false"
-          href="/templates/submit-letter-template/letter-template-id?lockNumber=1"
-          id="preview-letter-template-cta"
-          role="button"
-        >
-          Submit template
-        </a>
-        <p>
+                    <svg
+                      aria-hidden="true"
+                      class="icon"
+                      fill="none"
+                      height="26"
+                      viewBox="0 0 20 26"
+                      width="20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                        fill="#4C6272"
+                      />
+                    </svg>
+                    <p
+                      class="text"
+                    >
+                      template.pdf
+                    </p>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
           <a
-            href="/message-templates"
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="preview-letter-template-cta"
+            draggable="false"
+            href="/templates/submit-letter-template/letter-template-id?lockNumber=1"
+            id="preview-letter-template-cta"
+            role="button"
           >
-            Back to all templates
+            Submit template
           </a>
-        </p>
+          <p>
+            <a
+              href="/message-templates"
+            >
+              Back to all templates
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;
 

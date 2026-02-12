@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from 'next';
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@styles/app.scss';
@@ -55,12 +54,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const lib = `${getBasePath()}/lib`;
-
   return (
     <html lang='en'>
+      <head>
+        <script
+          src={`${getBasePath()}/lib/nhsuk-frontend-10.3.1.min.js`}
+          defer
+          type='module'
+        />
+      </head>
       <body suppressHydrationWarning>
-        <script src={`${lib}/nhs-frontend-js-check.js`} />
+        <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
           <AuthProvider>
             <ClientConfigProviderServer>
@@ -75,7 +79,6 @@ export default function RootLayout({
             </ClientConfigProviderServer>
           </AuthProvider>
         </CookiesProvider>
-        <script src={`${lib}/nhsuk-frontend-10.3.1.min.js`} type='module' />
       </body>
     </html>
   );

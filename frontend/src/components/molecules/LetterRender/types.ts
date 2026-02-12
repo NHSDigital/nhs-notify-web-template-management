@@ -7,6 +7,7 @@ export type RenderFormData = {
 
 export type UpdateLetterPreviewInput = {
   templateId: string;
+  lockNumber: number;
   tab: RenderTab;
   systemPersonalisationPackId: string;
   personalisation: Record<string, string>;

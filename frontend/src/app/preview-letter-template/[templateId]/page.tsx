@@ -11,7 +11,7 @@ import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
-import { PreviewPdfLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
+import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
@@ -51,7 +51,11 @@ export default async function PreviewLetterTemplatePage({
   }
 
   if (validatedTemplate.letterVersion === 'PDF') {
-    return <PreviewPdfLetterTemplate template={validatedTemplate} />;
+    return (
+      <NHSNotifyContainer>
+        <PreviewPdfLetterTemplate template={validatedTemplate} />
+      </NHSNotifyContainer>
+    );
   }
 
   // AUTHORING letter

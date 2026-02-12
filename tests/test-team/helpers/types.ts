@@ -71,10 +71,8 @@ type TypeSpecificProperties = {
   campaignId?: string;
   supplierReferences?: Record<string, string>;
   letterVariantId?: string;
-  // Authoring letter custom personalisation
   customPersonalisation?: string[];
   systemPersonalisation?: string[];
-  // Validation errors for authoring letters
   validationErrors?: string[];
 };
 

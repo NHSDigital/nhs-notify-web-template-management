@@ -22,7 +22,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly campaignAction: Locator;
 
   // LetterRender component (AUTHORING)
-  public readonly letterPreviewSection: Locator;
+  public readonly letterRender: Locator;
   public readonly shortExamplesTab: Locator;
   public readonly longExamplesTab: Locator;
 
@@ -54,7 +54,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.campaignAction = page.getByTestId('campaign-action');
 
     // LetterRender component locators
-    this.letterPreviewSection = page.locator('section').filter({
+    this.letterRender = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),
     });
     this.shortExamplesTab = page.getByRole('tab', { name: 'Short examples' });
@@ -95,30 +95,18 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     await this.continueButton.click();
   }
 
-  /**
-   * Get a custom personalisation field input for the short tab
-   */
   getShortCustomFieldInput(fieldName: string): Locator {
     return this.shortTabPanel.locator(`input[id="custom-${fieldName}-short"]`);
   }
 
-  /**
-   * Get a custom personalisation field input for the long tab
-   */
   getLongCustomFieldInput(fieldName: string): Locator {
     return this.longTabPanel.locator(`input[id="custom-${fieldName}-long"]`);
   }
 
-  /**
-   * Get all recipient options from the short tab dropdown
-   */
   getShortRecipientOptions(): Locator {
     return this.shortRecipientSelect.locator('option');
   }
 
-  /**
-   * Get all recipient options from the long tab dropdown
-   */
   getLongRecipientOptions(): Locator {
     return this.longRecipientSelect.locator('option');
   }

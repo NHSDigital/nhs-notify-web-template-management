@@ -201,6 +201,7 @@ describe('LetterRenderTab', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
           expect.objectContaining({
             templateId: 'template-123',
+            lockNumber: 1,
             tab: 'short',
             systemPersonalisationPackId: 'short-1',
           })
@@ -225,6 +226,7 @@ describe('LetterRenderTab', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
           expect.objectContaining({
             templateId: 'template-123',
+            lockNumber: 1,
             tab: 'long',
             systemPersonalisationPackId: 'long-1',
           })

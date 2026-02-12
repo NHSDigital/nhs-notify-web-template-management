@@ -7,7 +7,7 @@ import content from '@content/content';
 import {
   SHORT_EXAMPLE_RECIPIENTS,
   LONG_EXAMPLE_RECIPIENTS,
-} from './example-recipients';
+} from '@content/example-recipients';
 import type { RenderFormData, RenderTab } from './types';
 import styles from './LetterRenderForm.module.scss';
 
@@ -26,7 +26,7 @@ export function LetterRenderForm({
   onFormChange,
   onSubmit,
 }: LetterRenderFormProps) {
-  const { letterPreviewSection: copy } = content.components;
+  const { letterRender: copy } = content.components;
 
   const exampleRecipients =
     tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;

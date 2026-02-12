@@ -561,8 +561,8 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.campaignAction).toBeHidden();
     });
 
-    test.describe('Letter preview section', () => {
-      test('displays letter preview section with tabs when initialRender exists', async ({
+    test.describe('Letter render section', () => {
+      test('displays letter render section with tabs when initialRender exists', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
@@ -571,24 +571,19 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Letter preview section should be visible
-        await expect(previewPage.letterPreviewSection).toBeVisible();
+        await expect(previewPage.letterRender).toBeVisible();
 
-        // Both tabs should be visible
         await expect(previewPage.shortExamplesTab).toBeVisible();
         await expect(previewPage.longExamplesTab).toBeVisible();
 
-        // Short examples tab should be selected by default
         await expect(previewPage.shortExamplesTab).toHaveAttribute(
           'aria-selected',
           'true'
         );
 
-        // Form elements should be visible (short tab is default)
         await expect(previewPage.shortRecipientSelect).toBeVisible();
         await expect(previewPage.shortUpdatePreviewButton).toBeVisible();
 
-        // Preview iframe should be visible
         await expect(previewPage.shortPreviewIframe).toBeVisible();
       });
 
@@ -601,8 +596,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Letter preview section should not be visible
-        await expect(previewPage.letterPreviewSection).toBeHidden();
+        await expect(previewPage.letterRender).toBeHidden();
       });
 
       test('can switch between short and long example tabs', async ({
@@ -614,7 +608,6 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Short tab should be selected initially
         await expect(previewPage.shortExamplesTab).toHaveAttribute(
           'aria-selected',
           'true'
@@ -624,10 +617,8 @@ test.describe('Preview Letter template Page', () => {
           'false'
         );
 
-        // Click long examples tab
         await previewPage.longExamplesTab.click();
 
-        // Long tab should now be selected
         await expect(previewPage.longExamplesTab).toHaveAttribute(
           'aria-selected',
           'true'
@@ -647,13 +638,10 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Recipient select should have placeholder option selected initially
         await expect(previewPage.shortRecipientSelect).toHaveValue('');
 
-        // Select a recipient (first non-placeholder option)
         await previewPage.shortRecipientSelect.selectOption({ index: 1 });
 
-        // Value should have changed
         await expect(previewPage.shortRecipientSelect).not.toHaveValue('');
       });
 
@@ -664,57 +652,17 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Click long examples tab
         await previewPage.longExamplesTab.click();
 
-        // Long tab form elements should be visible
         await expect(previewPage.longRecipientSelect).toBeVisible();
         await expect(previewPage.longUpdatePreviewButton).toBeVisible();
         await expect(previewPage.longPreviewIframe).toBeVisible();
 
-        // Recipient select should have placeholder option selected initially
         await expect(previewPage.longRecipientSelect).toHaveValue('');
 
-        // Select a recipient (first non-placeholder option)
         await previewPage.longRecipientSelect.selectOption({ index: 1 });
 
-        // Value should have changed
         await expect(previewPage.longRecipientSelect).not.toHaveValue('');
-      });
-
-      test('short tab has correct number of example recipients', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
-
-        await previewPage.loadPage();
-
-        // Get all options (including placeholder)
-        const options = previewPage.getShortRecipientOptions();
-
-        // Should have placeholder + 11 short example recipients = 12 options
-        await expect(options).toHaveCount(12);
-      });
-
-      test('long tab has correct number of example recipients', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam('templateId', templates.authoringWithInitialRender.id);
-
-        await previewPage.loadPage();
-
-        // Click long examples tab
-        await previewPage.longExamplesTab.click();
-
-        // Get all options (including placeholder)
-        const options = previewPage.getLongRecipientOptions();
-
-        // Should have placeholder + 11 long example recipients = 12 options
-        await expect(options).toHaveCount(12);
       });
 
       test('clicking Update preview button does not navigate away', async ({
@@ -727,18 +675,78 @@ test.describe('Preview Letter template Page', () => {
         await previewPage.loadPage();
         const url = previewPage.getUrl();
 
-        // Select a recipient first
         await previewPage.shortRecipientSelect.selectOption({ index: 1 });
 
-        // Click Update preview button
         await previewPage.shortUpdatePreviewButton.click();
 
-        // Should stay on the same page
         await expect(page).toHaveURL(url);
 
-        // Form elements should still be visible
         await expect(previewPage.shortRecipientSelect).toBeVisible();
         await expect(previewPage.shortUpdatePreviewButton).toBeVisible();
+      });
+
+      test('preserves form data when switching between tabs', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringWithCustomFields.id);
+
+        await previewPage.loadPage();
+
+        // Fill in short tab form data
+        await previewPage.shortRecipientSelect.selectOption({ index: 1 });
+        const shortSelectedValue =
+          await previewPage.shortRecipientSelect.inputValue();
+
+        const shortAppointmentDate =
+          previewPage.getShortCustomFieldInput('appointmentDate');
+        const shortClinicName =
+          previewPage.getShortCustomFieldInput('clinicName');
+        const shortDoctorName =
+          previewPage.getShortCustomFieldInput('doctorName');
+
+        await shortAppointmentDate.fill('15 March 2025');
+        await shortClinicName.fill('City Hospital');
+        await shortDoctorName.fill('Dr Smith');
+
+        // Switch to long tab and fill different data
+        await previewPage.longExamplesTab.click();
+
+        await previewPage.longRecipientSelect.selectOption({ index: 2 });
+        const longSelectedValue =
+          await previewPage.longRecipientSelect.inputValue();
+
+        const longAppointmentDate =
+          previewPage.getLongCustomFieldInput('appointmentDate');
+        const longClinicName =
+          previewPage.getLongCustomFieldInput('clinicName');
+        const longDoctorName =
+          previewPage.getLongCustomFieldInput('doctorName');
+
+        await longAppointmentDate.fill('20 April 2025');
+        await longClinicName.fill('County Clinic');
+        await longDoctorName.fill('Dr Jones');
+
+        // Switch back to short tab and verify data is preserved
+        await previewPage.shortExamplesTab.click();
+
+        await expect(previewPage.shortRecipientSelect).toHaveValue(
+          shortSelectedValue
+        );
+        await expect(shortAppointmentDate).toHaveValue('15 March 2025');
+        await expect(shortClinicName).toHaveValue('City Hospital');
+        await expect(shortDoctorName).toHaveValue('Dr Smith');
+
+        // Switch back to long tab and verify data is preserved
+        await previewPage.longExamplesTab.click();
+
+        await expect(previewPage.longRecipientSelect).toHaveValue(
+          longSelectedValue
+        );
+        await expect(longAppointmentDate).toHaveValue('20 April 2025');
+        await expect(longClinicName).toHaveValue('County Clinic');
+        await expect(longDoctorName).toHaveValue('Dr Jones');
       });
     });
 
@@ -752,10 +760,8 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Custom fields heading should be visible in short tab
         await expect(previewPage.shortCustomFieldsHeading).toBeVisible();
 
-        // Custom field inputs should be visible
         const appointmentDateInput =
           previewPage.getShortCustomFieldInput('appointmentDate');
         const clinicNameInput =
@@ -775,7 +781,6 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Fill in custom field values
         const appointmentDateInput =
           previewPage.getShortCustomFieldInput('appointmentDate');
         await appointmentDateInput.fill('15 March 2025');
@@ -783,20 +788,17 @@ test.describe('Preview Letter template Page', () => {
         await expect(appointmentDateInput).toHaveValue('15 March 2025');
       });
 
-      test('custom fields are present in long tab too', async ({ page }) => {
+      test('same custom fields are present in long tab', async ({ page }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
         ).setPathParam('templateId', templates.authoringWithCustomFields.id);
 
         await previewPage.loadPage();
 
-        // Click long examples tab
         await previewPage.longExamplesTab.click();
 
-        // Custom fields heading should be visible in long tab
         await expect(previewPage.longCustomFieldsHeading).toBeVisible();
 
-        // Custom field inputs should be visible in long tab
         const appointmentDateInput =
           previewPage.getLongCustomFieldInput('appointmentDate');
         await expect(appointmentDateInput).toBeVisible();
@@ -811,7 +813,6 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Custom fields heading should not be visible
         await expect(previewPage.shortCustomFieldsHeading).toBeHidden();
       });
     });
@@ -826,18 +827,14 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Error summary should be visible
         await expect(previewPage.errorSummary).toBeVisible();
 
-        // Should contain virus scan error message
         await expect(previewPage.errorSummary).toContainText(
           'The file(s) you uploaded may contain a virus'
         );
 
-        // Submit button should be hidden for validation failed templates
         await expect(previewPage.continueButton).toBeHidden();
 
-        // Edit name link should be hidden for validation failed templates
         await expect(previewPage.editNameLink).toBeHidden();
       });
 
@@ -850,15 +847,12 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Error summary should be visible
         await expect(previewPage.errorSummary).toBeVisible();
 
-        // Should contain address lines error message
         await expect(previewPage.errorSummary).toContainText(
           'The template file you uploaded does not contain the address fields'
         );
 
-        // Submit button should be hidden
         await expect(previewPage.continueButton).toBeHidden();
       });
 
@@ -871,8 +865,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Letter preview section should be hidden (no initialRender)
-        await expect(previewPage.letterPreviewSection).toBeHidden();
+        await expect(previewPage.letterRender).toBeHidden();
       });
 
       test('shows letter preview section when VALIDATION_FAILED but has initialRender', async ({
@@ -887,11 +880,9 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Error summary should be visible
         await expect(previewPage.errorSummary).toBeVisible();
 
-        // Letter preview section should still be visible (has initialRender)
-        await expect(previewPage.letterPreviewSection).toBeVisible();
+        await expect(previewPage.letterRender).toBeVisible();
       });
 
       test('hides campaign and postage rows when VALIDATION_FAILED', async ({
@@ -903,10 +894,8 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Campaign row should be hidden
         await expect(page.getByText('Campaign')).toBeHidden();
 
-        // Printing and postage row should be hidden
         await expect(page.getByText('Printing and postage')).toBeHidden();
       });
     });

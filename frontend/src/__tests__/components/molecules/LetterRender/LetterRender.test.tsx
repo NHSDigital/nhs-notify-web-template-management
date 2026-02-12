@@ -171,6 +171,7 @@ describe('LetterRender', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
           expect.objectContaining({
             templateId: 'template-123',
+            lockNumber: 1,
             tab: 'short',
             systemPersonalisationPackId: 'short-1',
           })
@@ -205,6 +206,7 @@ describe('LetterRender', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
           expect.objectContaining({
             templateId: 'template-123',
+            lockNumber: 1,
             tab: 'long',
             systemPersonalisationPackId: 'long-1',
           })
@@ -230,6 +232,7 @@ describe('LetterRender', () => {
       await waitFor(() => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
           templateId: 'template-123',
+          lockNumber: 1,
           tab: 'short',
           systemPersonalisationPackId: '',
           personalisation: {
@@ -261,6 +264,7 @@ describe('LetterRender', () => {
       await waitFor(() => {
         expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
           templateId: 'template-123',
+          lockNumber: 1,
           tab: 'short',
           systemPersonalisationPackId: 'short-1',
           personalisation: {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewPdfLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
+import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/get-base-path', () => ({

@@ -10,7 +10,7 @@ export function LetterRender({
 }: {
   template: AuthoringLetterTemplate;
 }) {
-  const { letterPreviewSection: copy } = content.components;
+  const { letterRender: copy } = content.components;
 
   const tabs: TabItem[] = [
     {

@@ -138,6 +138,7 @@ describe('PreviewSubmittedTemplate component', () => {
         <PreviewSubmittedTemplate
           initialState={{
             id: 'template-id',
+            clientId: 'client-id',
             name: 'Example authoring letter',
             templateStatus: 'SUBMITTED',
             templateType: 'LETTER',
@@ -150,6 +151,22 @@ describe('PreviewSubmittedTemplate component', () => {
                 fileName: 'render.pdf',
                 currentVersion: 'v1',
                 status: 'RENDERED',
+                pageCount: 4,
+              },
+              shortFormRender: {
+                fileName: 'short-render.pdf',
+                currentVersion: 'v2',
+                status: 'RENDERED',
+                systemPersonalisationPackId: 'short-1',
+                personalisationParameters: {},
+                pageCount: 4,
+              },
+              longFormRender: {
+                fileName: 'long-render.pdf',
+                currentVersion: 'v3',
+                status: 'RENDERED',
+                systemPersonalisationPackId: 'long-1',
+                personalisationParameters: {},
                 pageCount: 4,
               },
             },

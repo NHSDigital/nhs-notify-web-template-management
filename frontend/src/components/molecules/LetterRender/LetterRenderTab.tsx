@@ -9,7 +9,7 @@ import { updateLetterPreview } from './server-action';
 import {
   SHORT_EXAMPLE_RECIPIENTS,
   LONG_EXAMPLE_RECIPIENTS,
-} from './example-recipients';
+} from '@content/example-recipients';
 import type { RenderTab, RenderFormData } from './types';
 import styles from './LetterRenderTab.module.scss';
 
@@ -50,7 +50,7 @@ export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
   const initial = getInitialState(template, tab);
 
   const [formData, setFormData] = useState<RenderFormData>(initial.formData);
-  // setPdfUrl omitted - will be used for CCM-13495 (polling for render status)
+  // setPdfUrl omitted because it's not used for now
   const [pdfUrl] = useState<string | null>(initial.pdfUrl);
 
   const { systemPersonalisationPackId, personalisationParameters } = formData;
@@ -68,9 +68,9 @@ export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
       ...personalisationParameters,
     };
 
-    // TODO: CCM-13495 - Implement polling for render status
     await updateLetterPreview({
       templateId: template.id,
+      lockNumber: template.lockNumber,
       tab,
       systemPersonalisationPackId,
       personalisation,

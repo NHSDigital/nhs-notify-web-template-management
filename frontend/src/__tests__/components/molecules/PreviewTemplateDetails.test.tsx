@@ -221,7 +221,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot without initialRender (pageCount is undefined)', () => {
+    it('matches snapshot without initialRender page counts are not displayed', () => {
       const templateWithoutInitialRender = {
         ...baseAuthoringLetter,
         files: {},
@@ -328,47 +328,20 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       templateStatus: 'PENDING_VALIDATION' as const,
     };
 
-    it('hides edit name link', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={pendingValidationTemplate}
-        />
-      );
-
-      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
-    });
-
-    it('hides campaign row completely', () => {
+    it('hides edit name link, campaign, printing/postage, pages, and sheets rows', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
           template={{ ...pendingValidationTemplate, campaignId: 'campaign-1' }}
         />
       );
 
+      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
       expect(screen.queryByText('Campaign')).not.toBeInTheDocument();
       expect(screen.queryByText('campaign-1')).not.toBeInTheDocument();
-    });
-
-    it('hides printing and postage row completely', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={pendingValidationTemplate}
-        />
-      );
-
       expect(
         screen.queryByText('Printing and postage')
       ).not.toBeInTheDocument();
       expect(screen.queryByText('variant-123')).not.toBeInTheDocument();
-    });
-
-    it('hides total pages and sheets rows', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={pendingValidationTemplate}
-        />
-      );
-
       expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
       expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
     });
@@ -391,33 +364,15 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       templateStatus: 'VALIDATION_FAILED' as const,
     };
 
-    it('hides edit name link', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={validationFailedTemplate}
-        />
-      );
-
-      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
-    });
-
-    it('hides campaign row completely', () => {
+    it('hides edit name link, campaign, and printing/postage rows', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
           template={{ ...validationFailedTemplate, campaignId: 'campaign-1' }}
         />
       );
 
+      expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
       expect(screen.queryByText('Campaign')).not.toBeInTheDocument();
-    });
-
-    it('hides printing and postage row completely', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={validationFailedTemplate}
-        />
-      );
-
       expect(
         screen.queryByText('Printing and postage')
       ).not.toBeInTheDocument();
