@@ -7,7 +7,8 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
-# Set Variables. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
+# Set Variables required for Docker Build. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
+BASE_IMAGE="$1"
 CSI="${project}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
@@ -16,6 +17,7 @@ IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 
 # Ensure required AWS/ECR configuration is present.
+echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
 echo "aws_account_id: ${aws_account_id:-<unset>}"
 echo "aws_region: ${region:-<unset>}"
 echo "component_name: ${component_name:-<unset>}"
@@ -52,7 +54,7 @@ BASE_IMAGE_ARG="$1"
 # Build and tag the Docker image for the lambda.
 docker buildx build \
   -f docker/lambda/Dockerfile \
-  --build-arg BASE_IMAGE="${BASE_IMAGE_ARG}" \
+  --build-arg BASE_IMAGE="${BASE_IMAGE}" \
   -t "${ECR_IMAGE}" \
   .
 
