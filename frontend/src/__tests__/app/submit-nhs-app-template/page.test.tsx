@@ -5,6 +5,7 @@ import SubmitNhsAppTemplatePage, {
   generateMetadata,
 } from '@app/submit-nhs-app-template/[templateId]/page';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -57,12 +58,14 @@ describe('SubmitNhsAppTemplatePage', () => {
       title: pageTitle.NHS_APP,
     });
     expect(page).toEqual(
-      <SubmitDigitalTemplate
-        templateName={state.name}
-        templateId={state.id}
-        channel='NHS_APP'
-        lockNumber={42}
-      />
+      <NHSNotifyContainer>
+        <SubmitDigitalTemplate
+          templateName={state.name}
+          templateId={state.id}
+          channel='NHS_APP'
+          lockNumber={42}
+        />
+      </NHSNotifyContainer>
     );
   });
 

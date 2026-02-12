@@ -18,6 +18,7 @@ import {
 import content from '@content/content';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -68,10 +69,12 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewSubmittedTemplate
-        initialState={submittedLetterTemplate}
-        previewComponent={PreviewTemplateDetailsLetter}
-      />
+      <NHSNotifyContainer>
+        <PreviewSubmittedTemplate
+          initialState={submittedLetterTemplate}
+          previewComponent={PreviewTemplateDetailsLetter}
+        />
+      </NHSNotifyContainer>
     );
   });
 
@@ -90,10 +93,12 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <PreviewSubmittedTemplate
-        initialState={templateDTO}
-        previewComponent={PreviewTemplateDetailsLetter}
-      />
+      <NHSNotifyContainer>
+        <PreviewSubmittedTemplate
+          initialState={templateDTO}
+          previewComponent={PreviewTemplateDetailsLetter}
+        />
+      </NHSNotifyContainer>
     );
   });
 

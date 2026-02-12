@@ -9,6 +9,7 @@ import {
   type PdfLetterTemplate,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
@@ -77,7 +78,11 @@ describe('PreviewLetterTemplatePage', () => {
       title: pageTitle,
     });
 
-    expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <PreviewLetterTemplate template={letterTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 
   it('should load page with authoring letter template', async () => {
@@ -90,7 +95,9 @@ describe('PreviewLetterTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <PreviewLetterTemplate template={AUTHORING_LETTER_TEMPLATE} />
+      <NHSNotifyContainer>
+        <PreviewLetterTemplate template={AUTHORING_LETTER_TEMPLATE} />
+      </NHSNotifyContainer>
     );
   });
 

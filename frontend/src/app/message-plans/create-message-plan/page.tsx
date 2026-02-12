@@ -6,6 +6,7 @@ import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { getCampaignIds } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
@@ -47,26 +48,28 @@ export default async function CreateMessagePlanPage({
   }
 
   return (
-    <NHSNotifyMain>
-      <NHSNotifyFormProvider serverAction={createMessagePlanServerAction}>
-        <NHSNotifyFormErrorSummary />
-        <div className='nhsuk-grid-row'>
-          <div className='nhsuk-grid-column-two-thirds'>
-            <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
-            <MessagePlanForm
-              backLink={pageContent.backLink}
-              campaignIds={campaignIds}
-            >
-              <input
-                type='hidden'
-                name='messageOrder'
-                value={params.messageOrder}
-                readOnly
-              />
-            </MessagePlanForm>
+    <NHSNotifyContainer>
+      <NHSNotifyMain>
+        <NHSNotifyFormProvider serverAction={createMessagePlanServerAction}>
+          <NHSNotifyFormErrorSummary />
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-two-thirds'>
+              <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
+              <MessagePlanForm
+                backLink={pageContent.backLink}
+                campaignIds={campaignIds}
+              >
+                <input
+                  type='hidden'
+                  name='messageOrder'
+                  value={params.messageOrder}
+                  readOnly
+                />
+              </MessagePlanForm>
+            </div>
           </div>
-        </div>
-      </NHSNotifyFormProvider>
-    </NHSNotifyMain>
+        </NHSNotifyFormProvider>
+      </NHSNotifyMain>
+    </NHSNotifyContainer>
   );
 }

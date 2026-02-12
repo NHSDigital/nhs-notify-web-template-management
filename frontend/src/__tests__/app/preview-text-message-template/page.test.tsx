@@ -6,6 +6,7 @@ import PreviewSMSTemplatePage, {
 } from '@app/preview-text-message-template/[templateId]/page';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -60,7 +61,11 @@ describe('PreviewSMSTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <PreviewSMSTemplate initialState={smsTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

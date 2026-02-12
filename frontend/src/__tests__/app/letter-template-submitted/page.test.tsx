@@ -5,6 +5,7 @@ import LetterTemplateSubmittedPage, {
   generateMetadata,
 } from '@app/letter-template-submitted/[templateId]/page';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { getTemplate } from '@utils/form-actions';
@@ -40,10 +41,12 @@ describe('LetterTemplateSubmittedPage', () => {
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(
-      <TemplateSubmitted
-        templateId={PDF_LETTER_TEMPLATE.id}
-        templateName={PDF_LETTER_TEMPLATE.name}
-      />
+      <NHSNotifyContainer>
+        <TemplateSubmitted
+          templateId={PDF_LETTER_TEMPLATE.id}
+          templateName={PDF_LETTER_TEMPLATE.name}
+        />
+      </NHSNotifyContainer>
     );
   });
 

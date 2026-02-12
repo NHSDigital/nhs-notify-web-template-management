@@ -5,6 +5,7 @@ import SubmitEmailTemplatePage, {
   generateMetadata,
 } from '@app/submit-email-template/[templateId]/page';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -55,12 +56,14 @@ describe('SubmitEmailTemplatePage', () => {
       title: pageTitle.EMAIL,
     });
     expect(page).toEqual(
-      <SubmitDigitalTemplate
-        templateName={state.name}
-        templateId={state.id}
-        channel='EMAIL'
-        lockNumber={42}
-      />
+      <NHSNotifyContainer>
+        <SubmitDigitalTemplate
+          templateName={state.name}
+          templateId={state.id}
+          channel='EMAIL'
+          lockNumber={42}
+        />
+      </NHSNotifyContainer>
     );
   });
 

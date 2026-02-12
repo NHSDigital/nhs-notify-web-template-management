@@ -5,6 +5,7 @@ import RequestProofPage, {
   generateMetadata,
 } from '@app/request-proof-of-template/[templateId]/page';
 import { RequestProof } from '@forms/RequestProof/RequestProof';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -75,12 +76,14 @@ describe('RequestProofPage', () => {
     });
 
     expect(page).toEqual(
-      <RequestProof
-        templateName={state.name}
-        templateId={state.id}
-        channel='LETTER'
-        lockNumber={42}
-      />
+      <NHSNotifyContainer>
+        <RequestProof
+          templateName={state.name}
+          templateId={state.id}
+          channel='LETTER'
+          lockNumber={42}
+        />
+      </NHSNotifyContainer>
     );
   });
 
