@@ -63,7 +63,7 @@ describe('LetterRender', () => {
     expect(screen.getByText('Long examples')).toBeInTheDocument();
   });
 
-  it('renders tab content for both variants', () => {
+  it('renders tab content for both tabs', () => {
     render(<LetterRender template={baseTemplate} />);
 
     // Both tab contents should be rendered (tabs component renders both, CSS hides inactive)
@@ -78,12 +78,8 @@ describe('LetterRender', () => {
   });
 
   it('handles template without shortFormRender or longFormRender', () => {
-    // Note: The page component controls whether LetterRender is rendered based on initialRender.
-    // This test verifies the component renders correctly when it only has initialRender
-    // (no short/long variant renders yet).
     render(<LetterRender template={baseTemplate} />);
 
-    // Component should render with tabs and content
     expect(screen.getByText('Letter preview')).toBeInTheDocument();
     expect(screen.getByText('Short examples')).toBeInTheDocument();
     expect(screen.getByText('Long examples')).toBeInTheDocument();
@@ -92,13 +88,16 @@ describe('LetterRender', () => {
   it('builds PDF URL from initialRender when variant render not available', () => {
     render(<LetterRender template={baseTemplate} />);
 
-    // The iframe should have the PDF URL built from initialRender
-    const iframes = screen.getAllByTitle(/letter preview/i);
-    expect(iframes.length).toBeGreaterThan(0);
+    const shortIframe = screen.getByTitle('Letter preview - short examples');
+    const longIframe = screen.getByTitle('Letter preview - long examples');
 
-    // Check that the iframe src contains the expected path
-    const iframe = iframes[0];
-    expect(iframe).toHaveAttribute(
+    expect(shortIframe).toHaveAttribute(
+      'src',
+      expect.stringContaining(
+        '/templates/files/client-123/renders/template-123/initial.pdf'
+      )
+    );
+    expect(longIframe).toHaveAttribute(
       'src',
       expect.stringContaining(
         '/templates/files/client-123/renders/template-123/initial.pdf'
@@ -114,12 +113,10 @@ describe('LetterRender', () => {
 
     render(<LetterRender template={templateWithoutRenders} />);
 
-    // Component should still render with tabs
     expect(screen.getByText('Letter preview')).toBeInTheDocument();
 
-    // When there's no PDF, the "No preview available" message should be shown
     const noPreviewMessages = screen.getAllByText('No preview available');
-    expect(noPreviewMessages.length).toBe(2); // One for each tab
+    expect(noPreviewMessages.length).toBe(2);
   });
 
   it('uses variant-specific render when available', () => {
@@ -145,12 +142,8 @@ describe('LetterRender', () => {
 
     render(<LetterRender template={templateWithVariantRender} />);
 
-    // Find the iframe in the short tab content
-    const iframes = screen.getAllByTitle(/letter preview/i);
-    expect(iframes.length).toBeGreaterThan(0);
-
-    // The first iframe (short tab) should use the variant-specific render
-    expect(iframes[0]).toHaveAttribute(
+    const iframe = screen.getByTitle('Letter preview - short examples');
+    expect(iframe).toHaveAttribute(
       'src',
       expect.stringContaining('short-render.pdf')
     );
@@ -162,16 +155,16 @@ describe('LetterRender', () => {
 
       render(<LetterRender template={baseTemplate} />);
 
-      // Select a recipient
       const dropdown = screen.getAllByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       })[0];
+
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
 
-      // Click the submit button
       const submitButtons = screen.getAllByRole('button', {
         name: 'Update preview',
       });
+
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
@@ -190,21 +183,22 @@ describe('LetterRender', () => {
 
       render(<LetterRender template={baseTemplate} />);
 
-      // Click the long tab
       const longTab = screen.getByRole('tab', { name: 'Long examples' });
+
       fireEvent.click(longTab);
 
-      // Select a recipient in the long tab
       const dropdowns = screen.getAllByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       });
+
       const longDropdown = dropdowns[1];
+
       fireEvent.change(longDropdown, { target: { value: 'long-1' } });
 
-      // Click the submit button in the long tab
       const submitButtons = screen.getAllByRole('button', {
         name: 'Update preview',
       });
+
       fireEvent.click(submitButtons[1]);
 
       await waitFor(() => {
@@ -223,24 +217,25 @@ describe('LetterRender', () => {
 
       render(<LetterRender template={baseTemplate} />);
 
-      // Fill in a custom personalisation field
       const appointmentInput = screen.getAllByLabelText('appointmentDate')[0];
+
       fireEvent.change(appointmentInput, { target: { value: '2025-03-15' } });
 
-      // Click the submit button
       const submitButtons = screen.getAllByRole('button', {
         name: 'Update preview',
       });
+
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
-          expect.objectContaining({
-            personalisation: expect.objectContaining({
-              appointmentDate: '2025-03-15',
-            }),
-          })
-        );
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
+          templateId: 'template-123',
+          tab: 'short',
+          systemPersonalisationPackId: '',
+          personalisation: {
+            appointmentDate: '2025-03-15',
+          },
+        });
       });
     });
 
@@ -249,34 +244,43 @@ describe('LetterRender', () => {
 
       render(<LetterRender template={baseTemplate} />);
 
-      // Select a recipient
       const dropdown = screen.getAllByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       })[0];
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
 
-      // Fill in a custom personalisation field
       const appointmentInput = screen.getAllByLabelText('appointmentDate')[0];
       fireEvent.change(appointmentInput, { target: { value: '2025-03-15' } });
 
-      // Click the submit button
       const submitButtons = screen.getAllByRole('button', {
         name: 'Update preview',
       });
+
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
-          expect.objectContaining({
-            personalisation: expect.objectContaining({
-              // From recipient data
-              firstName: 'Jo',
-              lastName: 'Bloggs',
-              // From custom input
-              appointmentDate: '2025-03-15',
-            }),
-          })
-        );
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
+          templateId: 'template-123',
+          tab: 'short',
+          systemPersonalisationPackId: 'short-1',
+          personalisation: {
+            nhsNumber: '9728543751',
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            fullName: 'Jo Bloggs',
+            middleNames: '',
+            namePrefix: '',
+            nameSuffix: '',
+            address_line_1: 'Jo Bloggs',
+            address_line_2: '1 High Street',
+            address_line_3: 'Leeds',
+            address_line_4: 'West Yorkshire',
+            address_line_5: 'LS1 1AA',
+            address_line_6: '',
+            address_line_7: '',
+            appointmentDate: '2025-03-15',
+          },
+        });
       });
     });
   });

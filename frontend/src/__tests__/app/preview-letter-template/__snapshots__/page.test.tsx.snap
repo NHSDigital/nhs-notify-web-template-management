@@ -432,7 +432,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 aria-selected="true"
                 class="nhsuk-tabs__tab"
                 href="#tab-short"
-                id="tab_tab-short"
+                id="tab-tab-short"
                 role="tab"
                 tabindex="0"
               >
@@ -448,7 +448,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 aria-selected="false"
                 class="nhsuk-tabs__tab"
                 href="#tab-long"
-                id="tab_tab-long"
+                id="tab-tab-long"
                 role="tab"
                 tabindex="-1"
               >
@@ -457,7 +457,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             </li>
           </ul>
           <div
-            aria-labelledby="tab_tab-short"
+            aria-labelledby="tab-tab-short"
             class="nhsuk-tabs__panel"
             id="tab-short"
             role="tabpanel"
@@ -486,13 +486,13 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="systemPersonalisationPackId-short"
+                      for="system-personalisation-pack-id-short"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="systemPersonalisationPackId-short"
+                      id="system-personalisation-pack-id-short"
                       name="systemPersonalisationPackId"
                     >
                       <option
@@ -579,7 +579,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             </div>
           </div>
           <div
-            aria-labelledby="tab_tab-long"
+            aria-labelledby="tab-tab-long"
             class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
             id="tab-long"
             role="tabpanel"
@@ -608,13 +608,13 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="systemPersonalisationPackId-long"
+                      for="system-personalisation-pack-id-long"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="systemPersonalisationPackId-long"
+                      id="system-personalisation-pack-id-long"
                       name="systemPersonalisationPackId"
                     >
                       <option

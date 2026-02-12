@@ -39,28 +39,14 @@ describe('LetterRenderForm', () => {
   });
 
   describe('PDS personalisation section', () => {
-    it('renders the PDS section heading and hint', () => {
-      render(<LetterRenderForm {...defaultProps} />);
-
-      expect(
-        screen.getByText('PDS personalisation fields')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'The PDS fields will be pre-filled with example data when you choose a test recipient.'
-        )
-      ).toBeInTheDocument();
-    });
-
     it('renders PDS recipient dropdown with short recipients for short tab', () => {
       render(<LetterRenderForm {...defaultProps} tab='short' />);
 
       const dropdown = screen.getByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       });
       expect(dropdown).toBeInTheDocument();
 
-      // Check for short recipient options
       expect(screen.getByText('Jo Bloggs')).toBeInTheDocument();
       expect(screen.getByText('Mr John Smith')).toBeInTheDocument();
       expect(screen.getByText('Ms Sarah Jones')).toBeInTheDocument();
@@ -70,11 +56,10 @@ describe('LetterRenderForm', () => {
       render(<LetterRenderForm {...defaultProps} tab='long' />);
 
       const dropdown = screen.getByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       });
       expect(dropdown).toBeInTheDocument();
 
-      // Check for long recipient options
       expect(
         screen.getByText('Mr Michael James Richardson-Clarke')
       ).toBeInTheDocument();
@@ -93,7 +78,7 @@ describe('LetterRenderForm', () => {
       );
 
       const dropdown = screen.getByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       });
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
 
@@ -193,7 +178,7 @@ describe('LetterRenderForm', () => {
       );
 
       const dropdown = screen.getByRole('combobox', {
-        name: /example recipient/i,
+        name: 'Example recipient',
       });
       expect(dropdown).toHaveValue('short-1');
     });

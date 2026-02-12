@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { NHSNotifyTabs, TabItem } from '@atoms/NHSNotifyTabs/NHSNotifyTabs';
+import { NHSNotifyTabs, type TabItem } from '@atoms/NHSNotifyTabs';
 
 const mockTabs: TabItem[] = [
   { id: 'tab-one', label: 'Tab One', content: <div>Content One</div> },
@@ -72,13 +72,12 @@ describe('NHSNotifyTabs', () => {
     expect(panelTwo).not.toHaveClass('nhsuk-tabs__panel--hidden');
   });
 
-  it('applies selected class to active tab list item', () => {
+  it('applies selected class to active tab list item (tab title)', () => {
     render(<NHSNotifyTabs title='Test Tabs' tabs={mockTabs} />);
 
     const firstTabLink = screen.getByRole('tab', { name: 'Tab One' });
     const secondTabLink = screen.getByRole('tab', { name: 'Tab Two' });
 
-    // Check parent li elements
     expect(firstTabLink.closest('li')).toHaveClass(
       'nhsuk-tabs__list-item--selected'
     );
@@ -86,7 +85,6 @@ describe('NHSNotifyTabs', () => {
       'nhsuk-tabs__list-item--selected'
     );
 
-    // Switch tabs
     fireEvent.click(secondTabLink);
 
     expect(firstTabLink.closest('li')).not.toHaveClass(
@@ -135,9 +133,9 @@ describe('NHSNotifyTabs', () => {
     const firstPanel = screen.getByRole('tabpanel', { name: 'Tab One' });
 
     expect(firstTab).toHaveAttribute('aria-controls', 'tab-one');
-    expect(firstTab).toHaveAttribute('id', 'tab_tab-one');
+    expect(firstTab).toHaveAttribute('id', 'tab-tab-one');
     expect(firstPanel).toHaveAttribute('id', 'tab-one');
-    expect(firstPanel).toHaveAttribute('aria-labelledby', 'tab_tab-one');
+    expect(firstPanel).toHaveAttribute('aria-labelledby', 'tab-tab-one');
   });
 
   it('matches snapshot', () => {

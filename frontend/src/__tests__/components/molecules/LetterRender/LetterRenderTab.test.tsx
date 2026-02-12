@@ -1,0 +1,429 @@
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { LetterRenderTab } from '@molecules/LetterRender/LetterRenderTab';
+import { updateLetterPreview } from '@molecules/LetterRender/server-action';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+
+jest.mock('@molecules/LetterRender/server-action', () => ({
+  updateLetterPreview: jest.fn(),
+}));
+
+jest.mock('@utils/get-base-path', () => ({
+  getBasePath: jest.fn(() => '/templates'),
+}));
+
+const mockUpdateLetterPreview = updateLetterPreview as jest.MockedFunction<
+  typeof updateLetterPreview
+>;
+
+const baseTemplate: AuthoringLetterTemplate = {
+  id: 'template-123',
+  clientId: 'client-456',
+  name: 'Test Letter',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  templateType: 'LETTER',
+  letterType: 'x0',
+  letterVersion: 'AUTHORING',
+  letterVariantId: 'variant-123',
+  language: 'en',
+  files: {
+    initialRender: {
+      fileName: 'initial.pdf',
+      currentVersion: 'version-1',
+      status: 'RENDERED',
+      pageCount: 4,
+    },
+  },
+  systemPersonalisation: ['firstName', 'lastName'],
+  customPersonalisation: ['appointmentDate'],
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+};
+
+describe('LetterRenderTab', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('buildPdfUrl', () => {
+    it('builds URL from initialRender when no variant render exists', () => {
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const iframe = screen.getByTitle('Letter preview - short examples');
+      expect(iframe).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/initial.pdf'
+      );
+    });
+
+    it('builds URL from shortFormRender when available', () => {
+      const templateWithShortRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          shortFormRender: {
+            fileName: 'short-render.pdf',
+            currentVersion: 'version-2',
+            status: 'RENDERED',
+            systemPersonalisationPackId: 'short-1',
+            personalisationParameters: {},
+            pageCount: 4,
+          },
+        },
+      };
+
+      render(<LetterRenderTab template={templateWithShortRender} tab='short' />);
+
+      const iframe = screen.getByTitle('Letter preview - short examples');
+      expect(iframe).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/short-render.pdf'
+      );
+    });
+
+    it('builds URL from longFormRender when available', () => {
+      const templateWithLongRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          longFormRender: {
+            fileName: 'long-render.pdf',
+            currentVersion: 'version-3',
+            status: 'RENDERED',
+            systemPersonalisationPackId: 'long-1',
+            personalisationParameters: {},
+            pageCount: 4,
+          },
+        },
+      };
+
+      render(<LetterRenderTab template={templateWithLongRender} tab='long' />);
+
+      const iframe = screen.getByTitle('Letter preview - long examples');
+      expect(iframe).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/long-render.pdf'
+      );
+    });
+
+    it('returns null URL when no renders exist', () => {
+      const templateNoRenders: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {},
+      };
+
+      render(<LetterRenderTab template={templateNoRenders} tab='short' />);
+
+      expect(screen.getByText('No preview available')).toBeInTheDocument();
+    });
+  });
+
+  describe('getInitialState', () => {
+    it('uses initial empty state when no variant render exists', () => {
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      expect(dropdown).toHaveValue('');
+    });
+
+    it('uses stored systemPersonalisationPackId from shortFormRender', () => {
+      const templateWithShortRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          shortFormRender: {
+            fileName: 'short-render.pdf',
+            currentVersion: 'version-2',
+            status: 'RENDERED',
+            systemPersonalisationPackId: 'short-1',
+            personalisationParameters: { appointmentDate: '2025-03-20' },
+            pageCount: 4,
+          },
+        },
+      };
+
+      render(<LetterRenderTab template={templateWithShortRender} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      expect(dropdown).toHaveValue('short-1');
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      expect(appointmentInput).toHaveValue('2025-03-20');
+    });
+
+    it('uses stored state from longFormRender for long tab', () => {
+      const templateWithLongRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          longFormRender: {
+            fileName: 'long-render.pdf',
+            currentVersion: 'version-3',
+            status: 'RENDERED',
+            systemPersonalisationPackId: 'long-2',
+            personalisationParameters: { appointmentDate: '2025-04-15' },
+            pageCount: 4,
+          },
+        },
+      };
+
+      render(<LetterRenderTab template={templateWithLongRender} tab='long' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      expect(dropdown).toHaveValue('long-2');
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      expect(appointmentInput).toHaveValue('2025-04-15');
+    });
+  });
+
+  describe('form submission', () => {
+    it('calls updateLetterPreview with correct data for short tab', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      fireEvent.change(dropdown, { target: { value: 'short-1' } });
+
+      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            templateId: 'template-123',
+            tab: 'short',
+            systemPersonalisationPackId: 'short-1',
+          })
+        );
+      });
+    });
+
+    it('calls updateLetterPreview with correct data for long tab', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRenderTab template={baseTemplate} tab='long' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      fireEvent.change(dropdown, { target: { value: 'long-1' } });
+
+      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            templateId: 'template-123',
+            tab: 'long',
+            systemPersonalisationPackId: 'long-1',
+          })
+        );
+      });
+    });
+
+    it('merges recipient data with custom personalisation', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      // Select a recipient
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      fireEvent.change(dropdown, { target: { value: 'short-1' } });
+
+      // Fill custom field
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      fireEvent.change(appointmentInput, { target: { value: '2025-05-20' } });
+
+      // Submit
+      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            personalisation: expect.objectContaining({
+              firstName: 'Jo',
+              lastName: 'Bloggs',
+              appointmentDate: '2025-05-20',
+            }),
+          })
+        );
+      });
+    });
+
+    it('uses long example recipients for long tab', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRenderTab template={baseTemplate} tab='long' />);
+
+      // Select a long recipient
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      fireEvent.change(dropdown, { target: { value: 'long-1' } });
+
+      // Submit
+      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            personalisation: expect.objectContaining({
+              firstName: 'Michael',
+              lastName: 'Richardson-Clarke',
+            }),
+          })
+        );
+      });
+    });
+
+    it('handles submission when no recipient selected', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(undefined);
+
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      // Submit without selecting recipient
+      const submitButton = screen.getByRole('button', { name: 'Update preview' });
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
+          expect.objectContaining({
+            systemPersonalisationPackId: '',
+            personalisation: {},
+          })
+        );
+      });
+    });
+  });
+
+  describe('form state management', () => {
+    it('updates systemPersonalisationPackId when dropdown changes', () => {
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(dropdown).toHaveValue('');
+
+      fireEvent.change(dropdown, { target: { value: 'short-2' } });
+      expect(dropdown).toHaveValue('short-2');
+
+      fireEvent.change(dropdown, { target: { value: 'short-3' } });
+      expect(dropdown).toHaveValue('short-3');
+    });
+
+    it('updates personalisationParameters when custom field changes', () => {
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+
+      expect(appointmentInput).toHaveValue('');
+
+      fireEvent.change(appointmentInput, { target: { value: '2025-06-01' } });
+      expect(appointmentInput).toHaveValue('2025-06-01');
+    });
+
+    it('maintains independent state between form fields', () => {
+      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+
+      // Set both fields
+      fireEvent.change(dropdown, { target: { value: 'short-1' } });
+      fireEvent.change(appointmentInput, { target: { value: '2025-06-15' } });
+
+      expect(dropdown).toHaveValue('short-1');
+      expect(appointmentInput).toHaveValue('2025-06-15');
+
+      // Change dropdown - custom field should remain
+      fireEvent.change(dropdown, { target: { value: 'short-2' } });
+
+      expect(dropdown).toHaveValue('short-2');
+      expect(appointmentInput).toHaveValue('2025-06-15');
+    });
+  });
+
+  describe('layout', () => {
+    it('renders form and iframe in grid layout', () => {
+      const { container } = render(
+        <LetterRenderTab template={baseTemplate} tab='short' />
+      );
+
+      const gridRow = container.querySelector('.nhsuk-grid-row');
+      expect(gridRow).toBeInTheDocument();
+
+      const oneThirdColumn = container.querySelector(
+        '.nhsuk-grid-column-one-third'
+      );
+      expect(oneThirdColumn).toBeInTheDocument();
+
+      const twoThirdsColumn = container.querySelector(
+        '.nhsuk-grid-column-two-thirds'
+      );
+      expect(twoThirdsColumn).toBeInTheDocument();
+    });
+
+    it('renders LetterRenderForm in one-third column', () => {
+      const { container } = render(
+        <LetterRenderTab template={baseTemplate} tab='short' />
+      );
+
+      const oneThirdColumn = container.querySelector(
+        '.nhsuk-grid-column-one-third'
+      );
+      const form = oneThirdColumn?.querySelector('form');
+      expect(form).toBeInTheDocument();
+    });
+
+    it('renders LetterRenderIframe in two-thirds column', () => {
+      const { container } = render(
+        <LetterRenderTab template={baseTemplate} tab='short' />
+      );
+
+      const twoThirdsColumn = container.querySelector(
+        '.nhsuk-grid-column-two-thirds'
+      );
+      const iframe = twoThirdsColumn?.querySelector('iframe');
+      expect(iframe).toBeInTheDocument();
+    });
+  });
+
+  describe('tab-specific form IDs', () => {
+    it('renders form with short tab ID', () => {
+      const { container } = render(
+        <LetterRenderTab template={baseTemplate} tab='short' />
+      );
+
+      const form = container.querySelector('#letter-preview-short');
+      expect(form).toBeInTheDocument();
+    });
+
+    it('renders form with long tab ID', () => {
+      const { container } = render(
+        <LetterRenderTab template={baseTemplate} tab='long' />
+      );
+
+      const form = container.querySelector('#letter-preview-long');
+      expect(form).toBeInTheDocument();
+    });
+  });
+});

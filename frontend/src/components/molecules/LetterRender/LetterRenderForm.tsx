@@ -63,11 +63,11 @@ export function LetterRenderForm({
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
       <div className='nhsuk-form-group'>
-        <Label size='s' htmlFor={`systemPersonalisationPackId-${tab}`}>
+        <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
         <select
-          id={`systemPersonalisationPackId-${tab}`}
+          id={`system-personalisation-pack-id-${tab}`}
           name='systemPersonalisationPackId'
           className={`nhsuk-select ${styles.recipientSelect}`}
           value={formData.systemPersonalisationPackId}

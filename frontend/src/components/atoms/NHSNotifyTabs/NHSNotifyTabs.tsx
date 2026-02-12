@@ -16,13 +16,6 @@ type NHSNotifyTabsProps = {
   defaultTab?: string;
 };
 
-/**
- * React-controlled tabs component using nhsuk-frontend CSS classes.
- *
- * This component doesn't use the nhsuk-frontend JavaScript (data-module="nhsuk-tabs")
- * to avoid CSP issues and peer dependency mismatches with nhsuk-react-components.
- * Tab state is managed entirely by React.
- */
 export function NHSNotifyTabs({
   title,
   tabs,
@@ -54,7 +47,7 @@ export function NHSNotifyTabs({
             <a
               className='nhsuk-tabs__tab'
               href={`#${tab.id}`}
-              id={`tab_${tab.id}`}
+              id={`tab-${tab.id}`}
               role='tab'
               aria-controls={tab.id}
               aria-selected={activeTab === tab.id}
@@ -75,7 +68,7 @@ export function NHSNotifyTabs({
           })}
           id={tab.id}
           role='tabpanel'
-          aria-labelledby={`tab_${tab.id}`}
+          aria-labelledby={`tab-${tab.id}`}
         >
           {tab.content}
         </div>

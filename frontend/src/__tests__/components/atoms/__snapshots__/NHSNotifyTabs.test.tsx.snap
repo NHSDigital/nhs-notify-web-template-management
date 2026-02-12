@@ -23,7 +23,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
           aria-selected="true"
           class="nhsuk-tabs__tab"
           href="#tab-one"
-          id="tab_tab-one"
+          id="tab-tab-one"
           role="tab"
           tabindex="0"
         >
@@ -39,7 +39,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
           aria-selected="false"
           class="nhsuk-tabs__tab"
           href="#tab-two"
-          id="tab_tab-two"
+          id="tab-tab-two"
           role="tab"
           tabindex="-1"
         >
@@ -55,7 +55,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
           aria-selected="false"
           class="nhsuk-tabs__tab"
           href="#tab-three"
-          id="tab_tab-three"
+          id="tab-tab-three"
           role="tab"
           tabindex="-1"
         >
@@ -64,7 +64,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
       </li>
     </ul>
     <div
-      aria-labelledby="tab_tab-one"
+      aria-labelledby="tab-tab-one"
       class="nhsuk-tabs__panel"
       id="tab-one"
       role="tabpanel"
@@ -74,7 +74,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
       </div>
     </div>
     <div
-      aria-labelledby="tab_tab-two"
+      aria-labelledby="tab-tab-two"
       class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
       id="tab-two"
       role="tabpanel"
@@ -84,7 +84,7 @@ exports[`NHSNotifyTabs matches snapshot 1`] = `
       </div>
     </div>
     <div
-      aria-labelledby="tab_tab-three"
+      aria-labelledby="tab-tab-three"
       class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
       id="tab-three"
       role="tabpanel"

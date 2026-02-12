@@ -20,13 +20,13 @@ exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="systemPersonalisationPackId-long"
+        for="system-personalisation-pack-id-long"
       >
         Example recipient
       </label>
       <select
         class="nhsuk-select recipientSelect"
-        id="systemPersonalisationPackId-long"
+        id="system-personalisation-pack-id-long"
         name="systemPersonalisationPackId"
       >
         <option
@@ -145,13 +145,13 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="systemPersonalisationPackId-short"
+        for="system-personalisation-pack-id-short"
       >
         Example recipient
       </label>
       <select
         class="nhsuk-select recipientSelect"
-        id="systemPersonalisationPackId-short"
+        id="system-personalisation-pack-id-short"
         name="systemPersonalisationPackId"
       >
         <option
@@ -288,13 +288,13 @@ exports[`LetterRenderForm snapshots matches snapshot without custom personalisat
     >
       <label
         class="nhsuk-label nhsuk-label--s"
-        for="systemPersonalisationPackId-short"
+        for="system-personalisation-pack-id-short"
       >
         Example recipient
       </label>
       <select
         class="nhsuk-select recipientSelect"
-        id="systemPersonalisationPackId-short"
+        id="system-personalisation-pack-id-short"
         name="systemPersonalisationPackId"
       >
         <option
