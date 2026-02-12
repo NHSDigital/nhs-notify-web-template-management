@@ -114,7 +114,13 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                             class="nhsuk-table__header"
                             data-testid="channel-templates-table-header-template-action"
                             scope="col"
-                          />
+                          >
+                            <span
+                              class="nhsuk-u-visually-hidden"
+                            >
+                              Template action
+                            </span>
+                          </th>
                         </tr>
                       </thead>
                       <tbody
@@ -149,7 +155,11 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                                 for="channelTemplate-large-print-letter-template-id"
                                 id="channelTemplate-large-print-letter-template-id--label"
                               >
-                                 
+                                <span
+                                  class="nhsuk-u-visually-hidden"
+                                >
+                                  Select template large print letter template name
+                                </span>
                               </label>
                             </div>
                           </td>
@@ -199,7 +209,7 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                               aria-hidden="true"
                               class="nhsuk-table-responsive__heading"
                             >
-                               
+                              [object Object] 
                             </span>
                             <a
                               aria-label="Preview"

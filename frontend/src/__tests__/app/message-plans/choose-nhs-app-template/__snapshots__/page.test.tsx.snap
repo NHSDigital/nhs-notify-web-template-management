@@ -133,7 +133,13 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                             class="nhsuk-table__header"
                             data-testid="channel-templates-table-header-template-action"
                             scope="col"
-                          />
+                          >
+                            <span
+                              class="nhsuk-u-visually-hidden"
+                            >
+                              Template action
+                            </span>
+                          </th>
                         </tr>
                       </thead>
                       <tbody
@@ -169,7 +175,11 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                                 for="channelTemplate-app-template-id"
                                 id="channelTemplate-app-template-id--label"
                               >
-                                 
+                                <span
+                                  class="nhsuk-u-visually-hidden"
+                                >
+                                  Select template app template name
+                                </span>
                               </label>
                             </div>
                           </td>
@@ -219,7 +229,7 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                               aria-hidden="true"
                               class="nhsuk-table-responsive__heading"
                             >
-                               
+                              [object Object] 
                             </span>
                             <a
                               aria-label="Preview"
