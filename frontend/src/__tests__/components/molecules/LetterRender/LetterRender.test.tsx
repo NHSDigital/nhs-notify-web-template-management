@@ -184,10 +184,6 @@ describe('LetterRender', () => {
 
       render(<LetterRender template={baseTemplate} />);
 
-      const longTab = screen.getByRole('tab', { name: 'Long examples' });
-
-      fireEvent.click(longTab);
-
       const dropdowns = screen.getAllByRole('combobox', {
         name: 'Example recipient',
       });

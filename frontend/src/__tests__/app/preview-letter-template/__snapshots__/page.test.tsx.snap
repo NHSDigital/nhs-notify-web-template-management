@@ -417,6 +417,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         </p>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
+          data-module="nhsuk-tabs"
         >
           <h2
             class="nhsuk-tabs__title"
@@ -436,7 +437,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 aria-selected="true"
                 class="nhsuk-tabs__tab"
                 href="#tab-short"
-                id="tab-tab-short"
+                id="tab_tab-short"
                 role="tab"
                 tabindex="0"
               >
@@ -452,7 +453,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 aria-selected="false"
                 class="nhsuk-tabs__tab"
                 href="#tab-long"
-                id="tab-tab-long"
+                id="tab_tab-long"
                 role="tab"
                 tabindex="-1"
               >
@@ -461,7 +462,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             </li>
           </ul>
           <div
-            aria-labelledby="tab-tab-short"
+            aria-labelledby="tab_tab-short"
             class="nhsuk-tabs__panel"
             id="tab-short"
             role="tabpanel"
@@ -583,7 +584,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             </div>
           </div>
           <div
-            aria-labelledby="tab-tab-long"
+            aria-labelledby="tab_tab-long"
             class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
             id="tab-long"
             role="tabpanel"
