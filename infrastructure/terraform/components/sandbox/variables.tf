@@ -68,3 +68,15 @@ variable "parent_acct_environment" {
   description = "Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments"
   default     = "main"
 }
+
+variable "container_lambda_ecr_repo" {
+  type        = string
+  description = "ECR repository name for container-based lambda images"
+  default     = "nhs-notify-main-acct"
+}
+
+variable "image_tag_suffix" {
+  type        = string
+  description = "The short SHA or Release Tag to append to the container lambda image tag"
+  default     = ""
+}
