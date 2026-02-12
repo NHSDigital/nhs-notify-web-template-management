@@ -22,7 +22,8 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-
+## Set TF_VAR_image_tag_suffix based on git tag or short SHA for unique lambda image tagging in ECR.
+#This ensures that each build produces a uniquely identifiable image, and tagged releases are easily traceable.
 echo "Checking if current commit is a tag..."
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
 if [ -n "$GIT_TAG" ]; then
