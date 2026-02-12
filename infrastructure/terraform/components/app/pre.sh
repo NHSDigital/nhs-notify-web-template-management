@@ -26,10 +26,12 @@ npm run generate-dependencies --workspaces --if-present
 echo "Checking if current commit is a tag..."
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
 if [ -n "$GIT_TAG" ]; then
-  echo "On tag: $GIT_TAG, exporting TF_VAR_image_tag_suffix as tag"
-  export TF_VAR_image_tag_suffix="$GIT_TAG"
+  TAGGED="tag-$GIT_TAG"
+  echo "On tag: $GIT_TAG, exporting TF_VAR_image_tag_suffix as tag: $TAGGED"
+  export TF_VAR_image_tag_suffix="$TAGGED"
+
 else
-  SHORT_SHA="$(git rev-parse --short HEAD)"
+  SHORT_SHA="sha-$(git rev-parse --short HEAD)"
   echo "Not on a tag, exporting TF_VAR_image_tag_suffix as short SHA: $SHORT_SHA"
   export TF_VAR_image_tag_suffix="$SHORT_SHA"
 fi
