@@ -66,7 +66,6 @@ describe('NHSNotifyTabs', () => {
     expect(panelOne).not.toHaveClass('nhsuk-tabs__panel--hidden');
     expect(panelTwo).toHaveClass('nhsuk-tabs__panel--hidden');
 
-    // Switch to tab two
     fireEvent.click(screen.getByRole('tab', { name: 'Tab Two' }));
 
     expect(panelOne).toHaveClass('nhsuk-tabs__panel--hidden');
