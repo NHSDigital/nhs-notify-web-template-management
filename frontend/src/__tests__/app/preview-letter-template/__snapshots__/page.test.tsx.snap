@@ -1,0 +1,1271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`authoring letter with validation errors matches snapshot with validation errors 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container-fluid"
+  >
+    <div
+      class="nhsuk-width-container"
+    >
+      <a
+        class="nhsuk-back-link"
+        data-testid="back-link-top"
+        href="/message-templates"
+      >
+        Back to all templates
+      </a>
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <span
+              class="nhsuk-error-message"
+            >
+              The file(s) you uploaded may contain a virus.
+            </span>
+          </li>
+          <li>
+            <span
+              class="nhsuk-error-message"
+            >
+              Create a new letter template to upload your file(s) again or upload different file(s).
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-full"
+          >
+            <div
+              class="nhsuk-u-reading-width"
+            >
+              <span
+                class="nhsuk-caption-l"
+              >
+                Template
+              </span>
+              <h1
+                class="preview__heading"
+                data-testid="preview-message__heading"
+              >
+                authoring letter template name
+              </h1>
+            </div>
+            <div
+              class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+            >
+              <dl
+                class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+              >
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template ID
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value monospace-font"
+                    data-testid="preview-template-id"
+                  >
+                    authoring-letter-template-id
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template type
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    Standard letter
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Total pages
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    2
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Sheets
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    1
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="sheets-action"
+                      href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about sheets
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Status
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    <strong
+                      class="nhsuk-tag nhsuk-tag--red"
+                      data-status="validation-failed"
+                      data-testid="status-tag"
+                    >
+                      Checks failed
+                    </strong>
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="status-action"
+                      href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about status
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section
+        class="nhsuk-u-margin-top-6"
+      >
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Letter preview
+        </h2>
+        <p>
+          Check how your personalisation fields will appear in your letter.
+        </p>
+        <div
+          class="nhsuk-tabs nhsuk-u-margin-top-6"
+        >
+          <h2
+            class="nhsuk-tabs__title"
+          >
+            Example personalisation data
+          </h2>
+          <ul
+            class="nhsuk-tabs__list"
+            role="tablist"
+          >
+            <li
+              class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-short"
+                aria-selected="true"
+                class="nhsuk-tabs__tab"
+                href="#tab-short"
+                id="tab_tab-short"
+                role="tab"
+                tabindex="0"
+              >
+                Short examples
+              </a>
+            </li>
+            <li
+              class="nhsuk-tabs__list-item"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-long"
+                aria-selected="false"
+                class="nhsuk-tabs__tab"
+                href="#tab-long"
+                id="tab_tab-long"
+                role="tab"
+                tabindex="-1"
+              >
+                Long examples
+              </a>
+            </li>
+          </ul>
+          <div
+            aria-labelledby="tab_tab-short"
+            class="nhsuk-tabs__panel"
+            id="tab-short"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <form
+                  id="letter-preview-short"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <p
+                    class="nhsuk-body-s"
+                  >
+                    The PDS fields will be pre-filled with example data when you choose a test recipient.
+                  </p>
+                  <div
+                    class="nhsuk-form-group"
+                  >
+                    <label
+                      class="nhsuk-label nhsuk-label--s"
+                      for="systemPersonalisationPackId-short"
+                    >
+                      Example recipient
+                    </label>
+                    <select
+                      class="nhsuk-select recipientSelect"
+                      id="systemPersonalisationPackId-short"
+                      name="systemPersonalisationPackId"
+                    >
+                      <option
+                        value=""
+                      >
+                        Select a recipient
+                      </option>
+                      <option
+                        value="short-1"
+                      >
+                        Jo Bloggs
+                      </option>
+                      <option
+                        value="short-2"
+                      >
+                        Mr John Smith
+                      </option>
+                      <option
+                        value="short-3"
+                      >
+                        Ms Sarah Jones
+                      </option>
+                      <option
+                        value="short-4"
+                      >
+                        Dr Li Wei
+                      </option>
+                      <option
+                        value="short-5"
+                      >
+                        Mrs Mary Brown
+                      </option>
+                      <option
+                        value="short-6"
+                      >
+                        Rev Mia Dao
+                      </option>
+                      <option
+                        value="short-7"
+                      >
+                        Miss Lucy Taylor
+                      </option>
+                      <option
+                        value="short-8"
+                      >
+                        Mx Alex Chen
+                      </option>
+                      <option
+                        value="short-9"
+                      >
+                        Prof Ola Fye
+                      </option>
+                      <option
+                        value="short-10"
+                      >
+                        Dr James Patel
+                      </option>
+                      <option
+                        value="short-11"
+                      >
+                        Ms Claire Davies
+                      </option>
+                    </select>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                    type="submit"
+                  >
+                    Update preview
+                  </button>
+                </form>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with short example personalisation data"
+                  referrerpolicy="no-referrer"
+                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  title="Letter preview - short examples"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            aria-labelledby="tab_tab-long"
+            class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+            id="tab-long"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <form
+                  id="letter-preview-long"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <p
+                    class="nhsuk-body-s"
+                  >
+                    The PDS fields will be pre-filled with example data when you choose a test recipient.
+                  </p>
+                  <div
+                    class="nhsuk-form-group"
+                  >
+                    <label
+                      class="nhsuk-label nhsuk-label--s"
+                      for="systemPersonalisationPackId-long"
+                    >
+                      Example recipient
+                    </label>
+                    <select
+                      class="nhsuk-select recipientSelect"
+                      id="systemPersonalisationPackId-long"
+                      name="systemPersonalisationPackId"
+                    >
+                      <option
+                        value=""
+                      >
+                        Select a recipient
+                      </option>
+                      <option
+                        value="long-1"
+                      >
+                        Mr Michael James Richardson-Clarke
+                      </option>
+                      <option
+                        value="long-2"
+                      >
+                        Dr Elizabeth Anne Thompson
+                      </option>
+                      <option
+                        value="long-3"
+                      >
+                        Dame Catherine Elizabeth Montgomery
+                      </option>
+                      <option
+                        value="long-4"
+                      >
+                        Mr Rajesh Kumar Chandrasekaran
+                      </option>
+                      <option
+                        value="long-5"
+                      >
+                        Ms Aminatou Diallo Kouyaté
+                      </option>
+                      <option
+                        value="long-6"
+                      >
+                        Sir William Alexander Fitzgerald
+                      </option>
+                      <option
+                        value="long-7"
+                      >
+                        Dr Priya Sharma-Williamson
+                      </option>
+                      <option
+                        value="long-8"
+                      >
+                        Rev Emmanuel Kwabena Adomako
+                      </option>
+                      <option
+                        value="long-9"
+                      >
+                        Prof Franziska Vogel-Bernhardt
+                      </option>
+                      <option
+                        value="long-10"
+                      >
+                        Mrs Margaret Anne O'Sullivan
+                      </option>
+                      <option
+                        value="long-11"
+                      >
+                        Dr Christopher James Harrington
+                      </option>
+                    </select>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                    type="submit"
+                  >
+                    Update preview
+                  </button>
+                </form>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with long example personalisation data"
+                  referrerpolicy="no-referrer"
+                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  title="Letter preview - long examples"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <p>
+        <a
+          href="/message-templates"
+        >
+          Back to all templates
+        </a>
+      </p>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`valid PDF letter template matches snapshot 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-back-link"
+    data-testid="back-link-top"
+    href="/message-templates"
+  >
+    Back to all templates
+  </a>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="nhsuk-u-reading-width"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Template
+          </span>
+          <h1
+            class="preview__heading"
+            data-testid="preview-message__heading"
+          >
+            letter template name
+          </h1>
+        </div>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value monospace-font"
+                data-testid="preview-template-id"
+              >
+                letter-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Standard letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag"
+                  data-status="not-yet-submitted"
+                  data-testid="status-tag"
+                >
+                  Not yet submitted
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    template.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="preview-letter-template-cta"
+          draggable="false"
+          href="/templates/submit-letter-template/letter-template-id?lockNumber=1"
+          id="preview-letter-template-cta"
+          role="button"
+        >
+          Submit template
+        </a>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`valid authoring letter template matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container-fluid"
+  >
+    <div
+      class="nhsuk-width-container"
+    >
+      <a
+        class="nhsuk-back-link"
+        data-testid="back-link-top"
+        href="/message-templates"
+      >
+        Back to all templates
+      </a>
+    </div>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-full"
+          >
+            <div
+              class="nhsuk-u-reading-width"
+            >
+              <span
+                class="nhsuk-caption-l"
+              >
+                Template
+              </span>
+              <h1
+                class="preview__heading"
+                data-testid="preview-message__heading"
+              >
+                authoring letter template name
+              </h1>
+            </div>
+            <p
+              class="nhsuk-u-margin-bottom-4"
+            >
+              <a
+                data-testid="edit-name-link"
+                href="/edit-template-name/authoring-letter-template-id"
+              >
+                Edit name
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                   for authoring letter template name
+                </span>
+              </a>
+            </p>
+            <div
+              class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+            >
+              <dl
+                class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+              >
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template ID
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value monospace-font"
+                    data-testid="preview-template-id"
+                  >
+                    authoring-letter-template-id
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template type
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    Standard letter
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row missing-value"
+                  id="campaign-id"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Campaign
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  />
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="campaign-action"
+                      href="/edit-template-campaign/authoring-letter-template-id"
+                    >
+                      Edit
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         campaign
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Total pages
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    2
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Sheets
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    1
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="sheets-action"
+                      href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about sheets
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Printing and postage
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    variant-123
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="printing-postage-action"
+                      href="/choose-printing-and-postage/authoring-letter-template-id"
+                    >
+                      Edit
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         printing and postage
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Status
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    <strong
+                      class="nhsuk-tag nhsuk-tag--yellow"
+                      data-status="not-yet-submitted"
+                      data-testid="status-tag"
+                    >
+                      Approval needed
+                    </strong>
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="status-action"
+                      href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about status
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section
+        class="nhsuk-u-margin-top-6"
+      >
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Letter preview
+        </h2>
+        <p>
+          Check how your personalisation fields will appear in your letter.
+        </p>
+        <div
+          class="nhsuk-tabs nhsuk-u-margin-top-6"
+        >
+          <h2
+            class="nhsuk-tabs__title"
+          >
+            Example personalisation data
+          </h2>
+          <ul
+            class="nhsuk-tabs__list"
+            role="tablist"
+          >
+            <li
+              class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-short"
+                aria-selected="true"
+                class="nhsuk-tabs__tab"
+                href="#tab-short"
+                id="tab_tab-short"
+                role="tab"
+                tabindex="0"
+              >
+                Short examples
+              </a>
+            </li>
+            <li
+              class="nhsuk-tabs__list-item"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-long"
+                aria-selected="false"
+                class="nhsuk-tabs__tab"
+                href="#tab-long"
+                id="tab_tab-long"
+                role="tab"
+                tabindex="-1"
+              >
+                Long examples
+              </a>
+            </li>
+          </ul>
+          <div
+            aria-labelledby="tab_tab-short"
+            class="nhsuk-tabs__panel"
+            id="tab-short"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <form
+                  id="letter-preview-short"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <p
+                    class="nhsuk-body-s"
+                  >
+                    The PDS fields will be pre-filled with example data when you choose a test recipient.
+                  </p>
+                  <div
+                    class="nhsuk-form-group"
+                  >
+                    <label
+                      class="nhsuk-label nhsuk-label--s"
+                      for="systemPersonalisationPackId-short"
+                    >
+                      Example recipient
+                    </label>
+                    <select
+                      class="nhsuk-select recipientSelect"
+                      id="systemPersonalisationPackId-short"
+                      name="systemPersonalisationPackId"
+                    >
+                      <option
+                        value=""
+                      >
+                        Select a recipient
+                      </option>
+                      <option
+                        value="short-1"
+                      >
+                        Jo Bloggs
+                      </option>
+                      <option
+                        value="short-2"
+                      >
+                        Mr John Smith
+                      </option>
+                      <option
+                        value="short-3"
+                      >
+                        Ms Sarah Jones
+                      </option>
+                      <option
+                        value="short-4"
+                      >
+                        Dr Li Wei
+                      </option>
+                      <option
+                        value="short-5"
+                      >
+                        Mrs Mary Brown
+                      </option>
+                      <option
+                        value="short-6"
+                      >
+                        Rev Mia Dao
+                      </option>
+                      <option
+                        value="short-7"
+                      >
+                        Miss Lucy Taylor
+                      </option>
+                      <option
+                        value="short-8"
+                      >
+                        Mx Alex Chen
+                      </option>
+                      <option
+                        value="short-9"
+                      >
+                        Prof Ola Fye
+                      </option>
+                      <option
+                        value="short-10"
+                      >
+                        Dr James Patel
+                      </option>
+                      <option
+                        value="short-11"
+                      >
+                        Ms Claire Davies
+                      </option>
+                    </select>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                    type="submit"
+                  >
+                    Update preview
+                  </button>
+                </form>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with short example personalisation data"
+                  referrerpolicy="no-referrer"
+                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  title="Letter preview - short examples"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            aria-labelledby="tab_tab-long"
+            class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+            id="tab-long"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <form
+                  id="letter-preview-long"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <p
+                    class="nhsuk-body-s"
+                  >
+                    The PDS fields will be pre-filled with example data when you choose a test recipient.
+                  </p>
+                  <div
+                    class="nhsuk-form-group"
+                  >
+                    <label
+                      class="nhsuk-label nhsuk-label--s"
+                      for="systemPersonalisationPackId-long"
+                    >
+                      Example recipient
+                    </label>
+                    <select
+                      class="nhsuk-select recipientSelect"
+                      id="systemPersonalisationPackId-long"
+                      name="systemPersonalisationPackId"
+                    >
+                      <option
+                        value=""
+                      >
+                        Select a recipient
+                      </option>
+                      <option
+                        value="long-1"
+                      >
+                        Mr Michael James Richardson-Clarke
+                      </option>
+                      <option
+                        value="long-2"
+                      >
+                        Dr Elizabeth Anne Thompson
+                      </option>
+                      <option
+                        value="long-3"
+                      >
+                        Dame Catherine Elizabeth Montgomery
+                      </option>
+                      <option
+                        value="long-4"
+                      >
+                        Mr Rajesh Kumar Chandrasekaran
+                      </option>
+                      <option
+                        value="long-5"
+                      >
+                        Ms Aminatou Diallo Kouyaté
+                      </option>
+                      <option
+                        value="long-6"
+                      >
+                        Sir William Alexander Fitzgerald
+                      </option>
+                      <option
+                        value="long-7"
+                      >
+                        Dr Priya Sharma-Williamson
+                      </option>
+                      <option
+                        value="long-8"
+                      >
+                        Rev Emmanuel Kwabena Adomako
+                      </option>
+                      <option
+                        value="long-9"
+                      >
+                        Prof Franziska Vogel-Bernhardt
+                      </option>
+                      <option
+                        value="long-10"
+                      >
+                        Mrs Margaret Anne O'Sullivan
+                      </option>
+                      <option
+                        value="long-11"
+                      >
+                        Dr Christopher James Harrington
+                      </option>
+                    </select>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                    type="submit"
+                  >
+                    Update preview
+                  </button>
+                </form>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with long example personalisation data"
+                  referrerpolicy="no-referrer"
+                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  title="Letter preview - long examples"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <form
+        action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="preview-letter-template"
+        />
+        <input
+          name="csrf_token"
+          readonly=""
+          type="hidden"
+          value="no_token"
+        />
+        <input
+          name="templateId"
+          type="hidden"
+          value="authoring-letter-template-id"
+        />
+        <input
+          name="lockNumber"
+          type="hidden"
+          value="1"
+        />
+        <button
+          class="nhsuk-button"
+          data-testid="preview-letter-template-cta"
+          id="preview-letter-template-cta"
+          type="submit"
+        >
+          Submit template
+        </button>
+      </form>
+      <p>
+        <a
+          href="/message-templates"
+        >
+          Back to all templates
+        </a>
+      </p>
+    </main>
+  </div>
+</DocumentFragment>
+`;
