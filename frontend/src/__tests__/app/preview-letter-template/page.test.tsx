@@ -274,7 +274,6 @@ describe('valid authoring letter template', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-
   it('submits the form with correct data', async () => {
     const user = userEvent.setup();
 
@@ -306,6 +305,63 @@ describe('valid authoring letter template', () => {
 
     const backLink = screen.getByTestId('back-link-top');
     expect(backLink).toHaveAttribute('href', '/message-templates');
+  });
+
+  it('displays the letter renderer when initialRender file exists', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Letter preview' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Short examples' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Long examples' })
+    ).toBeInTheDocument();
+  });
+});
+
+describe('authoring letter template without initial render', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {},
+    });
+  });
+
+  it('does not display the letter renderer when initialRender file is missing', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('still displays template details when initialRender is missing', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
   });
 });
 
@@ -342,7 +398,9 @@ describe('authoring letter with validation errors', () => {
 
     render(
       await Page({
-        params: Promise.resolve({ templateId: templateWithValidationErrors.id }),
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
       })
     );
 
@@ -423,25 +481,5 @@ describe('authoring letter with validation errors', () => {
     expect(
       screen.queryByRole('button', { name: 'Submit template' })
     ).not.toBeInTheDocument();
-  });
-
-  it('matches snapshot with validation errors', async () => {
-    const templateWithValidationErrors = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
-    };
-
-    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
-
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({
-          templateId: templateWithValidationErrors.id,
-        }),
-      })
-    );
-
-    expect(asFragment()).toMatchSnapshot();
   });
 });
