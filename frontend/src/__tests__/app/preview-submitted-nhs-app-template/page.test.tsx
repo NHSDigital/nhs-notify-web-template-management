@@ -16,6 +16,7 @@ import {
 import content from '@content/content';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
@@ -58,10 +59,12 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
       title: pageTitle,
     });
     expect(page).toEqual(
-      <PreviewSubmittedTemplate
-        initialState={submittedNHSAppTemplate}
-        previewComponent={PreviewTemplateDetailsNhsApp}
-      />
+      <NHSNotifyContainer>
+        <PreviewSubmittedTemplate
+          initialState={submittedNHSAppTemplate}
+          previewComponent={PreviewTemplateDetailsNhsApp}
+        />
+      </NHSNotifyContainer>
     );
   });
 

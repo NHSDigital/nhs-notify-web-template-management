@@ -11,6 +11,7 @@ import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { $LockNumber } from 'nhs-notify-backend-client';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.pages.previewOtherLanguageLetterTemplate;
 
@@ -44,12 +45,14 @@ const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
   }
 
   return (
-    <PreviewTemplateFromMessagePlan
-      initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsLetter}
-      routingConfigId={routingConfigId}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <PreviewTemplateFromMessagePlan
+        initialState={validatedTemplate}
+        previewComponent={PreviewTemplateDetailsLetter}
+        routingConfigId={routingConfigId}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 
