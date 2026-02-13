@@ -176,6 +176,10 @@ export class TemplateRepository {
       update.setName(updates.name);
     }
 
+    if (updates.campaignId) {
+      update.setCampaignId(updates.campaignId);
+    }
+
     const bannedStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
 
     update

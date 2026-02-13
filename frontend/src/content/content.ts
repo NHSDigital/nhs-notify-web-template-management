@@ -1755,6 +1755,26 @@ const editTemplateNamePage = {
   },
 };
 
+const editTemplateCampaignPage = {
+  pageTitle: generatePageTitle('Edit template campaign'),
+  form: {
+    campaignId: {
+      label: 'Edit template campaign',
+      hint: 'Choose which campaign this letter is for',
+      errors: {
+        empty: 'Choose a campaign',
+      },
+    },
+    submit: {
+      text: 'Save changes',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (templateId: string) => `/preview-letter-template/${templateId}`,
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1808,6 +1828,7 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlanSettings,
+    editTemplateCampaignPage,
     editTemplateNamePage,
     error404,
     homePage,

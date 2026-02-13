@@ -211,6 +211,7 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
 export const $PatchTemplate = schemaFor<PatchTemplate>()(
   z
     .object({
+      campaignId: z.string().trim().nonempty().optional(),
       name: $TemplateName.optional(),
     })
     .refine(
