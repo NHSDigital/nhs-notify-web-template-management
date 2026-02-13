@@ -252,7 +252,9 @@ describe('LetterRender', () => {
         LetterRenderFormState,
         FormData,
       ];
-      expect(formState.customPersonalisationFields).toContain('appointmentDate');
+      expect(formState.customPersonalisationFields).toContain(
+        'appointmentDate'
+      );
       expect(formData.get('custom_appointmentDate')).toBe('2025-03-15');
     });
 
