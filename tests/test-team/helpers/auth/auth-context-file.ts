@@ -94,6 +94,12 @@ export class AuthContextFile {
     );
   }
 
+  async clientIds(namespace: string): Promise<string[]> {
+    return this.mutex.runExclusive(() =>
+      Object.keys(this.read()[namespace]?.clients ?? {})
+    );
+  }
+
   async destroyNamespace(namespace: string): Promise<void> {
     return this.mutex.runExclusive(() => {
       const data = this.read();

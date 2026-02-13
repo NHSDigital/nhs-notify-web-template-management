@@ -11,6 +11,7 @@ import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
+import { TemplateMgmtEditTemplateCampaignPage } from 'pages/letter/template-mgmt-edit-template-campaign-page';
 import { TemplateMgmtEditTemplateNamePage } from 'pages/letter/template-mgmt-edit-template-name-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
@@ -59,6 +60,7 @@ import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
+import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -85,6 +87,7 @@ const protectedPages = [
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
@@ -95,6 +98,7 @@ const protectedPages = [
   TemplateMgmtEditEmailPage,
   TemplateMgmtEditNhsAppPage,
   TemplateMgmtEditSmsPage,
+  TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtMessageTemplatesPage,

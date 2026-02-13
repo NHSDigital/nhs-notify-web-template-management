@@ -17,9 +17,16 @@ test.describe('PATCH /v1/template/:templateId', () => {
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    const clientMultipleCampaigns = await authHelper.getStaticClient(
+      'ClientWithMultipleCampaigns'
+    );
+    user1 = await authHelper.getTestUser(
+      testUsers.UserWithMultipleCampaigns.userId
+    );
     userDifferentClient = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    userSharedClient = await authHelper.createAdHocUser(
+      clientMultipleCampaigns.id
+    );
   });
 
   test.afterAll(async () => {
@@ -160,7 +167,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
       user1,
       'Old template name',
       'NOT_YET_SUBMITTED',
-      { letterVariantId: 'letter-variant' }
+      { letterVariantId: 'letter-variant', campaignId: user1.campaignIds?.[0] }
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -176,6 +183,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         },
         data: {
           name: 'New template name',
+          campaignId: user1.campaignIds?.[1],
         },
       }
     );
@@ -191,6 +199,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
       data: {
         ...dto,
         name: 'New template name',
+        campaignId: user1.campaignIds?.[1],
         updatedAt: expect.stringMatching(isoDateRegExp),
         lockNumber: template.lockNumber + 1,
         updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
@@ -198,6 +207,42 @@ test.describe('PATCH /v1/template/:templateId', () => {
     });
 
     expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+  });
+
+  test('returns 400 - cannot set an campaign id not associated with the client', async ({
+    request,
+  }) => {
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user1,
+      'Template name',
+      'NOT_YET_SUBMITTED',
+      { letterVariantId: 'letter-variant', campaignId: user1.campaignIds?.[0] }
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          campaignId: 'Random value',
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    const body = await response.json();
+
+    expect(body).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Invalid campaign ID in request',
+    });
   });
 
   test('returns 400 - cannot update an approved template', async ({

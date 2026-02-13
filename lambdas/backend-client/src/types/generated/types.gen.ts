@@ -200,6 +200,7 @@ export type NhsAppProperties = {
 };
 
 export type PatchTemplate = {
+  campaignId?: string;
   name?: string;
 };
 

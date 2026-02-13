@@ -359,6 +359,40 @@ export class TemplateClient {
       );
     }
 
+    if (validationResult.data.campaignId) {
+      const clientConfigurationResult = await this.clientConfigRepository.get(
+        user.clientId
+      );
+
+      const { data: clientConfiguration, error: clientConfigurationError } =
+        clientConfigurationResult;
+
+      if (clientConfigurationError) {
+        log
+          .child(clientConfigurationError.errorMeta)
+          .error(
+            'Failed to fetch client configuration',
+            clientConfigurationError.actualError
+          );
+
+        return clientConfigurationResult;
+      }
+
+      const isCampaignIdValid = this.isCampaignIdValid(
+        clientConfiguration,
+        validationResult.data.campaignId
+      );
+
+      if (!isCampaignIdValid) {
+        log.error('Invalid campaign ID in request');
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Invalid campaign ID in request'
+        );
+      }
+    }
+
     const patchResult = await this.templateRepository.patch(
       templateId,
       validationResult.data,

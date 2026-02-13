@@ -37,22 +37,20 @@ export default async function EditTemplateNamePage({
     return redirect('/message-templates', RedirectType.replace);
   }
 
-  if (template.letterVersion !== 'AUTHORING') {
-    return redirect(
-      `/preview-letter-template/${templateId}`,
-      RedirectType.replace
-    );
+  const previewUrl =
+    template.templateStatus === 'SUBMITTED'
+      ? `/preview-submitted-letter-template/${templateId}`
+      : `/preview-letter-template/${templateId}`;
+
+  if (
+    template.templateStatus === 'SUBMITTED' ||
+    template.letterVersion !== 'AUTHORING'
+  ) {
+    return redirect(previewUrl, RedirectType.replace);
   }
 
   if (!client?.features.letterAuthoring) {
     return redirect('/message-templates', RedirectType.replace);
-  }
-
-  if (template.templateStatus === 'SUBMITTED') {
-    return redirect(
-      `/preview-submitted-letter-template/${templateId}`,
-      RedirectType.replace
-    );
   }
 
   return (
@@ -99,7 +97,7 @@ export default async function EditTemplateNamePage({
                   </NHSNotifyButton>
                   <Link
                     href={content.backLink.href(templateId)}
-                    className='nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3'
+                    className='nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3'
                     data-testid='back-link-bottom'
                   >
                     {content.backLink.text}
