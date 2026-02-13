@@ -1,3 +1,5 @@
 export class App {
-  async render() {}
+  async initialRender(): Promise<{ ok: true } | { ok: false }> {
+    return { ok: true };
+  }
 }
