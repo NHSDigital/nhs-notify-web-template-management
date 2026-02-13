@@ -1251,6 +1251,23 @@ const messagePlanConditionalLetterTemplates = {
   languageFormats: 'Other language letters',
 };
 
+const messagePlanCascadePreview = {
+  detailsOpenButton: {
+    openText: 'Close all template previews',
+    closedText: 'Open all template previews',
+  },
+  languageFormatsCardHeading: 'Other language letters (optional)',
+  accessibleFormatCardHeading: '{{format}} (optional)',
+  previewTemplateSummary: {
+    prefix: 'Preview',
+    suffix: 'template',
+  },
+  letterTemplateLinks: {
+    previewSubmitted: '/preview-submitted-letter-template/{{id}}',
+    preview: '/preview-letter-template/{{id}}',
+  },
+};
+
 const chooseTemplatesForMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
@@ -1626,11 +1643,6 @@ const previewMessagePlan = {
       status: 'Status',
     },
   },
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
 };
 
 const uploadDocxLetterTemplateForm = {
@@ -1735,6 +1747,27 @@ const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
   };
 };
 
+const reviewAndMoveToProduction = {
+  pageTitle: generatePageTitle('Review and move message plan to production'),
+  headerCaption: 'Step 2 of 2',
+  pageHeading: 'Review and move message plan to production',
+  summaryTable: {
+    rowHeadings: {
+      name: 'Name',
+    },
+  },
+  buttons: {
+    moveToProduction: {
+      text: 'Move to production',
+      href: '/message-plans',
+    },
+    keepInDraft: {
+      text: 'Keep in draft',
+      href: '{{basePath}}/message-plans/choose-templates/{{routingConfigId}}',
+    },
+  },
+};
+
 const editTemplateNamePage = {
   pageTitle: generatePageTitle('Edit template name'),
   form: {
@@ -1793,6 +1826,7 @@ const content = {
     logoutWarning,
     messageFormatting,
     messagePlanBlock,
+    messagePlanCascadePreview,
     messagePlanChannelTemplate,
     messagePlanFallbackConditions,
     messagePlanForm,
@@ -1840,6 +1874,7 @@ const content = {
     previewLargePrintLetterTemplate,
     previewOtherLanguageLetterTemplate,
     previewMessagePlan,
+    reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,
   },
