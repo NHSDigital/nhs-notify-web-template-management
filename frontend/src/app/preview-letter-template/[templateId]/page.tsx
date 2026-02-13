@@ -78,10 +78,10 @@ export default async function PreviewLetterTemplatePage({
           <NHSNotifyBackLink href={links.messageTemplates}>
             {backLinkText}
           </NHSNotifyBackLink>
-          <NHSNotifyForm.ErrorSummary />
         </div>
         <NHSNotifyMain>
           <div className='nhsuk-width-container'>
+            <NHSNotifyForm.ErrorSummary />
             <div className='nhsuk-grid-row'>
               <div className='nhsuk-grid-column-full'>
                 <PreviewTemplateDetailsAuthoringLetter
