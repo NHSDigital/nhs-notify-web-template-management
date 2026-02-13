@@ -87,9 +87,7 @@ describe('middleware function', () => {
       "img-src 'self'",
       "manifest-src 'self'",
       "object-src 'none'",
-      expect.stringMatching(
-        /^script-src 'self' 'nonce-[\dA-Za-z]+' 'sha256-tDOvXJi1PXbg0CWjLCCYSNHRXtps26K4JXkE3M6u\/c0='$/
-      ),
+      expect.stringMatching(/^script-src 'self' 'nonce-[\dA-Za-z]+'$/),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       'upgrade-insecure-requests',
       '',
@@ -133,9 +131,7 @@ describe('middleware function', () => {
       "img-src 'self'",
       "manifest-src 'self'",
       "object-src 'none'",
-      expect.stringMatching(
-        /^script-src 'self' 'nonce-[\dA-Za-z]+' 'sha256-tDOvXJi1PXbg0CWjLCCYSNHRXtps26K4JXkE3M6u\/c0='$/
-      ),
+      expect.stringMatching(/^script-src 'self' 'nonce-[\dA-Za-z]+'$/),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       'upgrade-insecure-requests',
       '',
@@ -162,9 +158,7 @@ describe('middleware function', () => {
       "img-src 'self'",
       "manifest-src 'self'",
       "object-src 'none'",
-      expect.stringMatching(
-        /^script-src 'self' 'nonce-[\dA-Za-z]+' 'sha256-tDOvXJi1PXbg0CWjLCCYSNHRXtps26K4JXkE3M6u\/c0='$/
-      ),
+      expect.stringMatching(/^script-src 'self' 'nonce-[\dA-Za-z]+'$/),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       'upgrade-insecure-requests',
       '',
@@ -192,7 +186,7 @@ describe('middleware function', () => {
       "manifest-src 'self'",
       "object-src 'none'",
       expect.stringMatching(
-        /^script-src 'self' 'nonce-[\dA-Za-z]+' 'sha256-tDOvXJi1PXbg0CWjLCCYSNHRXtps26K4JXkE3M6u\/c0=' 'unsafe-eval'$/
+        /^script-src 'self' 'nonce-[\dA-Za-z]+' 'unsafe-eval'$/
       ),
       expect.stringMatching(/^style-src 'self' 'nonce-[\dA-Za-z]+'$/),
       '',
