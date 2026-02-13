@@ -1,5 +1,5 @@
 module "letter_preview_renderer_lambda" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=feature/CCM-14149_Support_Container_Based_Lambdas"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.32/terraform-lambda.zip"
 
   project        = var.project
   environment    = var.environment

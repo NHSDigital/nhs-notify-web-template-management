@@ -7,7 +7,7 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
-# Set Variables required for Docker Build. TF_REGION and TF_ENVIRONMENT are set in pre.sh and exported for use here. COMPONENT is passed in the reusable workflow.
+# Set Variables required for Docker Build.
 BASE_IMAGE="$1"
 CSI="${project}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
