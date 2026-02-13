@@ -51,11 +51,9 @@ ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
 BASE_IMAGE_ARG="$1"
 
-docker build \
-  --pull \
-  --no-cache \
+docker buildx build \
   -f docker/lambda/Dockerfile \
-  --build-arg BASE_IMAGE="${BASE_IMAGE}" \
+  --build-arg BASE_IMAGE="${BASE_IMAGE_ARG}" \
   -t "${ECR_IMAGE}" \
   .
 
