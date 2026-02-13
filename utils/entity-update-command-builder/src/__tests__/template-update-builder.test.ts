@@ -662,4 +662,31 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('setCampaignId', () => {
+    test('sets campaignId field to provided value', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.setCampaignId('new-campaign-id').build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':campaignId': 'new-campaign-id',
+        },
+        ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
+        },
+        UpdateExpression: 'SET #campaignId = :campaignId',
+      });
+    });
+  });
 });

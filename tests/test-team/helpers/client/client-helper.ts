@@ -147,8 +147,7 @@ export class ClientConfigurationHelper {
   }
 
   async teardown() {
-    const values = await this.authContextFile.clientValues(this.runId);
-    const ids = Object.keys(values);
+    const ids = await this.authContextFile.clientIds(this.runId);
 
     if (ids.length > 0) {
       await this.ssmClient.send(

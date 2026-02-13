@@ -2,25 +2,25 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyContainer } from '@layouts/container/container';
 import { HintText, Label } from '@atoms/nhsuk-components';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
-import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import { getCampaignIds } from '@utils/client-config';
 import { getTemplate } from '@utils/form-actions';
 import { fetchClient } from '@utils/server-features';
-import { editTemplateName } from './server-action';
+import { editTemplateCampaign } from './server-action';
 
-const content = copy.pages.editTemplateNamePage;
+const content = copy.pages.editTemplateCampaignPage;
 
 export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function EditTemplateNamePage({
+export default async function EditTemplateCampaignPage({
   params,
 }: TemplatePageProps) {
   const { templateId } = await params;
@@ -28,6 +28,8 @@ export default async function EditTemplateNamePage({
   const template = await getTemplate(templateId);
 
   const client = await fetchClient();
+
+  const campaignIds = getCampaignIds(client);
 
   if (!template) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -44,7 +46,8 @@ export default async function EditTemplateNamePage({
 
   if (
     template.templateStatus === 'SUBMITTED' ||
-    template.letterVersion !== 'AUTHORING'
+    template.letterVersion !== 'AUTHORING' ||
+    campaignIds.length < 2
   ) {
     return redirect(previewUrl, RedirectType.replace);
   }
@@ -57,8 +60,8 @@ export default async function EditTemplateNamePage({
     <NHSNotifyContainer>
       <NHSNotifyMain>
         <NHSNotifyFormProvider
-          initialState={{ fields: { name: template.name } }}
-          serverAction={editTemplateName}
+          initialState={{ fields: { campaignId: template.campaignId } }}
+          serverAction={editTemplateCampaign}
         >
           <NHSNotifyForm.ErrorSummary />
           <div className='nhsuk-grid-row'>
@@ -76,20 +79,20 @@ export default async function EditTemplateNamePage({
                   value={template.lockNumber}
                   readOnly
                 />
-                <NHSNotifyForm.FormGroup htmlFor='name'>
-                  <Label size='l' isPageHeading htmlFor='name'>
-                    {content.form.name.label}
+                <NHSNotifyForm.FormGroup htmlFor='campaignId'>
+                  <Label size='l' isPageHeading htmlFor='campaignId'>
+                    {content.form.campaignId.label}
                   </Label>
-                  <HintText>{content.form.name.hint}</HintText>
-
-                  <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
-                  <NHSNotifyForm.ErrorMessage htmlFor='name' />
-                  <NHSNotifyForm.Input
-                    type='text'
-                    id='name'
-                    name='name'
-                    className='nhsuk-u-margin-bottom-2'
-                  />
+                  <HintText>{content.form.campaignId.hint}</HintText>
+                  <NHSNotifyForm.ErrorMessage htmlFor='campaignId' />
+                  <NHSNotifyForm.Select id='campaignId' name='campaignId'>
+                    <option />
+                    {campaignIds.map((id) => (
+                      <option key={id} value={id}>
+                        {id}
+                      </option>
+                    ))}
+                  </NHSNotifyForm.Select>
                 </NHSNotifyForm.FormGroup>
                 <NHSNotifyForm.FormGroup>
                   <NHSNotifyButton type='submit'>

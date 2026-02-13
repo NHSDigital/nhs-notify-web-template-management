@@ -1,24 +1,24 @@
 import { z } from 'zod/v4';
-import {
+import type {
+  AuthoringLetterProperties,
+  BaseCreatedTemplate,
+  BaseTemplate,
+  CreatePdfLetterProperties,
+  CreateUpdateTemplate,
+  EmailProperties,
+  Language,
+  LetterType,
+  NhsAppProperties,
   PatchTemplate,
-  type AuthoringLetterProperties,
-  type BaseCreatedTemplate,
-  type BaseTemplate,
-  type CreatePdfLetterProperties,
-  type CreateUpdateTemplate,
-  type EmailProperties,
-  type Language,
-  type LetterType,
-  type NhsAppProperties,
-  type PdfLetterFiles,
-  type PdfLetterProperties,
-  type ProofFileDetails,
-  type SmsProperties,
-  type TemplateDto,
-  type TemplateStatus,
-  type TemplateStatusActive,
-  type TemplateType,
-  type VersionedFileDetails,
+  PdfLetterFiles,
+  PdfLetterProperties,
+  ProofFileDetails,
+  SmsProperties,
+  TemplateDto,
+  TemplateStatus,
+  TemplateStatusActive,
+  TemplateType,
+  VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -166,6 +166,7 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
 export const $PatchTemplate = schemaFor<PatchTemplate>()(
   z
     .object({
+      campaignId: z.string().trim().nonempty().optional(),
       name: $TemplateName.optional(),
     })
     .refine(
