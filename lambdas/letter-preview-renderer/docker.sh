@@ -50,13 +50,10 @@ ECR_REPO_URI="${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO}"
 ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
 BASE_IMAGE_ARG="$1"
-# Allow override of build platform; default linux/amd64
-BUILD_PLATFORM="${BUILD_PLATFORM:-linux/amd64}"
-# Build and tag the Docker image for the lambda.
+
 docker build \
   --pull \
   --no-cache \
-  --platform ${BUILD_PLATFORM} \
   -f docker/lambda/Dockerfile \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
   -t "${ECR_IMAGE}" \
