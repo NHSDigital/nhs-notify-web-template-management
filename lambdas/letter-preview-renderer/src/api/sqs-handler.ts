@@ -21,6 +21,7 @@ const $PersonalisedRenderRequest = $Common.extend({
   requestType: z.literal('personalised'),
 });
 
+// move to shared location, derive type
 const $RenderRequest = z.discriminatedUnion('requestType', [
   $InitialRenderRequest,
   $PersonalisedRenderRequest,
