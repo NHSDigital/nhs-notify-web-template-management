@@ -51,12 +51,15 @@ ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
 BASE_IMAGE_ARG="$1"
 
-# Echo the docker build command before running it
-echo "docker build -f docker/lambda/Dockerfile --build-arg BASE_IMAGE=\"${BASE_IMAGE_ARG}\" -t \"${ECR_IMAGE}\" ."
-
-docker build \
+# Allow override of build platform; default linux/amd64
+BUILD_PLATFORM="${BUILD_PLATFORM:-linux/amd64}"
+# Build and tag the Docker image for the lambda.
+docker buildx build \
+  --pull \
+  --no-cache \
+  --platform ${BUILD_PLATFORM} \
   -f docker/lambda/Dockerfile \
-  --build-arg BASE_IMAGE="${BASE_IMAGE_ARG}" \
+  --build-arg BASE_IMAGE="${BASE_IMAGE}" \
   -t "${ECR_IMAGE}" \
   .
 
