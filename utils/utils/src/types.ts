@@ -125,13 +125,15 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   'NO_THREATS_FOUND'
 >;
 
+type DatabaseFiles = Partial<PdfLetterFiles & AuthoringLetterFiles>;
+
 export type DatabaseTemplate = {
   campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
   customPersonalisation?: string[];
-  files?: PdfLetterFiles | AuthoringLetterFiles;
+  files?: DatabaseFiles;
   id: string;
   language?: Language;
   letterType?: LetterType;

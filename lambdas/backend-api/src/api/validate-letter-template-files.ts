@@ -75,13 +75,10 @@ export class ValidateLetterTemplateFilesLambda {
       return;
     }
 
-    const { pdfTemplate: pdfData, testDataCsv: csvData } =
-      // template is type DatabaseTemplate, which lacks letterVersion specific properties
-      // however, this will be deleted soon anyway
-      template.files as PdfLetterFiles;
+    const { pdfTemplate: pdfData, testDataCsv: csvData } = template.files;
 
     if (
-      pdfData.currentVersion !== versionId ||
+      pdfData?.currentVersion !== versionId ||
       (csvData && csvData.currentVersion !== versionId)
     ) {
       //  No-op if file version in event is non-current
