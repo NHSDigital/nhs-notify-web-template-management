@@ -9,6 +9,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
@@ -29,7 +30,11 @@ const PreviewNhsAppTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewNHSAppTemplate initialState={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <PreviewNHSAppTemplate initialState={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default PreviewNhsAppTemplatePage;

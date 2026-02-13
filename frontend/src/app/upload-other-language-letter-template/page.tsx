@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import copy from '@content/content';
-import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm/form';
+import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
@@ -33,12 +36,13 @@ export default async function UploadOtherLanguageLetterTemplatePage() {
   }
 
   return (
-    <>
+    <NHSNotifyContainer>
       <NHSNotifyBackLink href={content.backLink.href}>
         {content.backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>
         <NHSNotifyFormProvider serverAction={uploadOtherLanguageLetterTemplate}>
+          <NHSNotifyForm.ErrorSummary />
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
               <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
@@ -46,14 +50,17 @@ export default async function UploadOtherLanguageLetterTemplatePage() {
           </div>
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>
-              <UploadDocxLetterTemplateForm.Form formId='upload-large-print-letter-template'>
+              <NHSNotifyForm.Form formId='upload-large-print-letter-template'>
                 <UploadDocxLetterTemplateForm.NameField />
                 <UploadDocxLetterTemplateForm.CampaignIdField
                   campaignIds={campaignIds}
                 />
                 <UploadDocxLetterTemplateForm.LanguageField />
                 <UploadDocxLetterTemplateForm.FileField />
-              </UploadDocxLetterTemplateForm.Form>
+                <NHSNotifyButton type='submit'>
+                  {content.submitButton.text}
+                </NHSNotifyButton>
+              </NHSNotifyForm.Form>
             </div>
 
             <div className='nhsuk-grid-column-one-third'>
@@ -62,6 +69,6 @@ export default async function UploadOtherLanguageLetterTemplatePage() {
           </div>
         </NHSNotifyFormProvider>
       </NHSNotifyMain>
-    </>
+    </NHSNotifyContainer>
   );
 }

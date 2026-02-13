@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
@@ -44,12 +45,14 @@ const PreviewNhsAppTemplateFromMessagePlan = async (
   }
 
   return (
-    <PreviewTemplateFromMessagePlan
-      initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsNhsApp}
-      routingConfigId={routingConfigId}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <PreviewTemplateFromMessagePlan
+        initialState={validatedTemplate}
+        previewComponent={PreviewTemplateDetailsNhsApp}
+        routingConfigId={routingConfigId}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 

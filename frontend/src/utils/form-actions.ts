@@ -4,6 +4,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import {
   $TemplateDto,
   CreateUpdateTemplate,
+  PatchTemplate,
   TemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -75,6 +76,32 @@ export async function saveTemplate(
     template,
     accessToken,
     template.lockNumber
+  );
+
+  if (error) {
+    logger.error('Failed to save template', error);
+    throw new Error('Failed to save template data');
+  }
+
+  return data;
+}
+
+export async function patchTemplate(
+  templateId: string,
+  template: PatchTemplate,
+  lockNumber: number
+): Promise<TemplateDto> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.patchTemplate(
+    templateId,
+    template,
+    accessToken,
+    lockNumber
   );
 
   if (error) {

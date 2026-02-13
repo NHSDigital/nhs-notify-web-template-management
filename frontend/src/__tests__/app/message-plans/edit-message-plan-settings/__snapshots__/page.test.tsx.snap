@@ -2,786 +2,802 @@
 
 exports[`multiple campaigns matches snapshot 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <div
-      class="nhsuk-grid-row"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        class="nhsuk-grid-row"
       >
-        <h1
-          class="nhsuk-heading-xl"
+        <div
+          class="nhsuk-grid-column-two-thirds"
         >
-          Edit message plan settings
-        </h1>
-        <form
-          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="message-plan"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+          <h1
+            class="nhsuk-heading-xl"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="name"
-            >
-              Message plan name
-            </label>
-            <div
-              class="nhsuk-hint"
-            >
-              This will not be visible to recipients.
-            </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
-            >
-              <summary
-                class="nhsuk-details__summary"
-              >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your message plans
-                </span>
-              </summary>
-              <div
-                class="nhsuk-details__text"
-              >
-                <p>
-                  You should name your message plans in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common message plan names include the:
-                </p>
-                <ul
-                  class="nhsuk-list nhsuk-list--bullet"
-                >
-                  <li>
-                    channels it uses
-                  </li>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the message
-                  </li>
-                  <li>
-                    version number
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
-                </p>
-              </div>
-            </details>
-            <div
-              class="nhsuk-form-group"
-            >
-              <input
-                class="nhsuk-input"
-                data-testid="name-field"
-                id="name"
-                name="name"
-                type="text"
-                value="Test config"
-              />
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+            Edit message plan settings
+          </h1>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
           >
+            <input
+              name="form-id"
+              readonly=""
+              type="hidden"
+              value="message-plan"
+            />
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
             >
               <label
                 class="nhsuk-label nhsuk-label--s"
-                for="campaignId"
-                id="campaignId--label"
+                for="name"
               >
-                Campaign
+                Message plan name
               </label>
               <div
                 class="nhsuk-hint"
-                id="campaignId--hint"
               >
-                Choose which campaign this message plan will link to
+                This will not be visible to recipients.
               </div>
-              <select
-                aria-describedby="campaignId--hint"
-                class="nhsuk-select"
-                data-testid="campaign-id-field"
-                id="campaignId"
-                name="campaignId"
+              <details
+                class="nhsuk-details nhsuk-u-margin-top-3"
               >
-                <option />
-                <option
-                  value="9e24950f-1d9b-416b-affd-50f142fb0873"
+                <summary
+                  class="nhsuk-details__summary"
                 >
-                  9e24950f-1d9b-416b-affd-50f142fb0873
-                </option>
-                <option
-                  selected=""
-                  value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Naming your message plans
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
                 >
-                  aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
-                </option>
-              </select>
+                  <p>
+                    You should name your message plans in a way that works best for your service or organisation.
+                  </p>
+                  <p>
+                    Common message plan names include the:
+                  </p>
+                  <ul
+                    class="nhsuk-list nhsuk-list--bullet"
+                  >
+                    <li>
+                      channels it uses
+                    </li>
+                    <li>
+                      subject or reason for the message
+                    </li>
+                    <li>
+                      intended audience for the message
+                    </li>
+                    <li>
+                      version number
+                    </li>
+                  </ul>
+                  <p>
+                    For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+                  </p>
+                </div>
+              </details>
+              <div
+                class="nhsuk-form-group"
+              >
+                <input
+                  class="nhsuk-input"
+                  data-testid="name-field"
+                  id="name"
+                  name="name"
+                  type="text"
+                  value="Test config"
+                />
+              </div>
             </div>
-          </div>
-          <div
-            class="nhsuk-form-group"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              type="submit"
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
             >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="campaignId"
+                  id="campaignId--label"
+                >
+                  Campaign
+                </label>
+                <div
+                  class="nhsuk-hint"
+                  id="campaignId--hint"
+                >
+                  Choose which campaign this message plan will link to
+                </div>
+                <select
+                  aria-describedby="campaignId--hint"
+                  class="nhsuk-select"
+                  data-testid="campaign-id-field"
+                  id="campaignId"
+                  name="campaignId"
+                >
+                  <option />
+                  <option
+                    value="9e24950f-1d9b-416b-affd-50f142fb0873"
+                  >
+                    9e24950f-1d9b-416b-affd-50f142fb0873
+                  </option>
+                  <option
+                    selected=""
+                    value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+                  >
+                    aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="nhsuk-form-group"
             >
-              Go back
-            </a>
-          </div>
-          <input
-            name="routingConfigId"
-            readonly=""
-            type="hidden"
-            value="d7afdc99-d55b-4f26-8442-2d10aea07346"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="0"
-          />
-        </form>
+              <button
+                aria-disabled="false"
+                class="nhsuk-button"
+                data-testid="submit-button"
+                type="submit"
+              >
+                Save and continue
+              </button>
+              <a
+                class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
+                data-testid="back-link-bottom"
+                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              >
+                Go back
+              </a>
+            </div>
+            <input
+              name="routingConfigId"
+              readonly=""
+              type="hidden"
+              value="d7afdc99-d55b-4f26-8442-2d10aea07346"
+            />
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="0"
+            />
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;
 
 exports[`multiple campaigns renders errors when form is submitted in invalid state 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <div
-      aria-labelledby="error-summary-title"
-      class="nhsuk-error-summary"
-      role="alert"
-      tabindex="-1"
-    >
-      <h2
-        class="nhsuk-error-summary__title"
-        data-testid="error-summary"
-        id="error-summary-title"
-      >
-        There is a problem
-      </h2>
-      <ul
-        class="nhsuk-list nhsuk-error-summary__list"
-      >
-        <li>
-          <a
-            href="#campaignId"
-          >
-            Select a campaign
-          </a>
-        </li>
-        <li>
-          <a
-            href="#name"
-          >
-            Message plan name too long
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div
-      class="nhsuk-grid-row"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
       >
-        <h1
-          class="nhsuk-heading-xl"
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
         >
-          Edit message plan settings
-        </h1>
-        <form
-          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
         >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="message-plan"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
+          <li>
+            <a
+              href="#campaignId"
+            >
+              Select a campaign
+            </a>
+          </li>
+          <li>
+            <a
+              href="#name"
+            >
+              Message plan name too long
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-two-thirds"
+        >
+          <h1
+            class="nhsuk-heading-xl"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="name"
-            >
-              Message plan name
-            </label>
-            <div
-              class="nhsuk-hint"
-            >
-              This will not be visible to recipients.
-            </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
-            >
-              <summary
-                class="nhsuk-details__summary"
-              >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your message plans
-                </span>
-              </summary>
-              <div
-                class="nhsuk-details__text"
-              >
-                <p>
-                  You should name your message plans in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common message plan names include the:
-                </p>
-                <ul
-                  class="nhsuk-list nhsuk-list--bullet"
-                >
-                  <li>
-                    channels it uses
-                  </li>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the message
-                  </li>
-                  <li>
-                    version number
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
-                </p>
-              </div>
-            </details>
-            <div
-              class="nhsuk-form-group nhsuk-form-group--error"
-            >
-              <span
-                class="nhsuk-error-message"
-                id="name--error-message"
-              >
-                <span
-                  class="nhsuk-u-visually-hidden"
-                >
-                  Error: 
-                </span>
-                Message plan name too long
-              </span>
-              <input
-                aria-describedby="name--error-message"
-                class="nhsuk-input nhsuk-input--error"
-                data-testid="name-field"
-                id="name"
-                name="name"
-                type="text"
-                value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-              />
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+            Edit message plan settings
+          </h1>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
           >
+            <input
+              name="form-id"
+              readonly=""
+              type="hidden"
+              value="message-plan"
+            />
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
             >
               <label
                 class="nhsuk-label nhsuk-label--s"
-                for="campaignId"
-                id="campaignId--label"
+                for="name"
               >
-                Campaign
+                Message plan name
               </label>
               <div
                 class="nhsuk-hint"
-                id="campaignId--hint"
               >
-                Choose which campaign this message plan will link to
+                This will not be visible to recipients.
               </div>
-              <span
-                class="nhsuk-error-message"
-                id="campaignId--error-message"
+              <details
+                class="nhsuk-details nhsuk-u-margin-top-3"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Naming your message plans
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <p>
+                    You should name your message plans in a way that works best for your service or organisation.
+                  </p>
+                  <p>
+                    Common message plan names include the:
+                  </p>
+                  <ul
+                    class="nhsuk-list nhsuk-list--bullet"
+                  >
+                    <li>
+                      channels it uses
+                    </li>
+                    <li>
+                      subject or reason for the message
+                    </li>
+                    <li>
+                      intended audience for the message
+                    </li>
+                    <li>
+                      version number
+                    </li>
+                  </ul>
+                  <p>
+                    For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+                  </p>
+                </div>
+              </details>
+              <div
+                class="nhsuk-form-group nhsuk-form-group--error"
               >
                 <span
-                  class="nhsuk-u-visually-hidden"
+                  class="nhsuk-error-message"
+                  id="name--error-message"
                 >
-                  Error: 
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Message plan name too long
                 </span>
-                Select a campaign
-              </span>
-              <select
-                aria-describedby="campaignId--hint campaignId--error-message"
-                class="nhsuk-select nhsuk-select--error"
-                data-testid="campaign-id-field"
-                id="campaignId"
-                name="campaignId"
-              >
-                <option />
-                <option
-                  value="9e24950f-1d9b-416b-affd-50f142fb0873"
-                >
-                  9e24950f-1d9b-416b-affd-50f142fb0873
-                </option>
-                <option
-                  selected=""
-                  value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
-                >
-                  aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
-                </option>
-              </select>
+                <input
+                  aria-describedby="name--error-message"
+                  class="nhsuk-input nhsuk-input--error"
+                  data-testid="name-field"
+                  id="name"
+                  name="name"
+                  type="text"
+                  value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                />
+              </div>
             </div>
-          </div>
-          <div
-            class="nhsuk-form-group"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              type="submit"
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
             >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              <div
+                class="nhsuk-form-group nhsuk-form-group--error"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="campaignId"
+                  id="campaignId--label"
+                >
+                  Campaign
+                </label>
+                <div
+                  class="nhsuk-hint"
+                  id="campaignId--hint"
+                >
+                  Choose which campaign this message plan will link to
+                </div>
+                <span
+                  class="nhsuk-error-message"
+                  id="campaignId--error-message"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Select a campaign
+                </span>
+                <select
+                  aria-describedby="campaignId--hint campaignId--error-message"
+                  class="nhsuk-select nhsuk-select--error"
+                  data-testid="campaign-id-field"
+                  id="campaignId"
+                  name="campaignId"
+                >
+                  <option />
+                  <option
+                    value="9e24950f-1d9b-416b-affd-50f142fb0873"
+                  >
+                    9e24950f-1d9b-416b-affd-50f142fb0873
+                  </option>
+                  <option
+                    selected=""
+                    value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+                  >
+                    aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="nhsuk-form-group"
             >
-              Go back
-            </a>
-          </div>
-          <input
-            name="routingConfigId"
-            readonly=""
-            type="hidden"
-            value="d7afdc99-d55b-4f26-8442-2d10aea07346"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="0"
-          />
-        </form>
+              <button
+                aria-disabled="false"
+                class="nhsuk-button"
+                data-testid="submit-button"
+                type="submit"
+              >
+                Save and continue
+              </button>
+              <a
+                class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
+                data-testid="back-link-bottom"
+                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              >
+                Go back
+              </a>
+            </div>
+            <input
+              name="routingConfigId"
+              readonly=""
+              type="hidden"
+              value="d7afdc99-d55b-4f26-8442-2d10aea07346"
+            />
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="0"
+            />
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;
 
 exports[`single campaign matches snapshot 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <div
-      class="nhsuk-grid-row"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        class="nhsuk-grid-row"
       >
-        <h1
-          class="nhsuk-heading-xl"
+        <div
+          class="nhsuk-grid-column-two-thirds"
         >
-          Edit message plan settings
-        </h1>
-        <form
-          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-        >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="message-plan"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+          <h1
+            class="nhsuk-heading-xl"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="name"
-            >
-              Message plan name
-            </label>
+            Edit message plan settings
+          </h1>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          >
+            <input
+              name="form-id"
+              readonly=""
+              type="hidden"
+              value="message-plan"
+            />
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
             <div
-              class="nhsuk-hint"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
             >
-              This will not be visible to recipients.
-            </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
-            >
-              <summary
-                class="nhsuk-details__summary"
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="name"
               >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your message plans
-                </span>
-              </summary>
+                Message plan name
+              </label>
               <div
-                class="nhsuk-details__text"
+                class="nhsuk-hint"
               >
-                <p>
-                  You should name your message plans in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common message plan names include the:
-                </p>
-                <ul
-                  class="nhsuk-list nhsuk-list--bullet"
-                >
-                  <li>
-                    channels it uses
-                  </li>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the message
-                  </li>
-                  <li>
-                    version number
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
-                </p>
+                This will not be visible to recipients.
               </div>
-            </details>
+              <details
+                class="nhsuk-details nhsuk-u-margin-top-3"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Naming your message plans
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <p>
+                    You should name your message plans in a way that works best for your service or organisation.
+                  </p>
+                  <p>
+                    Common message plan names include the:
+                  </p>
+                  <ul
+                    class="nhsuk-list nhsuk-list--bullet"
+                  >
+                    <li>
+                      channels it uses
+                    </li>
+                    <li>
+                      subject or reason for the message
+                    </li>
+                    <li>
+                      intended audience for the message
+                    </li>
+                    <li>
+                      version number
+                    </li>
+                  </ul>
+                  <p>
+                    For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+                  </p>
+                </div>
+              </details>
+              <div
+                class="nhsuk-form-group"
+              >
+                <input
+                  class="nhsuk-input"
+                  data-testid="name-field"
+                  id="name"
+                  name="name"
+                  type="text"
+                  value="Test config"
+                />
+              </div>
+            </div>
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+            >
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="campaignId"
+              >
+                Campaign
+              </label>
+              <div
+                class="nhsuk-hint"
+              >
+                This message plan will link to your only campaign:
+              </div>
+              <input
+                name="campaignId"
+                readonly=""
+                type="hidden"
+                value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+              />
+              <p
+                data-testid="single-campaign-id"
+              >
+                aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
+              </p>
+            </div>
             <div
               class="nhsuk-form-group"
             >
-              <input
-                class="nhsuk-input"
-                data-testid="name-field"
-                id="name"
-                name="name"
-                type="text"
-                value="Test config"
-              />
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
-          >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="campaignId"
-            >
-              Campaign
-            </label>
-            <div
-              class="nhsuk-hint"
-            >
-              This message plan will link to your only campaign:
+              <button
+                aria-disabled="false"
+                class="nhsuk-button"
+                data-testid="submit-button"
+                type="submit"
+              >
+                Save and continue
+              </button>
+              <a
+                class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
+                data-testid="back-link-bottom"
+                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              >
+                Go back
+              </a>
             </div>
             <input
-              name="campaignId"
+              name="routingConfigId"
               readonly=""
               type="hidden"
-              value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+              value="d7afdc99-d55b-4f26-8442-2d10aea07346"
             />
-            <p
-              data-testid="single-campaign-id"
-            >
-              aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
-            </p>
-          </div>
-          <div
-            class="nhsuk-form-group"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              type="submit"
-            >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
-            >
-              Go back
-            </a>
-          </div>
-          <input
-            name="routingConfigId"
-            readonly=""
-            type="hidden"
-            value="d7afdc99-d55b-4f26-8442-2d10aea07346"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="0"
-          />
-        </form>
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="0"
+            />
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;
 
 exports[`single campaign renders errors when form is submitted in invalid state 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <div
-      aria-labelledby="error-summary-title"
-      class="nhsuk-error-summary"
-      role="alert"
-      tabindex="-1"
-    >
-      <h2
-        class="nhsuk-error-summary__title"
-        data-testid="error-summary"
-        id="error-summary-title"
-      >
-        There is a problem
-      </h2>
-      <ul
-        class="nhsuk-list nhsuk-error-summary__list"
-      >
-        <li>
-          <a
-            href="#name"
-          >
-            Enter a message plan name
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div
-      class="nhsuk-grid-row"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
       >
-        <h1
-          class="nhsuk-heading-xl"
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
         >
-          Edit message plan settings
-        </h1>
-        <form
-          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
         >
-          <input
-            name="form-id"
-            readonly=""
-            type="hidden"
-            value="message-plan"
-          />
-          <input
-            name="csrf_token"
-            readonly=""
-            type="hidden"
-            value="no_token"
-          />
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
+          <li>
+            <a
+              href="#name"
+            >
+              Enter a message plan name
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-two-thirds"
+        >
+          <h1
+            class="nhsuk-heading-xl"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="name"
-            >
-              Message plan name
-            </label>
-            <div
-              class="nhsuk-hint"
-            >
-              This will not be visible to recipients.
-            </div>
-            <details
-              class="nhsuk-details nhsuk-u-margin-top-3"
-            >
-              <summary
-                class="nhsuk-details__summary"
-              >
-                <span
-                  class="nhsuk-details__summary-text"
-                >
-                  Naming your message plans
-                </span>
-              </summary>
-              <div
-                class="nhsuk-details__text"
-              >
-                <p>
-                  You should name your message plans in a way that works best for your service or organisation.
-                </p>
-                <p>
-                  Common message plan names include the:
-                </p>
-                <ul
-                  class="nhsuk-list nhsuk-list--bullet"
-                >
-                  <li>
-                    channels it uses
-                  </li>
-                  <li>
-                    subject or reason for the message
-                  </li>
-                  <li>
-                    intended audience for the message
-                  </li>
-                  <li>
-                    version number
-                  </li>
-                </ul>
-                <p>
-                  For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
-                </p>
-              </div>
-            </details>
-            <div
-              class="nhsuk-form-group nhsuk-form-group--error"
-            >
-              <span
-                class="nhsuk-error-message"
-                id="name--error-message"
-              >
-                <span
-                  class="nhsuk-u-visually-hidden"
-                >
-                  Error: 
-                </span>
-                Enter a message plan name
-              </span>
-              <input
-                aria-describedby="name--error-message"
-                class="nhsuk-input nhsuk-input--error"
-                data-testid="name-field"
-                id="name"
-                name="name"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="nhsuk-form-group nhsuk-u-margin-bottom-6"
+            Edit message plan settings
+          </h1>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="campaignId"
-            >
-              Campaign
-            </label>
-            <div
-              class="nhsuk-hint"
-            >
-              This message plan will link to your only campaign:
-            </div>
             <input
-              name="campaignId"
+              name="form-id"
               readonly=""
               type="hidden"
-              value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+              value="message-plan"
             />
-            <p
-              data-testid="single-campaign-id"
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-form-group--error"
             >
-              aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
-            </p>
-          </div>
-          <div
-            class="nhsuk-form-group"
-          >
-            <button
-              aria-disabled="false"
-              class="nhsuk-button"
-              data-testid="submit-button"
-              type="submit"
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="name"
+              >
+                Message plan name
+              </label>
+              <div
+                class="nhsuk-hint"
+              >
+                This will not be visible to recipients.
+              </div>
+              <details
+                class="nhsuk-details nhsuk-u-margin-top-3"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Naming your message plans
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <p>
+                    You should name your message plans in a way that works best for your service or organisation.
+                  </p>
+                  <p>
+                    Common message plan names include the:
+                  </p>
+                  <ul
+                    class="nhsuk-list nhsuk-list--bullet"
+                  >
+                    <li>
+                      channels it uses
+                    </li>
+                    <li>
+                      subject or reason for the message
+                    </li>
+                    <li>
+                      intended audience for the message
+                    </li>
+                    <li>
+                      version number
+                    </li>
+                  </ul>
+                  <p>
+                    For example, 'Email, SMS, letter - covid19 2023 - over 65s - version 3'
+                  </p>
+                </div>
+              </details>
+              <div
+                class="nhsuk-form-group nhsuk-form-group--error"
+              >
+                <span
+                  class="nhsuk-error-message"
+                  id="name--error-message"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Enter a message plan name
+                </span>
+                <input
+                  aria-describedby="name--error-message"
+                  class="nhsuk-input nhsuk-input--error"
+                  data-testid="name-field"
+                  id="name"
+                  name="name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="nhsuk-form-group nhsuk-u-margin-bottom-6"
             >
-              Save and continue
-            </button>
-            <a
-              class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
-              data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="campaignId"
+              >
+                Campaign
+              </label>
+              <div
+                class="nhsuk-hint"
+              >
+                This message plan will link to your only campaign:
+              </div>
+              <input
+                name="campaignId"
+                readonly=""
+                type="hidden"
+                value="aff79ee0-4481-4fa3-8a1a-0df53c7b41e5"
+              />
+              <p
+                data-testid="single-campaign-id"
+              >
+                aff79ee0-4481-4fa3-8a1a-0df53c7b41e5
+              </p>
+            </div>
+            <div
+              class="nhsuk-form-group"
             >
-              Go back
-            </a>
-          </div>
-          <input
-            name="routingConfigId"
-            readonly=""
-            type="hidden"
-            value="d7afdc99-d55b-4f26-8442-2d10aea07346"
-          />
-          <input
-            name="lockNumber"
-            readonly=""
-            type="hidden"
-            value="0"
-          />
-        </form>
+              <button
+                aria-disabled="false"
+                class="nhsuk-button"
+                data-testid="submit-button"
+                type="submit"
+              >
+                Save and continue
+              </button>
+              <a
+                class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
+                data-testid="back-link-bottom"
+                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+              >
+                Go back
+              </a>
+            </div>
+            <input
+              name="routingConfigId"
+              readonly=""
+              type="hidden"
+              value="d7afdc99-d55b-4f26-8442-2d10aea07346"
+            />
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="0"
+            />
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;

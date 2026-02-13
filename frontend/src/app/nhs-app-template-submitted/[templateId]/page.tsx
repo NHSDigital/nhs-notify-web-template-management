@@ -9,6 +9,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.templateSubmitted;
 
@@ -31,7 +32,11 @@ const NhsAppTemplateSubmittedPage = async (props: TemplatePageProps) => {
 
   const { id, name } = validatedTemplate;
 
-  return <TemplateSubmitted templateId={id} templateName={name} />;
+  return (
+    <NHSNotifyContainer>
+      <TemplateSubmitted templateId={id} templateName={name} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default NhsAppTemplateSubmittedPage;

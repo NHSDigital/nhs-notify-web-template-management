@@ -1,6 +1,6 @@
-import React from 'react';
 import { redirect, RedirectType } from 'next/navigation';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
 import { RoutingConfig } from 'nhs-notify-backend-client';
@@ -15,22 +15,22 @@ import {
   getMessagePlanTemplates,
   getRoutingConfig,
 } from '@utils/message-plans';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type { MessagePlanTemplates } from '@utils/routing-utils';
 
 import ReviewAndMoveMessagePlanPage, {
   metadata,
 } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/page';
+import { moveToProductionAction } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action';
 
 jest.mock('next/navigation');
 jest.mock('@utils/message-plans');
-jest.mock('@forms/ReviewAndMoveToProductionForm/server-action', () => ({
-  moveToProductionAction: jest.fn(),
-}));
-jest.mock('@providers/form-provider', () => ({
-  NHSNotifyFormProvider: ({ children }: { children: React.ReactNode }) =>
-    children,
-  useNHSNotifyForm: () => [{}, jest.fn(), false],
-}));
+jest.mock('@utils/csrf-utils');
+jest.mock(
+  '@app/message-plans/review-and-move-to-production/[routingConfigId]/server-action'
+);
+
+const moveToProductionActionMock = jest.mocked(moveToProductionAction);
 
 function createRoutingConfig(data?: Partial<RoutingConfig>) {
   return RoutingConfigFactory.create({
@@ -76,6 +76,7 @@ const templates: MessagePlanTemplates = {
 
 beforeEach(() => {
   jest.mocked(getMessagePlanTemplates).mockResolvedValue(templates);
+  jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 });
 
 afterEach(() => {
@@ -105,7 +106,7 @@ describe('Review and move to production page', () => {
     await renderPage(routingConfig);
 
     expect(redirect).toHaveBeenCalledWith(
-      '/message-plans',
+      '/message-plans/preview-message-plan/rc-123',
       RedirectType.replace
     );
   });
@@ -177,9 +178,11 @@ describe('Review and move to production page', () => {
 
     await renderPage(routingConfig);
 
-    const moveButton = screen.getByTestId('move-to-production-button');
+    const moveButton = screen.getByRole('button', {
+      name: 'Move to production',
+    });
     expect(moveButton).toBeInTheDocument();
-    expect(moveButton).toHaveTextContent('Move to production');
+    expect(moveButton).toHaveAttribute('type', 'submit');
     expect(moveButton).toHaveClass('nhsuk-button--warning');
   });
 
@@ -201,7 +204,7 @@ describe('Review and move to production page', () => {
     expect(keepInDraftLink).toHaveTextContent('Keep in draft');
     expect(keepInDraftLink).toHaveAttribute(
       'href',
-      '/message-plans/choose-templates/rc-123'
+      '/templates/message-plans/choose-templates/rc-123'
     );
   });
 
@@ -453,5 +456,112 @@ describe('Review and move to production page', () => {
     const { asFragment } = await renderPage(routingConfig);
 
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  describe('move to production button click', () => {
+    it('calls server action with routingConfigId and lockNumber when clicked', async () => {
+      const user = userEvent.setup();
+      moveToProductionActionMock.mockResolvedValue({});
+
+      const routingConfig = createRoutingConfig({
+        id: 'rc-456',
+        lockNumber: 10,
+        cascade: [
+          {
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: appTemplateId,
+            cascadeGroups: ['standard'],
+          },
+        ],
+      });
+
+      await renderPage(routingConfig);
+
+      const moveButton = screen.getByRole('button', {
+        name: 'Move to production',
+      });
+
+      await user.click(moveButton);
+
+      await waitFor(() => {
+        expect(moveToProductionActionMock).toHaveBeenCalledTimes(1);
+      });
+
+      const formData = moveToProductionActionMock.mock
+        .lastCall?.[1] as FormData;
+      expect(formData.get('routingConfigId')).toEqual('rc-456');
+      expect(formData.get('lockNumber')).toEqual('10');
+    });
+
+    it('displays error summary when server action returns validation errors', async () => {
+      const user = userEvent.setup();
+      moveToProductionActionMock.mockResolvedValue({
+        errorState: {
+          formErrors: ['Failed to move message plan to production'],
+          fieldErrors: {},
+        },
+      });
+
+      const routingConfig = createRoutingConfig({
+        cascade: [
+          {
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: appTemplateId,
+            cascadeGroups: ['standard'],
+          },
+        ],
+      });
+
+      await renderPage(routingConfig);
+
+      const moveButton = screen.getByRole('button', {
+        name: 'Move to production',
+      });
+
+      await user.click(moveButton);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Failed to move message plan to production')
+        ).toBeInTheDocument();
+      });
+    });
+
+    it('displays field-level error when server action returns field errors', async () => {
+      const user = userEvent.setup();
+      moveToProductionActionMock.mockResolvedValue({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            lockNumber: ['Invalid lock number'],
+          },
+        },
+      });
+
+      const routingConfig = createRoutingConfig({
+        cascade: [
+          {
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: appTemplateId,
+            cascadeGroups: ['standard'],
+          },
+        ],
+      });
+
+      await renderPage(routingConfig);
+
+      const moveButton = screen.getByRole('button', {
+        name: 'Move to production',
+      });
+
+      await user.click(moveButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('Invalid lock number')).toBeInTheDocument();
+      });
+    });
   });
 });

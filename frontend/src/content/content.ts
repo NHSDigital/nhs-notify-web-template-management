@@ -1607,18 +1607,13 @@ const previewMessagePlan = {
       status: 'Status',
     },
   },
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
 };
 
 const uploadDocxLetterTemplateForm = {
   fields: {
     name: {
       label: 'Template name',
-      hint: 'This will not be visible to recipients.',
+      hint: 'This will not be visible to recipients',
     },
     campaignId: {
       label: 'Campaign',
@@ -1626,12 +1621,12 @@ const uploadDocxLetterTemplateForm = {
         hint: 'This message plan will link to your only campaign:',
       },
       select: {
-        hint: 'Choose which campaign this letter is for.',
+        hint: 'Choose which campaign this letter is for',
       },
     },
     language: {
       label: 'Template language',
-      hint: 'Choose the language used in this template.',
+      hint: 'Choose the language used in this template',
       placeholder: 'Please select',
       rtl: [
         { type: 'text', text: '**Right-to-left language selected**' },
@@ -1649,9 +1644,6 @@ const uploadDocxLetterTemplateForm = {
           text: 'Only upload your final letter template file.  \nMake sure you use one of our blank template files to create the letter.',
         },
       ] satisfies ContentBlock[],
-    },
-    submitButton: {
-      text: 'Upload letter template file',
     },
   },
   errors: {
@@ -1713,6 +1705,9 @@ const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
         },
       },
     ] satisfies ContentBlock[] as ContentBlock[],
+    submitButton: {
+      text: 'Upload letter template file',
+    },
   };
 };
 
@@ -1725,11 +1720,6 @@ const reviewAndMoveToProduction = {
       name: 'Name',
     },
   },
-  detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
-  },
-  languageFormatsCardHeading: 'Other language letters (optional)',
   buttons: {
     moveToProduction: {
       text: 'Move to production',
@@ -1737,8 +1727,48 @@ const reviewAndMoveToProduction = {
     },
     keepInDraft: {
       text: 'Keep in draft',
-      href: '/message-plans/choose-templates/{{routingConfigId}}',
+      href: '{{basePath}}/message-plans/choose-templates/{{routingConfigId}}',
     },
+  },
+};
+
+const editTemplateNamePage = {
+  pageTitle: generatePageTitle('Edit template name'),
+  form: {
+    name: {
+      label: 'Edit template name',
+      hint: 'This will not be visible to recipients',
+      errors: {
+        empty: 'Enter a template name',
+      },
+    },
+    submit: {
+      text: 'Save changes',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (templateId: string) => `/preview-letter-template/${templateId}`,
+  },
+};
+
+const editTemplateCampaignPage = {
+  pageTitle: generatePageTitle('Edit template campaign'),
+  form: {
+    campaignId: {
+      label: 'Edit template campaign',
+      hint: 'Choose which campaign this letter is for',
+      errors: {
+        empty: 'Choose a campaign',
+      },
+    },
+    submit: {
+      text: 'Save changes',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (templateId: string) => `/preview-letter-template/${templateId}`,
   },
 };
 
@@ -1795,6 +1825,8 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlanSettings,
+    editTemplateCampaignPage,
+    editTemplateNamePage,
     error404,
     homePage,
     letterTemplateInvalidConfiguration,

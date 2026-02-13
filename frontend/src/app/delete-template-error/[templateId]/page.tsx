@@ -6,6 +6,7 @@ import { getTemplate } from '@utils/form-actions';
 import { getRoutingConfigReferencesByTemplateId } from '@utils/message-plans';
 import DeleteTemplateError from '@molecules/DeleteTemplateError/DeleteTemplateError';
 import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 import content from '@content/content';
 const title = content.pages.deleteTemplateErrorPage.pageTitle;
@@ -34,9 +35,11 @@ export default async function DeleteTemplateErrorPage(
   }
 
   return (
-    <DeleteTemplateError
-      templateName={template.name}
-      messagePlans={messagePlans}
-    />
+    <NHSNotifyContainer>
+      <DeleteTemplateError
+        templateName={template.name}
+        messagePlans={messagePlans}
+      />
+    </NHSNotifyContainer>
   );
 }

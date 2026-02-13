@@ -5,6 +5,7 @@ import SubmitLetterTemplatePage, {
   generateMetadata,
 } from '@app/submit-letter-template/[templateId]/page';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -48,11 +49,13 @@ describe('SubmitLetterTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <SubmitLetterTemplate
-        templateName={PDF_LETTER_TEMPLATE.name}
-        templateId={PDF_LETTER_TEMPLATE.id}
-        lockNumber={42}
-      />
+      <NHSNotifyContainer>
+        <SubmitLetterTemplate
+          templateName={PDF_LETTER_TEMPLATE.name}
+          templateId={PDF_LETTER_TEMPLATE.id}
+          lockNumber={42}
+        />
+      </NHSNotifyContainer>
     );
   });
 

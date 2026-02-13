@@ -7,6 +7,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { getTemplates } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 import content from '@content/content';
 const { pageTitle, pageHeading, noTemplatesText } =
@@ -57,14 +58,16 @@ export default async function ChooseLargePrintLetterTemplate(
   }
 
   return (
-    <ChooseChannelTemplate
-      messagePlan={messagePlan}
-      pageHeading={pageHeading}
-      noTemplatesText={noTemplatesText}
-      templateList={availableTemplateList}
-      cascadeIndex={cascadeIndex}
-      accessibleFormat='x1'
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <ChooseChannelTemplate
+        messagePlan={messagePlan}
+        pageHeading={pageHeading}
+        noTemplatesText={noTemplatesText}
+        templateList={availableTemplateList}
+        cascadeIndex={cascadeIndex}
+        accessibleFormat='x1'
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 }

@@ -176,9 +176,10 @@ function createTemplates(user: TestUser) {
 test.describe('Routing - Choose Templates page', () => {
   let messagePlans: ReturnType<typeof createRoutingConfigs>;
   let templates: ReturnType<typeof createTemplates>;
+  let user: TestUser;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
     messagePlans = await createRoutingConfigs(user);
     templates = createTemplates(user);
@@ -189,6 +190,7 @@ test.describe('Routing - Choose Templates page', () => {
 
   test.afterAll(async () => {
     await routingConfigStorageHelper.deleteSeeded();
+    await routingConfigStorageHelper.deleteAdHoc();
     await templateStorageHelper.deleteSeededTemplates();
   });
 
@@ -219,6 +221,11 @@ test.describe('Routing - Choose Templates page', () => {
           chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
 
         expect(messagePlanId).not.toBeUndefined();
+
+        routingConfigStorageHelper.addAdHocKey({
+          id: messagePlanId,
+          clientId: user.clientId,
+        });
 
         chooseTemplatesPage.setPathParam('messagePlanId', messagePlanId!);
 
@@ -379,6 +386,11 @@ test.describe('Routing - Choose Templates page', () => {
       chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
 
     expect(messagePlanId).not.toBeUndefined();
+
+    routingConfigStorageHelper.addAdHocKey({
+      id: messagePlanId,
+      clientId: user.clientId,
+    });
 
     await test.step('app channel with no template has only choose link', async () => {
       await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();

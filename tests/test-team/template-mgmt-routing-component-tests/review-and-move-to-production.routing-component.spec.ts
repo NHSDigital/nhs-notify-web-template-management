@@ -71,7 +71,7 @@ function createTemplates(user: TestUser) {
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
-      'SUBMITTED',
+      'PROOF_APPROVED',
       'PASSED',
       { language: 'fr' }
     ),
@@ -79,7 +79,7 @@ function createTemplates(user: TestUser) {
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
-      'SUBMITTED',
+      'PROOF_APPROVED',
       'PASSED',
       { language: 'es' }
     ),
@@ -301,7 +301,7 @@ test.describe('Routing - Review and Move to Production page', () => {
 
         await expect(links[index]).toHaveAttribute(
           'href',
-          `/templates/preview-submitted-letter-template/${templates[language].id}`
+          `/templates/preview-letter-template/${templates[language].id}`
         );
       }
     });

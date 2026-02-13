@@ -177,9 +177,9 @@ export function MessagePlanCascadePreview({
                         >
                           {languageTemplates.map((template) => (
                             <p
+                              data-testid='template-name'
                               key={template.id}
                               className='nhsuk-u-margin-bottom-0'
-                              data-testid='template-name'
                             >
                               <Link
                                 href={getLetterTemplatePreviewHref(template)}

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import type { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
 import { getCampaignIds } from '@utils/client-config';
 import { getRoutingConfig } from '@utils/message-plans';
@@ -37,32 +39,37 @@ export default async function EditMessagePlanSettingsPage({
   }
 
   return (
-    <NHSNotifyMain>
-      <NHSNotifyFormProvider serverAction={editMessagePlanSettingsServerAction}>
-        <div className='nhsuk-grid-row'>
-          <div className='nhsuk-grid-column-two-thirds'>
-            <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
-            <MessagePlanForm
-              backLink={pageContent.backLink(routingConfigId)}
-              campaignIds={campaignIds}
-              initialState={routingConfig}
-            >
-              <input
-                type='hidden'
-                name='routingConfigId'
-                value={routingConfigId}
-                readOnly
-              />
-              <input
-                type='hidden'
-                name='lockNumber'
-                value={routingConfig.lockNumber}
-                readOnly
-              />
-            </MessagePlanForm>
+    <NHSNotifyContainer>
+      <NHSNotifyMain>
+        <NHSNotifyFormProvider
+          serverAction={editMessagePlanSettingsServerAction}
+        >
+          <NHSNotifyFormErrorSummary />
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-two-thirds'>
+              <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
+              <MessagePlanForm
+                backLink={pageContent.backLink(routingConfigId)}
+                campaignIds={campaignIds}
+                initialState={routingConfig}
+              >
+                <input
+                  type='hidden'
+                  name='routingConfigId'
+                  value={routingConfigId}
+                  readOnly
+                />
+                <input
+                  type='hidden'
+                  name='lockNumber'
+                  value={routingConfig.lockNumber}
+                  readOnly
+                />
+              </MessagePlanForm>
+            </div>
           </div>
-        </div>
-      </NHSNotifyFormProvider>
-    </NHSNotifyMain>
+        </NHSNotifyFormProvider>
+      </NHSNotifyMain>
+    </NHSNotifyContainer>
   );
 }

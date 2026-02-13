@@ -3,6 +3,7 @@
  */
 import CopyTemplatePage from '@app/copy-template/[templateId]/page';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -64,7 +65,11 @@ describe('CopyTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<CopyTemplate template={template} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <CopyTemplate template={template} />
+      </NHSNotifyContainer>
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {

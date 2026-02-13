@@ -2,44 +2,48 @@
 
 exports[`matches snapshot 1`] = `
 <DocumentFragment>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
+  <div
+    class="nhsuk-width-container"
   >
-    <div
-      class="nhsuk-grid-row"
-      data-testid="page-content-wrapper"
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
     >
       <div
-        class="nhsuk-grid-column-two-thirds"
+        class="nhsuk-grid-row"
+        data-testid="page-content-wrapper"
       >
-        <h1
-          class="nhsuk-heading-xl"
-          data-testid="page-heading"
-        >
-          You cannot create message plans yet
-        </h1>
-        <p>
-          To get access, contact your onboarding manager and give them this error message:
-        </p>
         <div
-          class="nhsuk-inset-text"
+          class="nhsuk-grid-column-two-thirds"
         >
+          <h1
+            class="nhsuk-heading-xl"
+            data-testid="page-heading"
+          >
+            You cannot create message plans yet
+          </h1>
           <p>
-            Account needs a campaign ID
+            To get access, contact your onboarding manager and give them this error message:
+          </p>
+          <div
+            class="nhsuk-inset-text"
+          >
+            <p>
+              Account needs a campaign ID
+            </p>
+          </div>
+          <p>
+            <a
+              data-testid="back-link-bottom"
+              href="/message-plans"
+            >
+              Go back
+            </a>
           </p>
         </div>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-plans"
-          >
-            Go back
-          </a>
-        </p>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </DocumentFragment>
 `;
