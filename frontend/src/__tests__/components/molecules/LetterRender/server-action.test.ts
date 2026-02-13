@@ -175,7 +175,9 @@ describe('updateLetterPreview', () => {
         systemPersonalisationPackId: ['Select an example recipient'],
       },
     });
-    expect(result.fields?.systemPersonalisationPackId).toBe('invalid-recipient-id');
+    expect(result.fields?.systemPersonalisationPackId).toBe(
+      'invalid-recipient-id'
+    );
   });
 
   it('preserves custom field values on validation error', async () => {

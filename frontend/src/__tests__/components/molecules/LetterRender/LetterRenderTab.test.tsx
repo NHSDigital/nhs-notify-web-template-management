@@ -286,7 +286,9 @@ describe('LetterRenderTab', () => {
       });
 
       const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
-      expect(formState.customPersonalisationFields).toContain('appointmentDate');
+      expect(formState.customPersonalisationFields).toContain(
+        'appointmentDate'
+      );
       expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
       expect(formData.get('custom_appointmentDate')).toBe('2025-05-20');
     });
