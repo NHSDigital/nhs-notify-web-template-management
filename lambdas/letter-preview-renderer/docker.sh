@@ -8,7 +8,6 @@ chmod +x ./build.sh
 ./build.sh
 
 # Set Variables required for Docker Build.
-BASE_IMAGE="${1:?BASE_IMAGE is required as the first argument}"
 CSI="${project}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
@@ -18,7 +17,6 @@ LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
 BUILD_PLATFORM="${BUILD_PLATFORM:-linux/amd64}"
 
 # Ensure required AWS/ECR configuration is present.
-echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
 echo "aws_account_id: ${aws_account_id:-<unset>}"
 echo "aws_region: ${region:-<unset>}"
 echo "component_name: ${component_name:-<unset>}"
@@ -62,7 +60,6 @@ BUILD_CMD=(
   --no-cache
   --platform "${BUILD_PLATFORM}"
   -f docker/lambda/Dockerfile
-  --build-arg "BASE_IMAGE=${BASE_IMAGE}"
   -t "${ECR_IMAGE}"
   .
 )

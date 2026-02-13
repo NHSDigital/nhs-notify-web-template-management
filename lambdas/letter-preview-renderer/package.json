@@ -13,7 +13,7 @@
   "name": "nhs-notify-templates-letter-preview-renderer",
   "private": true,
   "scripts": {
-    "lambda-build": "./docker.sh ghcr.io/nhsdigital/nhs-notify/libreoffice-node-22:latest",
+    "lambda-build": "./docker.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
