@@ -52,9 +52,8 @@ ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 BASE_IMAGE_ARG="$1"
 
 # Build and tag the Docker image for the lambda.
-docker build \
+docker buildx build \
   -f docker/lambda/Dockerfile \
-  --platform=linux/amd64 \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
   -t "${ECR_IMAGE}" \
   .
