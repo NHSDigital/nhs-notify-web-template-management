@@ -53,7 +53,7 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 
 ### PATCH - /v1/template/:templateId - Apply a partial update of a template
 
-Only supports `name` attribute
+Only supports `name` and `campaignId` attributes
 
 ```bash
 curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
@@ -62,7 +62,8 @@ curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 --header "Authorization: $SANDBOX_TOKEN" \
 --header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \
 --data '{
-  "name": "<string>"
+  "name": "<string>",
+  "campaignId": "<string>"
 }'
 ```
 

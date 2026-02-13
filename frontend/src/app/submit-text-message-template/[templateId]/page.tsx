@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.submitTemplate;
 
@@ -42,12 +43,14 @@ const SubmitSmsTemplatePage = async (props: TemplatePageProps) => {
   }
 
   return (
-    <SubmitDigitalTemplate
-      templateName={validatedTemplate.name}
-      templateId={validatedTemplate.id}
-      channel='SMS'
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <SubmitDigitalTemplate
+        templateName={validatedTemplate.name}
+        templateId={validatedTemplate.id}
+        channel='SMS'
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 

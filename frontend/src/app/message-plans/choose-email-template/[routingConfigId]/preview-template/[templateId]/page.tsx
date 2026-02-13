@@ -10,6 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { $LockNumber } from 'nhs-notify-backend-client';
 
 const { pageTitle } = content.components.previewEmailTemplate;
@@ -44,12 +45,14 @@ const PreviewEmailTemplateFromMessagePlan = async (
   }
 
   return (
-    <PreviewTemplateFromMessagePlan
-      initialState={validatedTemplate}
-      previewComponent={PreviewTemplateDetailsEmail}
-      routingConfigId={routingConfigId}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <PreviewTemplateFromMessagePlan
+        initialState={validatedTemplate}
+        previewComponent={PreviewTemplateDetailsEmail}
+        routingConfigId={routingConfigId}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 
