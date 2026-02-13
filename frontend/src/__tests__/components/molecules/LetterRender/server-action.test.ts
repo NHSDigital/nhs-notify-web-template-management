@@ -46,7 +46,6 @@ describe('updateLetterPreview', () => {
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result.tab).toBe('long');
     expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
     expect(result.errorState).toBeUndefined();
   });

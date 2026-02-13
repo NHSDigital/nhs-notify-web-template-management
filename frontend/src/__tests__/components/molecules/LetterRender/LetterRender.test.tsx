@@ -248,7 +248,10 @@ describe('LetterRender', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
 
-      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0] as [
+        LetterRenderFormState,
+        FormData,
+      ];
       expect(formState.customPersonalisationFields).toContain('appointmentDate');
       expect(formData.get('custom_appointmentDate')).toBe('2025-03-15');
     });

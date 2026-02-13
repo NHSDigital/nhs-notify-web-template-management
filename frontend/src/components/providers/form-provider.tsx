@@ -8,41 +8,37 @@ import {
 } from 'react';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 
-type NHSNotifyFormActionState<T extends FormState = FormState> = ReturnType<
-  typeof useActionState<T, FormData>
+type NHSNotifyFormActionState = ReturnType<
+  typeof useActionState<FormState, FormData>
 >;
 
 const FormContext = createContext<NHSNotifyFormActionState | null>(null);
 
-export function useNHSNotifyForm<
-  T extends FormState = FormState,
->(): NHSNotifyFormActionState<T> {
+export function useNHSNotifyForm() {
   const context = useContext(FormContext);
   if (!context)
     throw new Error(
       'useNHSNotifyForm must be used within NHSNotifyFormProvider'
     );
 
-  return context as NHSNotifyFormActionState<T>;
+  return context;
 }
 
-export function NHSNotifyFormProvider<T extends FormState = FormState>({
+export function NHSNotifyFormProvider({
   children,
-  initialState,
+  initialState = {},
   serverAction,
 }: PropsWithChildren<{
-  initialState?: T;
-  serverAction: (state: T, data: FormData) => Promise<T>;
+  initialState?: FormState;
+  serverAction: (state: FormState, data: FormData) => Promise<FormState>;
 }>) {
-  const [state, action, isPending] = useActionState<T, FormData>(
+  const [state, action, isPending] = useActionState<FormState, FormData>(
     serverAction,
-    (initialState ?? {}) as Awaited<T>
+    initialState
   );
 
   return (
-    <FormContext.Provider
-      value={[state, action, isPending] as NHSNotifyFormActionState}
-    >
+    <FormContext.Provider value={[state, action, isPending]}>
       {children}
     </FormContext.Provider>
   );

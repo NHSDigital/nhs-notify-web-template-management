@@ -47,7 +47,7 @@ function renderWithProvider(
   initialState: LetterRenderFormState = createInitialFormState()
 ) {
   return render(
-    <NHSNotifyFormProvider<LetterRenderFormState>
+    <NHSNotifyFormProvider
       initialState={initialState}
       serverAction={mockServerAction}
     >

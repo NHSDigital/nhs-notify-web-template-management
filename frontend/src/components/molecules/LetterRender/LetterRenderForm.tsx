@@ -9,7 +9,7 @@ import {
 } from '@content/example-recipients';
 import { useNHSNotifyForm } from '@providers/form-provider';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
-import type { RenderTab, LetterRenderFormState } from './types';
+import type { RenderTab } from './types';
 import styles from './LetterRenderForm.module.scss';
 
 type LetterRenderFormProps = {
@@ -19,7 +19,7 @@ type LetterRenderFormProps = {
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
-  const [, formAction] = useNHSNotifyForm<LetterRenderFormState>();
+  const [, formAction] = useNHSNotifyForm();
 
   const exampleRecipients =
     tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;

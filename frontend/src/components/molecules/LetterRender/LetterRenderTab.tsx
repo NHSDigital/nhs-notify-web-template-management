@@ -76,7 +76,7 @@ export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
   const pdfUrl = getInitialPdfUrl(template, tab);
 
   return (
-    <NHSNotifyFormProvider<LetterRenderFormState>
+    <NHSNotifyFormProvider
       initialState={initialFormState}
       serverAction={updateLetterPreview}
     >

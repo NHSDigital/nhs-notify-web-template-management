@@ -1,10 +1,10 @@
 'use server';
 
 import { z } from 'zod/v4';
+import type { FormState } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { EXAMPLE_RECIPIENT_IDS } from '@content/example-recipients';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
-import type { LetterRenderFormState } from './types';
 
 const { pdsSection } = copy.components.letterRender;
 
@@ -15,9 +15,9 @@ const $FormSchema = z.object({
 });
 
 export async function updateLetterPreview(
-  formState: LetterRenderFormState,
+  formState: FormState,
   formData: FormData
-): Promise<LetterRenderFormState> {
+): Promise<FormState> {
   const result = $FormSchema.safeParse(Object.fromEntries(formData.entries()));
 
   const fields = formDataToFormStateFields(formData);
@@ -29,6 +29,10 @@ export async function updateLetterPreview(
       fields,
     };
   }
+
+  // combine form data custom personalisation with example recipient personalisation
+  // add date
+  // initiate polling
 
   const { errorState: _, ...rest } = formState;
 

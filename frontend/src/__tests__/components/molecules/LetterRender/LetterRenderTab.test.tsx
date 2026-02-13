@@ -285,7 +285,10 @@ describe('LetterRenderTab', () => {
         expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
 
-      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0] as [
+        LetterRenderFormState,
+        FormData,
+      ];
       expect(formState.customPersonalisationFields).toContain(
         'appointmentDate'
       );
