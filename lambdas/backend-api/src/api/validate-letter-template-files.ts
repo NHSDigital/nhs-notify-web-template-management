@@ -3,7 +3,6 @@ import {
   guardDutyEventValidator,
   isRightToLeft,
 } from 'nhs-notify-web-template-management-utils';
-import type { PdfLetterFiles } from 'nhs-notify-backend-client';
 import { LetterUploadRepository, TemplateRepository } from '../infra';
 import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
