@@ -52,7 +52,7 @@ ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 BASE_IMAGE_ARG="$1"
 
 # Allow override of build platform; default linux/amd64
-BUILD_PLATFORM="${BUILD_PLATFORM:-linux/amd64}"
+BUILD_PLATFORM="linux/amd64"
 # Build and tag the Docker image for the lambda.
 docker buildx build \
   --pull \
