@@ -79,6 +79,7 @@ function messageOrderToInitialCascade(
         INITIAL_CASCADE_ITEMS['SMS'],
         INITIAL_CASCADE_ITEMS['LETTER'],
       ],
+      EMAIL: [INITIAL_CASCADE_ITEMS['EMAIL']],
       LETTER: [INITIAL_CASCADE_ITEMS['LETTER']],
     } satisfies Record<MessageOrder, CascadeItem[]>
   )[messageOrder];

@@ -1,5 +1,6 @@
 import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
+import { MessageOrder } from 'helpers/enum';
 
 export class RoutingChooseMessageOrderPage extends TemplateMgmtBasePage {
   static readonly pathTemplate = '/message-plans/choose-message-order';
@@ -16,8 +17,13 @@ export class RoutingChooseMessageOrderPage extends TemplateMgmtBasePage {
     });
   }
 
-  async checkRadioButton(radioButtonLabel: string) {
-    await this.page.getByLabel(radioButtonLabel, { exact: true }).check();
+  getRadioButton(messageOrder: MessageOrder): Locator {
+    const testId = messageOrder.toLowerCase().split(',').join('-');
+    return this.page.getByTestId(`${testId}-radio`);
+  }
+
+  async checkRadioButton(messageOrder: MessageOrder) {
+    await this.getRadioButton(messageOrder).check();
   }
 
   async clickContinueButton() {

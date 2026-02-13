@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from '../pages/template-mgmt-choose-template-base-page';
+import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 
 type ChooseTemplatePageProps = {
-  page: TemplateMgmtChooseTemplateForMessagePlanBasePage;
+  page: RoutingChooseTemplateForMessagePlanBasePage;
 };
 
 export function assertChooseTemplatePageWithTemplatesAvailable({
