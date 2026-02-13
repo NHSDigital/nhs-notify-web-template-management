@@ -55,7 +55,7 @@ BASE_IMAGE_ARG="$1"
 docker build \
   -f docker/lambda/Dockerfile \
   --platform=linux/amd64 \
-  --provence=false \
+  --provenance=false \
   --sbom=false \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
   -t "${ECR_IMAGE}" \
