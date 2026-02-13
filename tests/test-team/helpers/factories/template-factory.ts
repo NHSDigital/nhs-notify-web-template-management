@@ -160,7 +160,6 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
       templateType: 'LETTER',
-      proofingEnabled: true,
       letterVariantId: options?.letterVariantId,
       ...(options?.customPersonalisation && {
         customPersonalisation: options.customPersonalisation,
