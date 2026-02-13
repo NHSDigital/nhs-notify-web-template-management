@@ -1902,7 +1902,14 @@ describe('templateClient', () => {
         letterType: 'x1',
         language: 'en',
         letterVersion: 'AUTHORING',
-        sidesCount: 1,
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 1,
+          },
+        },
         campaignId: 'campaign-id',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -1958,7 +1965,14 @@ describe('templateClient', () => {
         letterType: 'x1',
         language: 'en',
         letterVersion: 'AUTHORING',
-        sidesCount: 1,
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 1,
+          },
+        },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         lockNumber: 6,
