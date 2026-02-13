@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { LetterRenderForm } from '@molecules/LetterRender/LetterRenderForm';
+import { NHSNotifyFormProvider } from '@providers/form-provider';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { RenderFormData } from '@molecules/LetterRender/types';
+import type { LetterRenderFormState } from '@molecules/LetterRender/types';
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -20,18 +21,40 @@ const baseTemplate: AuthoringLetterTemplate = {
   lockNumber: 1,
 };
 
-const defaultFormData: RenderFormData = {
-  systemPersonalisationPackId: '',
-  personalisationParameters: {},
-};
+const mockServerAction = jest.fn().mockResolvedValue({
+  templateId: 'template-123',
+  lockNumber: 1,
+  tab: 'short',
+  customPersonalisationFields: [],
+  fields: {},
+} satisfies LetterRenderFormState);
 
-const defaultProps = {
-  template: baseTemplate,
-  tab: 'short' as const,
-  formData: defaultFormData,
-  onFormChange: jest.fn(),
-  onSubmit: jest.fn(),
-};
+function createInitialFormState(
+  overrides: Partial<LetterRenderFormState> = {}
+): LetterRenderFormState {
+  return {
+    templateId: 'template-123',
+    lockNumber: 1,
+    tab: 'short',
+    customPersonalisationFields: [],
+    fields: {},
+    ...overrides,
+  };
+}
+
+function renderWithProvider(
+  ui: React.ReactElement,
+  initialState: LetterRenderFormState = createInitialFormState()
+) {
+  return render(
+    <NHSNotifyFormProvider<LetterRenderFormState>
+      initialState={initialState}
+      serverAction={mockServerAction}
+    >
+      {ui}
+    </NHSNotifyFormProvider>
+  );
+}
 
 describe('LetterRenderForm', () => {
   beforeEach(() => {
@@ -40,7 +63,9 @@ describe('LetterRenderForm', () => {
 
   describe('PDS personalisation section', () => {
     it('renders PDS recipient dropdown with short recipients for short tab', () => {
-      render(<LetterRenderForm {...defaultProps} tab='short' />);
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -53,7 +78,11 @@ describe('LetterRenderForm', () => {
     });
 
     it('renders PDS recipient dropdown with long recipients for long tab', () => {
-      render(<LetterRenderForm {...defaultProps} tab='long' />);
+      const initialState = createInitialFormState({ tab: 'long' });
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='long' />,
+        initialState
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -70,23 +99,6 @@ describe('LetterRenderForm', () => {
         screen.getByText('Dame Catherine Elizabeth Montgomery')
       ).toBeInTheDocument();
     });
-
-    it('calls onFormChange when PDS dropdown changes', () => {
-      const onFormChange = jest.fn();
-      render(
-        <LetterRenderForm {...defaultProps} onFormChange={onFormChange} />
-      );
-
-      const dropdown = screen.getByRole('combobox', {
-        name: 'Example recipient',
-      });
-      fireEvent.change(dropdown, { target: { value: 'short-1' } });
-
-      expect(onFormChange).toHaveBeenCalledWith({
-        systemPersonalisationPackId: 'short-1',
-        personalisationParameters: {},
-      });
-    });
   });
 
   describe('Custom personalisation section', () => {
@@ -95,9 +107,13 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate', 'clinicName'],
       };
+      const initialState = createInitialFormState({
+        customPersonalisationFields: ['appointmentDate', 'clinicName'],
+      });
 
-      render(
-        <LetterRenderForm {...defaultProps} template={templateWithCustom} />
+      renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='short' />,
+        initialState
       );
 
       expect(
@@ -113,8 +129,8 @@ describe('LetterRenderForm', () => {
         customPersonalisation: undefined,
       };
 
-      render(
-        <LetterRenderForm {...defaultProps} template={templateWithoutCustom} />
+      renderWithProvider(
+        <LetterRenderForm template={templateWithoutCustom} tab='short' />
       );
 
       expect(
@@ -128,53 +144,27 @@ describe('LetterRenderForm', () => {
         customPersonalisation: [],
       };
 
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          template={templateWithEmptyCustom}
-        />
+      renderWithProvider(
+        <LetterRenderForm template={templateWithEmptyCustom} tab='short' />
       );
 
       expect(
         screen.queryByText('Custom personalisation fields')
       ).not.toBeInTheDocument();
     });
-
-    it('calls onFormChange when custom field changes', () => {
-      const onFormChange = jest.fn();
-      const templateWithCustom: AuthoringLetterTemplate = {
-        ...baseTemplate,
-        customPersonalisation: ['appointmentDate'],
-      };
-
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          template={templateWithCustom}
-          onFormChange={onFormChange}
-        />
-      );
-
-      const input = screen.getByLabelText('appointmentDate');
-      fireEvent.change(input, { target: { value: '2025-01-15' } });
-
-      expect(onFormChange).toHaveBeenCalledWith({
-        systemPersonalisationPackId: '',
-        personalisationParameters: { appointmentDate: '2025-01-15' },
-      });
-    });
   });
 
-  describe('controlled form values', () => {
-    it('displays selected PDS recipient from formData', () => {
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          formData={{
-            systemPersonalisationPackId: 'short-1',
-            personalisationParameters: {},
-          }}
-        />
+  describe('form values from state', () => {
+    it('displays selected PDS recipient from form state', () => {
+      const initialState = createInitialFormState({
+        fields: {
+          systemPersonalisationPackId: 'short-1',
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />,
+        initialState
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -183,21 +173,22 @@ describe('LetterRenderForm', () => {
       expect(dropdown).toHaveValue('short-1');
     });
 
-    it('displays custom field values from formData', () => {
+    it('displays custom field values from form state', () => {
       const templateWithCustom: AuthoringLetterTemplate = {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate'],
       };
+      const initialState = createInitialFormState({
+        customPersonalisationFields: ['appointmentDate'],
+        fields: {
+          systemPersonalisationPackId: '',
+          custom_appointmentDate: '2025-01-15',
+        },
+      });
 
-      render(
-        <LetterRenderForm
-          {...defaultProps}
-          template={templateWithCustom}
-          formData={{
-            systemPersonalisationPackId: '',
-            personalisationParameters: { appointmentDate: '2025-01-15' },
-          }}
-        />
+      renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='short' />,
+        initialState
       );
 
       const input = screen.getByLabelText('appointmentDate');
@@ -207,21 +198,13 @@ describe('LetterRenderForm', () => {
 
   describe('submit button', () => {
     it('renders the update preview button', () => {
-      render(<LetterRenderForm {...defaultProps} />);
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />
+      );
 
       expect(
         screen.getByRole('button', { name: 'Update preview' })
       ).toBeInTheDocument();
-    });
-
-    it('calls onSubmit when form is submitted', () => {
-      const onSubmit = jest.fn();
-      render(<LetterRenderForm {...defaultProps} onSubmit={onSubmit} />);
-
-      const button = screen.getByRole('button', { name: 'Update preview' });
-      fireEvent.click(button);
-
-      expect(onSubmit).toHaveBeenCalled();
     });
   });
 
@@ -231,9 +214,13 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate', 'clinicName'],
       };
+      const initialState = createInitialFormState({
+        customPersonalisationFields: ['appointmentDate', 'clinicName'],
+      });
 
-      const container = render(
-        <LetterRenderForm {...defaultProps} template={templateWithCustom} />
+      const container = renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='short' />,
+        initialState
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -244,20 +231,23 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate'],
       };
+      const initialState = createInitialFormState({
+        tab: 'long',
+        customPersonalisationFields: ['appointmentDate'],
+      });
 
-      const container = render(
-        <LetterRenderForm
-          {...defaultProps}
-          template={templateWithCustom}
-          tab='long'
-        />
+      const container = renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='long' />,
+        initialState
       );
 
       expect(container.asFragment()).toMatchSnapshot();
     });
 
     it('matches snapshot without custom personalisation', () => {
-      const container = render(<LetterRenderForm {...defaultProps} />);
+      const container = renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />
+      );
 
       expect(container.asFragment()).toMatchSnapshot();
     });

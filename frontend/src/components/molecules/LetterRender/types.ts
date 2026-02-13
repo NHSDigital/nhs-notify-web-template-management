@@ -1,14 +1,10 @@
+import type { FormState } from 'nhs-notify-web-template-management-utils';
+
 export type RenderTab = 'short' | 'long';
 
-export type RenderFormData = {
-  systemPersonalisationPackId: string;
-  personalisationParameters: Record<string, string>;
-};
-
-export type UpdateLetterPreviewInput = {
+export type LetterRenderFormState = FormState & {
   templateId: string;
   lockNumber: number;
   tab: RenderTab;
-  systemPersonalisationPackId: string;
-  personalisation: Record<string, string>;
+  customPersonalisationFields: string[];
 };

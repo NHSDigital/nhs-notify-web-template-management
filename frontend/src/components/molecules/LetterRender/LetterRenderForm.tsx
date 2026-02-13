@@ -1,6 +1,5 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
 import { Button, Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -8,25 +7,19 @@ import {
   SHORT_EXAMPLE_RECIPIENTS,
   LONG_EXAMPLE_RECIPIENTS,
 } from '@content/example-recipients';
-import type { RenderFormData, RenderTab } from './types';
+import { useNHSNotifyForm } from '@providers/form-provider';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
+import type { RenderTab, LetterRenderFormState } from './types';
 import styles from './LetterRenderForm.module.scss';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
   tab: RenderTab;
-  formData: RenderFormData;
-  onFormChange: (formData: RenderFormData) => void;
-  onSubmit: () => void;
 };
 
-export function LetterRenderForm({
-  template,
-  tab,
-  formData,
-  onFormChange,
-  onSubmit,
-}: LetterRenderFormProps) {
+export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
+  const [, formAction] = useNHSNotifyForm<LetterRenderFormState>();
 
   const exampleRecipients =
     tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;
@@ -34,44 +27,20 @@ export function LetterRenderForm({
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;
 
-  const handleExampleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    onFormChange({
-      ...formData,
-      systemPersonalisationPackId: e.target.value,
-    });
-  };
-
-  const handleCustomFieldChange = (fieldName: string, value: string) => {
-    onFormChange({
-      ...formData,
-      personalisationParameters: {
-        ...formData.personalisationParameters,
-        [fieldName]: value,
-      },
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit();
-  };
-
   return (
-    <form onSubmit={handleSubmit} id={`letter-preview-${tab}`}>
+    <form action={formAction} id={`letter-preview-${tab}`}>
       {/* PDS Personalisation Section */}
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <div className='nhsuk-form-group'>
+      <NHSNotifyForm.FormGroup>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <select
+        <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
           name='systemPersonalisationPackId'
-          className={`nhsuk-select ${styles.recipientSelect}`}
-          value={formData.systemPersonalisationPackId}
-          onChange={handleExampleChange}
+          className={styles.recipientSelect}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
           {exampleRecipients.map((recipient) => (
@@ -79,8 +48,8 @@ export function LetterRenderForm({
               {recipient.name}
             </option>
           ))}
-        </select>
-      </div>
+        </NHSNotifyForm.Select>
+      </NHSNotifyForm.FormGroup>
 
       {/* Custom Personalisation Section */}
       {hasCustomFields && (
@@ -89,22 +58,17 @@ export function LetterRenderForm({
             {copy.customSection.heading}
           </h3>
           {template.customPersonalisation!.map((fieldName) => (
-            <div key={fieldName} className='nhsuk-form-group'>
+            <NHSNotifyForm.FormGroup key={fieldName}>
               <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
                 {fieldName}
               </Label>
-              <input
+              <NHSNotifyForm.Input
                 type='text'
                 id={`custom-${fieldName}-${tab}`}
                 name={`custom_${fieldName}`}
-                className='nhsuk-input'
                 maxLength={500}
-                value={formData.personalisationParameters[fieldName] ?? ''}
-                onChange={(e) =>
-                  handleCustomFieldChange(fieldName, e.target.value)
-                }
               />
-            </div>
+            </NHSNotifyForm.FormGroup>
           ))}
         </>
       )}

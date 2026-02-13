@@ -449,3 +449,8 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     },
   },
 ];
+
+export const EXAMPLE_RECIPIENT_IDS = [
+  ...SHORT_EXAMPLE_RECIPIENTS.map((r) => r.id),
+  ...LONG_EXAMPLE_RECIPIENTS.map((r) => r.id),
+] as const;

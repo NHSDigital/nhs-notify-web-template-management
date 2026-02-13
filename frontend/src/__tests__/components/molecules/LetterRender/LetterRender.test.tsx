@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LetterRender } from '@molecules/LetterRender';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
+import type { LetterRenderFormState } from '@molecules/LetterRender/types';
 
 jest.mock('@molecules/LetterRender/server-action', () => ({
   updateLetterPreview: jest.fn(),
@@ -40,9 +41,27 @@ const baseTemplate: AuthoringLetterTemplate = {
   lockNumber: 1,
 };
 
+function createMockReturnState(
+  overrides: Partial<LetterRenderFormState> = {}
+): LetterRenderFormState {
+  return {
+    templateId: 'template-123',
+    lockNumber: 1,
+    tab: 'short',
+    customPersonalisationFields: ['appointmentDate', 'clinicName'],
+    fields: {
+      systemPersonalisationPackId: '',
+      custom_appointmentDate: '',
+      custom_clinicName: '',
+    },
+    ...overrides,
+  };
+}
+
 describe('LetterRender', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUpdateLetterPreview.mockResolvedValue(createMockReturnState());
   });
 
   it('renders the section heading and guidance', () => {
@@ -151,8 +170,6 @@ describe('LetterRender', () => {
 
   describe('form submission', () => {
     it('calls updateLetterPreview when form is submitted for short tab', async () => {
-      mockUpdateLetterPreview.mockResolvedValue(undefined);
-
       render(<LetterRender template={baseTemplate} />);
 
       const dropdown = screen.getAllByRole('combobox', {
@@ -168,19 +185,22 @@ describe('LetterRender', () => {
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
-          expect.objectContaining({
-            templateId: 'template-123',
-            lockNumber: 1,
-            tab: 'short',
-            systemPersonalisationPackId: 'short-1',
-          })
-        );
+        expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
+
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      expect(formState).toMatchObject({
+        templateId: 'template-123',
+        lockNumber: 1,
+        tab: 'short',
+      });
+      expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
     });
 
     it('calls updateLetterPreview when form is submitted for long tab', async () => {
-      mockUpdateLetterPreview.mockResolvedValue(undefined);
+      mockUpdateLetterPreview.mockResolvedValue(
+        createMockReturnState({ tab: 'long' })
+      );
 
       render(<LetterRender template={baseTemplate} />);
 
@@ -199,20 +219,19 @@ describe('LetterRender', () => {
       fireEvent.click(submitButtons[1]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith(
-          expect.objectContaining({
-            templateId: 'template-123',
-            lockNumber: 1,
-            tab: 'long',
-            systemPersonalisationPackId: 'long-1',
-          })
-        );
+        expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
+
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      expect(formState).toMatchObject({
+        templateId: 'template-123',
+        lockNumber: 1,
+        tab: 'long',
+      });
+      expect(formData.get('systemPersonalisationPackId')).toBe('long-1');
     });
 
-    it('includes custom personalisation parameters in submission', async () => {
-      mockUpdateLetterPreview.mockResolvedValue(undefined);
-
+    it('includes custom personalisation parameters in form data', async () => {
       render(<LetterRender template={baseTemplate} />);
 
       const appointmentInput = screen.getAllByLabelText('appointmentDate')[0];
@@ -226,21 +245,15 @@ describe('LetterRender', () => {
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
-          templateId: 'template-123',
-          lockNumber: 1,
-          tab: 'short',
-          systemPersonalisationPackId: '',
-          personalisation: {
-            appointmentDate: '2025-03-15',
-          },
-        });
+        expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
+
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      expect(formState.customPersonalisationFields).toContain('appointmentDate');
+      expect(formData.get('custom_appointmentDate')).toBe('2025-03-15');
     });
 
-    it('merges recipient data with custom personalisation', async () => {
-      mockUpdateLetterPreview.mockResolvedValue(undefined);
-
+    it('includes both recipient selection and custom personalisation in form data', async () => {
       render(<LetterRender template={baseTemplate} />);
 
       const dropdown = screen.getAllByRole('combobox', {
@@ -258,30 +271,17 @@ describe('LetterRender', () => {
       fireEvent.click(submitButtons[0]);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalledWith({
-          templateId: 'template-123',
-          lockNumber: 1,
-          tab: 'short',
-          systemPersonalisationPackId: 'short-1',
-          personalisation: {
-            nhsNumber: '9728543751',
-            firstName: 'Jo',
-            lastName: 'Bloggs',
-            fullName: 'Jo Bloggs',
-            middleNames: '',
-            namePrefix: '',
-            nameSuffix: '',
-            address_line_1: 'Jo Bloggs',
-            address_line_2: '1 High Street',
-            address_line_3: 'Leeds',
-            address_line_4: 'West Yorkshire',
-            address_line_5: 'LS1 1AA',
-            address_line_6: '',
-            address_line_7: '',
-            appointmentDate: '2025-03-15',
-          },
-        });
+        expect(mockUpdateLetterPreview).toHaveBeenCalled();
       });
+
+      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
+      expect(formState).toMatchObject({
+        templateId: 'template-123',
+        lockNumber: 1,
+        tab: 'short',
+      });
+      expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
+      expect(formData.get('custom_appointmentDate')).toBe('2025-03-15');
     });
   });
 });

@@ -3,6 +3,7 @@
 exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
 <DocumentFragment>
   <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
     id="letter-preview-long"
   >
     <h3
@@ -111,7 +112,6 @@ exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
         maxlength="500"
         name="custom_appointmentDate"
         type="text"
-        value=""
       />
     </div>
     <button
@@ -128,6 +128,7 @@ exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
 exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
 <DocumentFragment>
   <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
     id="letter-preview-short"
   >
     <h3
@@ -236,7 +237,6 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
         maxlength="500"
         name="custom_appointmentDate"
         type="text"
-        value=""
       />
     </div>
     <div
@@ -254,7 +254,6 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
         maxlength="500"
         name="custom_clinicName"
         type="text"
-        value=""
       />
     </div>
     <button
@@ -271,6 +270,7 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
 exports[`LetterRenderForm snapshots matches snapshot without custom personalisation 1`] = `
 <DocumentFragment>
   <form
+    action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
     id="letter-preview-short"
   >
     <h3

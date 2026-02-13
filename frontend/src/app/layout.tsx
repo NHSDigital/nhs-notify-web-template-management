@@ -63,10 +63,7 @@ export default function RootLayout({
           type='module'
         />
       </head>
-      <body
-        className='js-enabled nhsuk-frontend-supported'
-        suppressHydrationWarning
-      >
+      <body suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' nhsuk-frontend-supported' : '');`,

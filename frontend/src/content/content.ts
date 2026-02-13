@@ -575,6 +575,9 @@ const letterRender = {
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
     recipientLabel: 'Example recipient',
     recipientPlaceholder: 'Select a recipient',
+    error: {
+      invalid: 'Select an example recipient',
+    },
   },
   customSection: {
     heading: 'Custom personalisation fields',

@@ -88,6 +88,7 @@ function getContentSecurityPolicy(nonce: string) {
     'script-src': [
       `'self'`,
       `'nonce-${nonce}'`,
+      // inline script in layout.tsx for javascript detection
       `'sha256-tDOvXJi1PXbg0CWjLCCYSNHRXtps26K4JXkE3M6u/c0='`,
     ],
     'style-src': [`'self'`, `'nonce-${nonce}'`],

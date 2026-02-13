@@ -72,6 +72,7 @@ exports[`LetterRender matches snapshot 1`] = `
             class="nhsuk-grid-column-one-third"
           >
             <form
+              action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
               id="letter-preview-short"
             >
               <h3
@@ -99,6 +100,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   name="systemPersonalisationPackId"
                 >
                   <option
+                    selected=""
                     value=""
                   >
                     Select a recipient
@@ -235,6 +237,7 @@ exports[`LetterRender matches snapshot 1`] = `
             class="nhsuk-grid-column-one-third"
           >
             <form
+              action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
               id="letter-preview-long"
             >
               <h3
@@ -262,6 +265,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   name="systemPersonalisationPackId"
                 >
                   <option
+                    selected=""
                     value=""
                   >
                     Select a recipient
