@@ -716,7 +716,9 @@ exports[`full cascade plan matches snapshot 1`] = `
                       >
                         Large print letter (optional)
                       </h3>
-                      <p>
+                      <p
+                        data-testid="template-name"
+                      >
                         <a
                           href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
                         >
@@ -744,6 +746,7 @@ exports[`full cascade plan matches snapshot 1`] = `
                       </h3>
                       <p
                         class="nhsuk-u-margin-bottom-0"
+                        data-testid="template-name"
                       >
                         <a
                           href="/preview-submitted-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
@@ -753,6 +756,7 @@ exports[`full cascade plan matches snapshot 1`] = `
                       </p>
                       <p
                         class="nhsuk-u-margin-bottom-0"
+                        data-testid="template-name"
                       >
                         <a
                           href="/preview-submitted-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
@@ -774,83 +778,10 @@ exports[`full cascade plan matches snapshot 1`] = `
                 data-testid="back-link-bottom"
                 href="/message-plans"
               >
-                <div
-                  class="channel-template-outer"
-                  data-testid="channel-card"
-                >
-                  <div
-                    class="channel-template-inner"
-                  >
-                    <h3
-                      class="nhsuk-heading-s"
-                    >
-                      Large print letter (optional)
-                    </h3>
-                    <p
-                      data-testid="template-name"
-                    >
-                      <a
-                        href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
-                      >
-                        letter template name
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </li>
-              <li
-                class="message-plan-conditional-templates__list-item"
-                data-testid="conditional-template-languages"
-              >
-                <div
-                  class="channel-template-outer"
-                  data-testid="channel-card"
-                >
-                  <div
-                    class="channel-template-inner"
-                  >
-                    <h3
-                      class="nhsuk-heading-s"
-                    >
-                      Other language letters (optional)
-                    </h3>
-                    <p
-                      class="nhsuk-u-margin-bottom-0"
-                      data-testid="template-name"
-                    >
-                      <a
-                        href="/preview-submitted-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
-                      >
-                        letter template name
-                      </a>
-                    </p>
-                    <p
-                      class="nhsuk-u-margin-bottom-0"
-                      data-testid="template-name"
-                    >
-                      <a
-                        href="/preview-submitted-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
-                      >
-                        letter template name
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <div
-          class="nhsuk-form-group"
-        >
-          <p>
-            <a
-              data-testid="back-link-bottom"
-              href="/message-plans"
-            >
-              Back to all message plans
-            </a>
-          </p>
+                Back to all message plans
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </main>
