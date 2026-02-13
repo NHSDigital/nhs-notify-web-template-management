@@ -17,8 +17,8 @@ module "letter_preview_renderer_lambda" {
   image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.container_lambda_ecr_repo}:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-${var.image_tag_suffix}"
   image_repository_names = [var.container_lambda_ecr_repo]
 
-  memory  = 1024
-  timeout = 30
+  memory  = 128
+  timeout = 3
 
   log_retention_in_days = var.log_retention_in_days
 
