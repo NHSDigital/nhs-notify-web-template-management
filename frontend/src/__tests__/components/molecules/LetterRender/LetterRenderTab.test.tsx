@@ -3,18 +3,18 @@ import { LetterRenderTab } from '@molecules/LetterRender/LetterRenderTab';
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { LetterRenderFormState } from '@molecules/LetterRender/types';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 
-jest.mock('@molecules/LetterRender/server-action', () => ({
-  updateLetterPreview: jest.fn(),
-}));
+jest.mock('@utils/csrf-utils');
+jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+
+jest.mock('@molecules/LetterRender/server-action');
 
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
 }));
 
-const mockUpdateLetterPreview = updateLetterPreview as jest.MockedFunction<
-  typeof updateLetterPreview
->;
+const mockUpdateLetterPreview = jest.mocked(updateLetterPreview);
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -41,7 +41,7 @@ const baseTemplate: AuthoringLetterTemplate = {
   lockNumber: 1,
 };
 
-function createMockReturnState(
+function createMockState(
   overrides: Partial<LetterRenderFormState> = {}
 ): LetterRenderFormState {
   return {
@@ -60,7 +60,7 @@ function createMockReturnState(
 describe('LetterRenderTab', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUpdateLetterPreview.mockResolvedValue(createMockReturnState());
+    mockUpdateLetterPreview.mockResolvedValue(createMockState());
   });
 
   describe('buildPdfUrl', () => {
@@ -212,29 +212,42 @@ describe('LetterRenderTab', () => {
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
       });
+
       fireEvent.change(dropdown, { target: { value: 'short-1' } });
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      fireEvent.change(appointmentInput, { target: { value: '2025-06-15' } });
 
       const submitButton = screen.getByRole('button', {
         name: 'Update preview',
       });
+
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalled();
+        expect(mockUpdateLetterPreview).toHaveBeenCalledTimes(1);
       });
 
       const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
-      expect(formState).toMatchObject({
+
+      expect(formState).toEqual({
         templateId: 'template-123',
         lockNumber: 1,
         tab: 'short',
+        customPersonalisationFields: ['appointmentDate'],
+        fields: {
+          systemPersonalisationPackId: '',
+          custom_appointmentDate: '',
+        },
       });
+
       expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
+      expect(formData.get('custom_appointmentDate')).toBe('2025-06-15');
     });
 
     it('calls updateLetterPreview with form state and form data for long tab', async () => {
       mockUpdateLetterPreview.mockResolvedValue(
-        createMockReturnState({ tab: 'long' })
+        createMockState({ tab: 'long' })
       );
 
       render(<LetterRenderTab template={baseTemplate} tab='long' />);
@@ -244,73 +257,61 @@ describe('LetterRenderTab', () => {
       });
       fireEvent.change(dropdown, { target: { value: 'long-1' } });
 
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      fireEvent.change(appointmentInput, { target: { value: '2025-07-20' } });
+
       const submitButton = screen.getByRole('button', {
         name: 'Update preview',
       });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalled();
+        expect(mockUpdateLetterPreview).toHaveBeenCalledTimes(1);
       });
 
       const [formState, formData] = mockUpdateLetterPreview.mock.calls[0];
-      expect(formState).toMatchObject({
+
+      expect(formState).toEqual({
         templateId: 'template-123',
         lockNumber: 1,
         tab: 'long',
+        customPersonalisationFields: ['appointmentDate'],
+        fields: {
+          systemPersonalisationPackId: '',
+          custom_appointmentDate: '',
+        },
       });
+
       expect(formData.get('systemPersonalisationPackId')).toBe('long-1');
+      expect(formData.get('custom_appointmentDate')).toBe('2025-07-20');
     });
 
-    it('includes custom personalisation in form data', async () => {
-      render(<LetterRenderTab template={baseTemplate} tab='short' />);
-
-      // Select a recipient
-      const dropdown = screen.getByRole('combobox', {
-        name: 'Example recipient',
-      });
-      fireEvent.change(dropdown, { target: { value: 'short-1' } });
-
-      // Fill custom field
-      const appointmentInput = screen.getByLabelText('appointmentDate');
-      fireEvent.change(appointmentInput, { target: { value: '2025-05-20' } });
-
-      // Submit
-      const submitButton = screen.getByRole('button', {
-        name: 'Update preview',
-      });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalled();
-      });
-
-      const [formState, formData] = mockUpdateLetterPreview.mock.calls[0] as [
-        LetterRenderFormState,
-        FormData,
-      ];
-      expect(formState.customPersonalisationFields).toContain(
-        'appointmentDate'
+    it('displays validation error when no recipient selected', async () => {
+      mockUpdateLetterPreview.mockResolvedValue(
+        createMockState({
+          errorState: {
+            formErrors: [],
+            fieldErrors: {
+              systemPersonalisationPackId: ['Select an example recipient'],
+            },
+          },
+        })
       );
-      expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
-      expect(formData.get('custom_appointmentDate')).toBe('2025-05-20');
-    });
 
-    it('handles submission when no recipient selected', async () => {
       render(<LetterRenderTab template={baseTemplate} tab='short' />);
 
-      // Submit without selecting recipient
       const submitButton = screen.getByRole('button', {
         name: 'Update preview',
       });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(mockUpdateLetterPreview).toHaveBeenCalled();
+        expect(mockUpdateLetterPreview).toHaveBeenCalledTimes(1);
       });
 
-      const [_formState, formData] = mockUpdateLetterPreview.mock.calls[0];
-      expect(formData.get('systemPersonalisationPackId')).toBe('');
+      expect(
+        await screen.findByText('Select an example recipient')
+      ).toBeInTheDocument();
     });
   });
 
@@ -365,8 +366,10 @@ describe('LetterRenderTab', () => {
         <LetterRenderTab template={baseTemplate} tab='short' />
       );
 
-      const form = container.querySelector('#letter-preview-short');
-      expect(form).toBeInTheDocument();
+      const formIdInput = container.querySelector(
+        'input[name="form-id"][value="letter-preview-short"]'
+      );
+      expect(formIdInput).toBeInTheDocument();
     });
 
     it('renders form with long tab ID', () => {
@@ -374,8 +377,10 @@ describe('LetterRenderTab', () => {
         <LetterRenderTab template={baseTemplate} tab='long' />
       );
 
-      const form = container.querySelector('#letter-preview-long');
-      expect(form).toBeInTheDocument();
+      const formIdInput = container.querySelector(
+        'input[name="form-id"][value="letter-preview-long"]'
+      );
+      expect(formIdInput).toBeInTheDocument();
     });
   });
 });

@@ -4,8 +4,19 @@ exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-    id="letter-preview-long"
   >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="letter-preview-long"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <h3
       class="nhsuk-heading-s"
     >
@@ -129,8 +140,19 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-    id="letter-preview-short"
   >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="letter-preview-short"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <h3
       class="nhsuk-heading-s"
     >
@@ -271,8 +293,19 @@ exports[`LetterRenderForm snapshots matches snapshot without custom personalisat
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
-    id="letter-preview-short"
   >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="letter-preview-short"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <h3
       class="nhsuk-heading-s"
     >

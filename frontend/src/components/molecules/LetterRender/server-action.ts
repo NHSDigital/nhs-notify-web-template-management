@@ -30,8 +30,10 @@ export async function updateLetterPreview(
     };
   }
 
-  // combine form data custom personalisation with example recipient personalisation
+  // remove 'custom_' prefix from custom personalisation fields
+  // combine with example recipient personalisation
   // add date
+  // intitiate render
   // initiate polling
 
   const { errorState: _, ...rest } = formState;

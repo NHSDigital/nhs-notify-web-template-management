@@ -43,7 +43,7 @@ function createInitialFormState(
 }
 
 function renderWithProvider(
-  ui: React.ReactElement,
+  form: React.ReactElement,
   initialState: LetterRenderFormState = createInitialFormState()
 ) {
   return render(
@@ -51,7 +51,7 @@ function renderWithProvider(
       initialState={initialState}
       serverAction={mockServerAction}
     >
-      {ui}
+      {form}
     </NHSNotifyFormProvider>
   );
 }
@@ -205,6 +205,70 @@ describe('LetterRenderForm', () => {
       expect(
         screen.getByRole('button', { name: 'Update preview' })
       ).toBeInTheDocument();
+    });
+  });
+
+  describe('error display', () => {
+    it('displays error message when systemPersonalisationPackId has validation error', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            systemPersonalisationPackId: ['Select an example recipient'],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />,
+        initialState
+      );
+
+      expect(
+        screen.getByText('Select an example recipient')
+      ).toBeInTheDocument();
+    });
+
+    it('applies error styling to form group when validation error exists', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            systemPersonalisationPackId: ['Select an example recipient'],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />,
+        initialState
+      );
+
+      const formGroup = screen
+        .getByText('Select an example recipient')
+        .closest('.nhsuk-form-group');
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
+    });
+
+    it('applies error styling to select when validation error exists', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            systemPersonalisationPackId: ['Select an example recipient'],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />,
+        initialState
+      );
+
+      const select = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+      expect(select).toHaveClass('nhsuk-select--error');
     });
   });
 

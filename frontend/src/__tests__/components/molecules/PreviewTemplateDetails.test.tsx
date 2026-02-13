@@ -410,6 +410,117 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(screen.getByText('Sheets')).toBeInTheDocument();
     });
   });
+
+  describe('sheets calculation', () => {
+    it.each([
+      { pageCount: 1, expectedSheets: 1 },
+      { pageCount: 2, expectedSheets: 1 },
+      { pageCount: 3, expectedSheets: 2 },
+      { pageCount: 4, expectedSheets: 2 },
+      { pageCount: 5, expectedSheets: 3 },
+      { pageCount: 6, expectedSheets: 3 },
+    ])(
+      'calculates sheets as $expectedSheets when pageCount is $pageCount',
+      ({ pageCount, expectedSheets }) => {
+        render(
+          <PreviewTemplateDetailsAuthoringLetter
+            template={{
+              ...baseAuthoringLetter,
+              files: {
+                initialRender: {
+                  fileName: 'render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount,
+                },
+              },
+            }}
+          />
+        );
+
+        const sheetsRow = screen.getByText('Sheets').closest('div');
+        expect(sheetsRow).toHaveTextContent(String(expectedSheets));
+      }
+    );
+  });
+
+  describe('printing and postage action link', () => {
+    it('shows edit link when template is editable', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
+      );
+
+      expect(screen.getByTestId('printing-postage-action')).toBeInTheDocument();
+    });
+
+    it('hides edit link when hideEditActions is true', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          hideEditActions
+        />
+      );
+
+      expect(
+        screen.queryByTestId('printing-postage-action')
+      ).not.toBeInTheDocument();
+    });
+
+    it('hides edit link when template status is PENDING_VALIDATION', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{
+            ...baseAuthoringLetter,
+            templateStatus: 'PENDING_VALIDATION',
+          }}
+        />
+      );
+
+      expect(
+        screen.queryByTestId('printing-postage-action')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('edit links', () => {
+    it('renders edit name link with correct href', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
+      );
+
+      const editNameLink = screen.getByTestId('edit-name-link');
+      expect(editNameLink).toHaveAttribute(
+        'href',
+        '/edit-template-name/template-id'
+      );
+    });
+
+    it('renders campaign edit link with correct href', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{ ...baseAuthoringLetter, campaignId: 'campaign-1' }}
+        />
+      );
+
+      const campaignLink = screen.getByTestId('campaign-action');
+      expect(campaignLink).toHaveAttribute(
+        'href',
+        '/edit-template-campaign/template-id'
+      );
+    });
+
+    it('renders printing and postage edit link with correct href', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
+      );
+
+      const postageLink = screen.getByTestId('printing-postage-action');
+      expect(postageLink).toHaveAttribute(
+        'href',
+        '/choose-printing-and-postage/template-id'
+      );
+    });
+  });
 });
 
 describe('PreviewTemplateDetailsLetter', () => {

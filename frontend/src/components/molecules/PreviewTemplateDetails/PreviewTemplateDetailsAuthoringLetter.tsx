@@ -35,8 +35,8 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
 
-  const pageCount = template.files.initialRender?.pageCount;
-  const sheets = pageCount ? Math.ceil(pageCount / 2) : undefined;
+  const pageCount = template.files.initialRender?.pageCount ?? 0;
+  const sheets = Math.ceil(pageCount / 2);
 
   const hasSingleCampaign = campaignIds.length === 1;
 

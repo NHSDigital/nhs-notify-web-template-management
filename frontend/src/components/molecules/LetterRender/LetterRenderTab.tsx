@@ -51,12 +51,10 @@ function getInitialFormState(
 
   const customPersonalisationFields = template.customPersonalisation ?? [];
 
-  // Build fields object for FormState
   const fields: Record<string, string> = {
     systemPersonalisationPackId: systemPersonalisationPackId ?? '',
   };
 
-  // Add custom personalisation fields
   for (const fieldName of customPersonalisationFields) {
     fields[`custom_${fieldName}`] =
       personalisationParameters?.[fieldName] ?? '';
