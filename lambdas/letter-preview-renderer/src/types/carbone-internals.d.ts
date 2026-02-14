@@ -27,6 +27,7 @@ declare module 'carbone/lib/file' {
 declare module 'carbone/lib/parser' {
   export interface Marker {
     name: string;
+    pos: number;
   }
 
   interface ParserModule {

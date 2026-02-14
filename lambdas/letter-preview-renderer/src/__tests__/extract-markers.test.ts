@@ -1,6 +1,6 @@
 import path from 'node:path';
 import parser from 'carbone/lib/parser';
-import { extractMarkers } from '../utils/extract-markers';
+import { extractMarkers } from '../infra/carbone-internal';
 
 const FIXTURES_DIR = path.join(__dirname, 'fixtures');
 const DOCX_FIXTURE = path.join(FIXTURES_DIR, 'standard-english-template.docx');

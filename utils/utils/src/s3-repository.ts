@@ -1,9 +1,16 @@
 import {
+  GetObjectCommand,
+  GetObjectCommandOutput,
   PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { Readable } from 'node:stream';
+
+export type GetObjectOutputReadableBody = GetObjectCommandOutput & {
+  Body: Readable;
+};
 
 export class S3Repository {
   constructor(
@@ -22,6 +29,48 @@ export class S3Repository {
         Body: fileData,
         ChecksumAlgorithm: 'SHA256',
       })
+    );
+  }
+
+  async getObjectResponseWithReadableBody(
+    key: string
+  ): Promise<GetObjectOutputReadableBody> {
+    try {
+      const params = {
+        Bucket: this.bucket,
+        Key: key,
+      };
+      const response = await this.client.send(new GetObjectCommand(params));
+
+      if (this.isReadableBody(response)) {
+        return response;
+      }
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `Could not retrieve '${this.s3Path(key)}' from S3: ${msg}`
+      );
+    }
+
+    throw new Error(`Could not read file '${this.s3Path(key)}'`);
+  }
+
+  async getObjectStream(key: string): Promise<Readable> {
+    const response = await this.getObjectResponseWithReadableBody(key);
+    return response.Body;
+  }
+
+  private s3Path(key: string) {
+    return `s3://${this.bucket}/${key}`;
+  }
+
+  private isReadableBody(
+    response: GetObjectCommandOutput
+  ): response is GetObjectOutputReadableBody {
+    return (
+      response.Body !== undefined &&
+      response.Body &&
+      (response.Body as Readable).read !== undefined
     );
   }
 }
