@@ -4,7 +4,7 @@
  */
 
 declare module 'carbone/lib/file' {
-  interface TemplateFile {
+  export interface TemplateFile {
     data: string | Buffer;
     isMarked: boolean;
   }

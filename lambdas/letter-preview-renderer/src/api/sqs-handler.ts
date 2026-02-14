@@ -33,9 +33,7 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
 
     if (recordCount !== 1) {
       const msg = 'Event contained unexpected number of events';
-
       logger.child({ event, recordCount }).error(msg);
-
       throw new Error(msg);
     }
 
