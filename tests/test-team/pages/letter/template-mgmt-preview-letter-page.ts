@@ -10,7 +10,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
 
-  // Common elements
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
   public readonly statusTag: Locator;
@@ -32,7 +31,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
 
-    // Common elements
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');

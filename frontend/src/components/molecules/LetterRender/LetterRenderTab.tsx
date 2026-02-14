@@ -8,57 +8,57 @@ import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
 import type { RenderTab, LetterRenderFormState } from './types';
 import styles from './LetterRenderTab.module.scss';
+import { AuthoringPersonalisedRenderDetails } from 'nhs-notify-backend-client';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
   tab: RenderTab;
 };
 
-function buildPdfUrl(
-  template: AuthoringLetterTemplate,
-  fileName: string
-): string {
+function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
   const basePath = getBasePath();
   return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
+}
+
+function getPersonalisedRender(
+  template: AuthoringLetterTemplate,
+  tab: RenderTab
+): AuthoringPersonalisedRenderDetails | undefined {
+  return tab === 'short'
+    ? template.files.shortFormRender
+    : template.files.longFormRender;
 }
 
 function getInitialPdfUrl(
   template: AuthoringLetterTemplate,
   tab: RenderTab
 ): string | null {
-  const renderDetails =
-    tab === 'short'
-      ? template.files.shortFormRender
-      : template.files.longFormRender;
+  const personalisedRender = getPersonalisedRender(template, tab);
+  const initialRender = template.files.initialRender;
 
-  const file =
-    renderDetails?.fileName ?? template.files.initialRender?.fileName ?? null;
+  const { fileName } = personalisedRender ?? initialRender ?? {};
 
-  return file ? buildPdfUrl(template, file) : null;
+  return fileName ? buildPdfUrl(template, fileName) : null;
 }
 
 function getInitialFormState(
   template: AuthoringLetterTemplate,
   tab: RenderTab
 ): LetterRenderFormState {
-  const renderDetails =
-    tab === 'short'
-      ? template.files.shortFormRender
-      : template.files.longFormRender;
+  const personalisedRender = getPersonalisedRender(template, tab);
 
   const { systemPersonalisationPackId, personalisationParameters } =
-    renderDetails ?? {};
+    personalisedRender ?? {};
 
   const customPersonalisationFields = template.customPersonalisation ?? [];
 
-  const fields: Record<string, string> = {
-    systemPersonalisationPackId: systemPersonalisationPackId ?? '',
-  };
-
-  for (const fieldName of customPersonalisationFields) {
-    fields[`custom_${fieldName}`] =
-      personalisationParameters?.[fieldName] ?? '';
-  }
+  const fields = Object.fromEntries([
+    ['systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
+    ...customPersonalisationFields.map((f) => [
+      `custom_${f}`,
+      personalisationParameters?.[f] ?? '',
+    ]),
+  ]);
 
   return {
     templateId: template.id,

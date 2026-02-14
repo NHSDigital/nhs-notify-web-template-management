@@ -28,13 +28,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function getValidationErrors(template: AuthoringLetterTemplate): string[] {
-  if (template.templateStatus !== 'VALIDATION_FAILED') {
-    return [];
-  }
+  if (template.templateStatus !== 'VALIDATION_FAILED') return [];
 
-  const { validationErrors = [] } = template;
-
-  return validationErrors.flatMap((error) => validationErrorMessages[error]);
+  return (
+    template.validationErrors?.flatMap(
+      (error) => validationErrorMessages[error] ?? []
+    ) ?? []
+  );
 }
 
 export default async function PreviewLetterTemplatePage({

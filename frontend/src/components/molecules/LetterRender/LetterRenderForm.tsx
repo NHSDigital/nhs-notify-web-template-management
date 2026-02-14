@@ -28,7 +28,6 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
 
   return (
     <NHSNotifyForm.Form formId={`letter-preview-${tab}`}>
-      {/* PDS Personalisation Section */}
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
@@ -51,25 +50,29 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         </NHSNotifyForm.Select>
       </NHSNotifyForm.FormGroup>
 
-      {/* Custom Personalisation Section */}
       {hasCustomFields && (
         <>
           <h3 className='nhsuk-heading-s nhsuk-u-padding-top-4'>
             {copy.customSection.heading}
           </h3>
-          {template.customPersonalisation!.map((fieldName) => (
-            <NHSNotifyForm.FormGroup key={fieldName}>
-              <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
-                {fieldName}
-              </Label>
-              <NHSNotifyForm.Input
-                type='text'
-                id={`custom-${fieldName}-${tab}`}
-                name={`custom_${fieldName}`}
-                maxLength={500}
-              />
-            </NHSNotifyForm.FormGroup>
-          ))}
+          {template.customPersonalisation!.map((field) => {
+            const id = `custom-${field}-${tab}`;
+            const prefixedKey = `custom_${field}`;
+
+            return (
+              <NHSNotifyForm.FormGroup key={field}>
+                <Label size='s' htmlFor={id}>
+                  {field}
+                </Label>
+                <NHSNotifyForm.Input
+                  type='text'
+                  id={id}
+                  name={prefixedKey}
+                  maxLength={500}
+                />
+              </NHSNotifyForm.FormGroup>
+            );
+          })}
         </>
       )}
 

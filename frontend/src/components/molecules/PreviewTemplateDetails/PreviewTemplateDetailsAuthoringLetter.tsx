@@ -23,6 +23,13 @@ import { interpolate } from '@utils/interpolate';
 const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
+function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
+  const pages = template.files.initialRender?.pageCount ?? 0;
+  const sheets = Math.ceil(pages / 2);
+
+  return { pages, sheets };
+}
+
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
   hideStatus,
@@ -35,8 +42,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
 
-  const pageCount = template.files.initialRender?.pageCount ?? 0;
-  const sheets = Math.ceil(pageCount / 2);
+  const { pages, sheets } = pagesAndSheetsCount(template);
 
   const hasSingleCampaign = campaignIds.length === 1;
 
@@ -47,10 +53,12 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
   const unvalidated = pendingValidation || validationFailed;
 
-  const hideEditElements = hideEditActions || unvalidated;
+  const hideAllEditActions = hideEditActions || unvalidated;
+
+  const hideEditName = hideAllEditActions;
 
   const hideEditCampaignLink =
-    hideEditElements || (template.campaignId && hasSingleCampaign);
+    hideAllEditActions || (template.campaignId && hasSingleCampaign);
 
   const hideCampaignRow = unvalidated;
   const hidePostageRow = unvalidated;
@@ -61,7 +69,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
     <>
       <DetailsHeader templateName={template.name} />
 
-      {!hideEditElements && (
+      {!hideEditName && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link
             href={interpolate(links.editTemplateName, {
@@ -134,7 +142,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {!hideSidesAndPages && (
             <SummaryList.Row>
               <SummaryList.Key>{rowHeadings.totalPages}</SummaryList.Key>
-              <SummaryList.Value>{pageCount}</SummaryList.Value>
+              <SummaryList.Value>{pages}</SummaryList.Value>
               <SummaryList.Actions />
             </SummaryList.Row>
           )}
@@ -169,7 +177,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 })}
                 label={actions.edit}
                 visuallyHiddenText={visuallyHidden.printingAndPostage}
-                hidden={hideEditElements}
+                hidden={hideAllEditActions}
                 testId='printing-postage-action'
               />
             </SummaryList.Row>

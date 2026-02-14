@@ -24,6 +24,9 @@ export async function submitAuthoringLetterAction(
 
   const { templateId, lockNumber } = result.data;
 
-  // TBD
+  // check that both long and short renders exist
+  // check that no pageCount (initialRender, long, short) exceeds letter variant max
+
+  // destination TBD
   redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
 }

@@ -689,7 +689,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        // Fill in short tab form data
+        // Fill short tab form data
         await previewPage.shortTab.selectRecipient({ index: 1 });
         const shortSelectedValue =
           await previewPage.shortTab.recipientSelect.inputValue();
