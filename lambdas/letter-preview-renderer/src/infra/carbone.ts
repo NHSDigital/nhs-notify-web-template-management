@@ -29,7 +29,7 @@ export class Carbone {
 
     for (const { name } of unique) {
       if (!name.startsWith('_root.')) {
-        // warn or throw
+        // warn
         continue;
       }
 
