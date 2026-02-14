@@ -31,8 +31,8 @@ export function extractMarkers(path: string): Promise<string[]> {
           ? findMarkersAsync(parser.removeXMLInsideMarkers(f.data))
           : []
       )
-    ).then((markers) =>
-      [...new Set(markers.flat().map((marker) => marker.name))].sort()
+    ).then((markerArrays) =>
+      [...new Set(markerArrays.flat().map((marker) => marker.name))].sort()
     )
   );
 }
