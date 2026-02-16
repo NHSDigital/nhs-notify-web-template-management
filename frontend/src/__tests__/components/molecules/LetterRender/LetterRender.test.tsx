@@ -38,17 +38,6 @@ const baseTemplate: AuthoringLetterTemplate = {
 };
 
 describe('LetterRender', () => {
-  it('renders the section heading and guidance', () => {
-    render(<LetterRender template={baseTemplate} />);
-
-    expect(screen.getByText('Letter preview')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'Check how your personalisation fields will appear in your letter.'
-      )
-    ).toBeInTheDocument();
-  });
-
   it('renders tabs for short and long examples', () => {
     render(<LetterRender template={baseTemplate} />);
 

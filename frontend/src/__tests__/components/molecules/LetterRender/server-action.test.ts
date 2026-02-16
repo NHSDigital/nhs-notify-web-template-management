@@ -1,5 +1,5 @@
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
-import type { LetterRenderFormState } from '@molecules/LetterRender/types';
+import type { FormState } from 'nhs-notify-web-template-management-utils';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -7,141 +7,102 @@ beforeEach(() => {
 
 describe('updateLetterPreview', () => {
   it('returns updated fields when recipient is valid', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: ['appointmentDate'],
-    };
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'short-1');
-    formData.append('custom_appointmentDate', '2025-01-15');
+    formData.append('__systemPersonalisationPackId', 'short-1');
+    formData.append('appointmentDate', '2025-01-15');
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result).toMatchObject({
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: ['appointmentDate'],
+    expect(result).toEqual({
       fields: {
-        systemPersonalisationPackId: 'short-1',
-        custom_appointmentDate: '2025-01-15',
+        __systemPersonalisationPackId: 'short-1',
+        appointmentDate: '2025-01-15',
       },
     });
-    expect(result.errorState).toBeUndefined();
   });
 
   it('returns updated fields for long tab with valid recipient', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'long',
-      customPersonalisationFields: [],
-    };
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'long-1');
+    formData.append('__systemPersonalisationPackId', 'long-1');
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
+    expect(result.fields?.__systemPersonalisationPackId).toBe('long-1');
     expect(result.errorState).toBeUndefined();
   });
 
   it('handles multiple custom personalisation fields', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: ['appointmentDate', 'clinicName'],
-    };
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'short-1');
-    formData.append('custom_appointmentDate', '2025-01-15');
-    formData.append('custom_clinicName', 'Main Street Clinic');
+    formData.append('__systemPersonalisationPackId', 'short-1');
+    formData.append('appointmentDate', '2025-01-15');
+    formData.append('clinicName', 'Main Street Clinic');
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result.fields).toMatchObject({
-      systemPersonalisationPackId: 'short-1',
-      custom_appointmentDate: '2025-01-15',
-      custom_clinicName: 'Main Street Clinic',
+    expect(result.fields).toEqual({
+      __systemPersonalisationPackId: 'short-1',
+      appointmentDate: '2025-01-15',
+      clinicName: 'Main Street Clinic',
     });
     expect(result.errorState).toBeUndefined();
   });
 
   it('handles empty custom personalisation field values', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: ['appointmentDate'],
-    };
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'short-1');
-    formData.append('custom_appointmentDate', '');
+    formData.append('__systemPersonalisationPackId', 'short-1');
+    formData.append('appointmentDate', '');
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result.fields?.custom_appointmentDate).toBe('');
+    expect(result.fields?.appointmentDate).toBe('');
     expect(result.errorState).toBeUndefined();
   });
 
   it('clears previous errorState on successful submission', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: [],
+    const formState: FormState = {
       errorState: {
         formErrors: [],
         fieldErrors: {
-          systemPersonalisationPackId: ['Previous error'],
+          __systemPersonalisationPackId: ['Previous error'],
         },
       },
     };
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'short-1');
+    formData.append('__systemPersonalisationPackId', 'short-1');
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.errorState).toBeUndefined();
   });
 
-  it('returns validation error when systemPersonalisationPackId is empty', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: [],
-    };
+  it('returns validation error when __systemPersonalisationPackId is empty', async () => {
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', '');
+    formData.append('__systemPersonalisationPackId', '');
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
       fieldErrors: {
-        systemPersonalisationPackId: ['Select an example recipient'],
+        __systemPersonalisationPackId: ['Select an example recipient'],
       },
     });
-    expect(result.fields?.systemPersonalisationPackId).toBe('');
+    expect(result.fields?.__systemPersonalisationPackId).toBe('');
   });
 
-  it('returns validation error when systemPersonalisationPackId is missing', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: [],
-    };
+  it('returns validation error when __systemPersonalisationPackId is missing', async () => {
+    const formState: FormState = {};
 
     const formData = new FormData();
 
@@ -150,50 +111,40 @@ describe('updateLetterPreview', () => {
     expect(result.errorState).toEqual({
       formErrors: [],
       fieldErrors: {
-        systemPersonalisationPackId: ['Select an example recipient'],
+        __systemPersonalisationPackId: ['Select an example recipient'],
       },
     });
   });
 
-  it('returns validation error when systemPersonalisationPackId is invalid', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: [],
-    };
+  it('returns validation error when __systemPersonalisationPackId is invalid', async () => {
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', 'invalid-recipient-id');
+    formData.append('__systemPersonalisationPackId', 'invalid-recipient-id');
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.errorState).toEqual({
       formErrors: [],
       fieldErrors: {
-        systemPersonalisationPackId: ['Select an example recipient'],
+        __systemPersonalisationPackId: ['Select an example recipient'],
       },
     });
-    expect(result.fields?.systemPersonalisationPackId).toBe(
+    expect(result.fields?.__systemPersonalisationPackId).toBe(
       'invalid-recipient-id'
     );
   });
 
   it('preserves custom field values on validation error', async () => {
-    const formState: LetterRenderFormState = {
-      templateId: 'template-123',
-      lockNumber: 1,
-      tab: 'short',
-      customPersonalisationFields: ['appointmentDate'],
-    };
+    const formState: FormState = {};
 
     const formData = new FormData();
-    formData.append('systemPersonalisationPackId', '');
-    formData.append('custom_appointmentDate', '2025-01-15');
+    formData.append('__systemPersonalisationPackId', '');
+    formData.append('appointmentDate', '2025-01-15');
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.errorState).toBeDefined();
-    expect(result.fields?.custom_appointmentDate).toBe('2025-01-15');
+    expect(result.fields?.appointmentDate).toBe('2025-01-15');
   });
 });

@@ -55,6 +55,10 @@ test.each([
     label: 'NHS App, Email, Text message, Letter',
   },
   {
+    option: 'EMAIL',
+    label: 'Email only',
+  },
+  {
     option: 'LETTER',
     label: 'Letter only',
   },

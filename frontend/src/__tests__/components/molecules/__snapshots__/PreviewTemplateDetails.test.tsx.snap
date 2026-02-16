@@ -405,7 +405,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without initialRender page counts are not displayed 1`] = `
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without initialRender - page counts are not displayed 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"

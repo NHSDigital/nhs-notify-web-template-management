@@ -28,13 +28,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function getValidationErrors(template: AuthoringLetterTemplate): string[] {
-  if (template.templateStatus !== 'VALIDATION_FAILED') {
-    return [];
-  }
+  if (template.templateStatus !== 'VALIDATION_FAILED') return [];
 
-  const { validationErrors = [] } = template;
-
-  return validationErrors.flatMap((error) => validationErrorMessages[error]);
+  return (
+    template.validationErrors?.flatMap(
+      // istanbul ignore next - unreachable since all errors allowed by template validation are mapped
+      (error) => validationErrorMessages[error] ?? []
+    ) ?? []
+  );
 }
 
 export default async function PreviewLetterTemplatePage({
@@ -64,6 +65,10 @@ export default async function PreviewLetterTemplatePage({
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
 
+  // TODO: CCM-13495
+  // all of this might need to become a client component
+  // because lock number will change when updating previews
+
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
@@ -78,10 +83,10 @@ export default async function PreviewLetterTemplatePage({
           <NHSNotifyBackLink href={links.messageTemplates}>
             {backLinkText}
           </NHSNotifyBackLink>
-          <NHSNotifyForm.ErrorSummary />
         </div>
         <NHSNotifyMain>
           <div className='nhsuk-width-container'>
+            <NHSNotifyForm.ErrorSummary />
             <div className='nhsuk-grid-row'>
               <div className='nhsuk-grid-column-full'>
                 <PreviewTemplateDetailsAuthoringLetter

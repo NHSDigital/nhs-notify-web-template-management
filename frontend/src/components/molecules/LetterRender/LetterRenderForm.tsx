@@ -28,18 +28,17 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
 
   return (
     <NHSNotifyForm.Form formId={`letter-preview-${tab}`}>
-      {/* PDS Personalisation Section */}
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup htmlFor='__systemPersonalisationPackId'>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage htmlFor='__systemPersonalisationPackId' />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
-          name='systemPersonalisationPackId'
+          name='__systemPersonalisationPackId'
           className={styles.recipientSelect}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
@@ -51,25 +50,28 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         </NHSNotifyForm.Select>
       </NHSNotifyForm.FormGroup>
 
-      {/* Custom Personalisation Section */}
       {hasCustomFields && (
         <>
           <h3 className='nhsuk-heading-s nhsuk-u-padding-top-4'>
             {copy.customSection.heading}
           </h3>
-          {template.customPersonalisation!.map((fieldName) => (
-            <NHSNotifyForm.FormGroup key={fieldName}>
-              <Label size='s' htmlFor={`custom-${fieldName}-${tab}`}>
-                {fieldName}
-              </Label>
-              <NHSNotifyForm.Input
-                type='text'
-                id={`custom-${fieldName}-${tab}`}
-                name={`custom_${fieldName}`}
-                maxLength={500}
-              />
-            </NHSNotifyForm.FormGroup>
-          ))}
+          {template.customPersonalisation!.map((field) => {
+            const id = `custom-${field}-${tab}`;
+
+            return (
+              <NHSNotifyForm.FormGroup key={field}>
+                <Label size='s' htmlFor={id}>
+                  {field}
+                </Label>
+                <NHSNotifyForm.Input
+                  type='text'
+                  id={id}
+                  name={field}
+                  maxLength={500}
+                />
+              </NHSNotifyForm.FormGroup>
+            );
+          })}
         </>
       )}
 

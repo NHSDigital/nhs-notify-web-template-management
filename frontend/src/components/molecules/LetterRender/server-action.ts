@@ -9,13 +9,13 @@ import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
 const { pdsSection } = copy.components.letterRender;
 
 const $FormSchema = z.object({
-  systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
+  __systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
     message: pdsSection.error.invalid,
   }),
 });
 
 export async function updateLetterPreview(
-  formState: FormState,
+  _: FormState,
   formData: FormData
 ): Promise<FormState> {
   const result = $FormSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -24,22 +24,12 @@ export async function updateLetterPreview(
 
   if (result.error) {
     return {
-      ...formState,
       errorState: z.flattenError(result.error),
       fields,
     };
   }
 
-  // remove 'custom_' prefix from custom personalisation fields
-  // combine with example recipient personalisation
-  // add date
-  // intitiate render
-  // initiate polling
-
-  const { errorState: _, ...rest } = formState;
-
   return {
-    ...rest,
     fields,
   };
 }

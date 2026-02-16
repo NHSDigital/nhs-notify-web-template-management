@@ -24,6 +24,6 @@ export async function submitAuthoringLetterAction(
 
   const { templateId, lockNumber } = result.data;
 
-  // TBD
+  // destination TBD
   redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
 }

@@ -48,6 +48,8 @@ export type AuthoringRenderFile = {
   currentVersion: string;
   status: string;
   pageCount: number;
+  systemPersonalisationPackId?: string;
+  personalisationParameters?: Record<string, string>;
 };
 
 type TypeSpecificProperties = {

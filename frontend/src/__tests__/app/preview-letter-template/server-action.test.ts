@@ -4,9 +4,7 @@
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import { redirect } from 'next/navigation';
 
-jest.mock('next/navigation', () => ({
-  redirect: jest.fn(),
-}));
+jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
 

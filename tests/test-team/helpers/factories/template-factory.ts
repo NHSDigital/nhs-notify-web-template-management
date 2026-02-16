@@ -1,7 +1,28 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
-import { TestUser } from '../auth/cognito-auth-helper';
-import { Template } from '../types';
+import type { Language, LetterType } from 'nhs-notify-backend-client';
+import type { TestUser } from '../auth/cognito-auth-helper';
+import type { AuthoringRenderFile, Template } from '../types';
 import { randomUUID } from 'node:crypto';
+
+export const defaultFileRenders = {
+  initialRender: {
+    fileName: 'initial-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 1,
+  } satisfies AuthoringRenderFile,
+  shortFormRender: {
+    fileName: 'short-form-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 1,
+  } satisfies AuthoringRenderFile,
+  longFormRender: {
+    fileName: 'long-form-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 2,
+  } satisfies AuthoringRenderFile,
+};
 
 export const TemplateFactory = {
   createEmailTemplate: (
@@ -109,24 +130,9 @@ export const TemplateFactory = {
       language?: Language;
       letterVariantId?: string;
       campaignId?: string | null;
-      initialRender?: {
-        fileName: string;
-        currentVersion: string;
-        status: string;
-        pageCount: number;
-      };
-      shortFormRender?: {
-        fileName: string;
-        currentVersion: string;
-        status: string;
-        pageCount: number;
-      };
-      longFormRender?: {
-        fileName: string;
-        currentVersion: string;
-        status: string;
-        pageCount: number;
-      };
+      initialRender?: Partial<AuthoringRenderFile> | false;
+      shortFormRender?: Partial<AuthoringRenderFile> | false;
+      longFormRender?: Partial<AuthoringRenderFile> | false;
       customPersonalisation?: string[];
       systemPersonalisation?: string[];
       validationErrors?: string[];
@@ -138,14 +144,31 @@ export const TemplateFactory = {
         : (options?.campaignId ?? 'campaign-id');
 
     const files: Record<string, unknown> = {};
-    if (options?.initialRender) {
-      files.initialRender = options.initialRender;
+
+    if (options?.initialRender !== false) {
+      files.initialRender = {
+        ...defaultFileRenders.initialRender,
+        ...options?.initialRender,
+      };
     }
-    if (options?.shortFormRender) {
-      files.shortFormRender = options.shortFormRender;
+
+    if (
+      options?.shortFormRender !== undefined &&
+      options.shortFormRender !== false
+    ) {
+      files.shortFormRender = {
+        ...defaultFileRenders.shortFormRender,
+        ...options.shortFormRender,
+      };
     }
-    if (options?.longFormRender) {
-      files.longFormRender = options.longFormRender;
+    if (
+      options?.longFormRender !== undefined &&
+      options.longFormRender !== false
+    ) {
+      files.longFormRender = {
+        ...defaultFileRenders.longFormRender,
+        ...options.longFormRender,
+      };
     }
 
     return TemplateFactory.create({
@@ -160,7 +183,6 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
       templateType: 'LETTER',
-      proofingEnabled: true,
       letterVariantId: options?.letterVariantId,
       ...(options?.customPersonalisation && {
         customPersonalisation: options.customPersonalisation,

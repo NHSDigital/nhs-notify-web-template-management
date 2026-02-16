@@ -10,7 +10,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
 
-  // Common elements
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
   public readonly statusTag: Locator;
@@ -32,7 +31,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
 
-    // Common elements
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
@@ -59,10 +57,14 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     const panel = this.page.getByRole('tabpanel', { name: tabName });
     const tab = this.page.getByRole('tab', { name: tabName });
     const recipientSelect = panel.locator(
-      'select[name="systemPersonalisationPackId"]'
+      'select[name="__systemPersonalisationPackId"]'
     );
     const updatePreviewButton = panel.getByRole('button', {
       name: 'Update preview',
+    });
+    const previewIframe = panel.locator('iframe[title*="Letter preview"]');
+    const customFieldsHeading = panel.getByRole('heading', {
+      name: 'Custom personalisation fields',
     });
 
     return {
@@ -70,14 +72,12 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       panel,
       recipientSelect,
       updatePreviewButton,
-      previewIframe: panel.locator('iframe[title*="Letter preview"]'),
-      customFieldsHeading: panel.getByRole('heading', {
-        name: 'Custom personalisation fields',
-      }),
+      previewIframe,
+      customFieldsHeading,
       getCustomFieldInput: (fieldName: string): Locator =>
         panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
-      getRecipientOptions: (): Locator =>
-        panel.locator('select[name="systemPersonalisationPackId"] option'),
+      getRecipientOptions: (): Locator => recipientSelect.locator('option'),
+
       async clickTab() {
         await tab.click();
       },
