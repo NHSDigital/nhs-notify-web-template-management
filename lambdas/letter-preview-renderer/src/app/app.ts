@@ -9,8 +9,9 @@ import type { TemplateRepository } from '../infra/template-repository';
 import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getPersonalisation } from '../domain/personalisation';
-import type { Result } from '../types/result';
-import { RenderVariant } from '../types/types';
+import type { RenderVariant } from '../types/types';
+
+type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
 
 export class App {
   constructor(
@@ -22,35 +23,64 @@ export class App {
     private readonly logger: Logger
   ) {}
 
-  async renderInitial({
-    template,
-  }: InitialRenderRequest): Promise<Result<null>> {
-    const _templateLogger = this.logger.child(template);
+  async renderInitial({ template }: InitialRenderRequest): Promise<Outcome> {
+    const templateLogger = this.logger.child({
+      ...template,
+      renderVariant: 'initial',
+    });
 
     await using sourceDisposable = await this.sourceRepo.getSource(template);
 
     if (!sourceDisposable.result.ok) {
-      return this.recordNonRenderable(template, 'initial');
+      templateLogger.error(
+        'Failed to fetch source file',
+        sourceDisposable.result.error
+      );
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
-    const source = sourceDisposable.result.data;
+    const { data: source } = sourceDisposable.result;
 
     const markersResult = await this.carbone.extractMarkers(source);
 
     if (!markersResult.ok) {
-      return this.recordNonRenderable(template, 'initial');
+      templateLogger.info(
+        'Failed to extract markers from source',
+        markersResult.error
+      );
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
     const markers = markersResult.data;
+
+    const personalisation = getPersonalisation(markers);
 
     const {
       passthroughPersonalisation,
       invalidRenderablePersonalisation,
       nonRenderablePersonalisation,
-    } = getPersonalisation(markers);
+    } = personalisation;
 
     if (nonRenderablePersonalisation.length > 0) {
-      return this.recordNonRenderable(template, 'initial');
+      this.logger
+        .child(personalisation)
+        .info('Source contains non-renderable personalisation');
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
     const renderResult = await this.carbone.render(
@@ -59,7 +89,13 @@ export class App {
     );
 
     if (!renderResult.ok) {
-      return this.recordNonRenderable(template, 'initial');
+      this.logger.error('Failed to render', renderResult.error);
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
     const buf = renderResult.data;
@@ -67,7 +103,13 @@ export class App {
     const pagesResult = await this.checkRender.pageCount(buf);
 
     if (!pagesResult.ok) {
-      return this.recordNonRenderable(template, 'initial');
+      this.logger.error('Failed to count pages', pagesResult.error);
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
     const { data: pages } = pagesResult;
@@ -80,25 +122,43 @@ export class App {
     );
 
     if (!savePdfResult.ok) {
-      return this.recordNonRenderable(template, 'initial');
+      this.logger.error('failed to save PDF', savePdfResult.error);
+
+      return await this.handleNonRenderable(
+        template,
+        'initial',
+        templateLogger
+      );
     }
 
     const { data: filename } = savePdfResult;
 
     if (invalidRenderablePersonalisation.length > 0) {
-      return this.recordRenderedInvalid(template, pages, filename);
+      return await this.handleRenderedInvalid(
+        template,
+        pages,
+        filename,
+        templateLogger
+      );
     }
 
-    return this.recordRenderedValid(template, 'initial', pages, filename);
+    return await this.handleRenderedValid(
+      template,
+      'initial',
+      pages,
+      filename,
+      templateLogger
+    );
   }
 
-  private recordRenderedValid(
+  private async handleRenderedValid(
     template: TemplateRenderIds,
     renderVariant: RenderVariant,
     pages: number,
-    filename: string
-  ) {
-    return this.templateRepo.update(
+    filename: string,
+    _logger: Logger
+  ): Promise<Outcome> {
+    await this.templateRepo.update(
       template,
       renderVariant,
       'RENDERED',
@@ -106,28 +166,34 @@ export class App {
       pages,
       filename
     );
+
+    return 'rendered';
   }
 
-  private recordNonRenderable(
+  private async handleNonRenderable(
     template: TemplateRenderIds,
-    renderVariant: RenderVariant
-  ) {
+    renderVariant: RenderVariant,
+    _logger: Logger
+  ): Promise<Outcome> {
     // add specific error details?
-    return this.templateRepo.update(
+    await this.templateRepo.update(
       template,
       renderVariant,
       'FAILED',
       'VALIDATION_FAILED'
     );
+
+    return 'not-rendered';
   }
 
-  private recordRenderedInvalid(
+  private async handleRenderedInvalid(
     template: TemplateRenderIds,
     pages: number,
-    filename: string
-  ) {
+    filename: string,
+    _logger: Logger
+  ): Promise<Outcome> {
     // add specific error details?
-    return this.templateRepo.update(
+    await this.templateRepo.update(
       template,
       'initial',
       'FAILED',
@@ -135,5 +201,7 @@ export class App {
       pages,
       filename
     );
+
+    return 'not-rendered';
   }
 }
