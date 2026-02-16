@@ -15,7 +15,7 @@ exports[`TestMessageBanner matches snapshot for EMAIL template type 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-        Send a test email message
+        Send a test email
       </a>
        to preview this message properly.
     </div>

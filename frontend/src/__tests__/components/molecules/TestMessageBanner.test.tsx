@@ -27,7 +27,7 @@ describe('TestMessageBanner', () => {
 
     expect(screen.getByTestId('test-message-banner')).toBeVisible();
     expect(
-      screen.getByRole('link', { name: 'Send a test email message' })
+      screen.getByRole('link', { name: 'Send a test email' })
     ).toHaveAttribute('href', '/templates/send-test-email-message/template-789');
   });
 
