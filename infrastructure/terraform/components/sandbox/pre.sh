@@ -10,6 +10,10 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+# Use the Terraform component identifier for image tagging in sandbox.
+# Terraform resolves this as `sbx`while the folder name is `sandbox`.
+component_name="sbx"
+
 # Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
 export component_name project aws_account_id environment region
 
