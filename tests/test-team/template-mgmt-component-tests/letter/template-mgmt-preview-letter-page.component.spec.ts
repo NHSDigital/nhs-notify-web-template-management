@@ -196,6 +196,32 @@ async function createTemplates(user: TestUser) {
         },
       }
     ),
+    authoringWithShortFormRender: TemplateFactory.createAuthoringLetterTemplate(
+      'C9D0E1F2-A3B4-5678-CDEF-901234567890',
+      user,
+      'authoring-with-short-form-render',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: 'variant-short-render',
+        customPersonalisation: ['appointmentDate'],
+        initialRender: {
+          fileName: 'initial-render.pdf',
+          currentVersion: 'v1-initial',
+          pageCount: 4,
+        },
+        shortFormRender: {
+          fileName: 'short-personalised.pdf',
+          currentVersion: 'v1-short',
+          pageCount: 4,
+          systemPersonalisationPackId: 'short-1',
+          personalisationParameters: {
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            appointmentDate: '2025-03-15',
+          },
+        },
+      }
+    ),
     authoringValidationFailedWithRender:
       TemplateFactory.createAuthoringLetterTemplate(
         'B8C9D0E1-F2A3-4567-BCDE-890123456789',
@@ -742,6 +768,75 @@ test.describe('Preview Letter template Page', () => {
         await expect(longAppointmentDate).toHaveValue('20 April 2025');
         await expect(longClinicName).toHaveValue('County Clinic');
         await expect(longDoctorName).toHaveValue('Dr Jones');
+      });
+
+      test.describe('existing personalised renders', () => {
+        test('short tab displays personalised render when shortFormRender exists', async ({
+          page,
+        }) => {
+          const template = templates.authoringWithShortFormRender;
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          const expectedUrl = `/templates/files/${template.clientId}/renders/${template.id}/short-personalised.pdf`;
+
+          await expect(previewPage.shortTab.previewIframe).toHaveAttribute(
+            'src',
+            expectedUrl
+          );
+        });
+
+        test('short tab pre-populates form state from existing shortFormRender', async ({
+          page,
+        }) => {
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam(
+            'templateId',
+            templates.authoringWithShortFormRender.id
+          );
+
+          await previewPage.loadPage();
+
+          await expect(previewPage.shortTab.recipientSelect).toHaveValue(
+            'short-1'
+          );
+
+          const appointmentDateInput =
+            previewPage.shortTab.getCustomFieldInput('appointmentDate');
+
+          await expect(appointmentDateInput).toHaveValue('2025-03-15');
+        });
+
+        test('long tab falls back to initialRender when only shortFormRender exists', async ({
+          page,
+        }) => {
+          const template = templates.authoringWithShortFormRender;
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          await previewPage.longTab.clickTab();
+
+          const expectedUrl = `/templates/files/${template.clientId}/renders/${template.id}/initial-render.pdf`;
+
+          await expect(previewPage.longTab.previewIframe).toHaveAttribute(
+            'src',
+            expectedUrl
+          );
+
+          await expect(previewPage.longTab.recipientSelect).toHaveValue('');
+
+          const appointmentDateInput =
+            previewPage.longTab.getCustomFieldInput('appointmentDate');
+
+          await expect(appointmentDateInput).toHaveValue('');
+        });
       });
     });
 

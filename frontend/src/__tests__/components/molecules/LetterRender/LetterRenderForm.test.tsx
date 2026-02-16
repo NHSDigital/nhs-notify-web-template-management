@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { LetterRenderForm } from '@molecules/LetterRender/LetterRenderForm';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { LetterRenderFormState } from '@molecules/LetterRender/types';
+import type {
+  AuthoringLetterTemplate,
+  FormState,
+} from 'nhs-notify-web-template-management-utils';
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -22,21 +24,11 @@ const baseTemplate: AuthoringLetterTemplate = {
 };
 
 const mockServerAction = jest.fn().mockResolvedValue({
-  templateId: 'template-123',
-  lockNumber: 1,
-  tab: 'short',
-  customPersonalisationFields: [],
   fields: {},
-} satisfies LetterRenderFormState);
+} satisfies FormState);
 
-function createInitialFormState(
-  overrides: Partial<LetterRenderFormState> = {}
-): LetterRenderFormState {
+function createInitialFormState(overrides: Partial<FormState> = {}): FormState {
   return {
-    templateId: 'template-123',
-    lockNumber: 1,
-    tab: 'short',
-    customPersonalisationFields: [],
     fields: {},
     ...overrides,
   };
@@ -44,7 +36,7 @@ function createInitialFormState(
 
 function renderWithProvider(
   form: React.ReactElement,
-  initialState: LetterRenderFormState = createInitialFormState()
+  initialState: FormState = createInitialFormState()
 ) {
   return render(
     <NHSNotifyFormProvider
@@ -70,6 +62,7 @@ describe('LetterRenderForm', () => {
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
       });
+
       expect(dropdown).toBeInTheDocument();
 
       expect(screen.getByText('Jo Bloggs')).toBeInTheDocument();
@@ -78,23 +71,24 @@ describe('LetterRenderForm', () => {
     });
 
     it('renders PDS recipient dropdown with long recipients for long tab', () => {
-      const initialState = createInitialFormState({ tab: 'long' });
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='long' />,
-        initialState
+        <LetterRenderForm template={baseTemplate} tab='long' />
       );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
       });
+
       expect(dropdown).toBeInTheDocument();
 
       expect(
         screen.getByText('Mr Michael James Richardson-Clarke')
       ).toBeInTheDocument();
+
       expect(
         screen.getByText('Dr Elizabeth Anne Thompson')
       ).toBeInTheDocument();
+
       expect(
         screen.getByText('Dame Catherine Elizabeth Montgomery')
       ).toBeInTheDocument();
@@ -107,18 +101,15 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate', 'clinicName'],
       };
-      const initialState = createInitialFormState({
-        customPersonalisationFields: ['appointmentDate', 'clinicName'],
-      });
 
       renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='short' />,
-        initialState
+        <LetterRenderForm template={templateWithCustom} tab='short' />
       );
 
       expect(
         screen.getByText('Custom personalisation fields')
       ).toBeInTheDocument();
+
       expect(screen.getByLabelText('appointmentDate')).toBeInTheDocument();
       expect(screen.getByLabelText('clinicName')).toBeInTheDocument();
     });
@@ -158,7 +149,7 @@ describe('LetterRenderForm', () => {
     it('displays selected PDS recipient from form state', () => {
       const initialState = createInitialFormState({
         fields: {
-          systemPersonalisationPackId: 'short-1',
+          __systemPersonalisationPackId: 'short-1',
         },
       });
 
@@ -170,6 +161,7 @@ describe('LetterRenderForm', () => {
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
       });
+
       expect(dropdown).toHaveValue('short-1');
     });
 
@@ -178,11 +170,11 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate'],
       };
+
       const initialState = createInitialFormState({
-        customPersonalisationFields: ['appointmentDate'],
         fields: {
-          systemPersonalisationPackId: '',
-          custom_appointmentDate: '2025-01-15',
+          __systemPersonalisationPackId: '',
+          appointmentDate: '2025-01-15',
         },
       });
 
@@ -209,12 +201,12 @@ describe('LetterRenderForm', () => {
   });
 
   describe('error display', () => {
-    it('displays error message when systemPersonalisationPackId has validation error', () => {
+    it('displays error message and applies error styling when systemPersonalisationPackId has validation error', () => {
       const initialState = createInitialFormState({
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
+            __systemPersonalisationPackId: ['Select an example recipient'],
           },
         },
       });
@@ -227,47 +219,17 @@ describe('LetterRenderForm', () => {
       expect(
         screen.getByText('Select an example recipient')
       ).toBeInTheDocument();
-    });
-
-    it('applies error styling to form group when validation error exists', () => {
-      const initialState = createInitialFormState({
-        errorState: {
-          formErrors: [],
-          fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
-          },
-        },
-      });
-
-      renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />,
-        initialState
-      );
 
       const formGroup = screen
         .getByText('Select an example recipient')
         .closest('.nhsuk-form-group');
+
       expect(formGroup).toHaveClass('nhsuk-form-group--error');
-    });
-
-    it('applies error styling to select when validation error exists', () => {
-      const initialState = createInitialFormState({
-        errorState: {
-          formErrors: [],
-          fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
-          },
-        },
-      });
-
-      renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />,
-        initialState
-      );
 
       const select = screen.getByRole('combobox', {
         name: 'Example recipient',
       });
+
       expect(select).toHaveClass('nhsuk-select--error');
     });
   });
@@ -278,13 +240,9 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate', 'clinicName'],
       };
-      const initialState = createInitialFormState({
-        customPersonalisationFields: ['appointmentDate', 'clinicName'],
-      });
 
       const container = renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='short' />,
-        initialState
+        <LetterRenderForm template={templateWithCustom} tab='short' />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -295,14 +253,9 @@ describe('LetterRenderForm', () => {
         ...baseTemplate,
         customPersonalisation: ['appointmentDate'],
       };
-      const initialState = createInitialFormState({
-        tab: 'long',
-        customPersonalisationFields: ['appointmentDate'],
-      });
 
       const container = renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='long' />,
-        initialState
+        <LetterRenderForm template={templateWithCustom} tab='long' />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -311,6 +264,24 @@ describe('LetterRenderForm', () => {
     it('matches snapshot without custom personalisation', () => {
       const container = renderWithProvider(
         <LetterRenderForm template={baseTemplate} tab='short' />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('matches snapshot with validation error', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            __systemPersonalisationPackId: ['Select an example recipient'],
+          },
+        },
+      });
+
+      const container = renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='short' />,
+        initialState
       );
 
       expect(container.asFragment()).toMatchSnapshot();

@@ -108,7 +108,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 <select
                   class="nhsuk-select recipientSelect"
                   id="system-personalisation-pack-id-short"
-                  name="systemPersonalisationPackId"
+                  name="__systemPersonalisationPackId"
                 >
                   <option
                     selected=""
@@ -191,7 +191,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-appointmentDate-short"
                   maxlength="500"
-                  name="custom_appointmentDate"
+                  name="appointmentDate"
                   type="text"
                   value=""
                 />
@@ -209,7 +209,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-clinicName-short"
                   maxlength="500"
-                  name="custom_clinicName"
+                  name="clinicName"
                   type="text"
                   value=""
                 />
@@ -228,7 +228,6 @@ exports[`LetterRender matches snapshot 1`] = `
           >
             <iframe
               aria-label="PDF preview of letter template with short example personalisation data"
-              referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - short examples"
             />
@@ -284,7 +283,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 <select
                   class="nhsuk-select recipientSelect"
                   id="system-personalisation-pack-id-long"
-                  name="systemPersonalisationPackId"
+                  name="__systemPersonalisationPackId"
                 >
                   <option
                     selected=""
@@ -367,7 +366,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-appointmentDate-long"
                   maxlength="500"
-                  name="custom_appointmentDate"
+                  name="appointmentDate"
                   type="text"
                   value=""
                 />
@@ -385,7 +384,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-clinicName-long"
                   maxlength="500"
-                  name="custom_clinicName"
+                  name="clinicName"
                   type="text"
                   value=""
                 />
@@ -404,7 +403,6 @@ exports[`LetterRender matches snapshot 1`] = `
           >
             <iframe
               aria-label="PDF preview of letter template with long example personalisation data"
-              referrerpolicy="no-referrer"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - long examples"
             />

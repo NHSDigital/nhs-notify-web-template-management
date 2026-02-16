@@ -4,7 +4,6 @@ exports[`LetterRenderIframe snapshots matches snapshot with PDF URL 1`] = `
 <DocumentFragment>
   <iframe
     aria-label="PDF preview of letter template with short example personalisation data"
-    referrerpolicy="no-referrer"
     src="/templates/files/client-123/renders/template-123/initial.pdf"
     title="Letter preview - short examples"
   />

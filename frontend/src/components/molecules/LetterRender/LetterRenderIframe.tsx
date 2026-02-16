@@ -13,7 +13,6 @@ export function LetterRenderIframe({ tab, pdfUrl }: LetterRenderIframeProps) {
       src={pdfUrl}
       title={`Letter preview - ${tab} examples`}
       aria-label={`PDF preview of letter template with ${tab} example personalisation data`}
-      referrerPolicy='no-referrer'
     />
   );
 }

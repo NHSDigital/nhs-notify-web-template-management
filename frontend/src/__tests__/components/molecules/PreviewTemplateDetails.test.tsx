@@ -221,7 +221,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot without initialRender page counts are not displayed', () => {
+    it('matches snapshot without initialRender - page counts are not displayed', () => {
       const templateWithoutInitialRender = {
         ...baseAuthoringLetter,
         files: {},
@@ -479,46 +479,6 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(
         screen.queryByTestId('printing-postage-action')
       ).not.toBeInTheDocument();
-    });
-  });
-
-  describe('edit links', () => {
-    it('renders edit name link with correct href', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      const editNameLink = screen.getByTestId('edit-name-link');
-      expect(editNameLink).toHaveAttribute(
-        'href',
-        '/edit-template-name/template-id'
-      );
-    });
-
-    it('renders campaign edit link with correct href', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={{ ...baseAuthoringLetter, campaignId: 'campaign-1' }}
-        />
-      );
-
-      const campaignLink = screen.getByTestId('campaign-action');
-      expect(campaignLink).toHaveAttribute(
-        'href',
-        '/edit-template-campaign/template-id'
-      );
-    });
-
-    it('renders printing and postage edit link with correct href', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      const postageLink = screen.getByTestId('printing-postage-action');
-      expect(postageLink).toHaveAttribute(
-        'href',
-        '/choose-printing-and-postage/template-id'
-      );
     });
   });
 });

@@ -31,14 +31,14 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup htmlFor='__systemPersonalisationPackId'>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage htmlFor='__systemPersonalisationPackId' />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
-          name='systemPersonalisationPackId'
+          name='__systemPersonalisationPackId'
           className={styles.recipientSelect}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
@@ -57,7 +57,6 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
           </h3>
           {template.customPersonalisation!.map((field) => {
             const id = `custom-${field}-${tab}`;
-            const prefixedKey = `custom_${field}`;
 
             return (
               <NHSNotifyForm.FormGroup key={field}>
@@ -67,7 +66,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
-                  name={prefixedKey}
+                  name={field}
                   maxLength={500}
                 />
               </NHSNotifyForm.FormGroup>

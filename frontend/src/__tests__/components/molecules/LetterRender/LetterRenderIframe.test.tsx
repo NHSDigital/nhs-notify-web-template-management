@@ -12,6 +12,7 @@ describe('LetterRenderIframe', () => {
       );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
+
       expect(iframe).toHaveAttribute(
         'src',
         '/templates/files/client-123/renders/template-123/initial.pdf'
@@ -40,18 +41,10 @@ describe('LetterRenderIframe', () => {
       render(<LetterRenderIframe tab='short' pdfUrl={null} />);
 
       expect(screen.getByText('No preview available')).toBeInTheDocument();
+
       expect(
         screen.queryByTitle('Letter preview - short examples')
       ).not.toBeInTheDocument();
-    });
-  });
-
-  describe('iframe attributes', () => {
-    it('has referrerPolicy set to no-referrer', () => {
-      render(<LetterRenderIframe tab='short' pdfUrl='/test.pdf' />);
-
-      const iframe = screen.getByTitle('Letter preview - short examples');
-      expect(iframe).toHaveAttribute('referrerPolicy', 'no-referrer');
     });
   });
 

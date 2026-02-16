@@ -1,14 +1,17 @@
 'use client';
 
-import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type {
+  AuthoringLetterTemplate,
+  FormState,
+} from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import type { AuthoringPersonalisedRenderDetails } from 'nhs-notify-backend-client';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
-import type { RenderTab, LetterRenderFormState } from './types';
+import type { RenderTab } from './types';
 import styles from './LetterRenderTab.module.scss';
-import { AuthoringPersonalisedRenderDetails } from 'nhs-notify-backend-client';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -29,7 +32,7 @@ function getPersonalisedRender(
     : template.files.longFormRender;
 }
 
-function getInitialPdfUrl(
+function initialisePdfUrl(
   template: AuthoringLetterTemplate,
   tab: RenderTab
 ): string | null {
@@ -41,10 +44,10 @@ function getInitialPdfUrl(
   return fileName ? buildPdfUrl(template, fileName) : null;
 }
 
-function getInitialFormState(
+function initialiseFormState(
   template: AuthoringLetterTemplate,
   tab: RenderTab
-): LetterRenderFormState {
+): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
 
   const { systemPersonalisationPackId, personalisationParameters } =
@@ -52,30 +55,24 @@ function getInitialFormState(
 
   const customPersonalisationFields = template.customPersonalisation ?? [];
 
-  const fields = Object.fromEntries([
-    ['systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
-    ...customPersonalisationFields.map((f) => [
-      `custom_${f}`,
-      personalisationParameters?.[f] ?? '',
-    ]),
-  ]);
-
   return {
-    templateId: template.id,
-    lockNumber: template.lockNumber,
-    tab,
-    customPersonalisationFields,
-    fields,
+    fields: Object.fromEntries([
+      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
+      ...customPersonalisationFields.map((f) => [
+        f,
+        personalisationParameters?.[f] ?? '',
+      ]),
+    ]),
   };
 }
 
 export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
-  const initialFormState = getInitialFormState(template, tab);
-  const pdfUrl = getInitialPdfUrl(template, tab);
+  const formState = initialiseFormState(template, tab);
+  const pdfUrl = initialisePdfUrl(template, tab);
 
   return (
     <NHSNotifyFormProvider
-      initialState={initialFormState}
+      initialState={formState}
       serverAction={updateLetterPreview}
     >
       <div className='nhsuk-grid-row'>

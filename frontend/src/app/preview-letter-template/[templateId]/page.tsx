@@ -64,6 +64,10 @@ export default async function PreviewLetterTemplatePage({
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
 
+  // TODO: CCM-13495
+  // all of this might need to become a client component
+  // because lock number will change when updating previews
+
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
