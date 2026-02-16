@@ -10,6 +10,9 @@ import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getPersonalisation } from '../domain/personalisation';
 import type { RenderVariant } from '../types/types';
+import { failure, Result, success } from '../types/result';
+
+// should an intial request have a locknumber?
 
 type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
 
@@ -23,7 +26,9 @@ export class App {
     private readonly logger: Logger
   ) {}
 
-  async renderInitial({ template }: InitialRenderRequest): Promise<Outcome> {
+  async renderInitial({
+    template,
+  }: InitialRenderRequest): Promise<Result<Outcome>> {
     const templateLogger = this.logger.child({
       ...template,
       renderVariant: 'initial',
@@ -156,9 +161,9 @@ export class App {
     renderVariant: RenderVariant,
     pages: number,
     filename: string,
-    _logger: Logger
-  ): Promise<Outcome> {
-    await this.templateRepo.update(
+    logger: Logger
+  ): Promise<Result<Outcome>> {
+    const updateResult = await this.templateRepo.update(
       template,
       renderVariant,
       'RENDERED',
@@ -167,33 +172,41 @@ export class App {
       filename
     );
 
-    return 'rendered';
+    if (!updateResult.ok) {
+      return this.handleUpdateFailure(updateResult.error, logger);
+    }
+
+    return success('rendered');
   }
 
   private async handleNonRenderable(
     template: TemplateRenderIds,
     renderVariant: RenderVariant,
-    _logger: Logger
-  ): Promise<Outcome> {
+    logger: Logger
+  ): Promise<Result<Outcome>> {
     // add specific error details?
-    await this.templateRepo.update(
+    const updateResult = await this.templateRepo.update(
       template,
       renderVariant,
       'FAILED',
       'VALIDATION_FAILED'
     );
 
-    return 'not-rendered';
+    if (!updateResult.ok) {
+      return this.handleUpdateFailure(updateResult.error, logger);
+    }
+
+    return success('not-rendered');
   }
 
   private async handleRenderedInvalid(
     template: TemplateRenderIds,
     pages: number,
     filename: string,
-    _logger: Logger
-  ): Promise<Outcome> {
+    logger: Logger
+  ): Promise<Result<Outcome>> {
     // add specific error details?
-    await this.templateRepo.update(
+    const updateResult = await this.templateRepo.update(
       template,
       'initial',
       'FAILED',
@@ -202,6 +215,16 @@ export class App {
       filename
     );
 
-    return 'not-rendered';
+    if (!updateResult.ok) {
+      return this.handleUpdateFailure(updateResult.error, logger);
+    }
+
+    return success('not-rendered');
+  }
+
+  private handleUpdateFailure(error: unknown, logger: Logger) {
+    logger.error('Failed to update database', error);
+
+    return failure('failed-update');
   }
 }

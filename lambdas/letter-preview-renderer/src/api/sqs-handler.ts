@@ -24,11 +24,6 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
       return;
     }
 
-    const result = await app.renderInitial(request);
-
-    if (!result.ok) {
-      logger.error('Render failed', result.error);
-      throw new Error('Render failed');
-    }
+    await app.renderInitial(request);
   };
 }
