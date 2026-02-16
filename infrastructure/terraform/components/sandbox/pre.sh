@@ -2,6 +2,15 @@ REGION=$1
 ENVIRONMENT=$2
 ACTION=$3
 
+# Helper function for error handling
+run_or_fail() {
+  "$@"
+  if [ $? -ne 0 ]; then
+    echo "$* failed!" >&2
+    exit 1
+  fi
+}
+
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, and change of directory will persist once this script exits and returns control to terraform.sh
 
@@ -40,25 +49,21 @@ if [ "${ACTION}" == "apply" ]; then
     echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
     export PUBLISH_LAMBDA_IMAGE="true"
 
+
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
       echo "Installing dependencies"
-      npm ci;
+      run_or_fail npm ci;
     else
       echo "Skipping dependency installation"
     fi
 
-    npm run generate-dependencies --workspaces --if-present
+    run_or_fail npm run generate-dependencies --workspaces --if-present
+    run_or_fail npm run lambda-build --workspaces --if-present
+    run_or_fail lambdas/layers/pdfjs/build.sh
 
-    npm run lambda-build --workspaces --if-present
-    if [ $? -ne 0 ]; then
-      echo "npm run lambda-build failed!" >&2
-      exit 1
-    fi
-
-    lambdas/layers/pdfjs/build.sh
 else
     echo "Skipping lambda build for action $ACTION"
-    echo "Not setting PUBLISH_LAMBDA_IMAGE for non-apply action (e.g. plan)"
+    echo "Not setting PUBLISH_LAMBDA_IMAGE for action ($ACTION)"
 fi
 
 # revert back to original directory
