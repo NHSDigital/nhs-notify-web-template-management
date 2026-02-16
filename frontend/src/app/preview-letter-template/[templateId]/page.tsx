@@ -32,7 +32,7 @@ function getValidationErrors(template: AuthoringLetterTemplate): string[] {
 
   return (
     template.validationErrors?.flatMap(
-      // istanbul ignore next - unreachable since all errors allowed template by validation are mapped
+      // istanbul ignore next - unreachable since all errors allowed by template validation are mapped
       (error) => validationErrorMessages[error] ?? []
     ) ?? []
   );
