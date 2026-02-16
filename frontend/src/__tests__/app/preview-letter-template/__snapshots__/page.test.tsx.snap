@@ -486,7 +486,7 @@ exports[`authoring letter with validation errors matches snapshot with error and
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-short"
-                      name="systemPersonalisationPackId"
+                      name="__systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -565,7 +565,6 @@ exports[`authoring letter with validation errors matches snapshot with error and
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  referrerpolicy="no-referrer"
                   src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
@@ -621,7 +620,7 @@ exports[`authoring letter with validation errors matches snapshot with error and
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-long"
-                      name="systemPersonalisationPackId"
+                      name="__systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -700,7 +699,6 @@ exports[`authoring letter with validation errors matches snapshot with error and
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  referrerpolicy="no-referrer"
                   src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
@@ -1231,7 +1229,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-short"
-                      name="systemPersonalisationPackId"
+                      name="__systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -1310,7 +1308,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  referrerpolicy="no-referrer"
                   src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
@@ -1366,7 +1363,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-long"
-                      name="systemPersonalisationPackId"
+                      name="__systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -1445,7 +1442,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  referrerpolicy="no-referrer"
                   src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
