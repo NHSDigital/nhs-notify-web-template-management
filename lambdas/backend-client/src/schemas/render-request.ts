@@ -3,8 +3,10 @@ import type { RenderRequest } from '../types/render-request';
 import { schemaFor } from './schema-for';
 
 const $Common = z.object({
-  templateId: z.string(),
-  clientId: z.string(),
+  template: z.object({
+    templateId: z.string(),
+    clientId: z.string(),
+  }),
 });
 
 const $InitialRenderRequest = $Common.extend({

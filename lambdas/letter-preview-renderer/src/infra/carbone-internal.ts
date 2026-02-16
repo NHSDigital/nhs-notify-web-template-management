@@ -23,14 +23,16 @@ function findMarkersAsync(xml: string): Promise<Marker[]> {
   });
 }
 
-export function extractMarkers(path: string): Promise<Marker[]> {
-  return openTemplateAsync(path).then(({ files }) =>
-    Promise.all(
-      files.map(({ isMarked, data }) =>
-        isMarked && typeof data === 'string'
-          ? findMarkersAsync(parser.removeXMLInsideMarkers(data))
-          : []
-      )
-    ).then((markerArrays) => markerArrays.flat())
+export async function extractMarkers(path: string): Promise<Marker[]> {
+  const { files } = await openTemplateAsync(path);
+
+  const markerArrays = await Promise.all(
+    files.map(({ isMarked, data }) =>
+      isMarked && typeof data === 'string'
+        ? findMarkersAsync(parser.removeXMLInsideMarkers(data))
+        : []
+    )
   );
+
+  return markerArrays.flat();
 }

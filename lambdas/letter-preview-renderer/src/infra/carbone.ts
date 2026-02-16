@@ -1,41 +1,47 @@
 import carbone from 'carbone';
+import { type Result, success, failure } from '../types/result';
 import { extractMarkers } from './carbone-internal';
 
 export class Carbone {
   render(path: string, personalisation: Record<string, string>) {
-    return new Promise<Buffer>((resolve, reject) => {
+    return new Promise<Result<Buffer>>((resolve) => {
       carbone.render(
         path,
         personalisation,
         { convertTo: 'pdf' },
         (err, buf) => {
           if (err) {
-            return reject(err);
+            return resolve(failure(err));
           }
           if (!Buffer.isBuffer(buf)) {
-            return reject(new Error('Rendered buffer is not a Buffer'));
+            return resolve(
+              failure(new Error('Rendered buffer is not a Buffer'))
+            );
           }
-          return resolve(buf);
+          return resolve(success(buf));
         }
       );
     });
   }
 
-  async extractMarkers(path: string) {
-    const rawMarkers = await extractMarkers(path);
-    const unique = new Set(rawMarkers);
+  async extractMarkers(path: string): Promise<Result<Set<string>>> {
+    try {
+      const rawMarkers = await extractMarkers(path);
 
-    const markers: string[] = [];
+      const markers: string[] = [];
 
-    for (const { name } of unique) {
-      if (!name.startsWith('_root.')) {
-        // warn
-        continue;
+      for (const { name } of rawMarkers) {
+        if (!name.startsWith('_root.')) {
+          // warn
+          continue;
+        }
+
+        markers.push(name.slice(6));
       }
 
-      markers.push(name.slice(6));
+      return success(new Set(markers));
+    } catch (error) {
+      return failure(error);
     }
-
-    return markers.sort();
   }
 }

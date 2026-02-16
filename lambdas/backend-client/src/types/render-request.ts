@@ -1,6 +1,10 @@
-type Common = {
+export type TemplateRenderIds = {
   clientId: string;
   templateId: string;
+};
+
+type Common = {
+  template: TemplateRenderIds;
 };
 
 export type InitialRenderRequest = Common & {

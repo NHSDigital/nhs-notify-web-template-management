@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { randomUUID } from 'node:crypto';
-import { S3Repository } from 'nhs-notify-web-template-management-utils';
+import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { createWriteStream } from 'node:fs';
 import { unlink } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 
 export class SourceRepository {
   constructor(
@@ -13,9 +14,9 @@ export class SourceRepository {
     private readonly logger: Logger
   ) {}
 
-  async getSource(templateId: string, clientId: string) {
+  async getSource({ templateId, clientId }: TemplateRenderIds) {
     const stream = await this.s3.getObjectStream(
-      this.sourcePath(templateId, clientId)
+      this.sourcePathS3(templateId, clientId)
     );
 
     const path = await this.streamToTemp(stream);
@@ -34,15 +35,21 @@ export class SourceRepository {
   }
 
   private dispose(path: string) {
-    return () => unlink(path).catch((error) => this.logger.error(error));
+    return async () => {
+      await unlink(path).catch((error) =>
+        this.logger
+          .child({ path })
+          .error('Failed to delete temporary source file', error)
+      );
+    };
   }
 
   private tempPath() {
     const uuid = randomUUID();
-    return `/tmp/${uuid}.docx`;
+    return `/tmp/source/${uuid}.docx`;
   }
 
-  private sourcePath(templateId: string, clientId: string) {
+  private sourcePathS3(templateId: string, clientId: string) {
     return `${clientId}/letter-source/${templateId}/${templateId}.docx`;
   }
 }

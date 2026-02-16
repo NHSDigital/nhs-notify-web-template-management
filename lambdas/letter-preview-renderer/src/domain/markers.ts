@@ -1,12 +1,12 @@
 type MarkerStatus = 'valid' | 'invalid-renderable' | 'invalid-non-renderable';
 
 export function classifyAndCleanMarkers(
-  carboneMarkers: string[]
-): Record<MarkerStatus, string[]> {
-  const markers: Record<MarkerStatus, string[]> = {
-    valid: [],
-    'invalid-renderable': [],
-    'invalid-non-renderable': [],
+  carboneMarkers: Set<string>
+): Record<MarkerStatus, Set<string>> {
+  const markers: Record<MarkerStatus, Set<string>> = {
+    valid: new Set<string>(),
+    'invalid-renderable': new Set<string>(),
+    'invalid-non-renderable': new Set<string>(),
   };
 
   for (const marker of carboneMarkers) {
@@ -22,23 +22,23 @@ export function classifyAndCleanMarkers(
       marker.startsWith('#') ||
       /^t\(.*\)/.test(marker)
     ) {
-      markers['invalid-non-renderable'].push(marker);
+      markers['invalid-non-renderable'].add(marker);
       continue;
     }
 
     if (!marker.startsWith('d.')) {
-      markers['invalid-renderable'].push(marker);
+      markers['invalid-renderable'].add(marker);
       continue;
     }
 
     const dataMarker = marker.slice(2);
 
     if (!/^[A-Z_a-z-]+$/.test(dataMarker)) {
-      markers['invalid-renderable'].push(dataMarker);
+      markers['invalid-renderable'].add(dataMarker);
       continue;
     }
 
-    markers.valid.push(dataMarker);
+    markers.valid.add(dataMarker);
   }
 
   return markers;

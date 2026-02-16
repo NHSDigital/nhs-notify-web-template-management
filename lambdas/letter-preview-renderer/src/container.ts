@@ -5,6 +5,7 @@ import { SourceRepository } from './infra/source-repository';
 import { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Carbone } from './infra/carbone';
+import { CheckRender } from './infra/check-render';
 import { RenderRepository } from './infra/render-repository';
 import { TemplateRepository } from './infra/template-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
@@ -25,15 +26,24 @@ export function createContainer() {
   const internalS3 = new S3Repository(internalBucketName, s3Client);
   const downloadS3 = new S3Repository(downloadBucketName, s3Client);
 
-  const sourceRepo = new SourceRepository(internalS3);
+  const sourceRepo = new SourceRepository(internalS3, logger);
 
   const carbone = new Carbone();
+
+  const checkRender = new CheckRender();
 
   const renderRepo = new RenderRepository(downloadS3);
 
   const templateRepo = new TemplateRepository(ddbDocClient);
 
-  const app = new App(sourceRepo, carbone, renderRepo, templateRepo);
+  const app = new App(
+    sourceRepo,
+    carbone,
+    checkRender,
+    renderRepo,
+    templateRepo,
+    logger
+  );
 
   return { app, logger };
 }
