@@ -1,14 +1,16 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { randomUUID } from 'node:crypto';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
-import { createWriteStream } from 'node:fs';
-import { unlink } from 'node:fs/promises';
+import { createWriteStream, unlinkSync } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { RenderFailureError } from '../types/errors';
 
-export type SourceHandle = AsyncDisposable & { path: string };
+export type SourceHandle = {
+  path: string;
+  cleanup: () => void;
+};
 
 export class SourceRepository {
   constructor(
@@ -38,12 +40,14 @@ export class SourceRepository {
   private createHandle(path: string): SourceHandle {
     return {
       path,
-      [Symbol.asyncDispose]: async () => {
-        await unlink(path).catch((error) =>
+      cleanup: () => {
+        try {
+          unlinkSync(path);
+        } catch (error) {
           this.logger
             .child({ path })
-            .warn('Failed to delete temporary source file', error)
-        );
+            .warn('Failed to delete temporary source file', error);
+        }
       },
     };
   }

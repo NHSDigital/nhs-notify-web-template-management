@@ -4,6 +4,11 @@ import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/rend
 import { RenderVariant } from '../types/types';
 import { RenderFailureError } from '../types/errors';
 
+export type SaveResult = {
+  fileName: string;
+  currentVersion: string;
+};
+
 export class RenderRepository {
   constructor(private readonly s3: S3Repository) {}
 
@@ -12,16 +17,23 @@ export class RenderRepository {
     template: TemplateRenderIds,
     renderVariant: RenderVariant,
     pageCount: number
-  ): Promise<string> {
+  ): Promise<SaveResult> {
     const metadata = this.buildMetadata(template, renderVariant, pageCount);
     const key = this.s3Key(template, renderVariant);
 
     try {
-      await this.s3.putRawData(pdf, key, {
+      const response = await this.s3.putRawData(pdf, key, {
         Metadata: metadata,
       });
 
-      return key;
+      if (!response.VersionId) {
+        throw new Error('S3 did not return a VersionId');
+      }
+
+      return {
+        fileName: key,
+        currentVersion: response.VersionId,
+      };
     } catch (error) {
       throw new RenderFailureError('save-pdf', error);
     }

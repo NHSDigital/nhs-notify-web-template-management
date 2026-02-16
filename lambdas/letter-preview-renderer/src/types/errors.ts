@@ -6,10 +6,6 @@ export type RenderFailureReason =
   | 'save-pdf'
   | 'db-update';
 
-/**
- * Error thrown when the render pipeline fails at a known step.
- * These are expected failures that should mark the template as non-renderable.
- */
 export class RenderFailureError extends Error {
   constructor(
     public readonly reason: RenderFailureReason,
@@ -20,10 +16,6 @@ export class RenderFailureError extends Error {
   }
 }
 
-/**
- * Error thrown when the template contains markers that cannot be rendered.
- * This is a validation failure, not an infrastructure failure.
- */
 export class NonRenderableMarkersError extends Error {
   constructor(public readonly markers: string[]) {
     super(`Template contains non-renderable markers: ${markers.join(', ')}`);

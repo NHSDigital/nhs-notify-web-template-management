@@ -1,4 +1,9 @@
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  AuthoringPersonalisedRenderDetails,
+  AuthoringRenderDetails,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 import { BuilderOptionalArgs } from './types/builders';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { EntityUpdateBuilder } from './common/entity-update-builder';
@@ -85,6 +90,21 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
       supplier,
       supplierReference
     );
+    return this;
+  }
+
+  setInitialRender(details: AuthoringRenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'initialRender', details);
+    return this;
+  }
+
+  setLongFormRender(details: AuthoringPersonalisedRenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'longFormRender', details);
+    return this;
+  }
+
+  setShortFormRender(details: AuthoringPersonalisedRenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
     return this;
   }
 

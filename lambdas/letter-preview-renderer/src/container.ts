@@ -12,19 +12,24 @@ import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 export function createContainer() {
-  const { internalBucketName, region, downloadBucketName } = loadConfig();
+  const {
+    DOWNLOAD_BUCKET_NAME,
+    INTERNAL_BUCKET_NAME,
+    REGION,
+    TEMPLATES_TABLE_NAME,
+  } = loadConfig();
 
-  const s3Client = new S3Client({ region });
+  const s3Client = new S3Client({ region: REGION });
 
   const ddbDocClient = DynamoDBDocumentClient.from(
-    new DynamoDBClient({ region }),
+    new DynamoDBClient({ region: REGION }),
     {
       marshallOptions: { removeUndefinedValues: true },
     }
   );
 
-  const internalS3 = new S3Repository(internalBucketName, s3Client);
-  const downloadS3 = new S3Repository(downloadBucketName, s3Client);
+  const internalS3 = new S3Repository(INTERNAL_BUCKET_NAME, s3Client);
+  const downloadS3 = new S3Repository(DOWNLOAD_BUCKET_NAME, s3Client);
 
   const sourceRepo = new SourceRepository(internalS3, logger);
 
@@ -34,7 +39,10 @@ export function createContainer() {
 
   const renderRepo = new RenderRepository(downloadS3);
 
-  const templateRepo = new TemplateRepository(ddbDocClient);
+  const templateRepo = new TemplateRepository(
+    ddbDocClient,
+    TEMPLATES_TABLE_NAME
+  );
 
   const app = new App(
     sourceRepo,

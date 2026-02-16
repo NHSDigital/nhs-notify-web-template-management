@@ -1,5 +1,5 @@
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
-import type { SourceRepository } from '../infra/source-repository';
+import type { SourceRepository, SourceHandle } from '../infra/source-repository';
 import type { Carbone } from '../infra/carbone';
 import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
@@ -26,8 +26,10 @@ export class App {
       renderVariant: 'initial',
     });
 
+    let source: SourceHandle | undefined;
+
     try {
-      await using source = await this.sourceRepo.getSource(template);
+      source = await this.sourceRepo.getSource(template);
 
       const markers = await this.carbone.extractMarkers(source.path);
 
@@ -54,12 +56,17 @@ export class App {
 
       const pages = await this.checkRender.pageCount(pdf);
 
-      const filename = await this.renderRepo.save(
+      const saveResult = await this.renderRepo.save(
         pdf,
         template,
         'initial',
         pages
       );
+
+      const renderDetails = {
+        ...saveResult,
+        pageCount: pages,
+      };
 
       if (invalidRenderablePersonalisation.length > 0) {
         await this.templateRepo.update(
@@ -67,8 +74,7 @@ export class App {
           'initial',
           'FAILED',
           'VALIDATION_FAILED',
-          pages,
-          filename
+          renderDetails
         );
 
         return 'rendered-invalid';
@@ -79,8 +85,7 @@ export class App {
         'initial',
         'RENDERED',
         'NOT_YET_SUBMITTED',
-        pages,
-        filename
+        renderDetails
       );
 
       return 'rendered';
@@ -91,10 +96,9 @@ export class App {
       ) {
         templateLogger.info('Render failed', { error });
 
-        await this.templateRepo.update(
+        await this.templateRepo.updateFailed(
           template,
           'initial',
-          'FAILED',
           'VALIDATION_FAILED'
         );
 
@@ -102,6 +106,8 @@ export class App {
       }
 
       throw error;
+    } finally {
+      source?.cleanup();
     }
   }
 }
