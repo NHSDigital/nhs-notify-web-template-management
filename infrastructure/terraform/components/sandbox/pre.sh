@@ -11,6 +11,11 @@ run_or_fail() {
   fi
 }
 
+
+# Use the Terraform component identifier for image tagging in sandbox.
+# Terraform resolves this as `sbx`while the folder name is `sandbox`.
+component_name="sbx"
+
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, and change of directory will persist once this script exits and returns control to terraform.sh
 
@@ -18,10 +23,8 @@ echo "Running sandbox pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
+echo "component_name=$component_name"
 
-# Use the Terraform component identifier for image tagging in sandbox.
-# Terraform resolves this as `sbx`while the folder name is `sandbox`.
-component_name="sbx"
 
 # Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
 export component_name project aws_account_id environment region
