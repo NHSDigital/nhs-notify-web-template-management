@@ -32,8 +32,31 @@ CSI="${project}-${environment}-${DOCKER_COMPONENT_NAME:-$component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
-IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$PWD")}"
+
+## Set IMAGE_TAG_SUFFIX based on git tag or short SHA for unique lambda image tagging in ECR.
+#This ensures that each build produces a uniquely identifiable image, and tagged releases are easily traceable.
+echo "Checking if current commit is a tag..."
+GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+if [ -n "$GIT_TAG" ]; then
+  TAGGED="tag-$GIT_TAG"
+  echo "On tag: $GIT_TAG, exporting IMAGE_TAG_SUFFIX as tag: $TAGGED"
+  export IMAGE_TAG_SUFFIX="$TAGGED"
+
+else
+  SHORT_SHA="sha-$(git rev-parse --short HEAD)"
+  echo "Not on a tag, exporting IMAGE_TAG_SUFFIX as short SHA: $SHORT_SHA"
+  export IMAGE_TAG_SUFFIX="$SHORT_SHA"
+fi
+
+## Check if we are running in the context of a Terraform apply or plan, and set PUBLISH_LAMBDA_IMAGE accordingly. We only want to push images to ECR on apply, not on plan.
+echo "Checking if ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
+if [ "$ACTION" = "apply" ]; then
+  echo "Setting PUBLISH_LAMBDA_IMAGE to true for apply action"
+  export PUBLISH_LAMBDA_IMAGE="true"
+else
+  echo "Not setting PUBLISH_LAMBDA_IMAGE for action ($ACTION)"
+fi
 
 # Ensure required AWS/ECR configuration is present.
 echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
@@ -62,28 +85,46 @@ if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
 fi
 
 # Namespace tag by CSI and lambda name to avoid cross-environment collisions.
-IMAGE_TAG="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
+IMAGE_TAG="${CSI}-${LAMBDA_NAME}"
 
 # Compose the full ECR image references.
 ECR_REPO_URI="${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO}"
-ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
-# Use only the first input argument for BASE_IMAGE_ARG (no fallback)
+
+# Final tag names we will produce
+IMAGE_TAG_BASE="${ECR_REPO_URI}:${IMAGE_TAG}"
+IMAGE_TAG_LATEST="${ECR_REPO_URI}:${IMAGE_TAG}-latest"
+IMAGE_TAG_SUFFIXED="${ECR_REPO_URI}:${IMAGE_TAG}-${IMAGE_TAG_SUFFIX}"
+
+echo "Will build and tag images:"
+echo "  BASE -> ${IMAGE_TAG_BASE}"
+echo "  LATEST -> ${IMAGE_TAG_LATEST}"
+echo "  SUFFIXED -> ${IMAGE_TAG_SUFFIXED}"
 
 # Build and tag the Docker image for the lambda.
+# --load makes the built image available to the local docker daemon (single-platform).
 docker buildx build \
   -f docker/lambda/Dockerfile \
   --platform=linux/amd64 \
   --provenance=false \
   --sbom=false \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
-  -t "${ECR_IMAGE}" \
+  -t "${IMAGE_TAG_BASE}" \
+  -t "${IMAGE_TAG_LATEST}" \
+  -t "${IMAGE_TAG_SUFFIXED}" \
+  --load \
   .
 
-# Push the image tag to ECR on apply only. The Terraform configuration will reference this tag for the lambda image.
+# Push the image tag(s) to ECR on apply only. The Terraform configuration will reference the specific tag for the lambda image.
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
-  echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker image to ECR: ${ECR_IMAGE}"
-  docker push "${ECR_IMAGE}"
+  echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker images to ECR..."
+
+  for TAG in "${IMAGE_TAG_BASE}" "${IMAGE_TAG_LATEST}" "${IMAGE_TAG_SUFFIXED}"; do
+    echo "Pushing ${TAG}..."
+    docker push "${TAG}"
+  done
+
+  echo "Push complete."
 else
-  echo "PUBLISH_LAMBDA_IMAGE is not set to true (we are most likely running in the context of a TF Plan). Skipping Docker push."
+  echo "PUBLISH_LAMBDA_IMAGE is not set to true (likely TF Plan). Skipping Docker push."
   exit 0
 fi

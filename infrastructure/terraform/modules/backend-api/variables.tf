@@ -145,8 +145,3 @@ variable "enable_api_data_trace" {
   description = "Enable API Gateway data trace logging"
   default     = false
 }
-
-variable "image_tag_suffix" {
-  type        = string
-  description = "The short SHA or Release Tag to append to the container lambda image tag"
-}

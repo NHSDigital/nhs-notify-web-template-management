@@ -173,11 +173,6 @@ variable "event_delivery_logging_success_sample_percentage" {
   default     = 0
 }
 
-variable "image_tag_suffix" {
-  type        = string
-  description = "The short SHA or Release Tag to append to container lambda image tags"
-}
-
 variable "data_plane_bus_arn" {
   type        = string
   description = "Data plane event bus arn"

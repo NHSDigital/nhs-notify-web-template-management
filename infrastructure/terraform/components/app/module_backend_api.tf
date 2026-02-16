@@ -31,6 +31,4 @@ module "backend_api" {
   proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
 
   sns_topic_arn = module.eventpub.sns_topic.arn
-
-  image_tag_suffix = var.image_tag_suffix
 }

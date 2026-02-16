@@ -68,8 +68,3 @@ variable "parent_acct_environment" {
   description = "Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments"
   default     = "main"
 }
-
-variable "image_tag_suffix" {
-  type        = string
-  description = "The short SHA or Release Tag to append to container lambda image tags"
-}
