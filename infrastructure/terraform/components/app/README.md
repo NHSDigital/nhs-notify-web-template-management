@@ -22,7 +22,6 @@
 | <a name="input_cognito_user_pool_additional_callback_urls"></a> [cognito\_user\_pool\_additional\_callback\_urls](#input\_cognito\_user\_pool\_additional\_callback\_urls) | A list of additional callback\_urls for the cognito user pool | `list(string)` | `[]` | no |
 | <a name="input_commit_id"></a> [commit\_id](#input\_commit\_id) | The commit to deploy. Must be in the tree for branch\_name | `string` | `"HEAD"` | no |
 | <a name="input_component"></a> [component](#input\_component) | The variable encapsulating the name of this component | `string` | `"app"` | no |
-| <a name="input_container_lambda_ecr_repo"></a> [container\_lambda\_ecr\_repo](#input\_container\_lambda\_ecr\_repo) | ECR repository name for container-based lambda images | `string` | `"nhs-notify-main-acct"` | no |
 | <a name="input_control_plane_bus_arn"></a> [control\_plane\_bus\_arn](#input\_control\_plane\_bus\_arn) | Data plane event bus arn | `string` | n/a | yes |
 | <a name="input_data_plane_bus_arn"></a> [data\_plane\_bus\_arn](#input\_data\_plane\_bus\_arn) | Data plane event bus arn | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | A map of default tags to apply to all taggable resources within the component | `map(string)` | `{}` | no |
@@ -37,7 +36,7 @@
 | <a name="input_event_delivery_logging_success_sample_percentage"></a> [event\_delivery\_logging\_success\_sample\_percentage](#input\_event\_delivery\_logging\_success\_sample\_percentage) | Enable caching of events to an S3 bucket | `number` | `0` | no |
 | <a name="input_external_email_domain"></a> [external\_email\_domain](#input\_external\_email\_domain) | Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider. | `string` | `null` | no |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonymous with account short-name) | `string` | n/a | yes |
-| <a name="input_image_tag_suffix"></a> [image\_tag\_suffix](#input\_image\_tag\_suffix) | The short SHA or Release Tag to append to the container lambda image tag | `string` | n/a | yes |
+| <a name="input_image_tag_suffix"></a> [image\_tag\_suffix](#input\_image\_tag\_suffix) | The short SHA or Release Tag to append to container lambda image tags | `string` | n/a | yes |
 | <a name="input_kms_deletion_window"></a> [kms\_deletion\_window](#input\_kms\_deletion\_window) | When a kms key is deleted, how long should it wait in the pending deletion state? | `string` | `"30"` | no |
 | <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br/>    email_addresses  = list(string)<br/>    enable_polling   = bool<br/>    default_supplier = optional(bool)<br/>  }))</pre> | `{}` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
@@ -57,7 +56,6 @@
 | <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v2.0.28 |
 | <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_kms_us_east_1"></a> [kms\_us\_east\_1](#module\_kms\_us\_east\_1) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
-| <a name="module_letter_preview_renderer_lambda"></a> [letter\_preview\_renderer\_lambda](#module\_letter\_preview\_renderer\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.32/terraform-lambda.zip | n/a |
 | <a name="module_nhse_backup_vault"></a> [nhse\_backup\_vault](#module\_nhse\_backup\_vault) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.25/terraform-aws-backup-source.zip | n/a |
 | <a name="module_s3bucket_cf_logs"></a> [s3bucket\_cf\_logs](#module\_s3bucket\_cf\_logs) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../modules/ses | n/a |

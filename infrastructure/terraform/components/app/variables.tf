@@ -173,15 +173,9 @@ variable "event_delivery_logging_success_sample_percentage" {
   default     = 0
 }
 
-variable "container_lambda_ecr_repo" {
-  type        = string
-  description = "ECR repository name for container-based lambda images"
-  default     = "nhs-notify-main-acct"
-}
-
 variable "image_tag_suffix" {
   type        = string
-  description = "The short SHA or Release Tag to append to the container lambda image tag"
+  description = "The short SHA or Release Tag to append to container lambda image tags"
 }
 
 variable "data_plane_bus_arn" {

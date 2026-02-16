@@ -7,8 +7,27 @@ set -euo pipefail
 chmod +x ./build.sh
 ./build.sh
 
-# Set Variables required for Docker Build.
-BASE_IMAGE="$1"
+
+# Parse arguments
+BASE_IMAGE=""
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --base-image)
+      BASE_IMAGE="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$BASE_IMAGE" ]]; then
+  echo "Error: --base-image parameter is required." >&2
+  exit 1
+fi
+
 CSI="${project}-${environment}-${component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
@@ -52,7 +71,7 @@ ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 BASE_IMAGE_ARG="$1"
 
 # Build and tag the Docker image for the lambda.
-docker build \
+docker buildx build \
   -f docker/lambda/Dockerfile \
   --platform=linux/amd64 \
   --provenance=false \
