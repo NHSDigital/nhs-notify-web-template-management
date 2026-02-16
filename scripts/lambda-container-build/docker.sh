@@ -68,7 +68,6 @@ IMAGE_TAG="${CSI}-${LAMBDA_NAME}-${IMAGE_TAG_SUFFIX}"
 ECR_REPO_URI="${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO}"
 ECR_IMAGE="${ECR_REPO_URI}:${IMAGE_TAG}"
 # Use only the first input argument for BASE_IMAGE_ARG (no fallback)
-BASE_IMAGE_ARG="$1"
 
 # Build and tag the Docker image for the lambda.
 docker buildx build \
