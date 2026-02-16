@@ -10,6 +10,7 @@ import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getPersonalisation } from '../domain/personalisation';
 import type { Result } from '../types/result';
+import { RenderVariant } from '../types/types';
 
 export class App {
   constructor(
@@ -26,51 +27,81 @@ export class App {
   }: InitialRenderRequest): Promise<Result<null>> {
     const _templateLogger = this.logger.child(template);
 
-    await using source = await this.sourceRepo.getSource(template);
+    await using sourceDisposable = await this.sourceRepo.getSource(template);
 
-    const markersResult = await this.carbone.extractMarkers(source.path);
+    if (!sourceDisposable.result.ok) {
+      return this.recordNonRenderable(template, 'initial');
+    }
+
+    const source = sourceDisposable.result.data;
+
+    const markersResult = await this.carbone.extractMarkers(source);
 
     if (!markersResult.ok) {
-      return this.recordNonRenderable(template);
+      return this.recordNonRenderable(template, 'initial');
     }
 
     const markers = markersResult.data;
 
-    const personalisation = getPersonalisation(markers);
+    const {
+      passthroughPersonalisation,
+      invalidRenderablePersonalisation,
+      nonRenderablePersonalisation,
+    } = getPersonalisation(markers);
 
-    if (personalisation.nonRenderablePersonalisation.length > 0) {
-      return this.recordNonRenderable(template);
+    if (nonRenderablePersonalisation.length > 0) {
+      return this.recordNonRenderable(template, 'initial');
     }
 
     const renderResult = await this.carbone.render(
-      source.path,
-      personalisation.passthroughPersonalisation
+      source,
+      passthroughPersonalisation
     );
 
     if (!renderResult.ok) {
-      return this.recordNonRenderable(template);
+      return this.recordNonRenderable(template, 'initial');
     }
 
     const buf = renderResult.data;
 
-    const pages = await this.checkRender.pageCount(buf);
+    const pagesResult = await this.checkRender.pageCount(buf);
 
-    const filename = await this.renderRepo.save(buf, template, pages);
+    if (!pagesResult.ok) {
+      return this.recordNonRenderable(template, 'initial');
+    }
 
-    if (personalisation.invalidRenderablePersonalisation.length > 0) {
+    const { data: pages } = pagesResult;
+
+    const savePdfResult = await this.renderRepo.save(
+      buf,
+      template,
+      'initial',
+      pages
+    );
+
+    if (!savePdfResult.ok) {
+      return this.recordNonRenderable(template, 'initial');
+    }
+
+    const { data: filename } = savePdfResult;
+
+    if (invalidRenderablePersonalisation.length > 0) {
       return this.recordRenderedInvalid(template, pages, filename);
     }
 
-    return this.recordRenderedValid(template, pages, filename);
+    return this.recordRenderedValid(template, 'initial', pages, filename);
   }
 
   private recordRenderedValid(
     template: TemplateRenderIds,
+    renderVariant: RenderVariant,
     pages: number,
     filename: string
-  ): Promise<Result<null>> {
+  ) {
     return this.templateRepo.update(
       template,
+      renderVariant,
+      'RENDERED',
       'NOT_YET_SUBMITTED',
       pages,
       filename
@@ -78,20 +109,28 @@ export class App {
   }
 
   private recordNonRenderable(
-    template: TemplateRenderIds
-  ): Promise<Result<null>> {
+    template: TemplateRenderIds,
+    renderVariant: RenderVariant
+  ) {
     // add specific error details?
-    return this.templateRepo.update(template, 'VALIDATION_FAILED');
+    return this.templateRepo.update(
+      template,
+      renderVariant,
+      'FAILED',
+      'VALIDATION_FAILED'
+    );
   }
 
   private recordRenderedInvalid(
     template: TemplateRenderIds,
     pages: number,
     filename: string
-  ): Promise<Result<null>> {
+  ) {
     // add specific error details?
     return this.templateRepo.update(
       template,
+      'initial',
+      'FAILED',
       'VALIDATION_FAILED',
       pages,
       filename

@@ -8,7 +8,12 @@ export class TemplateRepository {
 
   async update(
     _template: TemplateRenderIds,
-    _status: Extract<TemplateStatus, 'NOT_YET_SUBMITTED' | 'VALIDATION_FAILED'>,
+    _renderVariant: 'initial' | 'long' | 'short',
+    _renderStatus: 'RENDERED' | 'FAILED',
+    _templateStatus?: Extract<
+      TemplateStatus,
+      'NOT_YET_SUBMITTED' | 'VALIDATION_FAILED'
+    >,
     _pageCount?: number,
     _filename?: string
   ): Promise<Result<null>> {

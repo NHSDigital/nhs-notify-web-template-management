@@ -8,6 +8,8 @@ import {
 } from '@aws-sdk/client-s3';
 import { Readable } from 'node:stream';
 
+type PutObjectOptions = Omit<PutObjectCommandInput, 'Bucket' | 'Key' | 'Body'>;
+
 export type GetObjectOutputReadableBody = GetObjectCommandOutput & {
   Body: Readable;
 };
@@ -20,14 +22,16 @@ export class S3Repository {
 
   async putRawData(
     fileData: PutObjectCommandInput['Body'],
-    key: string
+    key: string,
+    options: PutObjectOptions = {}
   ): Promise<PutObjectCommandOutput> {
+    // wrap errors incl path as in core?
     return await this.client.send(
       new PutObjectCommand({
         Bucket: this.bucket,
         Key: key,
         Body: fileData,
-        ChecksumAlgorithm: 'SHA256',
+        ...options,
       })
     );
   }

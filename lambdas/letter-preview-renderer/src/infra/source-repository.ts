@@ -3,10 +3,12 @@ import { randomUUID } from 'node:crypto';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { createWriteStream } from 'node:fs';
 import { unlink } from 'node:fs/promises';
-import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
+import { type Result, success, failure } from '../types/result';
+
+type SourceResult = AsyncDisposable & { result: Result<string> };
 
 export class SourceRepository {
   constructor(
@@ -14,33 +16,35 @@ export class SourceRepository {
     private readonly logger: Logger
   ) {}
 
-  async getSource({ templateId, clientId }: TemplateRenderIds) {
-    const stream = await this.s3.getObjectStream(
-      this.sourcePathS3(templateId, clientId)
-    );
-
-    const path = await this.streamToTemp(stream);
-
-    return {
-      path,
-      [Symbol.asyncDispose]: this.dispose(path),
-    };
-  }
-
-  private async streamToTemp(stream: Readable) {
+  async getSource({
+    templateId,
+    clientId,
+  }: TemplateRenderIds): Promise<SourceResult> {
     const path = this.tempPath();
 
-    await pipeline(stream, createWriteStream(path));
-    return path;
+    try {
+      const stream = await this.s3.getObjectStream(
+        this.sourcePathS3(templateId, clientId)
+      );
+
+      await pipeline(stream, createWriteStream(path));
+
+      return this.withDispose(success(path), path);
+    } catch (error) {
+      return this.withDispose(failure(error), path);
+    }
   }
 
-  private dispose(path: string) {
-    return async () => {
-      await unlink(path).catch((error) =>
-        this.logger
-          .child({ path })
-          .error('Failed to delete temporary source file', error)
-      );
+  private withDispose(result: Result<string>, path: string): SourceResult {
+    return {
+      result,
+      [Symbol.asyncDispose]: async () => {
+        await unlink(path).catch((error) =>
+          this.logger
+            .child({ path })
+            .warn('Failed to delete temporary source file', error)
+        );
+      },
     };
   }
 

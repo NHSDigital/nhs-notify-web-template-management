@@ -6,10 +6,8 @@ function hasAllAddressLines(markers: Set<string>): boolean {
     .every(Boolean);
 }
 
-function getPassthroughPersonalisation(
-  valid: Set<string>
-): Record<string, string> {
-  return Object.fromEntries([...valid].map((key) => [key, `d.${key}`]));
+function getPassthroughPersonalisation(keys: string[]): Record<string, string> {
+  return Object.fromEntries([...keys].map((key) => [key, `d.${key}`]));
 }
 
 export function getPersonalisation(markers: Set<string>) {
@@ -17,9 +15,10 @@ export function getPersonalisation(markers: Set<string>) {
 
   const hasAddressLines = hasAllAddressLines(cleaned.valid);
 
-  const passthroughPersonalisation = getPassthroughPersonalisation(
-    cleaned.valid
-  );
+  const passthroughPersonalisation = getPassthroughPersonalisation([
+    ...cleaned.valid,
+    ...cleaned['invalid-renderable'],
+  ]);
 
   return {
     hasAddressLines,
