@@ -9,6 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import content from '@content/content';
 import type { Metadata } from 'next';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -29,7 +30,11 @@ const PreviewLetterTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate template={validatedTemplate} />;
+  return (
+    <NHSNotifyContainer>
+      <PreviewLetterTemplate template={validatedTemplate} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default PreviewLetterTemplatePage;

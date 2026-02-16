@@ -8,6 +8,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import content from '@content/content';
 
 const { editPageTitle } = content.components.templateFormEmail;
@@ -84,6 +85,10 @@ describe('EditEmailTemplatePage', () => {
     expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toEqual(<EmailTemplateForm initialState={emailTemplate} />);
+    expect(page).toEqual(
+      <NHSNotifyContainer>
+        <EmailTemplateForm initialState={emailTemplate} />
+      </NHSNotifyContainer>
+    );
   });
 });

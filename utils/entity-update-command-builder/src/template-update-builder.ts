@@ -25,6 +25,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  setCampaignId(campaignId: string) {
+    this.updateBuilder.setValue('campaignId', campaignId);
+    return this;
+  }
+
   setSubject(subject: string) {
     this.updateBuilder.setValue('subject', subject);
     return this;
@@ -130,12 +135,26 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  expectNotFinalStatus() {
-    this.updateBuilder.conditions.andIn(
+  expectNotStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
+    if (Array.isArray(expectedStatus)) {
+      this.updateBuilder.conditions.andIn(
+        'templateStatus',
+        expectedStatus,
+        true
+      );
+      return this;
+    }
+    this.updateBuilder.conditions.and(
       'templateStatus',
-      ['DELETED', 'SUBMITTED'],
+      '=',
+      expectedStatus,
       true
     );
+    return this;
+  }
+
+  expectNotFinalStatus() {
+    this.expectNotStatus(['DELETED', 'SUBMITTED']);
     return this;
   }
 

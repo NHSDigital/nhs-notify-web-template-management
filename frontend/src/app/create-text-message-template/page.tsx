@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import { CreateUpdateSMSTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.templateFormSms;
 
@@ -18,7 +19,11 @@ const CreateSMSTemplatePage = async () => {
     message: '',
   };
 
-  return <SmsTemplateForm initialState={initialState} />;
+  return (
+    <NHSNotifyContainer>
+      <SmsTemplateForm initialState={initialState} />
+    </NHSNotifyContainer>
+  );
 };
 
 export default CreateSMSTemplatePage;

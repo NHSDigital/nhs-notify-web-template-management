@@ -23,6 +23,7 @@ export const messageOrderDisplayMappings: Record<MessageOrder, string> = {
   'NHSAPP,SMS,EMAIL': 'NHS App, Text message, Email',
   'NHSAPP,SMS,LETTER': 'NHS App, Text message, Letter',
   'NHSAPP,EMAIL,SMS,LETTER': 'NHS App, Email, Text message, Letter',
+  EMAIL: 'Email only',
   LETTER: 'Letter only',
 };
 

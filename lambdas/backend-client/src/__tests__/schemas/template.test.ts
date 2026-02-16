@@ -4,6 +4,7 @@ import {
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
   $LetterProperties,
+  $PatchTemplate,
   $PdfLetterProperties,
   $TemplateDto,
   $TemplateFilter,
@@ -591,6 +592,96 @@ describe('Template schemas', () => {
         ...emailTemplate,
         lockNumber: 0,
       });
+    });
+  });
+
+  describe('$PatchTemplate', () => {
+    it('should pass validation when name is provided', () => {
+      const result = $PatchTemplate.safeParse({
+        name: 'Updated Template Name',
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        name: 'Updated Template Name',
+      });
+    });
+
+    it('should pass validation when campaignId is provided', () => {
+      const result = $PatchTemplate.safeParse({
+        campaignId: 'Updated Campaign',
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        campaignId: 'Updated Campaign',
+      });
+    });
+
+    it('should fail validation when name is empty', () => {
+      const result = $PatchTemplate.safeParse({
+        name: '',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            name: ['Too small: expected string to have >=1 characters'],
+          },
+        })
+      );
+    });
+
+    it('should fail validation when name is whitespace only', () => {
+      const result = $PatchTemplate.safeParse({
+        name: '   ',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            name: ['Too small: expected string to have >=1 characters'],
+          },
+        })
+      );
+    });
+
+    it('should fail validation when campaignId is empty', () => {
+      const result = $PatchTemplate.safeParse({
+        campaignId: '',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            campaignId: ['Too small: expected string to have >=1 characters'],
+          },
+        })
+      );
+    });
+
+    it('should fail validation when campaignId is whitespace only', () => {
+      const result = $PatchTemplate.safeParse({
+        campaignId: '   ',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            campaignId: ['Too small: expected string to have >=1 characters'],
+          },
+        })
+      );
+    });
+
+    it('should fail validation when no fields are provided', () => {
+      const result = $PatchTemplate.safeParse({});
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          formErrors: expect.arrayContaining([expect.any(String)]),
+        })
+      );
     });
   });
 });

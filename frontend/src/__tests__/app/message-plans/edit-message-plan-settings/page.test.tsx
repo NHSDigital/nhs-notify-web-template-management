@@ -220,7 +220,7 @@ describe('multiple campaigns', () => {
 
     await user.click(await screen.findByTestId('name-field'));
 
-    await user.keyboard('x'.repeat(201));
+    await user.paste('x'.repeat(201));
 
     await user.selectOptions(
       await screen.findByTestId('campaign-id-field'),

@@ -1,6 +1,7 @@
 'use server';
 
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { MessagePlans } from '@molecules/MessagePlans/MessagePlans';
 import { Metadata } from 'next';
 import { countRoutingConfigs, getRoutingConfigs } from '@utils/message-plans';
@@ -32,16 +33,18 @@ const MessagePlansPage = async () => {
   const completed = messagePlans.filter((r) => r.status === 'COMPLETED');
 
   return (
-    <MessagePlans
-      draft={{
-        plans: draft,
-        count: draftCount,
-      }}
-      production={{
-        plans: completed,
-        count: completedCount,
-      }}
-    />
+    <NHSNotifyContainer>
+      <MessagePlans
+        draft={{
+          plans: draft,
+          count: draftCount,
+        }}
+        production={{
+          plans: completed,
+          count: completedCount,
+        }}
+      />
+    </NHSNotifyContainer>
   );
 };
 

@@ -5,6 +5,7 @@ import SubmitSmsTemplatePage, {
   generateMetadata,
 } from '@app/submit-text-message-template/[templateId]/page';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -55,12 +56,14 @@ describe('SubmitSmsTemplatePage', () => {
       title: pageTitle.SMS,
     });
     expect(page).toEqual(
-      <SubmitDigitalTemplate
-        templateName={state.name}
-        templateId={state.id}
-        channel='SMS'
-        lockNumber={42}
-      />
+      <NHSNotifyContainer>
+        <SubmitDigitalTemplate
+          templateName={state.name}
+          templateId={state.id}
+          channel='SMS'
+          lockNumber={42}
+        />
+      </NHSNotifyContainer>
     );
   });
 

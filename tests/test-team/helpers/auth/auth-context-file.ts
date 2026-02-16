@@ -3,9 +3,13 @@ import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Mutex } from 'async-mutex';
+import type { ClientConfiguration } from '../client/client-helper';
 import type { TestUserContext } from './cognito-auth-helper';
 
-type AuthContextNamespace = Record<string, TestUserContext>;
+type AuthContextNamespace = {
+  users: Record<string, TestUserContext>;
+  clients: Record<string, ClientConfiguration>;
+};
 
 export class AuthContextFile {
   public readonly path: string;
@@ -24,26 +28,75 @@ export class AuthContextFile {
     }
   }
 
-  async set(namespace: string, key: string, value: Partial<TestUserContext>) {
+  async setUser(
+    namespace: string,
+    id: string,
+    value: Partial<TestUserContext>
+  ) {
     await this.mutex.runExclusive(() => {
       const data = this.read();
-      const nsData = data[namespace] || {};
-      const keyData = nsData[key] || {};
+      const nsData = this.parseNamespace(data[namespace]);
 
-      nsData[key] = { ...keyData, ...value };
+      const keyData = nsData.users[id] || {};
+
+      nsData.users[id] = { ...keyData, ...value };
       data[namespace] = nsData;
 
       this.write(data);
     });
   }
 
-  async get(namespace: string, key: string): Promise<TestUserContext | null> {
-    return this.mutex.runExclusive(() => this.read()[namespace]?.[key] || null);
+  async getUser(
+    namespace: string,
+    id: string
+  ): Promise<TestUserContext | null> {
+    return this.mutex.runExclusive(
+      () => this.read()[namespace]?.users?.[id] ?? null
+    );
   }
 
-  async values(namespace: string): Promise<TestUserContext[]> {
+  async userValues(namespace: string): Promise<TestUserContext[]> {
     return this.mutex.runExclusive(() =>
-      Object.values(this.read()[namespace] || {})
+      Object.values(this.read()[namespace]?.users ?? {})
+    );
+  }
+
+  async setClient(
+    namespace: string,
+    id: string,
+    value: Partial<ClientConfiguration>
+  ) {
+    await this.mutex.runExclusive(() => {
+      const data = this.read();
+      const nsData = this.parseNamespace(data[namespace]);
+
+      const keyData = nsData.clients[id] || {};
+
+      nsData.clients[id] = { ...keyData, ...value };
+      data[namespace] = nsData;
+
+      this.write(data);
+    });
+  }
+
+  async getClient(
+    namespace: string,
+    id: string
+  ): Promise<ClientConfiguration | null> {
+    return this.mutex.runExclusive(
+      () => this.read()[namespace]?.clients?.[id] ?? null
+    );
+  }
+
+  async clientValues(namespace: string): Promise<ClientConfiguration[]> {
+    return this.mutex.runExclusive(() =>
+      Object.values(this.read()[namespace]?.clients ?? {})
+    );
+  }
+
+  async clientIds(namespace: string): Promise<string[]> {
+    return this.mutex.runExclusive(() =>
+      Object.keys(this.read()[namespace]?.clients ?? {})
     );
   }
 
@@ -53,6 +106,15 @@ export class AuthContextFile {
       Reflect.deleteProperty(data, namespace);
       this.write(data);
     });
+  }
+
+  private parseNamespace(
+    namespace: AuthContextNamespace | undefined
+  ): AuthContextNamespace {
+    return {
+      users: namespace?.users ?? {},
+      clients: namespace?.clients ?? {},
+    };
   }
 
   private write(data: Record<string, AuthContextNamespace>) {

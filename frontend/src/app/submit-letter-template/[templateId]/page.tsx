@@ -11,6 +11,7 @@ import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate
 import { $LockNumber } from 'nhs-notify-backend-client';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import content from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const routingEnabled = await serverIsFeatureEnabled('routing');
@@ -47,11 +48,13 @@ const SubmitLetterTemplatePage = async (props: TemplatePageProps) => {
   }
 
   return (
-    <SubmitLetterTemplate
-      templateName={validatedTemplate.name}
-      templateId={validatedTemplate.id}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <SubmitLetterTemplate
+        templateName={validatedTemplate.name}
+        templateId={validatedTemplate.id}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 };
 
