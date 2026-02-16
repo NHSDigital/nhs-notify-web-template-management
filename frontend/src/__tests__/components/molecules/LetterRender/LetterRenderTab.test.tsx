@@ -153,6 +153,21 @@ describe('LetterRenderTab', () => {
       expect(dropdown).toHaveValue('');
     });
 
+    it('handles template with no customPersonalisation', () => {
+      const templateWithoutCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: undefined,
+      };
+
+      render(<LetterRenderTab template={templateWithoutCustom} tab='short' />);
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(dropdown).toHaveValue('');
+    });
+
     it('uses stored systemPersonalisationPackId from shortFormRender', () => {
       const templateWithShortRender: AuthoringLetterTemplate = {
         ...baseTemplate,
