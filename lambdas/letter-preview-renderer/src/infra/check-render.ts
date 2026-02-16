@@ -1,13 +1,13 @@
 import { PDFDocument } from 'pdf-lib';
-import { failure, type Result, success } from '../types/result';
+import { RenderFailureError } from '../types/errors';
 
 export class CheckRender {
-  async pageCount(pdf: Buffer): Promise<Result<number>> {
+  async pageCount(pdf: Buffer): Promise<number> {
     try {
       const doc = await PDFDocument.load(pdf);
-      return success(doc.getPageCount());
+      return doc.getPageCount();
     } catch (error) {
-      return failure(error);
+      throw new RenderFailureError('page-count', error);
     }
   }
 }

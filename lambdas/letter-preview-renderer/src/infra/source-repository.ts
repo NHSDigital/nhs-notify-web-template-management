@@ -6,9 +6,9 @@ import { unlink } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
-import { type Result, success, failure } from '../types/result';
+import { RenderFailureError } from '../types/errors';
 
-type SourceResult = AsyncDisposable & { result: Result<string> };
+export type SourceHandle = AsyncDisposable & { path: string };
 
 export class SourceRepository {
   constructor(
@@ -19,7 +19,7 @@ export class SourceRepository {
   async getSource({
     templateId,
     clientId,
-  }: TemplateRenderIds): Promise<SourceResult> {
+  }: TemplateRenderIds): Promise<SourceHandle> {
     const path = this.tempPath();
 
     try {
@@ -29,15 +29,15 @@ export class SourceRepository {
 
       await pipeline(stream, createWriteStream(path));
 
-      return this.withDispose(success(path), path);
+      return this.createHandle(path);
     } catch (error) {
-      return this.withDispose(failure(error), path);
+      throw new RenderFailureError('source-fetch', error);
     }
   }
 
-  private withDispose(result: Result<string>, path: string): SourceResult {
+  private createHandle(path: string): SourceHandle {
     return {
-      result,
+      path,
       [Symbol.asyncDispose]: async () => {
         await unlink(path).catch((error) =>
           this.logger

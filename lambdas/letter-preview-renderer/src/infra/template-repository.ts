@@ -1,7 +1,6 @@
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import type { TemplateStatus } from 'nhs-notify-backend-client';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
-import { type Result, success } from '../types/result';
 
 export class TemplateRepository {
   constructor(private readonly ddb: DynamoDBDocumentClient) {}
@@ -16,7 +15,5 @@ export class TemplateRepository {
     >,
     _pageCount?: number,
     _filename?: string
-  ): Promise<Result<null>> {
-    return success(null);
-  }
+  ): Promise<void> {}
 }

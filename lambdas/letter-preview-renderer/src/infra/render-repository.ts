@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { S3Repository } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { RenderVariant } from '../types/types';
-import { failure, Result, success } from '../types/result';
+import { RenderFailureError } from '../types/errors';
 
 export class RenderRepository {
   constructor(private readonly s3: S3Repository) {}
@@ -12,7 +12,7 @@ export class RenderRepository {
     template: TemplateRenderIds,
     renderVariant: RenderVariant,
     pageCount: number
-  ): Promise<Result<string>> {
+  ): Promise<string> {
     const metadata = this.buildMetadata(template, renderVariant, pageCount);
     const key = this.s3Key(template, renderVariant);
 
@@ -21,9 +21,9 @@ export class RenderRepository {
         Metadata: metadata,
       });
 
-      return success(key);
+      return key;
     } catch (error) {
-      return failure(error);
+      throw new RenderFailureError('save-pdf', error);
     }
   }
 
