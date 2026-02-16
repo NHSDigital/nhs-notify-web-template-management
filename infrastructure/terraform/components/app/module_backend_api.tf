@@ -32,5 +32,5 @@ module "backend_api" {
 
   sns_topic_arn = module.eventpub.sns_topic.arn
 
-  image_tag_suffix          = var.image_tag_suffix
+  image_tag_suffix = var.image_tag_suffix
 }
