@@ -33,7 +33,7 @@ ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
 IMAGE_TAG_SUFFIX="${TF_VAR_image_tag_suffix}"
-LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$(cd "$(dirname "$0")" && pwd)")}"
+LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$PWD")}"
 
 # Ensure required AWS/ECR configuration is present.
 echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
