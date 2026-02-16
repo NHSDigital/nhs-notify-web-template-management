@@ -97,6 +97,9 @@ export type ClientConfigurationSuccess = {
 };
 
 export type ClientFeatures = {
+  digitalProofingEmail?: boolean;
+  digitalProofingNhsApp?: boolean;
+  digitalProofingSms?: boolean;
   letterAuthoring?: boolean;
   proofing?: boolean;
   routing?: boolean;

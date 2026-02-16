@@ -359,6 +359,15 @@
       },
       "ClientFeatures": {
         "properties": {
+          "digitalProofingEmail": {
+            "type": "boolean"
+          },
+          "digitalProofingNhsApp": {
+            "type": "boolean"
+          },
+          "digitalProofingSms": {
+            "type": "boolean"
+          },
           "letterAuthoring": {
             "type": "boolean"
           },

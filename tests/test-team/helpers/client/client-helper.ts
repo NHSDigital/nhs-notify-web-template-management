@@ -11,12 +11,15 @@ export type ClientConfiguration = {
     proofing: boolean;
     routing?: boolean;
     letterAuthoring?: boolean;
+    digitalProofingNhsApp?: boolean;
+    digitalProofingEmail?: boolean;
+    digitalProofingSms?: boolean;
   };
   name?: string;
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled' | 'DigitalProofingEnabled'}`;
 
 export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
   /**
@@ -116,6 +119,22 @@ export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
       proofing: false,
       routing: true,
       letterAuthoring: true,
+    },
+  },
+
+  /**
+   * ClientDigitalProofingEnabled is an alternative client with all digital proofing flags enabled
+   */
+  ClientDigitalProofingEnabled: {
+    campaignIds: ['DigitalProofingEnabledCampaign'],
+    name: 'Digital Proofing Enabled Client',
+    features: {
+      proofing: false,
+      routing: true,
+      letterAuthoring: true,
+      digitalProofingNhsApp: true,
+      digitalProofingEmail: true,
+      digitalProofingSms: true,
     },
   },
 };

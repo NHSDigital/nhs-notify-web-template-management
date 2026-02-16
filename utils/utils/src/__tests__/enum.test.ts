@@ -31,6 +31,8 @@ import {
   templateDisplayDeleteAction,
   templateTypeDisplayMappings,
   legacyTemplateTypeToUrlTextMappings,
+  testMessageUrlSegmentMapping,
+  sendDigitalTemplateTestMessageUrl,
   templateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
   type SupportedLetterType,
@@ -201,6 +203,26 @@ describe('legacyTemplateTypeToUrlTextMappings', () => {
     ['LETTER', 'letter'],
   ] as const)('$type maps to url fragment $expected', (type, expected) => {
     expect(legacyTemplateTypeToUrlTextMappings(type)).toEqual(expected);
+  });
+});
+
+describe('testMessageUrlSegmentMapping', () => {
+  test.each([
+    ['NHS_APP', 'nhs-app'],
+    ['SMS', 'text'],
+    ['EMAIL', 'email'],
+  ] as const)('maps %s to url segment %s', (type, expected) => {
+    expect(testMessageUrlSegmentMapping(type)).toEqual(expected);
+  });
+});
+
+describe('sendDigitalTemplateTestMessageUrl', () => {
+  test.each([
+    ['NHS_APP', 'template-123', '/send-test-nhs-app-message/template-123'],
+    ['SMS', 'template-456', '/send-test-text-message/template-456'],
+    ['EMAIL', 'template-789', '/send-test-email-message/template-789'],
+  ] as const)('generates url for %s template with id %s', (type, templateId, expected) => {
+    expect(sendDigitalTemplateTestMessageUrl(type, templateId)).toEqual(expected);
   });
 });
 

@@ -14,8 +14,6 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
 
   public readonly continueButton: Locator;
 
-  public readonly editButton: Locator;
-
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -29,7 +27,6 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
     this.continueButton = page.locator(
       '[id="preview-nhs-app-template-submit-button"]'
     );
-    this.editButton = page.locator('[data-testid="edit-template-button"]');
   }
 
   async clickContinueButton() {

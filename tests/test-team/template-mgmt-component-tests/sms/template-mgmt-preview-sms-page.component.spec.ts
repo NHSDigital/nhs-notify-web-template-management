@@ -22,11 +22,15 @@ import {
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 let routingDisabledUser: TestUser;
+let digitalProofingUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
   const user = await authHelper.getTestUser(testUsers.User1.userId);
   routingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
+  digitalProofingUser = await authHelper.getTestUser(
+    testUsers.UserDigitalProofingEnabled.userId
+  );
 
   return {
     empty: {
@@ -51,6 +55,14 @@ async function createTemplates() {
       name: 'test-template-sms',
       message: 'test-template-message',
     },
+    digitalProofing: {
+      ...TemplateFactory.createSmsTemplate(
+        randomUUID(),
+        digitalProofingUser
+      ),
+      name: 'digital-proofing-sms-template',
+      message: 'test-template-message',
+    },
   };
 }
 
@@ -60,6 +72,7 @@ test.describe('Preview SMS message template Page', () => {
     valid: Template;
     empty: Template;
     routingDisabled: Template;
+    digitalProofing: Template;
   };
 
   test.beforeAll(async () => {
@@ -93,6 +106,12 @@ test.describe('Preview SMS message template Page', () => {
     await expect(previewPage.continueButton).toBeHidden();
 
     await expect(previewPage.editButton).toBeVisible();
+
+    await expect(previewPage.testMessageBanner).not.toBeVisible();
+    await expect(previewPage.sendTestMessageButton).not.toBeVisible();
+
+    await expect(previewPage.editRadioOption).not.toBeVisible();
+    await expect(previewPage.submitRadioOption).not.toBeVisible();
   });
 
   test.describe('Page functionality', () => {
@@ -198,6 +217,11 @@ test.describe('Preview SMS message template Page', () => {
       );
 
       await expect(previewPage.messageText).toHaveText('test-template-message');
+
+      await expect(previewPage.editButton).not.toBeVisible();
+
+      await expect(previewPage.sendTestMessageButton).not.toBeVisible();
+      await expect(previewPage.testMessageBanner).not.toBeVisible();
     });
 
     test.describe('Page functionality', () => {
@@ -277,6 +301,58 @@ test.describe('Preview SMS message template Page', () => {
           page.locator('#previewSMSTemplateAction')
         ).toBeInViewport();
       });
+    });
+  });
+
+  test.describe('Digital proofing enabled', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('when digitalProofingSms is enabled, then banner and button are visible and both navigate correctly', async ({
+      page,
+      baseURL,
+      context,
+    }) => {
+      await loginAsUser(digitalProofingUser, page);
+
+      const previewPage = new TemplateMgmtPreviewSmsPage(page).setPathParam(
+        'templateId',
+        templates.digitalProofing.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.testMessageBanner).toBeVisible();
+      await expect(previewPage.testMessageBannerLink).toHaveText(
+        'Send a test text message'
+      );
+
+      await expect(previewPage.sendTestMessageButton).toBeVisible();
+      await expect(previewPage.sendTestMessageButton).toHaveText(
+        'Send a test message'
+      );
+
+      await expect(previewPage.editRadioOption).not.toBeVisible();
+      await expect(previewPage.submitRadioOption).not.toBeVisible();
+      await expect(previewPage.continueButton).toBeHidden();
+
+      // Test banner link (opens in new tab)
+      const newPagePromise = context.waitForEvent('page');
+      await previewPage.testMessageBannerLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
+
+      await expect(newPage).toHaveURL(
+        `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`
+      );
+
+      await newPage.close();
+
+      // Test button (same page navigation)
+      await previewPage.sendTestMessageButton.click();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`
+      );
     });
   });
 });

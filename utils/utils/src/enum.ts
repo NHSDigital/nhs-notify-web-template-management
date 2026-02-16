@@ -9,6 +9,7 @@ import type {
   ClientFeatures,
   LetterVersion,
 } from 'nhs-notify-backend-client';
+import { DigitalTemplateType } from './types';
 
 /**
  * @typedef {Object} LanguageMetadata
@@ -214,6 +215,16 @@ export const legacyTemplateTypeToUrlTextMappings = (type: TemplateType) =>
     EMAIL: 'email',
     LETTER: 'letter',
   })[type];
+
+export const testMessageUrlSegmentMapping = (type: DigitalTemplateType) =>
+  ({
+    NHS_APP: 'nhs-app',
+    SMS: 'text',
+    EMAIL: 'email',
+  })[type];
+
+export const sendDigitalTemplateTestMessageUrl = (type: DigitalTemplateType, templateId: string) =>
+  `/send-test-${testMessageUrlSegmentMapping(type)}-message/${templateId}`;
 
 export const templateTypeToUrlTextMappings = (
   type: TemplateType,

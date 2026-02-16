@@ -146,6 +146,15 @@ export const testUsers: Record<
     internalUserId: 'InternalUserLetterAuthoringEnabled',
     clientKey: 'ClientLetterAuthoringEnabled',
   },
+
+  /**
+   * UserDigitalProofingEnabled belongs to an alternate client with all digital proofing flags enabled
+   */
+  UserDigitalProofingEnabled: {
+    userId: 'UserWithDigitalProofingEnabled',
+    internalUserId: 'InternalUserDigitalProofingEnabled',
+    clientKey: 'ClientDigitalProofingEnabled',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
