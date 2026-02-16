@@ -5,9 +5,13 @@ import { createWriteStream } from 'node:fs';
 import { unlink } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export class SourceRepository {
-  constructor(private readonly s3: S3Repository) {}
+  constructor(
+    private readonly s3: S3Repository,
+    private readonly logger: Logger
+  ) {}
 
   async getSource(templateId: string, clientId: string) {
     const stream = await this.s3.getObjectStream(
@@ -30,10 +34,7 @@ export class SourceRepository {
   }
 
   private dispose(path: string) {
-    return async () => {
-      unlink(path);
-    };
-    // catch, log
+    return () => unlink(path).catch((error) => this.logger.error(error));
   }
 
   private tempPath() {
