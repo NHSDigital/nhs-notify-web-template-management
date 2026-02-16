@@ -28,7 +28,7 @@ if [[ -z "$BASE_IMAGE" ]]; then
   exit 1
 fi
 
-CSI="${project}-${environment}-${component_name}"
+CSI="${project}-${environment}-${DOCKER_COMPONENT_NAME:-$component_name}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"

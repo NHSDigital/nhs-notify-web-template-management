@@ -12,9 +12,9 @@ run_or_fail() {
 }
 
 
-# Use the Terraform component identifier for image tagging in sandbox.
-# Terraform resolves this as `sbx`while the folder name is `sandbox`.
-component_name="sbx"
+
+# Export a separate variable for Docker image tagging to override the default component_name (sandbox). Required because terraform.sh sets component_name to the directory name not the component variable value.
+export DOCKER_COMPONENT_NAME="sbx"
 
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 # any variables set or changed, and change of directory will persist once this script exits and returns control to terraform.sh
@@ -23,11 +23,11 @@ echo "Running sandbox pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
-echo "component_name=$component_name"
+echo "DOCKER_COMPONENT_NAME=$DOCKER_COMPONENT_NAME"
 
 
 # Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
-export component_name project aws_account_id environment region
+export project aws_account_id environment region DOCKER_COMPONENT_NAME
 
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
