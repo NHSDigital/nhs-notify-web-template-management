@@ -88,7 +88,7 @@ async function uploadDocx(
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   const docxContent = readFileSync(docxFullPath);
 
-  const s3Key = `${clientId}/letter-source/${templateId}/${templateId}.docx`;
+  const s3Key = `${clientId}/docx-template/${templateId}/${templateId}.docx`;
 
   await s3.send(
     new PutObjectCommand({

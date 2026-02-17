@@ -65,6 +65,6 @@ export class SourceRepository {
   }
 
   private sourcePathS3(templateId: string, clientId: string) {
-    return `${clientId}/letter-source/${templateId}/${templateId}.docx`;
+    return `${clientId}/docx-template/${templateId}/${templateId}.docx`;
   }
 }
