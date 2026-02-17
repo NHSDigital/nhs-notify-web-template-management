@@ -2365,7 +2365,7 @@ describe('templateClient', () => {
             currentVersion: 'version-id',
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
-          }
+          },
         },
         campaignId: 'campaign-id',
         createdAt: new Date().toISOString(),
@@ -2427,7 +2427,7 @@ describe('templateClient', () => {
             currentVersion: 'version-id',
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
-          }
+          },
         },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

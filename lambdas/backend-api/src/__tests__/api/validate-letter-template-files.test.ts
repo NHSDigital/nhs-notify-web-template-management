@@ -593,6 +593,39 @@ describe('guard duty handler', () => {
     ).not.toHaveBeenCalled();
   });
 
+  // to be sorted out by CCM-14558
+  test('no-op if the template is an authoring template', async () => {
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: mock<DatabaseTemplate>({
+        files: {
+          docxTemplate: {}
+        },
+        templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
+      }),
+    });
+
+    await handler(event);
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).not.toHaveBeenCalled();
+  });
+
   test('no-op if the event version id is non-current against the pdf', async () => {
     const { handler, mocks } = setup();
 
