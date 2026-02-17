@@ -1,4 +1,4 @@
-module "letter_preview_renderer_lambda" {
+module "lambda_letter_preview_renderer" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.32/terraform-lambda.zip"
 
   project        = var.project
@@ -18,7 +18,7 @@ module "letter_preview_renderer_lambda" {
   kms_key_arn = var.kms_key_arn
 
   package_type           = "Image"
-  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-latest"
+  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct@${data.aws_ecr_image.letter_preview_renderer.image_digest}"
   image_repository_names = ["${var.project}-${var.parent_acct_environment}-acct"]
 
   memory  = 4096
@@ -127,4 +127,10 @@ data "aws_iam_policy_document" "letter_preview_renderer" {
       var.kms_key_arn
     ]
   }
+}
+
+data "aws_ecr_image" "letter_preview_renderer" {
+  registry_id     = var.aws_account_id
+  repository_name = "${var.project}-${var.parent_acct_environment}-acct"
+  image_tag       = "${var.project}-${var.environment}-${var.component}-letter-preview-renderer-latest"
 }

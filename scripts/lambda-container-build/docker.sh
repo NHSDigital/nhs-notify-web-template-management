@@ -60,12 +60,12 @@ fi
 
 # Ensure required AWS/ECR configuration is present.
 echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
-echo "aws_account_id: ${AWS_ACCOUNT_ID:-<unset>}"
-echo "aws_region: ${AWS_REGION:-<unset>}"
-echo "component_name: ${COMPONENT:-<unset>}"
+echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID:-<unset>}"
+echo "AWS_REGION: ${AWS_REGION:-<unset>}"
+echo "COMPONENT: ${COMPONENT:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
 echo "ECR_REPO: ${ECR_REPO:-<unset>}"
-echo "environment: ${ENVIRONMENT:-<unset>}"
+echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
 echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
