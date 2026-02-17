@@ -612,7 +612,7 @@ describe('guard duty handler', () => {
     mocks.templateRepository.get.mockResolvedValueOnce({
       data: mock<DatabaseTemplate>({
         files: {
-          docxTemplate: {}
+          docxTemplate: {},
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
