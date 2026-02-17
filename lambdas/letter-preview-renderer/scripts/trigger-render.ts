@@ -15,8 +15,8 @@ const CONFIG = {
 
   bucketName: 'nhs-notify-891377170468-eu-west-2-alnu1-sbx-internal',
 
-  templateId: '',
-  clientId: '',
+  templateId: '745BB809-6CB2-4E8A-AF0B-DC7AEB61C6F2',
+  clientId: '21d8beea-e15c-489a-8327-15dbb303c9d2',
 
   docxPath:
     'lambdas/letter-preview-renderer/src/__tests__/fixtures/standard-english-template.docx',
@@ -81,7 +81,6 @@ async function uploadDocx(
   templateId: string,
   clientId: string
 ): Promise<void> {
-  // Resolve path relative to repo root (assumes script is run from repo root)
   const repoRoot = path.resolve(__dirname, '../../..');
   const docxFullPath = path.resolve(repoRoot, CONFIG.docxPath);
 
@@ -111,7 +110,6 @@ async function createTemplate(
   const now = new Date().toISOString();
 
   const template: DatabaseTemplate = {
-    // Identity
     id: templateId,
     owner: `CLIENT#${clientId}`,
     clientId,
