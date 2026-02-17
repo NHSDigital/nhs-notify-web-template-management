@@ -18,9 +18,6 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-# Export values so subprocesses (e.g. npm run lambda-build -> docker.sh) can access them.
-export component_name project aws_account_id environment region ACTION
-
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 

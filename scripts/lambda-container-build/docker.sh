@@ -28,7 +28,7 @@ if [[ -z "$BASE_IMAGE" ]]; then
   exit 1
 fi
 
-CSI="${project}-${environment}-${DOCKER_COMPONENT_NAME:-$component_name}"
+CSI="${PROJECT}-${ENVIRONMENT}-${COMPONENT}"
 ECR_REPO="${ECR_REPO:-nhs-notify-main-acct}"
 GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
@@ -60,21 +60,21 @@ fi
 
 # Ensure required AWS/ECR configuration is present.
 echo "BASE_IMAGE: ${BASE_IMAGE:-<unset>}"
-echo "aws_account_id: ${aws_account_id:-<unset>}"
-echo "aws_region: ${region:-<unset>}"
-echo "component_name: ${component_name:-<unset>}"
+echo "aws_account_id: ${AWS_ACCOUNT_ID:-<unset>}"
+echo "aws_region: ${AWS_REGION:-<unset>}"
+echo "component_name: ${COMPONENT:-<unset>}"
 echo "CSI: ${CSI:-<unset>}"
 echo "ECR_REPO: ${ECR_REPO:-<unset>}"
-echo "environment: ${environment:-<unset>}"
+echo "environment: ${ENVIRONMENT:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
 echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
-aws ecr get-login-password --region "${region}" | docker login --username AWS --password-stdin "${aws_account_id}".dkr.ecr."${region}".amazonaws.com
+aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_REGION}".amazonaws.com
 
-# Optionally authenticate to GitHub Container Registry for base images.
+# Authenticate to GitHub Container Registry for base images.
 if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
   echo "Attempting GHCR login as ${GHCR_LOGIN_USER}..."
   if echo "${GHCR_LOGIN_TOKEN}" | docker login ghcr.io --username "${GHCR_LOGIN_USER}" --password-stdin; then
@@ -88,15 +88,14 @@ fi
 IMAGE_TAG="${CSI}-${LAMBDA_NAME}"
 
 # Compose the full ECR image references.
-ECR_REPO_URI="${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO}"
+ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
 
 # Final tag names we will produce
-IMAGE_TAG_BASE="${ECR_REPO_URI}:${IMAGE_TAG}"
+
 IMAGE_TAG_LATEST="${ECR_REPO_URI}:${IMAGE_TAG}-latest"
 IMAGE_TAG_SUFFIXED="${ECR_REPO_URI}:${IMAGE_TAG}-${IMAGE_TAG_SUFFIX}"
 
 echo "Will build and tag images:"
-echo "  BASE -> ${IMAGE_TAG_BASE}"
 echo "  LATEST -> ${IMAGE_TAG_LATEST}"
 echo "  SUFFIXED -> ${IMAGE_TAG_SUFFIXED}"
 
@@ -108,7 +107,6 @@ docker buildx build \
   --provenance=false \
   --sbom=false \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
-  -t "${IMAGE_TAG_BASE}" \
   -t "${IMAGE_TAG_LATEST}" \
   -t "${IMAGE_TAG_SUFFIXED}" \
   --load \
@@ -118,7 +116,8 @@ docker buildx build \
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
   echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker images to ECR..."
 
-  for TAG in "${IMAGE_TAG_BASE}" "${IMAGE_TAG_LATEST}" "${IMAGE_TAG_SUFFIXED}"; do
+
+  for TAG in "${IMAGE_TAG_LATEST}" "${IMAGE_TAG_SUFFIXED}"; do
     echo "Pushing ${TAG}..."
     docker push "${TAG}"
   done

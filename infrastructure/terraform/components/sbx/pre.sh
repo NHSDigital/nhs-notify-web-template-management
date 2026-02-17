@@ -13,11 +13,6 @@ run_or_fail() {
   fi
 }
 
-
-
-# Export a separate variable for Docker image tagging to override the default component_name (sandbox). Required because terraform.sh sets component_name to the directory name not the component variable value.
-export DOCKER_COMPONENT_NAME="sbx"
-
 echo "Running sandbox pre.sh"
 echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
