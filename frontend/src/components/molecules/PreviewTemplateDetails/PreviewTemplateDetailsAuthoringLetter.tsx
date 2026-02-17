@@ -24,7 +24,11 @@ const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
 function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
-  const pages = template.files.initialRender?.pageCount ?? 0;
+  const pages =
+    template.files?.initialRender?.status === 'RENDERED'
+      ? template.files.initialRender.pageCount
+      : 0;
+
   const sheets = Math.ceil(pages / 2);
 
   return { pages, sheets };

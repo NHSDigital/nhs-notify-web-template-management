@@ -39,9 +39,11 @@ function initialisePdfUrl(
   const personalisedRender = getPersonalisedRender(template, tab);
   const initialRender = template.files.initialRender;
 
-  const { fileName } = personalisedRender ?? initialRender ?? {};
+  const render = personalisedRender ?? initialRender;
 
-  return fileName ? buildPdfUrl(template, fileName) : null;
+  return render?.status === 'RENDERED'
+    ? buildPdfUrl(template, render.fileName)
+    : null;
 }
 
 function initialiseFormState(
