@@ -90,7 +90,11 @@ export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
 
   public readonly email = this.messagePlanChannel('EMAIL');
 
-  public readonly letter = this.messagePlanChannel('LETTER');
+  public readonly letter = {
+    standard: this.messagePlanChannel('LETTER'),
+    largePrint: this.messagePlanChannel('x1'),
+    language: this.messagePlanChannel('foreign-language'),
+  };
 
   public alternativeLetterFormats() {
     const conditionalTemplates = this.page.getByTestId(

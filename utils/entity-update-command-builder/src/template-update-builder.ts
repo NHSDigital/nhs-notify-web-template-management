@@ -25,6 +25,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  setCampaignId(campaignId: string) {
+    this.updateBuilder.setValue('campaignId', campaignId);
+    return this;
+  }
+
   setSubject(subject: string) {
     this.updateBuilder.setValue('subject', subject);
     return this;

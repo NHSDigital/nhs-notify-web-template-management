@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export abstract class TemplateMgmtChooseTemplateForMessagePlanBasePage extends TemplateMgmtBasePage {
+export abstract class RoutingChooseTemplateForMessagePlanBasePage extends TemplateMgmtBasePage {
   readonly messagePlanName: Locator;
 
   readonly tableHintText: Locator;

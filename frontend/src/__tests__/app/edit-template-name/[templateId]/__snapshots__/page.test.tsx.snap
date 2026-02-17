@@ -117,7 +117,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                 Save changes
               </button>
               <a
-                class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+                class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3"
                 data-testid="back-link-bottom"
                 href="/preview-letter-template/template-123"
               >
@@ -283,7 +283,7 @@ exports[`valid template renders errors when blank form is submitted and error st
                 Save changes
               </button>
               <a
-                class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3"
+                class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3"
                 data-testid="back-link-bottom"
                 href="/preview-letter-template/template-123"
               >

@@ -570,6 +570,7 @@ describe('templateRepository', () => {
         id: 'abc-def-ghi-jkl-123',
         owner: ownerWithClientPrefix,
         clientId: clientId,
+        campaignId: 'Campaign 2',
         version: 1,
         name: 'Updated Template Name',
         templateType: 'LETTER',
@@ -595,7 +596,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.patch(
         'abc-def-ghi-jkl-123',
-        { name: 'Updated Template Name' },
+        { name: 'Updated Template Name', campaignId: 'Campaign 2' },
         user,
         5
       );
@@ -606,6 +607,7 @@ describe('templateRepository', () => {
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
           '#id': 'id',
           '#lockNumber': 'lockNumber',
           '#name': 'name',
@@ -614,6 +616,7 @@ describe('templateRepository', () => {
           '#updatedBy': 'updatedBy',
         },
         ExpressionAttributeValues: {
+          ':campaignId': 'Campaign 2',
           ':condition_2_1_templateStatus': 'DELETED',
           ':condition_2_2_templateStatus': 'SUBMITTED',
           ':condition_3_1_templateStatus': 'PROOF_APPROVED',
@@ -624,7 +627,7 @@ describe('templateRepository', () => {
           ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+          'SET #name = :name, #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
         ConditionExpression:
           'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND NOT #templateStatus IN (:condition_3_1_templateStatus) AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
       });
