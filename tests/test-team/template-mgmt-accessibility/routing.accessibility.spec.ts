@@ -1,38 +1,42 @@
+import { randomUUID } from 'node:crypto';
+import { expect } from '@playwright/test';
 import {
   createAuthHelper,
   TestUser,
   testUsers,
 } from 'helpers/auth/cognito-auth-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+import { TemplateFactory } from 'helpers/factories/template-factory';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+import { getAppRoutes } from 'helpers/get-app-routes';
 import { test } from 'fixtures/accessibility-analyze';
 import {
+  RoutingChooseEmailTemplatePage,
+  RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
-  RoutingCreateMessagePlanPage,
+  RoutingChooseNhsAppTemplatePage,
+  RoutingChooseOtherLanguageLetterTemplatePage,
+  RoutingChooseStandardLetterTemplatePage,
   RoutingChooseTemplatesPage,
+  RoutingChooseTextMessageTemplatePage,
+  RoutingCreateMessagePlanPage,
+  RoutingEditMessagePlanSettingsPage,
+  RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
-  RoutingChooseLargePrintLetterTemplatePage,
-  RoutingChooseOtherLanguageLetterTemplatePage,
-  RoutingChooseStandardLetterTemplatePage,
-  RoutingPreviewLargePrintLetterTemplatePage,
-  RoutingPreviewOtherLanguageLetterTemplatePage,
-  RoutingPreviewStandardLetterTemplatePage,
-  RoutingChooseEmailTemplatePage,
   RoutingPreviewEmailTemplatePage,
-  RoutingChooseNhsAppTemplatePage,
+  RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
-  RoutingChooseTextMessageTemplatePage,
+  RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
+  RoutingPreviewStandardLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
-import { loginAsUser } from 'helpers/auth/login-as-user';
-import { randomUUID } from 'node:crypto';
-import { TemplateFactory } from 'helpers/factories/template-factory';
-import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
-import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
-import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
-import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
+import { RoutingConfigStatus } from 'nhs-notify-backend-client';
 
 let userWithMultipleCampaigns: TestUser;
 const routingStorageHelper = new RoutingConfigStorageHelper();
@@ -49,6 +53,30 @@ const templateIds = {
   LETTER_LARGE_PRINT: randomUUID(),
   LETTER_OTHER_LANGUAGE: randomUUID(),
 };
+const routingPages = [
+  RoutingChooseEmailTemplatePage,
+  RoutingChooseLargePrintLetterTemplatePage,
+  RoutingChooseMessageOrderPage,
+  RoutingChooseNhsAppTemplatePage,
+  RoutingChooseOtherLanguageLetterTemplatePage,
+  RoutingChooseStandardLetterTemplatePage,
+  RoutingChooseTemplatesPage,
+  RoutingChooseTextMessageTemplatePage,
+  RoutingCreateMessagePlanPage,
+  RoutingEditMessagePlanSettingsPage,
+  RoutingGetReadyToMovePage,
+  RoutingInvalidMessagePlanPage,
+  RoutingMessagePlanCampaignIdRequiredPage,
+  RoutingMessagePlansPage,
+  RoutingPreviewEmailTemplatePage,
+  RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPage,
+  RoutingPreviewNhsAppTemplatePage,
+  RoutingPreviewOtherLanguageLetterTemplatePage,
+  RoutingPreviewSmsTemplatePage,
+  RoutingPreviewStandardLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
+];
 
 test.describe('Routing', () => {
   test.beforeAll(async () => {
@@ -60,10 +88,9 @@ test.describe('Routing', () => {
       testUsers.UserWithMultipleCampaigns.userId
     );
 
-    const createRoutingConfig = (id: string, status: string) =>
+    const createRoutingConfig = (id: string, status: RoutingConfigStatus) =>
       RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
         id,
-        name: `${status} - Test plan with some templates`,
         status,
       })
         .addTemplate('NHSAPP', templateIds.NHSAPP)
@@ -73,17 +100,32 @@ test.describe('Routing', () => {
         .addTemplate('LETTER', templateIds.LETTER_LARGE_PRINT)
         .addTemplate('LETTER', templateIds.LETTER_OTHER_LANGUAGE);
 
-    const routingConfigDraft = createRoutingConfig(
+    const draftRoutingConfig = createRoutingConfig(
       draftRoutingConfigId,
       'DRAFT'
     ).dbEntry;
 
-    const routingConfigProduction = createRoutingConfig(
+    const productionRoutingConfig = createRoutingConfig(
       productionRoutingConfigId,
       'COMPLETED'
     ).dbEntry;
 
-    const templates = [
+    const emptyRoutingConfig = RoutingConfigFactory.createForMessageOrder(
+      user,
+      messageOrder,
+      {
+        id: emptyRoutingConfigId,
+        status: 'DRAFT',
+      }
+    ).dbEntry;
+
+    await routingStorageHelper.seed([
+      draftRoutingConfig,
+      emptyRoutingConfig,
+      productionRoutingConfig,
+    ]);
+
+    await templateStorageHelper.seedTemplateData([
       TemplateFactory.createNhsAppTemplate(
         templateIds.NHSAPP,
         user,
@@ -120,22 +162,27 @@ test.describe('Routing', () => {
         'PASSED',
         { language: 'fr' }
       ),
-    ];
-
-    await routingStorageHelper.seed([
-      routingConfigDraft,
-      routingConfigProduction,
-      RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
-        id: emptyRoutingConfigId,
-        name: `EMPTY - Test plan with some templates`,
-      }).dbEntry,
     ]);
-    await templateStorageHelper.seedTemplateData(templates);
   });
 
   test.afterAll(async () => {
     await routingStorageHelper.deleteSeeded();
     await templateStorageHelper.deleteSeededTemplates();
+  });
+
+  test('/message-plans have an accessibility test', async () => {
+    const routes = await getAppRoutes();
+
+    const uncoveredRoutingPages = routes
+      .filter((r) => r.startsWith('message-plans/'))
+      .filter(
+        (r) =>
+          !routingPages.some(
+            ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
+          )
+      );
+
+    expect(uncoveredRoutingPages).toHaveLength(0);
   });
 
   test.describe('Choose templates', () => {
@@ -304,6 +351,13 @@ test.describe('Routing', () => {
         'messagePlanId',
         draftRoutingConfigId
       )
+    ));
+
+  test('Review and move to production', async ({ page, analyze }) =>
+    analyze(
+      new RoutingReviewAndMoveToProductionPage(page)
+        .setPathParam('messagePlanId', draftRoutingConfigId)
+        .setSearchParam('lockNumber', '0')
     ));
 
   test.describe('client has multiple campaigns', () => {
