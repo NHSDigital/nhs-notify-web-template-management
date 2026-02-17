@@ -107,7 +107,13 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
-      sidesCount?: number;
+      files?: {
+        docxTemplate: {
+          virusScanStatus: string;
+          currentVersion: string;
+          fileName: string;
+        }
+      };
       letterVariantId?: string;
       campaignId?: string | null;
     }
@@ -128,7 +134,13 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
       templateType: 'LETTER',
-      sidesCount: options?.sidesCount ?? 2,
+      files: options?.files ?? {
+        docxTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: randomUUID(),
+          virusScanStatus: 'PASSED',
+        },
+      },
       letterVariantId: options?.letterVariantId,
     });
   },

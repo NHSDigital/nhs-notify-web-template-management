@@ -50,6 +50,7 @@ type TypeSpecificProperties = {
   letterVersion?: string;
   language?: string;
   files?: {
+    docxTemplate?: File;
     pdfTemplate?: File;
     testDataCsv?: File;
     proofs?: Record<string, ProofFile>;
