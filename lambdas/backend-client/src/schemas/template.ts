@@ -1,24 +1,26 @@
 import { z } from 'zod/v4';
-import type {
-  AuthoringLetterProperties,
-  BaseCreatedTemplate,
-  BaseTemplate,
-  CreatePdfLetterProperties,
-  CreateUpdateTemplate,
-  EmailProperties,
-  Language,
-  LetterType,
-  NhsAppProperties,
+import {
+  AuthoringLetterFiles,
   PatchTemplate,
-  PdfLetterFiles,
-  PdfLetterProperties,
-  ProofFileDetails,
-  SmsProperties,
-  TemplateDto,
-  TemplateStatus,
-  TemplateStatusActive,
-  TemplateType,
-  VersionedFileDetails,
+  type AuthoringLetterProperties,
+  type BaseCreatedTemplate,
+  type BaseTemplate,
+  type CreateAuthoringLetterProperties,
+  type CreatePdfLetterProperties,
+  type CreateUpdateTemplate,
+  type EmailProperties,
+  type Language,
+  type LetterType,
+  type NhsAppProperties,
+  type PdfLetterFiles,
+  type PdfLetterProperties,
+  type ProofFileDetails,
+  type SmsProperties,
+  type TemplateDto,
+  type TemplateStatus,
+  type TemplateStatusActive,
+  type TemplateType,
+  type VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -52,6 +54,12 @@ const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
     currentVersion: z.string(),
     fileName: z.string().trim().min(1),
     virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
+  })
+);
+
+export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
+  z.object({
+    docxTemplate: $VersionedFileDetails,
   })
 );
 
@@ -111,13 +119,23 @@ export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   })
 );
 
+export const $CreateAuthoringLetterProperties =
+  schemaFor<CreateAuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+    })
+  );
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
-      sidesCount: z.number().int(),
+      sidesCount: z.number().int().optional(),
+      files: $AuthoringLetterFiles,
     })
   );
 
@@ -155,11 +173,12 @@ export const $CreateUpdateNonLetter = schemaFor<
 );
 
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
-  z.discriminatedUnion('templateType', [
+  z.union([
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
   ])
 );
 

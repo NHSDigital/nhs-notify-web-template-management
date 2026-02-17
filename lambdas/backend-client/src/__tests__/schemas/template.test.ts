@@ -1,5 +1,6 @@
 import {
   $AuthoringLetterProperties,
+  $CreateAuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
@@ -199,20 +200,36 @@ describe('Template schemas', () => {
 
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
-        fieldErrors: {
-          subject: ['Invalid input: expected string, received undefined'],
-        },
+        formErrors: ['Invalid input'],
       })
     );
   });
 
-  test('Letter template fields - should fail validation, when no letterType', async () => {
+  test('CreatePdfLetterProperties - should fail validation, when no letterType', async () => {
     const result = $CreatePdfLetterProperties.safeParse({
       name: 'Test Template',
       campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
       letterVersion: 'PDF',
+    });
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          letterType: ['Invalid option: expected one of "q4"|"x0"|"x1"'],
+        },
+      })
+    );
+  });
+
+  test('CreateAuthoringLetterProperties - should fail validation, when no letterType', async () => {
+    const result = $CreateAuthoringLetterProperties.safeParse({
+      name: 'Test Template',
+      campaignId: 'campaign-id',
+      templateType: 'LETTER',
+      language: 'en',
+      letterVersion: 'AUTHORING',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -300,7 +317,13 @@ describe('Template schemas', () => {
       language: 'en',
       letterVersion: 'AUTHORING',
       letterVariantId: 'variant-123',
-      sidesCount: 2,
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
+      },
     };
 
     test('should pass validation for valid AUTHORING letter', () => {
@@ -330,7 +353,7 @@ describe('Template schemas', () => {
       expect(result.success).toBe(false);
       expect(result.error?.flatten().fieldErrors).toEqual(
         expect.objectContaining({
-          sidesCount: expect.any(Array),
+          files: ['Invalid input: expected object, received undefined'],
         })
       );
     });
@@ -388,7 +411,13 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
+        },
       };
 
       const result = $LetterProperties.safeParse(authoringLetter);
@@ -559,7 +588,13 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
+        },
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
       };

@@ -13,12 +13,13 @@ exports[`LetterUploadRepository static parseKey errors if invalid file type segm
     "values": [
       "pdf-template",
       "test-data",
-      "proofs"
+      "proofs",
+      "docx-template"
     ],
     "path": [
       "file-type"
     ],
-    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
+    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\"|\\"docx-template\\""
   }
 ]"
 `;

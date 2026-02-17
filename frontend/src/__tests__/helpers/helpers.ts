@@ -106,11 +106,17 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   language: 'en',
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
-  sidesCount: 2,
   name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
+  files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    }
+  }
 } as const;
 
 export const ROUTING_CONFIG: RoutingConfig = {

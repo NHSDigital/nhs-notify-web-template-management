@@ -9,12 +9,13 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
     "values": [
       "pdf-template",
       "test-data",
-      "proofs"
+      "proofs",
+      "docx-template"
     ],
     "path": [
       "file-type"
     ],
-    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
+    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\"|\\"docx-template\\""
   }
 ]"
 `;

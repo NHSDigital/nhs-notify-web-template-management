@@ -21,6 +21,7 @@ const $FileType: z.ZodType<FileType> = z.enum([
   'pdf-template',
   'test-data',
   'proofs',
+  'docx-template',
 ]);
 
 const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
@@ -35,32 +36,28 @@ export class LetterUploadRepository extends LetterFileRepository {
     templateId: string,
     user: User,
     versionId: string,
-    pdf: File,
-    csv?: File
+    file: File,
+    fileType: 'pdf-template' | 'docx-template',
+    testDataFile?: File
   ): Promise<ApplicationResult<null>> {
-    const pdfKey = this.key(
-      'pdf-template',
-      user.clientId,
-      templateId,
-      versionId
-    );
+    const pdfKey = this.key(fileType, user.clientId, templateId, versionId);
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
         Bucket: this.quarantineBucketName,
         Key: pdfKey,
-        Body: await pdf.bytes(),
+        Body: await file.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
           user.clientId,
           templateId,
           versionId,
-          'pdf-template'
+          fileType
         ),
       }),
     ];
 
-    if (csv) {
+    if (testDataFile) {
       const csvKey = this.key(
         'test-data',
         user.clientId,
@@ -72,7 +69,7 @@ export class LetterUploadRepository extends LetterFileRepository {
         new PutObjectCommand({
           Bucket: this.quarantineBucketName,
           Key: csvKey,
-          Body: await csv.bytes(),
+          Body: await testDataFile.bytes(),
           ChecksumAlgorithm: 'SHA256',
           Metadata: LetterUploadRepository.metadata(
             user.clientId,
@@ -153,7 +150,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     templateId: string,
     versionId: string
   ) {
-    return `${type}/${clientId}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
+    return `${type}/${clientId}/${templateId}/${versionId}.${{ 'pdf-template': 'pdf', 'test-data': 'csv', 'docx-template': 'docx', proofs: 'pdf' }[type]}`;
   }
 
   private static metadata(

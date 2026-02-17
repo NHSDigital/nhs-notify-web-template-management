@@ -23,7 +23,6 @@ import {
   RoutingReviewAndMoveToProductionPage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
-import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from '../pages/template-mgmt-choose-template-base-page';
 import type { Template } from '../helpers/types';
 import type { Channel } from 'nhs-notify-backend-client';
 
@@ -91,7 +90,7 @@ function createTemplates(user: TestUser) {
 
 async function selectTemplateRadio(
   chooseTemplateLink: Locator,
-  chooseTemplatePage: TemplateMgmtChooseTemplateForMessagePlanBasePage,
+  chooseTemplatePage: RoutingChooseNhsAppTemplatePage,
   template: Template,
   templateNameLocator: Locator
 ) {
@@ -190,7 +189,7 @@ test.describe('Routing', () => {
       const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
 
       await chooseMessageOrderPage.checkRadioButton(
-        'NHS App, Email, Text message, Letter'
+        'NHSAPP,EMAIL,SMS,LETTER'
       );
 
       await chooseMessageOrderPage.clickContinueButton();

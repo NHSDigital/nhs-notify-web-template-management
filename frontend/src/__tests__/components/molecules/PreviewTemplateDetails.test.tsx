@@ -198,6 +198,21 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
+    it('matches snapshot without sidesCount', () => {
+      const { sidesCount: _, ...templateWithoutSidesCount } =
+        baseAuthoringLetter;
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={templateWithoutSidesCount}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+      expect(
+        container.container.querySelector('.missing-value')
+      ).toBeInTheDocument();
+    });
+
     it('matches snapshot without letterVariantId (shows missing value styling)', () => {
       const { letterVariantId: _, ...templateWithoutVariant } =
         baseAuthoringLetter;

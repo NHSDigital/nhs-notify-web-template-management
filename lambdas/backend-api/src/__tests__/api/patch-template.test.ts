@@ -205,7 +205,13 @@ describe('Template API - Patch', () => {
       letterType: 'x1',
       language: 'en',
       letterVersion: 'AUTHORING',
-      sidesCount: 1,
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PENDING',
+        },
+      },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lockNumber: 6,
