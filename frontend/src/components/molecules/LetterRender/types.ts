@@ -1,1 +1,1 @@
-export type RenderTab = 'short' | 'long';
+export type RenderTab = 'shortFormRender' | 'longFormRender';

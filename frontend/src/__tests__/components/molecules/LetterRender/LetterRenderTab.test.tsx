@@ -61,7 +61,7 @@ describe('LetterRenderTab', () => {
 
   describe('buildPdfUrl', () => {
     it('builds URL from initialRender when no variant render exists', () => {
-      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />);
 
       const iframe = screen.getByTitle('Letter preview - short examples');
       expect(iframe).toHaveAttribute(
@@ -90,7 +90,10 @@ describe('LetterRenderTab', () => {
       };
 
       render(
-        <LetterRenderTab template={templateWithShortRender} tab='short' />
+        <LetterRenderTab
+          template={templateWithShortRender}
+          tab='shortFormRender'
+        />
       );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
@@ -120,7 +123,12 @@ describe('LetterRenderTab', () => {
         },
       };
 
-      render(<LetterRenderTab template={templateWithLongRender} tab='long' />);
+      render(
+        <LetterRenderTab
+          template={templateWithLongRender}
+          tab='longFormRender'
+        />
+      );
 
       const iframe = screen.getByTitle('Letter preview - long examples');
 
@@ -136,7 +144,9 @@ describe('LetterRenderTab', () => {
         files: {},
       };
 
-      render(<LetterRenderTab template={templateNoRenders} tab='short' />);
+      render(
+        <LetterRenderTab template={templateNoRenders} tab='shortFormRender' />
+      );
 
       expect(screen.getByText('No preview available')).toBeInTheDocument();
     });
@@ -144,7 +154,7 @@ describe('LetterRenderTab', () => {
 
   describe('getInitialState', () => {
     it('uses initial empty state when no variant render exists', () => {
-      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />);
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -159,7 +169,12 @@ describe('LetterRenderTab', () => {
         customPersonalisation: undefined,
       };
 
-      render(<LetterRenderTab template={templateWithoutCustom} tab='short' />);
+      render(
+        <LetterRenderTab
+          template={templateWithoutCustom}
+          tab='shortFormRender'
+        />
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -189,7 +204,10 @@ describe('LetterRenderTab', () => {
       };
 
       render(
-        <LetterRenderTab template={templateWithShortRender} tab='short' />
+        <LetterRenderTab
+          template={templateWithShortRender}
+          tab='shortFormRender'
+        />
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -222,7 +240,12 @@ describe('LetterRenderTab', () => {
         },
       };
 
-      render(<LetterRenderTab template={templateWithLongRender} tab='long' />);
+      render(
+        <LetterRenderTab
+          template={templateWithLongRender}
+          tab='longFormRender'
+        />
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -237,7 +260,7 @@ describe('LetterRenderTab', () => {
 
   describe('form submission', () => {
     it('calls updateLetterPreview with form state and form data for short tab', async () => {
-      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />);
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -272,7 +295,7 @@ describe('LetterRenderTab', () => {
     });
 
     it('calls updateLetterPreview with form state and form data for long tab', async () => {
-      render(<LetterRenderTab template={baseTemplate} tab='long' />);
+      render(<LetterRenderTab template={baseTemplate} tab='longFormRender' />);
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -318,7 +341,7 @@ describe('LetterRenderTab', () => {
         })
       );
 
-      render(<LetterRenderTab template={baseTemplate} tab='short' />);
+      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />);
 
       const submitButton = screen.getByRole('button', {
         name: 'Update preview',
@@ -338,7 +361,7 @@ describe('LetterRenderTab', () => {
   describe('snapshots', () => {
     it('matches snapshot for short tab', () => {
       const { asFragment } = render(
-        <LetterRenderTab template={baseTemplate} tab='short' />
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />
       );
 
       expect(asFragment()).toMatchSnapshot();
@@ -346,7 +369,7 @@ describe('LetterRenderTab', () => {
 
     it('matches snapshot for long tab', () => {
       const { asFragment } = render(
-        <LetterRenderTab template={baseTemplate} tab='long' />
+        <LetterRenderTab template={baseTemplate} tab='longFormRender' />
       );
 
       expect(asFragment()).toMatchSnapshot();

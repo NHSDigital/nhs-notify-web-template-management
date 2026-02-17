@@ -15,7 +15,7 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="letter-preview-long"
+          value="letter-preview-longFormRender"
         />
         <input
           name="csrf_token"
@@ -38,13 +38,13 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
         >
           <label
             class="nhsuk-label nhsuk-label--s"
-            for="system-personalisation-pack-id-long"
+            for="system-personalisation-pack-id-longFormRender"
           >
             Example recipient
           </label>
           <select
             class="nhsuk-select recipientSelect"
-            id="system-personalisation-pack-id-long"
+            id="system-personalisation-pack-id-longFormRender"
             name="__systemPersonalisationPackId"
           >
             <option
@@ -120,13 +120,13 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
         >
           <label
             class="nhsuk-label nhsuk-label--s"
-            for="custom-appointmentDate-long"
+            for="custom-appointmentDate-longFormRender"
           >
             appointmentDate
           </label>
           <input
             class="nhsuk-input"
-            id="custom-appointmentDate-long"
+            id="custom-appointmentDate-longFormRender"
             maxlength="500"
             name="appointmentDate"
             type="text"
@@ -170,7 +170,7 @@ exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="letter-preview-short"
+          value="letter-preview-shortFormRender"
         />
         <input
           name="csrf_token"
@@ -193,13 +193,13 @@ exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
         >
           <label
             class="nhsuk-label nhsuk-label--s"
-            for="system-personalisation-pack-id-short"
+            for="system-personalisation-pack-id-shortFormRender"
           >
             Example recipient
           </label>
           <select
             class="nhsuk-select recipientSelect"
-            id="system-personalisation-pack-id-short"
+            id="system-personalisation-pack-id-shortFormRender"
             name="__systemPersonalisationPackId"
           >
             <option
@@ -275,13 +275,13 @@ exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
         >
           <label
             class="nhsuk-label nhsuk-label--s"
-            for="custom-appointmentDate-short"
+            for="custom-appointmentDate-shortFormRender"
           >
             appointmentDate
           </label>
           <input
             class="nhsuk-input"
-            id="custom-appointmentDate-short"
+            id="custom-appointmentDate-shortFormRender"
             maxlength="500"
             name="appointmentDate"
             type="text"

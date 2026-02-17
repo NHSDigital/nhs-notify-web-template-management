@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
-type TabVariant = 'short' | 'long';
+type TabVariant = 'shortFormRender' | 'longFormRender';
 
 export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   static readonly pathTemplate = '/preview-letter-template/:templateId';
@@ -48,12 +48,13 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       has: page.getByRole('heading', { name: 'Letter preview' }),
     });
 
-    this.shortTab = this.getTab('short');
-    this.longTab = this.getTab('long');
+    this.shortTab = this.getTab('shortFormRender');
+    this.longTab = this.getTab('longFormRender');
   }
 
   public getTab(variant: TabVariant) {
-    const tabName = variant === 'short' ? 'Short examples' : 'Long examples';
+    const tabName =
+      variant === 'shortFormRender' ? 'Short examples' : 'Long examples';
     const panel = this.page.getByRole('tabpanel', { name: tabName });
     const tab = this.page.getByRole('tab', { name: tabName });
     const recipientSelect = panel.locator(

@@ -27,9 +27,7 @@ function getPersonalisedRender(
   template: AuthoringLetterTemplate,
   tab: RenderTab
 ): PersonalisedRenderDetails | undefined {
-  return tab === 'short'
-    ? template.files.shortFormRender
-    : template.files.longFormRender;
+  return template.files[tab];
 }
 
 function initialisePdfUrl(
