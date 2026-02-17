@@ -11,7 +11,8 @@ import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils'
 const CONFIG = {
   tableName: 'nhs-notify-alnu1-sbx-api-templates',
 
-  queueUrl: 'https://sqs.eu-west-2.amazonaws.com/891377170468/nhs-notify-alnu1-sbx-letter-render-queue.fifo',
+  queueUrl:
+    'https://sqs.eu-west-2.amazonaws.com/891377170468/nhs-notify-alnu1-sbx-letter-render-queue.fifo',
 
   bucketName: 'nhs-notify-891377170468-eu-west-2-alnu1-sbx-internal',
 
@@ -36,10 +37,10 @@ async function main() {
   console.log(`  ClientId:   ${clientId}`);
   console.log();
 
-  const ddbClient = new DynamoDBClient({});
+  const ddbClient = new DynamoDBClient({ region: 'eu-west-2' });
   const ddb = DynamoDBDocumentClient.from(ddbClient);
-  const s3 = new S3Client({});
-  const sqs = new SQSClient({});
+  const s3 = new S3Client({ region: 'eu-west-2' });
+  const sqs = new SQSClient({ region: 'eu-west-2' });
 
   console.log('1. Uploading DOCX to S3...');
   await uploadDocx(s3, templateId, clientId);
@@ -157,6 +158,8 @@ async function sendRenderRequest(
     new SendMessageCommand({
       QueueUrl: CONFIG.queueUrl,
       MessageBody: JSON.stringify(request),
+      MessageGroupId: randomUUID(),
+      MessageDeduplicationId: randomUUID()
     })
   );
 
