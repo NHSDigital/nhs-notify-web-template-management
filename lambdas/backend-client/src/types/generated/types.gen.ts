@@ -4,7 +4,12 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterFiles = LetterFiles & {
+  docxTemplate: VersionedFileDetails;
+};
+
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  files?: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
   sidesCount: number;
@@ -204,12 +209,17 @@ export type PatchTemplate = {
   name?: string;
 };
 
-export type PdfLetterFiles = {
-  pdfTemplate: VersionedFileDetails;
+export type LetterFiles = {
+  docxTemplate?: VersionedFileDetails;
+  pdfTemplate?: VersionedFileDetails;
   proofs?: {
     [key: string]: ProofFileDetails;
   };
   testDataCsv?: VersionedFileDetails;
+};
+
+export type PdfLetterFiles = LetterFiles & {
+  pdfTemplate: VersionedFileDetails;
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
