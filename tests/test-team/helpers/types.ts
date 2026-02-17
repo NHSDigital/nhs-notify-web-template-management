@@ -43,7 +43,7 @@ export type ProofFile = {
   virusScanStatus: string;
 };
 
-export type AuthoringRenderFile = {
+export type RenderFile = {
   fileName: string;
   currentVersion: string;
   status: string;
@@ -64,9 +64,9 @@ type TypeSpecificProperties = {
     testDataCsv?: File;
     proofs?: Record<string, ProofFile>;
     // Authoring letter files
-    initialRender?: AuthoringRenderFile;
-    shortFormRender?: AuthoringRenderFile;
-    longFormRender?: AuthoringRenderFile;
+    initialRender?: RenderFile;
+    shortFormRender?: RenderFile;
+    longFormRender?: RenderFile;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];

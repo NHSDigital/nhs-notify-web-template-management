@@ -21,7 +21,9 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
 
   const exampleRecipients =
-    tab === 'short' ? SHORT_EXAMPLE_RECIPIENTS : LONG_EXAMPLE_RECIPIENTS;
+    tab === 'shortFormRender'
+      ? SHORT_EXAMPLE_RECIPIENTS
+      : LONG_EXAMPLE_RECIPIENTS;
 
   const hasCustomFields =
     template.customPersonalisation && template.customPersonalisation.length > 0;

@@ -5,9 +5,9 @@ export type ClientOptions = {
 };
 
 export type AuthoringLetterFiles = {
-  initialRender?: AuthoringRenderDetails;
-  longFormRender?: AuthoringPersonalisedRenderDetails;
-  shortFormRender?: AuthoringPersonalisedRenderDetails;
+  initialRender?: RenderDetails;
+  longFormRender?: PersonalisedRenderDetails;
+  shortFormRender?: PersonalisedRenderDetails;
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
@@ -17,36 +17,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   letterVersion: 'AUTHORING';
   systemPersonalisation?: Array<string>;
   validationErrors?: Array<LetterValidationError>;
-};
-
-export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
-  personalisationParameters: {
-    [key: string]: string;
-  };
-  systemPersonalisationPackId: string;
-};
-
-export type AuthoringRenderDetails =
-  | AuthoringRenderDetailsFailed
-  | AuthoringRenderDetailsPending
-  | AuthoringRenderDetailsRendered;
-
-export type AuthoringRenderDetailsFailed = {
-  currentVersion?: string;
-  fileName?: string;
-  pageCount?: number;
-  status: 'FAILED';
-};
-
-export type AuthoringRenderDetailsPending = {
-  status: 'PENDING';
-};
-
-export type AuthoringRenderDetailsRendered = {
-  currentVersion: string;
-  fileName: string;
-  pageCount: number;
-  status: 'RENDERED';
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -265,10 +235,40 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderDetails = RenderDetails & {
+  personalisationParameters: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId: string;
+};
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
+};
+
+export type RenderDetails =
+  | RenderDetailsFailed
+  | RenderDetailsPending
+  | RenderDetailsRendered;
+
+export type RenderDetailsFailed = {
+  currentVersion?: string;
+  fileName?: string;
+  pageCount?: number;
+  status: 'FAILED';
+};
+
+export type RenderDetailsPending = {
+  status: 'PENDING';
+};
+
+export type RenderDetailsRendered = {
+  currentVersion: string;
+  fileName: string;
+  pageCount: number;
+  status: 'RENDERED';
 };
 
 export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';

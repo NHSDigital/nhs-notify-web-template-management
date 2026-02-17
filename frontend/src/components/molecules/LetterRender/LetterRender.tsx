@@ -24,10 +24,10 @@ export function LetterRender({
           <Tabs.ListItem id='tab-long'>{copy.tabs.long}</Tabs.ListItem>
         </Tabs.List>
         <Tabs.Contents id='tab-short'>
-          <LetterRenderTab template={template} tab='short' />
+          <LetterRenderTab template={template} tab='shortFormRender' />
         </Tabs.Contents>
         <Tabs.Contents id='tab-long'>
-          <LetterRenderTab template={template} tab='long' />
+          <LetterRenderTab template={template} tab='longFormRender' />
         </Tabs.Contents>
       </Tabs>
     </section>

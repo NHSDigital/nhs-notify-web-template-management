@@ -56,7 +56,7 @@ describe('LetterRenderForm', () => {
   describe('PDS personalisation section', () => {
     it('renders PDS recipient dropdown with short recipients for short tab', () => {
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -72,7 +72,7 @@ describe('LetterRenderForm', () => {
 
     it('renders PDS recipient dropdown with long recipients for long tab', () => {
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='long' />
+        <LetterRenderForm template={baseTemplate} tab='longFormRender' />
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -103,7 +103,7 @@ describe('LetterRenderForm', () => {
       };
 
       renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='short' />
+        <LetterRenderForm template={templateWithCustom} tab='shortFormRender' />
       );
 
       expect(
@@ -121,7 +121,10 @@ describe('LetterRenderForm', () => {
       };
 
       renderWithProvider(
-        <LetterRenderForm template={templateWithoutCustom} tab='short' />
+        <LetterRenderForm
+          template={templateWithoutCustom}
+          tab='shortFormRender'
+        />
       );
 
       expect(
@@ -136,7 +139,10 @@ describe('LetterRenderForm', () => {
       };
 
       renderWithProvider(
-        <LetterRenderForm template={templateWithEmptyCustom} tab='short' />
+        <LetterRenderForm
+          template={templateWithEmptyCustom}
+          tab='shortFormRender'
+        />
       );
 
       expect(
@@ -154,7 +160,7 @@ describe('LetterRenderForm', () => {
       });
 
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />,
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />,
         initialState
       );
 
@@ -179,7 +185,10 @@ describe('LetterRenderForm', () => {
       });
 
       renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='short' />,
+        <LetterRenderForm
+          template={templateWithCustom}
+          tab='shortFormRender'
+        />,
         initialState
       );
 
@@ -191,7 +200,7 @@ describe('LetterRenderForm', () => {
   describe('submit button', () => {
     it('renders the update preview button', () => {
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
       );
 
       expect(
@@ -212,7 +221,7 @@ describe('LetterRenderForm', () => {
       });
 
       renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />,
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />,
         initialState
       );
 
@@ -242,7 +251,7 @@ describe('LetterRenderForm', () => {
       };
 
       const container = renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='short' />
+        <LetterRenderForm template={templateWithCustom} tab='shortFormRender' />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -255,7 +264,7 @@ describe('LetterRenderForm', () => {
       };
 
       const container = renderWithProvider(
-        <LetterRenderForm template={templateWithCustom} tab='long' />
+        <LetterRenderForm template={templateWithCustom} tab='longFormRender' />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -263,7 +272,7 @@ describe('LetterRenderForm', () => {
 
     it('matches snapshot without custom personalisation', () => {
       const container = renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
       );
 
       expect(container.asFragment()).toMatchSnapshot();
@@ -280,7 +289,7 @@ describe('LetterRenderForm', () => {
       });
 
       const container = renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='short' />,
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />,
         initialState
       );
 

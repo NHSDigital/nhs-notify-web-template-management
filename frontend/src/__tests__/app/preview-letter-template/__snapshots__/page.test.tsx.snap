@@ -456,7 +456,7 @@ exports[`authoring letter with validation errors matches snapshot with error and
                     name="form-id"
                     readonly=""
                     type="hidden"
-                    value="letter-preview-short"
+                    value="letter-preview-shortFormRender"
                   />
                   <input
                     name="csrf_token"
@@ -479,13 +479,13 @@ exports[`authoring letter with validation errors matches snapshot with error and
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="system-personalisation-pack-id-short"
+                      for="system-personalisation-pack-id-shortFormRender"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="system-personalisation-pack-id-short"
+                      id="system-personalisation-pack-id-shortFormRender"
                       name="__systemPersonalisationPackId"
                     >
                       <option
@@ -590,7 +590,7 @@ exports[`authoring letter with validation errors matches snapshot with error and
                     name="form-id"
                     readonly=""
                     type="hidden"
-                    value="letter-preview-long"
+                    value="letter-preview-longFormRender"
                   />
                   <input
                     name="csrf_token"
@@ -613,13 +613,13 @@ exports[`authoring letter with validation errors matches snapshot with error and
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="system-personalisation-pack-id-long"
+                      for="system-personalisation-pack-id-longFormRender"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="system-personalisation-pack-id-long"
+                      id="system-personalisation-pack-id-longFormRender"
                       name="__systemPersonalisationPackId"
                     >
                       <option
@@ -1199,7 +1199,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     name="form-id"
                     readonly=""
                     type="hidden"
-                    value="letter-preview-short"
+                    value="letter-preview-shortFormRender"
                   />
                   <input
                     name="csrf_token"
@@ -1222,13 +1222,13 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="system-personalisation-pack-id-short"
+                      for="system-personalisation-pack-id-shortFormRender"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="system-personalisation-pack-id-short"
+                      id="system-personalisation-pack-id-shortFormRender"
                       name="__systemPersonalisationPackId"
                     >
                       <option
@@ -1333,7 +1333,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     name="form-id"
                     readonly=""
                     type="hidden"
-                    value="letter-preview-long"
+                    value="letter-preview-longFormRender"
                   />
                   <input
                     name="csrf_token"
@@ -1356,13 +1356,13 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
-                      for="system-personalisation-pack-id-long"
+                      for="system-personalisation-pack-id-longFormRender"
                     >
                       Example recipient
                     </label>
                     <select
                       class="nhsuk-select recipientSelect"
-                      id="system-personalisation-pack-id-long"
+                      id="system-personalisation-pack-id-longFormRender"
                       name="__systemPersonalisationPackId"
                     >
                       <option

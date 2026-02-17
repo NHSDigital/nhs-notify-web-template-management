@@ -1,6 +1,6 @@
 import type { Language, LetterType } from 'nhs-notify-backend-client';
 import type { TestUser } from '../auth/cognito-auth-helper';
-import type { AuthoringRenderFile, Template } from '../types';
+import type { RenderFile, Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
 export const defaultFileRenders = {
@@ -9,19 +9,19 @@ export const defaultFileRenders = {
     currentVersion: 'v1',
     status: 'RENDERED',
     pageCount: 1,
-  } satisfies AuthoringRenderFile,
+  } satisfies RenderFile,
   shortFormRender: {
     fileName: 'short-form-render.pdf',
     currentVersion: 'v1',
     status: 'RENDERED',
     pageCount: 1,
-  } satisfies AuthoringRenderFile,
+  } satisfies RenderFile,
   longFormRender: {
     fileName: 'long-form-render.pdf',
     currentVersion: 'v1',
     status: 'RENDERED',
     pageCount: 2,
-  } satisfies AuthoringRenderFile,
+  } satisfies RenderFile,
 };
 
 export const TemplateFactory = {
@@ -130,9 +130,9 @@ export const TemplateFactory = {
       language?: Language;
       letterVariantId?: string;
       campaignId?: string | null;
-      initialRender?: Partial<AuthoringRenderFile> | false;
-      shortFormRender?: Partial<AuthoringRenderFile> | false;
-      longFormRender?: Partial<AuthoringRenderFile> | false;
+      initialRender?: Partial<RenderFile> | false;
+      shortFormRender?: Partial<RenderFile> | false;
+      longFormRender?: Partial<RenderFile> | false;
       customPersonalisation?: string[];
       systemPersonalisation?: string[];
       validationErrors?: string[];

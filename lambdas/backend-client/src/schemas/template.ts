@@ -2,8 +2,8 @@ import { z } from 'zod/v4';
 import type {
   AuthoringLetterFiles,
   AuthoringLetterProperties,
-  AuthoringPersonalisedRenderDetails,
-  AuthoringRenderDetails,
+  PersonalisedRenderDetails,
+  RenderDetails,
   BaseCreatedTemplate,
   BaseTemplate,
   CreatePdfLetterProperties,
@@ -69,49 +69,48 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
-const $AuthoringRenderDetailsFailed = z.object({
+const $RenderDetailsFailed = z.object({
   currentVersion: z.string().optional(),
   fileName: z.string().trim().min(1).optional(),
   pageCount: z.number().int().optional(),
   status: z.literal('FAILED'),
 });
 
-const $AuthoringRenderDetailsPending = z.object({
+const $RenderDetailsPending = z.object({
   status: z.literal('PENDING'),
 });
 
-const $AuthoringRenderDetailsRendered = z.object({
+const $RenderDetailsRendered = z.object({
   currentVersion: z.string(),
   fileName: z.string().trim().min(1),
   pageCount: z.number().int(),
   status: z.literal('RENDERED'),
 });
 
-const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
+const $RenderDetails = schemaFor<RenderDetails>()(
   z.discriminatedUnion('status', [
-    $AuthoringRenderDetailsFailed,
-    $AuthoringRenderDetailsPending,
-    $AuthoringRenderDetailsRendered,
+    $RenderDetailsFailed,
+    $RenderDetailsPending,
+    $RenderDetailsRendered,
   ])
 );
 
-const $AuthoringPersonalisedRenderDetails =
-  schemaFor<AuthoringPersonalisedRenderDetails>()(
-    z.object({
-      currentVersion: z.string(),
-      fileName: z.string().trim().min(1),
-      pageCount: z.number().int(),
-      personalisationParameters: z.record(z.string(), z.string()),
-      systemPersonalisationPackId: z.string(),
-      status: z.enum(RENDER_STATUS_LIST),
-    })
-  );
+const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
+  z.object({
+    currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    pageCount: z.number().int(),
+    personalisationParameters: z.record(z.string(), z.string()),
+    systemPersonalisationPackId: z.string(),
+    status: z.enum(RENDER_STATUS_LIST),
+  })
+);
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
-    initialRender: $AuthoringRenderDetails.optional(),
-    longFormRender: $AuthoringPersonalisedRenderDetails.optional(),
-    shortFormRender: $AuthoringPersonalisedRenderDetails.optional(),
+    initialRender: $RenderDetails.optional(),
+    longFormRender: $PersonalisedRenderDetails.optional(),
+    shortFormRender: $PersonalisedRenderDetails.optional(),
   })
 );
 
