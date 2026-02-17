@@ -40,7 +40,7 @@ module "lambda_letter_preview_renderer" {
 
 resource "aws_lambda_event_source_mapping" "letter_preview_renderer" {
   event_source_arn = module.sqs_letter_render.sqs_queue_arn
-  function_name    = module.letter_preview_renderer_lambda.function_name
+  function_name    = module.lambda_letter_preview_renderer.function_name
   batch_size       = 1
 
   scaling_config {
