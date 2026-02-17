@@ -26,11 +26,27 @@ export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
   systemPersonalisationPackId: string;
 };
 
-export type AuthoringRenderDetails = {
+export type AuthoringRenderDetails =
+  | AuthoringRenderDetailsFailed
+  | AuthoringRenderDetailsPending
+  | AuthoringRenderDetailsRendered;
+
+export type AuthoringRenderDetailsFailed = {
+  currentVersion?: string;
+  fileName?: string;
+  pageCount?: number;
+  status: 'FAILED';
+};
+
+export type AuthoringRenderDetailsPending = {
+  status: 'PENDING';
+};
+
+export type AuthoringRenderDetailsRendered = {
   currentVersion: string;
   fileName: string;
   pageCount: number;
-  status: RenderStatus;
+  status: 'RENDERED';
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {

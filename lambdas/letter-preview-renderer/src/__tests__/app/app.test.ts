@@ -1,13 +1,16 @@
 import { App } from '../../app/app';
-import { Carbone } from '../../infra/carbone';
-import { CheckRender } from '../../infra/check-render';
-import { RenderRepository, SaveResult } from '../../infra/render-repository';
-import {
+import type { Carbone } from '../../infra/carbone';
+import type { CheckRender } from '../../infra/check-render';
+import type {
+  RenderRepository,
+  SaveResult,
+} from '../../infra/render-repository';
+import type {
   SourceHandle,
   SourceRepository,
 } from '../../infra/source-repository';
 import { mock } from 'jest-mock-extended';
-import { TemplateRepository } from '../../infra/template-repository';
+import type { TemplateRepository } from '../../infra/template-repository';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 import { RenderFailureError } from '../../types/errors';
@@ -23,6 +26,7 @@ const validMarkers = new Set([
   'd.first_name',
 ]);
 
+// eslint-disable-next-line sonarjs/publicly-writable-directories
 const createSourceHandle = (path = '/tmp/source.docx'): SourceHandle => ({
   path,
   cleanup: jest.fn(),
@@ -73,6 +77,7 @@ describe('App', () => {
     describe('happy path', () => {
       test('renders template with valid markers and returns "rendered"', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
@@ -113,12 +118,24 @@ describe('App', () => {
           'initial',
           pageCount
         );
+
         expect(mocks.templateRepo.update).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'RENDERED',
-          'NOT_YET_SUBMITTED',
           {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          },
+          {
+            status: 'RENDERED',
             ...saveResult,
             pageCount,
           }
@@ -129,6 +146,7 @@ describe('App', () => {
     describe('invalid-renderable markers', () => {
       test('renders template but returns "rendered-invalid" when markers have invalid paths', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
@@ -138,11 +156,7 @@ describe('App', () => {
           currentVersion: 'version-456',
         };
 
-        // Markers with invalid path like 'd.foo.bar' are renderable but invalid
-        const markersWithInvalidPath = new Set([
-          ...validMarkers,
-          'foo.bar', // Invalid renderable - has dot path
-        ]);
+        const markersWithInvalidPath = new Set([...validMarkers, 'foo.bar']);
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(markersWithInvalidPath);
@@ -158,9 +172,20 @@ describe('App', () => {
         expect(mocks.templateRepo.update).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'FAILED',
-          'VALIDATION_FAILED',
           {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          },
+          {
+            status: 'FAILED',
             ...saveResult,
             pageCount,
           }
@@ -174,11 +199,7 @@ describe('App', () => {
         const request = createRequest();
         const sourceHandle = createSourceHandle();
 
-        // Markers like 'c.something' are non-renderable
-        const nonRenderableMarkers = new Set([
-          ...validMarkers,
-          'c.conditional', // Non-renderable - uses 'c.' prefix
-        ]);
+        const nonRenderableMarkers = new Set([...validMarkers, 'c.compliment']);
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(nonRenderableMarkers);
@@ -188,7 +209,6 @@ describe('App', () => {
 
         expect(outcome).toBe('not-rendered');
 
-        // Should NOT call render, pageCount, or save
         expect(mocks.carbone.render).not.toHaveBeenCalled();
         expect(mocks.checkRender.pageCount).not.toHaveBeenCalled();
         expect(mocks.renderRepo.save).not.toHaveBeenCalled();
@@ -196,7 +216,18 @@ describe('App', () => {
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          }
         );
       });
     });
@@ -204,6 +235,7 @@ describe('App', () => {
     describe('infrastructure failures', () => {
       test('returns "not-rendered" when source fetch fails', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
 
         mocks.sourceRepo.getSource.mockRejectedValue(
@@ -217,18 +249,23 @@ describe('App', () => {
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          undefined
         );
       });
 
       test('returns "not-rendered" when marker extraction fails', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
+
         mocks.carbone.extractMarkers.mockRejectedValue(
-          new RenderFailureError('marker-extraction', new Error('Carbone error'))
+          new RenderFailureError(
+            'marker-extraction',
+            new Error('Carbone error')
+          )
         );
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
@@ -238,12 +275,13 @@ describe('App', () => {
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          undefined
         );
       });
 
       test('returns "not-rendered" when render fails', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
 
@@ -260,12 +298,24 @@ describe('App', () => {
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          }
         );
       });
 
       test('returns "not-rendered" when page count fails', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
@@ -281,15 +331,28 @@ describe('App', () => {
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
+
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          }
         );
       });
 
       test('returns "not-rendered" when save fails', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
@@ -307,15 +370,28 @@ describe('App', () => {
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
+
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
           'initial',
-          'VALIDATION_FAILED'
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          }
         );
       });
 
       test('rethrows unexpected errors', async () => {
         const { app, mocks } = setup();
+
         const request = createRequest();
 
         const unexpectedError = new Error('Unexpected error');

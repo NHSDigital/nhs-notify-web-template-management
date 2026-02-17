@@ -17,7 +17,6 @@ import type {
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
-  RenderStatus,
   SmsProperties,
   TemplateDto,
   TemplateStatus,
@@ -70,15 +69,30 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
-const $RenderStatus = schemaFor<RenderStatus>()(z.enum(RENDER_STATUS_LIST));
+const $AuthoringRenderDetailsFailed = z.object({
+  currentVersion: z.string().optional(),
+  fileName: z.string().trim().min(1).optional(),
+  pageCount: z.number().int().optional(),
+  status: z.literal('FAILED'),
+});
+
+const $AuthoringRenderDetailsPending = z.object({
+  status: z.literal('PENDING'),
+});
+
+const $AuthoringRenderDetailsRendered = z.object({
+  currentVersion: z.string(),
+  fileName: z.string().trim().min(1),
+  pageCount: z.number().int(),
+  status: z.literal('RENDERED'),
+});
 
 const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
-  z.object({
-    currentVersion: z.string(),
-    fileName: z.string().trim().min(1),
-    pageCount: z.number().int(),
-    status: $RenderStatus,
-  })
+  z.discriminatedUnion('status', [
+    $AuthoringRenderDetailsFailed,
+    $AuthoringRenderDetailsPending,
+    $AuthoringRenderDetailsRendered,
+  ])
 );
 
 const $AuthoringPersonalisedRenderDetails =
@@ -89,7 +103,7 @@ const $AuthoringPersonalisedRenderDetails =
       pageCount: z.number().int(),
       personalisationParameters: z.record(z.string(), z.string()),
       systemPersonalisationPackId: z.string(),
-      status: $RenderStatus,
+      status: z.enum(RENDER_STATUS_LIST),
     })
   );
 

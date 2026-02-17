@@ -87,6 +87,19 @@
         ]
       },
       "AuthoringRenderDetails": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/AuthoringRenderDetailsFailed"
+          },
+          {
+            "$ref": "#/components/schemas/AuthoringRenderDetailsPending"
+          },
+          {
+            "$ref": "#/components/schemas/AuthoringRenderDetailsRendered"
+          }
+        ]
+      },
+      "AuthoringRenderDetailsFailed": {
         "properties": {
           "currentVersion": {
             "type": "string"
@@ -98,7 +111,47 @@
             "type": "integer"
           },
           "status": {
-            "$ref": "#/components/schemas/RenderStatus"
+            "enum": [
+              "FAILED"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "AuthoringRenderDetailsPending": {
+        "properties": {
+          "status": {
+            "enum": [
+              "PENDING"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "AuthoringRenderDetailsRendered": {
+        "properties": {
+          "currentVersion": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "pageCount": {
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "RENDERED"
+            ],
+            "type": "string"
           }
         },
         "required": [

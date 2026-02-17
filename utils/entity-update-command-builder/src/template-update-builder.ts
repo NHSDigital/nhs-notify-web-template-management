@@ -98,13 +98,14 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  setLongFormRender(details: AuthoringPersonalisedRenderDetails) {
-    this.updateBuilder.setValueInMap('files', 'longFormRender', details);
+  setShortFormRender(details: AuthoringPersonalisedRenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
     return this;
   }
 
-  setShortFormRender(details: AuthoringPersonalisedRenderDetails) {
-    this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
+  setPersonalisation(system: string[], custom: string[]) {
+    this.updateBuilder.setValue('systemPersonalisation', system);
+    this.updateBuilder.setValue('customPersonalisation', custom);
     return this;
   }
 

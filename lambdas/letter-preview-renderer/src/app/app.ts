@@ -1,12 +1,17 @@
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
-import type { SourceRepository, SourceHandle } from '../infra/source-repository';
+import type {
+  SourceRepository,
+  SourceHandle,
+} from '../infra/source-repository';
 import type { Carbone } from '../infra/carbone';
 import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
 import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { getPersonalisation } from '../domain/personalisation';
 import { NonRenderableMarkersError, RenderFailureError } from '../types/errors';
+import { Personalisation, RenderVariant } from '../types/types';
 
 export type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
 
@@ -27,68 +32,47 @@ export class App {
     });
 
     let source: SourceHandle | undefined;
+    let personalisation: Personalisation | undefined;
 
     try {
       source = await this.sourceRepo.getSource(template);
 
       const markers = await this.carbone.extractMarkers(source.path);
 
-      const personalisation = getPersonalisation(markers);
+      const classifiedPersonalisation = getPersonalisation(markers);
 
       const {
         passthroughPersonalisation,
         invalidRenderablePersonalisation,
         nonRenderablePersonalisation,
-      } = personalisation;
+      } = classifiedPersonalisation;
+
+      personalisation = classifiedPersonalisation.personalisation;
 
       if (nonRenderablePersonalisation.length > 0) {
         templateLogger
-          .child(personalisation)
+          .child({ personalisation: classifiedPersonalisation })
           .info('Source contains non-renderable personalisation');
 
         throw new NonRenderableMarkersError(nonRenderablePersonalisation);
       }
 
-      const pdf = await this.carbone.render(
+      const renderDetails = await this.renderAndSave(
         source.path,
+        template,
+        'initial',
         passthroughPersonalisation
       );
 
-      const pages = await this.checkRender.pageCount(pdf);
+      const hasInvalidMarkers = invalidRenderablePersonalisation.length > 0;
+      const status = hasInvalidMarkers ? 'FAILED' : 'RENDERED';
 
-      const saveResult = await this.renderRepo.save(
-        pdf,
-        template,
-        'initial',
-        pages
-      );
+      await this.templateRepo.update(template, 'initial', personalisation, {
+        status,
+        ...renderDetails,
+      });
 
-      const renderDetails = {
-        ...saveResult,
-        pageCount: pages,
-      };
-
-      if (invalidRenderablePersonalisation.length > 0) {
-        await this.templateRepo.update(
-          template,
-          'initial',
-          'FAILED',
-          'VALIDATION_FAILED',
-          renderDetails
-        );
-
-        return 'rendered-invalid';
-      }
-
-      await this.templateRepo.update(
-        template,
-        'initial',
-        'RENDERED',
-        'NOT_YET_SUBMITTED',
-        renderDetails
-      );
-
-      return 'rendered';
+      return hasInvalidMarkers ? 'rendered-invalid' : 'rendered';
     } catch (error) {
       if (
         error instanceof RenderFailureError ||
@@ -99,7 +83,7 @@ export class App {
         await this.templateRepo.updateFailed(
           template,
           'initial',
-          'VALIDATION_FAILED'
+          personalisation
         );
 
         return 'not-rendered';
@@ -109,5 +93,28 @@ export class App {
     } finally {
       source?.cleanup();
     }
+  }
+
+  private async renderAndSave(
+    sourcePath: string,
+    template: TemplateRenderIds,
+    variant: RenderVariant,
+    passthroughPersonalisation: Record<string, string>
+  ) {
+    const pdf = await this.carbone.render(
+      sourcePath,
+      passthroughPersonalisation
+    );
+
+    const pageCount = await this.checkRender.pageCount(pdf);
+
+    const saveResult = await this.renderRepo.save(
+      pdf,
+      template,
+      variant,
+      pageCount
+    );
+
+    return { ...saveResult, pageCount };
   }
 }

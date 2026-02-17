@@ -147,6 +147,7 @@ export type DatabaseTemplate = {
   sftpSendLockTime?: number;
   subject?: string;
   supplier?: string;
+  systemPersonalisation?: string[];
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;

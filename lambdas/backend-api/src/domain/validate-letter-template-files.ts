@@ -1,6 +1,7 @@
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { type TemplatePdf, ADDRESS_PERSONALISATIONS } from './template-pdf';
+import { type TemplatePdf } from './template-pdf';
 import type { TestDataCsv } from './test-data-csv';
+import { ADDRESS_PERSONALISATIONS } from 'nhs-notify-backend-client/src/schemas/constants';
 
 export function validateLetterTemplateFiles(
   pdf: TemplatePdf,

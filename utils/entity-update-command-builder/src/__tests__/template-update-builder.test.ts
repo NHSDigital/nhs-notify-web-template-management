@@ -689,4 +689,126 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('setPersonalisation', () => {
+    test('sets systemPersonalisation and customPersonalisation fields', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setPersonalisation(['firstName', 'lastName'], ['appointmentDate'])
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':systemPersonalisation': ['firstName', 'lastName'],
+          ':customPersonalisation': ['appointmentDate'],
+        },
+        ExpressionAttributeNames: {
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+        },
+        UpdateExpression:
+          'SET #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation',
+      });
+    });
+
+    test('sets empty arrays when no personalisation provided', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.setPersonalisation([], []).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':systemPersonalisation': [],
+          ':customPersonalisation': [],
+        },
+        ExpressionAttributeNames: {
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+        },
+        UpdateExpression:
+          'SET #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation',
+      });
+    });
+  });
+
+  describe('setInitialRender', () => {
+    test('sets initialRender in files map', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const renderDetails = {
+        status: 'RENDERED' as const,
+        fileName: 'test-file.pdf',
+        currentVersion: 'v1',
+        pageCount: 2,
+      };
+
+      const res = builder.setInitialRender(renderDetails).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+        },
+        ExpressionAttributeValues: {
+          ':initialRender': renderDetails,
+        },
+        UpdateExpression: 'SET #files.#initialRender = :initialRender',
+      });
+    });
+  });
+
+  describe('setShortFormRender', () => {
+    test('sets shortFormRender in files map', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const renderDetails = {
+        status: 'RENDERED' as const,
+        fileName: 'short-form.pdf',
+        currentVersion: 'v2',
+        pageCount: 1,
+        systemPersonalisationPackId: 'pack-1',
+        personalisationParameters: { firstName: 'John' },
+      };
+
+      const res = builder.setShortFormRender(renderDetails).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#files': 'files',
+          '#shortFormRender': 'shortFormRender',
+        },
+        ExpressionAttributeValues: {
+          ':shortFormRender': renderDetails,
+        },
+        UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
+      });
+    });
+  });
 });

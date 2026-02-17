@@ -33,7 +33,7 @@ export function classifyAndCleanMarkers(
 
     const dataMarker = marker.slice(2);
 
-    if (!/^[A-Za-z0-9_-]+$/.test(dataMarker)) {
+    if (!/^[\w-]+$/.test(dataMarker)) {
       markers['invalid-renderable'].add(dataMarker);
       continue;
     }
