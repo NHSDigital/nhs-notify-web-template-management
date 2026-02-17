@@ -173,16 +173,19 @@ test.describe('Routing', () => {
   test('/message-plans have an accessibility test', async () => {
     const routes = await getAppRoutes();
 
-    const uncoveredRoutingPages = routes
-      .filter((r) => r.startsWith('message-plans/'))
-      .filter(
-        (r) =>
-          !routingPages.some(
-            ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
-          )
-      );
+    const messagePlanRoutes = routes.filter((r) =>
+      r.startsWith('message-plans/')
+    );
 
-    expect(uncoveredRoutingPages).toHaveLength(0);
+    const uncoveredMessagePlans = messagePlanRoutes.filter(
+      (r) =>
+        !routingPages.some(
+          ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
+        )
+    );
+
+    expect(uncoveredMessagePlans).toHaveLength(0);
+    expect(messagePlanRoutes.length).toBe(routingPages.length);
   });
 
   test.describe('Choose templates', () => {
