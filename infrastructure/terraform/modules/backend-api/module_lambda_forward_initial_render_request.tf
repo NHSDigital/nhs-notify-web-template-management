@@ -39,7 +39,7 @@ module "lambda_forward_initial_render_request" {
 
 data "aws_iam_policy_document" "forward_initial_render_request" {
   statement {
-    sid    = "AllowProofingSQS"
+    sid    = "AllowRenderSQS"
     effect = "Allow"
 
     actions = [
@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "forward_initial_render_request" {
     ]
 
     resources = [
-      module.sqs_sftp_upload.sqs_queue_arn,
+      module.sqs_letter_render.sqs_queue_arn,
     ]
   }
 
