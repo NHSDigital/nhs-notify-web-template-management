@@ -19,20 +19,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   validationErrors?: Array<LetterValidationError>;
 };
 
-export type PersonalisedRenderDetails = RenderDetails & {
-  personalisationParameters: {
-    [key: string]: string;
-  };
-  systemPersonalisationPackId: string;
-};
-
-export type RenderDetails = {
-  currentVersion: string;
-  fileName: string;
-  pageCount: number;
-  status: RenderStatus;
-};
-
 export type BaseCreatedTemplate = BaseTemplate & {
   campaignId?: string;
   clientId?: string;
@@ -249,10 +235,24 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderDetails = RenderDetails & {
+  personalisationParameters: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId: string;
+};
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
+};
+
+export type RenderDetails = {
+  currentVersion: string;
+  fileName: string;
+  pageCount: number;
+  status: RenderStatus;
 };
 
 export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
