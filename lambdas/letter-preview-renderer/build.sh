@@ -13,4 +13,6 @@ npx esbuild \
   --loader:.node=file \
   --entry-names=[name] \
   --outdir=dist \
-  src/index.ts
+  src/letter-preview-renderer.ts
+
+cp ../../node_modules/carbone/lib/converter.py ./dist/converter.py
