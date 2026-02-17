@@ -15,7 +15,7 @@ function addressLineCount(markers: Set<string>): number {
 }
 
 function getPassthroughPersonalisation(keys: string[]): Record<string, string> {
-  return Object.fromEntries([...keys].map((key) => [key, `d.${key}`]));
+  return Object.fromEntries([...keys].map((key) => [key, `{d.${key}}`]));
 }
 
 function classifyPersonalisation(parameters: string[]) {

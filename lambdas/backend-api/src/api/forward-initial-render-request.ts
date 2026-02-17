@@ -3,6 +3,7 @@ import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
 // replace with LetterUploadRepository.parseKey
+// need to add currentVersion to the request object
 export const keyToInitialRenderRequest = (
   key: string
 ): InitialRenderRequest => {

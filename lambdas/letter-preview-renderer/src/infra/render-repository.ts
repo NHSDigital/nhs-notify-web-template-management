@@ -31,6 +31,7 @@ export class RenderRepository {
       }
 
       return {
+        // should be the last segment only
         fileName: key,
         currentVersion: response.VersionId,
       };
@@ -39,6 +40,7 @@ export class RenderRepository {
     }
   }
 
+  // compare pdf etc metadata, add 'file-type'
   private buildMetadata(
     { templateId, clientId }: TemplateRenderIds,
     renderVariant: RenderVariant,
