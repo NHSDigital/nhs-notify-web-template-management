@@ -4,12 +4,17 @@ import { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
 
 describe('TestMessageBanner', () => {
   it('matches snapshot for NHS_APP template type', () => {
-    render(<TestMessageBanner templateType='NHS_APP' templateId='template-123' />);
+    render(
+      <TestMessageBanner templateType='NHS_APP' templateId='template-123' />
+    );
 
     expect(screen.getByTestId('test-message-banner')).toBeVisible();
     expect(
       screen.getByRole('link', { name: 'Send a test NHS App message' })
-    ).toHaveAttribute('href', '/templates/send-test-nhs-app-message/template-123');
+    ).toHaveAttribute(
+      'href',
+      '/templates/send-test-nhs-app-message/template-123'
+    );
     expect(screen.getByText(/this is only a basic preview/i)).toBeVisible();
   });
 
@@ -23,12 +28,17 @@ describe('TestMessageBanner', () => {
   });
 
   it('renders for email template type', () => {
-    render(<TestMessageBanner templateType='EMAIL' templateId='template-789' />);
+    render(
+      <TestMessageBanner templateType='EMAIL' templateId='template-789' />
+    );
 
     expect(screen.getByTestId('test-message-banner')).toBeVisible();
     expect(
       screen.getByRole('link', { name: 'Send a test email' })
-    ).toHaveAttribute('href', '/templates/send-test-email-message/template-789');
+    ).toHaveAttribute(
+      'href',
+      '/templates/send-test-email-message/template-789'
+    );
   });
 
   it.each<[DigitalTemplateType, string]>([

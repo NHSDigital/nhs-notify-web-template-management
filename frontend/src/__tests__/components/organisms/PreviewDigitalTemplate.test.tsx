@@ -221,7 +221,10 @@ describe('PreviewDigitalTemplate', () => {
         expect(screen.getByTestId('test-message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test NHS App message' })
-        ).toHaveAttribute('href', '/templates/send-test-nhs-app-message/template-123');
+        ).toHaveAttribute(
+          'href',
+          '/templates/send-test-nhs-app-message/template-123'
+        );
       });
 
       it('displays "Send test message" button for draft NHS_APP template', () => {
@@ -295,7 +298,10 @@ describe('PreviewDigitalTemplate', () => {
         expect(screen.getByTestId('test-message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test email' })
-        ).toHaveAttribute('href', '/templates/send-test-email-message/template-456');
+        ).toHaveAttribute(
+          'href',
+          '/templates/send-test-email-message/template-456'
+        );
       });
 
       it('displays "Send test message" button for draft EMAIL template', () => {
@@ -369,7 +375,10 @@ describe('PreviewDigitalTemplate', () => {
         expect(screen.getByTestId('test-message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test text message' })
-        ).toHaveAttribute('href', '/templates/send-test-text-message/template-789');
+        ).toHaveAttribute(
+          'href',
+          '/templates/send-test-text-message/template-789'
+        );
       });
 
       it('displays "Send test message" button for draft SMS template', () => {

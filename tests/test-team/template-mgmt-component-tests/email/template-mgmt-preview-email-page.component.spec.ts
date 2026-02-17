@@ -58,10 +58,7 @@ async function createTemplates() {
       message: 'test-template-message',
     } as Template,
     digitalProofing: {
-      ...TemplateFactory.createEmailTemplate(
-        randomUUID(),
-        digitalProofingUser
-      ),
+      ...TemplateFactory.createEmailTemplate(randomUUID(), digitalProofingUser),
       name: 'digital-proofing-email-template',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
@@ -111,11 +108,11 @@ test.describe('Preview Email message template Page', () => {
 
     await expect(previewPage.editButton).toBeVisible();
 
-    await expect(previewPage.testMessageBanner).not.toBeVisible();
-    await expect(previewPage.sendTestMessageButton).not.toBeVisible();
+    await expect(previewPage.testMessageBanner).toBeHidden();
+    await expect(previewPage.sendTestMessageButton).toBeHidden();
 
-    await expect(previewPage.editRadioOption).not.toBeVisible();
-    await expect(previewPage.submitRadioOption).not.toBeVisible();
+    await expect(previewPage.editRadioOption).toBeHidden();
+    await expect(previewPage.submitRadioOption).toBeHidden();
   });
 
   test.describe('Page functionality', () => {
@@ -220,10 +217,10 @@ test.describe('Preview Email message template Page', () => {
 
       await expect(previewPage.messageText).toHaveText('test-template-message');
 
-      await expect(previewPage.editButton).not.toBeVisible();
+      await expect(previewPage.editButton).toBeHidden();
 
-      await expect(previewPage.sendTestMessageButton).not.toBeVisible();
-      await expect(previewPage.testMessageBanner).not.toBeVisible();
+      await expect(previewPage.sendTestMessageButton).toBeHidden();
+      await expect(previewPage.testMessageBanner).toBeHidden();
     });
 
     test.describe('Page functionality', () => {
@@ -333,8 +330,8 @@ test.describe('Preview Email message template Page', () => {
         'Send a test message'
       );
 
-      await expect(previewPage.editRadioOption).not.toBeVisible();
-      await expect(previewPage.submitRadioOption).not.toBeVisible();
+      await expect(previewPage.editRadioOption).toBeHidden();
+      await expect(previewPage.submitRadioOption).toBeHidden();
       await expect(previewPage.continueButton).toBeHidden();
 
       // Test banner link (opens in new tab)

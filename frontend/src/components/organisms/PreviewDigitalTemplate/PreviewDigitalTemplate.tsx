@@ -64,12 +64,15 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
               passHref
               legacyBehavior
             >
-              <Button secondary className='nhsuk-u-margin-left-3' data-testid='send-test-message-button'>
+              <Button
+                secondary
+                className='nhsuk-u-margin-left-3'
+                data-testid='send-test-message-button'
+              >
                 {sendTestMessageButton}
               </Button>
             </Link>
           )}
-
         </>
       ) : (
         <>

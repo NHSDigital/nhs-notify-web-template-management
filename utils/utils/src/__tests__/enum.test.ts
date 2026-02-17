@@ -221,9 +221,14 @@ describe('sendDigitalTemplateTestMessageUrl', () => {
     ['NHS_APP', 'template-123', '/send-test-nhs-app-message/template-123'],
     ['SMS', 'template-456', '/send-test-text-message/template-456'],
     ['EMAIL', 'template-789', '/send-test-email-message/template-789'],
-  ] as const)('generates url for %s template with id %s', (type, templateId, expected) => {
-    expect(sendDigitalTemplateTestMessageUrl(type, templateId)).toEqual(expected);
-  });
+  ] as const)(
+    'generates url for %s template with id %s',
+    (type, templateId, expected) => {
+      expect(sendDigitalTemplateTestMessageUrl(type, templateId)).toEqual(
+        expected
+      );
+    }
+  );
 });
 
 describe('templateTypeToUrlTextMappings', () => {

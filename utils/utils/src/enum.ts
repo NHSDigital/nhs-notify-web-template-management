@@ -223,8 +223,10 @@ export const testMessageUrlSegmentMapping = (type: DigitalTemplateType) =>
     EMAIL: 'email',
   })[type];
 
-export const sendDigitalTemplateTestMessageUrl = (type: DigitalTemplateType, templateId: string) =>
-  `/send-test-${testMessageUrlSegmentMapping(type)}-message/${templateId}`;
+export const sendDigitalTemplateTestMessageUrl = (
+  type: DigitalTemplateType,
+  templateId: string
+) => `/send-test-${testMessageUrlSegmentMapping(type)}-message/${templateId}`;
 
 export const templateTypeToUrlTextMappings = (
   type: TemplateType,
