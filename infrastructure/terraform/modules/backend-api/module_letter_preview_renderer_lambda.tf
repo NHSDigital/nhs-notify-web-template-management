@@ -15,7 +15,7 @@ module "letter_preview_renderer_lambda" {
 
   package_type           = "Image"
   image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-latest"
-  image_repository_names = [ "${var.project}-${var.parent_acct_environment}-acct"]
+  image_repository_names = ["${var.project}-${var.parent_acct_environment}-acct"]
 
   memory  = 128
   timeout = 3
