@@ -69,10 +69,19 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   notify_internal_id=$(uuidgen | tr '[:upper:]' '[:lower:]')
 
+  user_attributes=(
+    "Name=email,Value=${email}"
+    "Name=email_verified,Value=True"
+    "Name=custom:sbx_client_id,Value=${notify_client_id}"
+    "Name=custom:nhs_notify_user_id,Value=${notify_internal_id}"
+  )
+
+  joined_user_attributes=$(IFS=' '; echo "${user_attributes[*]}")
+
   aws cognito-idp admin-create-user \
     --user-pool-id "${cognito_user_pool_id}" \
     --username "${email}" \
-    --user-attributes Name=email,Value=${email} Name=email_verified,Value=True Name=custom:sbx_client_id,Value=${notify_client_id} Name=custom:nhs_notify_user_id,Value=${notify_internal_id} \
+    --user-attributes "${joined_user_attributes}" \
     --temporary-password "${temp_password}" \
     --desired-delivery-mediums EMAIL \
     --message-action SUPPRESS
