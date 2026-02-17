@@ -2,8 +2,8 @@ import { z } from 'zod/v4';
 import type {
   AuthoringLetterFiles,
   AuthoringLetterProperties,
-  AuthoringPersonalisedRenderDetails,
-  AuthoringRenderDetails,
+  PersonalisedRenderDetails,
+  RenderDetails,
   BaseCreatedTemplate,
   BaseTemplate,
   CreatePdfLetterProperties,
@@ -72,7 +72,7 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
 
 const $RenderStatus = schemaFor<RenderStatus>()(z.enum(RENDER_STATUS_LIST));
 
-const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
+const $RenderDetails = schemaFor<RenderDetails>()(
   z.object({
     currentVersion: z.string(),
     fileName: z.string().trim().min(1),
@@ -81,23 +81,22 @@ const $AuthoringRenderDetails = schemaFor<AuthoringRenderDetails>()(
   })
 );
 
-const $AuthoringPersonalisedRenderDetails =
-  schemaFor<AuthoringPersonalisedRenderDetails>()(
-    z.object({
-      currentVersion: z.string(),
-      fileName: z.string().trim().min(1),
-      pageCount: z.number().int(),
-      personalisationParameters: z.record(z.string(), z.string()),
-      systemPersonalisationPackId: z.string(),
-      status: $RenderStatus,
-    })
-  );
+const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
+  z.object({
+    currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    pageCount: z.number().int(),
+    personalisationParameters: z.record(z.string(), z.string()),
+    systemPersonalisationPackId: z.string(),
+    status: $RenderStatus,
+  })
+);
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
-    initialRender: $AuthoringRenderDetails.optional(),
-    longFormRender: $AuthoringPersonalisedRenderDetails.optional(),
-    shortFormRender: $AuthoringPersonalisedRenderDetails.optional(),
+    initialRender: $RenderDetails.optional(),
+    longFormRender: $PersonalisedRenderDetails.optional(),
+    shortFormRender: $PersonalisedRenderDetails.optional(),
   })
 );
 

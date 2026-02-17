@@ -5,9 +5,9 @@ export type ClientOptions = {
 };
 
 export type AuthoringLetterFiles = {
-  initialRender?: AuthoringRenderDetails;
-  longFormRender?: AuthoringPersonalisedRenderDetails;
-  shortFormRender?: AuthoringPersonalisedRenderDetails;
+  initialRender?: RenderDetails;
+  longFormRender?: PersonalisedRenderDetails;
+  shortFormRender?: PersonalisedRenderDetails;
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
@@ -19,14 +19,14 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   validationErrors?: Array<LetterValidationError>;
 };
 
-export type AuthoringPersonalisedRenderDetails = AuthoringRenderDetails & {
+export type PersonalisedRenderDetails = RenderDetails & {
   personalisationParameters: {
     [key: string]: string;
   };
   systemPersonalisationPackId: string;
 };
 
-export type AuthoringRenderDetails = {
+export type RenderDetails = {
   currentVersion: string;
   fileName: string;
   pageCount: number;

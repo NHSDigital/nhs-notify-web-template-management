@@ -4,13 +4,13 @@
       "AuthoringLetterFiles": {
         "properties": {
           "initialRender": {
-            "$ref": "#/components/schemas/AuthoringRenderDetails"
+            "$ref": "#/components/schemas/RenderDetails"
           },
           "longFormRender": {
-            "$ref": "#/components/schemas/AuthoringPersonalisedRenderDetails"
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
           },
           "shortFormRender": {
-            "$ref": "#/components/schemas/AuthoringPersonalisedRenderDetails"
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
           }
         },
         "type": "object"
@@ -60,54 +60,6 @@
             "type": "object"
           }
         ]
-      },
-      "AuthoringPersonalisedRenderDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AuthoringRenderDetails"
-          },
-          {
-            "properties": {
-              "personalisationParameters": {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              "systemPersonalisationPackId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "personalisationParameters",
-              "systemPersonalisationPackId"
-            ],
-            "type": "object"
-          }
-        ]
-      },
-      "AuthoringRenderDetails": {
-        "properties": {
-          "currentVersion": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "pageCount": {
-            "type": "integer"
-          },
-          "status": {
-            "$ref": "#/components/schemas/RenderStatus"
-          }
-        },
-        "required": [
-          "currentVersion",
-          "fileName",
-          "pageCount",
-          "status"
-        ],
-        "type": "object"
       },
       "BaseCreatedTemplate": {
         "allOf": [
@@ -791,6 +743,31 @@
           }
         ]
       },
+      "PersonalisedRenderDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          {
+            "properties": {
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "personalisationParameters",
+              "systemPersonalisationPackId"
+            ],
+            "type": "object"
+          }
+        ]
+      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -807,6 +784,29 @@
           "fileName",
           "supplier",
           "virusScanStatus"
+        ],
+        "type": "object"
+      },
+      "RenderDetails": {
+        "properties": {
+          "currentVersion": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "pageCount": {
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RenderStatus"
+          }
+        },
+        "required": [
+          "currentVersion",
+          "fileName",
+          "pageCount",
+          "status"
         ],
         "type": "object"
       },

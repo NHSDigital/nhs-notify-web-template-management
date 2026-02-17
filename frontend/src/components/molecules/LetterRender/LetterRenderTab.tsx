@@ -6,7 +6,7 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import type { AuthoringPersonalisedRenderDetails } from 'nhs-notify-backend-client';
+import type { PersonalisedRenderDetails } from 'nhs-notify-backend-client';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
@@ -26,7 +26,7 @@ function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
 function getPersonalisedRender(
   template: AuthoringLetterTemplate,
   tab: RenderTab
-): AuthoringPersonalisedRenderDetails | undefined {
+): PersonalisedRenderDetails | undefined {
   return tab === 'short'
     ? template.files.shortFormRender
     : template.files.longFormRender;
