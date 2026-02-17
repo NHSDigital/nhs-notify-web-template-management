@@ -54,7 +54,7 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
 
   client_config_param_name="$client_ssm_path_prefix/$notify_client_id"
 
-  client_config_param_value='{ "campaignIds": ["campaign"], "features": { "proofing": true, "routing": true } }'
+  client_config_param_value='{ "campaignIds": ["campaign"], "features": { "proofing": true, "routing": true, "letterAuthoring": true } }'
 
   if aws ssm get-parameter --name "$client_config_param_name" --with-decryption >/dev/null 2>&1; then
     echo "Client config parameter already exists: $client_config_param_name"
@@ -67,10 +67,12 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
     echo "Created client config parameter: $client_config_param_name"
   fi
 
+  notify_internal_id=$(uuidgen | tr '[:upper:]' '[:lower:]')
+
   aws cognito-idp admin-create-user \
     --user-pool-id "${cognito_user_pool_id}" \
     --username "${email}" \
-    --user-attributes Name=email,Value=${email} Name=email_verified,Value=True Name=custom:sbx_client_id,Value=${notify_client_id} \
+    --user-attributes Name=email,Value=${email} Name=email_verified,Value=True Name=custom:sbx_client_id,Value=${notify_client_id} Name=custom:nhs_notify_user_id,Value=${notify_internal_id} \
     --temporary-password "${temp_password}" \
     --desired-delivery-mediums EMAIL \
     --message-action SUPPRESS

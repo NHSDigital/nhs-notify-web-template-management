@@ -7,7 +7,7 @@ resource "aws_cloudwatch_event_rule" "s3_put_docx" {
     detail-type = ["Object Created"]
     detail = {
       bucket = {
-        name = { name = [module.s3bucket_internal.name] }
+        name = [module.s3bucket_internal.id]
       }
       object = {
         key = [{ prefix = "docx-template/" }]

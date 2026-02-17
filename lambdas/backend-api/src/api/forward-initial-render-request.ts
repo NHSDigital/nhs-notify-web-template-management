@@ -2,6 +2,7 @@ import { s3putObjectEventValidator } from 'nhs-notify-web-template-management-ut
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
+// replace with LetterUploadRepository.parseKey
 export const keyToInitialRenderRequest = (
   key: string
 ): InitialRenderRequest => {

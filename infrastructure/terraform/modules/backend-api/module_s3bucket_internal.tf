@@ -10,9 +10,8 @@ module "s3bucket_internal" {
   component      = var.component
 
   kms_key_arn = var.kms_key_arn
-}
 
-resource "aws_s3_bucket_notification" "docx_template_internal" {
-  bucket      = aws_s3_bucket.source.id
-  eventbridge = true
+  notification_events = {
+    eventbridge = true
+  }
 }

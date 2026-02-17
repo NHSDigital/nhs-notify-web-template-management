@@ -4,15 +4,10 @@ import { randomUUID } from 'node:crypto';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
-import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 const CONFIG = {
   tableName: 'nhs-notify-alnu1-sbx-api-templates',
-
-  queueUrl:
-    'https://sqs.eu-west-2.amazonaws.com/891377170468/nhs-notify-alnu1-sbx-letter-render-queue.fifo',
 
   bucketName: 'nhs-notify-891377170468-eu-west-2-alnu1-sbx-internal',
 
@@ -31,7 +26,6 @@ async function main() {
 
   console.log('Configuration:');
   console.log(`  Table:      ${CONFIG.tableName}`);
-  console.log(`  Queue:      ${CONFIG.queueUrl}`);
   console.log(`  Bucket:     ${CONFIG.bucketName}`);
   console.log(`  TemplateId: ${templateId}`);
   console.log(`  ClientId:   ${clientId}`);
@@ -40,19 +34,14 @@ async function main() {
   const ddbClient = new DynamoDBClient({ region: 'eu-west-2' });
   const ddb = DynamoDBDocumentClient.from(ddbClient);
   const s3 = new S3Client({ region: 'eu-west-2' });
-  const sqs = new SQSClient({ region: 'eu-west-2' });
 
-  console.log('1. Uploading DOCX to S3...');
-  await uploadDocx(s3, templateId, clientId);
-  console.log('   Done.');
-
-  console.log('2. Creating template record in DynamoDB...');
+  console.log('1. Creating template record in DynamoDB...');
   await createTemplate(ddb, templateId, clientId);
   console.log('   Done.');
 
-  console.log('3. Sending render request to SQS...');
-  const messageId = await sendRenderRequest(sqs, templateId, clientId);
-  console.log(`   Done. MessageId: ${messageId}`);
+  console.log('2. Uploading DOCX to S3...');
+  await uploadDocx(s3, templateId, clientId);
+  console.log('   Done.');
 
   console.log();
   console.log('Render triggered successfully!');
@@ -62,7 +51,6 @@ async function main() {
 function validateConfig() {
   const required: (keyof typeof CONFIG)[] = [
     'tableName',
-    'queueUrl',
     'bucketName',
   ];
 
@@ -119,6 +107,8 @@ async function createTemplate(
     letterType: 'x0',
     language: 'en',
     letterVersion: 'AUTHORING',
+    letterVariantId: 'var',
+    campaignId: 'camp',
 
     templateStatus: 'NOT_YET_SUBMITTED',
 
@@ -139,31 +129,6 @@ async function createTemplate(
       Item: template,
     })
   );
-}
-
-async function sendRenderRequest(
-  sqs: SQSClient,
-  templateId: string,
-  clientId: string
-): Promise<string> {
-  const request: InitialRenderRequest = {
-    requestType: 'initial',
-    template: {
-      templateId,
-      clientId,
-    },
-  };
-
-  const result = await sqs.send(
-    new SendMessageCommand({
-      QueueUrl: CONFIG.queueUrl,
-      MessageBody: JSON.stringify(request),
-      MessageGroupId: randomUUID(),
-      MessageDeduplicationId: randomUUID()
-    })
-  );
-
-  return result.MessageId ?? 'unknown';
 }
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
