@@ -28,7 +28,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   };
 
   const isDigitalProofingEnabledForType =
-    !!featureFlagMap[template.templateType as DigitalTemplateType] &&
+    !!featureFlagMap[template.templateType] &&
     template.templateStatus === 'NOT_YET_SUBMITTED';
 
   return (
@@ -44,7 +44,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
 
           {isDigitalProofingEnabledForType && (
             <TestMessageBanner
-              templateType={template.templateType as DigitalTemplateType}
+              templateType={template.templateType}
               templateId={template.id}
             />
           )}
@@ -58,7 +58,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
           {isDigitalProofingEnabledForType && (
             <Link
               href={sendDigitalTemplateTestMessageUrl(
-                template.templateType as DigitalTemplateType,
+                template.templateType,
                 template.id
               )}
               passHref
