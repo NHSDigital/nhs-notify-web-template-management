@@ -115,8 +115,8 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
       currentVersion: 'version-id',
       fileName: 'template.docx',
       virusScanStatus: 'PASSED',
-    }
-  }
+    },
+  },
 } as const;
 
 export const ROUTING_CONFIG: RoutingConfig = {
