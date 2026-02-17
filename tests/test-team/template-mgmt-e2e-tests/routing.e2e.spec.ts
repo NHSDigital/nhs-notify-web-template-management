@@ -188,9 +188,7 @@ test.describe('Routing', () => {
 
       const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
 
-      await chooseMessageOrderPage.checkRadioButton(
-        'NHSAPP,EMAIL,SMS,LETTER'
-      );
+      await chooseMessageOrderPage.checkRadioButton('NHSAPP,EMAIL,SMS,LETTER');
 
       await chooseMessageOrderPage.clickContinueButton();
 

@@ -74,6 +74,12 @@ export class ValidateLetterTemplateFilesLambda {
       return;
     }
 
+    // to be sorted out by CCM-14558
+    if ('docxTemplate' in template.files) {
+      log.error("Can't process authoring letter template");
+      return;
+    }
+
     const pdfData = template.files.pdfTemplate;
     const csvData = template.files.testDataCsv;
 
