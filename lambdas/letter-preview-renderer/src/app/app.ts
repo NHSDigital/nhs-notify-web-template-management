@@ -31,11 +31,15 @@ export class App {
       renderVariant: 'initial',
     });
 
+    templateLogger.info('UPDATED');
+
     let source: SourceHandle | undefined;
     let personalisation: Personalisation | undefined;
 
     try {
       source = await this.sourceRepo.getSource(template);
+
+      templateLogger.info(source);
 
       const markers = await this.carbone.extractMarkers(source.path);
 
