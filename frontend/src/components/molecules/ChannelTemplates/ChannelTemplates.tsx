@@ -68,9 +68,7 @@ export function ChannelTemplates({
                   {tableContent.lastEditedHeading}
                 </Table.Cell>
                 <Table.Cell data-testid='channel-templates-table-header-template-action'>
-                  <span className='nhsuk-u-visually-hidden'>
-                    Template action
-                  </span>
+                  {tableContent.action.heading}
                 </Table.Cell>
               </Table.Row>
             </Table.Head>
@@ -85,10 +83,11 @@ export function ChannelTemplates({
                       data-testid={`${template.id}-radio`}
                       key={`${template.id}-radio`}
                       defaultChecked={template.id === selectedTemplate}
+                      labelProps={{
+                        'aria-labelledby': `channelTemplate-${template.id}`,
+                      }}
                     >
-                      <span className='nhsuk-u-visually-hidden'>
-                        Select template {template.name}
-                      </span>
+                      {' '}
                     </Radios.Radio>
                   </Table.Cell>
                   <Table.Cell>{template.name}</Table.Cell>

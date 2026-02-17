@@ -133,13 +133,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                             class="nhsuk-table__header"
                             data-testid="channel-templates-table-header-template-action"
                             scope="col"
-                          >
-                            <span
-                              class="nhsuk-u-visually-hidden"
-                            >
-                              Template action
-                            </span>
-                          </th>
+                          />
                         </tr>
                       </thead>
                       <tbody
@@ -171,15 +165,12 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                                 value="letter-template-id"
                               />
                               <label
+                                aria-labelledby="channelTemplate-letter-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-letter-template-id"
                                 id="channelTemplate-letter-template-id--label"
                               >
-                                <span
-                                  class="nhsuk-u-visually-hidden"
-                                >
-                                  Select template letter template name
-                                </span>
+                                 
                               </label>
                             </div>
                           </td>
@@ -229,7 +220,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                               aria-hidden="true"
                               class="nhsuk-table-responsive__heading"
                             >
-                              [object Object] 
+                               
                             </span>
                             <a
                               aria-label="Preview"

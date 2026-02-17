@@ -65,13 +65,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                   class="nhsuk-table__header"
                   data-testid="channel-templates-table-header-template-action"
                   scope="col"
-                >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Template action
-                  </span>
-                </th>
+                />
               </tr>
             </thead>
             <tbody
@@ -102,15 +96,12 @@ exports[`ChannelTemplates renders templates 1`] = `
                       value="app-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-app-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-app-template-id"
                       id="channelTemplate-app-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template app template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -160,7 +151,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -198,15 +189,12 @@ exports[`ChannelTemplates renders templates 1`] = `
                       value="email-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-email-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-email-template-id"
                       id="channelTemplate-email-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template email template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -256,7 +244,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -294,15 +282,12 @@ exports[`ChannelTemplates renders templates 1`] = `
                       value="sms-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-sms-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-sms-template-id"
                       id="channelTemplate-sms-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template sms template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -352,7 +337,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -390,15 +375,12 @@ exports[`ChannelTemplates renders templates 1`] = `
                       value="letter-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-letter-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-letter-template-id"
                       id="channelTemplate-letter-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template letter template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -448,7 +430,7 @@ exports[`ChannelTemplates renders templates 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -535,13 +517,7 @@ exports[`ChannelTemplates renders templates including authoring letter 1`] = `
                   class="nhsuk-table__header"
                   data-testid="channel-templates-table-header-template-action"
                   scope="col"
-                >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Template action
-                  </span>
-                </th>
+                />
               </tr>
             </thead>
             <tbody
@@ -573,15 +549,12 @@ exports[`ChannelTemplates renders templates including authoring letter 1`] = `
                       value="authoring-letter-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-authoring-letter-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-authoring-letter-template-id"
                       id="channelTemplate-authoring-letter-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template authoring letter template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -631,7 +604,7 @@ exports[`ChannelTemplates renders templates including authoring letter 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -730,13 +703,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                   class="nhsuk-table__header"
                   data-testid="channel-templates-table-header-template-action"
                   scope="col"
-                >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Template action
-                  </span>
-                </th>
+                />
               </tr>
             </thead>
             <tbody
@@ -767,15 +734,12 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                       value="app-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-app-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-app-template-id"
                       id="channelTemplate-app-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template app template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -825,7 +789,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -863,15 +827,12 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                       value="email-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-email-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-email-template-id"
                       id="channelTemplate-email-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template email template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -921,7 +882,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -959,15 +920,12 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                       value="sms-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-sms-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-sms-template-id"
                       id="channelTemplate-sms-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template sms template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1017,7 +975,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -1055,15 +1013,12 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                       value="letter-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-letter-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-letter-template-id"
                       id="channelTemplate-letter-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template letter template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1113,7 +1068,7 @@ exports[`ChannelTemplates renders templates with error state 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -1200,13 +1155,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                   class="nhsuk-table__header"
                   data-testid="channel-templates-table-header-template-action"
                   scope="col"
-                >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Template action
-                  </span>
-                </th>
+                />
               </tr>
             </thead>
             <tbody
@@ -1237,15 +1186,12 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                       value="app-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-app-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-app-template-id"
                       id="channelTemplate-app-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template app template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1295,7 +1241,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -1334,15 +1280,12 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                       value="email-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-email-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-email-template-id"
                       id="channelTemplate-email-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template email template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1392,7 +1335,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -1430,15 +1373,12 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                       value="sms-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-sms-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-sms-template-id"
                       id="channelTemplate-sms-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template sms template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1488,7 +1428,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"
@@ -1526,15 +1466,12 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                       value="letter-template-id"
                     />
                     <label
+                      aria-labelledby="channelTemplate-letter-template-id"
                       class="nhsuk-label nhsuk-radios__label"
                       for="channelTemplate-letter-template-id"
                       id="channelTemplate-letter-template-id--label"
                     >
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                        Select template letter template name
-                      </span>
+                       
                     </label>
                   </div>
                 </td>
@@ -1584,7 +1521,7 @@ exports[`ChannelTemplates renders templates with pre-selected template 1`] = `
                     aria-hidden="true"
                     class="nhsuk-table-responsive__heading"
                   >
-                    [object Object] 
+                     
                   </span>
                   <a
                     aria-label="Preview"

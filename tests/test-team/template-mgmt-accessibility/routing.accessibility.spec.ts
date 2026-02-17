@@ -13,7 +13,6 @@ import {
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
-  // new
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
@@ -38,8 +37,9 @@ import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page'
 let userWithMultipleCampaigns: TestUser;
 const routingStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
-const draftRoutingConfig = randomUUID();
-const productionRoutingConfig = randomUUID();
+const draftRoutingConfigId = randomUUID();
+const productionRoutingConfigId = randomUUID();
+const emptyRoutingConfigId = randomUUID();
 const messageOrder = 'NHSAPP,EMAIL,SMS,LETTER';
 const templateIds = {
   NHSAPP: randomUUID(),
@@ -60,57 +60,49 @@ test.describe('Routing', () => {
       testUsers.UserWithMultipleCampaigns.userId
     );
 
-    const routingConfigDraft = RoutingConfigFactory.createForMessageOrder(
-      user,
-      messageOrder,
-      {
-        id: draftRoutingConfig,
-        name: 'Test plan with some templates',
-      }
-    )
-      .addTemplate('NHSAPP', templateIds.NHSAPP)
-      .addTemplate('SMS', templateIds.SMS)
-      .addTemplate('EMAIL', templateIds.EMAIL)
-      .addTemplate('LETTER', templateIds.LETTER)
-      .addTemplate('LETTER', templateIds.LETTER_LARGE_PRINT)
-      .addTemplate('LETTER', templateIds.LETTER_OTHER_LANGUAGE).dbEntry;
+    const createRoutingConfig = (id: string, status: string) =>
+      RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
+        id,
+        name: `${status} - Test plan with some templates`,
+        status,
+      })
+        .addTemplate('NHSAPP', templateIds.NHSAPP)
+        .addTemplate('SMS', templateIds.SMS)
+        .addTemplate('EMAIL', templateIds.EMAIL)
+        .addTemplate('LETTER', templateIds.LETTER)
+        .addTemplate('LETTER', templateIds.LETTER_LARGE_PRINT)
+        .addTemplate('LETTER', templateIds.LETTER_OTHER_LANGUAGE);
 
-    const routingConfigProduction = RoutingConfigFactory.createForMessageOrder(
-      user,
-      messageOrder,
-      {
-        id: productionRoutingConfig,
-        name: 'Production - Test plan with some templates',
-        status: 'COMPLETED',
-      }
-    )
-      .addTemplate('NHSAPP', templateIds.NHSAPP)
-      .addTemplate('SMS', templateIds.SMS)
-      .addTemplate('EMAIL', templateIds.EMAIL)
-      .addTemplate('LETTER', templateIds.LETTER)
-      .addTemplate('LETTER', templateIds.LETTER_LARGE_PRINT)
-      .addTemplate('LETTER', templateIds.LETTER_OTHER_LANGUAGE).dbEntry;
+    const routingConfigDraft = createRoutingConfig(
+      draftRoutingConfigId,
+      'DRAFT'
+    ).dbEntry;
+
+    const routingConfigProduction = createRoutingConfig(
+      productionRoutingConfigId,
+      'COMPLETED'
+    ).dbEntry;
 
     const templates = [
       TemplateFactory.createNhsAppTemplate(
         templateIds.NHSAPP,
         user,
-        'Test NHS App template'
-      ),
-      TemplateFactory.createSmsTemplate(
-        templateIds.SMS,
-        user,
-        'Test SMS template'
-      ),
-      TemplateFactory.uploadLetterTemplate(
-        templateIds.LETTER,
-        user,
-        'Test Letter template'
+        `Test NHS App template - ${templateIds.NHSAPP}`
       ),
       TemplateFactory.createEmailTemplate(
         templateIds.EMAIL,
         user,
-        'Test Email template'
+        `Test Email template - ${templateIds.EMAIL}`
+      ),
+      TemplateFactory.createSmsTemplate(
+        templateIds.SMS,
+        user,
+        `Test SMS template - ${templateIds.SMS}`
+      ),
+      TemplateFactory.uploadLetterTemplate(
+        templateIds.LETTER,
+        user,
+        `Test Letter template - ${templateIds.LETTER}`
       ),
       TemplateFactory.uploadLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
@@ -133,6 +125,10 @@ test.describe('Routing', () => {
     await routingStorageHelper.seed([
       routingConfigDraft,
       routingConfigProduction,
+      RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
+        id: emptyRoutingConfigId,
+        name: `EMPTY - Test plan with some templates`,
+      }).dbEntry,
     ]);
     await templateStorageHelper.seedTemplateData(templates);
   });
@@ -146,42 +142,42 @@ test.describe('Routing', () => {
     test('Choose large print letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseLargePrintLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
 
     test('Choose other language letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseOtherLanguageLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
 
     test('Choose standard letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseStandardLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
 
     test('Choose email template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseEmailTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
 
     test('Choose NHS App template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseNhsAppTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
 
     test('Choose text message template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseTextMessageTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setSearchParam('lockNumber', '0')
       ));
   });
@@ -190,7 +186,7 @@ test.describe('Routing', () => {
     test('Preview large print letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewLargePrintLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER_LARGE_PRINT)
           .setSearchParam('lockNumber', '0')
       ));
@@ -198,7 +194,7 @@ test.describe('Routing', () => {
     test('Preview other language letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER_OTHER_LANGUAGE)
           .setSearchParam('lockNumber', '0')
       ));
@@ -206,7 +202,7 @@ test.describe('Routing', () => {
     test('Preview standard letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewStandardLetterTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER)
           .setSearchParam('lockNumber', '0')
       ));
@@ -214,7 +210,7 @@ test.describe('Routing', () => {
     test('Preview email template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewEmailTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.EMAIL)
           .setSearchParam('lockNumber', '0')
       ));
@@ -222,7 +218,7 @@ test.describe('Routing', () => {
     test('Preview NHS App template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewNhsAppTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.NHSAPP)
           .setSearchParam('lockNumber', '0')
       ));
@@ -230,13 +226,11 @@ test.describe('Routing', () => {
     test('Preview text message template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewSmsTemplatePage(page)
-          .setPathParam('messagePlanId', draftRoutingConfig)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.SMS)
           .setSearchParam('lockNumber', '0')
       ));
   });
-
-  // ignore
 
   test('Message plans', async ({ page, analyze }) =>
     analyze(new RoutingMessagePlansPage(page)));
@@ -259,15 +253,26 @@ test.describe('Routing', () => {
     analyze(
       new RoutingChooseTemplatesPage(page).setPathParam(
         'messagePlanId',
-        draftRoutingConfig
+        draftRoutingConfigId
       )
+    ));
+
+  test('Choose template - error', async ({ page, analyze }) =>
+    analyze(
+      new RoutingChooseTemplatesPage(page).setPathParam(
+        'messagePlanId',
+        emptyRoutingConfigId
+      ),
+      {
+        beforeAnalyze: (p) => p.clickMoveToProduction(),
+      }
     ));
 
   test('Preview message plan', async ({ page, analyze }) =>
     analyze(
       new RoutingPreviewMessagePlanPage(page).setPathParam(
         'messagePlanId',
-        productionRoutingConfig
+        productionRoutingConfigId
       )
     ));
 
@@ -275,15 +280,29 @@ test.describe('Routing', () => {
     analyze(
       new RoutingEditMessagePlanSettingsPage(page).setPathParam(
         'messagePlanId',
-        draftRoutingConfig
+        draftRoutingConfigId
       )
+    ));
+
+  test('Edit message plan settings - error', async ({ page, analyze }) =>
+    analyze(
+      new RoutingEditMessagePlanSettingsPage(page).setPathParam(
+        'messagePlanId',
+        draftRoutingConfigId
+      ),
+      {
+        beforeAnalyze: async (p) => {
+          await p.nameField.fill('');
+          await p.clickSubmit();
+        },
+      }
     ));
 
   test('Get ready to move message plan', async ({ page, analyze }) =>
     analyze(
       new RoutingGetReadyToMovePage(page).setPathParam(
         'messagePlanId',
-        draftRoutingConfig
+        draftRoutingConfigId
       )
     ));
 
