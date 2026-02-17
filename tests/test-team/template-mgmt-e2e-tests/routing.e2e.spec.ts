@@ -23,7 +23,7 @@ import {
   RoutingReviewAndMoveToProductionPage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
-import { RoutingChooseTemplateForMessagePlanBasePage } from 'pages/routing/choose-template-base-page';
+import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
 import type { Channel } from 'nhs-notify-backend-client';
 

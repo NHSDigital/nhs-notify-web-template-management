@@ -20,6 +20,7 @@ import {
   getRoutingConfig,
 } from '@utils/message-plans';
 import { moveToProductionAction } from './server-action';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const pageContent = content.pages.reviewAndMoveToProduction;
 const basePath = getBasePath();
@@ -49,67 +50,71 @@ export default async function ReviewAndMoveMessagePlanPage({
   const templates = await getMessagePlanTemplates(messagePlan);
 
   return (
-    <NHSNotifyMain>
-      <NHSNotifyFormProvider serverAction={moveToProductionAction}>
-        <NHSNotifyForm.ErrorSummary />
-        <div className='nhsuk-grid-row'>
-          <div className='nhsuk-grid-column-three-quarters'>
-            <span className='nhsuk-caption-l'>{pageContent.headerCaption}</span>
-            <h1 className='nhsuk-heading-l'>{pageContent.pageHeading}</h1>
+    <NHSNotifyContainer>
+      <NHSNotifyMain>
+        <NHSNotifyFormProvider serverAction={moveToProductionAction}>
+          <NHSNotifyForm.ErrorSummary />
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-three-quarters'>
+              <span className='nhsuk-caption-l'>
+                {pageContent.headerCaption}
+              </span>
+              <h1 className='nhsuk-heading-l'>{pageContent.pageHeading}</h1>
 
-            <NHSNotifySummaryList data-testid='message-plan-details'>
-              <NHSNotifySummaryListRow>
-                <NHSNotifySummaryListKey>
-                  {pageContent.summaryTable.rowHeadings.name}
-                </NHSNotifySummaryListKey>
-                <NHSNotifySummaryListValue data-testid='plan-name'>
-                  {messagePlan.name}
-                </NHSNotifySummaryListValue>
-              </NHSNotifySummaryListRow>
-            </NHSNotifySummaryList>
+              <NHSNotifySummaryList data-testid='message-plan-details'>
+                <NHSNotifySummaryListRow>
+                  <NHSNotifySummaryListKey>
+                    {pageContent.summaryTable.rowHeadings.name}
+                  </NHSNotifySummaryListKey>
+                  <NHSNotifySummaryListValue data-testid='plan-name'>
+                    {messagePlan.name}
+                  </NHSNotifySummaryListValue>
+                </NHSNotifySummaryListRow>
+              </NHSNotifySummaryList>
 
-            <MessagePlanCascadePreview
-              messagePlan={messagePlan}
-              templates={templates}
-            />
-
-            <NHSNotifyForm.Form formId='review-and-move-to-production'>
-              <input
-                type='hidden'
-                name='routingConfigId'
-                value={routingConfigId}
-                readOnly
+              <MessagePlanCascadePreview
+                messagePlan={messagePlan}
+                templates={templates}
               />
-              <input
-                type='hidden'
-                name='lockNumber'
-                value={messagePlan.lockNumber}
-                readOnly
-              />
-              <NHSNotifyForm.FormGroup>
-                <NHSNotifyButton
-                  warning
-                  type='submit'
-                  data-testid='move-to-production-button'
-                >
-                  {pageContent.buttons.moveToProduction.text}
-                </NHSNotifyButton>
-                <NHSNotifyButton
-                  secondary
-                  href={interpolate(pageContent.buttons.keepInDraft.href, {
-                    basePath,
-                    routingConfigId,
-                  })}
-                  className='nhsuk-u-margin-left-3'
-                  data-testid='keep-in-draft-link'
-                >
-                  {pageContent.buttons.keepInDraft.text}
-                </NHSNotifyButton>
-              </NHSNotifyForm.FormGroup>
-            </NHSNotifyForm.Form>
+
+              <NHSNotifyForm.Form formId='review-and-move-to-production'>
+                <input
+                  type='hidden'
+                  name='routingConfigId'
+                  value={routingConfigId}
+                  readOnly
+                />
+                <input
+                  type='hidden'
+                  name='lockNumber'
+                  value={messagePlan.lockNumber}
+                  readOnly
+                />
+                <NHSNotifyForm.FormGroup>
+                  <NHSNotifyButton
+                    warning
+                    type='submit'
+                    data-testid='move-to-production-button'
+                  >
+                    {pageContent.buttons.moveToProduction.text}
+                  </NHSNotifyButton>
+                  <NHSNotifyButton
+                    secondary
+                    href={interpolate(pageContent.buttons.keepInDraft.href, {
+                      basePath,
+                      routingConfigId,
+                    })}
+                    className='nhsuk-u-margin-left-3'
+                    data-testid='keep-in-draft-link'
+                  >
+                    {pageContent.buttons.keepInDraft.text}
+                  </NHSNotifyButton>
+                </NHSNotifyForm.FormGroup>
+              </NHSNotifyForm.Form>
+            </div>
           </div>
-        </div>
-      </NHSNotifyFormProvider>
-    </NHSNotifyMain>
+        </NHSNotifyFormProvider>
+      </NHSNotifyMain>
+    </NHSNotifyContainer>
   );
 }
