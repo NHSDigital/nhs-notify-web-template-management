@@ -193,3 +193,11 @@ export const guardDutyEventValidator = (
     }),
   });
 };
+
+export const s3putObjectEventValidator = z.object({
+  detail: z.object({
+    object: z.object({
+      key: z.string(),
+    }),
+  }),
+});
