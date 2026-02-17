@@ -195,6 +195,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
@@ -204,7 +205,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -215,6 +215,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -289,6 +290,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-2-name"
                               class="nhsuk-radios__input"
                               data-testid="template-2-radio"
                               id="channelTemplate-template-2"
@@ -297,7 +299,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               value="template-2"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-2"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
@@ -308,6 +309,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-2-name"
                           role="cell"
                         >
                           <span
@@ -382,6 +384,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-3-name"
                               class="nhsuk-radios__input"
                               data-testid="template-3-radio"
                               id="channelTemplate-template-3"
@@ -390,7 +393,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                               value="template-3"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-3"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
@@ -401,6 +403,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-3-name"
                           role="cell"
                         >
                           <span
@@ -645,6 +648,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
@@ -654,7 +658,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -665,6 +668,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -739,6 +743,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-2-name"
                               class="nhsuk-radios__input"
                               data-testid="template-2-radio"
                               id="channelTemplate-template-2"
@@ -747,7 +752,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               value="template-2"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-2"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
@@ -758,6 +762,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-2-name"
                           role="cell"
                         >
                           <span
@@ -832,6 +837,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-3-name"
                               class="nhsuk-radios__input"
                               data-testid="template-3-radio"
                               id="channelTemplate-template-3"
@@ -840,7 +846,6 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                               value="template-3"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-3"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
@@ -851,6 +856,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-3-name"
                           role="cell"
                         >
                           <span
@@ -1095,6 +1101,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-email-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="email-template-id-radio"
@@ -1104,7 +1111,6 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                               value="email-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-email-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-email-template-id"
                               id="channelTemplate-email-template-id--label"
@@ -1115,6 +1121,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-email-template-id-name"
                           role="cell"
                         >
                           <span
@@ -1382,6 +1389,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
                               id="channelTemplate-app-template-id"
@@ -1390,7 +1398,6 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -1401,6 +1408,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -1626,6 +1634,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-large-print-letter-template-id-name"
                               class="nhsuk-radios__input"
                               data-testid="large-print-letter-template-id-radio"
                               id="channelTemplate-large-print-letter-template-id"
@@ -1634,7 +1643,6 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                               value="large-print-letter-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-large-print-letter-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-large-print-letter-template-id"
                               id="channelTemplate-large-print-letter-template-id--label"
@@ -1645,6 +1653,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-large-print-letter-template-id-name"
                           role="cell"
                         >
                           <span
@@ -1889,6 +1898,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-letter-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="letter-template-id-radio"
@@ -1898,7 +1908,6 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                               value="letter-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-letter-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-letter-template-id"
                               id="channelTemplate-letter-template-id--label"
@@ -1909,6 +1918,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-letter-template-id-name"
                           role="cell"
                         >
                           <span
@@ -2153,6 +2163,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
@@ -2162,7 +2173,6 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -2173,6 +2183,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -2417,6 +2428,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-sms-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="sms-template-id-radio"
@@ -2426,7 +2438,6 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                               value="sms-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-sms-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-sms-template-id"
                               id="channelTemplate-sms-template-id--label"
@@ -2437,6 +2448,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-sms-template-id-name"
                           role="cell"
                         >
                           <span
@@ -2681,6 +2693,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
@@ -2690,7 +2703,6 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -2701,6 +2713,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -2775,6 +2788,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-2-name"
                               class="nhsuk-radios__input"
                               data-testid="template-2-radio"
                               id="channelTemplate-template-2"
@@ -2783,7 +2797,6 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               value="template-2"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-2"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
@@ -2794,6 +2807,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-2-name"
                           role="cell"
                         >
                           <span
@@ -2868,6 +2882,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-3-name"
                               class="nhsuk-radios__input"
                               data-testid="template-3-radio"
                               id="channelTemplate-template-3"
@@ -2876,7 +2891,6 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                               value="template-3"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-3"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
@@ -2887,6 +2901,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-3-name"
                           role="cell"
                         >
                           <span
@@ -3210,6 +3225,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-large-print-template-2-name"
                               class="nhsuk-radios__input"
                               data-testid="large-print-template-2-radio"
                               id="channelTemplate-large-print-template-2"
@@ -3218,7 +3234,6 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               value="large-print-template-2"
                             />
                             <label
-                              aria-labelledby="channelTemplate-large-print-template-2"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-large-print-template-2"
                               id="channelTemplate-large-print-template-2--label"
@@ -3229,6 +3244,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-large-print-template-2-name"
                           role="cell"
                         >
                           <span
@@ -3303,6 +3319,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-large-print-letter-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="large-print-letter-template-id-radio"
@@ -3312,7 +3329,6 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               value="large-print-letter-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-large-print-letter-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-large-print-letter-template-id"
                               id="channelTemplate-large-print-letter-template-id--label"
@@ -3323,6 +3339,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-large-print-letter-template-id-name"
                           role="cell"
                         >
                           <span
@@ -3397,6 +3414,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-large-print-template-3-name"
                               class="nhsuk-radios__input"
                               data-testid="large-print-template-3-radio"
                               id="channelTemplate-large-print-template-3"
@@ -3405,7 +3423,6 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                               value="large-print-template-3"
                             />
                             <label
-                              aria-labelledby="channelTemplate-large-print-template-3"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-large-print-template-3"
                               id="channelTemplate-large-print-template-3--label"
@@ -3416,6 +3433,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-large-print-template-3-name"
                           role="cell"
                         >
                           <span
@@ -3660,6 +3678,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
@@ -3669,7 +3688,6 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -3680,6 +3698,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span
@@ -3754,6 +3773,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-2-name"
                               class="nhsuk-radios__input"
                               data-testid="template-2-radio"
                               id="channelTemplate-template-2"
@@ -3762,7 +3782,6 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               value="template-2"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-2"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-2"
                               id="channelTemplate-template-2--label"
@@ -3773,6 +3792,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-2-name"
                           role="cell"
                         >
                           <span
@@ -3847,6 +3867,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-template-3-name"
                               class="nhsuk-radios__input"
                               data-testid="template-3-radio"
                               id="channelTemplate-template-3"
@@ -3855,7 +3876,6 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                               value="template-3"
                             />
                             <label
-                              aria-labelledby="channelTemplate-template-3"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-template-3"
                               id="channelTemplate-template-3--label"
@@ -3866,6 +3886,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-template-3-name"
                           role="cell"
                         >
                           <span
@@ -4091,6 +4112,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                             class="nhsuk-radios__item"
                           >
                             <input
+                              aria-labelledby="channelTemplate-app-template-id-name"
                               class="nhsuk-radios__input"
                               data-testid="app-template-id-radio"
                               id="channelTemplate-app-template-id"
@@ -4099,7 +4121,6 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                               value="app-template-id"
                             />
                             <label
-                              aria-labelledby="channelTemplate-app-template-id"
                               class="nhsuk-label nhsuk-radios__label"
                               for="channelTemplate-app-template-id"
                               id="channelTemplate-app-template-id--label"
@@ -4110,6 +4131,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
                         </td>
                         <td
                           class="nhsuk-table__cell"
+                          id="channelTemplate-app-template-id-name"
                           role="cell"
                         >
                           <span

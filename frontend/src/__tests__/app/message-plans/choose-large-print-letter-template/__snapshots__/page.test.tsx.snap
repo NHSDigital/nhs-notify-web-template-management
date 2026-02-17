@@ -137,6 +137,7 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                               class="nhsuk-radios__item"
                             >
                               <input
+                                aria-labelledby="channelTemplate-large-print-letter-template-id-name"
                                 class="nhsuk-radios__input"
                                 data-testid="large-print-letter-template-id-radio"
                                 id="channelTemplate-large-print-letter-template-id"
@@ -145,7 +146,6 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                                 value="large-print-letter-template-id"
                               />
                               <label
-                                aria-labelledby="channelTemplate-large-print-letter-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-large-print-letter-template-id"
                                 id="channelTemplate-large-print-letter-template-id--label"
@@ -156,6 +156,7 @@ exports[`ChooseLargePrintLetterTemplate page renders large print letter template
                           </td>
                           <td
                             class="nhsuk-table__cell"
+                            id="channelTemplate-large-print-letter-template-id-name"
                             role="cell"
                           >
                             <span

@@ -156,6 +156,7 @@ exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
                               class="nhsuk-radios__item"
                             >
                               <input
+                                aria-labelledby="channelTemplate-sms-template-id-name"
                                 checked=""
                                 class="nhsuk-radios__input"
                                 data-testid="sms-template-id-radio"
@@ -165,7 +166,6 @@ exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
                                 value="sms-template-id"
                               />
                               <label
-                                aria-labelledby="channelTemplate-sms-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-sms-template-id"
                                 id="channelTemplate-sms-template-id--label"
@@ -176,6 +176,7 @@ exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
                           </td>
                           <td
                             class="nhsuk-table__cell"
+                            id="channelTemplate-sms-template-id-name"
                             role="cell"
                           >
                             <span

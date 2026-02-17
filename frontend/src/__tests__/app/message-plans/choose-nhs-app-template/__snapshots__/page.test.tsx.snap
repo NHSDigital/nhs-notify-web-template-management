@@ -156,6 +156,7 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                               class="nhsuk-radios__item"
                             >
                               <input
+                                aria-labelledby="channelTemplate-app-template-id-name"
                                 checked=""
                                 class="nhsuk-radios__input"
                                 data-testid="app-template-id-radio"
@@ -165,7 +166,6 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                                 value="app-template-id"
                               />
                               <label
-                                aria-labelledby="channelTemplate-app-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-app-template-id"
                                 id="channelTemplate-app-template-id--label"
@@ -176,6 +176,7 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
                           </td>
                           <td
                             class="nhsuk-table__cell"
+                            id="channelTemplate-app-template-id-name"
                             role="cell"
                           >
                             <span

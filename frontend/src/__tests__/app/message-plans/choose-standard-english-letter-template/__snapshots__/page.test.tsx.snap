@@ -156,6 +156,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                               class="nhsuk-radios__item"
                             >
                               <input
+                                aria-labelledby="channelTemplate-letter-template-id-name"
                                 checked=""
                                 class="nhsuk-radios__input"
                                 data-testid="letter-template-id-radio"
@@ -165,7 +166,6 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                                 value="letter-template-id"
                               />
                               <label
-                                aria-labelledby="channelTemplate-letter-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-letter-template-id"
                                 id="channelTemplate-letter-template-id--label"
@@ -176,6 +176,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                           </td>
                           <td
                             class="nhsuk-table__cell"
+                            id="channelTemplate-letter-template-id-name"
                             role="cell"
                           >
                             <span

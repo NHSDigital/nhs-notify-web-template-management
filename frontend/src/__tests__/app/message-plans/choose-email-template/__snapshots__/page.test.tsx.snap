@@ -156,6 +156,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
                               class="nhsuk-radios__item"
                             >
                               <input
+                                aria-labelledby="channelTemplate-email-template-id-name"
                                 checked=""
                                 class="nhsuk-radios__input"
                                 data-testid="email-template-id-radio"
@@ -165,7 +166,6 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
                                 value="email-template-id"
                               />
                               <label
-                                aria-labelledby="channelTemplate-email-template-id"
                                 class="nhsuk-label nhsuk-radios__label"
                                 for="channelTemplate-email-template-id"
                                 id="channelTemplate-email-template-id--label"
@@ -176,6 +176,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
                           </td>
                           <td
                             class="nhsuk-table__cell"
+                            id="channelTemplate-email-template-id-name"
                             role="cell"
                           >
                             <span
