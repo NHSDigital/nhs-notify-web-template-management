@@ -9,20 +9,15 @@ import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/r
 import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 const CONFIG = {
-  // DynamoDB table name for templates
-  tableName: '',
+  tableName: 'nhs-notify-alnu1-sbx-api-templates',
 
-  // SQS queue URL for render requests
-  queueUrl: '',
+  queueUrl: 'https://sqs.eu-west-2.amazonaws.com/891377170468/nhs-notify-alnu1-sbx-letter-render-queue.fifo',
 
-  // S3 bucket for letter sources
-  bucketName: '',
+  bucketName: 'nhs-notify-891377170468-eu-west-2-alnu1-sbx-internal',
 
-  // Template identity (leave empty to auto-generate)
   templateId: '',
   clientId: '',
 
-  // Path to test DOCX file (relative to repo root)
   docxPath:
     'lambdas/letter-preview-renderer/src/__tests__/fixtures/standard-english-template.docx',
 };
