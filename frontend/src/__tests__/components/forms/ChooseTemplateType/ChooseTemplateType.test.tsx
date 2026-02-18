@@ -9,7 +9,7 @@ jest.mock('@utils/amplify-utils');
 
 jest.mock('@providers/client-config-provider', () => ({
   useFeatureFlags: jest.fn().mockReturnValue({
-    letterAuthoring: false,
+    letterAuthoring: true,
   }),
 }));
 
