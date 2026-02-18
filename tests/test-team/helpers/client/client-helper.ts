@@ -168,12 +168,11 @@ export class ClientConfigurationHelper {
   async teardown() {
     const ids = await this.authContextFile.clientIds(this.runId);
 
-    if (ids.length > 0) {
-      await this.ssmClient.send(
-        new DeleteParametersCommand({
-          Names: ids.map((id) => this.ssmKey(id)),
-        })
-      );
+    const names = ids.map((id) => this.ssmKey(id));
+
+    for (let i = 0; i < names.length; i += 10) {
+      const batch = names.slice(i, i + 10);
+      await this.ssmClient.send(new DeleteParametersCommand({ Names: batch }));
     }
   }
 

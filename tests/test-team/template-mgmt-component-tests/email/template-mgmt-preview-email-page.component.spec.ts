@@ -341,7 +341,7 @@ test.describe('Preview Email message template Page', () => {
       await newPage.waitForLoadState();
 
       await expect(newPage).toHaveURL(
-        `${baseURL}/templates/send-test-email-message/${templates.digitalProofing.id}`
+        `${baseURL}/templates/send-test-email/${templates.digitalProofing.id}`
       );
 
       await newPage.close();
@@ -350,7 +350,7 @@ test.describe('Preview Email message template Page', () => {
       await previewPage.sendTestMessageButton.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/send-test-email-message/${templates.digitalProofing.id}`
+        `${baseURL}/templates/send-test-email/${templates.digitalProofing.id}`
       );
     });
   });
