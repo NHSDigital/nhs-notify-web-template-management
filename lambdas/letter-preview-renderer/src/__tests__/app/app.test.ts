@@ -152,18 +152,22 @@ describe('App', () => {
 
         expect(outcome).toBe('rendered-invalid');
 
-        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
-          system: [
-            'address_line_1',
-            'address_line_2',
-            'address_line_3',
-            'address_line_4',
-            'address_line_5',
-            'address_line_6',
-            'address_line_7',
-          ],
-          custom: ['first_name'],
-        });
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(
+          request,
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          },
+          [{ name: 'INVALID_MARKERS', issues: ['foo.bar'] }]
+        );
       });
     });
 
@@ -187,18 +191,22 @@ describe('App', () => {
         expect(mocks.checkRender.pageCount).not.toHaveBeenCalled();
         expect(mocks.renderRepo.save).not.toHaveBeenCalled();
 
-        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
-          system: [
-            'address_line_1',
-            'address_line_2',
-            'address_line_3',
-            'address_line_4',
-            'address_line_5',
-            'address_line_6',
-            'address_line_7',
-          ],
-          custom: ['first_name'],
-        });
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(
+          request,
+          {
+            system: [
+              'address_line_1',
+              'address_line_2',
+              'address_line_3',
+              'address_line_4',
+              'address_line_5',
+              'address_line_6',
+              'address_line_7',
+            ],
+            custom: ['first_name'],
+          },
+          [{ name: 'INVALID_MARKERS', issues: ['c.compliment'] }]
+        );
       });
     });
 

@@ -17,7 +17,7 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
   systemPersonalisation?: Array<string>;
-  validationErrors?: Array<LetterValidationError>;
+  validationErrors?: Array<LetterValidationErrorDetail>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -203,8 +203,14 @@ export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 export type LetterType = 'q4' | 'x0' | 'x1';
 
 export type LetterValidationError =
+  | 'INVALID_MARKERS'
   | 'MISSING_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
+
+export type LetterValidationErrorDetail = {
+  name: LetterValidationError;
+  issues?: Array<string>;
+};
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
 

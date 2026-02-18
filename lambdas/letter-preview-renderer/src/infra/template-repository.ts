@@ -1,5 +1,6 @@
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
+import type { LetterValidationErrorDetail } from 'nhs-notify-backend-client/src/types/generated/types.gen';
 import type { Personalisation } from '../types/types';
 import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
@@ -41,6 +42,7 @@ export class TemplateRepository {
   async updateFailure(
     request: RenderRequest,
     personalisation?: Personalisation,
+    validationErrors?: LetterValidationErrorDetail[],
     currentVersion?: string,
     fileName?: string,
     pageCount?: number
@@ -68,6 +70,10 @@ export class TemplateRepository {
         personalisation.system,
         personalisation.custom
       );
+    }
+
+    if (validationErrors && validationErrors.length > 0) {
+      builder.appendValidationErrors(validationErrors);
     }
 
     return await this.ddb.send(new UpdateCommand(builder.build()));

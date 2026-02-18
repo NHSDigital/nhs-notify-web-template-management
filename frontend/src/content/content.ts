@@ -540,6 +540,10 @@ const previewLetterTemplate = {
       'The file(s) you uploaded may contain a virus.',
       'Create a new letter template to upload your file(s) again or upload different file(s).',
     ],
+    INVALID_MARKERS: [
+      'The template file contains invalid personalisation markers.',
+      'Check that all personalisation markers use the correct format and try again.',
+    ],
   } satisfies Record<string, string[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {

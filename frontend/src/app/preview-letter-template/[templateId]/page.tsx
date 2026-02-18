@@ -32,7 +32,7 @@ function getValidationErrors(template: AuthoringLetterTemplate): string[] {
 
   return (
     template.validationErrors?.flatMap(
-      (error) => validationErrorMessages[error]
+      (error) => validationErrorMessages[error.name]
     ) ?? []
   );
 }

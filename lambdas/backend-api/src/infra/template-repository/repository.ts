@@ -661,7 +661,9 @@ export class TemplateRepository {
 
       if (fileType === 'docx-template') {
         ExpressionAttributeNames['#validationErrors'] = 'validationErrors';
-        ExpressionAttributeValues[':validationErrors'] = ['VIRUS_SCAN_FAILED'];
+        ExpressionAttributeValues[':validationErrors'] = [
+          { name: 'VIRUS_SCAN_FAILED' },
+        ];
         ExpressionAttributeValues[':emptyList'] = [];
         updates.push(
           '#validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)'

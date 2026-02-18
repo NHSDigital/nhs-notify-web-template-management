@@ -6,6 +6,7 @@ import type {
   CreateUpdateTemplate,
   Language,
   LetterType,
+  LetterValidationErrorDetail,
   LetterVersion,
   PdfLetterFiles,
   PdfLetterProperties,
@@ -153,6 +154,7 @@ export type DatabaseTemplate = {
   updatedAt: string;
   updatedBy?: string;
   supplierReferences?: Record<string, string>;
+  validationErrors?: LetterValidationErrorDetail[];
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {

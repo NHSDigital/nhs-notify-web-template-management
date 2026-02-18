@@ -1,4 +1,5 @@
 import type {
+  LetterValidationErrorDetail,
   PersonalisedRenderDetails,
   RenderDetails,
   TemplateStatus,
@@ -106,6 +107,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
   setPersonalisation(system: string[], custom: string[]) {
     this.updateBuilder.setValue('systemPersonalisation', system);
     this.updateBuilder.setValue('customPersonalisation', custom);
+    return this;
+  }
+
+  appendValidationErrors(errors: LetterValidationErrorDetail[]) {
+    this.updateBuilder.setValueInOrCreateList('validationErrors', errors);
     return this;
   }
 

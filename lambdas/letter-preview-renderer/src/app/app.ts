@@ -11,7 +11,7 @@ import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
 import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { getPersonalisation } from '../domain/personalisation';
+import { analyseMarkers } from '../domain/personalisation';
 
 export type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
 
@@ -62,22 +62,24 @@ export class App {
     logger: Logger
   ): Promise<Outcome> {
     const markers = await this.carbone.extractMarkers(sourcePath);
-    const classifiedPersonalisation = getPersonalisation(markers);
+    const analysis = analyseMarkers(markers);
 
     const {
       personalisation,
       passthroughPersonalisation,
-      invalidRenderablePersonalisation,
-      nonRenderablePersonalisation,
-    } = classifiedPersonalisation;
+      validationErrors,
+      canRender,
+    } = analysis;
 
-    if (nonRenderablePersonalisation.length > 0) {
-      logger.info(
-        'Source contains non-renderable personalisation',
-        classifiedPersonalisation
+    if (!canRender) {
+      logger.info('Source contains non-renderable markers', analysis);
+
+      await this.templateRepo.updateFailure(
+        request,
+        personalisation,
+        validationErrors
       );
 
-      await this.templateRepo.updateFailure(request, personalisation);
       return 'not-rendered';
     }
 
@@ -95,13 +97,14 @@ export class App {
         fileName,
       });
 
-      if (invalidRenderablePersonalisation.length > 0) {
-        logger.info(
-          'Source contains invalid markers',
-          classifiedPersonalisation
-        );
+      if (validationErrors.length > 0) {
+        logger.info('Source contains validation errors', analysis);
 
-        await this.templateRepo.updateFailure(request, personalisation);
+        await this.templateRepo.updateFailure(
+          request,
+          personalisation,
+          validationErrors
+        );
         return 'rendered-invalid';
       }
 
@@ -113,7 +116,7 @@ export class App {
         pageCount
       );
 
-      logger.info('Valid initial render was created');
+      logger.info('Valid initial render created');
 
       return 'rendered';
     } catch (error) {

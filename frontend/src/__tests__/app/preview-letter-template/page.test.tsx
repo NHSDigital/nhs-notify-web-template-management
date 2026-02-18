@@ -391,7 +391,7 @@ describe('authoring letter with validation errors', () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
@@ -422,7 +422,7 @@ describe('authoring letter with validation errors', () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
@@ -442,7 +442,7 @@ describe('authoring letter with validation errors', () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
       files: {},
     };
 
@@ -463,7 +463,7 @@ describe('authoring letter with validation errors', () => {
     const templateWithEmptyErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [] as 'VIRUS_SCAN_FAILED'[],
+      validationErrors: [] as { name: 'VIRUS_SCAN_FAILED' }[],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithEmptyErrors);
@@ -506,7 +506,7 @@ describe('authoring letter with validation errors', () => {
     const templateWithValidationErrors = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
