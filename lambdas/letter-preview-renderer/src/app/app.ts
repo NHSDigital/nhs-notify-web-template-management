@@ -25,13 +25,72 @@ export class App {
     private readonly logger: Logger
   ) {}
 
-  async renderInitial(request: InitialRenderRequest): Promise<Outcome> {
-    return this.render(request, (sourcePath, logger) =>
-      this.processInitialRender(sourcePath, request, logger)
-    );
+  renderInitial(request: InitialRenderRequest): Promise<Outcome> {
+    return this.renderFromSource(request, async (sourcePath, logger) => {
+      const markers = await this.carbone.extractMarkers(sourcePath);
+      const analysis = analyseMarkers(markers);
+
+      const {
+        personalisation,
+        passthroughPersonalisation,
+        validationErrors,
+        canRender,
+      } = analysis;
+
+      if (!canRender) {
+        logger.info('Source contains non-renderable markers', analysis);
+
+        await this.templateRepo.updateFailure(
+          request,
+          personalisation,
+          validationErrors
+        );
+
+        return 'not-rendered';
+      }
+
+      try {
+        const { fileName, pageCount } = await this.renderAndSave(
+          request,
+          sourcePath,
+          passthroughPersonalisation
+        );
+
+        logger.info('Saved PDF', {
+          fileName,
+        });
+
+        if (validationErrors.length > 0) {
+          logger.info('Source contains validation errors', analysis);
+
+          await this.templateRepo.updateFailure(
+            request,
+            personalisation,
+            validationErrors
+          );
+          return 'rendered-invalid';
+        }
+
+        await this.templateRepo.updateSuccess(
+          request,
+          personalisation,
+          request.currentVersion,
+          fileName,
+          pageCount
+        );
+
+        logger.info('Valid initial render created');
+        return 'rendered';
+      } catch (error) {
+        logger.error('Render failed', { error });
+
+        await this.templateRepo.updateFailure(request, personalisation);
+        return 'not-rendered';
+      }
+    });
   }
 
-  private async render(
+  private async renderFromSource(
     request: RenderRequest,
     handleRequest: (sourcePath: string, logger: Logger) => Promise<Outcome>
   ): Promise<Outcome> {
@@ -56,74 +115,17 @@ export class App {
     }
   }
 
-  private async processInitialRender(
+  private async renderAndSave(
+    request: RenderRequest,
     sourcePath: string,
-    request: InitialRenderRequest,
-    logger: Logger
-  ): Promise<Outcome> {
-    const markers = await this.carbone.extractMarkers(sourcePath);
-    const analysis = analyseMarkers(markers);
+    personalisation: Record<string, string>
+  ) {
+    const pdf = await this.carbone.render(sourcePath, personalisation);
 
-    const {
-      personalisation,
-      passthroughPersonalisation,
-      validationErrors,
-      canRender,
-    } = analysis;
+    const pageCount = await this.checkRender.pageCount(pdf);
 
-    if (!canRender) {
-      logger.info('Source contains non-renderable markers', analysis);
+    const fileName = await this.renderRepo.save(pdf, request, pageCount);
 
-      await this.templateRepo.updateFailure(
-        request,
-        personalisation,
-        validationErrors
-      );
-
-      return 'not-rendered';
-    }
-
-    try {
-      const pdf = await this.carbone.render(
-        sourcePath,
-        passthroughPersonalisation
-      );
-
-      const pageCount = await this.checkRender.pageCount(pdf);
-
-      const fileName = await this.renderRepo.save(pdf, request, pageCount);
-
-      logger.info('Saved PDF', {
-        fileName,
-      });
-
-      if (validationErrors.length > 0) {
-        logger.info('Source contains validation errors', analysis);
-
-        await this.templateRepo.updateFailure(
-          request,
-          personalisation,
-          validationErrors
-        );
-        return 'rendered-invalid';
-      }
-
-      await this.templateRepo.updateSuccess(
-        request,
-        personalisation,
-        request.currentVersion,
-        fileName,
-        pageCount
-      );
-
-      logger.info('Valid initial render created');
-
-      return 'rendered';
-    } catch (error) {
-      logger.error('Render failed', { error });
-
-      await this.templateRepo.updateFailure(request, personalisation);
-      return 'not-rendered';
-    }
+    return { fileName, pageCount };
   }
 }

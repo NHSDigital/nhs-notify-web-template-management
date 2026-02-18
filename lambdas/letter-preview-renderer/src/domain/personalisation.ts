@@ -4,16 +4,16 @@ import {
   DEFAULT_PERSONALISATION_LIST,
 } from 'nhs-notify-backend-client/src/schemas/constants';
 
-type MarkerStatus = 'valid' | 'invalid-renderable' | 'invalid-non-renderable';
+type ClassifiedMarkers = {
+  valid: Set<string>;
+  renderable: Set<string>;
+  nonRenderable: Set<string>;
+};
 
-function classifyAndCleanMarkers(
-  carboneMarkers: Set<string>
-): Record<MarkerStatus, Set<string>> {
-  const markers: Record<MarkerStatus, Set<string>> = {
-    valid: new Set<string>(),
-    'invalid-renderable': new Set<string>(),
-    'invalid-non-renderable': new Set<string>(),
-  };
+function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
+  const valid = new Set<string>();
+  const renderable = new Set<string>();
+  const nonRenderable = new Set<string>();
 
   for (const marker of carboneMarkers) {
     if (
@@ -28,38 +28,26 @@ function classifyAndCleanMarkers(
       marker.startsWith('#') ||
       /^t\(.*\)/.test(marker)
     ) {
-      markers['invalid-non-renderable'].add(marker);
+      nonRenderable.add(marker);
       continue;
     }
 
     if (!marker.startsWith('d.')) {
-      markers['invalid-renderable'].add(marker);
+      renderable.add(marker);
       continue;
     }
 
     const dataMarker = marker.slice(2);
 
     if (!/^[\w-]+$/.test(dataMarker)) {
-      markers['invalid-renderable'].add(dataMarker);
+      renderable.add(dataMarker);
       continue;
     }
 
-    markers.valid.add(dataMarker);
+    valid.add(dataMarker);
   }
 
-  return markers;
-}
-
-function hasAllAddressLines(markers: Set<string>): boolean {
-  return ADDRESS_PERSONALISATIONS.map((line) => markers.has(line)).every(
-    Boolean
-  );
-}
-
-function getPassthroughPersonalisation(
-  keys: Set<string>
-): Record<string, string> {
-  return Object.fromEntries([...keys].map((key) => [key, `{d.${key}}`]));
+  return { valid, renderable, nonRenderable };
 }
 
 function classifyPersonalisation(parameters: Set<string>) {
@@ -77,6 +65,37 @@ function classifyPersonalisation(parameters: Set<string>) {
   return { custom, system };
 }
 
+function buildPassthroughPersonalisation(
+  keys: Set<string>
+): Record<string, string> {
+  return Object.fromEntries([...keys].map((key) => [key, `{d.${key}}`]));
+}
+
+function buildValidationErrors(
+  classified: ClassifiedMarkers
+): LetterValidationErrorDetail[] {
+  const errors: LetterValidationErrorDetail[] = [];
+
+  const invalidMarkers = [
+    ...classified.nonRenderable,
+    ...classified.renderable,
+  ];
+
+  if (invalidMarkers.length > 0) {
+    errors.push({ name: 'INVALID_MARKERS', issues: invalidMarkers });
+  }
+
+  const hasAllAddressLines = ADDRESS_PERSONALISATIONS.every((line) =>
+    classified.valid.has(line)
+  );
+
+  if (!hasAllAddressLines) {
+    errors.push({ name: 'MISSING_ADDRESS_LINES' });
+  }
+
+  return errors;
+}
+
 export type MarkerAnalysis = {
   personalisation: { system: string[]; custom: string[] };
   passthroughPersonalisation: Record<string, string>;
@@ -85,44 +104,14 @@ export type MarkerAnalysis = {
 };
 
 export function analyseMarkers(markers: Set<string>): MarkerAnalysis {
-  const classified = classifyAndCleanMarkers(markers);
-
-  const personalisation = classifyPersonalisation(classified.valid);
-
-  const passthroughPersonalisation = getPassthroughPersonalisation(
-    classified.valid.union(classified['invalid-renderable'])
-  );
-
-  const validationErrors: LetterValidationErrorDetail[] = [];
-
-  // Non-renderable markers prevent rendering entirely
-  const hasNonRenderableMarkers = classified['invalid-non-renderable'].size > 0;
-
-  // Invalid but renderable markers should be reported
-  const invalidRenderableMarkers = [...classified['invalid-renderable']];
-  if (invalidRenderableMarkers.length > 0 || hasNonRenderableMarkers) {
-    const allInvalidMarkers = [
-      ...classified['invalid-non-renderable'],
-      ...invalidRenderableMarkers,
-    ];
-    validationErrors.push({
-      name: 'INVALID_MARKERS',
-      issues: allInvalidMarkers,
-    });
-  }
-
-  // Check for missing address lines
-  const hasMissingAddressLines = !hasAllAddressLines(classified.valid);
-  if (hasMissingAddressLines) {
-    validationErrors.push({
-      name: 'MISSING_ADDRESS_LINES',
-    });
-  }
+  const classified = classifyMarkers(markers);
 
   return {
-    personalisation,
-    passthroughPersonalisation,
-    validationErrors,
-    canRender: !hasNonRenderableMarkers,
+    personalisation: classifyPersonalisation(classified.valid),
+    passthroughPersonalisation: buildPassthroughPersonalisation(
+      classified.valid.union(classified.renderable)
+    ),
+    validationErrors: buildValidationErrors(classified),
+    canRender: classified.nonRenderable.size === 0,
   };
 }

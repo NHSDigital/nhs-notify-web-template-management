@@ -1,4 +1,7 @@
-import { TemplateStatus } from 'nhs-notify-backend-client';
+import {
+  LetterValidationErrorDetail,
+  TemplateStatus,
+} from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';
@@ -808,6 +811,35 @@ describe('TemplateUpdateBuilder', () => {
           ':shortFormRender': renderDetails,
         },
         UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
+      });
+    });
+  });
+
+  describe('appendValidationErrors', () => {
+    test('appends validation errors to existing list or creates it', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const errors: LetterValidationErrorDetail[] = [
+        { name: 'MISSING_ADDRESS_LINES' },
+        { name: 'INVALID_MARKERS', issues: ['marker-1', 'marker-2'] },
+      ];
+
+      const res = builder.appendValidationErrors(errors).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':validationErrors': errors,
+          ':emptyList': [],
+        },
+        UpdateExpression:
+          'SET #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)',
       });
     });
   });

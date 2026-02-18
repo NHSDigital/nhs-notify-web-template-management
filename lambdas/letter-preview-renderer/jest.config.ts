@@ -8,6 +8,8 @@ const config: Config = {
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
     'letter-preview-renderer.ts',
+    'container.ts',
+    'config.ts',
   ],
 };
 

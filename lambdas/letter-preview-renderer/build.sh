@@ -15,5 +15,5 @@ npx esbuild \
   --outdir=dist \
   src/letter-preview-renderer.ts
 
-# improve this
-cp ../../node_modules/carbone/lib/converter.py ./dist/converter.py
+converter_py=$(node -e "console.log(require.resolve('carbone/lib/converter.py'))")
+cp "$converter_py" ./dist/converter.py

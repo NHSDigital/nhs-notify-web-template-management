@@ -39,11 +39,7 @@ describe('createHandler', () => {
         body: JSON.stringify(initialRequest),
       });
 
-      await handler(
-        { Records: [record] },
-        mock<Context>(),
-        mock<Callback>()
-      );
+      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
       expect(mocks.app.renderInitial).toHaveBeenCalledWith(initialRequest);
     });
@@ -57,11 +53,7 @@ describe('createHandler', () => {
         body: JSON.stringify(initialRequest),
       });
 
-      await handler(
-        { Records: [record] },
-        mock<Context>(),
-        mock<Callback>()
-      );
+      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
       expect(logMessages).toContainEqual(
         expect.objectContaining({
@@ -79,11 +71,7 @@ describe('createHandler', () => {
         body: JSON.stringify(personalisedRequest),
       });
 
-      await handler(
-        { Records: [record] },
-        mock<Context>(),
-        mock<Callback>()
-      );
+      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
       expect(mocks.app.renderInitial).not.toHaveBeenCalled();
     });

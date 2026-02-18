@@ -47,11 +47,9 @@ describe('createHandler', () => {
           QueueUrl: mocks.renderRequestQueueUrl,
           MessageBody: JSON.stringify({
             requestType: 'initial',
-            template: {
-              clientId: 'client-123',
-              templateId: 'template-456',
-              currentVersion: 'version-789',
-            },
+            clientId: 'client-123',
+            templateId: 'template-456',
+            currentVersion: 'version-789',
           }),
           MessageGroupId: 'client-123',
         },

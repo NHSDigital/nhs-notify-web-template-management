@@ -2,6 +2,10 @@ import carbone from 'carbone';
 import { extractMarkers } from './carbone-internal';
 
 export class Carbone {
+  constructor() {
+    carbone.set({ factories: 1 });
+  }
+
   render(
     path: string,
     personalisation: Record<string, string>
