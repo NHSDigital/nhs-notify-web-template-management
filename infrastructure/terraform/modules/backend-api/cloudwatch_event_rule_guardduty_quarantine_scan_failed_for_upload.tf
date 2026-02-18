@@ -9,7 +9,7 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_failed_for_uploa
     detail = {
       s3ObjectDetails = {
         bucketName = [module.s3bucket_quarantine.id]
-        objectKey  = [{ prefix = "pdf-template/" }, { prefix = "test-data/" }]
+        objectKey  = [{ prefix = "docx-template/" }, { prefix = "pdf-template/" }, { prefix = "test-data/" }]
       }
       scanResultDetails = {
         scanResultStatus = [{ anything-but = "NO_THREATS_FOUND" }]

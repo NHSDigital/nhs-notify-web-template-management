@@ -3,6 +3,9 @@
     "schemas": {
       "AuthoringLetterFiles": {
         "properties": {
+          "docxTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
           "initialRender": {
             "$ref": "#/components/schemas/RenderDetails"
           },

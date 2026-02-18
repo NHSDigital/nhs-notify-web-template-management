@@ -2,6 +2,8 @@
 
 exports[`LetterUploadRepository static parseKey errors if file extension does not match csv file type 1`] = `"Unexpected object key "test-data/owner-id/template-id/version-id.pdf""`;
 
+exports[`LetterUploadRepository static parseKey errors if file extension does not match docx file type 1`] = `"Unexpected object key "docx-template/owner-id/template-id/version-id.pdf""`;
+
 exports[`LetterUploadRepository static parseKey errors if file extension does not match pdf file type 1`] = `"Unexpected object key "pdf-template/owner-id/template-id/version-id.csv""`;
 
 exports[`LetterUploadRepository static parseKey errors if filename has too many parts 1`] = `"Unexpected object key "test-data/owner-id/template-id/version-id.unexpected.csv""`;
@@ -11,6 +13,7 @@ exports[`LetterUploadRepository static parseKey errors if invalid file type segm
   {
     "code": "invalid_value",
     "values": [
+      "docx-template",
       "pdf-template",
       "test-data",
       "proofs"
@@ -18,7 +21,7 @@ exports[`LetterUploadRepository static parseKey errors if invalid file type segm
     "path": [
       "file-type"
     ],
-    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
+    "message": "Invalid option: expected one of \\"docx-template\\"|\\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
   }
 ]"
 `;

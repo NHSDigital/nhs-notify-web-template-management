@@ -176,7 +176,15 @@ export type TemplateKey = {
   templateId: string;
 };
 
-export type FileType = 'pdf-template' | 'test-data' | 'proofs';
+export type FileType =
+  | 'docx-template'
+  | 'pdf-template'
+  | 'test-data'
+  | 'proofs';
+
+export type UnionKeys<T> = T extends T ? keyof T : never;
+
+export type LetterFileKey = UnionKeys<LetterTemplate['files']>;
 
 export type ProofingRequest = {
   campaignId: string;
