@@ -2,13 +2,8 @@
 
 import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import content from '@content/content';
-import type {
-  AuthoringLetterTemplate,
-  LetterTemplate,
-  PdfLetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
@@ -23,17 +18,7 @@ import { interpolate } from '@utils/interpolate';
 
 type ButtonDetails = { text: string; href: string };
 
-export function PreviewLetterTemplate({
-  template,
-}: Readonly<{ template: LetterTemplate }>) {
-  return template.letterVersion === 'PDF' ? (
-    <PreviewPdfLetterTemplate template={template} />
-  ) : (
-    <PreviewAuthoringLetterTemplate template={template} />
-  );
-}
-
-function PreviewPdfLetterTemplate({
+export function PreviewPdfLetterTemplate({
   template,
 }: Readonly<{ template: PdfLetterTemplate }>) {
   const {
@@ -183,53 +168,6 @@ function PreviewPdfLetterTemplate({
                 {continueButton.text}
               </NHSNotifyButton>
             )}
-            <p>
-              <Link href={links.messageTemplates}>{backLinkText}</Link>
-            </p>
-          </div>
-        </div>
-      </NHSNotifyMain>
-    </>
-  );
-}
-
-function PreviewAuthoringLetterTemplate({
-  template,
-}: Readonly<{ template: AuthoringLetterTemplate }>) {
-  const {
-    backLinkText,
-    links,
-    validationError,
-    validationErrorAction,
-    virusScanError,
-    virusScanErrorAction,
-  } = content.components.previewLetterTemplate;
-
-  const errors: string[] = [];
-  if (template.templateStatus === 'VIRUS_SCAN_FAILED') {
-    errors.push(virusScanError, virusScanErrorAction);
-  }
-
-  if (template.templateStatus === 'VALIDATION_FAILED') {
-    errors.push(validationError, validationErrorAction);
-  }
-
-  return (
-    <>
-      <Link href={links.messageTemplates} passHref legacyBehavior>
-        <NotifyBackLink>{backLinkText}</NotifyBackLink>
-      </Link>
-      <NHSNotifyMain>
-        <div className='nhsuk-grid-row'>
-          <div className='nhsuk-grid-column-full'>
-            {errors.length > 0 && (
-              <NhsNotifyErrorSummary
-                errorState={{
-                  formErrors: errors,
-                }}
-              />
-            )}
-            <PreviewTemplateDetailsAuthoringLetter template={template} />
             <p>
               <Link href={links.messageTemplates}>{backLinkText}</Link>
             </p>

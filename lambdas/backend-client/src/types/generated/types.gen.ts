@@ -4,10 +4,20 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterFiles = {
+  docxTemplate?: VersionedFileDetails;
+  initialRender?: RenderDetails;
+  longFormRender?: PersonalisedRenderDetails;
+  shortFormRender?: PersonalisedRenderDetails;
+};
+
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  customPersonalisation?: Array<string>;
+  files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
-  sidesCount: number;
+  systemPersonalisation?: Array<string>;
+  validationErrors?: Array<LetterValidationError>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -192,6 +202,10 @@ export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
+export type LetterValidationError =
+  | 'MISSING_ADDRESS_LINES'
+  | 'VIRUS_SCAN_FAILED';
+
 export type LetterVersion = 'AUTHORING' | 'PDF';
 
 export type NhsAppProperties = {
@@ -222,11 +236,27 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderDetails = RenderDetails & {
+  personalisationParameters: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId: string;
+};
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
+
+export type RenderDetails = {
+  currentVersion: string;
+  fileName: string;
+  pageCount: number;
+  status: RenderStatus;
+};
+
+export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
 
 export type RoutingConfig = {
   campaignId: string;

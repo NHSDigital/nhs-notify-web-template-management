@@ -43,6 +43,15 @@ export type ProofFile = {
   virusScanStatus: string;
 };
 
+export type RenderFile = {
+  fileName: string;
+  currentVersion: string;
+  status: string;
+  pageCount: number;
+  systemPersonalisationPackId?: string;
+  personalisationParameters?: Record<string, string>;
+};
+
 type TypeSpecificProperties = {
   message?: string;
   subject?: string;
@@ -50,16 +59,23 @@ type TypeSpecificProperties = {
   letterVersion?: string;
   language?: string;
   files?: {
+    // PDF letter files
     pdfTemplate?: File;
     testDataCsv?: File;
     proofs?: Record<string, ProofFile>;
+    // Authoring letter files
+    initialRender?: RenderFile;
+    shortFormRender?: RenderFile;
+    longFormRender?: RenderFile;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];
   campaignId?: string;
   supplierReferences?: Record<string, string>;
-  sidesCount?: number;
   letterVariantId?: string;
+  customPersonalisation?: string[];
+  systemPersonalisation?: string[];
+  validationErrors?: string[];
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

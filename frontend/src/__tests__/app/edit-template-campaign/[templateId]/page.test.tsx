@@ -23,11 +23,18 @@ const mockTemplate: TemplateDto = {
   lockNumber: 5,
   language: 'en',
   letterType: 'x0',
-  sidesCount: 2,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
   clientId: 'client-123',
   campaignId: 'Campaign 1',
+  files: {
+    initialRender: {
+      pageCount: 2,
+      currentVersion: 'version',
+      fileName: 'name.pdf',
+      status: 'RENDERED',
+    },
+  },
 };
 
 beforeEach(() => {

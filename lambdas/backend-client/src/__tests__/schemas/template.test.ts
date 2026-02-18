@@ -1,4 +1,5 @@
 import {
+  $AuthoringLetterFiles,
   $AuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
@@ -300,7 +301,15 @@ describe('Template schemas', () => {
       language: 'en',
       letterVersion: 'AUTHORING',
       letterVariantId: 'variant-123',
-      sidesCount: 2,
+      files: {
+        initialRender: {
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 2,
+        },
+      },
+      systemPersonalisation: [],
     };
 
     test('should pass validation for valid AUTHORING letter', () => {
@@ -328,11 +337,97 @@ describe('Template schemas', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error?.flatten().fieldErrors).toEqual(
-        expect.objectContaining({
-          sidesCount: expect.any(Array),
-        })
-      );
+      expect(result.error?.flatten().fieldErrors).toEqual({
+        files: expect.any(Array),
+      });
+    });
+  });
+
+  describe('$AuthoringLetterFiles', () => {
+    test.each([
+      { description: 'empty files object', files: {} },
+      {
+        description: 'initialRender only',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
+      },
+      {
+        description: 'all render types',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+          shortFormRender: {
+            fileName: 'short.pdf',
+            currentVersion: 'v2',
+            status: 'RENDERED',
+            personalisationParameters: { firstName: 'John' },
+            systemPersonalisationPackId: 'pack-123',
+            pageCount: 2,
+          },
+          longFormRender: {
+            fileName: 'long.pdf',
+            currentVersion: 'v3',
+            status: 'PENDING',
+            personalisationParameters: { firstName: 'Jane' },
+            systemPersonalisationPackId: 'pack-456',
+            pageCount: 2,
+          },
+        },
+      },
+    ])('should pass validation for $description', ({ files }) => {
+      const result = $AuthoringLetterFiles.safeParse(files);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(files);
+    });
+
+    test.each([
+      {
+        description: 'invalid render status',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'INVALID_STATUS',
+            pageCount: 2,
+          },
+        },
+      },
+      {
+        description: 'shortFormRender missing required fields',
+        files: {
+          shortFormRender: {
+            fileName: 'short.pdf',
+            currentVersion: 'v2',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
+      },
+      {
+        description: 'initialRender missing pageCount',
+        files: {
+          initialRender: {
+            fileName: 'initial.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+          },
+        },
+      },
+    ])('should fail validation for $description', ({ files }) => {
+      const result = $AuthoringLetterFiles.safeParse(files);
+
+      expect(result.success).toBe(false);
     });
   });
 
@@ -388,7 +483,15 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
+        systemPersonalisation: [],
       };
 
       const result = $LetterProperties.safeParse(authoringLetter);
@@ -559,7 +662,15 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
-        sidesCount: 2,
+        files: {
+          initialRender: {
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+            pageCount: 2,
+          },
+        },
+        systemPersonalisation: [],
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
       };

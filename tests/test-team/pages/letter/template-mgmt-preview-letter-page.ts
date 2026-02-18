@@ -1,6 +1,8 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
+type TabVariant = 'shortFormRender' | 'longFormRender';
+
 export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   static readonly pathTemplate = '/preview-letter-template/:templateId';
 
@@ -21,16 +23,72 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly statusAction: Locator;
   public readonly campaignAction: Locator;
 
+  public readonly letterRender: Locator;
+
+  public readonly shortTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
+  public readonly longTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
+
   constructor(page: Page) {
     super(page);
+
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
+
+    // PDF letter specific
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
+
+    // AUTHORING letter specific
     this.editNameLink = page.getByTestId('edit-name-link');
     this.sheetsAction = page.getByTestId('sheets-action');
     this.statusAction = page.getByTestId('status-action');
     this.campaignAction = page.getByTestId('campaign-action');
+
+    this.letterRender = page.locator('section').filter({
+      has: page.getByRole('heading', { name: 'Letter preview' }),
+    });
+
+    this.shortTab = this.getTab('shortFormRender');
+    this.longTab = this.getTab('longFormRender');
+  }
+
+  public getTab(variant: TabVariant) {
+    const tabName =
+      variant === 'shortFormRender' ? 'Short examples' : 'Long examples';
+    const panel = this.page.getByRole('tabpanel', { name: tabName });
+    const tab = this.page.getByRole('tab', { name: tabName });
+    const recipientSelect = panel.locator(
+      'select[name="__systemPersonalisationPackId"]'
+    );
+    const updatePreviewButton = panel.getByRole('button', {
+      name: 'Update preview',
+    });
+    const previewIframe = panel.locator('iframe[title*="Letter preview"]');
+    const customFieldsHeading = panel.getByRole('heading', {
+      name: 'Custom personalisation fields',
+    });
+
+    return {
+      tab,
+      panel,
+      recipientSelect,
+      updatePreviewButton,
+      previewIframe,
+      customFieldsHeading,
+      getCustomFieldInput: (fieldName: string): Locator =>
+        panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
+      getRecipientOptions: (): Locator => recipientSelect.locator('option'),
+
+      async clickTab() {
+        await tab.click();
+      },
+      async clickUpdatePreview() {
+        await updatePreviewButton.click();
+      },
+      async selectRecipient(options: { index?: number; value?: string }) {
+        await recipientSelect.selectOption(options);
+      },
+    };
   }
 
   async clickContinueButton() {

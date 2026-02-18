@@ -1743,6 +1743,84 @@ describe('templateRepository', () => {
       });
     });
 
+    it('updates the virusScanStatus on the docxTemplate field when the status is PASSED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'PASSED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the docxTemplate field, the overall template status and validation errors when the status is FAILED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed , #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors) ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'FAILED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusFailed': 'VALIDATION_FAILED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+          ':emptyList': [],
+          ':validationErrors': ['VIRUS_SCAN_FAILED'],
+        },
+      });
+    });
+
     it('updates the virusScanStatus on the testDataCsv field and the overall template status when the status is FAILED', async () => {
       const { templateRepository, mocks } = setup();
 

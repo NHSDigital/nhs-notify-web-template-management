@@ -69,16 +69,15 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Unable to load template data');
     }
 
-    if (!template.files) {
-      log.error("Can't process non-letter template");
+    if (template.letterVersion === 'AUTHORING' || !template.files) {
+      log.error("Can't process non-PDF letter template");
       return;
     }
 
-    const pdfData = template.files.pdfTemplate;
-    const csvData = template.files.testDataCsv;
+    const { pdfTemplate: pdfData, testDataCsv: csvData } = template.files;
 
     if (
-      pdfData.currentVersion !== versionId ||
+      pdfData?.currentVersion !== versionId ||
       (csvData && csvData.currentVersion !== versionId)
     ) {
       //  No-op if file version in event is non-current
