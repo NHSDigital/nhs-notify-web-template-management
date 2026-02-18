@@ -532,6 +532,16 @@ const previewLetterTemplate = {
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
+  validationErrorMessages: {
+    MISSING_ADDRESS_LINES: [
+      'The template file you uploaded does not contain the address fields.',
+      'Add the address fields to the template file and upload it.',
+    ],
+    VIRUS_SCAN_FAILED: [
+      'The file(s) you uploaded may contain a virus.',
+      'Create a new letter template to upload your file(s) again or upload different file(s).',
+    ],
+  } satisfies Record<string, string[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',
@@ -547,6 +557,33 @@ const previewLetterTemplate = {
     requestProofOfTemplate:
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
   },
+};
+
+const letterRender = {
+  heading: 'Letter preview',
+  guidance: 'Check how your personalisation fields will appear in your letter.',
+  learnMoreLink: {
+    href: 'https://notify.nhs.uk/using-nhs-notify/personalisation',
+    text: 'Learn more about personalising your letters (opens in a new tab)',
+  },
+  tabTitle: 'Example personalisation data',
+  tabs: {
+    short: 'Short examples',
+    long: 'Long examples',
+  },
+  pdsSection: {
+    heading: 'PDS personalisation fields',
+    hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
+    recipientLabel: 'Example recipient',
+    recipientPlaceholder: 'Select a recipient',
+    error: {
+      invalid: 'Select an example recipient',
+    },
+  },
+  customSection: {
+    heading: 'Custom personalisation fields',
+  },
+  updatePreviewButton: 'Update preview',
 };
 
 const previewNHSAppTemplate = {
@@ -615,7 +652,6 @@ const previewTemplateDetails = {
     templateType: 'Template type',
     examplePersonalisationFile: 'Example personalisation file',
     letterType: 'Letter type',
-    sidesCount: 'Number of sides',
     totalPages: 'Total pages',
     sheets: 'Sheets',
     printingAndPostage: 'Printing and postage',
@@ -1794,6 +1830,7 @@ const content = {
     errorSummary,
     footer,
     header,
+    letterRender,
     lockedTemplateWarning,
     logoutWarning,
     messageFormatting,

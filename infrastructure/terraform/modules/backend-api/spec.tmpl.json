@@ -2,22 +2,21 @@
   "components": {
     "schemas": {
       "AuthoringLetterFiles": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LetterFiles"
+        "properties": {
+          "docxTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
           },
-          {
-            "properties": {
-              "docxTemplate": {
-                "$ref": "#/components/schemas/VersionedFileDetails"
-              }
-            },
-            "required": [
-              "docxTemplate"
-            ],
-            "type": "object"
+          "initialRender": {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          "longFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+          },
+          "shortFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
           }
-        ]
+        },
+        "type": "object"
       },
       "AuthoringLetterProperties": {
         "allOf": [
@@ -26,6 +25,12 @@
           },
           {
             "properties": {
+              "customPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "files": {
                 "$ref": "#/components/schemas/AuthoringLetterFiles"
               },
@@ -38,13 +43,22 @@
                 ],
                 "type": "string"
               },
-              "sidesCount": {
-                "type": "integer"
+              "systemPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "validationErrors": {
+                "items": {
+                  "$ref": "#/components/schemas/LetterValidationError"
+                },
+                "type": "array"
               }
             },
             "required": [
-              "letterVersion",
-              "sidesCount"
+              "files",
+              "letterVersion"
             ],
             "type": "object"
           }
@@ -619,26 +633,6 @@
         ],
         "type": "string"
       },
-      "LetterFiles": {
-        "properties": {
-          "docxTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "proofs": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ProofFileDetails"
-            },
-            "type": "object"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          }
-        },
-        "type": "object"
-      },
       "LetterProperties": {
         "oneOf": [
           {
@@ -654,6 +648,13 @@
           "q4",
           "x0",
           "x1"
+        ],
+        "type": "string"
+      },
+      "LetterValidationError": {
+        "enum": [
+          "MISSING_ADDRESS_LINES",
+          "VIRUS_SCAN_FAILED"
         ],
         "type": "string"
       },
@@ -695,22 +696,24 @@
         "type": "object"
       },
       "PdfLetterFiles": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LetterFiles"
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
           },
-          {
-            "properties": {
-              "pdfTemplate": {
-                "$ref": "#/components/schemas/VersionedFileDetails"
-              }
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProofFileDetails"
             },
-            "required": [
-              "pdfTemplate"
-            ],
             "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
           }
-        ]
+        },
+        "required": [
+          "pdfTemplate"
+        ],
+        "type": "object"
       },
       "PdfLetterProperties": {
         "allOf": [
@@ -752,6 +755,31 @@
           }
         ]
       },
+      "PersonalisedRenderDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          {
+            "properties": {
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "personalisationParameters",
+              "systemPersonalisationPackId"
+            ],
+            "type": "object"
+          }
+        ]
+      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -770,6 +798,37 @@
           "virusScanStatus"
         ],
         "type": "object"
+      },
+      "RenderDetails": {
+        "properties": {
+          "currentVersion": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "pageCount": {
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RenderStatus"
+          }
+        },
+        "required": [
+          "currentVersion",
+          "fileName",
+          "pageCount",
+          "status"
+        ],
+        "type": "object"
+      },
+      "RenderStatus": {
+        "enum": [
+          "FAILED",
+          "PENDING",
+          "RENDERED"
+        ],
+        "type": "string"
       },
       "RoutingConfig": {
         "properties": {

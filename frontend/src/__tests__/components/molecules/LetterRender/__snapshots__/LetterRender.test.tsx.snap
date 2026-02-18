@@ -1,0 +1,415 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LetterRender matches snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="nhsuk-u-margin-top-6"
+  >
+    <h2
+      class="nhsuk-heading-m"
+    >
+      Letter preview
+    </h2>
+    <p>
+      Check how your personalisation fields will appear in your letter.
+    </p>
+    <div
+      class="nhsuk-tabs nhsuk-u-margin-top-6"
+      data-module="nhsuk-tabs"
+    >
+      <h2
+        class="nhsuk-tabs__title"
+      >
+        Example personalisation data
+      </h2>
+      <ul
+        class="nhsuk-tabs__list"
+        role="tablist"
+      >
+        <li
+          class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+          role="presentation"
+        >
+          <a
+            aria-controls="tab-short"
+            aria-selected="true"
+            class="nhsuk-tabs__tab"
+            href="#tab-short"
+            id="tab_tab-short"
+            role="tab"
+            tabindex="0"
+          >
+            Short examples
+          </a>
+        </li>
+        <li
+          class="nhsuk-tabs__list-item"
+          role="presentation"
+        >
+          <a
+            aria-controls="tab-long"
+            aria-selected="false"
+            class="nhsuk-tabs__tab"
+            href="#tab-long"
+            id="tab_tab-long"
+            role="tab"
+            tabindex="-1"
+          >
+            Long examples
+          </a>
+        </li>
+      </ul>
+      <div
+        aria-labelledby="tab_tab-short"
+        class="nhsuk-tabs__panel"
+        id="tab-short"
+        role="tabpanel"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-one-third"
+          >
+            <form
+              action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+            >
+              <input
+                name="form-id"
+                readonly=""
+                type="hidden"
+                value="letter-preview-shortFormRender"
+              />
+              <input
+                name="csrf_token"
+                readonly=""
+                type="hidden"
+                value="no_token"
+              />
+              <h3
+                class="nhsuk-heading-s"
+              >
+                PDS personalisation fields
+              </h3>
+              <p
+                class="nhsuk-body-s"
+              >
+                The PDS fields will be pre-filled with example data when you choose a test recipient.
+              </p>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="system-personalisation-pack-id-shortFormRender"
+                >
+                  Example recipient
+                </label>
+                <select
+                  class="nhsuk-select recipientSelect"
+                  id="system-personalisation-pack-id-shortFormRender"
+                  name="__systemPersonalisationPackId"
+                >
+                  <option
+                    selected=""
+                    value=""
+                  >
+                    Select a recipient
+                  </option>
+                  <option
+                    value="short-1"
+                  >
+                    Jo Bloggs
+                  </option>
+                  <option
+                    value="short-2"
+                  >
+                    Mr John Smith
+                  </option>
+                  <option
+                    value="short-3"
+                  >
+                    Ms Sarah Jones
+                  </option>
+                  <option
+                    value="short-4"
+                  >
+                    Dr Li Wei
+                  </option>
+                  <option
+                    value="short-5"
+                  >
+                    Mrs Mary Brown
+                  </option>
+                  <option
+                    value="short-6"
+                  >
+                    Rev Mia Dao
+                  </option>
+                  <option
+                    value="short-7"
+                  >
+                    Miss Lucy Taylor
+                  </option>
+                  <option
+                    value="short-8"
+                  >
+                    Mx Alex Chen
+                  </option>
+                  <option
+                    value="short-9"
+                  >
+                    Prof Ola Fye
+                  </option>
+                  <option
+                    value="short-10"
+                  >
+                    Dr James Patel
+                  </option>
+                  <option
+                    value="short-11"
+                  >
+                    Ms Claire Davies
+                  </option>
+                </select>
+              </div>
+              <h3
+                class="nhsuk-heading-s nhsuk-u-padding-top-4"
+              >
+                Custom personalisation fields
+              </h3>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="custom-appointmentDate-shortFormRender"
+                >
+                  appointmentDate
+                </label>
+                <input
+                  class="nhsuk-input"
+                  id="custom-appointmentDate-shortFormRender"
+                  maxlength="500"
+                  name="appointmentDate"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="custom-clinicName-shortFormRender"
+                >
+                  clinicName
+                </label>
+                <input
+                  class="nhsuk-input"
+                  id="custom-clinicName-shortFormRender"
+                  maxlength="500"
+                  name="clinicName"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <button
+                aria-disabled="false"
+                class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                type="submit"
+              >
+                Update preview
+              </button>
+            </form>
+          </div>
+          <div
+            class="nhsuk-grid-column-two-thirds iframeColumn"
+          >
+            <iframe
+              aria-label="PDF preview of letter template with short example personalisation data"
+              src="/templates/files/client-123/renders/template-123/initial.pdf"
+              title="Letter preview - short examples"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        aria-labelledby="tab_tab-long"
+        class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+        id="tab-long"
+        role="tabpanel"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-one-third"
+          >
+            <form
+              action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+            >
+              <input
+                name="form-id"
+                readonly=""
+                type="hidden"
+                value="letter-preview-longFormRender"
+              />
+              <input
+                name="csrf_token"
+                readonly=""
+                type="hidden"
+                value="no_token"
+              />
+              <h3
+                class="nhsuk-heading-s"
+              >
+                PDS personalisation fields
+              </h3>
+              <p
+                class="nhsuk-body-s"
+              >
+                The PDS fields will be pre-filled with example data when you choose a test recipient.
+              </p>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="system-personalisation-pack-id-longFormRender"
+                >
+                  Example recipient
+                </label>
+                <select
+                  class="nhsuk-select recipientSelect"
+                  id="system-personalisation-pack-id-longFormRender"
+                  name="__systemPersonalisationPackId"
+                >
+                  <option
+                    selected=""
+                    value=""
+                  >
+                    Select a recipient
+                  </option>
+                  <option
+                    value="long-1"
+                  >
+                    Mr Michael James Richardson-Clarke
+                  </option>
+                  <option
+                    value="long-2"
+                  >
+                    Dr Elizabeth Anne Thompson
+                  </option>
+                  <option
+                    value="long-3"
+                  >
+                    Dame Catherine Elizabeth Montgomery
+                  </option>
+                  <option
+                    value="long-4"
+                  >
+                    Mr Rajesh Kumar Chandrasekaran
+                  </option>
+                  <option
+                    value="long-5"
+                  >
+                    Ms Aminatou Diallo Kouyaté
+                  </option>
+                  <option
+                    value="long-6"
+                  >
+                    Sir William Alexander Fitzgerald
+                  </option>
+                  <option
+                    value="long-7"
+                  >
+                    Dr Priya Sharma-Williamson
+                  </option>
+                  <option
+                    value="long-8"
+                  >
+                    Rev Emmanuel Kwabena Adomako
+                  </option>
+                  <option
+                    value="long-9"
+                  >
+                    Prof Franziska Vogel-Bernhardt
+                  </option>
+                  <option
+                    value="long-10"
+                  >
+                    Mrs Margaret Anne O'Sullivan
+                  </option>
+                  <option
+                    value="long-11"
+                  >
+                    Dr Christopher James Harrington
+                  </option>
+                </select>
+              </div>
+              <h3
+                class="nhsuk-heading-s nhsuk-u-padding-top-4"
+              >
+                Custom personalisation fields
+              </h3>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="custom-appointmentDate-longFormRender"
+                >
+                  appointmentDate
+                </label>
+                <input
+                  class="nhsuk-input"
+                  id="custom-appointmentDate-longFormRender"
+                  maxlength="500"
+                  name="appointmentDate"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="nhsuk-form-group"
+              >
+                <label
+                  class="nhsuk-label nhsuk-label--s"
+                  for="custom-clinicName-longFormRender"
+                >
+                  clinicName
+                </label>
+                <input
+                  class="nhsuk-input"
+                  id="custom-clinicName-longFormRender"
+                  maxlength="500"
+                  name="clinicName"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <button
+                aria-disabled="false"
+                class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
+                type="submit"
+              >
+                Update preview
+              </button>
+            </form>
+          </div>
+          <div
+            class="nhsuk-grid-column-two-thirds iframeColumn"
+          >
+            <iframe
+              aria-label="PDF preview of letter template with long example personalisation data"
+              src="/templates/files/client-123/renders/template-123/initial.pdf"
+              title="Letter preview - long examples"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

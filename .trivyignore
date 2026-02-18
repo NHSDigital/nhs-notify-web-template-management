@@ -1,0 +1,1 @@
+CVE-2026-1615 # https://avd.aquasec.com/nvd/cve-2026-1615 - jsonpath - fixed version not available. This is a dev-dependecy brought in by pa11y. pa11y will be removed soon (TODO: CCM-13084)
