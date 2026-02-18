@@ -1,6 +1,24 @@
 {
   "components": {
     "schemas": {
+      "AuthoringLetterFiles": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LetterFiles"
+          },
+          {
+            "properties": {
+              "docxTemplate": {
+                "$ref": "#/components/schemas/VersionedFileDetails"
+              }
+            },
+            "required": [
+              "docxTemplate"
+            ],
+            "type": "object"
+          }
+        ]
+      },
       "AuthoringLetterProperties": {
         "allOf": [
           {
@@ -8,6 +26,9 @@
           },
           {
             "properties": {
+              "files": {
+                "$ref": "#/components/schemas/AuthoringLetterFiles"
+              },
               "letterVariantId": {
                 "type": "string"
               },
@@ -589,6 +610,26 @@
         ],
         "type": "string"
       },
+      "LetterFiles": {
+        "properties": {
+          "docxTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProofFileDetails"
+            },
+            "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          }
+        },
+        "type": "object"
+      },
       "LetterProperties": {
         "oneOf": [
           {
@@ -645,24 +686,22 @@
         "type": "object"
       },
       "PdfLetterFiles": {
-        "properties": {
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LetterFiles"
           },
-          "proofs": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ProofFileDetails"
+          {
+            "properties": {
+              "pdfTemplate": {
+                "$ref": "#/components/schemas/VersionedFileDetails"
+              }
             },
+            "required": [
+              "pdfTemplate"
+            ],
             "type": "object"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
           }
-        },
-        "required": [
-          "pdfTemplate"
-        ],
-        "type": "object"
+        ]
       },
       "PdfLetterProperties": {
         "allOf": [
