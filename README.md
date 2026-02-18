@@ -35,6 +35,29 @@
   npm install
 ```
 
+### Environment Variables and .env.template
+
+This repository provides a `.env.template` file at the root. This file contains example environment variables required for local development and deployment.
+
+**How to use:**
+
+1. Copy `.env.template` to a new file named `.env` in the same directory:
+
+   ```shell
+   cp .env.template .env
+   ```
+
+2. Open `.env` and update the values as needed for your environment. For example, set your GitHub personal access token and username:
+
+   - `GITHUB_TOKEN` – Your GitHub Personal Access Token with packages:read permissions.
+   - `GITHUB_ACTOR` – Your GitHub username associated with the token
+
+3. Save the file. The application and scripts will now use these environment variables.
+
+**Tip:**
+
+- Keep `.env` files out of version control. The `.env.template` is provided as a reference for required variables.
+
 ### Running the project locally
 
 1. To create a Terraform backend sandbox, run:
