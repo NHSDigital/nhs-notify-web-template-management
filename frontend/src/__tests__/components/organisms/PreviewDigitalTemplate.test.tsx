@@ -144,7 +144,7 @@ describe('PreviewDigitalTemplate', () => {
       ).not.toBeInTheDocument();
 
       expect(
-        screen.queryByTestId('send-test-message-button')
+        screen.queryByRole('button', { name: 'Send a test message' })
       ).not.toBeInTheDocument();
     });
   });
@@ -233,7 +233,9 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        const button = screen.getByTestId('send-test-message-button');
+        const button = screen.getByRole('button', {
+          name: 'Send a test message',
+        });
         expect(button).toHaveTextContent('Send a test message');
         expect(button.closest('a')).toHaveAttribute(
           'href',
@@ -262,7 +264,7 @@ describe('PreviewDigitalTemplate', () => {
             screen.queryByTestId('test-message-banner')
           ).not.toBeInTheDocument();
           expect(
-            screen.queryByTestId('send-test-message-button')
+            screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
@@ -277,7 +279,7 @@ describe('PreviewDigitalTemplate', () => {
           screen.queryByTestId('test-message-banner')
         ).not.toBeInTheDocument();
         expect(
-          screen.queryByTestId('send-test-message-button')
+          screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
       });
     });
@@ -307,7 +309,9 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        const button = screen.getByTestId('send-test-message-button');
+        const button = screen.getByRole('button', {
+          name: 'Send a test message',
+        });
         expect(button).toHaveTextContent('Send a test message');
         expect(button.closest('a')).toHaveAttribute(
           'href',
@@ -336,7 +340,7 @@ describe('PreviewDigitalTemplate', () => {
             screen.queryByTestId('test-message-banner')
           ).not.toBeInTheDocument();
           expect(
-            screen.queryByTestId('send-test-message-button')
+            screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
@@ -351,7 +355,7 @@ describe('PreviewDigitalTemplate', () => {
           screen.queryByTestId('test-message-banner')
         ).not.toBeInTheDocument();
         expect(
-          screen.queryByTestId('send-test-message-button')
+          screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
       });
     });
@@ -384,7 +388,9 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        const button = screen.getByTestId('send-test-message-button');
+        const button = screen.getByRole('button', {
+          name: 'Send a test message',
+        });
         expect(button).toHaveTextContent('Send a test message');
         expect(button.closest('a')).toHaveAttribute(
           'href',
@@ -413,7 +419,7 @@ describe('PreviewDigitalTemplate', () => {
             screen.queryByTestId('test-message-banner')
           ).not.toBeInTheDocument();
           expect(
-            screen.queryByTestId('send-test-message-button')
+            screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
@@ -428,7 +434,7 @@ describe('PreviewDigitalTemplate', () => {
           screen.queryByTestId('test-message-banner')
         ).not.toBeInTheDocument();
         expect(
-          screen.queryByTestId('send-test-message-button')
+          screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
       });
     });
@@ -450,7 +456,7 @@ describe('PreviewDigitalTemplate', () => {
             screen.queryByTestId('test-message-banner')
           ).not.toBeInTheDocument();
           expect(
-            screen.queryByTestId('send-test-message-button')
+            screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );

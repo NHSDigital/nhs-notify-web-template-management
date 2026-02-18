@@ -9,10 +9,10 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingEmail is en
   </div>
   Preview
   <div
-    class="test-message-banner nhsuk-summary-list nhsuk-u-margin-bottom-6"
+    class="nhsuk-summary-list test-message-banner"
   >
     <div
-      class="nhsuk-warning-callout"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
       data-testid="test-message-banner"
     >
       This is only a basic preview. 
@@ -58,10 +58,10 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingNhsApp is e
   </div>
   Preview
   <div
-    class="test-message-banner nhsuk-summary-list nhsuk-u-margin-bottom-6"
+    class="nhsuk-summary-list test-message-banner"
   >
     <div
-      class="nhsuk-warning-callout"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
       data-testid="test-message-banner"
     >
       This is only a basic preview. 
@@ -107,10 +107,10 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingSms is enab
   </div>
   Preview
   <div
-    class="test-message-banner nhsuk-summary-list nhsuk-u-margin-bottom-6"
+    class="nhsuk-summary-list test-message-banner"
   >
     <div
-      class="nhsuk-warning-callout"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
       data-testid="test-message-banner"
     >
       This is only a basic preview. 
