@@ -39,6 +39,7 @@ function initialisePdfUrl(
 
   const render = personalisedRender ?? initialRender;
 
+  // component test needed
   return render?.status === 'RENDERED'
     ? buildPdfUrl(template, render.fileName)
     : null;

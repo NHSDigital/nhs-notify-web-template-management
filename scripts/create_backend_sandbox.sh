@@ -8,12 +8,13 @@ if [ $# -ne 1 ]; then
   exit 2
 fi
 
-ENVIRONMENT=$1
-COMPONENT="sbx"
-AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
-AWS_REGION="eu-west-2"
-PROJECT="nhs-notify"
-GROUP="nhs-notify-template-management-dev"
+export ENVIRONMENT=$1
+export COMPONENT="sbx"
+export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+export AWS_REGION="eu-west-2"
+export PROJECT="nhs-notify"
+export ACTION="apply"
+export GROUP="nhs-notify-template-management-dev"
 
 root_dir=$(git rev-parse --show-toplevel)
 terraform_dir=$root_dir/infrastructure/terraform
@@ -29,7 +30,7 @@ cd $terraform_dir
   --component $COMPONENT \
   --environment $ENVIRONMENT \
   --group $GROUP \
-  --action apply \
+  --action $ACTION \
   -- \
   -var aws_account_id=$AWS_ACCOUNT_ID \
   -var region=$AWS_REGION \

@@ -112,7 +112,7 @@ docker buildx build \
   --load \
   .
 
-# Push the image tag(s) to ECR on apply only. The Terraform configuration will reference the specific tag for the lambda image.
+# Push the image tag(s) to ECR on apply only. The Terraform configuration will reference image digest.
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
   echo "PUBLISH_LAMBDA_IMAGE is set to true. Pushing Docker images to ECR..."
 

@@ -15,4 +15,5 @@ npx esbuild \
   --outdir=dist \
   src/letter-preview-renderer.ts
 
+# improve this
 cp ../../node_modules/carbone/lib/converter.py ./dist/converter.py

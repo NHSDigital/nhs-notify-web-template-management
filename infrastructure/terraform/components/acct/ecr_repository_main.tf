@@ -25,6 +25,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 30
       },
       "action": {
@@ -34,22 +35,26 @@ resource "aws_ecr_lifecycle_policy" "main" {
     },
     {
       "rulePriority": 2,
-      "description": "Expire (delete) commit images 60 days after push (only those matched as commit images)",
+      "description": "Expire (delete) archived commit images 90 days after transition to archive",
       "selection": {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
         "countType": "sinceImageTransitioned",
-        "countNumber": 30
+        "storageClass": "archive",
+        "countUnit": "days",
+        "countNumber": 90
       },
       "action": {
         "type": "expire"
       }
     },
+    {
       "rulePriority": 3,
-      "description": "Expire (delete) untagged images 7 days after push (only those matched as commit images)",
+      "description": "Expire (delete) untagged images 7 days after push",
       "selection": {
         "tagStatus": "untagged",
-        "countType": "sinceImageTransitioned",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 7
       },
       "action": {
@@ -63,6 +68,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "tagStatus": "tagged",
         "tagPatternList": ["*-tag-*"],
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 90
       },
       "action": {
