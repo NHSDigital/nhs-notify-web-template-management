@@ -4,10 +4,7 @@ import {
   makeEventBridgeEvent,
   makeS3ObjectCreatedEventDetail,
 } from 'nhs-notify-web-template-management-test-helper-utils';
-import {
-  createHandler,
-  keyToInitialRenderRequest,
-} from '../../api/forward-initial-render-request';
+import { createHandler } from '../../api/forward-initial-render-request';
 
 function setup() {
   const mocks = {
@@ -35,7 +32,7 @@ describe('createHandler', () => {
 
     const event = makeS3ObjectCreatedEvent({
       object: {
-        key: 'letters/client-123/template-456/file.pdf',
+        key: 'docx-template/client-123/template-456/version-789.docx',
       },
     });
 
@@ -47,7 +44,11 @@ describe('createHandler', () => {
           QueueUrl: mocks.renderRequestQueueUrl,
           MessageBody: JSON.stringify({
             requestType: 'initial',
-            template: { templateId: 'template-456', clientId: 'client-123' },
+            template: {
+              clientId: 'client-123',
+              templateId: 'template-456',
+              currentVersion: 'version-789',
+            },
           }),
           MessageGroupId: 'client-123',
         },
@@ -69,7 +70,7 @@ describe('createHandler', () => {
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
   });
 
-  it('errors if the key has too few path segments', async () => {
+  it('errors if the key has invalid format', async () => {
     const { handler, mocks } = setup();
 
     const event = makeS3ObjectCreatedEvent({
@@ -78,67 +79,24 @@ describe('createHandler', () => {
       },
     });
 
-    await expect(handler(event)).rejects.toThrow(
-      'Expected four path segments in only/two'
-    );
+    await expect(handler(event)).rejects.toThrow('Unexpected object key');
 
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
   });
 
-  it('errors if the key has too many path segments', async () => {
+  it('errors if the file type is not docx-template', async () => {
     const { handler, mocks } = setup();
 
     const event = makeS3ObjectCreatedEvent({
       object: {
-        key: 'one/two/three/four/five',
+        key: 'pdf-template/client-123/template-456/version-789.pdf',
       },
     });
 
     await expect(handler(event)).rejects.toThrow(
-      'Expected four path segments in one/two/three/four/five'
+      'Expected file type "docx-template" but got "pdf-template"'
     );
 
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
-  });
-});
-
-describe('keyToInitialRenderRequest', () => {
-  it('parses the key into an initial render request', () => {
-    const result = keyToInitialRenderRequest(
-      'letters/client-123/template-456/file.pdf'
-    );
-
-    expect(result).toEqual({
-      requestType: 'initial',
-      template: { templateId: 'template-456', clientId: 'client-123' },
-    });
-  });
-
-  it('extracts clientId from the second path segment', () => {
-    const result = keyToInitialRenderRequest(
-      'prefix/my-client-id/my-template-id/filename.pdf'
-    );
-
-    expect(result.template.clientId).toBe('my-client-id');
-  });
-
-  it('extracts templateId from the third path segment', () => {
-    const result = keyToInitialRenderRequest(
-      'prefix/my-client-id/my-template-id/filename.pdf'
-    );
-
-    expect(result.template.templateId).toBe('my-template-id');
-  });
-
-  it('throws if the key has fewer than four segments', () => {
-    expect(() => keyToInitialRenderRequest('one/two/three')).toThrow(
-      'Expected four path segments in one/two/three'
-    );
-  });
-
-  it('throws if the key has more than four segments', () => {
-    expect(() => keyToInitialRenderRequest('one/two/three/four/five')).toThrow(
-      'Expected four path segments in one/two/three/four/five'
-    );
   });
 });

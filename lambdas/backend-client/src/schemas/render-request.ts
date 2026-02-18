@@ -6,6 +6,7 @@ const $Common = z.object({
   template: z.object({
     templateId: z.string(),
     clientId: z.string(),
+    currentVersion: z.string(),
   }),
 });
 

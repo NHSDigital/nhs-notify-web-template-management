@@ -1,6 +1,7 @@
 export type TemplateRenderIds = {
   clientId: string;
   templateId: string;
+  currentVersion: string;
 };
 
 type Common = {

@@ -38,6 +38,7 @@ const createRequest = (
   template: {
     clientId: 'test-client',
     templateId: 'test-template',
+    currentVersion: 'test-version',
     ...overrides,
   },
 });
