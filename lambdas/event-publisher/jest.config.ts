@@ -8,6 +8,11 @@ const config: Config = {
     '@nhsdigital/nhs-notify-event-schemas-template-management$':
       '<rootDir>/../../packages/event-schemas/src',
   },
+  coveragePathIgnorePatterns: [
+    ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
+    'sqs-handler.ts',
+    'event-publisher.ts'
+  ],
 };
 
 export default config;

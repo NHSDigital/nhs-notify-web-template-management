@@ -24,7 +24,17 @@ export const baseJestConfig: Config = {
     },
   },
 
-  coveragePathIgnorePatterns: ['/__tests__/'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}'],
+
+  coveragePathIgnorePatterns: [
+    '/__tests__/',
+    'config.ts',
+    'container.ts',
+    'jest.config.ts',
+    '.types.ts',
+    '.d.ts',
+  ],
+
   transform: { '^.+\\.ts$': '@swc/jest' },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 
