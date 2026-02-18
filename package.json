@@ -61,7 +61,6 @@
     "lambdas/backend-client",
     "lambdas/download-authorizer",
     "lambdas/sftp-letters",
-    "lambdas/letter-preview-renderer",
     "packages/event-schemas",
     "tests/accessibility",
     "tests/contracts/provider",
