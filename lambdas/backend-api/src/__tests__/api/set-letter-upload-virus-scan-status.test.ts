@@ -73,6 +73,36 @@ it('sets the virus scan status on csv files identified by file metadata', async 
   );
 });
 
+it('sets the virus scan status on docx files identified by file metadata', async () => {
+  const { handler, mocks } = setup();
+
+  const event = makeGuardDutyMalwareScanResultNotificationEvent({
+    detail: {
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey:
+          'docx-template/template-owner/template-id/template-version.docx',
+        versionId: 'test-data-s3-version-id',
+      },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
+    },
+  });
+
+  await handler(event);
+
+  expect(
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
+  ).toHaveBeenCalledWith(
+    {
+      templateId: 'template-id',
+      clientId: 'template-owner',
+    },
+    'docx-template',
+    'template-version',
+    'PASSED'
+  );
+});
+
 it.each($GuardDutyMalwareScanStatusFailed.options)(
   'handles guard duty scan failure status %s',
   async (status) => {
@@ -161,6 +191,28 @@ it('errors if event has invalid scan result status', async () => {
   };
 
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
+
+  expect(
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
+  ).not.toHaveBeenCalled();
+});
+
+it('errors if event object key has proofs/ prefix', async () => {
+  const { handler, mocks } = setup();
+  const event = {
+    detail: {
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'proofs/supplier/template-id/proof.pdf',
+        versionId: 'pdf-s3-version-id',
+      },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
+    },
+  };
+
+  await expect(handler(event)).rejects.toThrow(
+    'Proof files are not supported.'
+  );
 
   expect(
     mocks.templateRepository.setLetterFileVirusScanStatusForUpload

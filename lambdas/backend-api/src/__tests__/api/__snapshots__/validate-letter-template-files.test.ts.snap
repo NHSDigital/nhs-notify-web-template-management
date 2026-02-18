@@ -7,6 +7,7 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
   {
     "code": "invalid_value",
     "values": [
+      "docx-template",
       "pdf-template",
       "test-data",
       "proofs"
@@ -14,7 +15,7 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
     "path": [
       "file-type"
     ],
-    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
+    "message": "Invalid option: expected one of \\"docx-template\\"|\\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
   }
 ]"
 `;

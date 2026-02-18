@@ -74,6 +74,7 @@ export type {
   GetV1TemplatesResponse,
   GetV1TemplatesResponses,
   Language,
+  LetterFiles,
   LetterProperties,
   LetterType,
   LetterValidationError,

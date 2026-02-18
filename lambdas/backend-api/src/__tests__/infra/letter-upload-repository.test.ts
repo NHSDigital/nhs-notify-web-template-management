@@ -220,6 +220,19 @@ describe('LetterUploadRepository', () => {
       });
     });
 
+    it('returns metadata from valid docx key', () => {
+      expect(
+        LetterUploadRepository.parseKey(
+          'docx-template/owner-id/template-id/version-id.docx'
+        )
+      ).toEqual({
+        'file-type': 'docx-template',
+        'client-id': 'owner-id',
+        'template-id': 'template-id',
+        'version-id': 'version-id',
+      });
+    });
+
     it('errors if key if too long', () => {
       expect(() =>
         LetterUploadRepository.parseKey(
@@ -270,6 +283,14 @@ describe('LetterUploadRepository', () => {
       expect(() =>
         LetterUploadRepository.parseKey(
           'pdf-template/owner-id/template-id/version-id.csv'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if file extension does not match docx file type', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'docx-template/owner-id/template-id/version-id.pdf'
         )
       ).toThrowErrorMatchingSnapshot();
     });

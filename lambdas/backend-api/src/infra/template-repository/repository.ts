@@ -10,14 +10,15 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import {
+  CreateUpdateTemplate,
   ErrorCase,
+  LetterFiles,
+  PatchTemplate,
   PdfLetterFiles,
+  ProofFileDetails,
+  TemplateDto,
   TemplateStatus,
   VirusScanStatus,
-  ProofFileDetails,
-  CreateUpdateTemplate,
-  PatchTemplate,
-  TemplateDto,
 } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
@@ -620,7 +621,7 @@ export class TemplateRepository {
 
   async setLetterFileVirusScanStatusForUpload(
     templateKey: TemplateKey,
-    fileType: FileType,
+    fileType: Exclude<FileType, 'proofs'>,
     versionId: string,
     status: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
@@ -632,12 +633,7 @@ export class TemplateRepository {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
-        '#file': (fileType === 'pdf-template'
-          ? 'pdfTemplate'
-          : 'testDataCsv') satisfies Extract<
-          keyof PdfLetterFiles,
-          'pdfTemplate' | 'testDataCsv'
-        >,
+        '#file': this.templateFileKey(fileType),
         '#scanStatus': 'virusScanStatus',
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
@@ -656,9 +652,21 @@ export class TemplateRepository {
       };
 
     if (status === 'FAILED') {
-      ExpressionAttributeValues[':templateStatusFailed'] =
-        'VIRUS_SCAN_FAILED' satisfies TemplateStatus;
+      const templateStatus: TemplateStatus =
+        fileType === 'docx-template'
+          ? 'VALIDATION_FAILED'
+          : 'VIRUS_SCAN_FAILED';
+      ExpressionAttributeValues[':templateStatusFailed'] = templateStatus;
       updates.push('#templateStatus = :templateStatusFailed');
+
+      if (fileType === 'docx-template') {
+        ExpressionAttributeNames['#validationErrors'] = 'validationErrors';
+        ExpressionAttributeValues[':validationErrors'] = ['VIRUS_SCAN_FAILED'];
+        ExpressionAttributeValues[':emptyList'] = [];
+        updates.push(
+          '#validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)'
+        );
+      }
     }
 
     try {
@@ -818,6 +826,17 @@ export class TemplateRepository {
 
   private internalUserKey(user: User) {
     return `INTERNAL_USER#${user.internalUserId}`;
+  }
+
+  private templateFileKey(fileType: FileType): keyof LetterFiles {
+    const mapping: Record<FileType, keyof LetterFiles> = {
+      'docx-template': 'docxTemplate',
+      'pdf-template': 'pdfTemplate',
+      'test-data': 'testDataCsv',
+      proofs: 'proofs',
+    };
+
+    return mapping[fileType];
   }
 
   private _handleUpdateError(

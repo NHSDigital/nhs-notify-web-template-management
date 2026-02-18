@@ -18,6 +18,7 @@ export type LetterUploadMetadata = {
 };
 
 const $FileType: z.ZodType<FileType> = z.enum([
+  'docx-template',
   'pdf-template',
   'test-data',
   'proofs',
@@ -137,8 +138,9 @@ export class LetterUploadRepository extends LetterFileRepository {
       type
     );
 
-    const expectedExtension =
-      parsed['file-type'] === 'test-data' ? 'csv' : 'pdf';
+    const expectedExtension = LetterUploadRepository.extensionForType(
+      parsed['file-type']
+    );
 
     if (extension.toLowerCase() !== expectedExtension) {
       throw new Error(`Unexpected object key "${key}"`);
@@ -153,7 +155,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     templateId: string,
     versionId: string
   ) {
-    return `${type}/${clientId}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
+    return `${type}/${clientId}/${templateId}/${versionId}.${LetterUploadRepository.extensionForType(type)}`;
   }
 
   private static metadata(
@@ -168,5 +170,20 @@ export class LetterUploadRepository extends LetterFileRepository {
       'template-id': templateId,
       'version-id': versionId,
     });
+  }
+
+  private static extensionForType(type: FileType): 'docx' | 'csv' | 'pdf' {
+    switch (type) {
+      case 'docx-template': {
+        return 'docx';
+      }
+      case 'test-data': {
+        return 'csv';
+      }
+      case 'pdf-template':
+      case 'proofs': {
+        return 'pdf';
+      }
+    }
   }
 }
