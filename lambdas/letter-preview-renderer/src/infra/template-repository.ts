@@ -4,12 +4,6 @@ import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/rend
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type { Personalisation, RenderVariant } from '../types/types';
 
-export type RenderDetails = {
-  currentVersion: string;
-  fileName: string;
-  pageCount: number;
-};
-
 export class TemplateRepository {
   constructor(
     private readonly ddb: DynamoDBDocumentClient,

@@ -28,17 +28,13 @@ export class SourceRepository {
   }: TemplateRenderIds): Promise<SourceHandle> {
     const path = this.tempPath();
 
-    try {
-      const stream = await this.s3.getObjectStream(
-        this.sourcePathS3(templateId, clientId)
-      );
+    const stream = await this.s3.getObjectStream(
+      this.sourcePathS3(templateId, clientId)
+    );
 
-      await pipeline(stream, createWriteStream(path));
+    await pipeline(stream, createWriteStream(path));
 
-      return { path, dispose: () => this.dispose(path) };
-    } catch (error) {
-      throw error;
-    }
+    return { path, dispose: () => this.dispose(path) };
   }
 
   private dispose(path: string) {

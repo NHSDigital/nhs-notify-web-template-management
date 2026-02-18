@@ -245,8 +245,7 @@ describe('App', () => {
         expect(outcome).toBe('not-rendered');
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
-          'initial',
-          undefined
+          'initial'
         );
       });
 
@@ -268,8 +267,7 @@ describe('App', () => {
         expect(outcome).toBe('not-rendered');
         expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
           request.template,
-          'initial',
-          undefined
+          'initial'
         );
       });
 

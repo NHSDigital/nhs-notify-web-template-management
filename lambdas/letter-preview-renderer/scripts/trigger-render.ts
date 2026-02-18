@@ -49,10 +49,7 @@ async function main() {
 }
 
 function validateConfig() {
-  const required: (keyof typeof CONFIG)[] = [
-    'tableName',
-    'bucketName',
-  ];
+  const required: (keyof typeof CONFIG)[] = ['tableName', 'bucketName'];
 
   const missing = required.filter((key) => !CONFIG[key]);
 

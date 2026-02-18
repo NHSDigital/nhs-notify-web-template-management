@@ -1,6 +1,6 @@
 import type {
-  AuthoringPersonalisedRenderDetails,
-  AuthoringRenderDetails,
+  PersonalisedRenderDetails,
+  RenderDetails,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -93,12 +93,12 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  setInitialRender(details: AuthoringRenderDetails) {
+  setInitialRender(details: RenderDetails) {
     this.updateBuilder.setValueInMap('files', 'initialRender', details);
     return this;
   }
 
-  setShortFormRender(details: AuthoringPersonalisedRenderDetails) {
+  setShortFormRender(details: PersonalisedRenderDetails) {
     this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
     return this;
   }
