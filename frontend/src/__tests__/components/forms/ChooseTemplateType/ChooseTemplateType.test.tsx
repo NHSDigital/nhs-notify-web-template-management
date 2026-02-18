@@ -9,7 +9,7 @@ jest.mock('@utils/amplify-utils');
 
 jest.mock('@providers/client-config-provider', () => ({
   useFeatureFlags: jest.fn().mockReturnValue({
-    letterAuthoring: true,
+    letterAuthoring: false,
   }),
 }));
 
@@ -54,7 +54,6 @@ describe('Choose template page', () => {
       screen.getByTestId('email-radio'),
       screen.getByTestId('nhsapp-radio'),
       screen.getByTestId('sms-radio'),
-      screen.getByTestId('letter-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 
@@ -185,36 +184,6 @@ describe('Choose template page', () => {
       expect(errorMessages).toHaveLength(2);
 
       expect(container.asFragment()).toMatchSnapshot();
-    });
-  });
-
-  describe('when letter authoring is disabled', () => {
-    beforeEach(() => {
-      jest.mocked(useFeatureFlags).mockReturnValue({
-        letterAuthoring: false,
-      });
-    });
-
-    it('should not show the letter type options when "Letter" radio is selected', () => {
-      render(<ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />);
-
-      const letterRadio = screen.getByTestId('letter-radio');
-      fireEvent.click(letterRadio);
-
-      expect(letterRadio).toBeChecked();
-
-      expect(
-        screen.queryByTestId('letter-type-q4-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-x0-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-x1-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-language-radio')
-      ).not.toBeInTheDocument();
     });
   });
 });

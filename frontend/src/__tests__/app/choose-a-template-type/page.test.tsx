@@ -4,11 +4,8 @@ import ChooseATemplateTypePage, {
 } from '@app/choose-a-template-type/page';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { useFeatureFlags } from '@providers/client-config-provider';
 
 const { pageTitle } = content.components.chooseTemplateType;
-
-jest.mocked(useFeatureFlags).mockReturnValue({ letterAuthoring: true });
 
 jest.mock('next/navigation', () => ({
   redirect: () => {

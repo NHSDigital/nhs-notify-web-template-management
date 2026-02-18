@@ -2,7 +2,6 @@ import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseMessageOrder } from '@forms/ChooseMessageOrder/ChooseMessageOrder';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
-import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@utils/amplify-utils');
 
@@ -24,8 +23,6 @@ jest.mock('react', () => {
       ),
   };
 });
-
-jest.mocked(useFeatureFlags).mockReturnValue({ letterAuthoring: true });
 
 describe('Choose message order page', () => {
   const errorLogger = console.error;

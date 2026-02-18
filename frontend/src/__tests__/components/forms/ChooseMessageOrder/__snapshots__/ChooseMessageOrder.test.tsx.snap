@@ -244,6 +244,36 @@ exports[`Choose message order page Client-side validation triggers - invalid for
           </div>
         </fieldset>
       </div>
+      <div
+        class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+      >
+        <div
+          class="nhsuk-card__content"
+        >
+          <h4
+            class="nhsuk-card__heading"
+          >
+            To create a letter template
+          </h4>
+          <p
+            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+          >
+            You cannot upload a letter template using this service.
+          </p>
+          <p
+            class="nhsuk-card__description"
+          >
+            Follow our guidance to 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              upload a letter template (opens in a new tab)
+            </a>
+          </p>
+        </div>
+      </div>
       <button
         aria-disabled="false"
         class="nhsuk-button"
@@ -472,6 +502,36 @@ exports[`Choose message order page Client-side validation triggers - valid form 
             </div>
           </div>
         </fieldset>
+      </div>
+      <div
+        class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+      >
+        <div
+          class="nhsuk-card__content"
+        >
+          <h4
+            class="nhsuk-card__heading"
+          >
+            To create a letter template
+          </h4>
+          <p
+            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+          >
+            You cannot upload a letter template using this service.
+          </p>
+          <p
+            class="nhsuk-card__description"
+          >
+            Follow our guidance to 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              upload a letter template (opens in a new tab)
+            </a>
+          </p>
+        </div>
       </div>
       <button
         aria-disabled="false"
@@ -727,6 +787,36 @@ exports[`Choose message order page renders error component 1`] = `
           </div>
         </fieldset>
       </div>
+      <div
+        class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+      >
+        <div
+          class="nhsuk-card__content"
+        >
+          <h4
+            class="nhsuk-card__heading"
+          >
+            To create a letter template
+          </h4>
+          <p
+            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+          >
+            You cannot upload a letter template using this service.
+          </p>
+          <p
+            class="nhsuk-card__description"
+          >
+            Follow our guidance to 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              upload a letter template (opens in a new tab)
+            </a>
+          </p>
+        </div>
+      </div>
       <button
         aria-disabled="false"
         class="nhsuk-button"
@@ -955,6 +1045,36 @@ exports[`Choose message order page renders form 1`] = `
             </div>
           </div>
         </fieldset>
+      </div>
+      <div
+        class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+      >
+        <div
+          class="nhsuk-card__content"
+        >
+          <h4
+            class="nhsuk-card__heading"
+          >
+            To create a letter template
+          </h4>
+          <p
+            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+          >
+            You cannot upload a letter template using this service.
+          </p>
+          <p
+            class="nhsuk-card__description"
+          >
+            Follow our guidance to 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              upload a letter template (opens in a new tab)
+            </a>
+          </p>
+        </div>
       </div>
       <button
         aria-disabled="false"
