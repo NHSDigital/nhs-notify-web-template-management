@@ -35,10 +35,7 @@ describe('TestMessageBanner', () => {
     expect(screen.getByTestId('test-message-banner')).toBeVisible();
     expect(
       screen.getByRole('link', { name: 'Send a test email' })
-    ).toHaveAttribute(
-      'href',
-      '/templates/send-test-email-message/template-789'
-    );
+    ).toHaveAttribute('href', '/templates/send-test-email/template-789');
   });
 
   it.each<[DigitalTemplateType, string]>([

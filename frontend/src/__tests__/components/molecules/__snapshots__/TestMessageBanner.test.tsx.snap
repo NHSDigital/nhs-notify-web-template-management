@@ -11,7 +11,7 @@ exports[`TestMessageBanner matches snapshot for EMAIL template type 1`] = `
     >
       This is only a basic preview. 
       <a
-        href="/templates/send-test-email-message/template-789"
+        href="/templates/send-test-email/template-789"
         rel="noopener noreferrer"
         target="_blank"
       >

@@ -298,10 +298,7 @@ describe('PreviewDigitalTemplate', () => {
         expect(screen.getByTestId('test-message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test email' })
-        ).toHaveAttribute(
-          'href',
-          '/templates/send-test-email-message/template-456'
-        );
+        ).toHaveAttribute('href', '/templates/send-test-email/template-456');
       });
 
       it('displays "Send test message" button for draft EMAIL template', () => {
