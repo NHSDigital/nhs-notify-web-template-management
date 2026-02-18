@@ -4,10 +4,9 @@ import { baseJestConfig } from 'nhs-notify-web-template-management-utils'; // es
 const config: Config = {
   ...baseJestConfig,
   testEnvironment: 'node',
+  collectCoverageFrom: ['src/**/*.{ts,tsx}'],
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
-    'config.ts',
-    'container.ts',
     'letter-preview-renderer.ts',
   ],
 };
