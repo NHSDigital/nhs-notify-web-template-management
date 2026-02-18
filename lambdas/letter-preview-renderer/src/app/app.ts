@@ -1,8 +1,5 @@
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
-import type {
-  SourceRepository,
-  SourceHandle,
-} from '../infra/source-repository';
+import type { SourceRepository } from '../infra/source-repository';
 import type { Carbone } from '../infra/carbone';
 import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
@@ -31,36 +28,29 @@ export class App {
       renderVariant: 'initial',
     });
 
-    templateLogger.info('UPDATED');
+    const source = await this.sourceRepo.getSource(template).catch((error) => {
+      templateLogger.error('Failed to get docx source', error);
+      throw error;
+    });
 
-    let source: SourceHandle | undefined;
-    let personalisation: Personalisation | undefined;
+    const markers = await this.carbone.extractMarkers(source.path);
+    const classifiedPersonalisation = getPersonalisation(markers);
 
+    const {
+      personalisation,
+      passthroughPersonalisation,
+      invalidRenderablePersonalisation,
+      nonRenderablePersonalisation,
+    } = classifiedPersonalisation;
+
+    if (nonRenderablePersonalisation.length > 0) {
+      templateLogger
+        .child({ personalisation: classifiedPersonalisation })
+        .info('Source contains non-renderable personalisation');
+
+      throw new NonRenderableMarkersError(nonRenderablePersonalisation);
+    }
     try {
-      source = await this.sourceRepo.getSource(template);
-
-      templateLogger.info(source);
-
-      const markers = await this.carbone.extractMarkers(source.path);
-
-      const classifiedPersonalisation = getPersonalisation(markers);
-
-      const {
-        passthroughPersonalisation,
-        invalidRenderablePersonalisation,
-        nonRenderablePersonalisation,
-      } = classifiedPersonalisation;
-
-      personalisation = classifiedPersonalisation.personalisation;
-
-      if (nonRenderablePersonalisation.length > 0) {
-        templateLogger
-          .child({ personalisation: classifiedPersonalisation })
-          .info('Source contains non-renderable personalisation');
-
-        throw new NonRenderableMarkersError(nonRenderablePersonalisation);
-      }
-
       const renderDetails = await this.renderAndSave(
         source.path,
         template,
@@ -95,7 +85,7 @@ export class App {
 
       throw error;
     } finally {
-      source?.cleanup();
+      source.dispose();
     }
   }
 
