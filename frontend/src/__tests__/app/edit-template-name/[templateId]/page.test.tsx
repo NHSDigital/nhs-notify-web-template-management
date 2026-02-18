@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { fetchClient } from '@utils/server-features';
 import { getTemplate } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
@@ -14,7 +14,7 @@ jest.mock('@utils/form-actions');
 jest.mock('@app/edit-template-name/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
-const mockTemplate: TemplateDto = {
+const mockTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
   name: 'Original Template Name',
   templateType: 'LETTER',
@@ -23,10 +23,18 @@ const mockTemplate: TemplateDto = {
   lockNumber: 5,
   language: 'en',
   letterType: 'x0',
-  sidesCount: 2,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
   clientId: 'client-123',
+  files: {
+    initialRender: {
+      fileName: 'render.pdf',
+      currentVersion: 'v1',
+      status: 'RENDERED',
+      pageCount: 2,
+    },
+  },
+  systemPersonalisation: [],
 };
 
 beforeEach(() => {

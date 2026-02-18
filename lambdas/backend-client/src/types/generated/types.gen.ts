@@ -4,15 +4,20 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
-export type AuthoringLetterFiles = LetterFiles & {
-  docxTemplate: VersionedFileDetails;
+export type AuthoringLetterFiles = {
+  docxTemplate?: VersionedFileDetails;
+  initialRender?: RenderDetails;
+  longFormRender?: PersonalisedRenderDetails;
+  shortFormRender?: PersonalisedRenderDetails;
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
-  files?: AuthoringLetterFiles;
+  customPersonalisation?: Array<string>;
+  files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
-  sidesCount: number;
+  systemPersonalisation?: Array<string>;
+  validationErrors?: Array<LetterValidationError>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -193,18 +198,13 @@ export type Language =
   | 'ur'
   | 'zh';
 
-export type LetterFiles = {
-  docxTemplate?: VersionedFileDetails;
-  pdfTemplate?: VersionedFileDetails;
-  proofs?: {
-    [key: string]: ProofFileDetails;
-  };
-  testDataCsv?: VersionedFileDetails;
-};
-
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
+
+export type LetterValidationError =
+  | 'MISSING_ADDRESS_LINES'
+  | 'VIRUS_SCAN_FAILED';
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
 
@@ -218,8 +218,12 @@ export type PatchTemplate = {
   name?: string;
 };
 
-export type PdfLetterFiles = LetterFiles & {
+export type PdfLetterFiles = {
   pdfTemplate: VersionedFileDetails;
+  proofs?: {
+    [key: string]: ProofFileDetails;
+  };
+  testDataCsv?: VersionedFileDetails;
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
@@ -232,11 +236,27 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderDetails = RenderDetails & {
+  personalisationParameters: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId: string;
+};
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
+
+export type RenderDetails = {
+  currentVersion: string;
+  fileName: string;
+  pageCount: number;
+  status: RenderStatus;
+};
+
+export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
 
 export type RoutingConfig = {
   campaignId: string;

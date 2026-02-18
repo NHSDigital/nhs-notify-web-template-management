@@ -23,6 +23,13 @@ import { interpolate } from '@utils/interpolate';
 const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
+function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
+  const pages = template.files.initialRender?.pageCount ?? 0;
+  const sheets = Math.ceil(pages / 2);
+
+  return { pages, sheets };
+}
+
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
   hideStatus,
@@ -34,17 +41,35 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
-  const totalPages = Math.ceil(template.sidesCount / 2);
+
+  const { pages, sheets } = pagesAndSheetsCount(template);
+
   const hasSingleCampaign = campaignIds.length === 1;
 
+  const pendingValidation = template.templateStatus === 'PENDING_VALIDATION';
+  const validationFailed = template.templateStatus === 'VALIDATION_FAILED';
+
+  const hasInitialRender = Boolean(template.files.initialRender);
+
+  const unvalidated = pendingValidation || validationFailed;
+
+  const hideAllEditActions = hideEditActions || unvalidated;
+
+  const hideEditName = hideAllEditActions;
+
   const hideEditCampaignLink =
-    hideEditActions || (template.campaignId && hasSingleCampaign);
+    hideAllEditActions || (template.campaignId && hasSingleCampaign);
+
+  const hideCampaignRow = unvalidated;
+  const hidePostageRow = unvalidated;
+
+  const hideSidesAndPages = pendingValidation || !hasInitialRender;
 
   return (
     <>
       <DetailsHeader templateName={template.name} />
 
-      {!hideEditActions && (
+      {!hideEditName && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link
             href={interpolate(links.editTemplateName, {
@@ -94,59 +119,69 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           </SummaryList.Row>
 
           {/* Campaign */}
-          <SummaryList.Row
-            id='campaign-id'
-            className={template.campaignId ? undefined : 'missing-value'}
-          >
-            <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
-            <SummaryList.Value>{template.campaignId}</SummaryList.Value>
-            <ActionLink
-              href={interpolate(links.editTemplateCampaign, {
-                templateId: template.id,
-              })}
-              label={actions.edit}
-              visuallyHiddenText={visuallyHidden.campaign}
-              hidden={!!hideEditCampaignLink}
-              testId='campaign-action'
-            />
-          </SummaryList.Row>
+          {!hideCampaignRow && (
+            <SummaryList.Row
+              id='campaign-id'
+              className={template.campaignId ? undefined : 'missing-value'}
+            >
+              <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
+              <SummaryList.Value>{template.campaignId}</SummaryList.Value>
+              <ActionLink
+                href={interpolate(links.editTemplateCampaign, {
+                  templateId: template.id,
+                })}
+                label={actions.edit}
+                visuallyHiddenText={visuallyHidden.campaign}
+                hidden={!!hideEditCampaignLink}
+                testId='campaign-action'
+              />
+            </SummaryList.Row>
+          )}
 
           {/* Total pages */}
-          <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.totalPages}</SummaryList.Key>
-            <SummaryList.Value>{totalPages}</SummaryList.Value>
-            <SummaryList.Actions />
-          </SummaryList.Row>
+          {!hideSidesAndPages && (
+            <SummaryList.Row>
+              <SummaryList.Key>{rowHeadings.totalPages}</SummaryList.Key>
+              <SummaryList.Value>{pages}</SummaryList.Value>
+              <SummaryList.Actions />
+            </SummaryList.Row>
+          )}
 
           {/* Sheets */}
-          <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.sheets}</SummaryList.Key>
-            <SummaryList.Value>{template.sidesCount}</SummaryList.Value>
-            <ActionLink
-              href={externalLinks.lettersPricing}
-              label={actions.learnMore}
-              visuallyHiddenText={visuallyHidden.sheets}
-              testId='sheets-action'
-              external
-            />
-          </SummaryList.Row>
+          {!hideSidesAndPages && (
+            <SummaryList.Row>
+              <SummaryList.Key>{rowHeadings.sheets}</SummaryList.Key>
+              <SummaryList.Value>{sheets}</SummaryList.Value>
+              <ActionLink
+                href={externalLinks.lettersPricing}
+                label={actions.learnMore}
+                visuallyHiddenText={visuallyHidden.sheets}
+                testId='sheets-action'
+                external
+              />
+            </SummaryList.Row>
+          )}
 
           {/* Printing and postage */}
-          <SummaryList.Row
-            className={template.letterVariantId ? undefined : 'missing-value'}
-          >
-            <SummaryList.Key>{rowHeadings.printingAndPostage}</SummaryList.Key>
-            <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
-            <ActionLink
-              href={interpolate(links.choosePrintingAndPostage, {
-                templateId: template.id,
-              })}
-              label={actions.edit}
-              visuallyHiddenText={visuallyHidden.printingAndPostage}
-              hidden={hideEditActions}
-              testId='printing-postage-action'
-            />
-          </SummaryList.Row>
+          {!hidePostageRow && (
+            <SummaryList.Row
+              className={template.letterVariantId ? undefined : 'missing-value'}
+            >
+              <SummaryList.Key>
+                {rowHeadings.printingAndPostage}
+              </SummaryList.Key>
+              <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
+              <ActionLink
+                href={interpolate(links.choosePrintingAndPostage, {
+                  templateId: template.id,
+                })}
+                label={actions.edit}
+                visuallyHiddenText={visuallyHidden.printingAndPostage}
+                hidden={hideAllEditActions}
+                testId='printing-postage-action'
+              />
+            </SummaryList.Row>
+          )}
 
           {/* Status */}
           {!hideStatus && (

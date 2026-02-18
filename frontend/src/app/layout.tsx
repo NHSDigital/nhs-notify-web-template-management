@@ -63,8 +63,10 @@ export default function RootLayout({
           type='module'
         />
       </head>
-      <body suppressHydrationWarning>
-        <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
+      <body
+        className='js-enabled nhsuk-frontend-supported'
+        suppressHydrationWarning
+      >
         <CookiesProvider>
           <AuthProvider>
             <ClientConfigProviderServer>
