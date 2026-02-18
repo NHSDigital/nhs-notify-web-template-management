@@ -13,7 +13,6 @@ import { mock } from 'jest-mock-extended';
 import type { TemplateRepository } from '../../infra/template-repository';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
-import { RenderFailureError } from '../../types/errors';
 
 const validMarkers = new Set([
   'd.address_line_1',
@@ -29,7 +28,7 @@ const validMarkers = new Set([
 // eslint-disable-next-line sonarjs/publicly-writable-directories
 const createSourceHandle = (path = '/tmp/source.docx'): SourceHandle => ({
   path,
-  cleanup: jest.fn(),
+  dispose: jest.fn(),
 });
 
 const createRequest = (
@@ -238,9 +237,7 @@ describe('App', () => {
 
         const request = createRequest();
 
-        mocks.sourceRepo.getSource.mockRejectedValue(
-          new RenderFailureError('source-fetch', new Error('S3 error'))
-        );
+        mocks.sourceRepo.getSource.mockRejectedValue(new Error('S3 error'));
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
         const outcome = await app.renderInitial(request);
@@ -262,10 +259,7 @@ describe('App', () => {
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
 
         mocks.carbone.extractMarkers.mockRejectedValue(
-          new RenderFailureError(
-            'marker-extraction',
-            new Error('Carbone error')
-          )
+          new Error('Carbone error')
         );
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
@@ -288,7 +282,7 @@ describe('App', () => {
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(validMarkers);
         mocks.carbone.render.mockRejectedValue(
-          new RenderFailureError('render', new Error('Carbone render error'))
+          new Error('Carbone render error')
         );
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
@@ -324,7 +318,7 @@ describe('App', () => {
         mocks.carbone.extractMarkers.mockResolvedValue(validMarkers);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockRejectedValue(
-          new RenderFailureError('page-count', new Error('pdf-lib error'))
+          new Error('pdf-lib error')
         );
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
@@ -362,9 +356,7 @@ describe('App', () => {
         mocks.carbone.extractMarkers.mockResolvedValue(validMarkers);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
-        mocks.renderRepo.save.mockRejectedValue(
-          new RenderFailureError('save-pdf', new Error('S3 upload error'))
-        );
+        mocks.renderRepo.save.mockRejectedValue(new Error('S3 upload error'));
         mocks.templateRepo.updateFailed.mockResolvedValue();
 
         const outcome = await app.renderInitial(request);
@@ -387,22 +379,6 @@ describe('App', () => {
             custom: ['first_name'],
           }
         );
-      });
-
-      test('rethrows unexpected errors', async () => {
-        const { app, mocks } = setup();
-
-        const request = createRequest();
-
-        const unexpectedError = new Error('Unexpected error');
-        mocks.sourceRepo.getSource.mockRejectedValue(unexpectedError);
-
-        await expect(app.renderInitial(request)).rejects.toThrow(
-          unexpectedError
-        );
-
-        expect(mocks.templateRepo.update).not.toHaveBeenCalled();
-        expect(mocks.templateRepo.updateFailed).not.toHaveBeenCalled();
       });
     });
   });

@@ -1,5 +1,4 @@
 import carbone from 'carbone';
-import { RenderFailureError } from '../types/errors';
 import { extractMarkers } from './carbone-internal';
 
 export class Carbone {
@@ -14,15 +13,10 @@ export class Carbone {
         { convertTo: 'pdf' },
         (err, buf) => {
           if (err) {
-            return reject(new RenderFailureError('render', err));
+            return reject(err);
           }
           if (!Buffer.isBuffer(buf)) {
-            return reject(
-              new RenderFailureError(
-                'render',
-                new Error('Rendered buffer is not a Buffer')
-              )
-            );
+            return reject(new Error('Rendered buffer is not a Buffer'));
           }
           return resolve(buf);
         }
@@ -31,23 +25,19 @@ export class Carbone {
   }
 
   async extractMarkers(path: string): Promise<Set<string>> {
-    try {
-      const rawMarkers = await extractMarkers(path);
+    const rawMarkers = await extractMarkers(path);
 
-      const markers: string[] = [];
+    const markers: string[] = [];
 
-      for (const { name } of rawMarkers) {
-        if (!name.startsWith('_root.')) {
-          // warn
-          continue;
-        }
-
-        markers.push(name.slice(6));
+    for (const { name } of rawMarkers) {
+      if (!name.startsWith('_root.')) {
+        // warn
+        continue;
       }
 
-      return new Set(markers);
-    } catch (error) {
-      throw new RenderFailureError('marker-extraction', error);
+      markers.push(name.slice(6));
     }
+
+    return new Set(markers);
   }
 }

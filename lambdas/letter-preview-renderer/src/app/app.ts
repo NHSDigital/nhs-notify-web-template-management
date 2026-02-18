@@ -1,5 +1,8 @@
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
-import type { SourceRepository } from '../infra/source-repository';
+import type {
+  SourceRepository,
+  SourceHandle,
+} from '../infra/source-repository';
 import type { Carbone } from '../infra/carbone';
 import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
@@ -7,8 +10,6 @@ import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { getPersonalisation } from '../domain/personalisation';
-import { NonRenderableMarkersError, RenderFailureError } from '../types/errors';
-import { Personalisation, RenderVariant } from '../types/types';
 
 export type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
 
@@ -28,12 +29,26 @@ export class App {
       renderVariant: 'initial',
     });
 
-    const source = await this.sourceRepo.getSource(template).catch((error) => {
-      templateLogger.error('Failed to get docx source', error);
-      throw error;
-    });
+    let source: SourceHandle | undefined;
 
-    const markers = await this.carbone.extractMarkers(source.path);
+    try {
+      source = await this.sourceRepo.getSource(template);
+      return await this.processTemplate(source.path, template, templateLogger);
+    } catch (error) {
+      templateLogger.error('Render failed', { error });
+      await this.templateRepo.updateFailed(template, 'initial');
+      return 'not-rendered';
+    } finally {
+      source?.dispose();
+    }
+  }
+
+  private async processTemplate(
+    sourcePath: string,
+    template: TemplateRenderIds,
+    templateLogger: Logger
+  ): Promise<Outcome> {
+    const markers = await this.carbone.extractMarkers(sourcePath);
     const classifiedPersonalisation = getPersonalisation(markers);
 
     const {
@@ -48,14 +63,25 @@ export class App {
         .child({ personalisation: classifiedPersonalisation })
         .info('Source contains non-renderable personalisation');
 
-      throw new NonRenderableMarkersError(nonRenderablePersonalisation);
-    }
-    try {
-      const renderDetails = await this.renderAndSave(
-        source.path,
+      await this.templateRepo.updateFailed(
         template,
         'initial',
+        personalisation
+      );
+      return 'not-rendered';
+    }
+
+    try {
+      const pdf = await this.carbone.render(
+        sourcePath,
         passthroughPersonalisation
+      );
+      const pageCount = await this.checkRender.pageCount(pdf);
+      const saveResult = await this.renderRepo.save(
+        pdf,
+        template,
+        'initial',
+        pageCount
       );
 
       const hasInvalidMarkers = invalidRenderablePersonalisation.length > 0;
@@ -63,52 +89,19 @@ export class App {
 
       await this.templateRepo.update(template, 'initial', personalisation, {
         status,
-        ...renderDetails,
+        ...saveResult,
+        pageCount,
       });
 
       return hasInvalidMarkers ? 'rendered-invalid' : 'rendered';
     } catch (error) {
-      if (
-        error instanceof RenderFailureError ||
-        error instanceof NonRenderableMarkersError
-      ) {
-        templateLogger.info('Render failed', { error });
-
-        await this.templateRepo.updateFailed(
-          template,
-          'initial',
-          personalisation
-        );
-
-        return 'not-rendered';
-      }
-
-      throw error;
-    } finally {
-      source.dispose();
+      templateLogger.error('Render failed', { error });
+      await this.templateRepo.updateFailed(
+        template,
+        'initial',
+        personalisation
+      );
+      return 'not-rendered';
     }
-  }
-
-  private async renderAndSave(
-    sourcePath: string,
-    template: TemplateRenderIds,
-    variant: RenderVariant,
-    passthroughPersonalisation: Record<string, string>
-  ) {
-    const pdf = await this.carbone.render(
-      sourcePath,
-      passthroughPersonalisation
-    );
-
-    const pageCount = await this.checkRender.pageCount(pdf);
-
-    const saveResult = await this.renderRepo.save(
-      pdf,
-      template,
-      variant,
-      pageCount
-    );
-
-    return { ...saveResult, pageCount };
   }
 }

@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto';
 import { S3Repository } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { RenderVariant } from '../types/types';
-import { RenderFailureError } from '../types/errors';
 
 export type SaveResult = {
   fileName: string;
@@ -21,23 +20,19 @@ export class RenderRepository {
     const metadata = this.buildMetadata(template, renderVariant, pageCount);
     const key = this.s3Key(template, renderVariant);
 
-    try {
-      const response = await this.s3.putRawData(pdf, key, {
-        Metadata: metadata,
-      });
+    const response = await this.s3.putRawData(pdf, key, {
+      Metadata: metadata,
+    });
 
-      if (!response.VersionId) {
-        throw new Error('S3 did not return a VersionId');
-      }
-
-      return {
-        // should be the last segment only
-        fileName: key,
-        currentVersion: response.VersionId,
-      };
-    } catch (error) {
-      throw new RenderFailureError('save-pdf', error);
+    if (!response.VersionId) {
+      throw new Error('S3 did not return a VersionId');
     }
+
+    return {
+      // should be the last segment only
+      fileName: key,
+      currentVersion: response.VersionId,
+    };
   }
 
   // compare pdf etc metadata, add 'file-type'

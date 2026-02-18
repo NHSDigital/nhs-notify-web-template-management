@@ -1,12 +1,8 @@
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import type {
-  AuthoringRenderDetails,
-  TemplateStatus,
-} from 'nhs-notify-backend-client';
+import type { RenderDetails, TemplateStatus } from 'nhs-notify-backend-client';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type { Personalisation, RenderVariant } from '../types/types';
-import { RenderFailureError } from '../types/errors';
 
 export type RenderDetails = {
   currentVersion: string;
@@ -24,7 +20,7 @@ export class TemplateRepository {
     template: TemplateRenderIds,
     renderVariant: RenderVariant,
     personalisation: Personalisation,
-    renderDetails: AuthoringRenderDetails
+    renderDetails: RenderDetails
   ) {
     if (renderVariant !== 'initial') return;
 
@@ -46,9 +42,7 @@ export class TemplateRepository {
 
     builder.setInitialRender(renderDetails);
 
-    await this.ddb.send(new UpdateCommand(builder.build())).catch((error) => {
-      throw new RenderFailureError('db-update', error);
-    });
+    await this.ddb.send(new UpdateCommand(builder.build()));
   }
 
   async updateFailed(
@@ -77,8 +71,6 @@ export class TemplateRepository {
 
     builder.setInitialRender({ status: 'FAILED' });
 
-    await this.ddb.send(new UpdateCommand(builder.build())).catch((error) => {
-      throw new RenderFailureError('db-update', error);
-    });
+    await this.ddb.send(new UpdateCommand(builder.build()));
   }
 }

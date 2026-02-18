@@ -5,10 +5,14 @@ import { createWriteStream, unlinkSync, mkdirSync } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
-import { RenderFailureError } from '../types/errors';
 
 // eslint-disable-next-line sonarjs/publicly-writable-directories
 const sourceTmpDir = '/tmp/source';
+
+export type SourceHandle = {
+  path: string;
+  dispose: () => void;
+};
 
 export class SourceRepository {
   constructor(
@@ -18,10 +22,10 @@ export class SourceRepository {
     mkdirSync(sourceTmpDir, { recursive: true });
   }
 
-  async getSource({ templateId, clientId }: TemplateRenderIds): Promise<{
-    path: string;
-    dispose: () => void;
-  }> {
+  async getSource({
+    templateId,
+    clientId,
+  }: TemplateRenderIds): Promise<SourceHandle> {
     const path = this.tempPath();
 
     try {
@@ -33,7 +37,7 @@ export class SourceRepository {
 
       return { path, dispose: () => this.dispose(path) };
     } catch (error) {
-      throw new RenderFailureError('source-fetch', error);
+      throw error;
     }
   }
 
