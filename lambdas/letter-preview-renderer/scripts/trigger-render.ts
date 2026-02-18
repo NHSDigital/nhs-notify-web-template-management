@@ -107,9 +107,15 @@ async function createTemplate(
     letterVariantId: 'var',
     campaignId: 'camp',
 
-    templateStatus: 'NOT_YET_SUBMITTED',
+    templateStatus: 'PENDING_VALIDATION',
 
-    files: {},
+    files: {
+      docxTemplate: {
+        currentVersion: 'v',
+        fileName: 'file.docx',
+        virusScanStatus: 'PASSED',
+      },
+    },
 
     name: 'Test Letter Template (trigger-render script)',
     version: 1,

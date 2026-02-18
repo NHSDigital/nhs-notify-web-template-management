@@ -14,11 +14,13 @@ function addressLineCount(markers: Set<string>): number {
   return [...markers].filter((m) => m.startsWith('address_line_')).length;
 }
 
-function getPassthroughPersonalisation(keys: string[]): Record<string, string> {
+function getPassthroughPersonalisation(
+  keys: Set<string>
+): Record<string, string> {
   return Object.fromEntries([...keys].map((key) => [key, `{d.${key}}`]));
 }
 
-function classifyPersonalisation(parameters: string[]) {
+function classifyPersonalisation(parameters: Set<string>) {
   const custom = [];
   const system = [];
 
@@ -34,25 +36,24 @@ function classifyPersonalisation(parameters: string[]) {
 }
 
 export function getPersonalisation(markers: Set<string>) {
-  const cleaned = classifyAndCleanMarkers(markers);
+  const classified = classifyAndCleanMarkers(markers);
 
-  const hasAddressLines = hasAllAddressLines(cleaned.valid);
+  const hasAddressLines = hasAllAddressLines(classified.valid);
 
   const hasSevenAddressLines = addressLineCount(markers) === 7;
 
-  const personalisation = classifyPersonalisation([...cleaned.valid]);
+  const personalisation = classifyPersonalisation(classified.valid);
 
-  const passthroughPersonalisation = getPassthroughPersonalisation([
-    ...cleaned.valid,
-    ...cleaned['invalid-renderable'],
-  ]);
+  const passthroughPersonalisation = getPassthroughPersonalisation(
+    classified.valid.union(classified['invalid-renderable'])
+  );
 
   return {
     personalisation,
     hasAddressLines,
     hasSevenAddressLines,
-    nonRenderablePersonalisation: [...cleaned['invalid-non-renderable']],
-    invalidRenderablePersonalisation: [...cleaned['invalid-renderable']],
+    nonRenderablePersonalisation: [...classified['invalid-non-renderable']],
+    invalidRenderablePersonalisation: [...classified['invalid-renderable']],
     passthroughPersonalisation,
   };
 }

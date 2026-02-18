@@ -1,10 +1,7 @@
 import { App } from '../../app/app';
 import type { Carbone } from '../../infra/carbone';
 import type { CheckRender } from '../../infra/check-render';
-import type {
-  RenderRepository,
-  SaveResult,
-} from '../../infra/render-repository';
+import type { RenderRepository } from '../../infra/render-repository';
 import type {
   SourceHandle,
   SourceRepository,
@@ -32,15 +29,13 @@ const createSourceHandle = (path = '/tmp/source.docx'): SourceHandle => ({
 });
 
 const createRequest = (
-  overrides: Partial<InitialRenderRequest['template']> = {}
+  overrides: Partial<Omit<InitialRenderRequest, 'requestType'>> = {}
 ): InitialRenderRequest => ({
   requestType: 'initial',
-  template: {
-    clientId: 'test-client',
-    templateId: 'test-template',
-    currentVersion: 'test-version',
-    ...overrides,
-  },
+  clientId: 'test-client',
+  templateId: 'test-template',
+  currentVersion: 'test-version',
+  ...overrides,
 });
 
 function setup() {
@@ -82,25 +77,20 @@ describe('App', () => {
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
         const pageCount = 2;
-        const saveResult: SaveResult = {
-          fileName: 'test-client/test-template/renders/initial/abc123.pdf',
-          currentVersion: 'version-123',
-        };
+        const fileName = 'abc123.pdf';
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(validMarkers);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
-        mocks.renderRepo.save.mockResolvedValue(saveResult);
-        mocks.templateRepo.update.mockResolvedValue();
+        mocks.renderRepo.save.mockResolvedValue(fileName);
+        mocks.templateRepo.updateSuccess.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('rendered');
 
-        expect(mocks.sourceRepo.getSource).toHaveBeenCalledWith(
-          request.template
-        );
+        expect(mocks.sourceRepo.getSource).toHaveBeenCalledWith(request);
         expect(mocks.carbone.extractMarkers).toHaveBeenCalledWith(
           sourceHandle.path
         );
@@ -114,14 +104,12 @@ describe('App', () => {
         expect(mocks.checkRender.pageCount).toHaveBeenCalledWith(pdfBuffer);
         expect(mocks.renderRepo.save).toHaveBeenCalledWith(
           pdfBuffer,
-          request.template,
-          'initial',
+          request,
           pageCount
         );
 
-        expect(mocks.templateRepo.update).toHaveBeenCalledWith(
-          request.template,
-          'initial',
+        expect(mocks.templateRepo.updateSuccess).toHaveBeenCalledWith(
+          request,
           {
             system: [
               'address_line_1',
@@ -134,11 +122,9 @@ describe('App', () => {
             ],
             custom: ['first_name'],
           },
-          {
-            status: 'RENDERED',
-            ...saveResult,
-            pageCount,
-          }
+          request.currentVersion,
+          fileName,
+          pageCount
         );
       });
     });
@@ -151,10 +137,7 @@ describe('App', () => {
         const sourceHandle = createSourceHandle();
         const pdfBuffer = Buffer.from('pdf content');
         const pageCount = 1;
-        const saveResult: SaveResult = {
-          fileName: 'test-client/test-template/renders/initial/abc123.pdf',
-          currentVersion: 'version-456',
-        };
+        const fileName = 'abc123.pdf';
 
         const markersWithInvalidPath = new Set([...validMarkers, 'foo.bar']);
 
@@ -162,34 +145,25 @@ describe('App', () => {
         mocks.carbone.extractMarkers.mockResolvedValue(markersWithInvalidPath);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
-        mocks.renderRepo.save.mockResolvedValue(saveResult);
-        mocks.templateRepo.update.mockResolvedValue();
+        mocks.renderRepo.save.mockResolvedValue(fileName);
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('rendered-invalid');
 
-        expect(mocks.templateRepo.update).toHaveBeenCalledWith(
-          request.template,
-          'initial',
-          {
-            system: [
-              'address_line_1',
-              'address_line_2',
-              'address_line_3',
-              'address_line_4',
-              'address_line_5',
-              'address_line_6',
-              'address_line_7',
-            ],
-            custom: ['first_name'],
-          },
-          {
-            status: 'FAILED',
-            ...saveResult,
-            pageCount,
-          }
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
+          system: [
+            'address_line_1',
+            'address_line_2',
+            'address_line_3',
+            'address_line_4',
+            'address_line_5',
+            'address_line_6',
+            'address_line_7',
+          ],
+          custom: ['first_name'],
+        });
       });
     });
 
@@ -203,7 +177,7 @@ describe('App', () => {
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(nonRenderableMarkers);
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
@@ -213,22 +187,18 @@ describe('App', () => {
         expect(mocks.checkRender.pageCount).not.toHaveBeenCalled();
         expect(mocks.renderRepo.save).not.toHaveBeenCalled();
 
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial',
-          {
-            system: [
-              'address_line_1',
-              'address_line_2',
-              'address_line_3',
-              'address_line_4',
-              'address_line_5',
-              'address_line_6',
-              'address_line_7',
-            ],
-            custom: ['first_name'],
-          }
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
+          system: [
+            'address_line_1',
+            'address_line_2',
+            'address_line_3',
+            'address_line_4',
+            'address_line_5',
+            'address_line_6',
+            'address_line_7',
+          ],
+          custom: ['first_name'],
+        });
       });
     });
 
@@ -239,15 +209,12 @@ describe('App', () => {
         const request = createRequest();
 
         mocks.sourceRepo.getSource.mockRejectedValue(new Error('S3 error'));
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial'
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request);
       });
 
       test('returns "not-rendered" when marker extraction fails', async () => {
@@ -261,15 +228,12 @@ describe('App', () => {
         mocks.carbone.extractMarkers.mockRejectedValue(
           new Error('Carbone error')
         );
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial'
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request);
       });
 
       test('returns "not-rendered" when render fails', async () => {
@@ -283,27 +247,23 @@ describe('App', () => {
         mocks.carbone.render.mockRejectedValue(
           new Error('Carbone render error')
         );
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial',
-          {
-            system: [
-              'address_line_1',
-              'address_line_2',
-              'address_line_3',
-              'address_line_4',
-              'address_line_5',
-              'address_line_6',
-              'address_line_7',
-            ],
-            custom: ['first_name'],
-          }
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
+          system: [
+            'address_line_1',
+            'address_line_2',
+            'address_line_3',
+            'address_line_4',
+            'address_line_5',
+            'address_line_6',
+            'address_line_7',
+          ],
+          custom: ['first_name'],
+        });
       });
 
       test('returns "not-rendered" when page count fails', async () => {
@@ -319,28 +279,24 @@ describe('App', () => {
         mocks.checkRender.pageCount.mockRejectedValue(
           new Error('pdf-lib error')
         );
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
 
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial',
-          {
-            system: [
-              'address_line_1',
-              'address_line_2',
-              'address_line_3',
-              'address_line_4',
-              'address_line_5',
-              'address_line_6',
-              'address_line_7',
-            ],
-            custom: ['first_name'],
-          }
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
+          system: [
+            'address_line_1',
+            'address_line_2',
+            'address_line_3',
+            'address_line_4',
+            'address_line_5',
+            'address_line_6',
+            'address_line_7',
+          ],
+          custom: ['first_name'],
+        });
       });
 
       test('returns "not-rendered" when save fails', async () => {
@@ -356,28 +312,24 @@ describe('App', () => {
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
         mocks.renderRepo.save.mockRejectedValue(new Error('S3 upload error'));
-        mocks.templateRepo.updateFailed.mockResolvedValue();
+        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('not-rendered');
 
-        expect(mocks.templateRepo.updateFailed).toHaveBeenCalledWith(
-          request.template,
-          'initial',
-          {
-            system: [
-              'address_line_1',
-              'address_line_2',
-              'address_line_3',
-              'address_line_4',
-              'address_line_5',
-              'address_line_6',
-              'address_line_7',
-            ],
-            custom: ['first_name'],
-          }
-        );
+        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
+          system: [
+            'address_line_1',
+            'address_line_2',
+            'address_line_3',
+            'address_line_4',
+            'address_line_5',
+            'address_line_6',
+            'address_line_7',
+          ],
+          custom: ['first_name'],
+        });
       });
     });
   });

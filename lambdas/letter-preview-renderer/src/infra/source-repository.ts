@@ -4,7 +4,7 @@ import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { createWriteStream, unlinkSync, mkdirSync } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
+import { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
 // eslint-disable-next-line sonarjs/publicly-writable-directories
 const sourceTmpDir = '/tmp/source';
@@ -25,7 +25,7 @@ export class SourceRepository {
   async getSource({
     templateId,
     clientId,
-  }: TemplateRenderIds): Promise<SourceHandle> {
+  }: RenderRequest): Promise<SourceHandle> {
     const path = this.tempPath();
 
     const stream = await this.s3.getObjectStream(

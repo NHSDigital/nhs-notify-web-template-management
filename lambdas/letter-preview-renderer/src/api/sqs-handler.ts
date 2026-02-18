@@ -20,14 +20,12 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
 
     const request = $RenderRequest.parse(JSON.parse(event.Records[0].body));
 
-    if (request.requestType === 'personalised') {
+    if (request.requestType !== 'initial') {
       return;
     }
 
     const outcome: Outcome = await app.renderInitial(request);
 
-    logger
-      .child({ outcome, template: request.template })
-      .info('Render complete');
+    logger.child({ outcome, ...request }).info('Render complete');
   };
 }

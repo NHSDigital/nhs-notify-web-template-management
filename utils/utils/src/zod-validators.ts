@@ -194,7 +194,7 @@ export const guardDutyEventValidator = (
   });
 };
 
-export const s3putObjectEventValidator = z.object({
+export const eventBridgeS3ObjectCreatedValidator = z.object({
   detail: z.object({
     object: z.object({
       key: z.string(),

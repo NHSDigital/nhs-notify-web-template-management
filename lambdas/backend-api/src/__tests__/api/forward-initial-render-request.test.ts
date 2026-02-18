@@ -4,13 +4,16 @@ import {
   makeEventBridgeEvent,
   makeS3ObjectCreatedEventDetail,
 } from 'nhs-notify-web-template-management-test-helper-utils';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { createHandler } from '../../api/forward-initial-render-request';
 
 function setup() {
+  const { logger } = createMockLogger();
   const mocks = {
     sqsClient: mock<SQSClient>(),
     renderRequestQueueUrl:
       'https://sqs.eu-west-2.amazonaws.com/123456789012/render-queue.fifo',
+    logger,
   };
   const handler = createHandler(mocks);
 

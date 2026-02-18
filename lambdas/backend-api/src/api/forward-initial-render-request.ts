@@ -1,22 +1,25 @@
-import { s3putObjectEventValidator } from 'nhs-notify-web-template-management-utils';
+import { eventBridgeS3ObjectCreatedValidator } from 'nhs-notify-web-template-management-utils';
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export const createHandler =
   ({
     sqsClient,
     renderRequestQueueUrl,
+    logger,
   }: {
     sqsClient: SQSClient;
     renderRequestQueueUrl: string;
+    logger: Logger;
   }) =>
   async (event: unknown) => {
     const {
       detail: {
         object: { key },
       },
-    } = s3putObjectEventValidator.parse(event);
+    } = eventBridgeS3ObjectCreatedValidator.parse(event);
 
     const {
       'file-type': fileType,
@@ -33,8 +36,12 @@ export const createHandler =
 
     const request: InitialRenderRequest = {
       requestType: 'initial',
-      template: { clientId, templateId, currentVersion },
+      clientId,
+      templateId,
+      currentVersion,
     };
+
+    logger.info('Forwarding initial render request', request);
 
     await sqsClient.send(
       new SendMessageCommand({

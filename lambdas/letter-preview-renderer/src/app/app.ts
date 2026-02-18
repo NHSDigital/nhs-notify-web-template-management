@@ -1,4 +1,7 @@
-import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import type {
+  InitialRenderRequest,
+  RenderRequest,
+} from 'nhs-notify-backend-client/src/types/render-request';
 import type {
   SourceRepository,
   SourceHandle,
@@ -8,7 +11,6 @@ import type { RenderRepository } from '../infra/render-repository';
 import type { TemplateRepository } from '../infra/template-repository';
 import type { CheckRender } from '../infra/check-render';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { TemplateRenderIds } from 'nhs-notify-backend-client/src/types/render-request';
 import { getPersonalisation } from '../domain/personalisation';
 
 export type Outcome = 'rendered' | 'rendered-invalid' | 'not-rendered';
@@ -23,30 +25,41 @@ export class App {
     private readonly logger: Logger
   ) {}
 
-  async renderInitial({ template }: InitialRenderRequest): Promise<Outcome> {
-    const templateLogger = this.logger.child({
-      ...template,
-      renderVariant: 'initial',
-    });
+  async renderInitial(request: InitialRenderRequest): Promise<Outcome> {
+    return this.render(request, (sourcePath, logger) =>
+      this.processInitialRender(sourcePath, request, logger)
+    );
+  }
+
+  private async render(
+    request: RenderRequest,
+    handleRequest: (sourcePath: string, logger: Logger) => Promise<Outcome>
+  ): Promise<Outcome> {
+    const requestLogger = this.logger.child(request);
+
+    requestLogger.info('Rendering');
 
     let source: SourceHandle | undefined;
 
     try {
-      source = await this.sourceRepo.getSource(template);
-      return await this.processTemplate(source.path, template, templateLogger);
+      source = await this.sourceRepo.getSource(request);
+
+      return await handleRequest(source.path, requestLogger);
     } catch (error) {
-      templateLogger.error('Render failed', { error });
-      await this.templateRepo.updateFailed(template, 'initial');
+      requestLogger.error('Render failed', { error });
+
+      await this.templateRepo.updateFailure(request);
+
       return 'not-rendered';
     } finally {
       source?.dispose();
     }
   }
 
-  private async processTemplate(
+  private async processInitialRender(
     sourcePath: string,
-    template: TemplateRenderIds,
-    templateLogger: Logger
+    request: InitialRenderRequest,
+    logger: Logger
   ): Promise<Outcome> {
     const markers = await this.carbone.extractMarkers(sourcePath);
     const classifiedPersonalisation = getPersonalisation(markers);
@@ -59,15 +72,12 @@ export class App {
     } = classifiedPersonalisation;
 
     if (nonRenderablePersonalisation.length > 0) {
-      templateLogger
-        .child({ personalisation: classifiedPersonalisation })
-        .info('Source contains non-renderable personalisation');
-
-      await this.templateRepo.updateFailed(
-        template,
-        'initial',
-        personalisation
+      logger.info(
+        'Source contains non-renderable personalisation',
+        classifiedPersonalisation
       );
+
+      await this.templateRepo.updateFailure(request, personalisation);
       return 'not-rendered';
     }
 
@@ -76,31 +86,40 @@ export class App {
         sourcePath,
         passthroughPersonalisation
       );
+
       const pageCount = await this.checkRender.pageCount(pdf);
-      const saveResult = await this.renderRepo.save(
-        pdf,
-        template,
-        'initial',
+
+      const fileName = await this.renderRepo.save(pdf, request, pageCount);
+
+      logger.info('Saved PDF', {
+        fileName,
+      });
+
+      if (invalidRenderablePersonalisation.length > 0) {
+        logger.info(
+          'Source contains invalid markers',
+          classifiedPersonalisation
+        );
+
+        await this.templateRepo.updateFailure(request, personalisation);
+        return 'rendered-invalid';
+      }
+
+      await this.templateRepo.updateSuccess(
+        request,
+        personalisation,
+        request.currentVersion,
+        fileName,
         pageCount
       );
 
-      const hasInvalidMarkers = invalidRenderablePersonalisation.length > 0;
-      const status = hasInvalidMarkers ? 'FAILED' : 'RENDERED';
+      logger.info('Valid initial render was created');
 
-      await this.templateRepo.update(template, 'initial', personalisation, {
-        status,
-        ...saveResult,
-        pageCount,
-      });
-
-      return hasInvalidMarkers ? 'rendered-invalid' : 'rendered';
+      return 'rendered';
     } catch (error) {
-      templateLogger.error('Render failed', { error });
-      await this.templateRepo.updateFailed(
-        template,
-        'initial',
-        personalisation
-      );
+      logger.error('Render failed', { error });
+
+      await this.templateRepo.updateFailure(request, personalisation);
       return 'not-rendered';
     }
   }
