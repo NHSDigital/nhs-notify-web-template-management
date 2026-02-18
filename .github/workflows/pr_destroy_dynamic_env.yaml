@@ -54,5 +54,5 @@ jobs:
             --targetWorkflow "dispatch-deploy-dynamic-env.yaml" \
             --targetEnvironment "pr${{ github.event.number }}" \
             --targetAccountGroup "nhs-notify-template-management-dev" \
-            --targetComponent "sandbox" \
+            --targetComponent "sbx" \
             --terraformAction "destroy"
