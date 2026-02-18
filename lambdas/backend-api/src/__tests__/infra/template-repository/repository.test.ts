@@ -570,6 +570,7 @@ describe('templateRepository', () => {
         id: 'abc-def-ghi-jkl-123',
         owner: ownerWithClientPrefix,
         clientId: clientId,
+        campaignId: 'Campaign 2',
         version: 1,
         name: 'Updated Template Name',
         templateType: 'LETTER',
@@ -595,7 +596,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.patch(
         'abc-def-ghi-jkl-123',
-        { name: 'Updated Template Name' },
+        { name: 'Updated Template Name', campaignId: 'Campaign 2' },
         user,
         5
       );
@@ -606,6 +607,7 @@ describe('templateRepository', () => {
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
           '#id': 'id',
           '#lockNumber': 'lockNumber',
           '#name': 'name',
@@ -614,6 +616,7 @@ describe('templateRepository', () => {
           '#updatedBy': 'updatedBy',
         },
         ExpressionAttributeValues: {
+          ':campaignId': 'Campaign 2',
           ':condition_2_1_templateStatus': 'DELETED',
           ':condition_2_2_templateStatus': 'SUBMITTED',
           ':condition_3_1_templateStatus': 'PROOF_APPROVED',
@@ -624,7 +627,7 @@ describe('templateRepository', () => {
           ':updatedBy': `INTERNAL_USER#${internalUserId}`,
         },
         UpdateExpression:
-          'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+          'SET #name = :name, #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
         ConditionExpression:
           'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND NOT #templateStatus IN (:condition_3_1_templateStatus) AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
       });
@@ -1736,6 +1739,84 @@ describe('templateRepository', () => {
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
           ':lockNumberIncrement': 1,
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the docxTemplate field when the status is PASSED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'PASSED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the docxTemplate field, the overall template status and validation errors when the status is FAILED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed , #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors) ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'FAILED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusFailed': 'VALIDATION_FAILED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+          ':emptyList': [],
+          ':validationErrors': ['VIRUS_SCAN_FAILED'],
         },
       });
     });

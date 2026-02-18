@@ -1,6 +1,6 @@
-import { TemplateMgmtChooseTemplateForMessagePlanBasePage } from 'pages/template-mgmt-choose-template-base-page';
+import { RoutingChooseTemplateForMessagePlanBasePage } from 'pages/routing/choose-template-base-page';
 
-export class RoutingChooseEmailTemplatePage extends TemplateMgmtChooseTemplateForMessagePlanBasePage {
+export class RoutingChooseEmailTemplatePage extends RoutingChooseTemplateForMessagePlanBasePage {
   static readonly pathTemplate =
     '/message-plans/choose-email-template/:messagePlanId';
 }

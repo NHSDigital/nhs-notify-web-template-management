@@ -100,3 +100,11 @@ resource "aws_lambda_permission" "allow_eventbridge_copy_upload" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.arn
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_copy_upload_docx" {
+  statement_id  = "AllowFromEventBridgeDocxScanPassed"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_copy_scanned_object_to_internal.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_docx_upload.arn
+}

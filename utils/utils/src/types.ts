@@ -4,9 +4,9 @@ import type {
   BaseCreatedTemplate,
   CreateUpdateTemplate,
   Language,
+  LetterFiles,
   LetterType,
   LetterVersion,
-  PdfLetterFiles,
   PdfLetterProperties,
   TemplateDto,
   TemplateStatus,
@@ -131,7 +131,7 @@ export type DatabaseTemplate = {
   clientId?: string;
   createdAt: string;
   createdBy?: string;
-  files?: PdfLetterFiles;
+  files?: LetterFiles;
   id: string;
   language?: Language;
   letterType?: LetterType;
@@ -171,7 +171,11 @@ export type TemplateKey = {
   templateId: string;
 };
 
-export type FileType = 'pdf-template' | 'test-data' | 'proofs';
+export type FileType =
+  | 'docx-template'
+  | 'pdf-template'
+  | 'test-data'
+  | 'proofs';
 
 export type ProofingRequest = {
   campaignId: string;

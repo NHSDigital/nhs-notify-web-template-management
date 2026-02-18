@@ -69,8 +69,8 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Unable to load template data');
     }
 
-    if (!template.files) {
-      log.error("Can't process non-letter template");
+    if (!template.files || !template.files.pdfTemplate) {
+      log.error("Can't process non-pdf letter template");
       return;
     }
 

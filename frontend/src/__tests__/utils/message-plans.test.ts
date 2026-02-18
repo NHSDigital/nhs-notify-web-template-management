@@ -7,6 +7,7 @@ import {
   countRoutingConfigs,
   createRoutingConfig,
   getRoutingConfigReferencesByTemplateId,
+  submitRoutingConfig,
 } from '@utils/message-plans';
 import { getSessionServer } from '@utils/amplify-utils';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
@@ -745,6 +746,78 @@ describe('Message plans actions', () => {
         routingConfigApiMock.getRoutingConfigsByTemplateId
       ).toHaveBeenCalledWith('template-123', 'mock-token');
       expect(result).toEqual(references);
+    });
+  });
+
+  describe('submitRoutingConfig', () => {
+    test('should throw error when no token', async () => {
+      getSessionServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(
+        submitRoutingConfig(validRoutingConfigId, 1)
+      ).rejects.toThrow('Failed to get access token');
+
+      expect(routingConfigApiMock.submit).not.toHaveBeenCalled();
+    });
+
+    test('should log and throw error on API error', async () => {
+      routingConfigApiMock.submit.mockResolvedValueOnce({
+        error: {
+          errorMeta: { code: 500, description: 'Internal server error' },
+        },
+      });
+
+      await expect(
+        submitRoutingConfig(validRoutingConfigId, 1)
+      ).rejects.toThrow('Failed to submit message plan');
+
+      expect(routingConfigApiMock.submit).toHaveBeenCalledWith(
+        'mock-token',
+        validRoutingConfigId,
+        1
+      );
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to submit message plan',
+        expect.objectContaining({
+          errorMeta: expect.objectContaining({ code: 500 }),
+        })
+      );
+    });
+
+    test('should throw error when no data returned', async () => {
+      routingConfigApiMock.submit.mockResolvedValueOnce({
+        data: undefined as unknown as RoutingConfig,
+      });
+
+      await expect(
+        submitRoutingConfig(validRoutingConfigId, 1)
+      ).rejects.toThrow('No data returned from submit');
+
+      expect(routingConfigApiMock.submit).toHaveBeenCalledWith(
+        'mock-token',
+        validRoutingConfigId,
+        1
+      );
+    });
+
+    test('should return submitted routing config', async () => {
+      const submittedConfig = { ...baseConfig, status: 'COMPLETED' as const };
+
+      routingConfigApiMock.submit.mockResolvedValueOnce({
+        data: submittedConfig,
+      });
+
+      const result = await submitRoutingConfig(validRoutingConfigId, 1);
+
+      expect(routingConfigApiMock.submit).toHaveBeenCalledWith(
+        'mock-token',
+        validRoutingConfigId,
+        1
+      );
+      expect(result).toEqual(submittedConfig);
     });
   });
 });

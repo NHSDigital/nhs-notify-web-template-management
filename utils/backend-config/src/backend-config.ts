@@ -4,8 +4,10 @@ import fs from 'node:fs';
 
 export type BackendConfig = {
   apiBaseUrl: string;
+  awsAccountId: string;
   clientSsmPathPrefix: string;
-  eventCacheBucketName: string;
+  environment: string;
+  eventsSnsTopicArn: string;
   requestProofQueueUrl: string;
   routingConfigTableName: string;
   sftpEnvironment: string;
@@ -25,8 +27,10 @@ export const BackendConfigHelper = {
   fromEnv(): BackendConfig {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
+      awsAccountId: process.env.AWS_ACCOUNT_ID ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
-      eventCacheBucketName: process.env.EVENT_CACHE_BUCKET_NAME ?? '',
+      environment: process.env.ENVIRONMENT ?? '',
+      eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
@@ -48,8 +52,10 @@ export const BackendConfigHelper = {
 
   toEnv(config: BackendConfig): void {
     process.env.API_BASE_URL = config.apiBaseUrl;
+    process.env.AWS_ACCOUNT_ID = config.awsAccountId;
     process.env.CLIENT_SSM_PATH_PREFIX = config.clientSsmPathPrefix;
-    process.env.EVENT_CACHE_BUCKET_NAME = config.eventCacheBucketName;
+    process.env.ENVIRONMENT = config.environment;
+    process.env.EVENTS_SNS_TOPIC_ARN = config.eventsSnsTopicArn;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
@@ -70,13 +76,15 @@ export const BackendConfigHelper = {
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
     const outputsFileContent = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    const deployment = outputsFileContent.deployment?.value ?? {};
 
     return {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
+      awsAccountId: deployment.aws_account_id ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
-      eventCacheBucketName:
-        outputsFileContent.event_cache_bucket_name?.value ?? '',
+      environment: deployment.environment ?? '',
+      eventsSnsTopicArn: outputsFileContent.events_sns_topic_arn?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       routingConfigTableName:

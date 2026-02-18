@@ -26,6 +26,10 @@ export const createHandler =
       'client-id': clientId,
     } = LetterUploadRepository.parseKey(objectKey);
 
+    if (fileType === 'proofs') {
+      throw new Error('Proof files are not supported.');
+    }
+
     const virusScanResult =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 

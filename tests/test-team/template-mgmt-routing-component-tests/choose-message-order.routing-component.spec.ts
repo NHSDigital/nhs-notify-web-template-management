@@ -46,14 +46,21 @@ test.describe('Choose Message Order Page', () => {
     await assertBackLinkTopNotPresent(props);
   });
 
-  test('should display correct number of radio button options', async ({
-    page,
-  }) => {
+  test('should display correct radio button options', async ({ page }) => {
     const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
 
     await chooseMessageOrderPage.loadPage();
 
-    await expect(chooseMessageOrderPage.radioButtons).toHaveCount(8);
+    await expect(chooseMessageOrderPage.radioButtons).toHaveCount(9);
+
+    for (const {
+      messageOrder,
+      label,
+    } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS) {
+      const radioButton = chooseMessageOrderPage.getRadioButton(messageOrder);
+      await expect(radioButton).toBeVisible();
+      await expect(radioButton).toHaveAccessibleName(label);
+    }
   });
 
   test('should display error if no message order option selected and continue button clicked', async ({
@@ -79,14 +86,14 @@ test.describe('Choose Message Order Page', () => {
     label,
     messageOrder,
   } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
-    test(`when the ${label} message order is selected, nagivates to the create-message-plan page with the correct query parameter`, async ({
+    test(`when the ${label} message order is selected, navigates to the create-message-plan page with the correct query parameter`, async ({
       page,
       baseURL,
     }) => {
       const chooseMessageOrderPage = new RoutingChooseMessageOrderPage(page);
 
       await chooseMessageOrderPage.loadPage();
-      await chooseMessageOrderPage.checkRadioButton(label);
+      await chooseMessageOrderPage.checkRadioButton(messageOrder);
       await chooseMessageOrderPage.clickContinueButton();
 
       await expect(page).toHaveURL(

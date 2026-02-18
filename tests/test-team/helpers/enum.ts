@@ -6,6 +6,7 @@ export const MESSAGE_ORDERS = [
   'NHSAPP,SMS,EMAIL',
   'NHSAPP,SMS,LETTER',
   'NHSAPP,EMAIL,SMS,LETTER',
+  'EMAIL',
   'LETTER',
 ] as const;
 
@@ -42,6 +43,10 @@ export const ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS: Array<{
   {
     messageOrder: 'NHSAPP,EMAIL,SMS,LETTER',
     label: 'NHS App, Email, Text message, Letter',
+  },
+  {
+    messageOrder: 'EMAIL',
+    label: 'Email only',
   },
   {
     messageOrder: 'LETTER',
