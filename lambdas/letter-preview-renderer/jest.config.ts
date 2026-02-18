@@ -5,6 +5,14 @@ const config: Config = {
   ...baseJestConfig,
   testEnvironment: 'node',
   testPathIgnorePatterns: ['.build'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/__tests__/**',
+    '!src/**/*.d.ts',
+    '!src/config.ts',
+    '!src/container.ts',
+    '!src/letter-preview-renderer.ts',
+  ],
 };
 
 export default config;
