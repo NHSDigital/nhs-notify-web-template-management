@@ -1,7 +1,28 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
-import { TestUser } from '../auth/cognito-auth-helper';
-import { Template } from '../types';
+import type { Language, LetterType } from 'nhs-notify-backend-client';
+import type { TestUser } from '../auth/cognito-auth-helper';
+import type { RenderFile, Template } from '../types';
 import { randomUUID } from 'node:crypto';
+
+export const defaultFileRenders = {
+  initialRender: {
+    fileName: 'initial-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 1,
+  } satisfies RenderFile,
+  shortFormRender: {
+    fileName: 'short-form-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 1,
+  } satisfies RenderFile,
+  longFormRender: {
+    fileName: 'long-form-render.pdf',
+    currentVersion: 'v1',
+    status: 'RENDERED',
+    pageCount: 2,
+  } satisfies RenderFile,
+};
 
 export const TemplateFactory = {
   createEmailTemplate: (
@@ -107,9 +128,14 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
-      sidesCount?: number;
       letterVariantId?: string;
       campaignId?: string | null;
+      initialRender?: Partial<RenderFile> | false;
+      shortFormRender?: Partial<RenderFile> | false;
+      longFormRender?: Partial<RenderFile> | false;
+      customPersonalisation?: string[];
+      systemPersonalisation?: string[];
+      validationErrors?: string[];
     }
   ): Template => {
     const campaignId =
@@ -117,9 +143,38 @@ export const TemplateFactory = {
         ? undefined
         : (options?.campaignId ?? 'campaign-id');
 
+    const files: Record<string, unknown> = {};
+
+    if (options?.initialRender !== false) {
+      files.initialRender = {
+        ...defaultFileRenders.initialRender,
+        ...options?.initialRender,
+      };
+    }
+
+    if (
+      options?.shortFormRender !== undefined &&
+      options.shortFormRender !== false
+    ) {
+      files.shortFormRender = {
+        ...defaultFileRenders.shortFormRender,
+        ...options.shortFormRender,
+      };
+    }
+    if (
+      options?.longFormRender !== undefined &&
+      options.longFormRender !== false
+    ) {
+      files.longFormRender = {
+        ...defaultFileRenders.longFormRender,
+        ...options.longFormRender,
+      };
+    }
+
     return TemplateFactory.create({
       ...(campaignId && { campaignId }),
       clientId: user.clientId,
+      files,
       id,
       language: options?.language || 'en',
       letterType: options?.letterType || 'x0',
@@ -128,8 +183,16 @@ export const TemplateFactory = {
       owner: `CLIENT#${user.clientId}`,
       templateStatus,
       templateType: 'LETTER',
-      sidesCount: options?.sidesCount ?? 2,
       letterVariantId: options?.letterVariantId,
+      ...(options?.customPersonalisation && {
+        customPersonalisation: options.customPersonalisation,
+      }),
+      ...(options?.systemPersonalisation && {
+        systemPersonalisation: options.systemPersonalisation,
+      }),
+      ...(options?.validationErrors && {
+        validationErrors: options.validationErrors,
+      }),
     });
   },
 
