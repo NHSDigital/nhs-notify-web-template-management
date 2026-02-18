@@ -35,14 +35,14 @@ resource "aws_ecr_lifecycle_policy" "main" {
     },
     {
       "rulePriority": 2,
-      "description": "Expire (delete) archived commit images 60 days after push",
+      "description": "Expire (delete) archived commit images 90 days after transition to archive",
       "selection": {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
-        "countType": "sinceImagePushed",
+        "countType": "sinceImageTransitioned",
         "storageClass": "archive",
         "countUnit": "days",
-        "countNumber": 60
+        "countNumber": 90
       },
       "action": {
         "type": "expire"
