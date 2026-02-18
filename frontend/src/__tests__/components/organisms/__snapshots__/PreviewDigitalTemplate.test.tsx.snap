@@ -41,7 +41,7 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingEmail is en
     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
     data-testid="send-test-message-button"
     draggable="false"
-    href="/send-test-email-message/template-456"
+    href="/send-test-email/template-456"
     role="button"
   >
     Send a test message

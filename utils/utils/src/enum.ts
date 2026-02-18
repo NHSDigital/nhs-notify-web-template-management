@@ -218,15 +218,15 @@ export const legacyTemplateTypeToUrlTextMappings = (type: TemplateType) =>
 
 export const testMessageUrlSegmentMapping = (type: DigitalTemplateType) =>
   ({
-    NHS_APP: 'nhs-app',
-    SMS: 'text',
+    NHS_APP: 'nhs-app-message',
+    SMS: 'text-message',
     EMAIL: 'email',
   })[type];
 
 export const sendDigitalTemplateTestMessageUrl = (
   type: DigitalTemplateType,
   templateId: string
-) => `/send-test-${testMessageUrlSegmentMapping(type)}-message/${templateId}`;
+) => `/send-test-${testMessageUrlSegmentMapping(type)}/${templateId}`;
 
 export const templateTypeToUrlTextMappings = (
   type: TemplateType,

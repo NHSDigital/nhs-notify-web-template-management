@@ -315,7 +315,7 @@ describe('PreviewDigitalTemplate', () => {
         expect(button).toHaveTextContent('Send a test message');
         expect(button.closest('a')).toHaveAttribute(
           'href',
-          '/send-test-email-message/template-456'
+          '/send-test-email/template-456'
         );
       });
 
