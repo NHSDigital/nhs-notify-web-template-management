@@ -53,6 +53,7 @@ const templateIds = {
   LETTER_LARGE_PRINT: randomUUID(),
   LETTER_OTHER_LANGUAGE: randomUUID(),
 };
+
 const routingPages = [
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
@@ -170,11 +171,11 @@ test.describe('Routing', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('/message-plans have an accessibility test', async () => {
+  test('message plan routes are covered', async () => {
     const routes = await getAppRoutes();
 
     const messagePlanRoutes = routes.filter((r) =>
-      r.startsWith('message-plans/')
+      r.startsWith('message-plans')
     );
 
     const uncoveredMessagePlans = messagePlanRoutes.filter(
