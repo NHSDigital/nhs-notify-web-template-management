@@ -3,6 +3,9 @@
     "schemas": {
       "AuthoringLetterFiles": {
         "properties": {
+          "docxTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
           "initialRender": {
             "$ref": "#/components/schemas/RenderDetails"
           },
@@ -621,26 +624,6 @@
         ],
         "type": "string"
       },
-      "LetterFiles": {
-        "properties": {
-          "docxTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          },
-          "proofs": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ProofFileDetails"
-            },
-            "type": "object"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/VersionedFileDetails"
-          }
-        },
-        "type": "object"
-      },
       "LetterProperties": {
         "oneOf": [
           {
@@ -704,22 +687,24 @@
         "type": "object"
       },
       "PdfLetterFiles": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/LetterFiles"
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
           },
-          {
-            "properties": {
-              "pdfTemplate": {
-                "$ref": "#/components/schemas/VersionedFileDetails"
-              }
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProofFileDetails"
             },
-            "required": [
-              "pdfTemplate"
-            ],
             "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
           }
-        ]
+        },
+        "required": [
+          "pdfTemplate"
+        ],
+        "type": "object"
       },
       "PdfLetterProperties": {
         "allOf": [

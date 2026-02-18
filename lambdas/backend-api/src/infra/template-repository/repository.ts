@@ -12,7 +12,6 @@ import { unmarshall } from '@aws-sdk/util-dynamodb';
 import {
   CreateUpdateTemplate,
   ErrorCase,
-  LetterFiles,
   PatchTemplate,
   PdfLetterFiles,
   ProofFileDetails,
@@ -24,6 +23,7 @@ import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder'
 import type {
   DatabaseTemplate,
   FileType,
+  LetterFileKey,
   TemplateKey,
   User,
 } from 'nhs-notify-web-template-management-utils';
@@ -828,8 +828,8 @@ export class TemplateRepository {
     return `INTERNAL_USER#${user.internalUserId}`;
   }
 
-  private templateFileKey(fileType: FileType): keyof LetterFiles {
-    const mapping: Record<FileType, keyof LetterFiles> = {
+  private templateFileKey(fileType: FileType): LetterFileKey {
+    const mapping: Record<FileType, LetterFileKey> = {
       'docx-template': 'docxTemplate',
       'pdf-template': 'pdfTemplate',
       'test-data': 'testDataCsv',

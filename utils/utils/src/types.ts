@@ -181,6 +181,10 @@ export type FileType =
   | 'test-data'
   | 'proofs';
 
+export type UnionKeys<T> = T extends T ? keyof T : never;
+
+export type LetterFileKey = UnionKeys<LetterTemplate['files']>;
+
 export type ProofingRequest = {
   campaignId: string;
   language: Language;
