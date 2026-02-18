@@ -25,6 +25,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 30
       },
       "action": {
@@ -39,6 +40,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 60
       },
       "action": {
@@ -51,6 +53,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
       "selection": {
         "tagStatus": "untagged",
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 7
       },
       "action": {
@@ -64,6 +67,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "tagStatus": "tagged",
         "tagPatternList": ["*-tag-*"],
         "countType": "sinceImagePushed",
+        "countUnit": "days",
         "countNumber": 90
       },
       "action": {
