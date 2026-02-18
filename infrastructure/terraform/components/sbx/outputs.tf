@@ -65,3 +65,11 @@ output "test_email_bucket_name" {
 output "test_email_bucket_prefix" {
   value = "emails-${var.environment}"
 }
+
+output "routing_config_table_name" {
+  value = module.backend_api.routing_config_table_name
+}
+
+output "events_sns_topic_arn" {
+  value = module.eventpub.sns_topic.arn
+}
