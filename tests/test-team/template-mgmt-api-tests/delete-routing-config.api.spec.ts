@@ -254,7 +254,7 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
     expect(await response.json()).toEqual({
       statusCode: 409,
       technicalMessage:
-        'Lock number mismatch - Message Plan has been modified since last read',
+        'Lock number mismatch - Routing configuration has been modified since last read',
     });
   });
 });

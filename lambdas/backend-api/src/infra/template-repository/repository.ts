@@ -10,17 +10,20 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import {
+  CreateUpdateTemplate,
   ErrorCase,
+  PatchTemplate,
   PdfLetterFiles,
+  ProofFileDetails,
+  TemplateDto,
   TemplateStatus,
   VirusScanStatus,
-  ProofFileDetails,
-  CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
   DatabaseTemplate,
   FileType,
+  LetterFileKey,
   TemplateKey,
   User,
 } from 'nhs-notify-web-template-management-utils';
@@ -151,6 +154,56 @@ export class TemplateRepository {
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
       return this._handleUpdateError(error, template, lockNumber);
+    }
+  }
+
+  async patch(
+    templateId: string,
+    updates: PatchTemplate,
+    user: User,
+    lockNumber: number
+  ): Promise<ApplicationResult<DatabaseTemplate>> {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      user.clientId,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    );
+
+    if (updates.name) {
+      update.setName(updates.name);
+    }
+
+    if (updates.campaignId) {
+      update.setCampaignId(updates.campaignId);
+    }
+
+    const bannedStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
+
+    update
+      .expectTemplateExists()
+      .expectNotFinalStatus()
+      .expectNotStatus(bannedStatuses)
+      .expectLockNumber(lockNumber)
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .incrementLockNumber();
+
+    try {
+      const response = await this.client.send(
+        new UpdateCommand(update.build())
+      );
+
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      return this._handleUpdateError(
+        error,
+        updates,
+        lockNumber,
+        bannedStatuses
+      );
     }
   }
 
@@ -568,7 +621,7 @@ export class TemplateRepository {
 
   async setLetterFileVirusScanStatusForUpload(
     templateKey: TemplateKey,
-    fileType: FileType,
+    fileType: Exclude<FileType, 'proofs'>,
     versionId: string,
     status: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
@@ -580,12 +633,7 @@ export class TemplateRepository {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
-        '#file': (fileType === 'pdf-template'
-          ? 'pdfTemplate'
-          : 'testDataCsv') satisfies Extract<
-          keyof PdfLetterFiles,
-          'pdfTemplate' | 'testDataCsv'
-        >,
+        '#file': this.templateFileKey(fileType),
         '#scanStatus': 'virusScanStatus',
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
@@ -604,9 +652,21 @@ export class TemplateRepository {
       };
 
     if (status === 'FAILED') {
-      ExpressionAttributeValues[':templateStatusFailed'] =
-        'VIRUS_SCAN_FAILED' satisfies TemplateStatus;
+      const templateStatus: TemplateStatus =
+        fileType === 'docx-template'
+          ? 'VALIDATION_FAILED'
+          : 'VIRUS_SCAN_FAILED';
+      ExpressionAttributeValues[':templateStatusFailed'] = templateStatus;
       updates.push('#templateStatus = :templateStatusFailed');
+
+      if (fileType === 'docx-template') {
+        ExpressionAttributeNames['#validationErrors'] = 'validationErrors';
+        ExpressionAttributeValues[':validationErrors'] = ['VIRUS_SCAN_FAILED'];
+        ExpressionAttributeValues[':emptyList'] = [];
+        updates.push(
+          '#validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)'
+        );
+      }
     }
 
     try {
@@ -768,10 +828,22 @@ export class TemplateRepository {
     return `INTERNAL_USER#${user.internalUserId}`;
   }
 
+  private templateFileKey(fileType: FileType): LetterFileKey {
+    const mapping: Record<FileType, LetterFileKey> = {
+      'docx-template': 'docxTemplate',
+      'pdf-template': 'pdfTemplate',
+      'test-data': 'testDataCsv',
+      proofs: 'proofs',
+    };
+
+    return mapping[fileType];
+  }
+
   private _handleUpdateError(
     error: unknown,
-    template: Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
-    lockNumber: number
+    updates: Partial<TemplateDto>,
+    lockNumber: number,
+    blockedStatuses: TemplateStatus[] = []
   ) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
@@ -780,7 +852,7 @@ export class TemplateRepository {
 
       const oldItem = unmarshall(error.Item);
 
-      if (oldItem.templateStatus === 'SUBMITTED') {
+      if (['SUBMITTED', ...blockedStatuses].includes(oldItem.templateStatus)) {
         return failure(
           ErrorCase.ALREADY_SUBMITTED,
           `Template with status ${oldItem.templateStatus} cannot be updated`,
@@ -788,13 +860,16 @@ export class TemplateRepository {
         );
       }
 
-      if (oldItem.templateType !== template.templateType) {
+      if (
+        updates.templateType &&
+        oldItem.templateType !== updates.templateType
+      ) {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
           'Can not change template templateType',
           error,
           {
-            templateType: `Expected ${oldItem.templateType} but got ${template.templateType}`,
+            templateType: `Expected ${oldItem.templateType} but got ${updates.templateType}`,
           }
         );
       }

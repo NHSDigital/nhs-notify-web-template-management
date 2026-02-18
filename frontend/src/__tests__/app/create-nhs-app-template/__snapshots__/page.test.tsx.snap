@@ -1,13 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CreateNHSAppTemplatePage should render CreateNHSAppTemplatePage 1`] = `
-<NhsAppTemplateForm
-  initialState={
-    {
-      "message": "",
-      "name": "",
-      "templateType": "NHS_APP",
+<NHSNotifyContainer>
+  <NhsAppTemplateForm
+    initialState={
+      {
+        "message": "",
+        "name": "",
+        "templateType": "NHS_APP",
+      }
     }
-  }
-/>
+  />
+</NHSNotifyContainer>
 `;

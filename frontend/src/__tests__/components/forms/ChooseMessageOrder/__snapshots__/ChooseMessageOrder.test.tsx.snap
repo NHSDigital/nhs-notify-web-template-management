@@ -226,6 +226,25 @@ exports[`Choose message order page Client-side validation triggers - invalid for
               >
                 <input
                   class="nhsuk-radios__input"
+                  data-testid="email-radio"
+                  id="messageOrder-email"
+                  name="messageOrder"
+                  type="radio"
+                  value="EMAIL"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="messageOrder-email"
+                  id="messageOrder-email--label"
+                >
+                  Email only
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
                   data-testid="letter-radio"
                   id="messageOrder-letter"
                   name="messageOrder"
@@ -478,6 +497,25 @@ exports[`Choose message order page Client-side validation triggers - valid form 
                   id="messageOrder-nhsapp-email-sms-letter--label"
                 >
                   NHS App, Email, Text message, Letter
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="email-radio"
+                  id="messageOrder-email"
+                  name="messageOrder"
+                  type="radio"
+                  value="EMAIL"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="messageOrder-email"
+                  id="messageOrder-email--label"
+                >
+                  Email only
                 </label>
               </div>
               <div
@@ -769,6 +807,25 @@ exports[`Choose message order page renders error component 1`] = `
               >
                 <input
                   class="nhsuk-radios__input"
+                  data-testid="email-radio"
+                  id="messageOrder-email"
+                  name="messageOrder"
+                  type="radio"
+                  value="EMAIL"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="messageOrder-email"
+                  id="messageOrder-email--label"
+                >
+                  Email only
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
                   data-testid="letter-radio"
                   id="messageOrder-letter"
                   name="messageOrder"
@@ -1021,6 +1078,25 @@ exports[`Choose message order page renders form 1`] = `
                   id="messageOrder-nhsapp-email-sms-letter--label"
                 >
                   NHS App, Email, Text message, Letter
+                </label>
+              </div>
+              <div
+                class="nhsuk-radios__item"
+              >
+                <input
+                  class="nhsuk-radios__input"
+                  data-testid="email-radio"
+                  id="messageOrder-email"
+                  name="messageOrder"
+                  type="radio"
+                  value="EMAIL"
+                />
+                <label
+                  class="nhsuk-label nhsuk-radios__label"
+                  for="messageOrder-email"
+                  id="messageOrder-email--label"
+                >
+                  Email only
                 </label>
               </div>
               <div

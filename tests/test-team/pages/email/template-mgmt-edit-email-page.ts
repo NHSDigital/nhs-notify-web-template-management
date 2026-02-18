@@ -35,9 +35,9 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
     this.pdsPersonalisationFields = page.locator(
       '[data-testid="pds-personalisation-fields-details"]'
     );
-    this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template-details"]'
-    );
+    this.namingYourTemplate = page
+      .getByRole('group')
+      .filter({ hasText: 'Naming your templates' });
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
 

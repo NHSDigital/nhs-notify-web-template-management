@@ -1,5 +1,6 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import type {
+  AuthoringLetterFiles,
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   CreateUpdateTemplate,
@@ -28,8 +29,13 @@ export type ErrorState = {
   fieldErrors?: Record<string, string[]>;
 };
 
+type FormStateFieldValue = string | undefined;
+
+export type FormStateFields = Record<string, FormStateFieldValue>;
+
 export type FormState = {
   errorState?: ErrorState;
+  fields?: FormStateFields;
 };
 
 export type CreateUpdateNHSAppTemplate = Extract<
@@ -119,19 +125,24 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   'NO_THREATS_FOUND'
 >;
 
+type DatabaseFiles = Partial<PdfLetterFiles & AuthoringLetterFiles>;
+
 export type DatabaseTemplate = {
   campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
-  files?: PdfLetterFiles;
+  customPersonalisation?: string[];
+  files?: DatabaseFiles;
   id: string;
   language?: Language;
   letterType?: LetterType;
+  letterVariantId?: string;
   letterVersion?: LetterVersion;
   lockNumber?: number;
   message?: string;
   name: string;
+  pdsPersonalisation?: string[];
   proofingEnabled?: boolean;
   sftpSendLockTime?: number;
   subject?: string;
@@ -164,7 +175,15 @@ export type TemplateKey = {
   templateId: string;
 };
 
-export type FileType = 'pdf-template' | 'test-data' | 'proofs';
+export type FileType =
+  | 'docx-template'
+  | 'pdf-template'
+  | 'test-data'
+  | 'proofs';
+
+export type UnionKeys<T> = T extends T ? keyof T : never;
+
+export type LetterFileKey = UnionKeys<LetterTemplate['files']>;
 
 export type ProofingRequest = {
   campaignId: string;

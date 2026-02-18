@@ -7,6 +7,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { ChooseLanguageLetterTemplates } from '@forms/ChooseLanguageLetterTemplates/ChooseLanguageLetterTemplates';
 import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 import content from '@content/content';
 const { pageTitle, pageHeading } =
@@ -54,12 +55,14 @@ export default async function ChooseOtherLanguageLetterTemplate(
   }
 
   return (
-    <ChooseLanguageLetterTemplates
-      messagePlan={messagePlan}
-      pageHeading={pageHeading}
-      templateList={foreignLanguageTemplates}
-      cascadeIndex={cascadeIndex}
-      lockNumber={lockNumberResult.data}
-    />
+    <NHSNotifyContainer>
+      <ChooseLanguageLetterTemplates
+        messagePlan={messagePlan}
+        pageHeading={pageHeading}
+        templateList={foreignLanguageTemplates}
+        cascadeIndex={cascadeIndex}
+        lockNumber={lockNumberResult.data}
+      />
+    </NHSNotifyContainer>
   );
 }

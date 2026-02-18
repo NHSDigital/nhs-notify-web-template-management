@@ -1,0 +1,779 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Review and move to production page matches snapshot for full cascade 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-three-quarters"
+        >
+          <span
+            class="nhsuk-caption-l"
+          >
+            Step 2 of 2
+          </span>
+          <h1
+            class="nhsuk-heading-l"
+          >
+            Review and move message plan to production
+          </h1>
+          <dl
+            class="nhsuk-summary-list nhs_notify_summary_list"
+            data-testid="message-plan-details"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key nhs_notify_summary_list__key"
+              >
+                Name
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value nhs_notify_summary_list__value"
+                data-testid="plan-name"
+              >
+                Test config
+              </dd>
+            </div>
+          </dl>
+          <p>
+            <button
+              aria-disabled="false"
+              class="nhsuk-button nhsuk-button--secondary"
+              type="button"
+            >
+              Open all template previews
+            </button>
+          </p>
+          <ul
+            class="channel-list"
+            data-testid="cascade-channel-list"
+          >
+            <li
+              class="message-plan-block"
+              data-testid="message-plan-block-NHSAPP"
+            >
+              <div
+                aria-hidden="true"
+                class="message-plan-block-number"
+              >
+                1
+              </div>
+              <h2
+                class="nhsuk-heading-m nhsuk-u-padding-top-1"
+              >
+                First message
+              </h2>
+              <div
+                class="channel-template-outer"
+                data-testid="channel-card"
+              >
+                <div
+                  class="channel-template-inner"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    NHS App
+                  </h3>
+                  <p
+                    data-testid="template-name"
+                  >
+                    app template name
+                  </p>
+                  <details
+                    class="nhsuk-details nhsuk-u-margin-bottom-0"
+                  >
+                    <summary
+                      class="nhsuk-details__summary"
+                      data-testid="preview-template-summary"
+                    >
+                      <span
+                        class="nhsuk-details__summary-text"
+                      >
+                        Preview 
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          NHS App
+                        </span>
+                         template
+                      </span>
+                    </summary>
+                    <div
+                      class="nhsuk-details__text"
+                      data-testid="preview-template-text"
+                    >
+                      <div>
+                        <p>
+                          message
+                        </p>
+                        
+
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </li>
+            <li
+              class="fallback-conditions fallback-conditions"
+              data-testid="message-plan-fallback-conditions-NHSAPP"
+            >
+              <div
+                aria-hidden="true"
+                class="fallback-conditions-branch-icon"
+              >
+                <svg
+                  version="1.1"
+                  viewBox="0 0 499.694748 700.749167"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                    stroke="none"
+                    stroke-width="1"
+                  >
+                    <g
+                      transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+                    >
+                      <path
+                        d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                        fill="#005eb8"
+                        fill-rule="nonzero"
+                      />
+                      <rect
+                        height="800"
+                        width="800"
+                        x="0"
+                        y="0"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <details
+                class="nhsuk-details fallback-conditions-details"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Fallback conditions
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <ul
+                    class="nhsuk-list nhsuk-list--tick"
+                  >
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--tick"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-tick.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If first message read within 24 hours, no further messages sent.
+                    </li>
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--arrow-down"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If first message not read within 24 hours, second message sent.
+                    </li>
+                  </ul>
+                </div>
+              </details>
+            </li>
+            <li
+              class="message-plan-block"
+              data-testid="message-plan-block-EMAIL"
+            >
+              <div
+                aria-hidden="true"
+                class="message-plan-block-number"
+              >
+                2
+              </div>
+              <h2
+                class="nhsuk-heading-m nhsuk-u-padding-top-1"
+              >
+                Second message
+              </h2>
+              <div
+                class="channel-template-outer"
+                data-testid="channel-card"
+              >
+                <div
+                  class="channel-template-inner"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    Email
+                  </h3>
+                  <p
+                    data-testid="template-name"
+                  >
+                    email template name
+                  </p>
+                  <details
+                    class="nhsuk-details nhsuk-u-margin-bottom-0"
+                  >
+                    <summary
+                      class="nhsuk-details__summary"
+                      data-testid="preview-template-summary"
+                    >
+                      <span
+                        class="nhsuk-details__summary-text"
+                      >
+                        Preview 
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          Email
+                        </span>
+                         template
+                      </span>
+                    </summary>
+                    <div
+                      class="nhsuk-details__text"
+                      data-testid="preview-template-text"
+                    >
+                      <div>
+                        <p>
+                          message
+                        </p>
+                        
+
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </li>
+            <li
+              class="fallback-conditions fallback-conditions"
+              data-testid="message-plan-fallback-conditions-EMAIL"
+            >
+              <div
+                aria-hidden="true"
+                class="fallback-conditions-branch-icon"
+              >
+                <svg
+                  version="1.1"
+                  viewBox="0 0 499.694748 700.749167"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                    stroke="none"
+                    stroke-width="1"
+                  >
+                    <g
+                      transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+                    >
+                      <path
+                        d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                        fill="#005eb8"
+                        fill-rule="nonzero"
+                      />
+                      <rect
+                        height="800"
+                        width="800"
+                        x="0"
+                        y="0"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <details
+                class="nhsuk-details fallback-conditions-details"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Fallback conditions
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <ul
+                    class="nhsuk-list nhsuk-list--tick"
+                  >
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--tick"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-tick.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If second message delivered within 72 hours, no further messages sent.
+                    </li>
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--arrow-down"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If second message not delivered within 72 hours, third message sent.
+                    </li>
+                  </ul>
+                </div>
+              </details>
+            </li>
+            <li
+              class="message-plan-block"
+              data-testid="message-plan-block-SMS"
+            >
+              <div
+                aria-hidden="true"
+                class="message-plan-block-number"
+              >
+                3
+              </div>
+              <h2
+                class="nhsuk-heading-m nhsuk-u-padding-top-1"
+              >
+                Third message
+              </h2>
+              <div
+                class="channel-template-outer"
+                data-testid="channel-card"
+              >
+                <div
+                  class="channel-template-inner"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    Text message (SMS)
+                  </h3>
+                  <p
+                    data-testid="template-name"
+                  >
+                    sms template name
+                  </p>
+                  <details
+                    class="nhsuk-details nhsuk-u-margin-bottom-0"
+                  >
+                    <summary
+                      class="nhsuk-details__summary"
+                      data-testid="preview-template-summary"
+                    >
+                      <span
+                        class="nhsuk-details__summary-text"
+                      >
+                        Preview 
+                        <span
+                          class="nhsuk-u-visually-hidden"
+                        >
+                          Text message (SMS)
+                        </span>
+                         template
+                      </span>
+                    </summary>
+                    <div
+                      class="nhsuk-details__text"
+                      data-testid="preview-template-text"
+                    >
+                      <div>
+                        <p>
+                          message
+                        </p>
+                        
+
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </li>
+            <li
+              class="fallback-conditions fallback-conditions"
+              data-testid="message-plan-fallback-conditions-SMS"
+            >
+              <div
+                aria-hidden="true"
+                class="fallback-conditions-branch-icon"
+              >
+                <svg
+                  version="1.1"
+                  viewBox="0 0 499.694748 700.749167"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                    stroke="none"
+                    stroke-width="1"
+                  >
+                    <g
+                      transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+                    >
+                      <path
+                        d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                        fill="#005eb8"
+                        fill-rule="nonzero"
+                      />
+                      <rect
+                        height="800"
+                        width="800"
+                        x="0"
+                        y="0"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <details
+                class="nhsuk-details fallback-conditions-details"
+              >
+                <summary
+                  class="nhsuk-details__summary"
+                >
+                  <span
+                    class="nhsuk-details__summary-text"
+                  >
+                    Fallback conditions
+                  </span>
+                </summary>
+                <div
+                  class="nhsuk-details__text"
+                >
+                  <ul
+                    class="nhsuk-list nhsuk-list--tick"
+                  >
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--tick"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-tick.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If third message delivered within 72 hours, no further messages sent.
+                    </li>
+                    <li>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        class="nhsuk-icon nhsuk-icon--arrow-down"
+                        data-nimg="1"
+                        decoding="async"
+                        height="34"
+                        loading="lazy"
+                        src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                        style="color: transparent;"
+                        width="34"
+                      />
+                      If third message not delivered within 72 hours, fourth message sent.
+                    </li>
+                  </ul>
+                </div>
+              </details>
+            </li>
+            <li
+              class="message-plan-block"
+              data-testid="message-plan-block-LETTER"
+            >
+              <div
+                aria-hidden="true"
+                class="message-plan-block-number"
+              >
+                4
+              </div>
+              <h2
+                class="nhsuk-heading-m nhsuk-u-padding-top-1"
+              >
+                Fourth message
+              </h2>
+              <div
+                class="channel-template-outer"
+                data-testid="channel-card"
+              >
+                <div
+                  class="channel-template-inner"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                  >
+                    Standard English letter
+                  </h3>
+                  <p
+                    data-testid="template-name"
+                  >
+                    <a
+                      href="/preview-letter-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
+                    >
+                      letter template name
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <ul
+                class="message-plan-conditional-templates"
+                data-testid="conditional-templates"
+              >
+                <li
+                  class="fallback-conditions fallback-conditions"
+                  data-testid="conditional-templates-fallback-conditions"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="fallback-conditions-branch-icon"
+                  >
+                    <svg
+                      version="1.1"
+                      viewBox="0 0 499.694748 700.749167"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                        stroke="none"
+                        stroke-width="1"
+                      >
+                        <g
+                          transform="translate(250.007401, 350.374584) scale(-1, 1) rotate(90.000000) translate(-250.007401, -350.374584) translate(-149.992599, -49.625416)"
+                        >
+                          <path
+                            d="M650,450 C604.526092,450.130889 564.879924,480.959947 553.55,525 L450,525 C408.597492,524.954532 375.045468,491.402508 375,450 L375,350 C374.90465,322.865486 365.895962,296.514017 349.36,275 L553.55,275 C566.139176,323.757668 613.019668,355.54813 662.975013,349.20297 C712.930358,342.857809 750.374584,300.356703 750.374584,250 C750.374584,199.643297 712.930358,157.142191 662.975013,150.79703 C613.019668,144.45187 566.139176,176.242332 553.55,225 L246.45,225 C233.860824,176.242332 186.980332,144.45187 137.024987,150.79703 C87.0696422,157.142191 49.6254163,199.643297 49.6254163,250 C49.6254163,300.356703 87.0696422,342.857809 137.024987,349.20297 C186.980332,355.54813 233.860824,323.757668 246.45,275 L250,275 C291.402508,275.045468 324.954532,308.597492 325,350 L325,450 C325.081278,519.001899 380.998101,574.918722 450,575 L553.55,575 C566.624846,625.202218 615.96959,657.0262 667.095128,648.228835 C718.220666,639.431469 754.090123,592.944356 749.632835,541.259282 C745.175547,489.574208 701.876844,449.914506 650,450 Z M650,200 C677.614237,200 700,222.385763 700,250 C700,277.614237 677.614237,300 650,300 C622.385763,300 600,277.614237 600,250 C600.031687,222.398898 622.398898,200.031687 650,200 Z M150,300 C122.385763,300 100,277.614237 100,250 C100,222.385763 122.385763,200 150,200 C177.614237,200 200,222.385763 200,250 C199.972439,277.602813 177.602813,299.972439 150,300 L150,300 Z M650,600 C622.385763,600 600,577.614237 600,550 C600,522.385763 622.385763,500 650,500 C677.614237,500 700,522.385763 700,550 C699.962817,577.598821 677.598821,599.962817 650,600 Z"
+                            fill="#005eb8"
+                            fill-rule="nonzero"
+                          />
+                          <rect
+                            height="800"
+                            width="800"
+                            x="0"
+                            y="0"
+                          />
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                  <details
+                    class="nhsuk-details fallback-conditions-details"
+                  >
+                    <summary
+                      class="nhsuk-details__summary"
+                    >
+                      <span
+                        class="nhsuk-details__summary-text"
+                      >
+                        Conditions for accessible and language letters
+                      </span>
+                    </summary>
+                    <div
+                      class="nhsuk-details__text"
+                    >
+                      <ul
+                        class="nhsuk-list nhsuk-list--tick"
+                      >
+                        <li>
+                          <img
+                            alt=""
+                            aria-hidden="true"
+                            class="nhsuk-icon nhsuk-icon--arrow-down"
+                            data-nimg="1"
+                            decoding="async"
+                            height="34"
+                            loading="lazy"
+                            src="/templates/lib/assets/icons/icon-arrow-down.svg"
+                            style="color: transparent;"
+                            width="34"
+                          />
+                          The relevant accessible or language letter will be sent instead of the standard English letter if, both: 
+                          <ul>
+                            <li>
+                              the recipient has requested an accessible or language letter in PDS
+                            </li>
+                            <li>
+                              you've included the relevant template in this message plan
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </details>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
+                  data-testid="conditional-template-x1"
+                >
+                  <div
+                    class="channel-template-outer"
+                    data-testid="channel-card"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        Large print letter (optional)
+                      </h3>
+                      <p
+                        data-testid="template-name"
+                      >
+                        <a
+                          href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
+                        >
+                          letter template name
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
+                  data-testid="conditional-template-languages"
+                >
+                  <div
+                    class="channel-template-outer"
+                    data-testid="channel-card"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        Other language letters (optional)
+                      </h3>
+                      <p
+                        class="nhsuk-u-margin-bottom-0"
+                        data-testid="template-name"
+                      >
+                        <a
+                          href="/preview-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
+                        >
+                          letter template name
+                        </a>
+                      </p>
+                      <p
+                        class="nhsuk-u-margin-bottom-0"
+                        data-testid="template-name"
+                      >
+                        <a
+                          href="/preview-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
+                        >
+                          letter template name
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          >
+            <input
+              name="form-id"
+              readonly=""
+              type="hidden"
+              value="review-and-move-to-production"
+            />
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
+            <input
+              name="routingConfigId"
+              readonly=""
+              type="hidden"
+              value="rc-123"
+            />
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="5"
+            />
+            <div
+              class="nhsuk-form-group"
+            >
+              <button
+                aria-disabled="false"
+                class="nhsuk-button nhsuk-button--warning"
+                data-testid="move-to-production-button"
+                type="submit"
+              >
+                Move to production
+              </button>
+              <a
+                aria-disabled="false"
+                class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+                data-testid="keep-in-draft-link"
+                draggable="false"
+                href="/templates/message-plans/choose-templates/rc-123"
+                role="button"
+              >
+                Keep in draft
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;

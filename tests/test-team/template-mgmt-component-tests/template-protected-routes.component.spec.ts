@@ -9,7 +9,10 @@ import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-uplo
 import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
 import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms-page';
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
+import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
+import { TemplateMgmtEditTemplateCampaignPage } from 'pages/letter/template-mgmt-edit-template-campaign-page';
+import { TemplateMgmtEditTemplateNamePage } from 'pages/letter/template-mgmt-edit-template-name-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
@@ -32,6 +35,10 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
+import { TemplateMgmtUploadBSLLetterTemplatePage } from 'pages/letter/template-mgmt-upload-bsl-letter-template-page';
+import { TemplateMgmtUploadLargePrintLetterTemplatePage } from 'pages/letter/template-mgmt-upload-large-print-letter-template-page';
+import { TemplateMgmtUploadOtherLanguageLetterTemplatePage } from 'pages/letter/template-mgmt-upload-other-language-letter-template-page';
+import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
 import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-order-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
@@ -53,7 +60,7 @@ import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
-import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
+import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -80,6 +87,7 @@ const protectedPages = [
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
@@ -90,6 +98,8 @@ const protectedPages = [
   TemplateMgmtEditEmailPage,
   TemplateMgmtEditNhsAppPage,
   TemplateMgmtEditSmsPage,
+  TemplateMgmtEditTemplateCampaignPage,
+  TemplateMgmtEditTemplateNamePage,
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtMessageTemplatesPage,
   TemplateMgmtPreviewEmailPage,
@@ -111,6 +121,10 @@ const protectedPages = [
   TemplateMgmtTemplateSubmittedSmsPage,
   TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtUploadLetterPage,
+  TemplateMgmtUploadBSLLetterTemplatePage,
+  TemplateMgmtUploadLargePrintLetterTemplatePage,
+  TemplateMgmtUploadOtherLanguageLetterTemplatePage,
+  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

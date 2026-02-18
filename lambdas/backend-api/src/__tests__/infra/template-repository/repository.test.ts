@@ -562,6 +562,202 @@ describe('templateRepository', () => {
     });
   });
 
+  describe('patch', () => {
+    test('should correctly patch template and return updated template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const updated: DatabaseTemplate = {
+        id: 'abc-def-ghi-jkl-123',
+        owner: ownerWithClientPrefix,
+        clientId: clientId,
+        campaignId: 'Campaign 2',
+        version: 1,
+        name: 'Updated Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        createdAt: '2024-12-27T00:00:00.000Z',
+        updatedAt: '2024-12-27T00:00:00.000Z',
+        createdBy: `INTERNAL_USER#${internalUserId}`,
+        updatedBy: `INTERNAL_USER#${internalUserId}`,
+        lockNumber: 6,
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+        })
+        .resolves({
+          Attributes: updated,
+        });
+
+      const response = await templateRepository.patch(
+        'abc-def-ghi-jkl-123',
+        { name: 'Updated Template Name', campaignId: 'Campaign 2' },
+        user,
+        5
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ExpressionAttributeNames: {
+          '#campaignId': 'campaignId',
+          '#id': 'id',
+          '#lockNumber': 'lockNumber',
+          '#name': 'name',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+        },
+        ExpressionAttributeValues: {
+          ':campaignId': 'Campaign 2',
+          ':condition_2_1_templateStatus': 'DELETED',
+          ':condition_2_2_templateStatus': 'SUBMITTED',
+          ':condition_3_1_templateStatus': 'PROOF_APPROVED',
+          ':condition_4_1_lockNumber': 5,
+          ':lockNumber': 1,
+          ':name': 'Updated Template Name',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
+        },
+        UpdateExpression:
+          'SET #name = :name, #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND NOT #templateStatus IN (:condition_3_1_templateStatus) AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
+      });
+
+      expect(response).toEqual({
+        data: updated,
+      });
+    });
+
+    describe('ConditionalCheckException handling', () => {
+      const cases = [
+        {
+          testName: 'when no item is returned in the error',
+          errorCode: 404,
+          errorMeta: {
+            description: 'Template not found',
+          },
+        },
+        {
+          testName: 'when templateStatus is already SUBMITTED',
+          Item: {
+            templateType: { S: 'LETTER' },
+            templateStatus: { S: 'SUBMITTED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 400,
+          errorMeta: {
+            description: 'Template with status SUBMITTED cannot be updated',
+          },
+        },
+        {
+          testName: 'when templateStatus is already PROOF_APPROVED',
+          Item: {
+            templateType: { S: 'LETTER' },
+            templateStatus: { S: 'PROOF_APPROVED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 400,
+          errorMeta: {
+            description:
+              'Template with status PROOF_APPROVED cannot be updated',
+          },
+        },
+        {
+          testName: 'when templateStatus is already DELETED',
+          Item: {
+            templateType: { S: 'LETTER' },
+            templateStatus: { S: 'DELETED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 404,
+          errorMeta: {
+            description: 'Template not found',
+          },
+        },
+        {
+          testName:
+            'when lockNumber in database does not match the user-provided value',
+          Item: {
+            templateType: { S: 'LETTER' },
+            templateStatus: { S: 'NOT_YET_SUBMITTED' },
+            lockNumber: { N: '7' },
+          },
+          errorCode: 409,
+          errorMeta: {
+            description:
+              'Lock number mismatch - Template has been modified since last read',
+          },
+        },
+      ];
+
+      test.each(cases)(
+        'should return $errorCode error when ConditionalCheckFailedException occurs: $testName',
+        async ({ Item, errorCode, errorMeta }) => {
+          const { templateRepository, mocks } = setup();
+
+          const error = new ConditionalCheckFailedException({
+            message: 'mock',
+            $metadata: {},
+            Item,
+          });
+
+          mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+          const response = await templateRepository.patch(
+            'abc-def-ghi-jkl-123',
+            { name: 'Updated Name' },
+            user,
+            5
+          );
+
+          expect(response).toEqual({
+            error: {
+              actualError: error,
+              errorMeta: {
+                code: errorCode,
+                ...errorMeta,
+              },
+            },
+          });
+        }
+      );
+    });
+
+    test('should return error when an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.patch(
+        'abc-def-ghi-jkl-123',
+        { name: 'Updated Name' },
+        user,
+        5
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+    });
+  });
+
   describe('submit', () => {
     test.each([
       {
@@ -1543,6 +1739,84 @@ describe('templateRepository', () => {
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
           ':lockNumberIncrement': 1,
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the docxTemplate field when the status is PASSED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'PASSED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the docxTemplate field, the overall template status and validation errors when the status is FAILED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
+        { clientId, templateId: 'template-id' },
+        'docx-template',
+        'docx-version-id',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed , #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors) ADD #lockNumber :lockNumberIncrement',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'docxTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+          '#lockNumber': 'lockNumber',
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'FAILED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusFailed': 'VALIDATION_FAILED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'docx-version-id',
+          ':lockNumberIncrement': 1,
+          ':emptyList': [],
+          ':validationErrors': ['VIRUS_SCAN_FAILED'],
         },
       });
     });

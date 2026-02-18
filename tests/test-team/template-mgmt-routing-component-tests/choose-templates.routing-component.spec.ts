@@ -176,9 +176,10 @@ function createTemplates(user: TestUser) {
 test.describe('Routing - Choose Templates page', () => {
   let messagePlans: ReturnType<typeof createRoutingConfigs>;
   let templates: ReturnType<typeof createTemplates>;
+  let user: TestUser;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
     messagePlans = await createRoutingConfigs(user);
     templates = createTemplates(user);
@@ -189,6 +190,7 @@ test.describe('Routing - Choose Templates page', () => {
 
   test.afterAll(async () => {
     await routingConfigStorageHelper.deleteSeeded();
+    await routingConfigStorageHelper.deleteAdHoc();
     await templateStorageHelper.deleteSeededTemplates();
   });
 
@@ -219,6 +221,11 @@ test.describe('Routing - Choose Templates page', () => {
           chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
 
         expect(messagePlanId).not.toBeUndefined();
+
+        routingConfigStorageHelper.addAdHocKey({
+          id: messagePlanId,
+          clientId: user.clientId,
+        });
 
         chooseTemplatesPage.setPathParam('messagePlanId', messagePlanId!);
 
@@ -380,6 +387,11 @@ test.describe('Routing - Choose Templates page', () => {
 
     expect(messagePlanId).not.toBeUndefined();
 
+    routingConfigStorageHelper.addAdHocKey({
+      id: messagePlanId,
+      clientId: user.clientId,
+    });
+
     await test.step('app channel with no template has only choose link', async () => {
       await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
       await expect(chooseTemplatesPage.nhsApp.chooseTemplateLink).toBeVisible();
@@ -453,8 +465,13 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     await test.step('letter channel with no template selected has no name or change link', async () => {
-      await expect(chooseTemplatesPage.letter.templateName).toBeHidden();
-      await expect(chooseTemplatesPage.letter.changeTemplateLink).toBeHidden();
+      await expect(
+        chooseTemplatesPage.letter.standard.templateName
+      ).toBeHidden();
+
+      await expect(
+        chooseTemplatesPage.letter.standard.changeTemplateLink
+      ).toBeHidden();
     });
 
     await chooseTemplatesPage.nhsApp.clickChangeTemplateLink();
@@ -490,7 +507,9 @@ test.describe('Routing - Choose Templates page', () => {
 
     await chooseTemplatesPage.nhsApp.clickRemoveTemplateLink();
 
-    await expect(chooseTemplatesPage.letter.removeTemplateLink).toBeHidden();
+    await expect(
+      chooseTemplatesPage.letter.standard.removeTemplateLink
+    ).toBeHidden();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.valid}`
@@ -568,18 +587,28 @@ test.describe('Routing - Choose Templates page', () => {
     await chooseTemplatesPage.loadPage();
 
     await test.step('standard letter channel with default template has template name and change link', async () => {
-      await expect(chooseTemplatesPage.letter.templateName).toHaveText(
+      await expect(chooseTemplatesPage.letter.standard.templateName).toHaveText(
         templates.LETTER.name
       );
-      await expect(chooseTemplatesPage.letter.changeTemplateLink).toBeVisible();
+
       await expect(
-        chooseTemplatesPage.letter.changeTemplateLink
+        chooseTemplatesPage.letter.standard.changeTemplateLink
+      ).toBeVisible();
+
+      await expect(
+        chooseTemplatesPage.letter.standard.changeTemplateLink
       ).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-standard-english-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
-      await expect(chooseTemplatesPage.letter.removeTemplateLink).toBeVisible();
-      await expect(chooseTemplatesPage.letter.chooseTemplateLink).toBeHidden();
+
+      await expect(
+        chooseTemplatesPage.letter.standard.removeTemplateLink
+      ).toBeVisible();
+
+      await expect(
+        chooseTemplatesPage.letter.standard.chooseTemplateLink
+      ).toBeHidden();
     });
 
     const alternativeLetterFormats =

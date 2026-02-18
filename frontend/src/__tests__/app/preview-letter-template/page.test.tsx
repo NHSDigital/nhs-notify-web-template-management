@@ -1,163 +1,526 @@
-/**
- * @jest-environment node
- */
-import PreviewLetterTemplatePage, {
-  generateMetadata,
-} from '@app/preview-letter-template/[templateId]/page';
-import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
-import {
-  type PdfLetterTemplate,
-  type LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
-import { redirect } from 'next/navigation';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
+import Page, {
+  generateMetadata,
+} from '@app/preview-letter-template/[templateId]/page';
+import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-
-const { pageTitle } = content.components.previewLetterTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@app/preview-letter-template/[templateId]/server-action');
+jest.mock('@utils/csrf-utils');
 
-const redirectMock = jest.mocked(redirect);
-const getTemplateMock = jest.mocked(getTemplate);
+const { pageTitle } = content.components.previewLetterTemplate;
 
-const templateDTO = {
-  createdAt: '2025-01-13T10:19:25.579Z',
-  files: {
-    pdfTemplate: {
-      fileName: 'template.pdf',
-      currentVersion: 'saoj867b789',
-      virusScanStatus: 'PASSED',
-    },
-    testDataCsv: {
-      fileName: 'test-data.csv',
-      currentVersion: '897asiahv87',
-      virusScanStatus: 'FAILED',
-    },
-  },
-  id: 'template-id',
-  language: 'en',
-  letterType: 'x0',
-  letterVersion: 'PDF',
-  name: 'template-name',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  templateType: 'LETTER',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-  lockNumber: 1,
-} satisfies TemplateDto;
+beforeEach(() => {
+  jest.resetAllMocks();
+  jest.mocked(submitAuthoringLetterAction).mockResolvedValue({});
+  jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+});
 
-const letterTemplate: LetterTemplate = {
-  ...templateDTO,
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-};
+test('metadata', async () => {
+  expect(await generateMetadata()).toEqual({
+    title: pageTitle,
+  });
+});
 
-describe('PreviewLetterTemplatePage', () => {
+describe('template does not exist', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.mocked(getTemplate).mockResolvedValue(undefined);
   });
 
-  it('should load page with PDF letter template', async () => {
-    getTemplateMock.mockResolvedValueOnce(templateDTO);
+  it('redirects to invalid template page', async () => {
+    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
 
-    const page = await PreviewLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: 'template-id',
-      }),
-    });
-
-    expect(await generateMetadata()).toEqual({
-      title: pageTitle,
-    });
-
-    expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
   });
+});
 
-  it('should load page with authoring letter template', async () => {
-    getTemplateMock.mockResolvedValueOnce(AUTHORING_LETTER_TEMPLATE);
+describe('template is not a letter', () => {
+  it('redirects to invalid template page when template is an email', async () => {
+    jest.mocked(getTemplate).mockResolvedValue(EMAIL_TEMPLATE);
 
-    const page = await PreviewLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
-      }),
-    });
+    await Page({ params: Promise.resolve({ templateId: EMAIL_TEMPLATE.id }) });
 
-    expect(page).toEqual(
-      <PreviewLetterTemplate template={AUTHORING_LETTER_TEMPLATE} />
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
     );
   });
 
-  it('should redirect to invalid-template when no template is found', async () => {
-    await PreviewLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: 'template-id',
-      }),
-    });
+  it('redirects to invalid template page when template is an SMS', async () => {
+    jest.mocked(getTemplate).mockResolvedValue(SMS_TEMPLATE);
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+    await Page({ params: Promise.resolve({ templateId: SMS_TEMPLATE.id }) });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
   });
 
-  test.each([
-    {
-      description: 'an email',
-      ...EMAIL_TEMPLATE,
-    },
-    {
-      description: 'an SMS',
-      ...SMS_TEMPLATE,
-    },
-    {
-      description: 'an app message',
-      ...NHS_APP_TEMPLATE,
-    },
-    {
-      description: 'a letter lacking language',
-      language: undefined as unknown as Language,
-    },
-    {
-      description: 'a letter lacking a name',
+  it('redirects to invalid template page when template is an NHS App message', async () => {
+    jest.mocked(getTemplate).mockResolvedValue(NHS_APP_TEMPLATE);
+
+    await Page({
+      params: Promise.resolve({ templateId: NHS_APP_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('PDF letter template is invalid', () => {
+  it('redirects to invalid template page when name is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...PDF_LETTER_TEMPLATE,
       name: undefined as unknown as string,
-    },
-    {
-      description: 'a letter lacking letterType',
-      letterType: undefined as unknown as LetterType,
-    },
-    {
-      description: 'a letter lacking pdfTemplate fileName',
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when language is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...PDF_LETTER_TEMPLATE,
+      language: undefined as unknown as 'en',
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when letterType is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...PDF_LETTER_TEMPLATE,
+      letterType: undefined as unknown as 'x0',
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when pdfTemplate fileName is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...PDF_LETTER_TEMPLATE,
       files: {
         pdfTemplate: {
           fileName: undefined as unknown as string,
           currentVersion: 'uuid',
-          virusScanStatus: 'FAILED' as const,
+          virusScanStatus: 'PASSED',
         },
       },
-    },
-    {
-      description: 'a letter where files is the wrong data type',
-      files: [] as unknown as PdfLetterTemplate['files'],
-    },
-  ])(
-    'should redirect to invalid-template when template is $description',
-    async ({ description: _, ...value }) => {
-      getTemplateMock.mockResolvedValueOnce({
-        ...templateDTO,
-        ...value,
-      });
+    });
 
-      await PreviewLetterTemplatePage({
+    await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when files is wrong data type', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...PDF_LETTER_TEMPLATE,
+      files: [] as unknown as (typeof PDF_LETTER_TEMPLATE)['files'],
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('authoring letter template is invalid', () => {
+  it('redirects to invalid template page when name is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      name: undefined as unknown as string,
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when language is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      language: undefined as unknown as 'en',
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to invalid template page when letterType is missing', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      letterType: undefined as unknown as 'x0',
+    });
+
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/invalid-template',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('valid PDF letter template', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue(PDF_LETTER_TEMPLATE);
+  });
+
+  it('renders the page without redirecting', async () => {
+    const page = await Page({
+      params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+    });
+
+    expect(page).toBeTruthy();
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('matches snapshot', async () => {
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('valid authoring letter template', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+  });
+
+  it('renders the page without redirecting', async () => {
+    const page = await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(page).toBeTruthy();
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('matches snapshot', async () => {
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('submits the form with correct data', async () => {
+    const user = userEvent.setup();
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Submit template' }));
+
+    expect(submitAuthoringLetterAction).toHaveBeenCalledTimes(1);
+
+    const callArgs = jest.mocked(submitAuthoringLetterAction).mock.calls[0];
+    const formData = callArgs[1] as FormData;
+
+    expect(formData.get('templateId')).toBe(AUTHORING_LETTER_TEMPLATE.id);
+    expect(formData.get('lockNumber')).toBe(
+      String(AUTHORING_LETTER_TEMPLATE.lockNumber)
+    );
+  });
+
+  it('displays the back link with correct href', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    const backLink = screen.getByTestId('back-link-top');
+    expect(backLink).toHaveAttribute('href', '/message-templates');
+  });
+
+  it('displays the letter renderer when initialRender file exists', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Letter preview' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Short examples' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Long examples' })
+    ).toBeInTheDocument();
+  });
+});
+
+describe('authoring letter template without initial render', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {},
+    });
+  });
+
+  it('does not display the letter renderer when initialRender file is missing', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('still displays template details when initialRender is missing', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
+  });
+});
+
+describe('authoring letter template does not show submit form when already submitted', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+  });
+
+  it('does not render the submit button', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Submit template for review' })
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe('authoring letter with validation errors', () => {
+  it('renders page with VALIDATION_FAILED status and displays error summary with virus scan message', async () => {
+    const templateWithValidationErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+
+    render(
+      await Page({
         params: Promise.resolve({
-          templateId: 'template-id',
+          templateId: templateWithValidationErrors.id,
         }),
-      });
+      })
+    );
 
-      expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-    }
-  );
+    expect(redirect).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole('alert', { name: 'There is a problem' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('The file(s) you uploaded may contain a virus.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Create a new letter template to upload your file(s) again or upload different file(s).'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('matches snapshot with error and render', async () => {
+    const templateWithValidationErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot with error and no render', async () => {
+    const templateWithValidationErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      files: {},
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders page with VALIDATION_FAILED status and empty validationErrors without error summary', async () => {
+    const templateWithEmptyErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+      validationErrors: [] as 'VIRUS_SCAN_FAILED'[],
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithEmptyErrors);
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: templateWithEmptyErrors.id }),
+      })
+    );
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+  });
+
+  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary', async () => {
+    const templateWithUndefinedErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithUndefinedErrors);
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: templateWithUndefinedErrors.id }),
+      })
+    );
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+  });
+
+  it('does not display submit button when validation has failed', async () => {
+    const templateWithValidationErrors = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED' as const,
+      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+
+    render(
+      await Page({
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Submit template' })
+    ).not.toBeInTheDocument();
+  });
 });

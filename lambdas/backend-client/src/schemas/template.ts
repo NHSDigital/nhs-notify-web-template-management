@@ -1,6 +1,9 @@
 import { z } from 'zod/v4';
 import type {
+  AuthoringLetterFiles,
   AuthoringLetterProperties,
+  PersonalisedRenderDetails,
+  RenderDetails,
   BaseCreatedTemplate,
   BaseTemplate,
   CreatePdfLetterProperties,
@@ -8,10 +11,13 @@ import type {
   EmailProperties,
   Language,
   LetterType,
+  LetterValidationError,
   NhsAppProperties,
+  PatchTemplate,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
+  RenderStatus,
   SmsProperties,
   TemplateDto,
   TemplateStatus,
@@ -28,6 +34,8 @@ import { schemaFor } from './schema-for';
 import {
   LANGUAGE_LIST,
   LETTER_TYPE_LIST,
+  LETTER_VALIDATION_ERROR_LIST,
+  RENDER_STATUS_LIST,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
@@ -62,6 +70,36 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
+const $RenderStatus = schemaFor<RenderStatus>()(z.enum(RENDER_STATUS_LIST));
+
+const $RenderDetails = schemaFor<RenderDetails>()(
+  z.object({
+    currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    pageCount: z.number().int(),
+    status: $RenderStatus,
+  })
+);
+
+const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
+  z.object({
+    currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    pageCount: z.number().int(),
+    personalisationParameters: z.record(z.string(), z.string()),
+    systemPersonalisationPackId: z.string(),
+    status: $RenderStatus,
+  })
+);
+
+export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
+  z.object({
+    initialRender: $RenderDetails.optional(),
+    longFormRender: $PersonalisedRenderDetails.optional(),
+    shortFormRender: $PersonalisedRenderDetails.optional(),
+  })
+);
+
 export const $EmailProperties = schemaFor<EmailProperties>()(
   z.object({
     templateType: z.literal('EMAIL'),
@@ -84,7 +122,7 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-export const $BaseLetterTemplateProperties = z.object({
+const $BaseLetterTemplateProperties = z.object({
   templateType: z.literal('LETTER'),
   letterType: z.enum(LETTER_TYPE_LIST),
   language: z.enum(LANGUAGE_LIST),
@@ -110,13 +148,20 @@ export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   })
 );
 
+const $LetterValidationError = schemaFor<LetterValidationError>()(
+  z.enum(LETTER_VALIDATION_ERROR_LIST)
+);
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      customPersonalisation: z.array(z.string()).optional(),
+      files: $AuthoringLetterFiles,
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
-      sidesCount: z.number().int(),
+      systemPersonalisation: z.array(z.string()).optional(),
+      validationErrors: z.array($LetterValidationError).optional(),
     })
   );
 
@@ -134,9 +179,11 @@ export const $LetterProperties = z.discriminatedUnion('letterVersion', [
   $AuthoringLetterProperties,
 ]);
 
-export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
+const $TemplateName = z.string().trim().min(1);
+
+const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
-    name: z.string().trim().min(1),
+    name: $TemplateName,
     templateType: z.enum(TEMPLATE_TYPE_LIST),
   })
 );
@@ -158,6 +205,18 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
     $BaseTemplateSchema.extend($SmsProperties.shape),
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
   ])
+);
+
+export const $PatchTemplate = schemaFor<PatchTemplate>()(
+  z
+    .object({
+      campaignId: z.string().trim().nonempty().optional(),
+      name: $TemplateName.optional(),
+    })
+    .refine(
+      (data) => Object.values(data).some((value) => value !== undefined),
+      { error: 'Unexpected empty object' }
+    )
 );
 
 export const $LockNumber = z.coerce

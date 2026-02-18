@@ -2,173 +2,177 @@
 
 exports[`ChooseATemplateTypePage 1`] = `
 <DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
+  <div
+    class="nhsuk-width-container"
   >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <form
-      action="/action"
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-templates"
     >
-      <input
-        name="form-id"
-        readonly=""
-        type="hidden"
-        value="choose-a-template-type"
-      />
-      <input
-        name="csrf_token"
-        readonly=""
-        type="hidden"
-        value="no_token"
-      />
-      <div
-        class="nhsuk-form-group"
+      Back to all templates
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <form
+        action="/action"
       >
-        <fieldset
-          class="nhsuk-fieldset"
-        >
-          <legend
-            class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
-            data-testid="templateType-form__legend"
-          >
-            <h1
-              class="nhsuk-fieldset__heading"
-            >
-              Choose a template type to create
-            </h1>
-          </legend>
-          <p>
-            <a
-              href="/features"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Learn more about message channels (opens in a new tab)
-            </a>
-          </p>
-          <div
-            class="nhsuk-form-group"
-          >
-            <div
-              class="nhsuk-hint"
-              id="templateType--hint"
-            >
-              Select one option
-            </div>
-            <div
-              aria-describedby="templateType--hint"
-              class="nhsuk-radios"
-              id="templateType"
-            >
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="nhsapp-radio"
-                  id="templateType-nhsapp"
-                  name="templateType"
-                  type="radio"
-                  value="NHS_APP"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-nhsapp"
-                  id="templateType-nhsapp--label"
-                >
-                  NHS App message
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="email-radio"
-                  id="templateType-email"
-                  name="templateType"
-                  type="radio"
-                  value="EMAIL"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-email"
-                  id="templateType-email--label"
-                >
-                  Email
-                </label>
-              </div>
-              <div
-                class="nhsuk-radios__item"
-              >
-                <input
-                  class="nhsuk-radios__input"
-                  data-testid="sms-radio"
-                  id="templateType-sms"
-                  name="templateType"
-                  type="radio"
-                  value="SMS"
-                />
-                <label
-                  class="nhsuk-label nhsuk-radios__label"
-                  for="templateType-sms"
-                  id="templateType-sms--label"
-                >
-                  Text message (SMS)
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-      <div
-        class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
-      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="choose-a-template-type"
+        />
+        <input
+          name="csrf_token"
+          readonly=""
+          type="hidden"
+          value="no_token"
+        />
         <div
-          class="nhsuk-card__content"
+          class="nhsuk-form-group"
         >
-          <h4
-            class="nhsuk-card__heading"
+          <fieldset
+            class="nhsuk-fieldset"
           >
-            To create a letter template
-          </h4>
-          <p
-            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
-          >
-            You cannot upload a letter template using this service.
-          </p>
-          <p
-            class="nhsuk-card__description"
-          >
-            Follow our guidance to 
-            <a
-              href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
-              rel="noopener noreferrer"
-              target="_blank"
+            <legend
+              class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+              data-testid="templateType-form__legend"
             >
-              upload a letter template (opens in a new tab)
-            </a>
-          </p>
+              <h1
+                class="nhsuk-fieldset__heading"
+              >
+                Choose a template type to create
+              </h1>
+            </legend>
+            <p>
+              <a
+                href="/features"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more about message channels (opens in a new tab)
+              </a>
+            </p>
+            <div
+              class="nhsuk-form-group"
+            >
+              <div
+                class="nhsuk-hint"
+                id="templateType--hint"
+              >
+                Select one option
+              </div>
+              <div
+                aria-describedby="templateType--hint"
+                class="nhsuk-radios"
+                id="templateType"
+              >
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="nhsapp-radio"
+                    id="templateType-nhsapp"
+                    name="templateType"
+                    type="radio"
+                    value="NHS_APP"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="templateType-nhsapp"
+                    id="templateType-nhsapp--label"
+                  >
+                    NHS App message
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="email-radio"
+                    id="templateType-email"
+                    name="templateType"
+                    type="radio"
+                    value="EMAIL"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="templateType-email"
+                    id="templateType-email--label"
+                  >
+                    Email
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    class="nhsuk-radios__input"
+                    data-testid="sms-radio"
+                    id="templateType-sms"
+                    name="templateType"
+                    type="radio"
+                    value="SMS"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="templateType-sms"
+                    id="templateType-sms--label"
+                  >
+                    Text message (SMS)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
         </div>
-      </div>
-      <button
-        aria-disabled="false"
-        class="nhsuk-button"
-        data-testid="submit-button"
-        id="choose-a-template-type-submit-button"
-        type="submit"
-      >
-        Continue
-      </button>
-    </form>
-  </main>
+        <div
+          class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+        >
+          <div
+            class="nhsuk-card__content"
+          >
+            <h4
+              class="nhsuk-card__heading"
+            >
+              To create a letter template
+            </h4>
+            <p
+              class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+            >
+              You cannot upload a letter template using this service.
+            </p>
+            <p
+              class="nhsuk-card__description"
+            >
+              Follow our guidance to 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                upload a letter template (opens in a new tab)
+              </a>
+            </p>
+          </div>
+        </div>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          id="choose-a-template-type-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </main>
+  </div>
 </DocumentFragment>
 `;

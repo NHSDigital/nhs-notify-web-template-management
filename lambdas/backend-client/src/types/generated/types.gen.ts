@@ -4,10 +4,20 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AuthoringLetterFiles = {
+  docxTemplate?: VersionedFileDetails;
+  initialRender?: RenderDetails;
+  longFormRender?: PersonalisedRenderDetails;
+  shortFormRender?: PersonalisedRenderDetails;
+};
+
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  customPersonalisation?: Array<string>;
+  files: AuthoringLetterFiles;
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
-  sidesCount: number;
+  systemPersonalisation?: Array<string>;
+  validationErrors?: Array<LetterValidationError>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -107,7 +117,7 @@ export type ConditionalTemplateAccessible = {
   supplierReferences?: {
     [key: string]: string;
   };
-  templateId: string | null;
+  templateId: string;
 };
 
 export type ConditionalTemplateLanguage = {
@@ -115,7 +125,7 @@ export type ConditionalTemplateLanguage = {
   supplierReferences?: {
     [key: string]: string;
   };
-  templateId: string | null;
+  templateId: string;
 };
 
 export type CountSuccess = {
@@ -192,11 +202,20 @@ export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
 
+export type LetterValidationError =
+  | 'MISSING_ADDRESS_LINES'
+  | 'VIRUS_SCAN_FAILED';
+
 export type LetterVersion = 'AUTHORING' | 'PDF';
 
 export type NhsAppProperties = {
   message: string;
   templateType: 'NHS_APP';
+};
+
+export type PatchTemplate = {
+  campaignId?: string;
+  name?: string;
 };
 
 export type PdfLetterFiles = {
@@ -217,11 +236,27 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderDetails = RenderDetails & {
+  personalisationParameters: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId: string;
+};
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
+
+export type RenderDetails = {
+  currentVersion: string;
+  fileName: string;
+  pageCount: number;
+  status: RenderStatus;
+};
+
+export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
 
 export type RoutingConfig = {
   campaignId: string;
@@ -715,6 +750,47 @@ export type GetV1TemplateByTemplateIdResponses = {
 
 export type GetV1TemplateByTemplateIdResponse =
   GetV1TemplateByTemplateIdResponses[keyof GetV1TemplateByTemplateIdResponses];
+
+export type PatchV1TemplateByTemplateIdData = {
+  /**
+   * Updates to apply
+   */
+  body: PatchTemplate;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}';
+};
+
+export type PatchV1TemplateByTemplateIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdError =
+  PatchV1TemplateByTemplateIdErrors[keyof PatchV1TemplateByTemplateIdErrors];
+
+export type PatchV1TemplateByTemplateIdResponses = {
+  /**
+   * 200 response
+   */
+  200: TemplateSuccess;
+};
+
+export type PatchV1TemplateByTemplateIdResponse =
+  PatchV1TemplateByTemplateIdResponses[keyof PatchV1TemplateByTemplateIdResponses];
 
 export type PutV1TemplateByTemplateIdData = {
   /**

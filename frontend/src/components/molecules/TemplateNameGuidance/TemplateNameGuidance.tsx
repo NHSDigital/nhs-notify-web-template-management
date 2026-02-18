@@ -1,34 +1,25 @@
-import content from '@content/content';
+'use client';
+
+import type { HTMLProps } from 'react';
+import type { TemplateType } from 'nhs-notify-backend-client';
 import { Details } from 'nhsuk-react-components';
-import { TemplateNameGuidanceType } from './template-name-guidance.types';
+import content from '@content/content';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
-export function TemplateNameGuidance({ template }: TemplateNameGuidanceType) {
-  const {
-    templateNameDetailsSummary,
-    templateNameDetailsOpeningParagraph,
-    templateNameDetailsListHeader,
-    templateNameDetailsList,
-    templateNameDetailsExample,
-  } = content.components.nameYourTemplate;
-
-  const templateNameDetailsExampleText = templateNameDetailsExample[template];
+export function TemplateNameGuidance({
+  templateType,
+  ...props
+}: Omit<HTMLProps<HTMLDetailsElement>, 'children'> & {
+  templateType?: TemplateType;
+}) {
+  const { summary, text } =
+    content.components.templateNameGuidance(templateType);
 
   return (
-    <Details data-testid='how-to-name-your-template-details'>
-      <Details.Summary data-testid='how-to-name-your-template-summary'>
-        {templateNameDetailsSummary}
-      </Details.Summary>
-      <Details.Text data-testid='how-to-name-your-template-text'>
-        <p>{templateNameDetailsOpeningParagraph}</p>
-        <p>{templateNameDetailsListHeader}</p>
-        <ul>
-          {templateNameDetailsList.map((listItem) => (
-            <li key={`list-item-${listItem.id}`}>{listItem.text}</li>
-          ))}
-        </ul>
-        <p data-testid='template-name-example'>
-          {templateNameDetailsExampleText}
-        </p>
+    <Details {...props}>
+      <Details.Summary>{summary}</Details.Summary>
+      <Details.Text>
+        <ContentRenderer content={text} />
       </Details.Text>
     </Details>
   );

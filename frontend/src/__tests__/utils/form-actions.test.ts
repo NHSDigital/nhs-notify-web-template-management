@@ -5,10 +5,12 @@ import {
   UploadLetterTemplate,
   CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
+  AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import {
   createTemplate,
   saveTemplate,
+  patchTemplate,
   getTemplate,
   getTemplates,
   getForeignLanguageLetterTemplates,
@@ -393,6 +395,87 @@ describe('form-actions', () => {
     await expect(
       saveTemplate(updateTemplateInput.id, updateTemplateInput)
     ).rejects.toThrow('Failed to get access token');
+  });
+
+  test('patchTemplate', async () => {
+    const responseData: AuthoringLetterTemplate = {
+      id: 'template-123',
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'Updated Template Name',
+      letterType: 'x1',
+      language: 'en',
+      letterVersion: 'AUTHORING',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 6,
+      files: {
+        initialRender: {
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          status: 'RENDERED',
+          pageCount: 2,
+        },
+      },
+      systemPersonalisation: [],
+    };
+
+    mockedTemplateClient.patchTemplate.mockResolvedValueOnce({
+      data: responseData,
+    });
+
+    const patchData = {
+      name: 'Updated Template Name',
+    };
+
+    const response = await patchTemplate('template-123', patchData, 5);
+
+    expect(mockedTemplateClient.patchTemplate).toHaveBeenCalledWith(
+      'template-123',
+      patchData,
+      'token',
+      5
+    );
+
+    expect(response).toEqual(responseData);
+  });
+
+  test('patchTemplate - should throw error when saving unexpectedly fails', async () => {
+    mockedTemplateClient.patchTemplate.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+        },
+      },
+    });
+
+    const patchData = {
+      name: 'Updated Template Name',
+    };
+
+    await expect(patchTemplate('template-123', patchData, 5)).rejects.toThrow(
+      'Failed to save template data'
+    );
+
+    expect(mockedTemplateClient.patchTemplate).toHaveBeenCalledWith(
+      'template-123',
+      patchData,
+      'token',
+      5
+    );
+  });
+
+  test('patchTemplate - should throw error when no token', async () => {
+    authIdTokenServerMock.mockResolvedValueOnce({});
+
+    const patchData = {
+      name: 'Updated Template Name',
+    };
+
+    await expect(patchTemplate('template-123', patchData, 5)).rejects.toThrow(
+      'Failed to get access token'
+    );
   });
 
   test('getTemplate', async () => {

@@ -62,6 +62,11 @@ const languageMap: Record<Language, LanguageMetadata> = {
   ur: { name: 'Urdu', rtl: true },
   zh: { name: 'Chinese', rtl: false },
 };
+
+export const isLanguage = (value: unknown): value is Language => {
+  return typeof value === 'string' && Object.keys(languageMap).includes(value);
+};
+
 export const languageMapping = (language: Language) =>
   languageMap[language].name;
 
@@ -333,6 +338,7 @@ export const MESSAGE_ORDER_OPTIONS_LIST = [
   'NHSAPP,SMS,EMAIL',
   'NHSAPP,SMS,LETTER',
   'NHSAPP,EMAIL,SMS,LETTER',
+  'EMAIL',
   'LETTER',
 ] as const;
 

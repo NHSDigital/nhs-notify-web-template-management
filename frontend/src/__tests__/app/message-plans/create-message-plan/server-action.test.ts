@@ -167,6 +167,17 @@ const MESSAGE_ORDER_SCENARIOS: [MessageOrder, CascadeItem[]][] = [
     ],
   ],
   [
+    'EMAIL',
+    [
+      {
+        cascadeGroups: ['standard'],
+        channel: 'EMAIL',
+        channelType: 'primary',
+        defaultTemplateId: null,
+      },
+    ],
+  ],
+  [
     'LETTER',
     [
       {

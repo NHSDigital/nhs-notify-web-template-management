@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_passed_for_upload" {
   name        = "${local.csi}-quarantine-scan-passed-for-upload"
-  description = "Matches quarantine 'GuardDuty Malware Protection Object Scan Result' events where the scan result is NO_THREATS_FOUND"
+  description = "Matches quarantine 'GuardDuty Malware Protection Object Scan Result' events for pdf templates / csv test data where the scan result is NO_THREATS_FOUND"
 
   event_pattern = jsonencode({
     source      = ["aws.guardduty"]

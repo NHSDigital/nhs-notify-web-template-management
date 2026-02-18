@@ -55,13 +55,41 @@ const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
 
 const templates: MessagePlanTemplates = {
-  [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
-  [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
-  [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
-  [letterTemplateId]: { ...PDF_LETTER_TEMPLATE, id: letterTemplateId },
-  [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
-  [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
-  [largePrintTemplateId]: { ...PDF_LETTER_TEMPLATE, id: largePrintTemplateId },
+  [appTemplateId]: {
+    ...NHS_APP_TEMPLATE,
+    id: appTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [emailTemplateId]: {
+    ...EMAIL_TEMPLATE,
+    id: emailTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [smsTemplateId]: {
+    ...SMS_TEMPLATE,
+    id: smsTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [letterTemplateId]: {
+    ...PDF_LETTER_TEMPLATE,
+    id: letterTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [kuTemplateId]: {
+    ...PDF_LETTER_TEMPLATE,
+    id: kuTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [sqTemplateId]: {
+    ...PDF_LETTER_TEMPLATE,
+    id: sqTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [largePrintTemplateId]: {
+    ...PDF_LETTER_TEMPLATE,
+    id: largePrintTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
 };
 
 beforeEach(() => {

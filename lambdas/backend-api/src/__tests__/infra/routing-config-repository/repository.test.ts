@@ -1,4 +1,5 @@
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -51,8 +52,29 @@ const TEMPLATE_TABLE_NAME = 'template-table-name';
 const user = { internalUserId: 'user', clientId: 'nhs-notify-client-id' };
 const clientOwnerKey = `CLIENT#${user.clientId}`;
 
+const dynamo = mockClient(DynamoDBDocumentClient);
+
+// Helper to create valid template mocks that pass $TemplateDto validation
+const makeTemplateMock = (
+  overrides: {
+    id?: string;
+    templateType?: 'SMS' | 'EMAIL' | 'NHS_APP' | 'LETTER';
+    templateStatus?: string;
+    lockNumber?: number;
+  } = {}
+) => ({
+  id: overrides.id ?? 'template-id',
+  name: 'Test Template',
+  templateType: overrides.templateType ?? 'SMS',
+  templateStatus: overrides.templateStatus ?? 'NOT_YET_SUBMITTED',
+  lockNumber: overrides.lockNumber ?? 1,
+  message: 'Test message content',
+  createdAt: date.toISOString(),
+  updatedAt: date.toISOString(),
+});
+
 function setup() {
-  const dynamo = mockClient(DynamoDBDocumentClient);
+  dynamo.reset();
 
   const mocks = { dynamo };
 
@@ -110,7 +132,10 @@ describe('RoutingConfigRepository', () => {
 
       expect(result).toEqual({
         error: {
-          errorMeta: { code: 404, description: 'Routing Config not found' },
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
         },
       });
 
@@ -249,54 +274,230 @@ describe('RoutingConfigRepository', () => {
   });
 
   describe('submit', () => {
-    test('updates routing config to COMPLETED', async () => {
+    test('updates routing config to COMPLETED and templates to SUBMITTED', async () => {
       const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
 
       const completed: RoutingConfig = {
         ...routingConfig,
         status: 'COMPLETED',
+        lockNumber: 3,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completed });
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLock })
+        .resolvesOnce({ Item: completed });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
       expect(result).toEqual({ data: completed });
 
-      expect(mocks.dynamo).toHaveReceivedCommandWith(UpdateCommand, {
-        ConditionExpression:
-          '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-        ExpressionAttributeNames: {
-          '#status': 'status',
-          '#updatedAt': 'updatedAt',
-          '#updatedBy': 'updatedBy',
-          '#lockNumber': 'lockNumber',
+      expect(mocks.dynamo).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          [TEMPLATE_TABLE_NAME]: {
+            Keys: [
+              {
+                id: routingConfig.cascade[0].defaultTemplateId!,
+                owner: clientOwnerKey,
+              },
+            ],
+          },
         },
-        ExpressionAttributeValues: {
-          ':condition_1_status': 'DRAFT',
-          ':condition_2_lockNumber': 2,
-          ':lockNumber': 1,
-          ':status': 'COMPLETED',
-          ':updatedAt': date.toISOString(),
-          ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-        },
-        Key: {
-          id: routingConfig.id,
-          owner: clientOwnerKey,
-        },
-        ReturnValues: 'ALL_NEW',
-        TableName: TABLE_NAME,
-        UpdateExpression:
-          'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+      });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: {
+              ConditionExpression:
+                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_status': 'DRAFT',
+                ':condition_2_lockNumber': 2,
+                ':lockNumber': 1,
+                ':status': 'COMPLETED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+              TableName: 'routing-config-table-name',
+              UpdateExpression:
+                'SET #status = :status, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+          {
+            Update: {
+              ConditionExpression:
+                '#templateStatus = :condition_1_templateStatus AND (#lockNumber = :condition_2_1_lockNumber OR attribute_not_exists (#lockNumber))',
+              ExpressionAttributeNames: {
+                '#lockNumber': 'lockNumber',
+                '#templateStatus': 'templateStatus',
+                '#updatedAt': 'updatedAt',
+                '#updatedBy': 'updatedBy',
+              },
+              ExpressionAttributeValues: {
+                ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
+                ':condition_2_1_lockNumber': 1,
+                ':lockNumber': 1,
+                ':templateStatus': 'SUBMITTED',
+                ':updatedAt': date.toISOString(),
+                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
+              },
+              Key: {
+                id: routingConfig.cascade[0].defaultTemplateId!,
+                owner: clientOwnerKey,
+              },
+              ReturnValues: 'ALL_NEW',
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+              TableName: 'template-table-name',
+              UpdateExpression:
+                'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+            },
+          },
+        ],
       });
     });
 
-    test('returns failure on client error', async () => {
+    test('uses ConditionCheck for templates already SUBMITTED', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const completed: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+        lockNumber: 3,
+      };
+
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateType: 'SMS',
+        templateStatus: 'SUBMITTED',
+        lockNumber: 5,
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLock })
+        .resolvesOnce({ Item: completed });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({ data: completed });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: [
+          {
+            Update: expect.objectContaining({
+              TableName: TABLE_NAME,
+              Key: {
+                id: routingConfig.id,
+                owner: clientOwnerKey,
+              },
+            }),
+          },
+          {
+            ConditionCheck: {
+              TableName: TEMPLATE_TABLE_NAME,
+              Key: {
+                id: routingConfig.cascade[0].defaultTemplateId!,
+                owner: clientOwnerKey,
+              },
+              ConditionExpression:
+                'attribute_exists(id) AND lockNumber = :lockNumber AND templateStatus = :submitted',
+              ExpressionAttributeValues: {
+                ':lockNumber': 5,
+                ':submitted': 'SUBMITTED',
+              },
+              ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+            },
+          },
+        ],
+      });
+    });
+
+    test('returns failure on client error during initial get', async () => {
       const { repo, mocks } = setup();
 
       const err = new Error('ddb err');
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(GetCommand).rejectsOnce(err);
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving routing configuration',
+          },
+        },
+      });
+    });
+
+    test('returns failure on client error during transaction', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new Error('ddb err');
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).rejectsOnce(err);
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -314,13 +515,34 @@ describe('RoutingConfigRepository', () => {
     test('returns failure if updated template is invalid', async () => {
       const { repo, mocks } = setup();
 
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
       const completedInvalid: RoutingConfig = {
         ...routingConfig,
         status: 'COMPLETED',
         name: 0 as unknown as string,
       };
 
-      mocks.dynamo.on(UpdateCommand).resolves({ Attributes: completedInvalid });
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLock })
+        .resolvesOnce({ Item: completedInvalid });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -344,15 +566,91 @@ describe('RoutingConfigRepository', () => {
       });
     });
 
-    test('returns 404 failure if routing config does not exist', async () => {
+    test('returns failure if template from database is invalid', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        $metadata: {},
-        message: 'msg',
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      // Invalid template - missing required fields like name, createdAt, etc.
+      const invalidTemplate = {
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        owner: clientOwnerKey,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+        // Missing: name, message, createdAt, updatedAt
+      };
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [invalidTemplate],
+        },
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(Error),
+          errorMeta: {
+            code: 500,
+            description: 'Error parsing template from database',
+            details: undefined,
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 404 failure if routing config does not exist on get', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: undefined });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Routing configuration not found',
+          },
+        },
+      });
+    });
+
+    test('returns 404 failure if routing config does not exist on write', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'msg',
+        CancellationReasons: [{ Code: 'ConditionalCheckFailed' }],
+      });
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).rejectsOnce(err);
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -369,13 +667,12 @@ describe('RoutingConfigRepository', () => {
     test('returns 404 failure if routing config is DELETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'DELETED' satisfies RoutingConfigStatus } },
-        $metadata: {},
-        message: 'msg',
-      });
+      const deletedRoutingConfig: RoutingConfig = {
+        ...routingConfig,
+        status: 'DELETED',
+      };
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: deletedRoutingConfig });
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -387,18 +684,21 @@ describe('RoutingConfigRepository', () => {
           },
         },
       });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
     });
 
     test('returns 400 failure if routing config is COMPLETED', async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: { status: { S: 'COMPLETED' satisfies RoutingConfigStatus } },
-        $metadata: {},
-        message: 'msg',
-      });
+      const completedRoutingConfig: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+      };
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: completedRoutingConfig });
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -411,21 +711,393 @@ describe('RoutingConfigRepository', () => {
           },
         },
       });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
     });
 
     test("returns 409 failure if lock number doesn't match", async () => {
       const { repo, mocks } = setup();
 
-      const err = new ConditionalCheckFailedException({
-        Item: {
-          status: { S: 'DRAFT' satisfies RoutingConfigStatus },
-          lockNumber: { N: '3' },
+      const mismatchedLockRoutingConfig: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 3,
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: mismatchedLockRoutingConfig });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Routing configuration has been modified since last read',
+          },
         },
-        $metadata: {},
-        message: 'msg',
       });
 
-      mocks.dynamo.on(UpdateCommand).rejects(err);
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns validation failure if cascade item conditionalTemplates is empty with no defaultTemplateId', async () => {
+      const { repo, mocks } = setup();
+
+      const invalidRoutingConfig: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            conditionalTemplates: [],
+          },
+        ],
+      };
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: invalidRoutingConfig });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(Error),
+          errorMeta: {
+            code: 400,
+            description:
+              'Routing config is not ready for submission: all cascade items must have templates assigned',
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns validation failure if defaultTemplateId is null', async () => {
+      const { repo, mocks } = setup();
+
+      const invalidRoutingConfig: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            defaultTemplateId: null,
+          },
+        ],
+      };
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: invalidRoutingConfig });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(Error),
+          errorMeta: {
+            code: 400,
+            description:
+              'Routing config is not ready for submission: all cascade items must have templates assigned',
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 400 failure if template not found during submit', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithTemplate: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'missing-template-id',
+          },
+        ],
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithTemplate });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [],
+        },
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Some templates not found',
+            details: { templateIds: 'missing-template-id' },
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 400 failure if template has DELETED status', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithTemplate: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'deleted-template-id',
+          },
+        ],
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithTemplate });
+      // Template exists but is DELETED
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [
+            makeTemplateMock({
+              id: 'deleted-template-id',
+              templateType: 'SMS',
+              templateStatus: 'DELETED',
+              lockNumber: 1,
+            }),
+          ],
+        },
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Some templates not found',
+            details: { templateIds: 'deleted-template-id' },
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 400 failure if LETTER template has invalid status', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLetter: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'letter-template-id',
+          },
+        ],
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLetter });
+      // LETTER template with invalid status (not PROOF_APPROVED or SUBMITTED)
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [
+            {
+              id: 'letter-template-id',
+              owner: clientOwnerKey,
+              name: 'Test Letter Template',
+              templateType: 'LETTER',
+              templateStatus: 'NOT_YET_SUBMITTED',
+              lockNumber: 1,
+              letterType: 'x0',
+              language: 'en',
+              letterVersion: 'PDF',
+              files: {
+                pdfTemplate: {
+                  fileName: 'test.pdf',
+                  currentVersion: '1',
+                  virusScanStatus: 'PASSED',
+                },
+              },
+              createdAt: date.toISOString(),
+              updatedAt: date.toISOString(),
+            },
+          ],
+        },
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'Letter templates must have status PROOF_APPROVED or SUBMITTED',
+            details: { templateIds: 'letter-template-id' },
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 500 failure on unexpected TransactionCanceledException', async () => {
+      const { repo, mocks } = setup();
+
+      // Transaction cancelled with update succeeded but no template failures
+      // This is an edge case that shouldn't normally happen
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'Unexpected cancellation',
+        CancellationReasons: [
+          { Code: 'None' }, // Update succeeded
+          { Code: 'None' }, // Template update also passed (unexpected)
+        ],
+      });
+
+      const routingConfigWithTemplate: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'some-template-id',
+          },
+        ],
+      };
+
+      const template = makeTemplateMock({
+        id: 'some-template-id',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithTemplate });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).rejectsOnce(err);
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns 500 failure on TransactionCanceledException with undefined CancellationReasons', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'Transaction cancelled with no reasons',
+        CancellationReasons: undefined,
+      });
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const template = makeTemplateMock({
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).rejectsOnce(err);
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update routing config',
+          },
+        },
+      });
+    });
+
+    test('returns 409 failure if template was modified since retrieval', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithTemplate: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'SMS',
+            channelType: 'primary',
+            defaultTemplateId: 'modified-template-id',
+          },
+        ],
+      };
+
+      const template = makeTemplateMock({
+        id: 'modified-template-id',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      const err = new TransactionCanceledException({
+        $metadata: {},
+        message: 'Transaction cancelled',
+        CancellationReasons: [
+          { Code: 'None' }, // Routing config update succeeded
+          { Code: 'ConditionalCheckFailed' }, // Template lock number mismatch
+        ],
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithTemplate });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).rejectsOnce(err);
 
       const result = await repo.submit(routingConfig.id, user, 2);
 
@@ -435,7 +1107,165 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Some templates have been modified since they were retrieved',
+            details: { templateIds: 'modified-template-id' },
+          },
+        },
+      });
+    });
+
+    test('returns 500 failure if BatchGetCommand fails', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const err = new Error('BatchGet failed');
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).rejectsOnce(err);
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to retrieve templates',
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('succeeds when routing config has no templates (empty cascade)', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigNoTemplates: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'NHSAPP',
+            channelType: 'primary',
+            conditionalTemplates: [
+              { language: 'en', templateId: 'english-template' },
+            ],
+          },
+        ],
+      };
+
+      const completed: RoutingConfig = {
+        ...routingConfigNoTemplates,
+        status: 'COMPLETED',
+        lockNumber: 3,
+      };
+
+      const template = makeTemplateMock({
+        id: 'english-template',
+        templateType: 'NHS_APP',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        lockNumber: 1,
+      });
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigNoTemplates })
+        .resolvesOnce({ Item: completed });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({ data: completed });
+    });
+
+    test('handles template with undefined lockNumber', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      const completed: RoutingConfig = {
+        ...routingConfig,
+        status: 'COMPLETED',
+        lockNumber: 3,
+      };
+
+      const template = {
+        id: routingConfig.cascade[0].defaultTemplateId!,
+        owner: clientOwnerKey,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: 'Test Template',
+        message: 'Test message content',
+        createdAt: date.toISOString(),
+        updatedAt: date.toISOString(),
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLock })
+        .resolvesOnce({ Item: completed });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [template],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({ data: completed });
+
+      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
+        TransactItems: expect.arrayContaining([
+          expect.objectContaining({
+            Update: expect.objectContaining({
+              ExpressionAttributeValues: expect.objectContaining({
+                ':condition_2_1_lockNumber': 0,
+              }),
+            }),
+          }),
+        ]),
+      });
+    });
+
+    test('handles BatchGetCommand returning empty Responses', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLock: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+      };
+
+      mocks.dynamo.on(GetCommand).resolvesOnce({ Item: routingConfigWithLock });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {},
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          actualError: undefined,
+          errorMeta: {
+            code: 400,
+            description: 'Some templates not found',
+            details: {
+              templateIds: routingConfig.cascade[0].defaultTemplateId,
+            },
           },
         },
       });
@@ -631,7 +1461,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Lock number mismatch - Routing configuration has been modified since last read',
           },
         },
       });
@@ -1495,7 +2325,7 @@ describe('RoutingConfigRepository', () => {
           errorMeta: {
             code: 409,
             description:
-              'Lock number mismatch - Message Plan has been modified since last read',
+              'Lock number mismatch - Routing configuration has been modified since last read',
           },
         },
       });

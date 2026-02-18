@@ -8,6 +8,7 @@ import '@aws-amplify/ui-react/styles.css';
 // eslint-disable-next-line  unicorn/prefer-node-protocol
 import path from 'path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyContainer } from '@layouts/container/container';
 
 const useRedirectPath = () => {
   const searchParams = useSearchParams();
@@ -29,22 +30,24 @@ const SignIn = () => {
 
 export default function Page() {
   return (
-    <NHSNotifyMain>
-      <Suspense fallback={<p>Loading...</p>}>
-        <Authenticator
-          variation='default'
-          hideSignUp
-          formFields={{
-            signIn: {
-              username: {
-                type: 'text',
+    <NHSNotifyContainer>
+      <NHSNotifyMain>
+        <Suspense fallback={<p>Loading...</p>}>
+          <Authenticator
+            variation='default'
+            hideSignUp
+            formFields={{
+              signIn: {
+                username: {
+                  type: 'text',
+                },
               },
-            },
-          }}
-        >
-          <SignIn />
-        </Authenticator>
-      </Suspense>
-    </NHSNotifyMain>
+            }}
+          >
+            <SignIn />
+          </Authenticator>
+        </Suspense>
+      </NHSNotifyMain>
+    </NHSNotifyContainer>
   );
 }

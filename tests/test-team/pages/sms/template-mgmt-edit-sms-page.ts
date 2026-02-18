@@ -36,11 +36,11 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
     this.pdsPersonalisationFields = page.locator(
       '[data-testid="pds-personalisation-fields-details"]'
     );
-    this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template-details"]'
-    );
-    this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
-    this.characterCountText = page.getByTestId('character-message-count-0');
+    this.namingYourTemplate = page
+      .getByRole('group')
+      .filter({ hasText: 'Naming your templates' });
+    this.pricingLink = page.getByTestId('sms-pricing-info').locator('a');
+    this.characterCountText = page.getByTestId('character-message-count');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(
@@ -55,7 +55,7 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
 
   async waitForPageToLoad() {
     const characterCountLocator = this.page.locator(
-      '[data-testid="character-message-count-0"]'
+      '[data-testid="character-message-count"]'
     );
     await expect(characterCountLocator).toBeVisible();
   }

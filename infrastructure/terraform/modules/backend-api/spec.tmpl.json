@@ -1,6 +1,23 @@
 {
   "components": {
     "schemas": {
+      "AuthoringLetterFiles": {
+        "properties": {
+          "docxTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "initialRender": {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          "longFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+          },
+          "shortFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+          }
+        },
+        "type": "object"
+      },
       "AuthoringLetterProperties": {
         "allOf": [
           {
@@ -8,6 +25,15 @@
           },
           {
             "properties": {
+              "customPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "files": {
+                "$ref": "#/components/schemas/AuthoringLetterFiles"
+              },
               "letterVariantId": {
                 "type": "string"
               },
@@ -17,13 +43,22 @@
                 ],
                 "type": "string"
               },
-              "sidesCount": {
-                "type": "integer"
+              "systemPersonalisation": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "validationErrors": {
+                "items": {
+                  "$ref": "#/components/schemas/LetterValidationError"
+                },
+                "type": "array"
               }
             },
             "required": [
-              "letterVersion",
-              "sidesCount"
+              "files",
+              "letterVersion"
             ],
             "type": "object"
           }
@@ -385,7 +420,6 @@
           },
           "templateId": {
             "format": "uuid",
-            "nullable": true,
             "type": "string"
           }
         },
@@ -409,7 +443,6 @@
           },
           "templateId": {
             "format": "uuid",
-            "nullable": true,
             "type": "string"
           }
         },
@@ -609,6 +642,13 @@
         ],
         "type": "string"
       },
+      "LetterValidationError": {
+        "enum": [
+          "MISSING_ADDRESS_LINES",
+          "VIRUS_SCAN_FAILED"
+        ],
+        "type": "string"
+      },
       "LetterVersion": {
         "enum": [
           "AUTHORING",
@@ -632,6 +672,18 @@
           "message",
           "templateType"
         ],
+        "type": "object"
+      },
+      "PatchTemplate": {
+        "additionalProperties": false,
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "PdfLetterFiles": {
@@ -694,6 +746,31 @@
           }
         ]
       },
+      "PersonalisedRenderDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          {
+            "properties": {
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "personalisationParameters",
+              "systemPersonalisationPackId"
+            ],
+            "type": "object"
+          }
+        ]
+      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -712,6 +789,37 @@
           "virusScanStatus"
         ],
         "type": "object"
+      },
+      "RenderDetails": {
+        "properties": {
+          "currentVersion": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "pageCount": {
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RenderStatus"
+          }
+        },
+        "required": [
+          "currentVersion",
+          "fileName",
+          "pageCount",
+          "status"
+        ],
+        "type": "object"
+      },
+      "RenderStatus": {
+        "enum": [
+          "FAILED",
+          "PENDING",
+          "RENDERED"
+        ],
+        "type": "string"
       },
       "RoutingConfig": {
         "properties": {
@@ -1866,8 +1974,91 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
         }
       },
+      "patch": {
+        "description": "Partial update of a template by Id",
+        "parameters": [
+          {
+            "description": "ID of template to update",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Lock number of the current version of the template",
+            "in": "header",
+            "name": "X-Lock-Number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTemplate"
+              }
+            }
+          },
+          "description": "Updates to apply",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${PATCH_TEMPLATE_LAMBDA_ARN}/invocations"
+        }
+      },
       "put": {
-        "description": "Update a template template by Id",
+        "description": "Update a template by Id",
         "parameters": [
           {
             "description": "ID of template to update",
