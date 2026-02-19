@@ -2255,6 +2255,11 @@ describe('templateClient', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial-render.pdf',
             currentVersion: 'v1',

@@ -518,6 +518,11 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 6,
       files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
         initialRender: {
           fileName: 'render.pdf',
           currentVersion: 'v1',

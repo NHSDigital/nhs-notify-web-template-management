@@ -11,11 +11,13 @@ import {
   type EmailProperties,
   type Language,
   type LetterType,
+  type LetterValidationError,
   type NhsAppProperties,
   type PersonalisedRenderDetails,
   type PdfLetterFiles,
   type PdfLetterProperties,
   type ProofFileDetails,
+  type RenderDetails,
   type RenderStatus,
   type SmsProperties,
   type TemplateDto,
@@ -61,12 +63,6 @@ const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
   })
 );
 
-export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
-  z.object({
-    docxTemplate: $VersionedFileDetails,
-  })
-);
-
 export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
@@ -99,6 +95,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
+    docxTemplate: $VersionedFileDetails,
     initialRender: $RenderDetails.optional(),
     longFormRender: $PersonalisedRenderDetails.optional(),
     shortFormRender: $PersonalisedRenderDetails.optional(),
@@ -156,6 +153,15 @@ export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
 const $LetterValidationError = schemaFor<LetterValidationError>()(
   z.enum(LETTER_VALIDATION_ERROR_LIST)
 );
+
+export const $CreateAuthoringLetterProperties =
+  schemaFor<CreateAuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+    })
+  );
 
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(

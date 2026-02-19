@@ -367,10 +367,21 @@ describe('Template schemas', () => {
 
   describe('$AuthoringLetterFiles', () => {
     test.each([
-      { description: 'empty files object', files: {} },
+      { description: 'template only', files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
+      } },
       {
-        description: 'initialRender only',
+        description: 'template and initialRender only',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
@@ -382,6 +393,11 @@ describe('Template schemas', () => {
       {
         description: 'all render types',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
