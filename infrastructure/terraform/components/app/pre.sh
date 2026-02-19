@@ -18,6 +18,12 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+if [ "${ACTION}" = "apply" ]; then
+  export TF_VAR_use_dummy_container_image_uri=false
+else
+  export TF_VAR_use_dummy_container_image_uri=true
+fi
+
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 

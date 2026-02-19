@@ -33,6 +33,7 @@ No requirements.
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | `true` | no |
 | <a name="input_sns_topic_arn"></a> [sns\_topic\_arn](#input\_sns\_topic\_arn) | SNS topic ARN | `string` | `null` | no |
 | <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
+| <a name="input_use_dummy_container_image_uri"></a> [use\_dummy\_container\_image\_uri](#input\_use\_dummy\_container\_image\_uri) | Use a dummy image URI for container/image based Lambdas instead of resolving from ECR | `bool` | `false` | no |
 ## Modules
 
 | Name | Source | Version |

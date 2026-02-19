@@ -219,3 +219,9 @@ variable "enable_api_data_trace" {
   description = "Enable API Gateway data trace logging"
   default     = false
 }
+
+variable "use_dummy_container_image_uri" {
+  type        = bool
+  description = "Use a dummy image URI for container/image based Lambdas instead of resolving from ECR"
+  default     = false
+}

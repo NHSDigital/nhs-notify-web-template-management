@@ -22,6 +22,7 @@
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments | `string` | `"main"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
+| <a name="input_use_dummy_container_image_uri"></a> [use\_dummy\_container\_image\_uri](#input\_use\_dummy\_container\_image\_uri) | Use a dummy image URI for container/image based Lambdas instead of resolving from ECR | `bool` | `false` | no |
 ## Modules
 
 | Name | Source | Version |
