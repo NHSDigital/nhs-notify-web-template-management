@@ -18,10 +18,10 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-if [ "${ACTION}" = "apply" ]; then
-  export TF_VAR_use_dummy_container_image_uri=false
-else
+if [ "${ACTION}" = "plan" ]; then
   export TF_VAR_use_dummy_container_image_uri=true
+else
+  unset TF_VAR_use_dummy_container_image_uri
 fi
 
 # change to monorepo root
