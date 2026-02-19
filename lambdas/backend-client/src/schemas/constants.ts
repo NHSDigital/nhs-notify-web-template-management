@@ -23,4 +23,9 @@ export const LETTER_MULTIPART = {
     name: 'testCsv',
     fileType: 'text/csv',
   },
+  DOCX: {
+    name: 'docxTemplate',
+    fileType:
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  },
 };

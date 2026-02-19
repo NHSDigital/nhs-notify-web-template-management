@@ -1,7 +1,24 @@
+import { redirect, RedirectType } from 'next/navigation';
 import { uploadLargePrintLetterTemplate } from '@app/upload-large-print-letter-template/server-action';
+import { uploadDocxTemplate } from '@utils/form-actions';
+import { mockDeep } from 'jest-mock-extended';
+import { TemplateDto } from 'nhs-notify-backend-client';
+
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
 
 describe('uploadLargePrintLetterTemplate', () => {
   it('returns success when all fields are valid', async () => {
+    const mockUploadDocxTemplate = jest
+      .mocked(uploadDocxTemplate)
+      .mockResolvedValue(
+        mockDeep<TemplateDto>({
+          id: 'template-id',
+        })
+      );
+
+    const mockRedirect = jest.mocked(redirect);
+
     const formData = new FormData();
     formData.append('name', 'Test Template');
     formData.append('campaignId', 'Campaign 1');
@@ -11,13 +28,24 @@ describe('uploadLargePrintLetterTemplate', () => {
     });
     formData.append('file', file);
 
-    const result = await uploadLargePrintLetterTemplate({}, formData);
+    await uploadLargePrintLetterTemplate({}, formData);
 
-    expect(result.errorState).toBeUndefined();
-    expect(result.fields).toEqual({
-      name: 'Test Template',
-      campaignId: 'Campaign 1',
-    });
+    expect(mockUploadDocxTemplate).toHaveBeenCalledWith(
+      {
+        name: 'Test Template',
+        campaignId: 'Campaign 1',
+        letterType: 'x1',
+        language: 'en',
+        templateType: 'LETTER',
+        letterVersion: 'AUTHORING',
+      },
+      file
+    );
+
+    expect(mockRedirect).toHaveBeenCalledWith(
+      '/preview-letter-template/template-id?from=edit',
+      RedirectType.push
+    );
   });
 
   it('returns validation error when name is empty', async () => {

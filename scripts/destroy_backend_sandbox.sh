@@ -11,11 +11,11 @@ if [ $# -ne 1 ]; then
   exit 2
 fi
 
-AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+AWS_ACCOUNT_ID="$( AWS_CA_BUNDLE=/usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt aws sts get-caller-identity --query Account --output text)"
 AWS_REGION="eu-west-2"
 PROJECT="nhs-notify"
 GROUP="nhs-notify-template-management-dev"
-
+-
 identifier=$1
 
 echo "Destroying backend sandbox \"$identifier\""

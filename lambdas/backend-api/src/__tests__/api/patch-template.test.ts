@@ -212,6 +212,11 @@ describe('Template API - Patch', () => {
           status: 'RENDERED',
           pageCount: 1,
         },
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PENDING',
+        },
       },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
