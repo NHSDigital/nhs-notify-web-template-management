@@ -10,7 +10,8 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
       "docx-template",
       "pdf-template",
       "test-data",
-      "proofs"
+      "proofs",
+      "docx-template"
     ],
     "path": [
       "file-type"

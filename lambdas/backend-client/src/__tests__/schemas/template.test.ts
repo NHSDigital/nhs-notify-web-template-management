@@ -1,6 +1,7 @@
 import {
   $AuthoringLetterFiles,
   $AuthoringLetterProperties,
+  $CreateAuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
@@ -200,20 +201,36 @@ describe('Template schemas', () => {
 
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
-        fieldErrors: {
-          subject: ['Invalid input: expected string, received undefined'],
-        },
+        formErrors: ['Invalid input'],
       })
     );
   });
 
-  test('Letter template fields - should fail validation, when no letterType', async () => {
+  test('CreatePdfLetterProperties - should fail validation, when no letterType', async () => {
     const result = $CreatePdfLetterProperties.safeParse({
       name: 'Test Template',
       campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
       letterVersion: 'PDF',
+    });
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          letterType: ['Invalid option: expected one of "q4"|"x0"|"x1"'],
+        },
+      })
+    );
+  });
+
+  test('CreateAuthoringLetterProperties - should fail validation, when no letterType', async () => {
+    const result = $CreateAuthoringLetterProperties.safeParse({
+      name: 'Test Template',
+      campaignId: 'campaign-id',
+      templateType: 'LETTER',
+      language: 'en',
+      letterVersion: 'AUTHORING',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -307,6 +324,11 @@ describe('Template schemas', () => {
           currentVersion: 'v1',
           status: 'RENDERED',
           pageCount: 2,
+        },
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
         },
       },
       systemPersonalisation: [],
@@ -490,6 +512,11 @@ describe('Template schemas', () => {
             status: 'RENDERED',
             pageCount: 2,
           },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
         },
         systemPersonalisation: [],
       };
@@ -668,6 +695,11 @@ describe('Template schemas', () => {
             currentVersion: 'v1',
             status: 'RENDERED',
             pageCount: 2,
+          },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
           },
         },
         systemPersonalisation: [],

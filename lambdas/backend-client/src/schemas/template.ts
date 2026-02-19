@@ -1,29 +1,28 @@
 import { z } from 'zod/v4';
-import type {
+import {
   AuthoringLetterFiles,
-  AuthoringLetterProperties,
-  PersonalisedRenderDetails,
-  RenderDetails,
-  BaseCreatedTemplate,
-  BaseTemplate,
-  CreatePdfLetterProperties,
-  CreateUpdateTemplate,
-  EmailProperties,
-  Language,
-  LetterType,
-  LetterValidationError,
-  NhsAppProperties,
   PatchTemplate,
-  PdfLetterFiles,
-  PdfLetterProperties,
-  ProofFileDetails,
-  RenderStatus,
-  SmsProperties,
-  TemplateDto,
-  TemplateStatus,
-  TemplateStatusActive,
-  TemplateType,
-  VersionedFileDetails,
+  type AuthoringLetterProperties,
+  type BaseCreatedTemplate,
+  type BaseTemplate,
+  type CreateAuthoringLetterProperties,
+  type CreatePdfLetterProperties,
+  type CreateUpdateTemplate,
+  type EmailProperties,
+  type Language,
+  type LetterType,
+  type NhsAppProperties,
+  type PersonalisedRenderDetails,
+  type PdfLetterFiles,
+  type PdfLetterProperties,
+  type ProofFileDetails,
+  type RenderStatus,
+  type SmsProperties,
+  type TemplateDto,
+  type TemplateStatus,
+  type TemplateStatusActive,
+  type TemplateType,
+  type VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -59,6 +58,12 @@ const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
     currentVersion: z.string(),
     fileName: z.string().trim().min(1),
     virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
+  })
+);
+
+export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
+  z.object({
+    docxTemplate: $VersionedFileDetails,
   })
 );
 
@@ -199,11 +204,12 @@ export const $CreateUpdateNonLetter = schemaFor<
 );
 
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
-  z.discriminatedUnion('templateType', [
+  z.union([
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
   ])
 );
 

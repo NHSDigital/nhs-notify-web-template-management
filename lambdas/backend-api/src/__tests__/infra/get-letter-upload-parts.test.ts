@@ -1,8 +1,132 @@
-import { getLetterUploadParts } from '../../app/get-letter-upload-parts';
+import {
+  getPdfUploadParts,
+  getDocxUploadParts,
+} from '../../app/get-letter-upload-parts';
 import { CreateUpdateTemplate } from 'nhs-notify-backend-client';
 import { pdfLetterMultipart } from 'nhs-notify-web-template-management-test-helper-utils';
 
-describe('getLetterUploadParts', () => {
+beforeAll(() => {
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date('2022-01-01 09:00'));
+});
+
+describe('getDocxUploadParts', () => {
+  const initialTemplate: CreateUpdateTemplate = {
+    templateType: 'LETTER',
+    name: 'template-name',
+    letterType: 'x0',
+    language: 'en',
+    campaignId: 'camapign-id',
+    letterVersion: 'AUTHORING',
+  };
+
+  const docxTemplate = Buffer.from('docxTemplate');
+
+  test('parses a multipart letter event', () => {
+    const { multipart, contentType } = pdfLetterMultipart(
+      [
+        { _type: 'json', partName: 'template' },
+        {
+          _type: 'file',
+          partName: 'docxTemplate',
+          file: docxTemplate,
+          fileName: 'template.docx',
+          fileType:
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        },
+      ],
+      initialTemplate
+    );
+
+    const result = getDocxUploadParts(multipart, contentType);
+
+    expect(result).toEqual({
+      data: {
+        template: initialTemplate,
+        docxTemplate: new File([docxTemplate], 'template.docx', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          lastModified: new Date('2022-01-01 09:00').getTime(),
+        }),
+      },
+    });
+  });
+
+  test('returns failure result when docx part is missing name', () => {
+    const { multipart, contentType } = pdfLetterMultipart([
+      { _type: 'json', partName: 'template' },
+      {
+        _type: 'file',
+        partName: 'docxTemplate',
+        file: docxTemplate,
+        fileType:
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      },
+    ]);
+
+    expect(getDocxUploadParts(multipart, contentType)).toEqual({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Docx template file is unavailable or cannot be parsed',
+        },
+      },
+    });
+  });
+
+  test('returns failure result when template part is missing', () => {
+    const { multipart, contentType } = pdfLetterMultipart([
+      {
+        _type: 'file',
+        partName: 'docxTemplate',
+        file: docxTemplate,
+        fileName: 'template.docx',
+        fileType:
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      },
+      {
+        _type: 'file',
+        partName: 'docxTemplate',
+        file: docxTemplate,
+        fileName: 'template.docx',
+        fileType:
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      },
+    ]);
+
+    expect(getDocxUploadParts(multipart, contentType)).toEqual({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Template is unavailable or cannot be parsed',
+        },
+      },
+    });
+  });
+
+  test('returns failure result when number of parts is not 2', () => {
+    const { multipart, contentType } = pdfLetterMultipart([
+      {
+        _type: 'file',
+        partName: 'docxTemplate',
+        file: docxTemplate,
+        fileName: 'template.docx',
+        fileType:
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      },
+    ]);
+
+    expect(getDocxUploadParts(multipart, contentType)).toEqual({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Unexpected number of form parts in form data: 1',
+        },
+      },
+    });
+  });
+});
+
+describe('getPdfUploadParts', () => {
   const initialTemplate: CreateUpdateTemplate = {
     templateType: 'LETTER',
     name: 'template-name',
@@ -37,29 +161,21 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    const result = getLetterUploadParts(multipart, contentType);
+    const result = getPdfUploadParts(multipart, contentType);
 
     expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: expect.any(File),
-        csv: expect.any(File),
+        pdf: new File([pdf], 'template.pdf', {
+          type: 'application/pdf',
+          lastModified: result.data!.pdf!.lastModified,
+        }),
+        csv: new File([csv], 'test-data.csv', {
+          type: 'text/csv',
+          lastModified: result.data!.csv!.lastModified,
+        }),
       },
     });
-
-    expect(result.data!.pdf).toEqual(
-      new File([pdf], 'template.pdf', {
-        type: 'application/pdf',
-        lastModified: result.data!.pdf!.lastModified,
-      })
-    );
-
-    expect(result.data!.csv).toEqual(
-      new File([csv], 'test-data.csv', {
-        type: 'text/csv',
-        lastModified: result.data!.csv!.lastModified,
-      })
-    );
   });
 
   test('defaults filenames to empty strings', () => {
@@ -82,26 +198,19 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    const result = getLetterUploadParts(multipart, contentType);
+    const result = getPdfUploadParts(multipart, contentType);
 
     expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: expect.any(File),
-        csv: expect.any(File),
+        pdf: new File([pdf], '', {
+          lastModified: result.data!.pdf!.lastModified,
+        }),
+        csv: new File([csv], '', {
+          lastModified: result.data!.csv!.lastModified,
+        }),
       },
     });
-
-    expect(result.data!.pdf).toEqual(
-      new File([pdf], '', {
-        lastModified: result.data!.pdf!.lastModified,
-      })
-    );
-    expect(result.data!.csv).toEqual(
-      new File([csv], '', {
-        lastModified: result.data!.csv!.lastModified,
-      })
-    );
   });
 
   test('returns default blank file object for PDF when expected file parts are not present', () => {
@@ -124,20 +233,16 @@ describe('getLetterUploadParts', () => {
       initialTemplate
     );
 
-    const result = getLetterUploadParts(multipart, contentType);
+    const result = getPdfUploadParts(multipart, contentType);
 
     expect(result).toEqual({
       data: {
         template: initialTemplate,
-        pdf: expect.any(File),
+        pdf: new File([], '', {
+          lastModified: result.data!.pdf!.lastModified,
+        }),
       },
     });
-
-    expect(result.data!.pdf).toEqual(
-      new File([], '', {
-        lastModified: result.data!.pdf!.lastModified,
-      })
-    );
   });
 
   test('returns failure result when template part cannot be parsed as JSON', () => {
@@ -162,7 +267,7 @@ describe('getLetterUploadParts', () => {
       'not_json'
     );
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    expect(getPdfUploadParts(multipart, contentType)).toEqual({
       error: {
         errorMeta: {
           code: 400,
@@ -190,7 +295,7 @@ describe('getLetterUploadParts', () => {
       },
     ]);
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    expect(getPdfUploadParts(multipart, contentType)).toEqual({
       error: {
         errorMeta: {
           code: 400,
@@ -211,7 +316,7 @@ describe('getLetterUploadParts', () => {
       },
     ]);
 
-    expect(getLetterUploadParts(multipart, contentType)).toEqual({
+    expect(getPdfUploadParts(multipart, contentType)).toEqual({
       error: {
         errorMeta: {
           code: 400,

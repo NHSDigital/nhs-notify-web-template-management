@@ -107,6 +107,11 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       fileName: 'render.pdf',
       currentVersion: 'v1',

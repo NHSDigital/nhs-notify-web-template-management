@@ -6,6 +6,7 @@ import {
   testUsers,
 } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import {
   assertAndClickBackLinkTop,
   assertBackLinkBottomNotPresent,
@@ -32,6 +33,12 @@ test.beforeAll(async () => {
     testUsers.UserWithMultipleCampaigns.userId
   );
   userAuthoringDisabled = await authHelper.getTestUser(testUsers.User3.userId);
+});
+
+const templateStorageHelper = new TemplateStorageHelper();
+
+test.afterAll(async () => {
+  await templateStorageHelper.deleteAdHocTemplates();
 });
 
 test.describe('Upload Other Language Letter Template Page', () => {
@@ -80,9 +87,23 @@ test.describe('Upload Other Language Letter Template Page', () => {
 
       await uploadPage.submitButton.click();
 
-      // TODO: CCM-14211 - test submit behaviour
+      const previewPageRegex =
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
-      await expect(uploadPage.errorSummaryList).toBeHidden();
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
+
+      const previewPageURLParts = page.url().match(previewPageRegex);
+
+      const templateId = previewPageURLParts?.[1];
+
+      if (!templateId) {
+        throw new Error('Could not determine template ID');
+      }
+
+      templateStorageHelper.addAdHocTemplateKey({
+        templateId,
+        clientId: userSingleCampaign.clientId,
+      });
     });
 
     test('displays error messages when blank form is submitted', async ({
@@ -134,9 +155,23 @@ test.describe('Upload Other Language Letter Template Page', () => {
 
       await uploadPage.submitButton.click();
 
-      // TODO: CCM-14211 - test submit behaviour
+      const previewPageRegex =
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
-      await expect(uploadPage.errorSummaryList).toBeHidden();
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
+
+      const previewPageURLParts = page.url().match(previewPageRegex);
+
+      const templateId = previewPageURLParts?.[1];
+
+      if (!templateId) {
+        throw new Error('Could not determine template ID');
+      }
+
+      templateStorageHelper.addAdHocTemplateKey({
+        templateId,
+        clientId: userMultipleCampaigns.clientId,
+      });
     });
 
     test('displays error messages when blank form is submitted', async ({
