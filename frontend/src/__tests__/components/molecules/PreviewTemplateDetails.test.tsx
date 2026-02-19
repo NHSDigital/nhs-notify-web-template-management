@@ -13,6 +13,7 @@ import {
   AuthoringLetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { VersionedFileDetails } from 'nhs-notify-backend-client';
 
 jest.mock('@providers/client-config-provider');
 
@@ -56,6 +57,11 @@ const baseAuthoringLetter: AuthoringLetterTemplate = {
   letterVariantId: 'variant-123',
   language: 'en',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       fileName: 'render.pdf',
       currentVersion: 'v1',
@@ -206,21 +212,6 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('matches snapshot without sidesCount', () => {
-      const { sidesCount: _, ...templateWithoutSidesCount } =
-        baseAuthoringLetter;
-      const container = render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={templateWithoutSidesCount}
-        />
-      );
-
-      expect(container.asFragment()).toMatchSnapshot();
-      expect(
-        container.container.querySelector('.missing-value')
-      ).toBeInTheDocument();
-    });
-
     it('matches snapshot without letterVariantId (shows missing value styling)', () => {
       const { letterVariantId: _, ...templateWithoutVariant } =
         baseAuthoringLetter;
@@ -239,7 +230,13 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     it('matches snapshot without initialRender - page counts are not displayed', () => {
       const templateWithoutInitialRender = {
         ...baseAuthoringLetter,
-        files: {},
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          } satisfies VersionedFileDetails,
+        },
       };
       const container = render(
         <PreviewTemplateDetailsAuthoringLetter
@@ -396,7 +393,16 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     it('hides total pages and sheets when no initialRender', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
-          template={{ ...validationFailedTemplate, files: {} }}
+          template={{
+            ...validationFailedTemplate,
+            files: {
+              docxTemplate: {
+                currentVersion: 'version-id',
+                fileName: 'template.docx',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          }}
         />
       );
 
@@ -410,6 +416,11 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
           template={{
             ...validationFailedTemplate,
             files: {
+              docxTemplate: {
+                currentVersion: 'version-id',
+                fileName: 'template.docx',
+                virusScanStatus: 'PASSED',
+              },
               initialRender: {
                 fileName: 'render.pdf',
                 currentVersion: 'v1',
@@ -442,6 +453,11 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
             template={{
               ...baseAuthoringLetter,
               files: {
+                docxTemplate: {
+                  currentVersion: 'version-id',
+                  fileName: 'template.docx',
+                  virusScanStatus: 'PASSED',
+                },
                 initialRender: {
                   fileName: 'render.pdf',
                   currentVersion: 'v1',

@@ -147,6 +147,11 @@ describe('PreviewSubmittedTemplate component', () => {
             language: 'en',
             letterVariantId: 'first-class',
             files: {
+              docxTemplate: {
+                currentVersion: 'version-id',
+                fileName: 'template.docx',
+                virusScanStatus: 'PASSED',
+              },
               initialRender: {
                 fileName: 'render.pdf',
                 currentVersion: 'v1',

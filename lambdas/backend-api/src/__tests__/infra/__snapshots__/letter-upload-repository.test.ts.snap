@@ -16,8 +16,7 @@ exports[`LetterUploadRepository static parseKey errors if invalid file type segm
       "docx-template",
       "pdf-template",
       "test-data",
-      "proofs",
-      "docx-template"
+      "proofs"
     ],
     "path": [
       "file-type"
