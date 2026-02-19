@@ -18,16 +18,12 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-if [ "${ACTION}" = "plan" ]; then
-  export TF_VAR_use_dummy_container_image_uri=true
-else
-  unset TF_VAR_use_dummy_container_image_uri
-fi
-
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 
-if [ "${ACTION}" == "apply" ]; then
+case "${ACTION}" in
+  apply)
+    unset TF_VAR_use_dummy_container_image_uri
     echo "Building lambdas for distribution"
 
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
@@ -40,10 +36,16 @@ if [ "${ACTION}" == "apply" ]; then
     run_or_fail npm run generate-dependencies --workspaces --if-present
     run_or_fail npm run lambda-build --workspaces --if-present
     run_or_fail lambdas/layers/pdfjs/build.sh
-
-else
+    ;;
+  plan)
+    export TF_VAR_use_dummy_container_image_uri=true
     echo "Skipping lambda build for action $ACTION"
-fi
+    ;;
+  *)
+    unset TF_VAR_use_dummy_container_image_uri
+    echo "Skipping lambda build for action $ACTION"
+    ;;
+esac
 
 # revert back to original directory
 cd -
