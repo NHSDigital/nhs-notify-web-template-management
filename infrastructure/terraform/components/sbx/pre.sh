@@ -23,7 +23,12 @@ cd $(git rev-parse --show-toplevel)
 
 case "${ACTION}" in
   apply)
-    unset TF_VAR_use_dummy_container_image_uri
+    if [ -n "${build_id}" ]; then
+      # Saved plans already include variable values. Avoid overriding at apply.
+      unset TF_VAR_use_dummy_container_image_uri
+    else
+      export TF_VAR_use_dummy_container_image_uri=false
+    fi
     echo "Building lambdas for distribution"
 
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then

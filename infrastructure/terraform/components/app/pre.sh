@@ -20,6 +20,13 @@ echo "ACTION=$ACTION"
 
 if [ "${ACTION}" = "plan" ]; then
   export TF_VAR_use_dummy_container_image_uri=true
+elif [ "${ACTION}" = "apply" ]; then
+  if [ -n "${build_id}" ]; then
+    # Saved plans already include variable values. Avoid overriding at apply.
+    unset TF_VAR_use_dummy_container_image_uri
+  else
+    export TF_VAR_use_dummy_container_image_uri=false
+  fi
 else
   unset TF_VAR_use_dummy_container_image_uri
 fi
