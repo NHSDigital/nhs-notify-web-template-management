@@ -18,17 +18,11 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
-if [ "${ACTION}" = "plan" ]; then
-  export TF_VAR_use_dummy_container_image_uri=true
-elif [ "${ACTION}" = "apply" ]; then
-  if [ -n "${build_id}" ]; then
-    # Saved plans already include variable values. Avoid overriding at apply.
-    unset TF_VAR_use_dummy_container_image_uri
-  else
-    export TF_VAR_use_dummy_container_image_uri=false
-  fi
+GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+if [ -n "${GIT_TAG}" ]; then
+  export TF_VAR_container_image_tag_suffix="tag-${GIT_TAG}"
 else
-  unset TF_VAR_use_dummy_container_image_uri
+  export TF_VAR_container_image_tag_suffix="sha-$(git rev-parse --short HEAD)"
 fi
 
 # change to monorepo root

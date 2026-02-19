@@ -18,17 +18,18 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+if [ -n "${GIT_TAG}" ]; then
+  export TF_VAR_container_image_tag_suffix="tag-${GIT_TAG}"
+else
+  export TF_VAR_container_image_tag_suffix="sha-$(git rev-parse --short HEAD)"
+fi
+
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 
 case "${ACTION}" in
   apply)
-    if [ -n "${build_id}" ]; then
-      # Saved plans already include variable values. Avoid overriding at apply.
-      unset TF_VAR_use_dummy_container_image_uri
-    else
-      export TF_VAR_use_dummy_container_image_uri=false
-    fi
     echo "Building lambdas for distribution"
 
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
@@ -43,11 +44,9 @@ case "${ACTION}" in
     run_or_fail lambdas/layers/pdfjs/build.sh
     ;;
   plan)
-    export TF_VAR_use_dummy_container_image_uri=true
     echo "Skipping lambda build for action $ACTION"
     ;;
   *)
-    unset TF_VAR_use_dummy_container_image_uri
     echo "Skipping lambda build for action $ACTION"
     ;;
 esac

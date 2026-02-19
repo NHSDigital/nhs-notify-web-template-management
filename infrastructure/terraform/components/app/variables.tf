@@ -220,8 +220,8 @@ variable "enable_api_data_trace" {
   default     = false
 }
 
-variable "use_dummy_container_image_uri" {
-  type        = bool
-  description = "Use a dummy image URI for container/image based Lambdas instead of resolving from ECR"
-  default     = false
+variable "container_image_tag_suffix" {
+  type        = string
+  description = "Suffix used for container/image based Lambda image tags"
+  default     = "latest"
 }

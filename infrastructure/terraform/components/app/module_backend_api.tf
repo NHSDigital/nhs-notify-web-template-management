@@ -21,11 +21,11 @@ module "backend_api" {
 
   enable_backup = var.destination_vault_arn != null ? true : false
 
-  letter_suppliers              = var.letter_suppliers
-  log_destination_arn           = local.log_destination_arn
-  log_subscription_role_arn     = local.acct.log_subscription_role_arn
-  enable_api_data_trace         = var.enable_api_data_trace
-  use_dummy_container_image_uri = var.use_dummy_container_image_uri
+  letter_suppliers           = var.letter_suppliers
+  log_destination_arn        = local.log_destination_arn
+  log_subscription_role_arn  = local.acct.log_subscription_role_arn
+  enable_api_data_trace      = var.enable_api_data_trace
+  container_image_tag_suffix = var.container_image_tag_suffix
 
   email_domain                            = module.ses.domain
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"

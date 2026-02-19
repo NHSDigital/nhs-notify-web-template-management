@@ -14,7 +14,7 @@ module "lambda_letter_preview_renderer" {
   kms_key_arn = var.kms_key_arn
 
   package_type           = "Image"
-  image_uri              = var.use_dummy_container_image_uri ? "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-latest" : "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct@${data.aws_ecr_image.letter_preview_renderer[0].image_digest}"
+  image_uri              = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.project}-${var.parent_acct_environment}-acct:${var.project}-${var.environment}-${var.component}-letter-preview-renderer-${var.container_image_tag_suffix}"
   image_repository_names = ["${var.project}-${var.parent_acct_environment}-acct"]
 
   memory  = 128
@@ -25,12 +25,4 @@ module "lambda_letter_preview_renderer" {
   log_destination_arn       = var.log_destination_arn
   log_retention_in_days     = var.log_retention_in_days
   log_subscription_role_arn = var.log_subscription_role_arn
-}
-
-data "aws_ecr_image" "letter_preview_renderer" {
-  count = var.use_dummy_container_image_uri ? 0 : 1
-
-  registry_id     = var.aws_account_id
-  repository_name = "${var.project}-${var.parent_acct_environment}-acct"
-  image_tag       = "${var.project}-${var.environment}-${var.component}-letter-preview-renderer-latest"
 }
