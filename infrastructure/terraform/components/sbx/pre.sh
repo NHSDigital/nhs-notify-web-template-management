@@ -20,7 +20,8 @@ echo "ACTION=$ACTION"
 
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
 if [ -n "${GIT_TAG}" ]; then
-  export TF_VAR_container_image_tag_suffix="tag-${GIT_TAG}"
+  RELEASE_VERSION="${GIT_TAG#v}"
+  export TF_VAR_container_image_tag_suffix="release-${RELEASE_VERSION}-$(git rev-parse --short HEAD)"
 else
   export TF_VAR_container_image_tag_suffix="sha-$(git rev-parse --short HEAD)"
 fi

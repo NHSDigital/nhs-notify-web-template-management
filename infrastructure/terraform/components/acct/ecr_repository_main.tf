@@ -13,6 +13,7 @@ resource "aws_ecr_repository" "main" {
 }
 
 resource "aws_ecr_lifecycle_policy" "main" {
+  count      = var.enable_ecr_lifecycle ? 1 : 0
   repository = aws_ecr_repository.main.name
 
   policy = <<EOF
@@ -63,10 +64,10 @@ resource "aws_ecr_lifecycle_policy" "main" {
     },
     {
       "rulePriority": 10,
-      "description": "Archive tagged images (semantic-version tags) after 90 days — do not expire them (no delete)",
+      "description": "Archive tagged releaseimages (semantic-version tags) after 90 days — do not expire them (no delete)",
       "selection": {
         "tagStatus": "tagged",
-        "tagPatternList": ["*-tag-*"],
+        "tagPatternList": ["*-release-*"],
         "countType": "sinceImagePushed",
         "countUnit": "days",
         "countNumber": 90

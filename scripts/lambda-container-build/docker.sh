@@ -35,21 +35,23 @@ GHCR_LOGIN_USER="${GITHUB_ACTOR}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$PWD")}"
 
 ## Set image tag suffixes based on git metadata.
-# We always publish a sha-based tag. If the commit is tagged, we also publish a tag-based alias.
+# We always publish a sha-based suffix. If the commit is tagged, we also publish a release suffix.
 echo "Checking git metadata for image tag suffixes..."
-SHORT_SHA="sha-$(git rev-parse --short HEAD)"
+SHORT_SHA="$(git rev-parse --short HEAD)"
+SHA_SUFFIX="sha-${SHORT_SHA}"
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
 
 if [ -n "$GIT_TAG" ]; then
-  TAGGED="tag-$GIT_TAG"
+  RELEASE_VERSION="${GIT_TAG#v}"
+  RELEASE_SUFFIX="release-${RELEASE_VERSION}-${SHORT_SHA}"
   echo "On tag: $GIT_TAG"
-  echo "Publishing SHA suffix: $SHORT_SHA"
-  echo "Publishing TAG suffix: $TAGGED"
-  export IMAGE_TAG_SUFFIX="$TAGGED"
+  echo "Publishing SHA suffix: $SHA_SUFFIX"
+  echo "Publishing RELEASE suffix: $RELEASE_SUFFIX"
+  export IMAGE_TAG_SUFFIX="$RELEASE_SUFFIX"
 else
   echo "Not on a tag"
-  echo "Publishing SHA suffix: $SHORT_SHA"
-  export IMAGE_TAG_SUFFIX="$SHORT_SHA"
+  echo "Publishing SHA suffix: $SHA_SUFFIX"
+  export IMAGE_TAG_SUFFIX="$SHA_SUFFIX"
 fi
 
 ## Check if we are running in the context of a Terraform apply or plan, and set PUBLISH_LAMBDA_IMAGE accordingly. We only want to push images to ECR on apply, not on plan.
@@ -94,20 +96,15 @@ IMAGE_TAG="${CSI}-${LAMBDA_NAME}"
 ECR_REPO_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
 
 # Final tag names we will produce.
-IMAGE_TAG_SHA="${ECR_REPO_URI}:${IMAGE_TAG}-${SHORT_SHA}"
-IMAGE_TAG_TAGGED=""
+IMAGE_TAG_SHA="${ECR_REPO_URI}:${IMAGE_TAG}-${SHA_SUFFIX}"
+IMAGE_TAG_RELEASE=""
 if [ -n "${GIT_TAG}" ]; then
-  IMAGE_TAG_TAGGED="${ECR_REPO_URI}:${IMAGE_TAG}-tag-${GIT_TAG}"
+  IMAGE_TAG_RELEASE="${ECR_REPO_URI}:${IMAGE_TAG}-${RELEASE_SUFFIX}"
 fi
 
 declare -a IMAGE_TAGS=("${IMAGE_TAG_SHA}")
-if [ -n "${IMAGE_TAG_TAGGED}" ]; then
-  IMAGE_TAGS+=("${IMAGE_TAG_TAGGED}")
-fi
-
-declare -a BUILD_TAG_ARGS=()
-for TAG in "${IMAGE_TAGS[@]}"; do
-  BUILD_TAG_ARGS+=("-t" "${TAG}")
+if [ -n "${IMAGE_TAG_RELEASE}" ]; then
+  IMAGE_TAGS+=("${IMAGE_TAG_RELEASE}")
 done
 
 echo "Will build and tag images:"
@@ -123,9 +120,14 @@ docker buildx build \
   --provenance=false \
   --sbom=false \
   --build-arg BASE_IMAGE="${BASE_IMAGE}" \
-  "${BUILD_TAG_ARGS[@]}" \
+  -t "${IMAGE_TAG_SHA}" \
   --load \
   .
+
+if [ -n "${IMAGE_TAG_RELEASE}" ]; then
+  echo "Tagging release alias ${IMAGE_TAG_RELEASE} from ${IMAGE_TAG_SHA}"
+  docker tag "${IMAGE_TAG_SHA}" "${IMAGE_TAG_RELEASE}"
+fi
 
 # Push the image tag(s) to ECR on apply only. The Terraform configuration references the deterministic suffixed tag.
 if [ "${PUBLISH_LAMBDA_IMAGE:-false}" = "true" ]; then
