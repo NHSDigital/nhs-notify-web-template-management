@@ -105,7 +105,7 @@ fi
 declare -a IMAGE_TAGS=("${IMAGE_TAG_SHA}")
 if [ -n "${IMAGE_TAG_RELEASE}" ]; then
   IMAGE_TAGS+=("${IMAGE_TAG_RELEASE}")
-done
+fi
 
 echo "Will build and tag images:"
 for TAG in "${IMAGE_TAGS[@]}"; do
