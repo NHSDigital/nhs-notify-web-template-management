@@ -5,6 +5,15 @@
         "properties": {
           "docxTemplate": {
             "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "initialRender": {
+            "$ref": "#/components/schemas/RenderDetails"
+          },
+          "longFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+          },
+          "shortFormRender": {
+            "$ref": "#/components/schemas/PersonalisedRenderDetails"
           }
         },
         "required": [

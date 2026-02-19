@@ -367,13 +367,16 @@ describe('Template schemas', () => {
 
   describe('$AuthoringLetterFiles', () => {
     test.each([
-      { description: 'template only', files: {
-        docxTemplate: {
-          currentVersion: 'version-id',
-          fileName: 'template.docx',
-          virusScanStatus: 'PASSED',
+      {
+        description: 'template only',
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
         },
-      } },
+      },
       {
         description: 'template and initialRender only',
         files: {
