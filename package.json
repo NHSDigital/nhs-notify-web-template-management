@@ -29,6 +29,7 @@
   "name": "nhs-notify-web-template-management",
   "overrides": {
     "fast-xml-parser": "^5.3.6",
+    "minimatch": "^10.2.1",
     "nhsuk-react-components": {
       "nhsuk-frontend": "^10.3.1"
     },
