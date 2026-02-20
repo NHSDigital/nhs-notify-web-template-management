@@ -304,7 +304,8 @@ test.describe('POST /v1/docx-letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'FDocx template file is unavailable or cannot be parsed',
+      technicalMessage:
+        'FDocx template file is unavailable or cannot be parsed',
     });
   });
 
