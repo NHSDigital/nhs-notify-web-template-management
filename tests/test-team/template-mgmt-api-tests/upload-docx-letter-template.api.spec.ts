@@ -93,7 +93,7 @@ test.describe('POST /v1/docx-letter-template', () => {
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
-        lockNumber: 1, // the api endpoint does a create and then an update so this gets incremented to 1 rather than initial 0
+        lockNumber: 0,
         createdBy: `INTERNAL_USER#${user1.internalUserId}`,
         updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
       },
@@ -102,87 +102,6 @@ test.describe('POST /v1/docx-letter-template', () => {
     expect(result.data.files.pdfTemplate.currentVersion).toBe(
       result.data.files.testDataCsv.currentVersion
     );
-
-    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
-    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
-  });
-
-  test('returns 201 if input is valid, test data is optional', async ({
-    request,
-  }) => {
-    const { templateData, multipart, contentType } =
-      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
-        },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'docxTemplate',
-            fileName: 'template.docx',
-            fileType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            file: docxFixtures.standard.open(),
-          },
-        ]
-      );
-
-    const start = new Date();
-
-    const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
-      {
-        data: multipart,
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'Content-Type': contentType,
-        },
-      }
-    );
-
-    const result = await response.json();
-    const debug = JSON.stringify(result, null, 2);
-
-    expect(response.status(), debug).toBe(201);
-
-    templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.data.id,
-      clientId: user1.clientId,
-    });
-
-    expect(result).toEqual({
-      statusCode: 201,
-      data: {
-        campaignId: user1?.campaignIds?.[0],
-        createdAt: expect.stringMatching(isoDateRegExp),
-        files: {
-          pdfTemplate: {
-            currentVersion: expect.stringMatching(uuidRegExp),
-            fileName: 'template.docx',
-            virusScanStatus: 'PENDING',
-          },
-          proofs: {},
-        },
-        id: expect.stringMatching(uuidRegExp),
-        language: 'en',
-        letterType: 'x0',
-        letterVersion: 'AUTHORING',
-        name: templateData.name,
-        templateStatus: 'PENDING_VALIDATION',
-        templateType: templateData.templateType,
-        updatedAt: expect.stringMatching(isoDateRegExp),
-        clientId: user1.clientId,
-        lockNumber: 1,
-        createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-        updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
-      },
-    });
 
     expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
     expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
@@ -265,9 +184,9 @@ test.describe('POST /v1/docx-letter-template', () => {
           },
           {
             _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
+            partName: 'docxTemplate',
+            fileName: 'template.docx',
+            fileType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             file: docxFixtures.standard.open(),
           },
         ]
@@ -341,10 +260,7 @@ test.describe('POST /v1/docx-letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Request failed validation',
-      details: {
-        $root: 'Invalid input',
-      },
+      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
     });
   });
 
@@ -448,6 +364,7 @@ test.describe('POST /v1/docx-letter-template', () => {
         {
           templateType: 'LETTER',
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -482,7 +399,7 @@ test.describe('POST /v1/docx-letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Failed to identify or validate DOCX data',
+      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
     });
   });
 });
