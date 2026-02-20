@@ -89,6 +89,7 @@ if [ -n "${GHCR_LOGIN_USER:-}" ] && [ -n "${GHCR_LOGIN_TOKEN:-}" ]; then
     echo "GHCR login successful."
   else
     echo "GHCR login failed!" >&2
+    exit 1
   fi
 fi
 
