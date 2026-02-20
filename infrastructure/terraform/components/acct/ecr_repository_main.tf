@@ -21,7 +21,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
   "rules": [
     {
       "rulePriority": 1,
-      "description": "Expire commit images after 30 days (commit tags use suffix '-sha-')",
+      "description": "Expire (delete) commit images after 30 days (commit tags use suffix '-sha-')",
       "selection": {
         "tagStatus": "tagged",
         "tagPatternList": ["*-sha-*"],
@@ -48,7 +48,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
     },
     {
       "rulePriority": 10,
-      "description": "Archive tagged releaseimages (semantic-version tags), keeping the 10 most recent — do not expire them (no delete)",
+      "description": "Archive tagged release images (semantic-version tags), keeping the 10 most recent — do not expire them (no delete)",
       "selection": {
         "tagStatus": "tagged",
         "tagPatternList": ["*-release-*"],
