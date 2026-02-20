@@ -298,7 +298,7 @@ fi;
   || error_and_die "Required argument missing: -a/--action";
 
 # Validate AWS Credentials Available
-iam_iron_man="$( AWS_CA_BUNDLE=/usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt aws sts get-caller-identity --query 'Arn' --output text)";
+iam_iron_man="$(aws sts get-caller-identity --query 'Arn' --output text)";
 if [ -n "${iam_iron_man}" ]; then
   echo -e "AWS Credentials Found. Using ARN '${iam_iron_man}'";
 else
@@ -306,7 +306,7 @@ else
 fi;
 
 # Query canonical AWS Account ID
-aws_account_id="$( AWS_CA_BUNDLE=/usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt aws sts get-caller-identity --query 'Account' --output text)";
+aws_account_id="$(aws sts get-caller-identity --query 'Account' --output text)";
 if [ -n "${aws_account_id}" ]; then
   echo -e "AWS Account ID: ${aws_account_id}";
 else
