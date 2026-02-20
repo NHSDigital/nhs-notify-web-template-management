@@ -33,6 +33,10 @@ export const ChooseTemplateType = ({
 
   const features = useFeatureFlags();
 
+  const filteredTemplateTypes = features.letterAuthoring
+    ? templateTypes
+    : templateTypes.filter((type) => type !== 'LETTER');
+
   const $ChooseTemplateType = features.letterAuthoring
     ? $ChooseTemplateTypeWithLetterAuthoring
     : $ChooseTemplateTypeBase;
@@ -61,7 +65,7 @@ export const ChooseTemplateType = ({
     </Radios>
   );
 
-  const templateTypeOptions = templateTypes.map((templateType) => ({
+  const templateTypeOptions = filteredTemplateTypes.map((templateType) => ({
     id: templateType,
     text: content.templateTypes[templateType],
     conditional:
@@ -93,6 +97,7 @@ export const ChooseTemplateType = ({
           learnMoreLink={content.learnMoreLink}
           learnMoreText={content.learnMoreText}
           formAttributes={{ onSubmit: formValidate }}
+          isLetterAuthoringEnabled={features.letterAuthoring}
         />
       </NHSNotifyMain>
     </>
