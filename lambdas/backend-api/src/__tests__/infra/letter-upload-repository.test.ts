@@ -53,6 +53,7 @@ describe('LetterUploadRepository', () => {
         { internalUserId, clientId },
         versionId,
         pdf,
+        'pdf-template',
         csv
       );
 
@@ -89,7 +90,8 @@ describe('LetterUploadRepository', () => {
         templateId,
         { internalUserId, clientId },
         versionId,
-        pdf
+        pdf,
+        'pdf-template'
       );
 
       expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 1);
@@ -119,6 +121,7 @@ describe('LetterUploadRepository', () => {
         { internalUserId, clientId },
         versionId,
         pdf,
+        'pdf-template',
         csv
       );
 

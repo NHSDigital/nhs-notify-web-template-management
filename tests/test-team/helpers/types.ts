@@ -64,6 +64,7 @@ type TypeSpecificProperties = {
     testDataCsv?: File;
     proofs?: Record<string, ProofFile>;
     // Authoring letter files
+    docxTemplate?: File;
     initialRender?: RenderFile;
     shortFormRender?: RenderFile;
     longFormRender?: RenderFile;

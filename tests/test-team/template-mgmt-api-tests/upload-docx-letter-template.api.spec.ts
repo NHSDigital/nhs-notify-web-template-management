@@ -10,9 +10,9 @@ import {
   isoDateRegExp,
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
-import { pdfUploadFixtures } from '../fixtures/letters';
+import { docxFixtures } from '../fixtures/letters';
 
-test.describe('POST /v1/letter-template', () => {
+test.describe('POST /v1/docx-letter-template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -31,6 +31,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -39,17 +40,11 @@ test.describe('POST /v1/letter-template', () => {
           },
           {
             _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-          },
-          {
-            _type: 'file',
-            partName: 'testCsv',
-            fileName: 'test-data.csv',
-            fileType: 'text/csv',
-            file: pdfUploadFixtures.withPersonalisation.csv.open(),
+            partName: 'docxTemplate',
+            fileName: 'template.docx',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            file: docxFixtures.standard.open(),
           },
         ]
       );
@@ -57,7 +52,7 @@ test.describe('POST /v1/letter-template', () => {
     const start = new Date();
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -83,125 +78,33 @@ test.describe('POST /v1/letter-template', () => {
         campaignId: user1.campaignIds?.[0],
         createdAt: expect.stringMatching(isoDateRegExp),
         files: {
-          pdfTemplate: {
+          docxTemplate: {
             currentVersion: expect.stringMatching(uuidRegExp),
-            fileName: 'template.pdf',
+            fileName: 'template.docx',
             virusScanStatus: 'PENDING',
           },
-          testDataCsv: {
-            currentVersion: expect.stringMatching(uuidRegExp),
-            fileName: 'test-data.csv',
-            virusScanStatus: 'PENDING',
-          },
-          proofs: {},
         },
         id: expect.stringMatching(uuidRegExp),
         language: 'en',
         letterType: 'x0',
-        letterVersion: 'PDF',
+        letterVersion: 'AUTHORING',
         name: templateData.name,
-        proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
         clientId: user1.clientId,
-        lockNumber: 1, // the api endpoint does a create and then an update so this gets incremented to 1 rather than initial 0
-        createdBy: `INTERNAL_USER#${user1.internalUserId}`,
-        updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
-      },
-    });
-
-    expect(result.data.files.pdfTemplate.currentVersion).toBe(
-      result.data.files.testDataCsv.currentVersion
-    );
-
-    expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
-    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
-  });
-
-  test('returns 201 if input is valid, test data is optional', async ({
-    request,
-  }) => {
-    const { templateData, multipart, contentType } =
-      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-        },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
-          },
-        ]
-      );
-
-    const start = new Date();
-
-    const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
-      {
-        data: multipart,
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'Content-Type': contentType,
-        },
-      }
-    );
-
-    const result = await response.json();
-    const debug = JSON.stringify(result, null, 2);
-
-    expect(response.status(), debug).toBe(201);
-
-    templateStorageHelper.addAdHocTemplateKey({
-      templateId: result.data.id,
-      clientId: user1.clientId,
-    });
-
-    expect(result).toEqual({
-      statusCode: 201,
-      data: {
-        campaignId: user1?.campaignIds?.[0],
-        createdAt: expect.stringMatching(isoDateRegExp),
-        files: {
-          pdfTemplate: {
-            currentVersion: expect.stringMatching(uuidRegExp),
-            fileName: 'template.pdf',
-            virusScanStatus: 'PENDING',
-          },
-          proofs: {},
-        },
-        id: expect.stringMatching(uuidRegExp),
-        language: 'en',
-        letterType: 'x0',
-        letterVersion: 'PDF',
-        name: templateData.name,
-        proofingEnabled: true,
-        templateStatus: 'PENDING_VALIDATION',
-        templateType: templateData.templateType,
-        updatedAt: expect.stringMatching(isoDateRegExp),
-        clientId: user1.clientId,
-        lockNumber: 1,
+        lockNumber: 0,
         createdBy: `INTERNAL_USER#${user1.internalUserId}`,
         updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
       },
     });
 
     expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
-    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`
     );
 
     const result = await response.json();
@@ -215,7 +118,7 @@ test.describe('POST /v1/letter-template', () => {
 
   test('returns 400 if no body on request', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -236,7 +139,7 @@ test.describe('POST /v1/letter-template', () => {
 
   test('returns 400 if body is not form data', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
@@ -267,6 +170,7 @@ test.describe('POST /v1/letter-template', () => {
           templateType: 'LETTER',
           templateStatus: 'SUBMITTED',
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -275,16 +179,17 @@ test.describe('POST /v1/letter-template', () => {
           },
           {
             _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
+            partName: 'docxTemplate',
+            fileName: 'template.docx',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            file: docxFixtures.standard.open(),
           },
         ]
       );
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -316,6 +221,7 @@ test.describe('POST /v1/letter-template', () => {
           templateType: 'LETTER',
           name: undefined,
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -327,13 +233,13 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
+            file: docxFixtures.standard.open(),
           },
         ]
       );
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -350,14 +256,11 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Request failed validation',
-      details: {
-        $root: 'Invalid input',
-      },
+      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
     });
   });
 
-  test('returns 400 if PDF part cannot be identified in form parts', async ({
+  test('returns 400 if DOCX part cannot be identified in form parts', async ({
     request,
   }) => {
     const { multipart, contentType } =
@@ -374,22 +277,16 @@ test.describe('POST /v1/letter-template', () => {
           {
             _type: 'file',
             partName: 'UNEXPECTED',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-          },
-          {
-            _type: 'file',
-            partName: 'testCsv',
-            fileName: 'test-data.csv',
-            fileType: 'text/csv',
-            file: pdfUploadFixtures.withPersonalisation.csv.open(),
+            fileName: 'template.docx',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            file: docxFixtures.standard.open(),
           },
         ]
       );
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -406,7 +303,7 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Failed to identify or validate PDF data',
+      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
     });
   });
 
@@ -418,6 +315,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -426,16 +324,16 @@ test.describe('POST /v1/letter-template', () => {
           },
           {
             _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
+            partName: 'docxTemplate',
+            fileName: 'template.docx',
             fileType: 'UNEXPECTED',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
+            file: docxFixtures.standard.open(),
           },
         ]
       );
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -452,7 +350,7 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Failed to identify or validate PDF data',
+      technicalMessage: 'Failed to identify or validate DOCX data',
     });
   });
 
@@ -462,6 +360,7 @@ test.describe('POST /v1/letter-template', () => {
         {
           templateType: 'LETTER',
           campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
         },
         [
           {
@@ -470,15 +369,16 @@ test.describe('POST /v1/letter-template', () => {
           },
           {
             _type: 'file',
-            partName: 'letterPdf',
-            fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
+            partName: 'docxTemplate',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            file: docxFixtures.standard.open(),
           },
         ]
       );
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
       {
         data: multipart,
         headers: {
@@ -495,58 +395,7 @@ test.describe('POST /v1/letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Failed to identify or validate PDF data',
-    });
-  });
-
-  test('returns 400 if CSV part is present but is invalid', async ({
-    request,
-  }) => {
-    const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-        },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'letterPdf',
-            fileType: 'application/pdf',
-            fileName: 'template.pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
-          },
-          {
-            _type: 'file',
-            partName: 'testCsv',
-            file: pdfUploadFixtures.withPersonalisation.csv.open(),
-          },
-        ]
-      );
-
-    const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/letter-template`,
-      {
-        data: multipart,
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'Content-Type': contentType,
-        },
-      }
-    );
-
-    const result = await response.json();
-    const debug = JSON.stringify(result, null, 2);
-
-    expect(response.status(), debug).toBe(400);
-
-    expect(await response.json()).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Failed to validate CSV data',
+      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
     });
   });
 });

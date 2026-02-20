@@ -14,10 +14,12 @@ import {
   $TemplateFilter,
   PatchTemplate,
   $PatchTemplate,
+  AuthoringLetterFiles,
 } from 'nhs-notify-backend-client';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
-  $UploadLetterTemplate,
+  $UploadPdfLetterTemplate,
+  $UploadDocxLetterTemplate,
   DatabaseTemplate,
   User,
   $PdfLetterTemplate,
@@ -105,7 +107,7 @@ export class TemplateClient {
     });
 
     const templateValidationResult = await validate(
-      $UploadLetterTemplate,
+      $UploadPdfLetterTemplate,
       template
     );
 
@@ -226,6 +228,7 @@ export class TemplateClient {
       user,
       versionId,
       pdf,
+      'pdf-template',
       csv
     );
 
@@ -260,6 +263,138 @@ export class TemplateClient {
     }
 
     return success(finalTemplateDTO);
+  }
+
+  async uploadDocxTemplate(
+    template: unknown,
+    user: User,
+    docxTemplate: File
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({
+      template,
+      user,
+    });
+
+    const templateValidationResult = await validate(
+      $UploadDocxLetterTemplate,
+      template
+    );
+
+    if (templateValidationResult.error) {
+      log
+        .child(templateValidationResult.error.errorMeta)
+        .error(
+          'Request failed validation',
+          templateValidationResult.error.actualError
+        );
+
+      return templateValidationResult;
+    }
+
+    const validatedTemplate = templateValidationResult.data;
+
+    if (
+      docxTemplate.type !== LETTER_MULTIPART.DOCX.fileType ||
+      !docxTemplate.name
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Failed to identify or validate DOCX data'
+      );
+    }
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    const { data: clientConfiguration, error: clientConfigurationError } =
+      clientConfigurationResult;
+
+    if (clientConfigurationError) {
+      log
+        .child(clientConfigurationError.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationError.actualError
+        );
+
+      return clientConfigurationResult;
+    }
+
+    const isCampaignIdValid = this.isCampaignIdValid(
+      clientConfiguration,
+      validatedTemplate.campaignId
+    );
+
+    if (!isCampaignIdValid) {
+      log.error('Invalid campaign ID in request');
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
+
+    const versionId = randomUUID();
+
+    const files: AuthoringLetterFiles = {
+      docxTemplate: {
+        fileName: docxTemplate.name,
+        currentVersion: versionId,
+        virusScanStatus: 'PENDING',
+      },
+    };
+
+    const letterTemplateFields = {
+      ...validatedTemplate,
+      files,
+    };
+
+    const createResult = await this.templateRepository.create(
+      letterTemplateFields,
+      user,
+      'PENDING_VALIDATION',
+      validatedTemplate.campaignId
+    );
+
+    if (createResult.error) {
+      log
+        .child(createResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          createResult.error.actualError
+        );
+
+      return createResult;
+    }
+
+    console.log('CREATE RESULT', createResult.data);
+
+    const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    const uploadResult = await this.letterUploadRepository.upload(
+      templateDTO.id,
+      user,
+      versionId,
+      docxTemplate,
+      'docx-template'
+    );
+
+    if (uploadResult.error) {
+      log
+        .child(uploadResult.error.errorMeta)
+        .error('Failed to upload letter files', uploadResult.error.actualError);
+
+      return uploadResult;
+    }
+
+    console.log('DTO', templateDTO);
+
+    return success(templateDTO);
   }
 
   async updateTemplate(
@@ -809,7 +944,10 @@ export class TemplateClient {
   ): TemplateDto | undefined {
     const parseResult = $TemplateDto.safeParse(databaseTemplate);
     if (!parseResult.success) {
-      this.logger.child(databaseTemplate).error('Failed to parse template');
+      this.logger.child(databaseTemplate).error({
+        description: 'Failed to parse template',
+        err: parseResult.error,
+      });
     }
     return parseResult.data;
   }

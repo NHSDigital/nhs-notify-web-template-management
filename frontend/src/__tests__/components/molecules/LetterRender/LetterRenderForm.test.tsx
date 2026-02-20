@@ -16,7 +16,13 @@ const baseTemplate: AuthoringLetterTemplate = {
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
   language: 'en',
-  files: {},
+  files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
+  },
   systemPersonalisation: ['firstName', 'lastName'],
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',

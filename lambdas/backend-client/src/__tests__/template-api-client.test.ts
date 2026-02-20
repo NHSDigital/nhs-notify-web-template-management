@@ -174,6 +174,97 @@ describe('TemplateAPIClient', () => {
     expect(result.error).toBeUndefined();
   });
 
+  test('uploadDocxTemplate - should return error', async () => {
+    axiosMock.onPost('/v1/docx-letter-template').reply(400, {
+      statusCode: 400,
+      technicalMessage: 'Bad request',
+      details: {
+        message: 'Invalid request',
+      },
+    });
+
+    const result = await client.uploadDocxTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'x1',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      },
+      testToken,
+      new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      })
+    );
+
+    expect(result.error).toEqual({
+      errorMeta: {
+        code: 400,
+        description: 'Bad request',
+        details: {
+          message: 'Invalid request',
+        },
+      },
+    });
+
+    expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(1);
+  });
+
+  test('uploadDocxTemplate - should return template', async () => {
+    axiosMock.onPost('/v1/docx-letter-template').reply(201, {
+      statusCode: 201,
+      data: {
+        id: 'id',
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'x1',
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: '32ADDAB01170',
+            virusScanStatus: 'PENDING',
+          },
+        },
+      },
+    });
+
+    const result = await client.uploadDocxTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'x1',
+        campaignId: 'campaign-id',
+        letterVersion: 'PDF',
+      },
+      testToken,
+      new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      })
+    );
+
+    expect(result.data).toEqual({
+      id: 'id',
+      name: 'test',
+      templateType: 'LETTER',
+      language: 'de',
+      letterType: 'x1',
+      files: {
+        docxTemplate: {
+          fileName: 'template.docx',
+          currentVersion: '32ADDAB01170',
+          virusScanStatus: 'PENDING',
+        },
+      },
+    });
+
+    expect(result.error).toBeUndefined();
+  });
+
   test('updateTemplate - should return error', async () => {
     axiosMock.onPut('/v1/template/real-id').reply(400, {
       statusCode: 400,
