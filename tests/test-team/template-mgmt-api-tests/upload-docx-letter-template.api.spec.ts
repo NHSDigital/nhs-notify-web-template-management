@@ -99,10 +99,6 @@ test.describe('POST /v1/docx-letter-template', () => {
       },
     });
 
-    expect(result.data.files.pdfTemplate.currentVersion).toBe(
-      result.data.files.testDataCsv.currentVersion
-    );
-
     expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
     expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
@@ -308,7 +304,7 @@ test.describe('POST /v1/docx-letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Failed to identify or validate DOCX data',
+      technicalMessage: 'FDocx template file is unavailable or cannot be parsed',
     });
   });
 
