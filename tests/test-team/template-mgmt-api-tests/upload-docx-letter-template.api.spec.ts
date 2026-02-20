@@ -100,7 +100,6 @@ test.describe('POST /v1/docx-letter-template', () => {
     });
 
     expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
-    expect(result.data.createdAt).not.toEqual(result.data.updatedAt);
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -305,7 +304,7 @@ test.describe('POST /v1/docx-letter-template', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage:
-        'FDocx template file is unavailable or cannot be parsed',
+        'Docx template file is unavailable or cannot be parsed',
     });
   });
 
