@@ -1,11 +1,158 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PreviewDigitalTemplate Digital proofing when digitalProofingEmail is enabled matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    Template saved
+  </div>
+  Preview
+  <div
+    class="nhsuk-summary-list test-message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-email/template-456"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test email
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary"
+    data-testid="edit-template-button"
+    draggable="false"
+    href="/edit-email-template/template-456"
+    role="button"
+  >
+    Edit template
+  </a>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+    data-testid="send-test-message-button"
+    draggable="false"
+    href="/send-test-email/template-456"
+    role="button"
+  >
+    Send a test message
+  </a>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplate Digital proofing when digitalProofingNhsApp is enabled matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    Template saved
+  </div>
+  Preview
+  <div
+    class="nhsuk-summary-list test-message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-nhs-app-message/template-123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test NHS App message
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary"
+    data-testid="edit-template-button"
+    draggable="false"
+    href="/edit-nhs-app-template/template-123"
+    role="button"
+  >
+    Edit template
+  </a>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+    data-testid="send-test-message-button"
+    draggable="false"
+    href="/send-test-nhs-app-message/template-123"
+    role="button"
+  >
+    Send a test message
+  </a>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplate Digital proofing when digitalProofingSms is enabled matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    Template saved
+  </div>
+  Preview
+  <div
+    class="nhsuk-summary-list test-message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-text-message/template-789"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test text message
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary"
+    data-testid="edit-template-button"
+    draggable="false"
+    href="/edit-sms-template/template-789"
+    role="button"
+  >
+    Edit template
+  </a>
+  <a
+    aria-disabled="false"
+    class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+    data-testid="send-test-message-button"
+    draggable="false"
+    href="/send-test-text-message/template-789"
+    role="button"
+  >
+    Send a test message
+  </a>
+</DocumentFragment>
+`;
+
 exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
   >
-    NHS app message template
+    Template saved
   </div>
   <div
     aria-labelledby="error-summary-title"
@@ -72,18 +219,18 @@ exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
             >
               <input
                 class="nhsuk-radios__input"
-                data-testid="option-1-radio"
-                id="preview-example-option-1"
+                data-testid="test-edit-radio"
+                id="preview-example-test-edit"
                 name="preview-example"
                 type="radio"
-                value="option-1"
+                value="test-edit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-example-option-1"
-                id="preview-example-option-1--label"
+                for="preview-example-test-edit"
+                id="preview-example-test-edit--label"
               >
-                option 1
+                Edit template
               </label>
             </div>
             <div
@@ -91,18 +238,18 @@ exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
             >
               <input
                 class="nhsuk-radios__input"
-                data-testid="option-2-radio"
-                id="preview-example-option-2"
+                data-testid="test-submit-radio"
+                id="preview-example-test-submit"
                 name="preview-example"
                 type="radio"
-                value="option-2"
+                value="test-submit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-example-option-2"
-                id="preview-example-option-2--label"
+                for="preview-example-test-submit"
+                id="preview-example-test-submit--label"
               >
-                option 2
+                Submit template
               </label>
             </div>
           </div>
@@ -127,7 +274,7 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
   >
-    NHS app message template
+    Template saved
   </div>
   Preview
   <form
@@ -169,18 +316,18 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
             >
               <input
                 class="nhsuk-radios__input"
-                data-testid="option-1-radio"
-                id="preview-example-option-1"
+                data-testid="test-edit-radio"
+                id="preview-example-test-edit"
                 name="preview-example"
                 type="radio"
-                value="option-1"
+                value="test-edit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-example-option-1"
-                id="preview-example-option-1--label"
+                for="preview-example-test-edit"
+                id="preview-example-test-edit--label"
               >
-                option 1
+                Edit template
               </label>
             </div>
             <div
@@ -188,18 +335,18 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
             >
               <input
                 class="nhsuk-radios__input"
-                data-testid="option-2-radio"
-                id="preview-example-option-2"
+                data-testid="test-submit-radio"
+                id="preview-example-test-submit"
                 name="preview-example"
                 type="radio"
-                value="option-2"
+                value="test-submit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-example-option-2"
-                id="preview-example-option-2--label"
+                for="preview-example-test-submit"
+                id="preview-example-test-submit--label"
               >
-                option 2
+                Submit template
               </label>
             </div>
           </div>
@@ -221,13 +368,18 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
 
 exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
 <DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    Template saved
+  </div>
   Preview
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"
     data-testid="edit-template-button"
     draggable="false"
-    href="/edit-nhs-app-template/template-id"
+    href="/edit-nhs-app-template/app-template-id"
     role="button"
   >
     Edit template

@@ -2,11 +2,11 @@ import { NHSNotifyRadioButtonFormProps } from '@molecules/NHSNotifyRadioButtonFo
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
 
 export type PreviewTemplateProps = {
   sectionHeading: string | undefined;
-  template: TemplateDto;
+  template: DigitalTemplate;
   previewDetailsComponent: React.ReactElement<
     | typeof PreviewTemplateDetailsEmail
     | typeof PreviewTemplateDetailsNhsApp
