@@ -68,9 +68,8 @@ resource "aws_ecr_lifecycle_policy" "main" {
       "selection": {
         "tagStatus": "tagged",
         "tagPatternList": ["*-release-*"],
-        "countType": "sinceImagePushed",
-        "countUnit": "days",
-        "countNumber": 90
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
       },
       "action": {
         "type": "transition",
