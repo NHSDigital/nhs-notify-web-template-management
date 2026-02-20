@@ -186,7 +186,8 @@ test.describe('POST /v1/docx-letter-template', () => {
             _type: 'file',
             partName: 'docxTemplate',
             fileName: 'template.docx',
-            fileType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             file: docxFixtures.standard.open(),
           },
         ]
