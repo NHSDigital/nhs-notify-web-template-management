@@ -126,7 +126,7 @@ test.describe('Submit Letter Template Page', () => {
     expect(status).toBe('Proof approved');
   });
 
-  test.only('when routing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
+  test('when routing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
     page,
     baseURL,
   }) => {

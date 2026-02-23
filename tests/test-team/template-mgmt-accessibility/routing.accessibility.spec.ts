@@ -145,7 +145,10 @@ test.describe('Routing', () => {
       TemplateFactory.uploadLetterTemplate(
         templateIds.LETTER,
         user,
-        `Test Letter template - ${templateIds.LETTER}`
+        `Test Letter template - ${templateIds.LETTER}`,
+        'NOT_YET_SUBMITTED',
+        'PASSED',
+        { letterVersion: 'AUTHORING' }
       ),
       TemplateFactory.uploadLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
@@ -153,7 +156,7 @@ test.describe('Routing', () => {
         `Test Large Print Letter template - ${templateIds.LETTER_LARGE_PRINT}`,
         'NOT_YET_SUBMITTED',
         'PASSED',
-        { letterType: 'x1' }
+        { letterType: 'x1', letterVersion: 'AUTHORING' }
       ),
       TemplateFactory.uploadLetterTemplate(
         templateIds.LETTER_OTHER_LANGUAGE,
@@ -161,7 +164,7 @@ test.describe('Routing', () => {
         `Test Letter template French - ${templateIds.LETTER_OTHER_LANGUAGE}`,
         'NOT_YET_SUBMITTED',
         'PASSED',
-        { language: 'fr' }
+        { language: 'fr', letterVersion: 'AUTHORING' }
       ),
     ]);
   });

@@ -375,7 +375,7 @@ test.describe('letter complete e2e journey', () => {
     );
   });
 
-  test.only('Full journey with proofing disabled and routing enabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
+  test('Full journey with proofing disabled and routing enabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
     await loginAsUser(proofingDisabledAndRoutingEnabled, page);

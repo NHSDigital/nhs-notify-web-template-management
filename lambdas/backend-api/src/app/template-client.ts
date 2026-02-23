@@ -633,6 +633,7 @@ export class TemplateClient {
       language,
       excludeLanguage,
       letterType,
+      letterVersion,
     } = parsedFilters;
     const query = this.templateRepository.query(user.clientId);
     query.excludeTemplateStatus('DELETED');
@@ -641,6 +642,7 @@ export class TemplateClient {
     if (language) query.language(language);
     if (excludeLanguage) query.excludeLanguage(excludeLanguage);
     if (letterType) query.letterType(letterType);
+    if (letterVersion) query.letterVersion(letterVersion);
 
     return query.list();
   }
