@@ -593,7 +593,6 @@ describe('guard duty handler', () => {
     ).not.toHaveBeenCalled();
   });
 
-  // to be sorted out by CCM-14558
   test('no-op if the template is an authoring template', async () => {
     const { handler, mocks } = setup();
 

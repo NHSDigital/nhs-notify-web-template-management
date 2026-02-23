@@ -410,9 +410,6 @@ describe('templateClient', () => {
         docxTemplate
       );
 
-      console.log('RESULT', result);
-      console.log('EXPECT', expectedDto);
-
       expect(result).toEqual({
         data: {
           ...expectedDto,

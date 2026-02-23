@@ -84,7 +84,7 @@ test.describe('Upload BSL Letter Template Page', () => {
       await uploadPage.submitButton.click();
 
       const previewPageRegex =
-        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
@@ -145,7 +145,7 @@ test.describe('Upload BSL Letter Template Page', () => {
       await uploadPage.submitButton.click();
 
       const previewPageRegex =
-        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 

@@ -368,8 +368,6 @@ export class TemplateClient {
       return createResult;
     }
 
-    console.log('CREATE RESULT', createResult.data);
-
     const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
 
     if (!templateDTO) {
@@ -391,8 +389,6 @@ export class TemplateClient {
 
       return uploadResult;
     }
-
-    console.log('DTO', templateDTO);
 
     return success(templateDTO);
   }

@@ -43,7 +43,7 @@ describe('uploadLargePrintLetterTemplate', () => {
     );
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/preview-letter-template/template-id?from=edit',
+      '/preview-letter-template/template-id',
       RedirectType.push
     );
   });

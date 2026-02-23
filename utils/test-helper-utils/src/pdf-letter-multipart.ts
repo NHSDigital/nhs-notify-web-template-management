@@ -13,10 +13,10 @@ type FilePart = {
   fileType?: string;
 };
 
-export type PdfUploadPartSpec = TemplatePart | FilePart;
+export type UploadPartSpec = TemplatePart | FilePart;
 
 export function getTestMultipartFormData(
-  parts: PdfUploadPartSpec[],
+  parts: UploadPartSpec[],
   template?: Record<string, unknown> | string
 ): {
   contentType: string;

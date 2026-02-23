@@ -8,9 +8,30 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import {
   isoDateRegExp,
+  UploadPartSpec,
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { docxFixtures } from '../fixtures/letters';
+
+const baseTemplateData = {
+  templateType: 'LETTER',
+  campaignId: 'Campaign1',
+  letterVersion: 'AUTHORING',
+};
+
+const baseTemplateFormData: UploadPartSpec = {
+  _type: 'json',
+  partName: 'template',
+};
+
+const baseDocxMultipartFormData: UploadPartSpec = {
+  _type: 'file',
+  partName: 'docxTemplate',
+  fileName: 'template.docx',
+  fileType:
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  file: docxFixtures.standard.open(),
+};
 
 test.describe('POST /v1/docx-letter-template', () => {
   const authHelper = createAuthHelper();
@@ -28,25 +49,8 @@ test.describe('POST /v1/docx-letter-template', () => {
   test('returns 201 if input is valid', async ({ request }) => {
     const { templateData, multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
-        },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'docxTemplate',
-            fileName: 'template.docx',
-            fileType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            file: docxFixtures.standard.open(),
-          },
-        ]
+        baseTemplateData,
+        [baseTemplateFormData, baseDocxMultipartFormData]
       );
 
     const start = new Date();
@@ -167,25 +171,10 @@ test.describe('POST /v1/docx-letter-template', () => {
     const { multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
-          templateType: 'LETTER',
+          ...baseTemplateData,
           templateStatus: 'SUBMITTED',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
         },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'docxTemplate',
-            fileName: 'template.docx',
-            fileType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            file: docxFixtures.standard.open(),
-          },
-        ]
+        [baseTemplateFormData, baseDocxMultipartFormData]
       );
 
     const response = await request.post(
@@ -218,24 +207,10 @@ test.describe('POST /v1/docx-letter-template', () => {
     const { multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
-          templateType: 'LETTER',
+          ...baseTemplateData,
           name: undefined,
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
         },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'letterPdf',
-            fileName: 'template.pdf',
-            fileType: 'application/pdf',
-            file: docxFixtures.standard.open(),
-          },
-        ]
+        [baseTemplateFormData, baseDocxMultipartFormData]
       );
 
     const response = await request.post(
@@ -265,22 +240,12 @@ test.describe('POST /v1/docx-letter-template', () => {
   }) => {
     const { multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-        },
+        baseTemplateData,
         [
+          baseTemplateFormData,
           {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
+            ...baseDocxMultipartFormData,
             partName: 'UNEXPECTED',
-            fileName: 'template.docx',
-            fileType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            file: docxFixtures.standard.open(),
           },
         ]
       );
@@ -312,22 +277,12 @@ test.describe('POST /v1/docx-letter-template', () => {
   }) => {
     const { multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
-        },
+        baseTemplateData,
         [
+          baseTemplateFormData,
           {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'docxTemplate',
-            fileName: 'template.docx',
+            ...baseDocxMultipartFormData,
             fileType: 'UNEXPECTED',
-            file: docxFixtures.standard.open(),
           },
         ]
       );
@@ -355,26 +310,11 @@ test.describe('POST /v1/docx-letter-template', () => {
   });
 
   test('returns 400 if PDF part has no filename', async ({ request }) => {
+    const { fileName: _, ...docxMultipartFormData } = baseDocxMultipartFormData;
     const { multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-        {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
-        },
-        [
-          {
-            _type: 'json',
-            partName: 'template',
-          },
-          {
-            _type: 'file',
-            partName: 'docxTemplate',
-            fileType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            file: docxFixtures.standard.open(),
-          },
-        ]
+        baseTemplateData,
+        [baseTemplateFormData, docxMultipartFormData]
       );
 
     const response = await request.post(

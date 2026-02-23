@@ -56,7 +56,7 @@ export async function uploadOtherLanguageLetterTemplate(
   const savedTemplate = await uploadDocxTemplate(template, file);
 
   return redirect(
-    `/preview-letter-template/${savedTemplate.id}?from=edit`,
+    `/preview-letter-template/${savedTemplate.id}`,
     RedirectType.push
   );
 }

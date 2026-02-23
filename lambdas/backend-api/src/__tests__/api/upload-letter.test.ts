@@ -8,7 +8,7 @@ import {
 } from 'aws-lambda';
 import {
   getTestMultipartFormData,
-  PdfUploadPartSpec,
+  UploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateClient } from '../../app/template-client';
 
@@ -311,7 +311,7 @@ describe('upload-letter', () => {
 
   const invalidMultipartLengthCases: {
     count: number;
-    parts: PdfUploadPartSpec[];
+    parts: UploadPartSpec[];
   }[] = [
     {
       count: 1,
