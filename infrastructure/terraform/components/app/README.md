@@ -22,6 +22,7 @@
 | <a name="input_cognito_user_pool_additional_callback_urls"></a> [cognito\_user\_pool\_additional\_callback\_urls](#input\_cognito\_user\_pool\_additional\_callback\_urls) | A list of additional callback\_urls for the cognito user pool | `list(string)` | `[]` | no |
 | <a name="input_commit_id"></a> [commit\_id](#input\_commit\_id) | The commit to deploy. Must be in the tree for branch\_name | `string` | `"HEAD"` | no |
 | <a name="input_component"></a> [component](#input\_component) | The variable encapsulating the name of this component | `string` | `"app"` | no |
+| <a name="input_container_image_tag_suffix"></a> [container\_image\_tag\_suffix](#input\_container\_image\_tag\_suffix) | Suffix used for container/image based Lambda image tags | `string` | `"latest"` | no |
 | <a name="input_control_plane_bus_arn"></a> [control\_plane\_bus\_arn](#input\_control\_plane\_bus\_arn) | Data plane event bus arn | `string` | n/a | yes |
 | <a name="input_data_plane_bus_arn"></a> [data\_plane\_bus\_arn](#input\_data\_plane\_bus\_arn) | Data plane event bus arn | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | A map of default tags to apply to all taggable resources within the component | `map(string)` | `{}` | no |

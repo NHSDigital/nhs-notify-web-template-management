@@ -115,9 +115,9 @@ test.describe('Submit Letter Template Page', () => {
 
     await submitPage.clickSubmitTemplateButton();
 
-    await expect(page).toHaveURL(TemplateMgmtMessageTemplatesPage.url);
-
     const listPage = new TemplateMgmtMessageTemplatesPage(page);
+
+    await expect(page).toHaveURL(listPage.getUrl());
 
     const status = await listPage.getTemplateStatus(
       templates.routingEnabled.id
