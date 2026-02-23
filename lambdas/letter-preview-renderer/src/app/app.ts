@@ -108,7 +108,7 @@ export class App {
 
       return await handleRequest(source.path, requestLogger);
     } catch (error) {
-      requestLogger.error('Render failed', { error });
+      requestLogger.error('Render failed', error);
 
       await this.templateRepository.updateFailure(request);
 
