@@ -231,7 +231,10 @@ test.describe('POST /v1/docx-letter-template', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage: 'Docx template file is unavailable or cannot be parsed',
+      technicalMessage: 'Request failed validation',
+      details: {
+        name: 'Invalid input: expected string, received undefined',
+      },
     });
   });
 
