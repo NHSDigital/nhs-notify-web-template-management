@@ -4,6 +4,7 @@ import type {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
+import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
 
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -1197,6 +1198,14 @@ const requestProof = {
 
 const previewDigitalTemplate = {
   editButton: 'Edit template',
+  sendTestMessageButton: 'Send a test message',
+  testMessageBanner: {
+    NHS_APP:
+      'This is only a basic preview. [Send a test NHS App message](/templates/send-test-nhs-app-message/{{templateId}}) to preview this message properly.',
+    SMS: 'This is only a basic preview. [Send a test text message](/templates/send-test-text-message/{{templateId}}) to preview this message properly.',
+    EMAIL:
+      'This is only a basic preview. [Send a test email](/templates/send-test-email/{{templateId}}) to preview this message properly.',
+  } as Record<DigitalTemplateType, string>,
 };
 
 const messagePlanFallbackConditions: Record<
