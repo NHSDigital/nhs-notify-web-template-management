@@ -219,3 +219,9 @@ variable "enable_api_data_trace" {
   description = "Enable API Gateway data trace logging"
   default     = false
 }
+
+variable "container_image_tag_suffix" {
+  type        = string
+  description = "Suffix used for container/image based Lambda image tags"
+  default     = "latest"
+}

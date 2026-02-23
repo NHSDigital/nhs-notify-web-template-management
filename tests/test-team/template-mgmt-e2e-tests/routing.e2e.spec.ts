@@ -395,6 +395,7 @@ test.describe('Routing', () => {
     });
 
     await test.step('verify message plan is in production', async () => {
+      expect(page.url()).toContain(messagePlansPage.getUrl());
       await expect(messagePlansPage.pageHeading).toBeVisible();
 
       await assertMessagePlanInTable(
