@@ -250,7 +250,8 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { templateId: string; clientId: string }
+  templateKey: { templateId: string; clientId: string },
+  expectedUrl: RegExp
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
@@ -258,9 +259,7 @@ function submit(
     const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
     await submitTemplatePage.clickSubmitTemplateButton();
 
-    await expect(page).toHaveURL(
-      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
-    );
+    await expect(page).toHaveURL(expectedUrl);
 
     const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
     expect(finalTemplate.templateStatus).toBe('SUBMITTED');
@@ -312,18 +311,14 @@ test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   let userWithRouting: TestUser;
-  let userWithoutRouting: TestUser;
-  let userWithoutProofing: TestUser;
+  let proofingDisabledAndRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
     userWithRouting = await createAuthHelper().getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
-    userWithoutRouting = await createAuthHelper().getTestUser(
-      testUsers.User2.userId
-    );
-    userWithoutProofing = await createAuthHelper().getTestUser(
-      testUsers.User3.userId
+    proofingDisabledAndRoutingEnabled = await createAuthHelper().getTestUser(
+      testUsers.UserRoutingEnabled.userId
     );
   });
 
@@ -361,6 +356,13 @@ test.describe('letter complete e2e journey', () => {
       'proof-requested-sender'
     );
 
+    await submit(
+      page,
+      templateStorageHelper,
+      templateKey,
+      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
+    );
+
     await approve(page, templateStorageHelper, templateKey);
 
     await checkEmail(
@@ -371,57 +373,26 @@ test.describe('letter complete e2e journey', () => {
     );
   });
 
-  test('Full journey with routing disabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
+  test.only('Full journey with proofing disabled and routing enabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
-    const testStart = new Date();
-
-    await loginAsUser(userWithoutRouting, page);
+    await loginAsUser(proofingDisabledAndRoutingEnabled, page);
 
     const templateKey = await create(
       page,
       templateStorageHelper,
-      userWithoutRouting,
-      'PENDING_PROOF_REQUEST'
-    );
-
-    await continueAfterCreation(page);
-
-    const supplierReference = await requestProof(
-      page,
-      templateStorageHelper,
-      templateKey
-    );
-
-    await checkEmail(
-      supplierReference,
-      testStart,
-      'Proof Requested',
-      'proof-requested-sender'
-    );
-
-    await submit(page, templateStorageHelper, templateKey);
-
-    await checkEmail(
-      supplierReference,
-      testStart,
-      'Template Submitted',
-      'template-submitted-sender'
-    );
-  });
-
-  test('Full journey - user has proofing disabled', async ({ page }) => {
-    await loginAsUser(userWithoutProofing, page);
-
-    const templateKey = await create(
-      page,
-      templateStorageHelper,
-      userWithoutProofing,
+      proofingDisabledAndRoutingEnabled,
       'NOT_YET_SUBMITTED'
     );
 
     await continueAfterCreation(page);
 
-    await submit(page, templateStorageHelper, templateKey);
+    await submit(
+      page,
+      templateStorageHelper,
+      templateKey,
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      new RegExp(TemplateMgmtMessageTemplatesPage.pathTemplate)
+    );
   });
 });

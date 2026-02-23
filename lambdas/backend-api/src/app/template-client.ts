@@ -473,7 +473,7 @@ export class TemplateClient {
       return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
     }
 
-    const result = clientConfig.features.routing
+    const result = clientConfig.features.proofing
       ? await this.templateRepository.approveProof(
           templateId,
           user,
