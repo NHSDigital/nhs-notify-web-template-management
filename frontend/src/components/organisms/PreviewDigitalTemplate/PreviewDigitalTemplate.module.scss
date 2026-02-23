@@ -1,0 +1,12 @@
+.test-message-banner {
+  margin-top: -40px;
+
+  &:global(.nhsuk-summary-list) {
+    border-top: 0;
+  }
+}
+
+.test-message-banner__callout {
+  margin: 1rem !important;
+  max-width: initial;
+}

@@ -73,6 +73,8 @@ export type LetterTemplate = PdfLetterTemplate | AuthoringLetterTemplate;
 
 export type DigitalTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
 
+export type DigitalTemplateType = Exclude<TemplateType, 'LETTER'>;
+
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
 
