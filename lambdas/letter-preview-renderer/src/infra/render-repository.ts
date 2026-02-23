@@ -37,10 +37,7 @@ export class RenderRepository {
     };
   }
 
-  private s3Key(
-    { templateId, clientId, requestType }: RenderRequest,
-    id: string
-  ) {
-    return `${clientId}/${templateId}/renders/${requestType}/${id}.pdf`;
+  private s3Key({ templateId, clientId }: RenderRequest, id: string) {
+    return `${clientId}/renders/${templateId}/${id}.pdf`;
   }
 }

@@ -53,7 +53,7 @@ describe('RenderRepository', () => {
       expect(result).toBe(`${uuid}.pdf`);
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
-        `test-client/test-template/renders/initial/${uuid}.pdf`,
+        `test-client/renders/test-template/${uuid}.pdf`,
         {
           Metadata: {
             'page-count': '3',
@@ -111,7 +111,7 @@ describe('RenderRepository', () => {
 
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
-        `client-abc/tmpl-xyz/renders/personalised/${uuid}.pdf`,
+        `client-abc/renders/tmpl-xyz/${uuid}.pdf`,
         expect.objectContaining({
           Metadata: expect.objectContaining({
             variant: 'personalised',
