@@ -11,12 +11,15 @@ export type ClientConfiguration = {
     proofing: boolean;
     routing?: boolean;
     letterAuthoring?: boolean;
+    digitalProofingNhsApp?: boolean;
+    digitalProofingEmail?: boolean;
+    digitalProofingSms?: boolean;
   };
   name?: string;
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled' | 'DigitalProofingEnabled'}`;
 
 export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
   /**
@@ -118,6 +121,22 @@ export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
       letterAuthoring: true,
     },
   },
+
+  /**
+   * ClientDigitalProofingEnabled is an alternative client with all digital proofing flags enabled
+   */
+  ClientDigitalProofingEnabled: {
+    campaignIds: ['DigitalProofingEnabledCampaign'],
+    name: 'Digital Proofing Enabled Client',
+    features: {
+      proofing: false,
+      routing: true,
+      letterAuthoring: true,
+      digitalProofingNhsApp: true,
+      digitalProofingEmail: true,
+      digitalProofingSms: true,
+    },
+  },
 };
 
 export class ClientConfigurationHelper {
@@ -149,12 +168,11 @@ export class ClientConfigurationHelper {
   async teardown() {
     const ids = await this.authContextFile.clientIds(this.runId);
 
-    if (ids.length > 0) {
-      await this.ssmClient.send(
-        new DeleteParametersCommand({
-          Names: ids.map((id) => this.ssmKey(id)),
-        })
-      );
+    const names = ids.map((id) => this.ssmKey(id));
+
+    for (let i = 0; i < names.length; i += 10) {
+      const batch = names.slice(i, i + 10);
+      await this.ssmClient.send(new DeleteParametersCommand({ Names: batch }));
     }
   }
 
