@@ -1,9 +1,14 @@
 import type { Language, LetterType } from 'nhs-notify-backend-client';
 import type { TestUser } from '../auth/cognito-auth-helper';
-import type { RenderFile, Template } from '../types';
+import type { RenderFile, Template, File } from '../types';
 import { randomUUID } from 'node:crypto';
 
 export const defaultFileRenders = {
+  docxTemplate: {
+    fileName: 'template.docx',
+    currentVersion: 'version-id',
+    virusScanStatus: 'PASSED',
+  } satisfies File,
   initialRender: {
     fileName: 'initial-render.pdf',
     currentVersion: 'v1',
@@ -130,6 +135,7 @@ export const TemplateFactory = {
       language?: Language;
       letterVariantId?: string;
       campaignId?: string | null;
+      docxTemplate?: Partial<File> | false;
       initialRender?: Partial<RenderFile> | false;
       shortFormRender?: Partial<RenderFile> | false;
       longFormRender?: Partial<RenderFile> | false;
@@ -144,6 +150,13 @@ export const TemplateFactory = {
         : (options?.campaignId ?? 'campaign-id');
 
     const files: Record<string, unknown> = {};
+
+    if (options?.docxTemplate !== false) {
+      files.docxTemplate = {
+        ...defaultFileRenders.docxTemplate,
+        ...options?.docxTemplate,
+      };
+    }
 
     if (options?.initialRender !== false) {
       files.initialRender = {

@@ -24,6 +24,7 @@ import type {
   TemplateStatusActive,
   TemplateType,
   VersionedFileDetails,
+  CreateAuthoringLetterProperties,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -106,6 +107,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
+    docxTemplate: $VersionedFileDetails,
     initialRender: $RenderDetails.optional(),
     longFormRender: $PersonalisedRenderDetails.optional(),
     shortFormRender: $PersonalisedRenderDetails.optional(),
@@ -171,6 +173,15 @@ const $ValidationErrorDetail = schemaFor<ValidationErrorDetail>()(
   })
 );
 
+export const $CreateAuthoringLetterProperties =
+  schemaFor<CreateAuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+    })
+  );
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
@@ -217,12 +228,20 @@ export const $CreateUpdateNonLetter = schemaFor<
   ])
 );
 
+export const $CreateUpdateLetterTemplate = z.discriminatedUnion(
+  'letterVersion',
+  [
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
+  ]
+);
+
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $CreateUpdateLetterTemplate,
   ])
 );
 

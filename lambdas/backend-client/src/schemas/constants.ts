@@ -23,6 +23,11 @@ export const LETTER_MULTIPART = {
     name: 'testCsv',
     fileType: 'text/csv',
   },
+  DOCX: {
+    name: 'docxTemplate',
+    fileType:
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  },
 };
 
 // From https://github.com/NHSDigital/comms-mgr/blob/main/packages/libs/utils/src/constants.ts

@@ -36,6 +36,7 @@ npx esbuild \
     src/submit.ts \
     src/update-routing-config.ts \
     src/update.ts \
+    src/upload-docx-letter.ts \
     src/upload-letter.ts \
     src/validate-letter-template-files.ts
 

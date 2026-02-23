@@ -15,6 +15,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
+import { VersionedFileDetails } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -330,7 +331,13 @@ describe('authoring letter template without initial render', () => {
   beforeEach(() => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
-      files: {},
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
+      },
     });
   });
 
@@ -443,7 +450,13 @@ describe('authoring letter with validation errors', () => {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED' as const,
       validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
-      files: {},
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        } satisfies VersionedFileDetails,
+      },
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
