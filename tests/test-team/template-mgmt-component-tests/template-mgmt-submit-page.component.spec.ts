@@ -232,7 +232,7 @@ test.describe('Submit template Page', () => {
         await assertBackLinkTopNotPresent(props);
       });
 
-      test.only(`when user submits form, then the ${channelName} "Submit template" page is displayed`, async ({
+      test(`when user submits form, then the ${channelName} "Submit template" page is displayed`, async ({
         page,
       }) => {
         await loginAsUser(proofingDisabledAndRoutingEnabledUser, page);

@@ -3,6 +3,7 @@ import {
   $TemplateDto,
   Language,
   LetterType,
+  LetterVersion,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -16,6 +17,7 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
   private includeLanguages: Language[] = [];
   private excludeLanguages: Language[] = [];
   private includeLetterTypes: LetterType[] = [];
+  private includeLetterVersions: LetterVersion[] = [];
 
   constructor(
     docClient: DynamoDBDocumentClient,
@@ -60,6 +62,11 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
     return this;
   }
 
+  letterVersion(...letterVersions: LetterVersion[]) {
+    this.includeLetterVersions.push(...letterVersions);
+    return this;
+  }
+
   protected addFilters(): void {
     this.addFilterToQuery('templateStatus', 'INCLUDE', this.includeStatuses);
     this.addFilterToQuery('templateStatus', 'EXCLUDE', this.excludeStatuses);
@@ -67,5 +74,10 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
     this.addFilterToQuery('language', 'INCLUDE', this.includeLanguages);
     this.addFilterToQuery('language', 'EXCLUDE', this.excludeLanguages);
     this.addFilterToQuery('letterType', 'INCLUDE', this.includeLetterTypes);
+    this.addFilterToQuery(
+      'letterVersion',
+      'INCLUDE',
+      this.includeLetterVersions
+    );
   }
 }

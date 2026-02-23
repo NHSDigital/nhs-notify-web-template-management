@@ -965,6 +965,10 @@ export type GetV1TemplatesData = {
      * Filter by a single accessible letter type
      */
     letterType?: LetterType;
+    /**
+     * Filter by a single letter version
+     */
+    letterVersion?: LetterVersion;
   };
   url: '/v1/templates';
 };

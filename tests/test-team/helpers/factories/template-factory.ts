@@ -1,4 +1,8 @@
-import type { Language, LetterType } from 'nhs-notify-backend-client';
+import type {
+  Language,
+  LetterType,
+  LetterVersion,
+} from 'nhs-notify-backend-client';
 import type { TestUser } from '../auth/cognito-auth-helper';
 import type { RenderFile, Template } from '../types';
 import { randomUUID } from 'node:crypto';
@@ -89,6 +93,7 @@ export const TemplateFactory = {
     options?: {
       letterType?: LetterType;
       language?: Language;
+      letterVersion?: LetterVersion;
     }
   ): Template => {
     return TemplateFactory.create({
