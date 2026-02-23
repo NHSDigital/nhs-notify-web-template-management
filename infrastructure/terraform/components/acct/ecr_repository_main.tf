@@ -29,7 +29,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
         "countNumber": 30
       },
       "action": {
-        "type": "expire",
+        "type": "expire"
       }
     },
     {
