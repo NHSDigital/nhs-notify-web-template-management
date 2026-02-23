@@ -11,7 +11,7 @@ const config: Config = {
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
     'sqs-handler.ts',
-    'event-publisher.ts'
+    'event-publisher.ts',
   ],
 };
 

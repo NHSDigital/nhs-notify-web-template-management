@@ -6,7 +6,7 @@ const config: Config = {
   testEnvironment: 'node',
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
-    'version.ts'
+    'version.ts',
   ],
 };
 

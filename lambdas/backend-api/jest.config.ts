@@ -20,7 +20,7 @@ const jestConfig: Config = {
     '/test-utils/',
     'proofing-queue.ts', // proofing code will be removed
     'src/container',
-    '/src/[^/]+\\.ts$' // entrypoint files
+    '/src/[^/]+\\.ts$', // entrypoint files
   ],
   transformIgnorePatterns: ['node_modules/(?!pdfjs-dist)'],
   transform: {

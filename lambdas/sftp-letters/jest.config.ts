@@ -12,7 +12,7 @@ const config: Config = {
     'sftp-poll',
     'sftp-request-proof.ts',
     'types.ts',
-    'config-poll.ts'
+    'config-poll.ts',
   ],
 };
 
