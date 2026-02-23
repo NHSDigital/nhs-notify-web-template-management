@@ -71,9 +71,6 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
 );
 
 const $RenderDetailsFailed = z.object({
-  currentVersion: z.string().optional(),
-  fileName: z.string().trim().min(1).optional(),
-  pageCount: z.number().int().optional(),
   status: z.literal('FAILED'),
 });
 

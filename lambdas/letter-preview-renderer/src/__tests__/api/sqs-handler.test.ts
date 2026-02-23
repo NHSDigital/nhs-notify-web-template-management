@@ -22,10 +22,13 @@ const initialRequest = {
 };
 
 const personalisedRequest = {
-  requestType: 'personalised-short',
+  requestType: 'personalised',
+  requestTypeVariant: 'short',
   clientId: 'test-client',
   templateId: 'test-template',
   currentVersion: 'test-version',
+  personalisation: { first_name: 'Test' },
+  lockNumber: 1,
 };
 
 describe('createHandler', () => {

@@ -75,35 +75,39 @@ describe('Carbone', () => {
   });
 
   describe('extractMarkers', () => {
-    test('strips _root. prefix and returns marker names as a Set', async () => {
+    test('returns marker names as a Set', async () => {
       const instance = setup();
 
       mockExtractMarkers.mockResolvedValue([
-        { name: '_root.d.address_line_1', pos: 0 },
-        { name: '_root.d.first_name', pos: 1 },
-        { name: '_root.d.last_name', pos: 2 },
+        '_root.d.address_line_1',
+        '_root.d.first_name',
+        '_root.d.last_name',
       ]);
 
       const result = await instance.extractMarkers('/tmp/template.docx');
 
       expect(result).toEqual(
-        new Set(['d.address_line_1', 'd.first_name', 'd.last_name'])
+        new Set([
+          '_root.d.address_line_1',
+          '_root.d.first_name',
+          '_root.d.last_name',
+        ])
       );
       expect(mockExtractMarkers).toHaveBeenCalledWith('/tmp/template.docx');
     });
 
-    test('skips markers without _root. prefix', async () => {
+    test('throws when a marker lacks _root. prefix', async () => {
       const instance = setup();
 
       mockExtractMarkers.mockResolvedValue([
-        { name: '_root.d.address_line_1', pos: 0 },
-        { name: 'no_root_prefix', pos: 1 },
-        { name: '_root.d.first_name', pos: 2 },
+        '_root.d.address_line_1',
+        'no_root_prefix',
+        '_root.d.first_name',
       ]);
 
-      const result = await instance.extractMarkers('/tmp/template.docx');
-
-      expect(result).toEqual(new Set(['d.address_line_1', 'd.first_name']));
+      await expect(
+        instance.extractMarkers('/tmp/template.docx')
+      ).rejects.toThrow('Unexpected marker name no_root_prefix');
     });
 
     test('returns empty set when no markers are found', async () => {
@@ -116,17 +120,20 @@ describe('Carbone', () => {
       expect(result).toEqual(new Set());
     });
 
-    test('returns empty set when all markers lack _root. prefix', async () => {
+    test('deduplicates marker names', async () => {
       const instance = setup();
 
       mockExtractMarkers.mockResolvedValue([
-        { name: 'bad_marker', pos: 0 },
-        { name: 'another_bad', pos: 1 },
+        '_root.d.first_name',
+        '_root.d.first_name',
+        '_root.d.last_name',
       ]);
 
       const result = await instance.extractMarkers('/tmp/template.docx');
 
-      expect(result).toEqual(new Set());
+      expect(result).toEqual(
+        new Set(['_root.d.first_name', '_root.d.last_name'])
+      );
     });
   });
 });

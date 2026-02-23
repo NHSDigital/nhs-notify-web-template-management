@@ -832,15 +832,6 @@
       },
       "RenderDetailsFailed": {
         "properties": {
-          "currentVersion": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "pageCount": {
-            "type": "integer"
-          },
           "status": {
             "enum": [
               "FAILED"

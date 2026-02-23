@@ -146,13 +146,13 @@ describe('App', () => {
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
         mocks.renderRepo.save.mockResolvedValue(fileName);
-        mocks.templateRepo.updateFailure.mockResolvedValue(undefined);
+        mocks.templateRepo.updateSuccess.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('rendered-invalid');
 
-        expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(
+        expect(mocks.templateRepo.updateSuccess).toHaveBeenCalledWith(
           request,
           {
             system: [
@@ -166,6 +166,9 @@ describe('App', () => {
             ],
             custom: ['first_name'],
           },
+          request.currentVersion,
+          fileName,
+          pageCount,
           [{ name: 'INVALID_MARKERS', issues: ['foo.bar'] }]
         );
       });

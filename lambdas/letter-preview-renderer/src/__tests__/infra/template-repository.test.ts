@@ -34,10 +34,13 @@ const createInitialRequest = (
 const createPersonalisedRequest = (
   overrides: Partial<Omit<ShortPersonalisedRenderRequest, 'requestType'>> = {}
 ): ShortPersonalisedRenderRequest => ({
-  requestType: 'personalised-short',
+  requestType: 'personalised',
+  requestTypeVariant: 'short',
   clientId: 'test-client',
   templateId: 'test-template',
   currentVersion: 'test-version',
+  personalisation: { first_name: 'Test' },
+  lockNumber: 1,
   ...overrides,
 });
 
@@ -139,6 +142,62 @@ describe('TemplateRepository', () => {
           ':customPersonalisation': ['last_name', 'dob'],
         }),
       });
+    });
+
+    test('sets status to VALIDATION_FAILED and appends validation errors when provided', async () => {
+      const { templateRepository, mocks } = setup();
+      const request = createInitialRequest();
+      const personalisation = createPersonalisation();
+      const validationErrors = [
+        { name: 'INVALID_MARKERS' as const, issues: ['foo.bar'] },
+      ];
+
+      mocks.ddbDocClient.on(UpdateCommand).resolves({});
+
+      await templateRepository.updateSuccess(
+        request,
+        personalisation,
+        'v1',
+        'render.pdf',
+        2,
+        validationErrors
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ExpressionAttributeValues: expect.objectContaining({
+          ':templateStatus': 'VALIDATION_FAILED',
+          ':validationErrors': validationErrors,
+        }),
+      });
+    });
+
+    test('does not append validation errors when array is empty', async () => {
+      const { templateRepository, mocks } = setup();
+      const request = createInitialRequest();
+      const personalisation = createPersonalisation();
+
+      mocks.ddbDocClient.on(UpdateCommand).resolves({});
+
+      await templateRepository.updateSuccess(
+        request,
+        personalisation,
+        'v1',
+        'render.pdf',
+        2,
+        []
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ExpressionAttributeValues: expect.objectContaining({
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+        }),
+      });
+
+      const receivedCommand = mocks.ddbDocClient.commandCalls(UpdateCommand);
+      const expressionValues =
+        receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
+
+      expect(expressionValues).not.toHaveProperty(':validationErrors');
     });
   });
 
@@ -266,28 +325,6 @@ describe('TemplateRepository', () => {
         receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
 
       expect(expressionValues).not.toHaveProperty(':validationErrors');
-    });
-
-    test('passes optional currentVersion, fileName, pageCount to initial render', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-      const personalisation = createPersonalisation();
-      const validationErrors = [
-        { name: 'INVALID_MARKERS' as const, issues: ['bad.marker'] },
-      ];
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailure(
-        request,
-        personalisation,
-        validationErrors,
-        'v2',
-        'failed-render.pdf',
-        1
-      );
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommand(UpdateCommand);
     });
   });
 });

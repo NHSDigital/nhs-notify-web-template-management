@@ -467,6 +467,29 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
     });
   });
 
+  describe('failed initial render', () => {
+    it('shows 0 pages and 0 sheets when initialRender status is FAILED', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{
+            ...baseAuthoringLetter,
+            files: {
+              initialRender: {
+                status: 'FAILED',
+              },
+            },
+          }}
+        />
+      );
+
+      const pagesRow = screen.getByText('Total pages').closest('div');
+      expect(pagesRow).toHaveTextContent('0');
+
+      const sheetsRow = screen.getByText('Sheets').closest('div');
+      expect(sheetsRow).toHaveTextContent('0');
+    });
+  });
+
   describe('printing and postage action link', () => {
     it('shows edit link when template is editable', () => {
       render(

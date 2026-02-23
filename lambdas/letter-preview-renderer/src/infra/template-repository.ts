@@ -15,9 +15,12 @@ export class TemplateRepository {
     personalisation: Personalisation,
     currentVersion: string,
     fileName: string,
-    pageCount: number
+    pageCount: number,
+    validationErrors?: LetterValidationErrorDetail[]
   ) {
     if (request.requestType !== 'initial') return;
+
+    const hasValidationErrors = validationErrors && validationErrors.length > 0;
 
     const builder = new TemplateUpdateBuilder(
       this.templatesTableName,
@@ -27,7 +30,9 @@ export class TemplateRepository {
       .incrementLockNumber()
       .expectTemplateExists()
       .expectStatus('PENDING_VALIDATION')
-      .setStatus('NOT_YET_SUBMITTED')
+      .setStatus(
+        hasValidationErrors ? 'VALIDATION_FAILED' : 'NOT_YET_SUBMITTED'
+      )
       .setPersonalisation(personalisation.system, personalisation.custom)
       .setInitialRender({
         status: 'RENDERED',
@@ -36,16 +41,17 @@ export class TemplateRepository {
         pageCount,
       });
 
+    if (hasValidationErrors) {
+      builder.appendValidationErrors(validationErrors);
+    }
+
     return await this.ddb.send(new UpdateCommand(builder.build()));
   }
 
   async updateFailure(
     request: RenderRequest,
     personalisation?: Personalisation,
-    validationErrors?: LetterValidationErrorDetail[],
-    currentVersion?: string,
-    fileName?: string,
-    pageCount?: number
+    validationErrors?: LetterValidationErrorDetail[]
   ) {
     if (request.requestType !== 'initial') return;
 
@@ -60,9 +66,6 @@ export class TemplateRepository {
       .setStatus('VALIDATION_FAILED')
       .setInitialRender({
         status: 'FAILED',
-        currentVersion,
-        fileName,
-        pageCount,
       });
 
     if (personalisation) {

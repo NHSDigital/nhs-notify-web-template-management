@@ -22,6 +22,8 @@ describe('extractMarkers', () => {
         '_root.#alias_banned',
         '_root.t(translation_banned)',
         '_root.d.rtl_correct',
+        '_root.d.',
+        '_root.d.!_banned',
         '_root.d.correct_in_header',
         '_root.d.correct_in_footer',
       ],

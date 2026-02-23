@@ -264,9 +264,6 @@ export type RenderDetails =
   | RenderDetailsRendered;
 
 export type RenderDetailsFailed = {
-  currentVersion?: string;
-  fileName?: string;
-  pageCount?: number;
   status: 'FAILED';
 };
 

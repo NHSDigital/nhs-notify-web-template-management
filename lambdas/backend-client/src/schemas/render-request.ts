@@ -30,10 +30,14 @@ const $LongPersonalisedRenderRequest = z.object({
   requestTypeVariant: z.literal('long'),
 });
 
+const $PersonalisedRenderRequest = z.discriminatedUnion('requestTypeVariant', [
+  $ShortPersonalisedRenderRequest,
+  $LongPersonalisedRenderRequest,
+]);
+
 export const $RenderRequest = schemaFor<RenderRequest>()(
   z.discriminatedUnion('requestType', [
     $InitialRenderRequest,
-    $ShortPersonalisedRenderRequest,
-    $LongPersonalisedRenderRequest,
+    $PersonalisedRenderRequest,
   ])
 );

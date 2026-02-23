@@ -98,20 +98,23 @@ describe('RenderRepository', () => {
       await renderRepository.save(
         pdf,
         {
-          requestType: 'personalised-short',
+          requestType: 'personalised',
+          requestTypeVariant: 'short',
           clientId: 'client-abc',
           templateId: 'tmpl-xyz',
           currentVersion: 'v1',
+          personalisation: { first_name: 'Test' },
+          lockNumber: 1,
         },
         5
       );
 
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
-        `client-abc/tmpl-xyz/renders/personalised-short/${uuid}.pdf`,
+        `client-abc/tmpl-xyz/renders/personalised/${uuid}.pdf`,
         expect.objectContaining({
           Metadata: expect.objectContaining({
-            variant: 'personalised-short',
+            variant: 'personalised',
           }),
         })
       );

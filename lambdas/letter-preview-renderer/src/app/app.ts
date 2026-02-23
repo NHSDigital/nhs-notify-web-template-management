@@ -63,9 +63,12 @@ export class App {
         if (validationErrors.length > 0) {
           logger.info('Source contains validation errors', analysis);
 
-          await this.templateRepository.updateFailure(
+          await this.templateRepository.updateSuccess(
             request,
             personalisation,
+            request.currentVersion,
+            fileName,
+            pageCount,
             validationErrors
           );
           return 'rendered-invalid';
