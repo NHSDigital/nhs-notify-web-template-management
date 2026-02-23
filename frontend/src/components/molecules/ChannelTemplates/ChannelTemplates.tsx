@@ -83,11 +83,14 @@ export function ChannelTemplates({
                       data-testid={`${template.id}-radio`}
                       key={`${template.id}-radio`}
                       defaultChecked={template.id === selectedTemplate}
+                      aria-labelledby={`channelTemplate-${template.id}-name`}
                     >
                       {' '}
                     </Radios.Radio>
                   </Table.Cell>
-                  <Table.Cell>{template.name}</Table.Cell>
+                  <Table.Cell id={`channelTemplate-${template.id}-name`}>
+                    {template.name}
+                  </Table.Cell>
                   <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                   <Table.Cell>
                     {format(`${template.updatedAt}`, 'do MMM yyyy')}
