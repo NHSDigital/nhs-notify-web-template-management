@@ -211,8 +211,8 @@ export type LetterValidationError =
   | 'VIRUS_SCAN_FAILED';
 
 export type LetterValidationErrorDetail = {
-  name: LetterValidationError;
   issues?: Array<string>;
+  name: LetterValidationError;
 };
 
 export type LetterVersion = 'AUTHORING' | 'PDF';

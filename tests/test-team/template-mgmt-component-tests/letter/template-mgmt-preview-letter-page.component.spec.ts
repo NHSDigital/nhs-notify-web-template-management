@@ -166,7 +166,7 @@ async function createTemplates(user: TestUser) {
       'VALIDATION_FAILED',
       {
         letterVariantId: 'variant-virus',
-        validationErrors: ['VIRUS_SCAN_FAILED'],
+        validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
         initialRender: false,
       }
     ),
@@ -177,7 +177,7 @@ async function createTemplates(user: TestUser) {
       'VALIDATION_FAILED',
       {
         letterVariantId: 'variant-address',
-        validationErrors: ['MISSING_ADDRESS_LINES'],
+        validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
         initialRender: false,
       }
     ),
@@ -270,7 +270,7 @@ async function createTemplates(user: TestUser) {
         'VALIDATION_FAILED',
         {
           letterVariantId: 'variant-fail-render',
-          validationErrors: ['VIRUS_SCAN_FAILED'],
+          validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
           initialRender: {
             fileName: 'failed-render.pdf',
             currentVersion: 'v1-failed',

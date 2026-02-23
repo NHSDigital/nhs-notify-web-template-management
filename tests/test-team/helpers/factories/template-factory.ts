@@ -135,7 +135,7 @@ export const TemplateFactory = {
       longFormRender?: Partial<RenderFile> | false;
       customPersonalisation?: string[];
       systemPersonalisation?: string[];
-      validationErrors?: string[];
+      validationErrors?: Array<{ name: string; issues?: string[] }>;
     }
   ): Template => {
     const campaignId =
