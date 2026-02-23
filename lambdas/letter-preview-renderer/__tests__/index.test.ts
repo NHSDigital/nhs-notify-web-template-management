@@ -1,4 +1,4 @@
-import { handler } from '../index';
+import { handler } from '../src/index';
 import type { Context } from 'aws-lambda';
 import { mockDeep } from 'jest-mock-extended';
 
