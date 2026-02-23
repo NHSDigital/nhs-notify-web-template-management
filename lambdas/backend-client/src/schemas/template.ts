@@ -209,10 +209,13 @@ export const $CreateUpdateNonLetter = schemaFor<
   ])
 );
 
-export const $CreateUpdateLetterTemplate = z.discriminatedUnion('letterVersion', [
+export const $CreateUpdateLetterTemplate = z.discriminatedUnion(
+  'letterVersion',
+  [
     $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
     $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
-]);
+  ]
+);
 
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   z.discriminatedUnion('templateType', [

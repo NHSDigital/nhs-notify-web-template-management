@@ -352,7 +352,7 @@ test.describe('POST /v1/letter-template', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        $root: 'Invalid input',
+        name: 'Invalid input: expected string, received undefined',
       },
     });
   });

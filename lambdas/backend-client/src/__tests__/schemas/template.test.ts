@@ -199,11 +199,12 @@ describe('Template schemas', () => {
       templateType: 'EMAIL',
     });
 
-    expect(result.error?.flatten()).toEqual(
-      expect.objectContaining({
-        formErrors: ['Invalid input'],
-      })
-    );
+    expect(result.error?.flatten()).toEqual({
+      fieldErrors: {
+        subject: ['Invalid input: expected string, received undefined'],
+      },
+      formErrors: [],
+    });
   });
 
   test('CreatePdfLetterProperties - should fail validation, when no letterType', async () => {
