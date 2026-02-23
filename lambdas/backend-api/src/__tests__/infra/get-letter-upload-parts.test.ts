@@ -3,7 +3,7 @@ import {
   getDocxUploadParts,
 } from '../../app/get-letter-upload-parts';
 import { CreateUpdateTemplate } from 'nhs-notify-backend-client';
-import { pdfLetterMultipart } from 'nhs-notify-web-template-management-test-helper-utils';
+import { getTestMultipartFormData } from 'nhs-notify-web-template-management-test-helper-utils';
 
 beforeAll(() => {
   jest.useFakeTimers();
@@ -23,7 +23,7 @@ describe('getDocxUploadParts', () => {
   const docxTemplate = Buffer.from('docxTemplate');
 
   test('parses a multipart letter event', () => {
-    const { multipart, contentType } = pdfLetterMultipart(
+    const { multipart, contentType } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -52,7 +52,7 @@ describe('getDocxUploadParts', () => {
   });
 
   test('returns failure result when docx part is missing name', () => {
-    const { multipart, contentType } = pdfLetterMultipart([
+    const { multipart, contentType } = getTestMultipartFormData([
       { _type: 'json', partName: 'template' },
       {
         _type: 'file',
@@ -74,7 +74,7 @@ describe('getDocxUploadParts', () => {
   });
 
   test('returns failure result when template part is missing', () => {
-    const { multipart, contentType } = pdfLetterMultipart([
+    const { multipart, contentType } = getTestMultipartFormData([
       {
         _type: 'file',
         partName: 'docxTemplate',
@@ -104,7 +104,7 @@ describe('getDocxUploadParts', () => {
   });
 
   test('returns failure result when number of parts is not 2', () => {
-    const { multipart, contentType } = pdfLetterMultipart([
+    const { multipart, contentType } = getTestMultipartFormData([
       {
         _type: 'file',
         partName: 'docxTemplate',
@@ -140,7 +140,7 @@ describe('getPdfUploadParts', () => {
   const csv = Buffer.from('testCsv');
 
   test('parses a multipart letter event', () => {
-    const { multipart, contentType } = pdfLetterMultipart(
+    const { multipart, contentType } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -179,7 +179,7 @@ describe('getPdfUploadParts', () => {
   });
 
   test('defaults filenames to empty strings', () => {
-    const { multipart, contentType } = pdfLetterMultipart(
+    const { multipart, contentType } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -214,7 +214,7 @@ describe('getPdfUploadParts', () => {
   });
 
   test('returns default blank file object for PDF when expected file parts are not present', () => {
-    const { multipart, contentType } = pdfLetterMultipart(
+    const { multipart, contentType } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -246,7 +246,7 @@ describe('getPdfUploadParts', () => {
   });
 
   test('returns failure result when template part cannot be parsed as JSON', () => {
-    const { multipart, contentType } = pdfLetterMultipart(
+    const { multipart, contentType } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -278,7 +278,7 @@ describe('getPdfUploadParts', () => {
   });
 
   test('returns failure result when template part is missing', () => {
-    const { multipart, contentType } = pdfLetterMultipart([
+    const { multipart, contentType } = getTestMultipartFormData([
       {
         _type: 'file',
         partName: 'letterPdf',
@@ -306,7 +306,7 @@ describe('getPdfUploadParts', () => {
   });
 
   test('returns failure result when number of parts is not 2 or 3', () => {
-    const { multipart, contentType } = pdfLetterMultipart([
+    const { multipart, contentType } = getTestMultipartFormData([
       {
         _type: 'file',
         partName: 'testCsv',

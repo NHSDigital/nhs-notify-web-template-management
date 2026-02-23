@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import {
-  AuthoringLetterFiles,
-  PatchTemplate,
+  type AuthoringLetterFiles,
+  type PatchTemplate,
   type AuthoringLetterProperties,
   type BaseCreatedTemplate,
   type BaseTemplate,
@@ -209,13 +209,17 @@ export const $CreateUpdateNonLetter = schemaFor<
   ])
 );
 
+export const $CreateUpdateLetterTemplate = z.discriminatedUnion('letterVersion', [
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
+]);
+
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
-  z.union([
+  z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
-    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
+    $CreateUpdateLetterTemplate,
   ])
 );
 

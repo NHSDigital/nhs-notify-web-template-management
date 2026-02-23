@@ -460,7 +460,8 @@ describe('templateClient', () => {
             code: 400,
             description: 'Request failed validation',
             details: expect.objectContaining({
-              letterType: 'Invalid option: expected one of "q4"|"x0"|"x1"',
+              letterType:
+                'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
             }),
           }),
         }),
@@ -1079,7 +1080,8 @@ describe('templateClient', () => {
             code: 400,
             description: 'Request failed validation',
             details: expect.objectContaining({
-              letterType: 'Invalid option: expected one of "q4"|"x0"|"x1"',
+              letterType:
+                'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
             }),
           }),
         }),

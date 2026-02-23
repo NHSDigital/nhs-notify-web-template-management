@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { CreateTemplatePayload, UpdateTemplatePayload } from '../types';
 import {
-  pdfLetterMultipart,
+  getTestMultipartFormData,
   type PdfUploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 
@@ -85,7 +85,7 @@ export const TemplateAPIPayloadFactory = {
       ...template,
     };
 
-    const multipartData = pdfLetterMultipart(uploadSpec, templateData);
+    const multipartData = getTestMultipartFormData(uploadSpec, templateData);
 
     return {
       templateData,

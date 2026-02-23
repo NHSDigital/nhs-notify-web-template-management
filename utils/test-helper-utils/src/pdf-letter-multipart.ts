@@ -15,7 +15,7 @@ type FilePart = {
 
 export type PdfUploadPartSpec = TemplatePart | FilePart;
 
-export function pdfLetterMultipart(
+export function getTestMultipartFormData(
   parts: PdfUploadPartSpec[],
   template?: Record<string, unknown> | string
 ): {

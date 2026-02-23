@@ -7,7 +7,7 @@ import {
   Context,
 } from 'aws-lambda';
 import {
-  pdfLetterMultipart,
+  getTestMultipartFormData,
   PdfUploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateClient } from '../../app/template-client';
@@ -49,7 +49,7 @@ describe('upload-letter', () => {
     const pdfType = 'application/pdf';
     const csvType = 'text/csv';
 
-    const { contentType, multipart } = pdfLetterMultipart(
+    const { contentType, multipart } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -147,7 +147,7 @@ describe('upload-letter', () => {
     const pdfFilename = 'template.pdf';
     const pdfType = 'application/pdf';
 
-    const { contentType, multipart } = pdfLetterMultipart(
+    const { contentType, multipart } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -274,7 +274,7 @@ describe('upload-letter', () => {
   test('returns 400 - Invalid request when template within multipart input cannot be parsed as JSON', async () => {
     const { handler, mocks } = setup();
 
-    const { contentType, multipart } = pdfLetterMultipart(
+    const { contentType, multipart } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -333,7 +333,7 @@ describe('upload-letter', () => {
     async ({ parts, count }) => {
       const { handler } = setup();
 
-      const { multipart, contentType } = pdfLetterMultipart(
+      const { multipart, contentType } = getTestMultipartFormData(
         parts,
         initialTemplate
       );
@@ -363,7 +363,7 @@ describe('upload-letter', () => {
     const pdfFilename = 't.pdf';
     const pdfType = 'application/pdf';
 
-    const { contentType, multipart } = pdfLetterMultipart(
+    const { contentType, multipart } = getTestMultipartFormData(
       [
         { _type: 'json', partName: 'template' },
         {
