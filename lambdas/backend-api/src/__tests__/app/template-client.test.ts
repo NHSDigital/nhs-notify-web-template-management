@@ -2509,7 +2509,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should set LETTER template status to proof approved if routing is enabled', async () => {
+    test('should set LETTER template status to proof approved if proofing is enabled', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -2539,7 +2539,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { routing: true } },
+        data: { features: { proofing: true } },
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -2568,7 +2568,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should set LETTER template status to submitted if routing is not enabled', async () => {
+    test('should set LETTER template status to submitted if proofing is not enabled', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -2598,7 +2598,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {} },
+        data: { features: { proofing: false } },
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
