@@ -25,11 +25,12 @@ export class SourceRepository {
   async getSource({
     templateId,
     clientId,
+    currentVersion,
   }: RenderRequest): Promise<SourceHandle> {
     const path = this.tempPath();
 
     const stream = await this.s3.getObjectStream(
-      this.sourcePathS3(templateId, clientId)
+      this.sourcePathS3(templateId, clientId, currentVersion)
     );
 
     await pipeline(stream, createWriteStream(path));
@@ -52,7 +53,11 @@ export class SourceRepository {
     return `${sourceTmpDir}/${uuid}.docx`;
   }
 
-  private sourcePathS3(templateId: string, clientId: string) {
-    return `docx-template/${clientId}/${templateId}/${templateId}.docx`;
+  private sourcePathS3(
+    templateId: string,
+    clientId: string,
+    currentVersion: string
+  ) {
+    return `docx-template/${clientId}/${templateId}/${currentVersion}.docx`;
   }
 }

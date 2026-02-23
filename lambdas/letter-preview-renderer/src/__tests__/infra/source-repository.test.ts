@@ -78,7 +78,7 @@ describe('SourceRepository', () => {
 
       expect(handle.path).toBe(`/tmp/source/${uuid}.docx`);
       expect(mocks.s3.getObjectStream).toHaveBeenCalledWith(
-        'docx-template/test-client/test-template/test-template.docx'
+        'docx-template/test-client/test-template/test-version.docx'
       );
       expect(mockCreateWriteStream).toHaveBeenCalledWith(
         `/tmp/source/${uuid}.docx`
