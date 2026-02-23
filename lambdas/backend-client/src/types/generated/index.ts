@@ -77,7 +77,7 @@ export type {
   LetterProperties,
   LetterType,
   LetterValidationError,
-  LetterValidationErrorDetail,
+  ValidationErrorDetail,
   LetterVersion,
   NhsAppProperties,
   PatchTemplate,

@@ -144,9 +144,3 @@ variable "enable_env_destroy_event_rule" {
   description = "Toggles the creation of the CloudWatch Event Rule for environment destruction failures"
   default     = false
 }
-
-variable "enable_ecr_lifecycle" {
-  type        = bool
-  description = "Enable ECR lifecycle policy management for repository image retention"
-  default     = false
-}

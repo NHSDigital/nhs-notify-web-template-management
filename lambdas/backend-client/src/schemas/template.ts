@@ -12,7 +12,7 @@ import type {
   Language,
   LetterType,
   LetterValidationError,
-  LetterValidationErrorDetail,
+  ValidationErrorDetail,
   NhsAppProperties,
   PatchTemplate,
   PdfLetterFiles,
@@ -164,7 +164,7 @@ const $LetterValidationError = schemaFor<LetterValidationError>()(
   z.enum(LETTER_VALIDATION_ERROR_LIST)
 );
 
-const $LetterValidationErrorDetail = schemaFor<LetterValidationErrorDetail>()(
+const $ValidationErrorDetail = schemaFor<ValidationErrorDetail>()(
   z.object({
     name: $LetterValidationError,
     issues: z.array(z.string()).optional(),
@@ -180,7 +180,7 @@ export const $AuthoringLetterProperties =
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
       systemPersonalisation: z.array(z.string()).optional(),
-      validationErrors: z.array($LetterValidationErrorDetail).optional(),
+      validationErrors: z.array($ValidationErrorDetail).optional(),
     })
   );
 

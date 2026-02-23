@@ -113,7 +113,6 @@ export const makeGuardDutyMalwareScanResultNotificationEvent = (
     detail: makeGuardDutyMalwareScanResultNotificationEventDetail(event.detail),
   });
 
-// S3 Object Created Event Detail
 export type S3ObjectCreatedEventDetail = {
   version: string;
   bucket: { name: string };

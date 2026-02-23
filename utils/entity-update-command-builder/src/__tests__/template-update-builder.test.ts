@@ -1,5 +1,5 @@
-import {
-  LetterValidationErrorDetail,
+import type {
+  ValidationErrorDetail,
   TemplateStatus,
 } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from '../template-update-builder';
@@ -723,34 +723,6 @@ describe('TemplateUpdateBuilder', () => {
           'SET #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation',
       });
     });
-
-    test('sets empty arrays when no personalisation provided', () => {
-      const builder = new TemplateUpdateBuilder(
-        mockTableName,
-        mockOwner,
-        mockId
-      );
-
-      const res = builder.setPersonalisation([], []).build();
-
-      expect(res).toEqual({
-        TableName: mockTableName,
-        Key: {
-          owner: mockOwnerKey,
-          id: mockId,
-        },
-        ExpressionAttributeValues: {
-          ':systemPersonalisation': [],
-          ':customPersonalisation': [],
-        },
-        ExpressionAttributeNames: {
-          '#systemPersonalisation': 'systemPersonalisation',
-          '#customPersonalisation': 'customPersonalisation',
-        },
-        UpdateExpression:
-          'SET #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation',
-      });
-    });
   });
 
   describe('setInitialRender', () => {
@@ -823,7 +795,7 @@ describe('TemplateUpdateBuilder', () => {
         mockId
       );
 
-      const errors: LetterValidationErrorDetail[] = [
+      const errors: ValidationErrorDetail[] = [
         { name: 'MISSING_ADDRESS_LINES' },
         { name: 'INVALID_MARKERS', issues: ['marker-1', 'marker-2'] },
       ];

@@ -1,4 +1,4 @@
-import type { LetterValidationErrorDetail } from 'nhs-notify-backend-client/src/types/generated/types.gen';
+import type { ValidationErrorDetail } from 'nhs-notify-backend-client/src/types/generated/types.gen';
 import {
   ADDRESS_PERSONALISATIONS,
   DEFAULT_PERSONALISATION_LIST,
@@ -73,8 +73,8 @@ function buildPassthroughPersonalisation(
 
 function buildValidationErrors(
   classified: ClassifiedMarkers
-): LetterValidationErrorDetail[] {
-  const errors: LetterValidationErrorDetail[] = [];
+): ValidationErrorDetail[] {
+  const errors: ValidationErrorDetail[] = [];
 
   const invalidMarkers = [
     ...classified.nonRenderable,
@@ -99,7 +99,7 @@ function buildValidationErrors(
 export type MarkerAnalysis = {
   personalisation: { system: string[]; custom: string[] };
   passthroughPersonalisation: Record<string, string>;
-  validationErrors: LetterValidationErrorDetail[];
+  validationErrors: ValidationErrorDetail[];
   canRender: boolean;
 };
 

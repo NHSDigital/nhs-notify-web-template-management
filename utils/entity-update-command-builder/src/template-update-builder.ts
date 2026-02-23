@@ -1,5 +1,5 @@
 import type {
-  LetterValidationErrorDetail,
+  ValidationErrorDetail,
   PersonalisedRenderDetails,
   RenderDetails,
   TemplateStatus,
@@ -110,7 +110,7 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  appendValidationErrors(errors: LetterValidationErrorDetail[]) {
+  appendValidationErrors(errors: ValidationErrorDetail[]) {
     this.updateBuilder.setValueInOrCreateList('validationErrors', errors);
     return this;
   }

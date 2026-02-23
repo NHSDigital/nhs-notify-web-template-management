@@ -17,7 +17,7 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
   systemPersonalisation?: Array<string>;
-  validationErrors?: Array<LetterValidationErrorDetail>;
+  validationErrors?: Array<ValidationErrorDetail>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -210,7 +210,7 @@ export type LetterValidationError =
   | 'MISSING_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
 
-export type LetterValidationErrorDetail = {
+export type ValidationErrorDetail = {
   issues?: Array<string>;
   name: LetterValidationError;
 };

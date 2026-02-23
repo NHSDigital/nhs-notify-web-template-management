@@ -51,7 +51,7 @@
               },
               "validationErrors": {
                 "items": {
-                  "$ref": "#/components/schemas/LetterValidationErrorDetail"
+                  "$ref": "#/components/schemas/ValidationErrorDetail"
                 },
                 "type": "array"
               }
@@ -659,23 +659,6 @@
         ],
         "type": "string"
       },
-      "LetterValidationErrorDetail": {
-        "properties": {
-          "issues": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "name": {
-            "$ref": "#/components/schemas/LetterValidationError"
-          }
-        },
-        "required": [
-          "name"
-        ],
-        "type": "object"
-      },
       "LetterVersion": {
         "enum": [
           "AUTHORING",
@@ -1213,6 +1196,23 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "ValidationErrorDetail": {
+        "properties": {
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LetterValidationError"
+          }
+        },
+        "required": [
+          "name"
+        ],
         "type": "object"
       },
       "VersionedFileDetails": {
