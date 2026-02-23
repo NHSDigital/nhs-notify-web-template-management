@@ -63,7 +63,7 @@ export class App {
         if (validationErrors.length > 0) {
           logger.info('Source contains validation errors', analysis);
 
-          await this.templateRepository.updateSuccess(
+          await this.templateRepository.updateRendered(
             request,
             personalisation,
             request.currentVersion,
@@ -74,7 +74,7 @@ export class App {
           return 'rendered-invalid';
         }
 
-        await this.templateRepository.updateSuccess(
+        await this.templateRepository.updateRendered(
           request,
           personalisation,
           request.currentVersion,

@@ -10,7 +10,7 @@ export class TemplateRepository {
     private readonly templatesTableName: string
   ) {}
 
-  async updateSuccess(
+  async updateRendered(
     request: RenderRequest,
     personalisation: Personalisation,
     currentVersion: string,

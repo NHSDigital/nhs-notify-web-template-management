@@ -57,7 +57,7 @@ describe('TemplateRepository', () => {
     jest.resetAllMocks();
   });
 
-  describe('updateSuccess', () => {
+  describe('updateRendered', () => {
     test('sends UpdateCommand with correct builder output for initial request', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
@@ -65,7 +65,7 @@ describe('TemplateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});
 
-      await templateRepository.updateSuccess(
+      await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',
@@ -84,7 +84,7 @@ describe('TemplateRepository', () => {
       const request = createPersonalisedRequest();
       const personalisation = createPersonalisation();
 
-      const result = await templateRepository.updateSuccess(
+      const result = await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',
@@ -103,7 +103,7 @@ describe('TemplateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});
 
-      await templateRepository.updateSuccess(
+      await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',
@@ -128,7 +128,7 @@ describe('TemplateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});
 
-      await templateRepository.updateSuccess(
+      await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',
@@ -154,7 +154,7 @@ describe('TemplateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});
 
-      await templateRepository.updateSuccess(
+      await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',
@@ -178,7 +178,7 @@ describe('TemplateRepository', () => {
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});
 
-      await templateRepository.updateSuccess(
+      await templateRepository.updateRendered(
         request,
         personalisation,
         'v1',

@@ -71,7 +71,7 @@ describe('getObjectResponseWithReadableBody', () => {
     const response =
       await repository.getObjectResponseWithReadableBody('my/key.txt');
 
-    expect(response.Body).toBe(readable);
+    expect(response.Body).toEqual(readable);
     expect(s3Mock).toHaveReceivedCommandWith(GetObjectCommand, {
       Bucket: BUCKET,
       Key: 'my/key.txt',
@@ -132,5 +132,28 @@ describe('getObjectStream', () => {
     const stream = await repository.getObjectStream('stream/key.txt');
 
     expect(stream).toBe(readable);
+  });
+
+  it('rethrows error from S3', async () => {
+    const { s3Mock, repository } = setup();
+
+    s3Mock.on(GetObjectCommand).rejects(new Error('s3err'));
+
+    await expect(repository.getObjectStream('k')).rejects.toThrow(
+      `Could not retrieve 's3://${BUCKET}/k' from S3: s3err`
+    );
+  });
+
+  it('throws when body is not readable', async () => {
+    const { s3Mock, repository } = setup();
+
+    s3Mock.on(GetObjectCommand).resolves({
+      Body: undefined,
+      $metadata: {},
+    });
+
+    await expect(repository.getObjectStream('k')).rejects.toThrow(
+      `Could not read file 's3://${BUCKET}/k'`
+    );
   });
 });

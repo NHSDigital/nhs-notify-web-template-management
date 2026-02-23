@@ -77,7 +77,6 @@ export type {
   LetterProperties,
   LetterType,
   LetterValidationError,
-  ValidationErrorDetail,
   LetterVersion,
   NhsAppProperties,
   PatchTemplate,
@@ -151,6 +150,7 @@ export type {
   TemplateType,
   UpdateRoutingConfig,
   UploadLetterTemplate,
+  ValidationErrorDetail,
   VersionedFileDetails,
   VirusScanStatus,
 } from './types.gen';

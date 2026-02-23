@@ -210,11 +210,6 @@ export type LetterValidationError =
   | 'MISSING_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
 
-export type ValidationErrorDetail = {
-  issues?: Array<string>;
-  name: LetterValidationError;
-};
-
 export type LetterVersion = 'AUTHORING' | 'PDF';
 
 export type NhsAppProperties = {
@@ -363,6 +358,11 @@ export type UploadLetterTemplate = {
   letterPdf?: Blob | File;
   template?: CreateUpdateTemplate;
   testCsv?: string;
+};
+
+export type ValidationErrorDetail = {
+  issues?: Array<string>;
+  name: LetterValidationError;
 };
 
 export type VersionedFileDetails = {

@@ -84,7 +84,7 @@ describe('App', () => {
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
         mocks.renderRepo.save.mockResolvedValue(fileName);
-        mocks.templateRepo.updateSuccess.mockResolvedValue(undefined);
+        mocks.templateRepo.updateRendered.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
@@ -108,7 +108,7 @@ describe('App', () => {
           pageCount
         );
 
-        expect(mocks.templateRepo.updateSuccess).toHaveBeenCalledWith(
+        expect(mocks.templateRepo.updateRendered).toHaveBeenCalledWith(
           request,
           {
             system: [
@@ -146,13 +146,13 @@ describe('App', () => {
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
         mocks.renderRepo.save.mockResolvedValue(fileName);
-        mocks.templateRepo.updateSuccess.mockResolvedValue(undefined);
+        mocks.templateRepo.updateRendered.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('rendered-invalid');
 
-        expect(mocks.templateRepo.updateSuccess).toHaveBeenCalledWith(
+        expect(mocks.templateRepo.updateRendered).toHaveBeenCalledWith(
           request,
           {
             system: [
