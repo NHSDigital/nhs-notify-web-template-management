@@ -196,10 +196,6 @@ export const statusToColourMapping = (
   const notYetSubmitted =
     template.templateType === 'LETTER' ? notYetSubmittedLetter : 'green';
 
-  const isLetterAndAuthoring =
-    template.templateType === 'LETTER' &&
-    template.letterVersion === 'AUTHORING';
-
   let submitted: Colour = featureFlags.routing ? 'pink' : 'grey';
 
   if (
