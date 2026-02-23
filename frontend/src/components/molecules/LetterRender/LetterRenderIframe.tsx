@@ -14,7 +14,6 @@ export function LetterRenderIframe({ tab, pdfUrl }: LetterRenderIframeProps) {
       src={pdfUrl}
       title={`Letter preview - ${tabDescription} examples`}
       aria-label={`PDF preview of letter template with ${tabDescription} example personalisation data`}
-      referrerPolicy='no-referrer'
     />
   );
 }
