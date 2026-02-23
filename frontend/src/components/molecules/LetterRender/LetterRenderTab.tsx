@@ -37,9 +37,11 @@ function initialisePdfUrl(
   const personalisedRender = getPersonalisedRender(template, tab);
   const initialRender = template.files.initialRender;
 
-  const render = personalisedRender ?? initialRender;
+  const render =
+    personalisedRender?.status === 'RENDERED'
+      ? personalisedRender
+      : initialRender;
 
-  // component test needed
   return render?.status === 'RENDERED'
     ? buildPdfUrl(template, render.fileName)
     : null;
@@ -50,9 +52,11 @@ function initialiseFormState(
   tab: RenderTab
 ): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
+  const renderedPersonalisation =
+    personalisedRender?.status === 'RENDERED' ? personalisedRender : undefined;
 
   const { systemPersonalisationPackId, personalisationParameters } =
-    personalisedRender ?? {};
+    renderedPersonalisation ?? {};
 
   const customPersonalisationFields = template.customPersonalisation ?? [];
 

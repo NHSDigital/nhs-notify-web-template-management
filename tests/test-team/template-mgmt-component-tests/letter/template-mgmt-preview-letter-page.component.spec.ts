@@ -222,6 +222,46 @@ async function createTemplates(user: TestUser) {
         },
       }
     ),
+    authoringWithPendingPersonalisedRenders:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'D0E1F2A3-B4C5-6789-DEFA-012345678901',
+        user,
+        'authoring-with-pending-personalised-renders',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: 'variant-pending-renders',
+          customPersonalisation: ['appointmentDate'],
+          initialRender: {
+            fileName: 'initial-render.pdf',
+            currentVersion: 'v1-initial',
+            pageCount: 4,
+          },
+          shortFormRender: {
+            fileName: 'pending-short.pdf',
+            currentVersion: 'v1-pending-short',
+            status: 'PENDING',
+            pageCount: 4,
+            systemPersonalisationPackId: 'short-pending-1',
+            personalisationParameters: {
+              firstName: 'Jo',
+              lastName: 'Bloggs',
+              appointmentDate: '2025-03-15',
+            },
+          },
+          longFormRender: {
+            fileName: 'pending-long.pdf',
+            currentVersion: 'v1-pending-long',
+            status: 'PENDING',
+            pageCount: 4,
+            systemPersonalisationPackId: 'long-pending-1',
+            personalisationParameters: {
+              firstName: 'Elizabeth',
+              lastName: 'Thompson',
+              appointmentDate: '2025-04-20',
+            },
+          },
+        }
+      ),
     authoringValidationFailedWithRender:
       TemplateFactory.createAuthoringLetterTemplate(
         'B8C9D0E1-F2A3-4567-BCDE-890123456789',
@@ -815,6 +855,58 @@ test.describe('Preview Letter template Page', () => {
           page,
         }) => {
           const template = templates.authoringWithShortFormRender;
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          await previewPage.longTab.clickTab();
+
+          const expectedUrl = `/templates/files/${template.clientId}/renders/${template.id}/initial-render.pdf`;
+
+          await expect(previewPage.longTab.previewIframe).toHaveAttribute(
+            'src',
+            expectedUrl
+          );
+
+          await expect(previewPage.longTab.recipientSelect).toHaveValue('');
+
+          const appointmentDateInput =
+            previewPage.longTab.getCustomFieldInput('appointmentDate');
+
+          await expect(appointmentDateInput).toHaveValue('');
+        });
+
+        test('short tab falls back to initial render when shortFormRender has non-RENDERED status', async ({
+          page,
+        }) => {
+          const template = templates.authoringWithPendingPersonalisedRenders;
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          const expectedUrl = `/templates/files/${template.clientId}/renders/${template.id}/initial-render.pdf`;
+
+          await expect(previewPage.shortTab.previewIframe).toHaveAttribute(
+            'src',
+            expectedUrl
+          );
+
+          await expect(previewPage.shortTab.recipientSelect).toHaveValue('');
+
+          const appointmentDateInput =
+            previewPage.shortTab.getCustomFieldInput('appointmentDate');
+
+          await expect(appointmentDateInput).toHaveValue('');
+        });
+
+        test('long tab falls back to initial render when longFormRender has non-RENDERED status', async ({
+          page,
+        }) => {
+          const template = templates.authoringWithPendingPersonalisedRenders;
           const previewPage = new TemplateMgmtPreviewLetterPage(
             page
           ).setPathParam('templateId', template.id);
