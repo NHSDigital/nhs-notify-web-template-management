@@ -20,7 +20,7 @@ const jestConfig: Config = {
     '/test-utils/',
     'proofing-queue.ts',
     'src/container',
-    '/src/[^/]+\\.ts$',
+    `/src/[^/]+\\.ts$`,
   ],
   transformIgnorePatterns: ['node_modules/(?!pdfjs-dist)'],
   transform: {
