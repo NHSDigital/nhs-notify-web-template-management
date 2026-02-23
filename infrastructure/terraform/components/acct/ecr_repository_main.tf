@@ -13,7 +13,6 @@ resource "aws_ecr_repository" "main" {
 }
 
 resource "aws_ecr_lifecycle_policy" "main" {
-  count      = var.enable_ecr_lifecycle ? 1 : 0
   repository = aws_ecr_repository.main.name
 
   policy = <<EOF
