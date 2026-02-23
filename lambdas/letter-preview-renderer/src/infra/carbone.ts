@@ -35,7 +35,7 @@ export class Carbone {
       if (!name.startsWith('_root.')) {
         throw new Error(`Unexpected marker name ${name}`);
       }
-      return name;
+      return name.slice(6);
     });
 
     return new Set(markers);

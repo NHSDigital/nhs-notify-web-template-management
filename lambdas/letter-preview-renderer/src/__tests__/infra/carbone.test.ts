@@ -87,11 +87,7 @@ describe('Carbone', () => {
       const result = await instance.extractMarkers('/tmp/template.docx');
 
       expect(result).toEqual(
-        new Set([
-          '_root.d.address_line_1',
-          '_root.d.first_name',
-          '_root.d.last_name',
-        ])
+        new Set(['d.address_line_1', 'd.first_name', 'd.last_name'])
       );
       expect(mockExtractMarkers).toHaveBeenCalledWith('/tmp/template.docx');
     });
@@ -131,9 +127,7 @@ describe('Carbone', () => {
 
       const result = await instance.extractMarkers('/tmp/template.docx');
 
-      expect(result).toEqual(
-        new Set(['_root.d.first_name', '_root.d.last_name'])
-      );
+      expect(result).toEqual(new Set(['d.first_name', 'd.last_name']));
     });
   });
 });
