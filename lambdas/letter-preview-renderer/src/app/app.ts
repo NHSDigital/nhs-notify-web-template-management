@@ -20,8 +20,8 @@ export class App {
     private readonly sourceRepo: SourceRepository,
     private readonly carbone: Carbone,
     private readonly checkRender: CheckRender,
-    private readonly renderRepo: RenderRepository,
-    private readonly templateRepo: TemplateRepository,
+    private readonly renderRepository: RenderRepository,
+    private readonly templateRepository: TemplateRepository,
     private readonly logger: Logger
   ) {}
 
@@ -40,7 +40,7 @@ export class App {
       if (!canRender) {
         logger.info('Source contains non-renderable markers', analysis);
 
-        await this.templateRepo.updateFailure(
+        await this.templateRepository.updateFailure(
           request,
           personalisation,
           validationErrors
@@ -63,7 +63,7 @@ export class App {
         if (validationErrors.length > 0) {
           logger.info('Source contains validation errors', analysis);
 
-          await this.templateRepo.updateFailure(
+          await this.templateRepository.updateFailure(
             request,
             personalisation,
             validationErrors
@@ -71,7 +71,7 @@ export class App {
           return 'rendered-invalid';
         }
 
-        await this.templateRepo.updateSuccess(
+        await this.templateRepository.updateSuccess(
           request,
           personalisation,
           request.currentVersion,
@@ -84,7 +84,7 @@ export class App {
       } catch (error) {
         logger.error('Render failed', { error });
 
-        await this.templateRepo.updateFailure(request, personalisation);
+        await this.templateRepository.updateFailure(request, personalisation);
         return 'not-rendered';
       }
     });
@@ -107,7 +107,7 @@ export class App {
     } catch (error) {
       requestLogger.error('Render failed', { error });
 
-      await this.templateRepo.updateFailure(request);
+      await this.templateRepository.updateFailure(request);
 
       return 'not-rendered';
     } finally {
@@ -124,7 +124,7 @@ export class App {
 
     const pageCount = await this.checkRender.pageCount(pdf);
 
-    const fileName = await this.renderRepo.save(pdf, request, pageCount);
+    const fileName = await this.renderRepository.save(pdf, request, pageCount);
 
     return { fileName, pageCount };
   }

@@ -8,16 +8,26 @@ const $Common = z.object({
   currentVersion: z.string(),
 });
 
-const $InitialRenderRequest = $Common.extend({
+const $InitialRenderRequest = z.object({
+  ...$Common.shape,
   requestType: z.literal('initial'),
 });
 
-const $ShortPersonalisedRenderRequest = $Common.extend({
-  requestType: z.literal('personalised-short'),
+const $PersonalisedCommon = z.object({
+  ...$Common.shape,
+  requestType: z.literal('personalised'),
+  personalisation: z.record(z.string(), z.string()),
+  lockNumber: z.number(),
 });
 
-const $LongPersonalisedRenderRequest = $Common.extend({
-  requestType: z.literal('personalised-long'),
+const $ShortPersonalisedRenderRequest = z.object({
+  ...$PersonalisedCommon.shape,
+  requestTypeVariant: z.literal('short'),
+});
+
+const $LongPersonalisedRenderRequest = z.object({
+  ...$PersonalisedCommon.shape,
+  requestTypeVariant: z.literal('long'),
 });
 
 export const $RenderRequest = schemaFor<RenderRequest>()(

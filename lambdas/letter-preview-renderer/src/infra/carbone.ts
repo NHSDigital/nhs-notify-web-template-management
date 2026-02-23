@@ -31,16 +31,12 @@ export class Carbone {
   async extractMarkers(path: string): Promise<Set<string>> {
     const rawMarkers = await extractMarkers(path);
 
-    const markers: string[] = [];
-
-    for (const { name } of rawMarkers) {
+    const markers = rawMarkers.map((name) => {
       if (!name.startsWith('_root.')) {
-        // warn
-        continue;
+        throw new Error(`Unexpected marker name ${name}`);
       }
-
-      markers.push(name.slice(6));
-    }
+      return name;
+    });
 
     return new Set(markers);
   }

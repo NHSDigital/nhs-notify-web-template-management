@@ -8,12 +8,18 @@ export type InitialRenderRequest = Common & {
   requestType: 'initial';
 };
 
-export type ShortPersonalisedRenderRequest = Common & {
-  requestType: 'personalised-short';
+type PersonalisedCommon = Common & {
+  requestType: 'personalised';
+  personalisation: Record<string, string>;
+  lockNumber: number;
 };
 
-export type LongPersonalisedRenderRequest = Common & {
-  requestType: 'personalised-long';
+export type ShortPersonalisedRenderRequest = PersonalisedCommon & {
+  requestTypeVariant: 'short';
+};
+
+export type LongPersonalisedRenderRequest = PersonalisedCommon & {
+  requestTypeVariant: 'long';
 };
 
 export type PersonalisedRenderRequest =

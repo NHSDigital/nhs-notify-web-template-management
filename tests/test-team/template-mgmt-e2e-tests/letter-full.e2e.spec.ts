@@ -278,9 +278,9 @@ function approve(
     const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
     await submitTemplatePage.clickSubmitTemplateButton();
 
-    const listPage = new TemplateMgmtMessageTemplatesPage(page);
-
-    await expect(page).toHaveURL(listPage.getUrl());
+    await expect(page).toHaveURL(
+      new TemplateMgmtMessageTemplatesPage(page).getUrl()
+    );
 
     const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
     expect(finalTemplate.templateStatus).toBe('PROOF_APPROVED');
