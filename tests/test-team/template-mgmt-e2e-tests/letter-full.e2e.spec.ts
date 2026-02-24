@@ -250,8 +250,7 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { templateId: string; clientId: string },
-  expectedUrl: RegExp
+  templateKey: { templateId: string; clientId: string }
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
@@ -259,7 +258,9 @@ function submit(
     const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
     await submitTemplatePage.clickSubmitTemplateButton();
 
-    await expect(page).toHaveURL(expectedUrl);
+    await expect(page).toHaveURL(
+      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
+    );
 
     const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
     expect(finalTemplate.templateStatus).toBe('SUBMITTED');
@@ -358,13 +359,6 @@ test.describe('letter complete e2e journey', () => {
       'proof-requested-sender'
     );
 
-    await submit(
-      page,
-      templateStorageHelper,
-      templateKey,
-      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
-    );
-
     await approve(page, templateStorageHelper, templateKey);
 
     await checkEmail(
@@ -389,12 +383,6 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await submit(
-      page,
-      templateStorageHelper,
-      templateKey,
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      new RegExp(TemplateMgmtMessageTemplatesPage.pathTemplate)
-    );
+    await submit(page, templateStorageHelper, templateKey);
   });
 });

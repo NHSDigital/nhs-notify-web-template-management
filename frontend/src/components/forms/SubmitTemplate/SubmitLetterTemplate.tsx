@@ -112,7 +112,7 @@ export const SubmitLetterTemplate: FC<Omit<ActionPageProps, 'channel'>> = ({
 
   const [_, action] = useActionState(submitTemplate, {
     channel: 'LETTER' as const,
-    routingEnabled: features.routing === true,
+    proofingEnabled: features.proofing === true,
   });
 
   const pageContent = features.routing

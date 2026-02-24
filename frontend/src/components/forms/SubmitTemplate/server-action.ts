@@ -18,8 +18,8 @@ const $SubmitTemplateFormData = z.object({
 export async function submitTemplate(
   {
     channel,
-    routingEnabled,
-  }: { channel: TemplateType; routingEnabled?: boolean },
+    proofingEnabled,
+  }: { channel: TemplateType; proofingEnabled?: boolean },
   formData: FormData
 ) {
   const { success, data } = $SubmitTemplateFormData.safeParse(
@@ -51,7 +51,8 @@ export async function submitTemplate(
     throw error;
   }
 
-  if (routingEnabled && channel === 'LETTER') {
+  // just proofing disabled.
+  if (proofingEnabled && channel === 'LETTER') {
     return redirect('/message-templates', RedirectType.push);
   }
 
