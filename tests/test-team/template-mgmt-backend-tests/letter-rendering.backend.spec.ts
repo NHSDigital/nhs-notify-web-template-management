@@ -29,6 +29,10 @@ test.describe('Letter rendering', () => {
   });
 
   test.describe('Initial render', () => {
+    // EICAR
+    // non-renderable
+    // renderable invalid
+
     test('produces initial render', async ({ request }) => {
       const { multipart, contentType } =
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
@@ -91,6 +95,7 @@ test.describe('Letter rendering', () => {
       );
 
       expect(render?.buffer).toBeInstanceOf(Buffer);
+      console.log(render?.metadata);
     });
   });
 });

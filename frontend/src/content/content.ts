@@ -542,8 +542,8 @@ const previewLetterTemplate = {
       'Create a new letter template to upload your file(s) again or upload different file(s).',
     ],
     INVALID_MARKERS: [
-      'The template file contains invalid personalisation markers.',
-      'Check that all personalisation markers use the correct format and try again.',
+      'Personalisation fields in letter templates should be written like: {d.fullName}',
+      'The template file you uploaded contains incorrect personalisation fields.',
     ],
   } satisfies Record<string, string[]>,
   preSubmissionText: previewLetterPreSubmissionText,
