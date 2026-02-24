@@ -25,6 +25,7 @@
     "nhs-notify-backend-client": "*",
     "nhs-notify-web-template-management-test-helper-utils": "^0.0.1",
     "nhs-notify-web-template-management-util-backend-config": "^0.0.1",
+    "pdf-parse": "^2.4.5",
     "ssh2-sftp-client": "^9.1.0",
     "zod": "^4.0.17"
   },

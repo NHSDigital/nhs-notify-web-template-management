@@ -308,6 +308,19 @@ export class TemplateStorageHelper {
   }
 
   /**
+   * Retrieves a letter template docx file from the quarantine bucket
+   */
+  async getQuarantineDocxMetadata(key: TemplateKey, version: string) {
+    return await this.getLetterTemplateMetadata(
+      process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+      'docx-template',
+      key,
+      version,
+      'docx'
+    );
+  }
+
+  /**
    * Adds a letter template file to s3
    */
   private async putLetterTemplateFile(

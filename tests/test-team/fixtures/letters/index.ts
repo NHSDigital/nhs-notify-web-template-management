@@ -65,4 +65,10 @@ export const pdfUploadFixtures = {
 
 export const docxFixtures = {
   standard: getFile('docx', 'standard-english-template.docx'),
+  fakeVirus: getFile('docx', 'eicar-threat-test.docx'),
+  incompleteAddress: getFile('docx', 'missing-address-line.docx'),
+  nonRenderableMarker: getFile('docx', 'non-renderable-marker.docx'), // contains {c.fullName}
+  password: getFile('docx', 'password.docx'),
+  invalidMarkers: getFile('docx', 'invalid-markers.docx'), // contains {d.parameter!}
+  corrupted: getFile('docx', 'corrupted.docx'), // word/document.xml is invalid XML
 };
