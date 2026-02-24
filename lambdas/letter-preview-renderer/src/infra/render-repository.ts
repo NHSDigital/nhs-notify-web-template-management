@@ -17,6 +17,7 @@ export class RenderRepository {
     const response = await this.s3.putRawData(pdf, key, {
       Metadata: metadata,
       ContentType: 'application/pdf',
+      // disposition filename?
       ContentDisposition: 'inline',
     });
 

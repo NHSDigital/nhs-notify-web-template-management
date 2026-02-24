@@ -1,6 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
-  DeleteObjectsCommand,
+  GetObjectCommand,
   HeadObjectCommand,
   NotFound,
   PutObjectCommand,
@@ -190,26 +190,6 @@ export class TemplateStorageHelper {
         )
       )
     );
-
-    const files = keys.flatMap(({ id, owner }) => [
-      `pdf-template/${this.stripClientOwnerPrefix(owner)}/${id}.pdf`,
-      `test-data/${this.stripClientOwnerPrefix(owner)}/${id}.csv`,
-    ]);
-
-    const s3Chunks = TemplateStorageHelper.chunk(files, 1000);
-
-    await Promise.all(
-      s3Chunks.map((chunk) =>
-        this.s3.send(
-          new DeleteObjectsCommand({
-            Bucket: process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
-            Delete: {
-              Objects: chunk.map((key) => ({ Key: key })),
-            },
-          })
-        )
-      )
-    );
   }
 
   /**
@@ -223,6 +203,20 @@ export class TemplateStorageHelper {
     }
 
     return chunks;
+  }
+
+  /**
+   * Retrieves a rendered pdf from the download bucket
+   */
+  async getRenderFile(
+    key: TemplateKey,
+    renderType: 'initial',
+    filename: string
+  ) {
+    return await this.getS3File(
+      process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
+      `${key.clientId}/${key.templateId}/renders/${renderType}/${filename}`
+    );
   }
 
   /**
@@ -328,7 +322,7 @@ export class TemplateStorageHelper {
     return this.s3.send(
       new PutObjectCommand({
         Bucket: bucket,
-        Key: this.letterFileKey(prefix, key, version, ext),
+        Key: this.letterInternalFileKey(prefix, key, version, ext),
         Body: data,
         Metadata: metadata,
       })
@@ -347,7 +341,7 @@ export class TemplateStorageHelper {
   ) {
     return await this.getS3Metadata(
       bucket,
-      this.letterFileKey(prefix, key, version, ext)
+      this.letterInternalFileKey(prefix, key, version, ext)
     );
   }
 
@@ -383,7 +377,31 @@ export class TemplateStorageHelper {
     }
   }
 
-  private letterFileKey(
+  private async getS3File(bucket: string, key: string) {
+    try {
+      const response = await this.s3.send(
+        new GetObjectCommand({
+          Bucket: bucket,
+          Key: key,
+        })
+      );
+
+      if (!response.Body) throw new Error('response.Body is absent');
+
+      const byteArray = await response.Body.transformToByteArray();
+      const buf = Buffer.from(byteArray);
+
+      return { buffer: buf, metadata: response.Metadata };
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return null;
+      }
+
+      throw error;
+    }
+  }
+
+  private letterInternalFileKey(
     prefix: string,
     key: TemplateKey,
     version: string,
@@ -394,11 +412,5 @@ export class TemplateStorageHelper {
 
   private addClientOwnerPrefix(owner: string) {
     return `${this.clientOwnerPrefix}${owner}`;
-  }
-
-  private stripClientOwnerPrefix(owner: string) {
-    return owner.startsWith(this.clientOwnerPrefix)
-      ? owner.slice(this.clientOwnerPrefix.length)
-      : owner;
   }
 }

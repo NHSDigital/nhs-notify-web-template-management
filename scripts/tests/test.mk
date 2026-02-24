@@ -38,6 +38,9 @@ test-ui-e2e: # Run tests from scripts/tests/ui-e2e.sh @Testing
 test-api: # Run tests from scripts/tests/api.sh @Testing
 	make _test name="api"
 
+test-backend: # Run tests from scripts/tests/backend.sh @Testing
+	make _test name="api"
+
 test-ui-user-timeout: # Run tests from scripts/tests/ui-user-timeout.sh @Testing
 	make _test name="ui-user-timeout"
 
@@ -57,6 +60,7 @@ test: # Run all the test tasks @Testing
 		test-ui-component \
 		test-ui-e2e \
 		test-api \
+		test-backend \
 		test-accessibility \
 		test-ui-user-timeout \
 		test-contract-provider \
@@ -82,6 +86,7 @@ ${VERBOSE}.SILENT: \
 	test-ui-accessibility \
 	test-ui-component \
 	test-api \
+	test-backend \
 	test-ui-e2e \
 	test-ui-user-timeout \
 	test-unit \
