@@ -78,12 +78,13 @@ describe('App', () => {
         const pdfBuffer = Buffer.from('pdf content');
         const pageCount = 2;
         const fileName = 'abc123.pdf';
+        const currentVersion = 'abc123';
 
         mocks.sourceRepo.getSource.mockResolvedValue(sourceHandle);
         mocks.carbone.extractMarkers.mockResolvedValue(validMarkers);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
-        mocks.renderRepo.save.mockResolvedValue(fileName);
+        mocks.renderRepo.save.mockResolvedValue({ fileName, currentVersion });
         mocks.templateRepo.updateRendered.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
@@ -122,7 +123,7 @@ describe('App', () => {
             ],
             custom: ['first_name'],
           },
-          request.currentVersion,
+          currentVersion,
           fileName,
           pageCount
         );
@@ -138,6 +139,7 @@ describe('App', () => {
         const pdfBuffer = Buffer.from('pdf content');
         const pageCount = 1;
         const fileName = 'abc123.pdf';
+        const currentVersion = 'abc123';
 
         const markersWithInvalidPath = new Set([...validMarkers, 'foo.bar']);
 
@@ -145,7 +147,7 @@ describe('App', () => {
         mocks.carbone.extractMarkers.mockResolvedValue(markersWithInvalidPath);
         mocks.carbone.render.mockResolvedValue(pdfBuffer);
         mocks.checkRender.pageCount.mockResolvedValue(pageCount);
-        mocks.renderRepo.save.mockResolvedValue(fileName);
+        mocks.renderRepo.save.mockResolvedValue({ fileName, currentVersion });
         mocks.templateRepo.updateRendered.mockResolvedValue(undefined);
 
         const outcome = await app.renderInitial(request);
@@ -166,7 +168,7 @@ describe('App', () => {
             ],
             custom: ['first_name'],
           },
-          request.currentVersion,
+          currentVersion,
           fileName,
           pageCount,
           [{ name: 'INVALID_MARKERS', issues: ['foo.bar'] }]

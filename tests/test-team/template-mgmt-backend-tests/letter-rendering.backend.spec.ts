@@ -245,7 +245,7 @@ test.describe('Letter rendering', () => {
       );
     });
 
-    test('docx containing invalid XML fails with generic COULD_NOT_RENDER validation error', async ({
+    test('docx containing invalid XML fails with VALIDATION_FAILED status and no specific validation error', async ({
       request,
     }) => {
       await initialRenderTest(
@@ -253,10 +253,11 @@ test.describe('Letter rendering', () => {
         docxFixtures.corrupted.open(),
         user,
         (t: Template) => {
+          expect(t.validationErrors).toBeUndefined();
+
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'VALIDATION_FAILED',
-              // validationErrors: [{ name: 'COULD_NOT_RENDER' }],
               files: expect.objectContaining({
                 initialRender: { status: 'FAILED' },
               }),

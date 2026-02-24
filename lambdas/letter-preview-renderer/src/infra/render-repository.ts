@@ -2,6 +2,11 @@ import { randomUUID } from 'node:crypto';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
+export type SaveResult = {
+  fileName: string;
+  currentVersion: string;
+};
+
 export class RenderRepository {
   constructor(private readonly s3: S3Repository) {}
 
@@ -9,7 +14,7 @@ export class RenderRepository {
     pdf: Buffer,
     request: RenderRequest,
     pageCount: number
-  ): Promise<string> {
+  ): Promise<SaveResult> {
     const id = randomUUID();
     const metadata = this.buildMetadata(request, pageCount);
     const key = this.s3Key(request, id);
@@ -25,7 +30,7 @@ export class RenderRepository {
       throw new Error('S3 did not return a VersionId');
     }
 
-    return `${id}.pdf`;
+    return { fileName: `${id}.pdf`, currentVersion: id };
   }
 
   private buildMetadata(

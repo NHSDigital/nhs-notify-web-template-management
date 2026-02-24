@@ -278,6 +278,32 @@ async function createTemplates(user: TestUser) {
           },
         }
       ),
+    authoringWithPendingInitialRender:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'A1B2C3D4-E5F6-7890-ABCD-EF9876543210',
+        user,
+        'authoring-pending-initial-render',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: 'variant-pending-init',
+          initialRender: {
+            status: 'PENDING',
+          },
+        }
+      ),
+    authoringWithFailedInitialRender:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'F1E2D3C4-B5A6-7890-FEDC-BA9876543210',
+        user,
+        'authoring-failed-initial-render',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: 'variant-failed-init',
+          initialRender: {
+            status: 'FAILED',
+          },
+        }
+      ),
   };
 }
 
@@ -654,6 +680,36 @@ test.describe('Preview Letter template Page', () => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
         ).setPathParam('templateId', templates.authoringNoInitialRender.id);
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.letterRender).toBeHidden();
+      });
+
+      test('hides letter preview section when initialRender is not RENDERED', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringWithPendingInitialRender.id
+        );
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.letterRender).toBeHidden();
+      });
+
+      test('hides letter preview section when initialRender is FAILED', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringWithFailedInitialRender.id
+        );
 
         await previewPage.loadPage();
 

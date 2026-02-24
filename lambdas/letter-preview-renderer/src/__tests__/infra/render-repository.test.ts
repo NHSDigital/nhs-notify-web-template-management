@@ -50,7 +50,10 @@ describe('RenderRepository', () => {
 
       const result = await renderRepository.save(pdf, request, pageCount);
 
-      expect(result).toBe(`${uuid}.pdf`);
+      expect(result).toEqual({
+        fileName: `${uuid}.pdf`,
+        currentVersion: uuid,
+      });
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
         `test-client/renders/test-template/${uuid}.pdf`,
@@ -61,6 +64,8 @@ describe('RenderRepository', () => {
             'client-id': 'test-client',
             variant: 'initial',
           },
+          ContentType: 'application/pdf',
+          ContentDisposition: 'inline',
         }
       );
     });

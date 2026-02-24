@@ -50,7 +50,7 @@ export class App {
       }
 
       try {
-        const { fileName, pageCount } = await this.renderAndSave(
+        const { fileName, currentVersion, pageCount } = await this.renderAndSave(
           request,
           sourcePath,
           passthroughPersonalisation
@@ -66,7 +66,7 @@ export class App {
           await this.templateRepository.updateRendered(
             request,
             personalisation,
-            request.currentVersion,
+            currentVersion,
             fileName,
             pageCount,
             validationErrors
@@ -77,7 +77,7 @@ export class App {
         await this.templateRepository.updateRendered(
           request,
           personalisation,
-          request.currentVersion,
+          currentVersion,
           fileName,
           pageCount
         );
@@ -127,8 +127,12 @@ export class App {
 
     const pageCount = await this.checkRender.pageCount(pdf);
 
-    const fileName = await this.renderRepository.save(pdf, request, pageCount);
+    const { fileName, currentVersion } = await this.renderRepository.save(
+      pdf,
+      request,
+      pageCount
+    );
 
-    return { fileName, pageCount };
+    return { fileName, currentVersion, pageCount };
   }
 }
