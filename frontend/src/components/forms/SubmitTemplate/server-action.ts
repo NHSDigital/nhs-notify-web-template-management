@@ -51,7 +51,6 @@ export async function submitTemplate(
     throw error;
   }
 
-  // just proofing disabled.
   if (proofingEnabled && channel === 'LETTER') {
     return redirect('/message-templates', RedirectType.push);
   }

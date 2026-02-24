@@ -153,7 +153,9 @@ test.describe('Submit Letter Template Page', () => {
 
     await submitPage.clickSubmitTemplateButton();
 
-    await expect(page).toHaveURL('/templates/message-templates');
+    await expect(page).toHaveURL(
+      `/templates/letter-template-submitted/${templates.routingDisabled.id}`
+    );
   });
 
   test('when proofing is disabled and user submits form, then the "letter-template-submitted" page is displayed', async ({
