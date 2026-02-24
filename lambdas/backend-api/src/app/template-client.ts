@@ -473,17 +473,18 @@ export class TemplateClient {
       return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
     }
 
-    const result = clientConfig.features.proofing
-      ? await this.templateRepository.approveProof(
-          templateId,
-          user,
-          lockNumberValidation.data
-        )
-      : await this.templateRepository.submit(
-          templateId,
-          user,
-          lockNumberValidation.data
-        );
+    const result =
+      clientConfig.features.proofing && template.templateType === 'LETTER'
+        ? await this.templateRepository.approveProof(
+            templateId,
+            user,
+            lockNumberValidation.data
+          )
+        : await this.templateRepository.submit(
+            templateId,
+            user,
+            lockNumberValidation.data
+          );
 
     if (result.error) {
       log
