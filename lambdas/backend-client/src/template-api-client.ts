@@ -3,7 +3,9 @@ import {
   TemplateSuccess,
   TemplateSuccessList,
   TemplateDto,
-  PatchTemplate,
+  AuthoringLetterPatch,
+  LetterVariant,
+  LetterVariantListSuccess,
 } from './types/generated';
 import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
@@ -100,7 +102,7 @@ export const templateApiClient = {
 
   async patchTemplate(
     templateId: string,
-    template: PatchTemplate,
+    template: AuthoringLetterPatch,
     token: string,
     lockNumber: number
   ): Promise<Result<TemplateDto>> {
@@ -247,6 +249,32 @@ export const templateApiClient = {
             'Content-Type': 'application/json',
             Authorization: owner,
             'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async getTemplateLetterVariants(
+    templateId: string,
+    owner: string
+  ): Promise<Result<LetterVariant[]>> {
+    const response = await catchAxiosError(
+      httpClient.get<LetterVariantListSuccess>(
+        `/v1/template/${encodeURIComponent(templateId)}/letter-variants`,
+        {
+          headers: {
+            Authorization: owner,
           },
         }
       )

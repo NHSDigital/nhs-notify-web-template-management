@@ -5,6 +5,8 @@ const $Env = z.object({
   CLIENT_CONFIG_TTL_SECONDS: z.string().pipe(z.coerce.number()),
   DEFAULT_LETTER_SUPPLIER: z.string(),
   ENVIRONMENT: z.string(),
+  LETTER_VARIANT_CACHE_TTL_MS: z.string().pipe(z.coerce.number()),
+  LETTER_VARIANT_TABLE_NAME: z.string(),
   REQUEST_PROOF_QUEUE_URL: z.string(),
   ROUTING_CONFIG_TABLE_NAME: z.string(),
   SUPPLIER_RECIPIENT_EMAIL_ADDRESSES: z.string(),
@@ -36,5 +38,7 @@ export function loadConfig() {
     templatesTableName: env.TEMPLATES_TABLE_NAME,
     templateSubmittedSenderEmailAddress:
       env.TEMPLATE_SUBMITTED_SENDER_EMAIL_ADDRESS,
+    letterVariantCacheTtlMs: env.LETTER_VARIANT_CACHE_TTL_MS,
+    letterVariantTableName: env.LETTER_VARIANT_TABLE_NAME,
   };
 }

@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
+import { $LockNumber } from 'nhs-notify-backend-client';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyContainer } from '@layouts/container/container';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
@@ -20,14 +21,10 @@ export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function EditTemplateNamePage({
-  params,
-}: TemplatePageProps) {
-  const { templateId } = await params;
+export default async function EditTemplateNamePage(props: TemplatePageProps) {
+  const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
-
-  const client = await fetchClient();
 
   if (!template) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -37,6 +34,10 @@ export default async function EditTemplateNamePage({
     return redirect('/message-templates', RedirectType.replace);
   }
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
   const previewUrl =
     template.templateStatus === 'SUBMITTED'
       ? `/preview-submitted-letter-template/${templateId}`
@@ -44,10 +45,13 @@ export default async function EditTemplateNamePage({
 
   if (
     template.templateStatus === 'SUBMITTED' ||
-    template.letterVersion !== 'AUTHORING'
+    template.letterVersion !== 'AUTHORING' ||
+    !lockNumberResult.success
   ) {
     return redirect(previewUrl, RedirectType.replace);
   }
+
+  const client = await fetchClient();
 
   if (!client?.features.letterAuthoring) {
     return redirect('/message-templates', RedirectType.replace);
@@ -73,7 +77,7 @@ export default async function EditTemplateNamePage({
                 <input
                   type='hidden'
                   name='lockNumber'
-                  value={template.lockNumber}
+                  value={lockNumberResult.data}
                   readOnly
                 />
                 <NHSNotifyForm.FormGroup htmlFor='name'>

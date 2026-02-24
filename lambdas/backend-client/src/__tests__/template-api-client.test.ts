@@ -3,14 +3,15 @@ import {
   templateApiClient as client,
   httpClient,
 } from '../template-api-client';
+import { LetterVariant } from '../types/generated';
 
-const axiosMock = new MockAdapter(httpClient);
+let axiosMock: MockAdapter;
 
 const testToken = 'abc';
 
 describe('TemplateAPIClient', () => {
   beforeEach(() => {
-    axiosMock.reset();
+    axiosMock = new MockAdapter(httpClient);
   });
 
   test('createTemplate - should return error', async () => {
@@ -539,6 +540,80 @@ describe('TemplateAPIClient', () => {
       const result = await client.requestProof('real-id', testToken, 4);
 
       expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
+  });
+
+  describe('getTemplateLetterVariants', () => {
+    test('should return error', async () => {
+      axiosMock.onGet('/v1/template/template-123/letter-variants').reply(500, {
+        statusCode: 500,
+        technicalMessage: 'Internal server error',
+        details: {
+          message: 'Failed to fetch letter variants',
+        },
+      });
+
+      const result = await client.getTemplateLetterVariants(
+        'template-123',
+        testToken
+      );
+
+      expect(result.error).toEqual({
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+          details: {
+            message: 'Failed to fetch letter variants',
+          },
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+    });
+
+    test('should return letter variants', async () => {
+      const letterVariants: LetterVariant[] = [
+        {
+          id: 'variant-1',
+          name: 'First Class',
+          bothSides: true,
+          dispatchTime: 'standard',
+          envelopeSize: 'C4',
+          maxSheets: 4,
+          postage: 'first class',
+          printColour: 'black',
+          sheetSize: 'A4',
+          status: 'PROD',
+          type: 'STANDARD',
+        },
+        {
+          id: 'variant-2',
+          name: 'Economy',
+          bothSides: true,
+          dispatchTime: 'standard',
+          envelopeSize: 'C4',
+          maxSheets: 4,
+          postage: 'economy',
+          printColour: 'black',
+          sheetSize: 'A4',
+          status: 'PROD',
+          type: 'STANDARD',
+        },
+      ];
+
+      axiosMock.onGet('/v1/template/template-123/letter-variants').reply(200, {
+        statusCode: 200,
+        data: letterVariants,
+      });
+
+      const result = await client.getTemplateLetterVariants(
+        'template-123',
+        testToken
+      );
+
+      expect(result.data).toEqual(letterVariants);
 
       expect(result.error).toBeUndefined();
     });

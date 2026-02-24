@@ -4,6 +4,7 @@ import {
   SSMClient,
 } from '@aws-sdk/client-ssm';
 import type { AuthContextFile } from 'helpers/auth/auth-context-file';
+import { chunk } from 'helpers/chunk';
 
 export type ClientConfiguration = {
   campaignIds?: string[];
@@ -168,11 +169,16 @@ export class ClientConfigurationHelper {
   async teardown() {
     const ids = await this.authContextFile.clientIds(this.runId);
 
-    const names = ids.map((id) => this.ssmKey(id));
-
-    for (let i = 0; i < names.length; i += 10) {
-      const batch = names.slice(i, i + 10);
-      await this.ssmClient.send(new DeleteParametersCommand({ Names: batch }));
+    if (ids.length > 0) {
+      await Promise.all(
+        chunk(ids, 10).map((batch) =>
+          this.ssmClient.send(
+            new DeleteParametersCommand({
+              Names: batch.map((id) => this.ssmKey(id)),
+            })
+          )
+        )
+      );
     }
   }
 

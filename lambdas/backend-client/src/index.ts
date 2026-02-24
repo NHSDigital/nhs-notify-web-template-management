@@ -3,6 +3,7 @@ export * from './schemas/routing-config';
 export * from './schemas/schema-for';
 export * from './schemas/template';
 export * from './schemas/union-lists';
+export * from './schemas/letter-variant';
 export * from './types/error-cases';
 export * from './types/generated';
 export * from './types/result';

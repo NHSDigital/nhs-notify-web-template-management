@@ -4,12 +4,13 @@
 
 'use client';
 
-import { Details, SummaryList } from 'nhsuk-react-components';
+import { Details, SummaryList, Table } from 'nhsuk-react-components';
 export {
   Details,
   HintText,
   Label,
   SummaryList,
+  Table,
   Tag,
 } from 'nhsuk-react-components';
 
@@ -19,3 +20,8 @@ export const DetailsText = Details.Text;
 export const SummaryListRow = SummaryList.Row;
 export const SummaryListKey = SummaryList.Key;
 export const SummaryListValue = SummaryList.Value;
+
+export const TableHead = Table.Head;
+export const TableRow = Table.Row;
+export const TableBody = Table.Body;
+export const TableCell = Table.Cell;

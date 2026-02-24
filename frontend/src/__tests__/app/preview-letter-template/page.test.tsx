@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate } from '@utils/form-actions';
+import { getTemplate, getLetterVariantById } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
+  makeLetterVariant,
   NHS_APP_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
@@ -253,6 +254,12 @@ describe('valid PDF letter template', () => {
 describe('valid authoring letter template', () => {
   beforeEach(() => {
     jest.mocked(getTemplate).mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+    jest.mocked(getLetterVariantById).mockResolvedValue(
+      makeLetterVariant({
+        id: AUTHORING_LETTER_TEMPLATE.letterVariantId,
+        name: 'Example Letter Variant',
+      })
+    );
   });
 
   it('renders the page without redirecting', async () => {
@@ -262,6 +269,16 @@ describe('valid authoring letter template', () => {
 
     expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('fetches the letter variant', async () => {
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(getLetterVariantById).toHaveBeenCalledWith(
+      AUTHORING_LETTER_TEMPLATE.letterVariantId
+    );
   });
 
   it('matches snapshot', async () => {
@@ -323,6 +340,23 @@ describe('valid authoring letter template', () => {
     expect(
       screen.getByRole('tab', { name: 'Long examples' })
     ).toBeInTheDocument();
+  });
+});
+
+describe('authoring letter template with no letter variant set', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      letterVariantId: undefined,
+    });
+  });
+
+  it('does not fetch the letter variant', async () => {
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(getLetterVariantById).not.toHaveBeenCalled();
   });
 });
 

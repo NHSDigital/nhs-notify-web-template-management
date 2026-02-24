@@ -3,4 +3,5 @@ export { NHSNotifyFormErrorSummary as ErrorSummary } from './ErrorSummary';
 export { NHSNotifyForm as Form } from './Form';
 export { NHSNotifyFormGroup as FormGroup } from './FormGroup';
 export { NHSNotifyFormInput as Input } from './Input';
+export { NHSNotifyFormRadioInput as RadioInput } from './RadioInput';
 export { NHSNotifyFormSelect as Select } from './Select';

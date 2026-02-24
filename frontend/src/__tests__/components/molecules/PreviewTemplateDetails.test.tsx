@@ -13,6 +13,7 @@ import {
   AuthoringLetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { makeLetterVariant } from '@testhelpers/helpers';
 
 jest.mock('@providers/client-config-provider');
 
@@ -48,6 +49,7 @@ const basePdfLetter: PdfLetterTemplate = {
 
 const baseAuthoringLetter: AuthoringLetterTemplate = {
   ...baseTemplate,
+  clientId: 'client-id',
   name: 'Authoring Letter',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',
@@ -219,6 +221,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(
         container.container.querySelector('.missing-value')
       ).toBeInTheDocument();
+    });
+
+    it('matches snapshot with letter variant name displayed', () => {
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          letterVariant={makeLetterVariant({ name: 'Example Variant Name' })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
     });
 
     it('matches snapshot without initialRender - page counts are not displayed', () => {

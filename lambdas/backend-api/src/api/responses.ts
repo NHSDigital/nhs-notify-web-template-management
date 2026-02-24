@@ -3,6 +3,7 @@ import type {
   TemplateDto,
   RoutingConfig,
   RoutingConfigReference,
+  LetterVariant,
 } from 'nhs-notify-backend-client';
 
 type Count = { count: number };
@@ -10,6 +11,8 @@ type Count = { count: number };
 export const apiSuccess = <
   T extends
     | Count
+    | LetterVariant
+    | LetterVariant[]
     | RoutingConfig
     | RoutingConfig[]
     | RoutingConfigReference[]

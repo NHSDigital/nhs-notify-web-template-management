@@ -36,15 +36,29 @@ module "patch_template_lambda" {
 
 data "aws_iam_policy_document" "patch_template_lambda_policy" {
   statement {
-    sid    = "AllowDynamoAccess"
+    sid    = "AllowTemplatesReadWrite"
     effect = "Allow"
 
     actions = [
+      "dynamodb:GetItem",
       "dynamodb:UpdateItem",
     ]
 
     resources = [
       aws_dynamodb_table.templates.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowLetterVariantsQueryByScope"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.letter_variants.arn}/index/ByScope",
     ]
   }
 

@@ -81,10 +81,9 @@ test.describe('Edit Template Campaign page', () => {
       await templateStorageHelper.seedTemplateData([template]);
 
       const props = {
-        page: new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          template.id
-        ),
+        page: new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', template.id)
+          .setSearchParam('lockNumber', String(template.lockNumber)),
         baseURL,
       };
 
@@ -112,9 +111,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -141,9 +140,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -154,7 +153,7 @@ test.describe('Edit Template Campaign page', () => {
       await editPage.submitButton.click();
 
       await expect(page).toHaveURL(
-        `/templates/edit-template-campaign/${template.id}`
+        `/templates/edit-template-campaign/${template.id}?lockNumber=${template.lockNumber}`
       );
 
       await expect(editPage.errorSummaryList).toHaveText(['Choose a campaign']);
@@ -163,9 +162,9 @@ test.describe('Edit Template Campaign page', () => {
     test("redirects to invalid template page if template doesn't exist", async ({
       page,
     }) => {
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', 'no-exist');
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', 'no-exist')
+        .setSearchParam('lockNumber', '1');
 
       await editPage.loadPage();
 
@@ -182,9 +181,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -201,9 +200,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -220,9 +219,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -240,9 +239,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -263,6 +262,28 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
+
+      await editPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `/templates/preview-submitted-letter-template/${template.id}`
+      );
+    });
+
+    test('redirects to preview page when lockNumber query parameter is missing', async ({
+      page,
+    }) => {
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        userMultiCampaignAuthoringEnabled,
+        'Letter Template'
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
       const editPage = new TemplateMgmtEditTemplateCampaignPage(
         page
       ).setPathParam('templateId', template.id);
@@ -270,7 +291,7 @@ test.describe('Edit Template Campaign page', () => {
       await editPage.loadPage();
 
       await expect(page).toHaveURL(
-        `/templates/preview-submitted-letter-template/${template.id}`
+        `/templates/preview-letter-template/${template.id}`
       );
     });
   });
@@ -289,9 +310,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -313,9 +334,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -339,9 +360,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 

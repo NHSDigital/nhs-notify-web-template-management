@@ -37,6 +37,8 @@ const mockTemplate: TemplateDto = {
   },
 };
 
+const validSearchParams = Promise.resolve({ lockNumber: '7' });
+
 beforeEach(() => {
   jest.resetAllMocks();
   jest.mocked(editTemplateCampaign).mockResolvedValue({});
@@ -62,7 +64,10 @@ describe('template does not exist', () => {
   });
 
   it('redirects to invalid template page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/invalid-template',
@@ -88,7 +93,10 @@ describe('template is not a letter', () => {
   });
 
   it('redirects to message templates page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/message-templates',
@@ -122,7 +130,10 @@ describe('letter version is not AUTHORING', () => {
   });
 
   it('redirects to preview letter template page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/preview-letter-template/template-123',
@@ -142,7 +153,10 @@ describe('client has letter authoring feature flag disabled', () => {
   });
 
   it('redirects to message templates page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/message-templates',
@@ -160,7 +174,10 @@ describe('template has been submitted', () => {
   });
 
   it('redirects to preview submitted letter template page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/preview-submitted-letter-template/template-123',
@@ -180,7 +197,24 @@ describe('client only has one campaign', () => {
   });
 
   it('redirects to preview letter template page', async () => {
-    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: validSearchParams,
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/preview-letter-template/template-123',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('lockNumber search parameter validation fails', () => {
+  it('redirects to preview letter template page', async () => {
+    await Page({
+      params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: Promise.resolve({ lockNumber: 'invalid-lock-number' }),
+    });
 
     expect(redirect).toHaveBeenCalledWith(
       '/preview-letter-template/template-123',
@@ -193,7 +227,10 @@ describe('valid template', () => {
   it('matches snapshot on initial render', async () => {
     expect(
       render(
-        await Page({ params: Promise.resolve({ templateId: 'template-123' }) })
+        await Page({
+          params: Promise.resolve({ templateId: 'template-123' }),
+          searchParams: validSearchParams,
+        })
       ).asFragment()
     ).toMatchSnapshot();
   });
@@ -202,7 +239,10 @@ describe('valid template', () => {
     const user = userEvent.setup();
 
     render(
-      await Page({ params: Promise.resolve({ templateId: 'template-123' }) })
+      await Page({
+        params: Promise.resolve({ templateId: 'template-123' }),
+        searchParams: validSearchParams,
+      })
     );
 
     const campaignSelect = screen.getByLabelText('Edit template campaign');
@@ -220,7 +260,7 @@ describe('valid template', () => {
 
     expect(formData.get('campaignId')).toBe('Campaign 2');
     expect(formData.get('templateId')).toBe('template-123');
-    expect(formData.get('lockNumber')).toBe('5');
+    expect(formData.get('lockNumber')).toBe('7');
 
     expect(
       screen.queryByRole('alert', { name: 'There is a problem' })
@@ -239,7 +279,10 @@ describe('valid template', () => {
     const user = userEvent.setup();
 
     const page = render(
-      await Page({ params: Promise.resolve({ templateId: 'template-123' }) })
+      await Page({
+        params: Promise.resolve({ templateId: 'template-123' }),
+        searchParams: validSearchParams,
+      })
     );
 
     const campaignSelect = screen.getByLabelText('Edit template campaign');
@@ -258,7 +301,10 @@ describe('valid template', () => {
 
   it('displays the cancel link with correct href', async () => {
     render(
-      await Page({ params: Promise.resolve({ templateId: 'template-123' }) })
+      await Page({
+        params: Promise.resolve({ templateId: 'template-123' }),
+        searchParams: validSearchParams,
+      })
     );
 
     const cancelLink = screen.getByRole('link', { name: 'Go back' });
