@@ -208,14 +208,10 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a rendered pdf from the download bucket
    */
-  async getRenderFile(
-    key: TemplateKey,
-    renderType: 'initial',
-    filename: string
-  ) {
+  async getRenderFile(key: TemplateKey, filename: string) {
     return await this.getS3File(
       process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
-      `${key.clientId}/${key.templateId}/renders/${renderType}/${filename}`
+      `${key.clientId}/renders/${key.templateId}/${filename}`
     );
   }
 

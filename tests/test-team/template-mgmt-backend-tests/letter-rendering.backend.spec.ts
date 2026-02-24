@@ -8,7 +8,7 @@ import { PDFParse } from 'pdf-parse';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { docxFixtures } from '../fixtures/letters';
-import { Template } from 'helpers/types';
+import type { Template } from '../helpers/types';
 
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -121,7 +121,6 @@ test.describe('Letter rendering', () => {
 
       const render = await templateStorageHelper.getRenderFile(
         { clientId: template!.clientId!, templateId: template!.id },
-        'initial',
         template!.files!.initialRender!.fileName
       );
 
