@@ -139,17 +139,11 @@ test('polls SFTP folder', async () => {
   expect(s3Repository.putRawData).toHaveBeenCalledTimes(2);
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1/proof-1.pdf',
-    {
-      ChecksumAlgorithm: 'SHA256',
-    }
+    'proofs/supplier/template-1/proof-1.pdf'
   );
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1/proof-2.pdf',
-    {
-      ChecksumAlgorithm: 'SHA256',
-    }
+    'proofs/supplier/template-1/proof-2.pdf'
   );
 
   expect(mockLogger.logMessages).toContainEqual(

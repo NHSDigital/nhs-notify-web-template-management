@@ -126,9 +126,7 @@ export class App {
       const fileValidation = await this.validateFile(data);
 
       if (fileValidation) {
-        await this.s3Repository.putRawData(data, s3Path, {
-          ChecksumAlgorithm: 'SHA256',
-        });
+        await this.s3Repository.putRawData(data, s3Path);
       } else {
         pathLogger.error('PDF file failed validation');
       }

@@ -34,6 +34,7 @@ describe('putRawData', () => {
       Bucket: BUCKET,
       Key: 'some/key.txt',
       Body: data,
+      ChecksumAlgorithm: 'SHA256',
     });
   });
 
@@ -51,6 +52,7 @@ describe('putRawData', () => {
       Bucket: BUCKET,
       Key: 'some/key.txt',
       Body: data,
+      ChecksumAlgorithm: 'SHA256',
       ContentType: 'application/pdf',
       ServerSideEncryption: 'aws:kms',
     });

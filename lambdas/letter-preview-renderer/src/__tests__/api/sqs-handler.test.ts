@@ -4,6 +4,10 @@ import { makeSQSRecord } from 'nhs-notify-web-template-management-test-helper-ut
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { createHandler } from '../../api/sqs-handler';
 import type { App } from '../../app/app';
+import type {
+  InitialRenderRequest,
+  PersonalisedRenderRequest,
+} from 'nhs-notify-backend-client/src/types/render-request';
 
 function setup() {
   const app = mock<App>();
@@ -14,14 +18,14 @@ function setup() {
   return { handler, mocks: { app }, logMessages };
 }
 
-const initialRequest = {
+const initialRequest: InitialRenderRequest = {
   requestType: 'initial',
   clientId: 'test-client',
   templateId: 'test-template',
   currentVersion: 'test-version',
 };
 
-const personalisedRequest = {
+const personalisedRequest: PersonalisedRenderRequest = {
   requestType: 'personalised',
   requestTypeVariant: 'short',
   clientId: 'test-client',

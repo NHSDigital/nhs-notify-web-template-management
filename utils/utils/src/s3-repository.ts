@@ -25,12 +25,12 @@ export class S3Repository {
     key: string,
     options: PutObjectOptions = {}
   ): Promise<PutObjectCommandOutput> {
-    // wrap errors incl path as in core?
     return await this.client.send(
       new PutObjectCommand({
         Bucket: this.bucket,
         Key: key,
         Body: fileData,
+        ChecksumAlgorithm: 'SHA256',
         ...options,
       })
     );
