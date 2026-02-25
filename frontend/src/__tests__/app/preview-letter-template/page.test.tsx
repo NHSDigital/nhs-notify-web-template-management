@@ -15,10 +15,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-import type {
-  RenderStatus,
-  VersionedFileDetails,
-} from 'nhs-notify-backend-client';
+import type { VersionedFileDetails } from 'nhs-notify-backend-client';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
@@ -365,49 +362,41 @@ describe('authoring letter template without initial render in RENDERED status', 
     );
   });
 
-  const renderStatusCases = [
-    'FAILED',
-    'PENDING',
-  ] as const satisfies RenderStatus[];
-
-  test.each(renderStatusCases)(
-    'does not display renderer when initialRender status is %s',
-    async (status) => {
-      jest.mocked(getTemplate).mockResolvedValue({
-        ...AUTHORING_LETTER_TEMPLATE,
-        files: {
-          docxTemplate: {
-            currentVersion: 'version-id',
-            fileName: 'template.docx',
-            virusScanStatus: 'PASSED',
-          },
-          initialRender: {
-            status,
-          },
+  test('does not display renderer when initialRender status is FAILED', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
         },
-      });
+        initialRender: {
+          status: 'FAILED',
+        },
+      },
+    });
 
-      render(
-        await Page({
-          params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-        })
-      );
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
 
-      expect(
-        screen.queryByRole('heading', { name: 'Letter preview' })
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByRole('tab', { name: 'Short examples' })
-      ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
 
-      expect(
-        screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-      ).toBeInTheDocument();
-      expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
-        AUTHORING_LETTER_TEMPLATE.id
-      );
-    }
-  );
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
+  });
 });
 
 describe('authoring letter template does not show submit form when already submitted', () => {

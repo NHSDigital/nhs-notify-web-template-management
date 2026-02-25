@@ -16,6 +16,7 @@ type RenderWithOptions = (
 
 const mockCarboneRender =
   carbone.render as unknown as jest.MockedFunction<RenderWithOptions>;
+
 const mockExtractMarkers = jest.mocked(extractMarkers);
 
 function setup() {

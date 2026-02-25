@@ -32,80 +32,68 @@ const personalisedRequest = {
 };
 
 describe('createHandler', () => {
-  describe('happy path', () => {
-    test('parses request and calls app.renderInitial for initial request', async () => {
-      const { handler, mocks } = setup();
+  test('parses request and calls app.renderInitial for initial request', async () => {
+    const { handler, mocks } = setup();
 
-      mocks.app.renderInitial.mockResolvedValue('rendered');
+    mocks.app.renderInitial.mockResolvedValue('rendered');
 
-      const record = makeSQSRecord({
-        body: JSON.stringify(initialRequest),
-      });
-
-      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
-
-      expect(mocks.app.renderInitial).toHaveBeenCalledWith(initialRequest);
+    const record = makeSQSRecord({
+      body: JSON.stringify(initialRequest),
     });
 
-    test('logs outcome after successful render', async () => {
-      const { handler, mocks, logMessages } = setup();
+    await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
-      mocks.app.renderInitial.mockResolvedValue('rendered');
-
-      const record = makeSQSRecord({
-        body: JSON.stringify(initialRequest),
-      });
-
-      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
-
-      expect(logMessages).toContainEqual(
-        expect.objectContaining({
-          message: 'Render complete',
-        })
-      );
-    });
+    expect(mocks.app.renderInitial).toHaveBeenCalledWith(initialRequest);
   });
 
-  describe('non-initial request types', () => {
-    test('returns early without calling app for personalised-short', async () => {
-      const { handler, mocks } = setup();
+  test('returns early without calling app for personalised-short', async () => {
+    const { handler, mocks } = setup();
 
-      const record = makeSQSRecord({
-        body: JSON.stringify(personalisedRequest),
-      });
-
-      await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
-
-      expect(mocks.app.renderInitial).not.toHaveBeenCalled();
+    const record = makeSQSRecord({
+      body: JSON.stringify(personalisedRequest),
     });
+
+    await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
+
+    expect(mocks.app.renderInitial).not.toHaveBeenCalled();
   });
 
-  describe('record count validation', () => {
-    test('throws when event contains zero records', async () => {
-      const { handler } = setup();
+  test('throws when event is not a valid render request', async () => {
+    const { handler } = setup();
 
-      await expect(
-        handler({ Records: [] }, mock<Context>(), mock<Callback>())
-      ).rejects.toThrow('Event contained unexpected number of events');
+    await expect(
+      handler(
+        { Records: [makeSQSRecord({ body: JSON.stringify({}) })] },
+        mock<Context>(),
+        mock<Callback>()
+      )
+    ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  test('throws when event contains zero records', async () => {
+    const { handler } = setup();
+
+    await expect(
+      handler({ Records: [] }, mock<Context>(), mock<Callback>())
+    ).rejects.toThrow('Event contained unexpected number of events');
+  });
+
+  test('throws when event contains multiple records', async () => {
+    const { handler } = setup();
+
+    const record1 = makeSQSRecord({
+      body: JSON.stringify(initialRequest),
+    });
+    const record2 = makeSQSRecord({
+      body: JSON.stringify(initialRequest),
     });
 
-    test('throws when event contains multiple records', async () => {
-      const { handler } = setup();
-
-      const record1 = makeSQSRecord({
-        body: JSON.stringify(initialRequest),
-      });
-      const record2 = makeSQSRecord({
-        body: JSON.stringify(initialRequest),
-      });
-
-      await expect(
-        handler(
-          { Records: [record1, record2] },
-          mock<Context>(),
-          mock<Callback>()
-        )
-      ).rejects.toThrow('Event contained unexpected number of events');
-    });
+    await expect(
+      handler(
+        { Records: [record1, record2] },
+        mock<Context>(),
+        mock<Callback>()
+      )
+    ).rejects.toThrow('Event contained unexpected number of events');
   });
 });

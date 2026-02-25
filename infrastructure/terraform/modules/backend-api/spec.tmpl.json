@@ -685,6 +685,7 @@
         "enum": [
           "INVALID_MARKERS",
           "MISSING_ADDRESS_LINES",
+          "UNEXPECTED_ADDRESS_LINES",
           "VIRUS_SCAN_FAILED"
         ],
         "type": "string"

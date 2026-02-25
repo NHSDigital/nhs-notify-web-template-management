@@ -6,22 +6,12 @@ import { mock } from 'jest-mock-extended';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { SourceRepository } from '../../infra/source-repository';
-import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import { createInitialRequest } from '../fixtures/create-request';
 import { Readable } from 'node:stream';
 
-jest.mock('node:crypto', () => ({
-  randomUUID: jest.fn(),
-}));
-
-jest.mock('node:fs', () => ({
-  createWriteStream: jest.fn(),
-  unlinkSync: jest.fn(),
-  mkdirSync: jest.fn(),
-}));
-
-jest.mock('node:stream/promises', () => ({
-  pipeline: jest.fn(),
-}));
+jest.mock('node:crypto');
+jest.mock('node:fs');
+jest.mock('node:stream/promises');
 
 const mockUUID = jest.mocked(randomUUID);
 const mockCreateWriteStream = jest.mocked(createWriteStream);
@@ -37,16 +27,6 @@ function setup() {
 
   return { sourceRepository, mocks: { s3 } };
 }
-
-const createRequest = (
-  overrides: Partial<Omit<InitialRenderRequest, 'requestType'>> = {}
-): InitialRenderRequest => ({
-  requestType: 'initial',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-  ...overrides,
-});
 
 describe('SourceRepository', () => {
   beforeEach(() => {
@@ -64,12 +44,13 @@ describe('SourceRepository', () => {
   describe('getSource', () => {
     test('downloads S3 object to temp file and returns handle with path', async () => {
       const { sourceRepository, mocks } = setup();
-      const request = createRequest();
-      const uuid = 'source-uuid-1234';
+
+      const request = createInitialRequest();
+      const uuid = '5B37238E-3F4F-4155-8DD4-20EE6942C571';
       const mockStream = new Readable({ read() {} });
       const mockWriteStream = {} as ReturnType<typeof createWriteStream>;
 
-      mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
+      mockUUID.mockReturnValue(uuid);
       mocks.s3.getObjectStream.mockResolvedValue(mockStream);
       mockCreateWriteStream.mockReturnValue(mockWriteStream);
       mockPipeline.mockResolvedValue();
@@ -77,21 +58,25 @@ describe('SourceRepository', () => {
       const handle = await sourceRepository.getSource(request);
 
       expect(handle.path).toBe(`/tmp/source/${uuid}.docx`);
+
       expect(mocks.s3.getObjectStream).toHaveBeenCalledWith(
         'docx-template/test-client/test-template/test-version.docx'
       );
+
       expect(mockCreateWriteStream).toHaveBeenCalledWith(
         `/tmp/source/${uuid}.docx`
       );
+
       expect(mockPipeline).toHaveBeenCalledWith(mockStream, mockWriteStream);
     });
 
     test('returns a dispose function that deletes the temp file', async () => {
       const { sourceRepository, mocks } = setup();
-      const request = createRequest();
-      const uuid = 'dispose-uuid';
 
-      mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
+      const request = createInitialRequest();
+      const uuid = '5A491ECB-C769-4A43-B466-AC131431C5F6';
+
+      mockUUID.mockReturnValue(uuid);
       mocks.s3.getObjectStream.mockResolvedValue(new Readable({ read() {} }));
       mockCreateWriteStream.mockReturnValue(
         {} as ReturnType<typeof createWriteStream>
@@ -107,10 +92,10 @@ describe('SourceRepository', () => {
 
     test('dispose swallows errors from unlinkSync', async () => {
       const { sourceRepository, mocks } = setup();
-      const request = createRequest();
-      const uuid = 'error-uuid';
 
-      mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
+      const request = createInitialRequest();
+
+      mockUUID.mockReturnValue('B74266F2-73C7-4968-8FB9-EF90D7A12300');
       mocks.s3.getObjectStream.mockResolvedValue(new Readable({ read() {} }));
       mockCreateWriteStream.mockReturnValue(
         {} as ReturnType<typeof createWriteStream>

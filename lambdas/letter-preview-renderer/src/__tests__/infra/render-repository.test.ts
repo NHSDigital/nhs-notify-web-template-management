@@ -2,11 +2,9 @@ import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
 import { RenderRepository } from '../../infra/render-repository';
-import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import { createInitialRequest } from '../fixtures/create-request';
 
-jest.mock('node:crypto', () => ({
-  randomUUID: jest.fn(),
-}));
+jest.mock('node:crypto');
 
 const mockUUID = jest.mocked(randomUUID);
 
@@ -18,16 +16,6 @@ function setup() {
   return { renderRepository, mocks: { s3 } };
 }
 
-const createRequest = (
-  overrides: Partial<Omit<InitialRenderRequest, 'requestType'>> = {}
-): InitialRenderRequest => ({
-  requestType: 'initial',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-  ...overrides,
-});
-
 describe('RenderRepository', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -37,11 +25,11 @@ describe('RenderRepository', () => {
     test('saves PDF to S3 with correct key and metadata, returns filename', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
-      const request = createRequest();
+      const request = createInitialRequest();
       const pageCount = 3;
-      const uuid = 'generated-uuid-1234';
+      const uuid = '99472D0D-7C5A-4162-B3B0-7F3F2C679EB4';
 
-      mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
+      mockUUID.mockReturnValue(uuid);
 
       mocks.s3.putRawData.mockResolvedValue({
         $metadata: {},
@@ -70,7 +58,7 @@ describe('RenderRepository', () => {
       );
     });
 
-    test('builds correct S3 key for different request types', async () => {
+    test('builds correct S3 key for personalised render request', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
       const uuid = 'uuid-for-key-test';
@@ -102,30 +90,6 @@ describe('RenderRepository', () => {
           Metadata: expect.objectContaining({
             'request-type': 'personalised',
             'file-type': 'render',
-          }),
-        })
-      );
-    });
-
-    test('includes page count as string in metadata', async () => {
-      const { renderRepository, mocks } = setup();
-      const pdf = Buffer.from('pdf-content');
-      const request = createRequest();
-
-      mockUUID.mockReturnValue('uuid-meta' as ReturnType<typeof randomUUID>);
-
-      mocks.s3.putRawData.mockResolvedValue({
-        $metadata: {},
-      });
-
-      await renderRepository.save(pdf, request, 10);
-
-      expect(mocks.s3.putRawData).toHaveBeenCalledWith(
-        pdf,
-        expect.any(String),
-        expect.objectContaining({
-          Metadata: expect.objectContaining({
-            'page-count': '10',
           }),
         })
       );

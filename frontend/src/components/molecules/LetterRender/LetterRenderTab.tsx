@@ -53,7 +53,7 @@ function initialiseFormState(
 ): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
   const renderedPersonalisation =
-    personalisedRender?.status === 'RENDERED' ? personalisedRender : undefined;
+    personalisedRender?.status === 'RENDERED' ? personalisedRender : null;
 
   const { systemPersonalisationPackId, personalisationParameters } =
     renderedPersonalisation ?? {};

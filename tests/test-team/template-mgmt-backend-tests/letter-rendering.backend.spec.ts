@@ -312,5 +312,31 @@ test.describe('Letter rendering', () => {
         }
       );
     });
+
+    test('template with unexpected address lines fails with appropriate validation error', async ({
+      request,
+    }) => {
+      await initialRenderTest(
+        request,
+        docxFixtures.unexpectedAddressLines.open(),
+        user,
+        (t: Template) => {
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'VALIDATION_FAILED',
+              validationErrors: [
+                {
+                  name: 'UNEXPECTED_ADDRESS_LINES',
+                  issues: ['address_line_8'],
+                },
+              ],
+              files: expect.objectContaining({
+                initialRender: expect.objectContaining({ status: 'RENDERED' }),
+              }),
+            })
+          );
+        }
+      );
+    });
   });
 });

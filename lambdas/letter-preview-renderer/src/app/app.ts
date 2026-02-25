@@ -50,11 +50,12 @@ export class App {
       }
 
       try {
-        const { fileName, currentVersion, pageCount } = await this.renderAndSave(
-          request,
-          sourcePath,
-          passthroughPersonalisation
-        );
+        const { fileName, currentVersion, pageCount } =
+          await this.renderAndSave(
+            request,
+            sourcePath,
+            passthroughPersonalisation
+          );
 
         logger.info('Saved PDF', {
           fileName,

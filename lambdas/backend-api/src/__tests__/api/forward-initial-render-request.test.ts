@@ -71,7 +71,7 @@ describe('createHandler', () => {
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
   });
 
-  it('errors if the key has invalid format', async () => {
+  it('errors if the key has invalid number of segments', async () => {
     const { handler, mocks } = setup();
 
     const event = makeS3ObjectCreatedEvent({

@@ -2,11 +2,11 @@ import 'aws-sdk-client-mock-jest';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import { TemplateRepository } from '../../infra/template-repository';
-import type {
-  InitialRenderRequest,
-  ShortPersonalisedRenderRequest,
-} from 'nhs-notify-backend-client/src/types/render-request';
 import type { Personalisation } from '../../types/types';
+import {
+  createInitialRequest,
+  createPersonalisedRequest,
+} from '../fixtures/create-request';
 
 const templatesTableName = 'test-templates-table';
 
@@ -20,29 +20,6 @@ function setup() {
 
   return { templateRepository, mocks: { ddbDocClient } };
 }
-
-const createInitialRequest = (
-  overrides: Partial<Omit<InitialRenderRequest, 'requestType'>> = {}
-): InitialRenderRequest => ({
-  requestType: 'initial',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-  ...overrides,
-});
-
-const createPersonalisedRequest = (
-  overrides: Partial<Omit<ShortPersonalisedRenderRequest, 'requestType'>> = {}
-): ShortPersonalisedRenderRequest => ({
-  requestType: 'personalised',
-  requestTypeVariant: 'short',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-  personalisation: { first_name: 'Test' },
-  lockNumber: 1,
-  ...overrides,
-});
 
 const createPersonalisation = (
   overrides: Partial<Personalisation> = {}

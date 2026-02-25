@@ -1,6 +1,6 @@
 import type { SQSHandler } from 'aws-lambda';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { App, Outcome } from '../app/app';
+import type { App } from '../app/app';
 import { $RenderRequest } from 'nhs-notify-backend-client/src/schemas/render-request';
 
 type Dependencies = {
@@ -24,8 +24,6 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
       return;
     }
 
-    const outcome: Outcome = await app.renderInitial(request);
-
-    logger.child({ outcome, ...request }).info('Render complete');
+    await app.renderInitial(request);
   };
 }

@@ -93,6 +93,20 @@ function buildValidationErrors(
     errors.push({ name: 'MISSING_ADDRESS_LINES' });
   }
 
+  const addressLinePattern = /^address_line_\d+$/;
+  const unexpectedAddressLines = [...classified.valid].filter(
+    (marker) =>
+      addressLinePattern.test(marker) &&
+      !ADDRESS_PERSONALISATIONS.includes(marker)
+  );
+
+  if (unexpectedAddressLines.length > 0) {
+    errors.push({
+      name: 'UNEXPECTED_ADDRESS_LINES',
+      issues: unexpectedAddressLines,
+    });
+  }
+
   return errors;
 }
 

@@ -214,6 +214,7 @@ export type LetterType = 'q4' | 'x0' | 'x1';
 export type LetterValidationError =
   | 'INVALID_MARKERS'
   | 'MISSING_ADDRESS_LINES'
+  | 'UNEXPECTED_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
