@@ -149,7 +149,7 @@ describe('LetterRenderTab', () => {
         files: {
           ...baseTemplate.files,
           shortFormRender: {
-            status: 'PENDING',
+            status: 'FAILED',
             systemPersonalisationPackId: 'short-1',
             personalisationParameters: {
               firstName: 'Jo',
@@ -180,7 +180,7 @@ describe('LetterRenderTab', () => {
         files: {
           ...baseTemplate.files,
           longFormRender: {
-            status: 'PENDING',
+            status: 'FAILED',
             systemPersonalisationPackId: 'long-1',
             personalisationParameters: {
               firstName: 'Michael',
