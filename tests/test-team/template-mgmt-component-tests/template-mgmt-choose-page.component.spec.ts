@@ -61,14 +61,13 @@ test.describe('Choose Template Type Page', () => {
     await chooseTemplateTypePage.loadPage();
 
     await expect(chooseTemplateTypePage.templateTypeRadioButtons).toHaveCount(
-      3
+      4
     );
 
     for (const [templateType, label] of [
       ['nhsapp', 'NHS App message'],
       ['email', 'Email'],
       ['sms', 'Text message (SMS)'],
-      ['letter', 'Letter'],
     ] as const) {
       const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
       await expect(radio).toBeVisible();
@@ -114,6 +113,17 @@ test.describe('Choose Template Type Page', () => {
 
       await page.waitForURL(`${baseURL}/templates/create-${path}-template`);
     });
+
+  test('should not show letter type conditional radios when Letter is selected', async ({
+    page,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+    await chooseTemplateTypePage.getTemplateTypeRadio('letter').check();
+
+    await expect(chooseTemplateTypePage.letterTypeRadioButtons).toHaveCount(0);
+  });
 });
 
 test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
