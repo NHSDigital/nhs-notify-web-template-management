@@ -44,7 +44,6 @@ describe('RenderRepository', () => {
       mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
 
       mocks.s3.putRawData.mockResolvedValue({
-        VersionId: 'v1',
         $metadata: {},
       });
 
@@ -62,30 +61,13 @@ describe('RenderRepository', () => {
             'page-count': '3',
             'template-id': 'test-template',
             'client-id': 'test-client',
-            variant: 'initial',
+            'request-type': 'initial',
+            'file-type': 'render',
           },
           ContentType: 'application/pdf',
           ContentDisposition: 'inline',
         }
       );
-    });
-
-    test('throws when S3 does not return a VersionId', async () => {
-      const { renderRepository, mocks } = setup();
-      const pdf = Buffer.from('pdf-content');
-      const request = createRequest();
-      const pageCount = 2;
-
-      mockUUID.mockReturnValue('some-uuid' as ReturnType<typeof randomUUID>);
-
-      mocks.s3.putRawData.mockResolvedValue({
-        VersionId: undefined,
-        $metadata: {},
-      });
-
-      await expect(
-        renderRepository.save(pdf, request, pageCount)
-      ).rejects.toThrow('S3 did not return a VersionId');
     });
 
     test('builds correct S3 key for different request types', async () => {
@@ -96,7 +78,6 @@ describe('RenderRepository', () => {
       mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
 
       mocks.s3.putRawData.mockResolvedValue({
-        VersionId: 'v1',
         $metadata: {},
       });
 
@@ -119,7 +100,8 @@ describe('RenderRepository', () => {
         `client-abc/renders/tmpl-xyz/${uuid}.pdf`,
         expect.objectContaining({
           Metadata: expect.objectContaining({
-            variant: 'personalised',
+            'request-type': 'personalised',
+            'file-type': 'render',
           }),
         })
       );
@@ -133,7 +115,6 @@ describe('RenderRepository', () => {
       mockUUID.mockReturnValue('uuid-meta' as ReturnType<typeof randomUUID>);
 
       mocks.s3.putRawData.mockResolvedValue({
-        VersionId: 'v1',
         $metadata: {},
       });
 

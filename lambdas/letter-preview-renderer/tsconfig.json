@@ -2,7 +2,6 @@
   "extends": "@tsconfig/node22/tsconfig.json",
   "include": [
     "src/**/*",
-    "scripts/**/*",
     "jest.config.ts"
   ]
 }

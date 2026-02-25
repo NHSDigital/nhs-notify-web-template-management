@@ -15,7 +15,11 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-import { RenderStatus, VersionedFileDetails } from 'nhs-notify-backend-client';
+import type {
+  RenderStatus,
+  VersionedFileDetails,
+} from 'nhs-notify-backend-client';
+import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -429,10 +433,10 @@ describe('authoring letter template does not show submit form when already submi
 
 describe('authoring letter with validation errors', () => {
   it('renders page with VALIDATION_FAILED status and displays error summary with virus scan message', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
@@ -460,10 +464,10 @@ describe('authoring letter with validation errors', () => {
   });
 
   it('matches snapshot with error and render', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
@@ -480,10 +484,10 @@ describe('authoring letter with validation errors', () => {
   });
 
   it('matches snapshot with error and no render', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
       files: {
         docxTemplate: {
           currentVersion: 'version-id',
@@ -507,9 +511,9 @@ describe('authoring letter with validation errors', () => {
   });
 
   it('renders page with VALIDATION_FAILED status and empty validationErrors without error summary', async () => {
-    const templateWithEmptyErrors = {
+    const templateWithEmptyErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
+      templateStatus: 'VALIDATION_FAILED',
       validationErrors: [] as { name: 'VIRUS_SCAN_FAILED' }[],
     };
 
@@ -529,9 +533,9 @@ describe('authoring letter with validation errors', () => {
   });
 
   it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary', async () => {
-    const templateWithUndefinedErrors = {
+    const templateWithUndefinedErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
+      templateStatus: 'VALIDATION_FAILED',
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithUndefinedErrors);
@@ -550,10 +554,10 @@ describe('authoring letter with validation errors', () => {
   });
 
   it('does not display submit button when validation has failed', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' as const }],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);

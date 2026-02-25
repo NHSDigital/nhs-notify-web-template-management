@@ -70,6 +70,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                   id={id}
                   name={field}
                   maxLength={500}
+                  autoComplete='on'
                 />
               </NHSNotifyForm.FormGroup>
             );

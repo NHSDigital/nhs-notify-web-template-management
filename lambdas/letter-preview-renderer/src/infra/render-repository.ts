@@ -19,16 +19,11 @@ export class RenderRepository {
     const metadata = this.buildMetadata(request, pageCount);
     const key = this.s3Key(request, id);
 
-    const response = await this.s3.putRawData(pdf, key, {
+    await this.s3.putRawData(pdf, key, {
       Metadata: metadata,
       ContentType: 'application/pdf',
-      // disposition filename?
       ContentDisposition: 'inline',
     });
-
-    if (!response.VersionId) {
-      throw new Error('S3 did not return a VersionId');
-    }
 
     return { fileName: `${id}.pdf`, currentVersion: id };
   }
@@ -41,7 +36,8 @@ export class RenderRepository {
       'page-count': pageCount.toString(),
       'template-id': templateId,
       'client-id': clientId,
-      variant: requestType,
+      'request-type': requestType,
+      'file-type': 'render',
     };
   }
 

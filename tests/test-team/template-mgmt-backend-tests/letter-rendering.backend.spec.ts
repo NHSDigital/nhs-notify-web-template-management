@@ -128,7 +128,8 @@ test.describe('Letter rendering', () => {
         'client-id': template!.clientId,
         'page-count': '2',
         'template-id': template!.id,
-        variant: 'initial',
+        'request-type': 'initial',
+        'file-type': 'render',
       });
 
       expect(render?.buffer).toBeDefined();
