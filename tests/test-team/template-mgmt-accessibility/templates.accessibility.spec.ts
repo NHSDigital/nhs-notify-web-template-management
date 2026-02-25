@@ -15,9 +15,15 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
+import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 
-const templateId = randomUUID();
+const templateIds = {
+  TEMPLATE: randomUUID(),
+  TEMPLATE_ATTACHED_TO_MESSAGE_PLAN: randomUUID(),
+};
 const templateStorageHelper = new TemplateStorageHelper();
+const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 let userWithNoTemplateData: TestUser;
 let userWithTemplateData: TestUser;
 
@@ -27,25 +33,51 @@ test.beforeAll(async () => {
   userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
 
   const template = TemplateFactory.createSmsTemplate(
-    templateId,
+    templateIds.TEMPLATE,
     userWithTemplateData,
-    `Test SMS template - ${templateId}`
+    `Test SMS template - ${templateIds.TEMPLATE}`
   );
 
-  await templateStorageHelper.seedTemplateData([template]);
+  const templateForRoutingPlan = TemplateFactory.createNhsAppTemplate(
+    templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN,
+    userWithTemplateData,
+    `Test NHS App template - ${templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN}`
+  );
+
+  const routingPlan = RoutingConfigFactory.createForMessageOrder(
+    userWithTemplateData,
+    'NHSAPP',
+    {
+      id: randomUUID(),
+      name: 'Message plan 1',
+    }
+  ).addTemplate('NHSAPP', templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN);
+
+  await templateStorageHelper.seedTemplateData([
+    template,
+    templateForRoutingPlan,
+  ]);
+
+  await routingConfigStorageHelper.seed([routingPlan.dbEntry]);
+});
+
+test.afterAll(async () => {
+  await templateStorageHelper.deleteSeededTemplates();
+  await routingConfigStorageHelper.deleteSeeded();
 });
 
 test('Create and submit templates', async ({ page, analyze }) =>
   analyze(new TemplateMgmtStartPage(page)));
 
-test.describe('Message templates (list)', () => {
-  test('With templates', async ({ page, analyze }) =>
-    analyze(new TemplateMgmtMessageTemplatesPage(page)));
+test('Message templates (with templates)', async ({ page, analyze }) =>
+  analyze(new TemplateMgmtMessageTemplatesPage(page)));
 
-  test('With no templates', async ({ page, analyze }) => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+test.describe('Message templates', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
 
+  test('with no templates', async ({ page, analyze }) => {
     await loginAsUser(userWithNoTemplateData, page);
+
     await analyze(new TemplateMgmtMessageTemplatesPage(page));
   });
 });
@@ -72,12 +104,18 @@ test('Choose a template type error (no letter variant)', async ({
 
 test('Copy template', async ({ page, analyze }) =>
   analyze(
-    new TemplateMgmtCopyPage(page).setPathParam('templateId', templateId)
+    new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templateIds.TEMPLATE
+    )
   ));
 
 test('Copy template error', async ({ page, analyze }) =>
   analyze(
-    new TemplateMgmtCopyPage(page).setPathParam('templateId', templateId),
+    new TemplateMgmtCopyPage(page).setPathParam(
+      'templateId',
+      templateIds.TEMPLATE
+    ),
     {
       beforeAnalyze: (p) => p.clickContinueButton(),
     }
@@ -85,12 +123,18 @@ test('Copy template error', async ({ page, analyze }) =>
 
 test('Delete template', async ({ page, analyze }) =>
   analyze(
-    new TemplateMgmtDeletePage(page).setPathParam('templateId', templateId)
+    new TemplateMgmtDeletePage(page).setPathParam(
+      'templateId',
+      templateIds.TEMPLATE
+    )
   ));
 
 test('Delete template error', async ({ page, analyze }) =>
   analyze(
-    new TemplateMgmtDeleteErrorPage(page).setPathParam('templateId', templateId)
+    new TemplateMgmtDeleteErrorPage(page).setPathParam(
+      'templateId',
+      templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN
+    )
   ));
 
 test('Invalid template', async ({ page, analyze }) =>
