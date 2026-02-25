@@ -13,6 +13,7 @@ No requirements.
 | <a name="input_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#input\_cloudfront\_distribution\_arn) | ARN of the cloudfront distribution to serve files from | `string` | `null` | no |
 | <a name="input_cognito_config"></a> [cognito\_config](#input\_cognito\_config) | Cognito config | <pre>object({<br/>    USER_POOL_ID : string,<br/>    USER_POOL_CLIENT_ID : string<br/>  })</pre> | n/a | yes |
 | <a name="input_component"></a> [component](#input\_component) | The variable encapsulating the name of this component | `string` | n/a | yes |
+| <a name="input_container_image_tag_suffix"></a> [container\_image\_tag\_suffix](#input\_container\_image\_tag\_suffix) | Suffix used for container/image based Lambda image tags | `string` | `"latest"` | no |
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
 | <a name="input_email_domain"></a> [email\_domain](#input\_email\_domain) | Email domain | `string` | n/a | yes |
 | <a name="input_enable_api_data_trace"></a> [enable\_api\_data\_trace](#input\_enable\_api\_data\_trace) | Enable API Gateway data trace logging | `bool` | `false` | no |
@@ -50,6 +51,7 @@ No requirements.
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_event_publisher"></a> [lambda\_event\_publisher](#module\_lambda\_event\_publisher) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_lambda_letter_preview_renderer"></a> [lambda\_letter\_preview\_renderer](#module\_lambda\_letter\_preview\_renderer) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.32/terraform-lambda.zip | n/a |
 | <a name="module_lambda_process_proof"></a> [lambda\_process\_proof](#module\_lambda\_process\_proof) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_set_file_virus_scan_status_for_upload"></a> [lambda\_set\_file\_virus\_scan\_status\_for\_upload](#module\_lambda\_set\_file\_virus\_scan\_status\_for\_upload) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_sftp_poll"></a> [lambda\_sftp\_poll](#module\_lambda\_sftp\_poll) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
@@ -71,6 +73,7 @@ No requirements.
 | <a name="module_submit_template_lambda"></a> [submit\_template\_lambda](#module\_submit\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_update_routing_config_lambda"></a> [update\_routing\_config\_lambda](#module\_update\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_upload_docx_letter_template_lambda"></a> [upload\_docx\_letter\_template\_lambda](#module\_upload\_docx\_letter\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_upload_letter_template_lambda"></a> [upload\_letter\_template\_lambda](#module\_upload\_letter\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 ## Outputs
 

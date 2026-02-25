@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import { getLetterUploadParts } from '../app/get-letter-upload-parts';
+import { getPdfUploadParts } from '../app/get-letter-upload-parts';
 import { TemplateClient } from '../app/template-client';
 
 export function createHandler({
@@ -20,8 +20,10 @@ export function createHandler({
     const contentType =
       event.headers['Content-Type'] ?? event.headers['content-type'] ?? 'none';
 
-    const { error: getLetterPartsError, data: letterParts } =
-      getLetterUploadParts(base64body, contentType);
+    const { error: getLetterPartsError, data: letterParts } = getPdfUploadParts(
+      base64body,
+      contentType
+    );
 
     if (getLetterPartsError) {
       return apiFailure(400, getLetterPartsError.errorMeta.description);

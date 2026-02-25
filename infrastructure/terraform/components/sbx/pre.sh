@@ -18,10 +18,21 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+if [ -n "${GIT_TAG}" ]; then
+  RELEASE_VERSION="${GIT_TAG#v}"
+  export TF_VAR_container_image_tag_suffix="release-${RELEASE_VERSION}-$(git rev-parse --short HEAD)"
+  echo "On tag: $GIT_TAG, image tag suffixes will be: release-${RELEASE_VERSION}-$(git rev-parse --short HEAD)"
+else
+  export TF_VAR_container_image_tag_suffix="sha-$(git rev-parse --short HEAD)"
+  echo "Not on a tag, image tag suffix will be: sha-$(git rev-parse --short HEAD)"
+fi
+
 # change to monorepo root
 cd $(git rev-parse --show-toplevel)
 
-if [ "${ACTION}" == "apply" ]; then
+case "${ACTION}" in
+  apply)
     echo "Building lambdas for distribution"
 
     if [[ -z $SKIP_SANDBOX_INSTALL ]]; then
@@ -34,10 +45,14 @@ if [ "${ACTION}" == "apply" ]; then
     run_or_fail npm run generate-dependencies --workspaces --if-present
     run_or_fail npm run lambda-build --workspaces --if-present
     run_or_fail lambdas/layers/pdfjs/build.sh
-
-else
+    ;;
+  plan)
     echo "Skipping lambda build for action $ACTION"
-fi
+    ;;
+  *)
+    echo "Skipping lambda build for action $ACTION"
+    ;;
+esac
 
 # revert back to original directory
 cd -
