@@ -13,12 +13,6 @@ import type { Template } from '../helpers/types';
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-const baseTemplateData = {
-  templateType: 'LETTER',
-  campaignId: 'Campaign1',
-  letterVersion: 'AUTHORING',
-};
-
 async function initialRenderTest(
   request: APIRequestContext,
   docx: Buffer,
@@ -27,7 +21,11 @@ async function initialRenderTest(
 ) {
   const { multipart, contentType } =
     TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-      baseTemplateData,
+      {
+        templateType: 'LETTER',
+        campaignId: 'Campaign1',
+        letterVersion: 'AUTHORING',
+      },
       docx
     );
 
@@ -66,8 +64,28 @@ async function initialRenderTest(
     assert(updatedTemplate);
   }).toPass({ intervals: [1000] });
 
-  return updatedTemplate;
+  return updatedTemplate as Template;
 }
+
+const customPersonalisation = [
+  'gpSurgeryName',
+  'gpSurgeryAddress',
+  'gpSurgeryPhone',
+];
+
+const systemPersonalisation = [
+  'fullName',
+  'firstName',
+  'nhsNumber',
+  'address_line_1',
+  'address_line_2',
+  'address_line_3',
+  'address_line_4',
+  'address_line_5',
+  'address_line_6',
+  'address_line_7',
+  'date',
+];
 
 test.describe('Letter rendering', () => {
   let user: TestUser;
@@ -94,40 +112,25 @@ test.describe('Letter rendering', () => {
                 initialRender: expect.objectContaining({
                   status: 'RENDERED',
                   fileName: expect.any(String),
+                  pageCount: 2,
                 }),
               }),
-              customPersonalisation: [
-                'gpSurgeryName',
-                'gpSurgeryAddress',
-                'gpSurgeryPhone',
-              ],
-              systemPersonalisation: [
-                'fullName',
-                'firstName',
-                'nhsNumber',
-                'address_line_1',
-                'address_line_2',
-                'address_line_3',
-                'address_line_4',
-                'address_line_5',
-                'address_line_6',
-                'address_line_7',
-                'date',
-              ],
+              customPersonalisation,
+              systemPersonalisation,
             })
           );
         }
       );
 
       const render = await templateStorageHelper.getRenderFile(
-        { clientId: template!.clientId!, templateId: template!.id },
-        template!.files!.initialRender!.fileName
+        { clientId: template.clientId!, templateId: template.id },
+        template.files!.initialRender!.fileName
       );
 
       expect(render?.metadata).toEqual({
-        'client-id': template!.clientId,
+        'client-id': template.clientId,
         'page-count': '2',
-        'template-id': template!.id,
+        'template-id': template.id,
         'request-type': 'initial',
         'file-type': 'render',
       });
@@ -153,6 +156,10 @@ test.describe('Letter rendering', () => {
         docxFixtures.fakeVirus.open(),
         user,
         (t: Template) => {
+          expect(t.files?.initialRender).toBeUndefined();
+          expect(t.customPersonalisation).toBeUndefined();
+          expect(t.systemPersonalisation).toBeUndefined();
+
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'VALIDATION_FAILED',
@@ -167,13 +174,15 @@ test.describe('Letter rendering', () => {
         }
       );
 
-      const docxQuarantine =
-        await templateStorageHelper.getQuarantineDocxMetadata(
-          { clientId: template!.clientId!, templateId: template!.id },
-          template!.files!.docxTemplate!.currentVersion
-        );
+      await expect(async () => {
+        const docxQuarantine =
+          await templateStorageHelper.getQuarantineDocxMetadata(
+            { clientId: template.clientId!, templateId: template.id },
+            template.files!.docxTemplate!.currentVersion
+          );
 
-      expect(docxQuarantine).toBe(null);
+        expect(docxQuarantine).toBe(null);
+      }).toPass({ intervals: [1000] });
     });
 
     test('password protected docx template fails virus scan', async ({
@@ -184,6 +193,10 @@ test.describe('Letter rendering', () => {
         docxFixtures.password.open(),
         user,
         (t: Template) => {
+          expect(t.files?.initialRender).toBeUndefined();
+          expect(t.customPersonalisation).toBeUndefined();
+          expect(t.systemPersonalisation).toBeUndefined();
+
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'VALIDATION_FAILED',
@@ -198,13 +211,15 @@ test.describe('Letter rendering', () => {
         }
       );
 
-      const docxQuarantine =
-        await templateStorageHelper.getQuarantineDocxMetadata(
-          { clientId: template!.clientId!, templateId: template!.id },
-          template!.files!.docxTemplate!.currentVersion
-        );
+      await expect(async () => {
+        const docxQuarantine =
+          await templateStorageHelper.getQuarantineDocxMetadata(
+            { clientId: template.clientId!, templateId: template.id },
+            template.files!.docxTemplate!.currentVersion
+          );
 
-      expect(docxQuarantine).toBe(null);
+        expect(docxQuarantine).toBe(null);
+      }).toPass({ intervals: [1000] });
     });
 
     test('template with missing address line fails with appropriate validation error', async ({
@@ -220,13 +235,13 @@ test.describe('Letter rendering', () => {
               templateStatus: 'VALIDATION_FAILED',
               validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
               files: expect.objectContaining({
-                initialRender: expect.objectContaining({ status: 'RENDERED' }),
+                initialRender: expect.objectContaining({
+                  status: 'RENDERED',
+                  pageCount: 2,
+                  fileName: expect.any(String),
+                }),
               }),
-              customPersonalisation: [
-                'gpSurgeryName',
-                'gpSurgeryAddress',
-                'gpSurgeryPhone',
-              ],
+              customPersonalisation,
               systemPersonalisation: [
                 'fullName',
                 'firstName',
@@ -261,6 +276,9 @@ test.describe('Letter rendering', () => {
               files: expect.objectContaining({
                 initialRender: { status: 'FAILED' },
               }),
+              // personalisation is present because marker extraction is not XML-based
+              systemPersonalisation,
+              customPersonalisation,
             })
           );
         }
@@ -284,6 +302,19 @@ test.describe('Letter rendering', () => {
               files: expect.objectContaining({
                 initialRender: { status: 'FAILED' },
               }),
+              customPersonalisation,
+              systemPersonalisation: [
+                'firstName',
+                'nhsNumber',
+                'address_line_1',
+                'address_line_2',
+                'address_line_3',
+                'address_line_4',
+                'address_line_5',
+                'address_line_6',
+                'address_line_7',
+                'date',
+              ],
             })
           );
         }
@@ -307,6 +338,19 @@ test.describe('Letter rendering', () => {
               files: expect.objectContaining({
                 initialRender: expect.objectContaining({ status: 'RENDERED' }),
               }),
+              customPersonalisation,
+              systemPersonalisation: [
+                'firstName',
+                'nhsNumber',
+                'address_line_1',
+                'address_line_2',
+                'address_line_3',
+                'address_line_4',
+                'address_line_5',
+                'address_line_6',
+                'address_line_7',
+                'date',
+              ],
             })
           );
         }
@@ -333,6 +377,13 @@ test.describe('Letter rendering', () => {
               files: expect.objectContaining({
                 initialRender: expect.objectContaining({ status: 'RENDERED' }),
               }),
+              systemPersonalisation,
+              customPersonalisation: [
+                'gpSurgeryName',
+                'gpSurgeryAddress',
+                'gpSurgeryPhone',
+                'address_line_8',
+              ],
             })
           );
         }

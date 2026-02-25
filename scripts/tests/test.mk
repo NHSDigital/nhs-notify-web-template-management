@@ -39,7 +39,7 @@ test-api: # Run tests from scripts/tests/api.sh @Testing
 	make _test name="api"
 
 test-backend: # Run tests from scripts/tests/backend.sh @Testing
-	make _test name="api"
+	make _test name="backend"
 
 test-ui-user-timeout: # Run tests from scripts/tests/ui-user-timeout.sh @Testing
 	make _test name="ui-user-timeout"

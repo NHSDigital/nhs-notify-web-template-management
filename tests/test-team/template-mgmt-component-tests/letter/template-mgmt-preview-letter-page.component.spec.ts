@@ -235,14 +235,14 @@ async function createTemplates(user: TestUser) {
         },
       }
     ),
-    authoringWithPendingPersonalisedRenders:
+    authoringWithFailedPersonalisedRenders:
       TemplateFactory.createAuthoringLetterTemplate(
         'D0E1F2A3-B4C5-6789-DEFA-012345678901',
         user,
-        'authoring-with-pending-personalised-renders',
+        'authoring-with-failed-personalised-renders',
         'NOT_YET_SUBMITTED',
         {
-          letterVariantId: 'variant-pending-renders',
+          letterVariantId: 'variant-failed-renders',
           customPersonalisation: ['appointmentDate'],
           initialRender: {
             fileName: 'initial-render.pdf',
@@ -250,11 +250,11 @@ async function createTemplates(user: TestUser) {
             pageCount: 4,
           },
           shortFormRender: {
-            fileName: 'pending-short.pdf',
-            currentVersion: 'v1-pending-short',
-            status: 'PENDING',
+            fileName: 'failed-short.pdf',
+            currentVersion: 'v1-failed-short',
+            status: 'FAILED',
             pageCount: 4,
-            systemPersonalisationPackId: 'short-pending-1',
+            systemPersonalisationPackId: 'short-failed-1',
             personalisationParameters: {
               firstName: 'Jo',
               lastName: 'Bloggs',
@@ -262,11 +262,11 @@ async function createTemplates(user: TestUser) {
             },
           },
           longFormRender: {
-            fileName: 'pending-long.pdf',
-            currentVersion: 'v1-pending-long',
-            status: 'PENDING',
+            fileName: 'failed-long.pdf',
+            currentVersion: 'v1-failed-long',
+            status: 'FAILED',
             pageCount: 4,
-            systemPersonalisationPackId: 'long-pending-1',
+            systemPersonalisationPackId: 'long-failed-1',
             personalisationParameters: {
               firstName: 'Elizabeth',
               lastName: 'Thompson',
@@ -922,7 +922,7 @@ test.describe('Preview Letter template Page', () => {
         test('short tab falls back to initial render when shortFormRender has non-RENDERED status', async ({
           page,
         }) => {
-          const template = templates.authoringWithPendingPersonalisedRenders;
+          const template = templates.authoringWithFailedPersonalisedRenders;
           const previewPage = new TemplateMgmtPreviewLetterPage(
             page
           ).setPathParam('templateId', template.id);
@@ -947,7 +947,7 @@ test.describe('Preview Letter template Page', () => {
         test('long tab falls back to initial render when longFormRender has non-RENDERED status', async ({
           page,
         }) => {
-          const template = templates.authoringWithPendingPersonalisedRenders;
+          const template = templates.authoringWithFailedPersonalisedRenders;
           const previewPage = new TemplateMgmtPreviewLetterPage(
             page
           ).setPathParam('templateId', template.id);
