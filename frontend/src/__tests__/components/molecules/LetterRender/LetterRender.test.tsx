@@ -23,6 +23,11 @@ const baseTemplate: AuthoringLetterTemplate = {
   letterVariantId: 'variant-123',
   language: 'en',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       fileName: 'initial.pdf',
       currentVersion: 'version-1',

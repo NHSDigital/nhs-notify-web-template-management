@@ -1,29 +1,30 @@
 import { z } from 'zod/v4';
-import type {
-  AuthoringLetterFiles,
-  AuthoringLetterProperties,
-  PersonalisedRenderDetails,
-  RenderDetails,
-  BaseCreatedTemplate,
-  BaseTemplate,
-  CreatePdfLetterProperties,
-  CreateUpdateTemplate,
-  EmailProperties,
-  Language,
-  LetterType,
-  LetterValidationError,
-  NhsAppProperties,
-  PatchTemplate,
-  PdfLetterFiles,
-  PdfLetterProperties,
-  ProofFileDetails,
-  RenderStatus,
-  SmsProperties,
-  TemplateDto,
-  TemplateStatus,
-  TemplateStatusActive,
-  TemplateType,
-  VersionedFileDetails,
+import {
+  type AuthoringLetterFiles,
+  type PatchTemplate,
+  type AuthoringLetterProperties,
+  type BaseCreatedTemplate,
+  type BaseTemplate,
+  type CreateAuthoringLetterProperties,
+  type CreatePdfLetterProperties,
+  type CreateUpdateTemplate,
+  type EmailProperties,
+  type Language,
+  type LetterType,
+  type LetterValidationError,
+  type NhsAppProperties,
+  type PersonalisedRenderDetails,
+  type PdfLetterFiles,
+  type PdfLetterProperties,
+  type ProofFileDetails,
+  type RenderDetails,
+  type RenderStatus,
+  type SmsProperties,
+  type TemplateDto,
+  type TemplateStatus,
+  type TemplateStatusActive,
+  type TemplateType,
+  type VersionedFileDetails,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -94,6 +95,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
+    docxTemplate: $VersionedFileDetails,
     initialRender: $RenderDetails.optional(),
     longFormRender: $PersonalisedRenderDetails.optional(),
     shortFormRender: $PersonalisedRenderDetails.optional(),
@@ -152,6 +154,15 @@ const $LetterValidationError = schemaFor<LetterValidationError>()(
   z.enum(LETTER_VALIDATION_ERROR_LIST)
 );
 
+export const $CreateAuthoringLetterProperties =
+  schemaFor<CreateAuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+    })
+  );
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
@@ -198,12 +209,20 @@ export const $CreateUpdateNonLetter = schemaFor<
   ])
 );
 
+export const $CreateUpdateLetterTemplate = z.discriminatedUnion(
+  'letterVersion',
+  [
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
+  ]
+);
+
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $CreateUpdateLetterTemplate,
   ])
 );
 
