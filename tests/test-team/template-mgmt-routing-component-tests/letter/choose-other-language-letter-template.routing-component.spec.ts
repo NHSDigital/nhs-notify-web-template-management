@@ -99,7 +99,7 @@ function getTemplates(
       templateIds.FRENCH_LETTER_NOT_SUBMITTED,
       user,
       `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
-      'PROOF_AVAILABLE',
+      'NOT_YET_SUBMITTED',
       { language: 'fr' }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(

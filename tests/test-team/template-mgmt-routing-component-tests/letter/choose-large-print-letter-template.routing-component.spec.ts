@@ -77,7 +77,7 @@ function getTemplates(
         templateIds.LARGE_PRINT_LETTER_NOT_SUBMITTED,
         user,
         'Proof available large print letter',
-        'PROOF_AVAILABLE',
+        'NOT_YET_SUBMITTED',
         { letterType: 'x1' }
       ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(

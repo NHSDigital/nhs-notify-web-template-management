@@ -66,7 +66,7 @@ function createTemplates(user: TestUser) {
       randomUUID(),
       user,
       'Proof available letter template',
-      'PROOF_AVAILABLE'
+      'NOT_YET_SUBMITTED'
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
