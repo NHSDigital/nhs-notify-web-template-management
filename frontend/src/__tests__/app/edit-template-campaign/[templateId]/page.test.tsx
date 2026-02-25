@@ -28,6 +28,11 @@ const mockTemplate: TemplateDto = {
   clientId: 'client-123',
   campaignId: 'Campaign 1',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       pageCount: 2,
       currentVersion: 'version',

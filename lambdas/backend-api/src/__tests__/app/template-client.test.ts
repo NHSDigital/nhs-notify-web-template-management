@@ -6,6 +6,7 @@ import type {
   TemplateDto,
   CreateUpdateTemplate,
   ClientConfiguration,
+  AuthoringLetterFiles,
 } from 'nhs-notify-web-template-management-types';
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
@@ -339,6 +340,469 @@ describe('templateClient', () => {
     });
   });
 
+  describe('uploadDocxTemplate', () => {
+    test('should return created template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const docxFilename = 'template.docx';
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const docxTemplate = new File(['docxTemplate'], docxFilename, {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+      const filesWithVersions: AuthoringLetterFiles = {
+        docxTemplate: {
+          fileName: docxFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+      };
+
+      const dataWithFiles: CreateUpdateTemplate & {
+        files: AuthoringLetterFiles;
+      } = {
+        ...data,
+        files: filesWithVersions,
+      };
+
+      const creationTime = '2025-03-12T08:41:08.805Z';
+
+      const createdTemplate: DatabaseTemplate = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+        templateStatus: 'PENDING_UPLOAD',
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        letterVersion: 'AUTHORING',
+      };
+
+      const { version: _1, owner: _2, ...expectedDto } = createdTemplate;
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: createdTemplate,
+      });
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: {
+            proofing: true,
+          },
+        },
+      });
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        docxTemplate
+      );
+
+      expect(result).toEqual({
+        data: {
+          ...expectedDto,
+          lockNumber: 0,
+        },
+      });
+
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        dataWithFiles,
+        user,
+        'PENDING_VALIDATION',
+        'campaign-id'
+      );
+
+      expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
+        templateId,
+        user,
+        versionId,
+        docxTemplate,
+        'docx-template'
+      );
+    });
+
+    test('should return a failure result, when template data is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: undefined,
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      } as unknown as CreateUpdateTemplate;
+
+      const pdf = new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+      const result = await templateClient.uploadDocxTemplate(data, user, pdf);
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+            details: expect.objectContaining({
+              letterType:
+                'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
+            }),
+          }),
+        }),
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
+    const invalidDocxCases: { case: string; file: File }[] = [
+      {
+        case: 'no file type',
+        file: new File(['docxTemplate'], 'template.docx'),
+      },
+      {
+        case: 'wrong file type',
+        file: new File(['docxTemplate'], 'template.docx', {
+          type: 'application/json',
+        }),
+      },
+      {
+        case: 'empty file name',
+        file: new File(['docxTemplate'], '', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        }),
+      },
+    ];
+
+    test.each(invalidDocxCases)(
+      'return a failure result when pdf has $case',
+      async ({ file }) => {
+        const { templateClient, mocks } = setup();
+
+        const data: CreateUpdateTemplate = {
+          templateType: 'LETTER',
+          name: 'name',
+          language: 'en',
+          letterType: 'x0',
+          campaignId: 'campaign-id',
+          letterVersion: 'AUTHORING',
+        };
+
+        const result = await templateClient.uploadDocxTemplate(
+          data,
+          user,
+          file
+        );
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: expect.objectContaining({
+              code: 400,
+              description: 'Failed to identify or validate DOCX data',
+            }),
+          },
+        });
+
+        expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+      }
+    );
+
+    test("should return a failure result if client configuration unexpectedly can't be fetched", async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { errorMeta: { description: 'err', code: 500 } },
+      });
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        new File(['docxTemplate'], 'template.docx', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        })
+      );
+
+      expect(result).toEqual({
+        error: { errorMeta: { description: 'err', code: 500 } },
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result if campaign ID is not valid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: {}, campaignIds: ['fish-campaign'] },
+      });
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        new File(['docxTemplate'], 'template.docx', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        })
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            description: 'Invalid campaign ID in request',
+            code: 400,
+          },
+        },
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result when initial template creation fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const docxTemplate = new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+      const dataWithFiles = {
+        ...data,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PENDING',
+          },
+        },
+      };
+
+      const templateRepoFailure = {
+        error: {
+          actualError: new Error('ddb err'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create template',
+          },
+        },
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
+      });
+
+      mocks.templateRepository.create.mockResolvedValueOnce(
+        templateRepoFailure
+      );
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        docxTemplate
+      );
+
+      expect(result).toEqual(templateRepoFailure);
+
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        dataWithFiles,
+        user,
+        'PENDING_VALIDATION',
+        'campaign-id'
+      );
+
+      expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result when initially created database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const docxTemplate = new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
+      });
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: {} as unknown as DatabaseTemplate,
+      });
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        docxTemplate
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+
+      expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
+      expect(mocks.templateRepository.update).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result when failing to upload letter files', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        campaignId: 'campaign-id',
+        letterVersion: 'AUTHORING',
+      };
+
+      const docxTemplate = new File(['docxTemplate'], 'template.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+      const filesWithVersions: AuthoringLetterFiles = {
+        docxTemplate: {
+          fileName: 'template.docx',
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+      };
+
+      const dataWithFiles: CreateUpdateTemplate & {
+        files: AuthoringLetterFiles;
+      } = {
+        ...data,
+        files: filesWithVersions,
+      };
+
+      const expectedTemplateDto: TemplateDto = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'PENDING_VALIDATION',
+        lockNumber: 1,
+        letterVersion: 'AUTHORING',
+      };
+
+      const createdTemplate: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        templateStatus: 'PENDING_VALIDATION',
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          features: { proofing: false },
+        },
+      });
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: createdTemplate,
+      });
+
+      const uploadErr = {
+        error: {
+          actualError: expect.objectContaining({
+            message: 'Failed to upload letter files',
+            cause: [
+              expect.objectContaining({ message: 'could not upload' }),
+              expect.objectContaining({ message: 'could not upload' }),
+            ],
+          }),
+          errorMeta: {
+            code: 500,
+            details: undefined,
+            description: 'Failed to upload letter files',
+          },
+        },
+      };
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce(uploadErr);
+
+      const result = await templateClient.uploadDocxTemplate(
+        data,
+        user,
+        docxTemplate
+      );
+
+      expect(result).toEqual(uploadErr);
+
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        dataWithFiles,
+        user,
+        'PENDING_VALIDATION',
+        'campaign-id'
+      );
+
+      expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
+        templateId,
+        user,
+        versionId,
+        docxTemplate,
+        'docx-template'
+      );
+
+      expect(mocks.templateRepository.update).not.toHaveBeenCalled();
+    });
+  });
+
   describe('uploadLetterTemplate', () => {
     test('should return created template', async () => {
       const { templateClient, mocks } = setup();
@@ -446,6 +910,7 @@ describe('templateClient', () => {
         user,
         versionId,
         pdf,
+        'pdf-template',
         csv
       );
 
@@ -611,10 +1076,10 @@ describe('templateClient', () => {
           errorMeta: expect.objectContaining({
             code: 400,
             description: 'Request failed validation',
-            details: {
+            details: expect.objectContaining({
               letterType:
                 'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
-            },
+            }),
           }),
         }),
       });
@@ -652,7 +1117,6 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
 
-    // temporary, until we implement support for AUTHORING letter version
     test('should return a failure result, when letterVersion is not PDF', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1060,6 +1524,7 @@ describe('templateClient', () => {
         user,
         versionId,
         pdf,
+        'pdf-template',
         undefined
       );
 
@@ -1156,6 +1621,7 @@ describe('templateClient', () => {
         user,
         versionId,
         pdf,
+        'pdf-template',
         undefined
       );
 
@@ -1561,6 +2027,11 @@ describe('templateClient', () => {
             status: 'RENDERED',
             pageCount: 1,
           },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PENDING',
+          },
         },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -1694,6 +2165,11 @@ describe('templateClient', () => {
               status: 'RENDERED',
               pageCount: 1,
             },
+            docxTemplate: {
+              currentVersion: 'version-id',
+              fileName: 'template.docx',
+              virusScanStatus: 'PENDING',
+            },
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -1778,6 +2254,11 @@ describe('templateClient', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial-render.pdf',
             currentVersion: 'v1',
@@ -1909,6 +2390,11 @@ describe('templateClient', () => {
             status: 'RENDERED',
             pageCount: 1,
           },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
         },
         campaignId: 'campaign-id',
         createdAt: new Date().toISOString(),
@@ -1971,6 +2457,11 @@ describe('templateClient', () => {
             currentVersion: 'v1',
             status: 'RENDERED',
             pageCount: 1,
+          },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
           },
         },
         createdAt: new Date().toISOString(),

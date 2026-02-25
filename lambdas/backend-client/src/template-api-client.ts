@@ -37,6 +37,34 @@ export const templateApiClient = {
     };
   },
 
+  async uploadDocxTemplate(
+    template: CreateUpdateTemplate,
+    token: string,
+    docxTemplate: File
+  ): Promise<Result<TemplateDto>> {
+    const formData = new FormData();
+    formData.append(LETTER_MULTIPART.TEMPLATE.name, JSON.stringify(template));
+    formData.append(LETTER_MULTIPART.DOCX.name, docxTemplate);
+
+    const response = await catchAxiosError(
+      httpClient.post<TemplateSuccess>('/v1/docx-letter-template', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token,
+        },
+      })
+    );
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
   async uploadLetterTemplate(
     template: CreateUpdateTemplate,
     token: string,

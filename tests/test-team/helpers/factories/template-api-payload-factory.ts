@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { CreateTemplatePayload, UpdateTemplatePayload } from '../types';
 import {
-  pdfLetterMultipart,
-  type PdfUploadPartSpec,
+  getTestMultipartFormData,
+  type UploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 
 type TemplatePayload = CreateTemplatePayload | UpdateTemplatePayload;
@@ -28,7 +28,10 @@ type TemplateOutput<
   U extends Record<string, unknown>,
 > = T & U;
 
-const createTemplateBaseData = (templateType: unknown) => ({
+const createTemplateBaseData = (
+  templateType: unknown,
+  letterVersion = 'PDF'
+) => ({
   name: faker.word.noun(),
   message: faker.word.words(5),
   ...(templateType === 'EMAIL' && {
@@ -37,7 +40,7 @@ const createTemplateBaseData = (templateType: unknown) => ({
   ...(templateType === 'LETTER' && {
     language: 'en',
     letterType: 'x0',
-    letterVersion: 'PDF',
+    letterVersion,
   }),
 });
 
@@ -74,7 +77,7 @@ export const TemplateAPIPayloadFactory = {
     T extends TemplateInput<CreateTemplatePayload>,
   >(
     template: T,
-    uploadSpec: PdfUploadPartSpec[]
+    uploadSpec: UploadPartSpec[]
   ): {
     templateData: TemplateOutput<CreateTemplatePayload, T>;
     multipart: Buffer;
@@ -85,7 +88,7 @@ export const TemplateAPIPayloadFactory = {
       ...template,
     };
 
-    const multipartData = pdfLetterMultipart(uploadSpec, templateData);
+    const multipartData = getTestMultipartFormData(uploadSpec, templateData);
 
     return {
       templateData,

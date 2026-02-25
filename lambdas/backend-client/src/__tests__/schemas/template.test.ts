@@ -2,6 +2,7 @@ import type { CreateUpdateTemplate } from 'nhs-notify-web-template-management-ty
 import {
   $AuthoringLetterFiles,
   $AuthoringLetterProperties,
+  $CreateAuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
@@ -198,22 +199,39 @@ describe('Template schemas', () => {
       templateType: 'EMAIL',
     });
 
-    expect(result.error?.flatten()).toEqual(
-      expect.objectContaining({
-        fieldErrors: {
-          subject: ['Invalid input: expected string, received undefined'],
-        },
-      })
-    );
+    expect(result.error?.flatten()).toEqual({
+      fieldErrors: {
+        subject: ['Invalid input: expected string, received undefined'],
+      },
+      formErrors: [],
+    });
   });
 
-  test('Letter template fields - should fail validation, when no letterType', async () => {
+  test('CreatePdfLetterProperties - should fail validation, when no letterType', async () => {
     const result = $CreatePdfLetterProperties.safeParse({
       name: 'Test Template',
       campaignId: 'campaign-id',
       templateType: 'LETTER',
       language: 'en',
       letterVersion: 'PDF',
+    });
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          letterType: ['Invalid option: expected one of "q4"|"x0"|"x1"'],
+        },
+      })
+    );
+  });
+
+  test('CreateAuthoringLetterProperties - should fail validation, when no letterType', async () => {
+    const result = $CreateAuthoringLetterProperties.safeParse({
+      name: 'Test Template',
+      campaignId: 'campaign-id',
+      templateType: 'LETTER',
+      language: 'en',
+      letterVersion: 'AUTHORING',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -308,6 +326,11 @@ describe('Template schemas', () => {
           status: 'RENDERED',
           pageCount: 2,
         },
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
       },
       systemPersonalisation: [],
     };
@@ -345,10 +368,24 @@ describe('Template schemas', () => {
 
   describe('$AuthoringLetterFiles', () => {
     test.each([
-      { description: 'empty files object', files: {} },
       {
-        description: 'initialRender only',
+        description: 'template only',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      },
+      {
+        description: 'template and initialRender only',
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
@@ -360,6 +397,11 @@ describe('Template schemas', () => {
       {
         description: 'all render types',
         files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
           initialRender: {
             fileName: 'initial.pdf',
             currentVersion: 'v1',
@@ -489,6 +531,11 @@ describe('Template schemas', () => {
             currentVersion: 'v1',
             status: 'RENDERED',
             pageCount: 2,
+          },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
           },
         },
         systemPersonalisation: [],
@@ -668,6 +715,11 @@ describe('Template schemas', () => {
             currentVersion: 'v1',
             status: 'RENDERED',
             pageCount: 2,
+          },
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
           },
         },
         systemPersonalisation: [],

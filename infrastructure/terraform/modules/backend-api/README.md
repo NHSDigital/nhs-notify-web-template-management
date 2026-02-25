@@ -73,6 +73,7 @@ No requirements.
 | <a name="module_submit_template_lambda"></a> [submit\_template\_lambda](#module\_submit\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_update_routing_config_lambda"></a> [update\_routing\_config\_lambda](#module\_update\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_upload_docx_letter_template_lambda"></a> [upload\_docx\_letter\_template\_lambda](#module\_upload\_docx\_letter\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_upload_letter_template_lambda"></a> [upload\_letter\_template\_lambda](#module\_upload\_letter\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 ## Outputs
 
