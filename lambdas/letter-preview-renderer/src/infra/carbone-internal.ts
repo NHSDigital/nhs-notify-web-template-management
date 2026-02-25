@@ -8,8 +8,11 @@ import type { Marker } from 'carbone/lib/parser';
 function openTemplateAsync(templatePath: string): Promise<Template> {
   return new Promise((resolve, reject) => {
     file.openTemplate(templatePath, (err, template) => {
-      if (err) reject(err);
-      else resolve(template);
+      if (err) {
+        reject(err);
+      } else {
+        resolve(template);
+      }
     });
   });
 }
@@ -17,8 +20,11 @@ function openTemplateAsync(templatePath: string): Promise<Template> {
 function findMarkersAsync(xml: string): Promise<Marker[]> {
   return new Promise((resolve, reject) => {
     parser.findMarkers(xml, (err, _, markers) => {
-      if (err) reject(err);
-      else resolve(markers);
+      if (err) {
+        reject(err);
+      } else {
+        resolve(markers);
+      }
     });
   });
 }

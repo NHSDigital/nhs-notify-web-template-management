@@ -61,9 +61,9 @@ describe('RenderRepository', () => {
     test('builds correct S3 key for personalised render request', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
-      const uuid = 'uuid-for-key-test';
+      const uuid = '4CBEA40A-D9AE-478A-8E42-5A87C135AAE4';
 
-      mockUUID.mockReturnValue(uuid as ReturnType<typeof randomUUID>);
+      mockUUID.mockReturnValue(uuid);
 
       mocks.s3.putRawData.mockResolvedValue({
         $metadata: {},

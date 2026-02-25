@@ -35,7 +35,7 @@ describe('TemplateRepository', () => {
   });
 
   describe('updateRendered', () => {
-    test('sends UpdateCommand with correct builder output for initial request', async () => {
+    test('sends correct UpdateCommand for a valid initial render', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
       const personalisation = createPersonalisation();
@@ -53,75 +53,36 @@ describe('TemplateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: templatesTableName,
         Key: { owner: 'CLIENT#test-client', id: 'test-template' },
-      });
-    });
-
-    test('skips update for non-initial request types', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createPersonalisedRequest();
-      const personalisation = createPersonalisation();
-
-      const result = await templateRepository.updateRendered(
-        request,
-        personalisation,
-        'v1',
-        'abc123.pdf',
-        3
-      );
-
-      expect(result).toBeUndefined();
-      expect(mocks.ddbDocClient).not.toHaveReceivedCommand(UpdateCommand);
-    });
-
-    test('sets status to NOT_YET_SUBMITTED and render status to RENDERED', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-      const personalisation = createPersonalisation();
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateRendered(
-        request,
-        personalisation,
-        'v1',
-        'render.pdf',
-        2
-      );
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': 'NOT_YET_SUBMITTED',
-        }),
+          ':systemPersonalisation': ['address_line_1', 'address_line_2'],
+          ':customPersonalisation': ['first_name'],
+          ':initialRender': {
+            status: 'RENDERED',
+            currentVersion: 'v1',
+            fileName: 'abc123.pdf',
+            pageCount: 3,
+          },
+        },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation, #files.#initialRender = :initialRender ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
     });
 
-    test('sets personalisation fields', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-      const personalisation = createPersonalisation({
-        system: ['address_line_1'],
-        custom: ['last_name', 'dob'],
-      });
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateRendered(
-        request,
-        personalisation,
-        'v1',
-        'render.pdf',
-        1
-      );
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
-          ':systemPersonalisation': ['address_line_1'],
-          ':customPersonalisation': ['last_name', 'dob'],
-        }),
-      });
-    });
-
-    test('sets status to VALIDATION_FAILED and appends validation errors when provided', async () => {
+    test('sends correct UpdateCommand with validation errors', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
       const personalisation = createPersonalisation();
@@ -141,14 +102,41 @@ describe('TemplateRepository', () => {
       );
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
+        TableName: templatesTableName,
+        Key: { owner: 'CLIENT#test-client', id: 'test-template' },
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': 'VALIDATION_FAILED',
+          ':systemPersonalisation': ['address_line_1', 'address_line_2'],
+          ':customPersonalisation': ['first_name'],
+          ':initialRender': {
+            status: 'RENDERED',
+            currentVersion: 'v1',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
           ':validationErrors': validationErrors,
-        }),
+          ':emptyList': [],
+        },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation, #files.#initialRender = :initialRender, #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors) ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
     });
 
-    test('does not append validation errors when array is empty', async () => {
+    test('sends correct UpdateCommand when validation errors array is empty', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
       const personalisation = createPersonalisation();
@@ -165,21 +153,57 @@ describe('TemplateRepository', () => {
       );
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
+        TableName: templatesTableName,
+        Key: { owner: 'CLIENT#test-client', id: 'test-template' },
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': 'NOT_YET_SUBMITTED',
-        }),
+          ':systemPersonalisation': ['address_line_1', 'address_line_2'],
+          ':customPersonalisation': ['first_name'],
+          ':initialRender': {
+            status: 'RENDERED',
+            currentVersion: 'v1',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation, #files.#initialRender = :initialRender ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
+    });
 
-      const receivedCommand = mocks.ddbDocClient.commandCalls(UpdateCommand);
-      const expressionValues =
-        receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
+    test('skips update for non-initial request types', async () => {
+      const { templateRepository, mocks } = setup();
+      const request = createPersonalisedRequest();
+      const personalisation = createPersonalisation();
 
-      expect(expressionValues).not.toHaveProperty(':validationErrors');
+      const result = await templateRepository.updateRendered(
+        request,
+        personalisation,
+        'v1',
+        'abc123.pdf',
+        3
+      );
+
+      expect(result).toBeUndefined();
+      expect(mocks.ddbDocClient).not.toHaveReceivedCommand(UpdateCommand);
     });
   });
 
   describe('updateFailure', () => {
-    test('sends UpdateCommand with correct builder output for initial request', async () => {
+    test('sends correct UpdateCommand without personalisation or validation errors', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
 
@@ -190,68 +214,27 @@ describe('TemplateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: templatesTableName,
         Key: { owner: 'CLIENT#test-client', id: 'test-template' },
-      });
-    });
-
-    test('skips update for non-initial request types', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createPersonalisedRequest();
-
-      const result = await templateRepository.updateFailure(request);
-
-      expect(result).toBeUndefined();
-      expect(mocks.ddbDocClient).not.toHaveReceivedCommand(UpdateCommand);
-    });
-
-    test('sets status to VALIDATION_FAILED and render status to FAILED', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailure(request);
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
           ':templateStatus': 'VALIDATION_FAILED',
-        }),
+          ':initialRender': { status: 'FAILED' },
+        },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #files.#initialRender = :initialRender ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
     });
 
-    test('sets personalisation when provided', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-      const personalisation = createPersonalisation();
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailure(request, personalisation);
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
-          ':systemPersonalisation': ['address_line_1', 'address_line_2'],
-          ':customPersonalisation': ['first_name'],
-        }),
-      });
-    });
-
-    test('does not set personalisation when not provided', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailure(request);
-
-      const receivedCommand = mocks.ddbDocClient.commandCalls(UpdateCommand);
-      const expressionValues =
-        receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
-
-      expect(expressionValues).not.toHaveProperty(':systemPersonalisation');
-      expect(expressionValues).not.toHaveProperty(':customPersonalisation');
-    });
-
-    test('appends validation errors when provided', async () => {
+    test('sends correct UpdateCommand with personalisation and validation errors', async () => {
       const { templateRepository, mocks } = setup();
       const request = createInitialRequest();
       const personalisation = createPersonalisation();
@@ -268,40 +251,43 @@ describe('TemplateRepository', () => {
       );
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeValues: expect.objectContaining({
+        TableName: templatesTableName,
+        Key: { owner: 'CLIENT#test-client', id: 'test-template' },
+        ExpressionAttributeNames: {
+          '#lockNumber': 'lockNumber',
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':lockNumber': 1,
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
+          ':templateStatus': 'VALIDATION_FAILED',
+          ':initialRender': { status: 'FAILED' },
+          ':systemPersonalisation': ['address_line_1', 'address_line_2'],
+          ':customPersonalisation': ['first_name'],
           ':validationErrors': validationErrors,
-        }),
+          ':emptyList': [],
+        },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #files.#initialRender = :initialRender, #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation, #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors) ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
     });
 
-    test('does not append validation errors when array is empty', async () => {
+    test('skips update for non-initial request types', async () => {
       const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
+      const request = createPersonalisedRequest();
 
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
+      const result = await templateRepository.updateFailure(request);
 
-      await templateRepository.updateFailure(request, undefined, []);
-
-      const receivedCommand = mocks.ddbDocClient.commandCalls(UpdateCommand);
-      const expressionValues =
-        receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
-
-      expect(expressionValues).not.toHaveProperty(':validationErrors');
-    });
-
-    test('does not append validation errors when not provided', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createInitialRequest();
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailure(request);
-
-      const receivedCommand = mocks.ddbDocClient.commandCalls(UpdateCommand);
-      const expressionValues =
-        receivedCommand[0]?.args[0]?.input?.ExpressionAttributeValues ?? {};
-
-      expect(expressionValues).not.toHaveProperty(':validationErrors');
+      expect(result).toBeUndefined();
+      expect(mocks.ddbDocClient).not.toHaveReceivedCommand(UpdateCommand);
     });
   });
 });
