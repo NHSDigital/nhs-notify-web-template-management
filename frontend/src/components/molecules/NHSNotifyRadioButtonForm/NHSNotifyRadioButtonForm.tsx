@@ -101,9 +101,9 @@ export const NHSNotifyRadioButtonForm = ({
     {isLetterAuthoringEnabled ? null : (
       <div className='nhsuk-card nhsuk-card--warning nhsuk-u-reading-width'>
         <div className='nhsuk-card__content'>
-          <h4 className='nhsuk-card__heading'>
+          <h2 className='nhsuk-card__heading'>
             {warningCalloutContent.headingLabel}
-          </h4>
+          </h2>
           <p className='nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6'>
             {warningCalloutContent.firstParagraph}
           </p>
