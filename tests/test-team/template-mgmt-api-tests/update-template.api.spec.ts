@@ -200,7 +200,19 @@ test.describe('PUT /v1/template/:templateId', () => {
           templateType: 'LETTER',
           campaignId: 'Campaign1',
         },
-        pdfUploadFixtures.noCustomPersonalisation.pdf.open()
+        [
+          {
+            _type: 'json',
+            partName: 'template',
+          },
+          {
+            _type: 'file',
+            partName: 'letterPdf',
+            fileName: 'template.pdf',
+            fileType: 'application/pdf',
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
+          },
+        ]
       );
 
     const createResponse = await request.post(
