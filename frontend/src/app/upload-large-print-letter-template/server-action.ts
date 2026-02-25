@@ -1,9 +1,14 @@
 'use server';
 
 import { z } from 'zod/v4';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
+import { redirect, RedirectType } from 'next/navigation';
+import type {
+  FormState,
+  UploadLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
+import { uploadDocxTemplate } from '@utils/form-actions';
 
 const { errors } = copy.components.uploadDocxLetterTemplateForm;
 
@@ -35,6 +40,21 @@ export async function uploadLargePrintLetterTemplate(
     };
   }
 
-  // TODO: CCM-14211 - submit the form and redirect instead of returning
-  return { fields };
+  const { name, campaignId, file } = validation.data;
+
+  const template: UploadLetterTemplate = {
+    name,
+    campaignId,
+    letterType: 'x1',
+    language: 'en',
+    templateType: 'LETTER',
+    letterVersion: 'AUTHORING',
+  };
+
+  const savedTemplate = await uploadDocxTemplate(template, file);
+
+  return redirect(
+    `/preview-letter-template/${savedTemplate.id}`,
+    RedirectType.push
+  );
 }

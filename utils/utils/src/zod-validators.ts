@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   $AuthoringLetterProperties,
+  $CreateAuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
@@ -73,9 +74,14 @@ export const $SubmittedSMSTemplate = z.intersection(
   $SMSTemplate
 );
 
-export const $UploadLetterTemplate = z.intersection(
+export const $UploadPdfLetterTemplate = z.intersection(
   $CreateUpdateTemplate,
   $CreatePdfLetterProperties
+);
+
+export const $UploadDocxLetterTemplate = z.intersection(
+  $CreateUpdateTemplate,
+  $CreateAuthoringLetterProperties
 );
 
 const $BaseLetterTemplateDto = z.intersection(
