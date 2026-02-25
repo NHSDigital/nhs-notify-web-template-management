@@ -85,6 +85,7 @@ No requirements.
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
+| <a name="output_letter_variants_table_name"></a> [letter\_variants\_table\_name](#output\_letter\_variants\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |

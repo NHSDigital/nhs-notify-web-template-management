@@ -10,9 +10,12 @@ export const letterVariantApiClient = {
     token: string
   ): Promise<Result<LetterVariant>> {
     const response = await catchAxiosError(
-      httpClient.get<LetterVariantSuccess>(`/v1/letter-variant/${id}`, {
-        headers: { Authorization: token },
-      })
+      httpClient.get<LetterVariantSuccess>(
+        `/v1/letter-variant/${encodeURIComponent(id)}`,
+        {
+          headers: { Authorization: token },
+        }
+      )
     );
 
     if (response.error) {
