@@ -5,7 +5,7 @@ export type ClientOptions = {
 };
 
 export type AuthoringLetterFiles = {
-  docxTemplate?: VersionedFileDetails;
+  docxTemplate: VersionedFileDetails;
   initialRender?: RenderDetails;
   longFormRender?: PersonalisedRenderDetails;
   shortFormRender?: PersonalisedRenderDetails;
@@ -138,6 +138,11 @@ export type CountSuccess = {
   statusCode: number;
 };
 
+export type CreateAuthoringLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
+  letterVersion: 'AUTHORING';
+};
+
 export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
   campaignId: string;
   letterVersion: 'PDF';
@@ -156,6 +161,7 @@ export type CreateUpdateTemplate = BaseTemplate &
     | EmailProperties
     | NhsAppProperties
     | CreatePdfLetterProperties
+    | CreateAuthoringLetterProperties
   );
 
 export type EmailProperties = {
@@ -380,6 +386,36 @@ export type GetV1ClientConfigurationResponses = {
 
 export type GetV1ClientConfigurationResponse =
   GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
+
+export type PostV1DocxLetterTemplateData = {
+  /**
+   * Letter template to create
+   */
+  body: UploadLetterTemplate;
+  path?: never;
+  query?: never;
+  url: '/v1/docx-letter-template';
+};
+
+export type PostV1DocxLetterTemplateErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1DocxLetterTemplateError =
+  PostV1DocxLetterTemplateErrors[keyof PostV1DocxLetterTemplateErrors];
+
+export type PostV1DocxLetterTemplateResponses = {
+  /**
+   * 201 response
+   */
+  201: TemplateSuccess;
+};
+
+export type PostV1DocxLetterTemplateResponse =
+  PostV1DocxLetterTemplateResponses[keyof PostV1DocxLetterTemplateResponses];
 
 export type PostV1LetterTemplateData = {
   /**
