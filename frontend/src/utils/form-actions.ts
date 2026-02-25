@@ -1,12 +1,12 @@
 'use server';
 
 import { getSessionServer } from '@utils/amplify-utils';
-import {
-  $TemplateDto,
+import { $TemplateDto } from 'nhs-notify-backend-client';
+import type {
   CreateUpdateTemplate,
   PatchTemplate,
   TemplateDto,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { sortAscByUpdatedAt } from './sort';

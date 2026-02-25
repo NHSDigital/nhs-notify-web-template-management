@@ -1,7 +1,7 @@
 'use client';
 
 import type { HTMLProps } from 'react';
-import type { TemplateType } from 'nhs-notify-backend-client';
+import type { TemplateType } from 'nhs-notify-web-template-management-types';
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';

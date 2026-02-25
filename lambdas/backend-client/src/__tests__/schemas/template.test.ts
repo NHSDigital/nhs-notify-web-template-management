@@ -1,3 +1,4 @@
+import type { CreateUpdateTemplate } from 'nhs-notify-web-template-management-types';
 import {
   $AuthoringLetterFiles,
   $AuthoringLetterProperties,
@@ -10,7 +11,6 @@ import {
   $TemplateDto,
   $TemplateFilter,
 } from '../../schemas';
-import type { CreateUpdateTemplate } from '../../types/generated';
 
 describe('Template schemas', () => {
   test.each([

@@ -1,5 +1,5 @@
 import { getLetterUploadParts } from '../../app/get-letter-upload-parts';
-import { CreateUpdateTemplate } from 'nhs-notify-backend-client';
+import type { CreateUpdateTemplate } from 'nhs-notify-web-template-management-types';
 import { pdfLetterMultipart } from 'nhs-notify-web-template-management-test-helper-utils';
 
 describe('getLetterUploadParts', () => {

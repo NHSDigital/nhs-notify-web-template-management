@@ -20,7 +20,10 @@ import {
   requestTemplateProof,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
+import {
+  TemplateDto,
+  TemplateStatus,
+} from 'nhs-notify-web-template-management-types';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';

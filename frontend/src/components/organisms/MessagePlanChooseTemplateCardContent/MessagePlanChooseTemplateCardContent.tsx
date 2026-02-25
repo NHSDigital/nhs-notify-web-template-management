@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import type { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import copy from '@content/content';
 import { interpolate } from '@utils/interpolate';
 import styles from './MessagePlanChooseTemplateCardContent.module.scss';

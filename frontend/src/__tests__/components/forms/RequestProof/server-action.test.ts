@@ -5,7 +5,7 @@ import { requestProof } from '@forms/RequestProof/server-action';
 import { getMockFormData } from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, requestTemplateProof } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');

@@ -24,7 +24,7 @@ import type {
   TemplateStatusActive,
   TemplateType,
   VersionedFileDetails,
-} from '../types/generated';
+} from 'nhs-notify-web-template-management-types';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,

@@ -6,7 +6,8 @@ import {
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { replaceLanguageTemplatesInCascadeItem } from '@utils/routing-utils';
-import { Language, $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client';
+import type { Language } from 'nhs-notify-web-template-management-types';
 import { ChooseLanguageLetterTemplatesProps } from './ChooseLanguageLetterTemplates';
 import baseContent from '@content/content';
 
