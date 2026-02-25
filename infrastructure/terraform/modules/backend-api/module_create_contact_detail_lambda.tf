@@ -1,0 +1,92 @@
+module "create_contact_detail_lambda" {
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip"
+
+  project        = var.project
+  environment    = var.environment
+  component      = var.component
+  aws_account_id = var.aws_account_id
+  region         = var.region
+
+  kms_key_arn = var.kms_key_arn
+
+  function_name = "create-contact-detail"
+
+  function_module_name  = "create-contact-detail"
+  handler_function_name = "handler"
+  description           = "Create contact detail endpoint"
+
+  memory  = 2048
+  timeout = 20
+  runtime = "nodejs22.x"
+
+  log_retention_in_days = var.log_retention_in_days
+  iam_policy_document = {
+    body = data.aws_iam_policy_document.create_contact_detail_lambda_policy.json
+  }
+
+  lambda_env_vars         = local.backend_lambda_environment_variables
+  function_s3_bucket      = var.function_s3_bucket
+  function_code_base_path = local.lambdas_dir
+  function_code_dir       = "backend-api/dist/create-contact-detail"
+
+  send_to_firehose          = var.send_to_firehose
+  log_destination_arn       = var.log_destination_arn
+  log_subscription_role_arn = var.log_subscription_role_arn
+}
+
+data "aws_iam_policy_document" "create_contact_detail_lambda_policy" {
+  statement {
+    sid    = "AllowSMSVoiceSend"
+    effect = "Allow"
+
+    actions = [
+      "sms-voice:SendTextMessage",
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    sid    = "AllowSNSPublish"
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish",
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid    = "AllowDynamoAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:PutItem",
+    ]
+
+    resources = [
+      aws_dynamodb_table.contact_details.arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowKMSAccess"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+    ]
+
+    resources = [
+      var.kms_key_arn
+    ]
+  }
+}

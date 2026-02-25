@@ -3,6 +3,7 @@ import type {
   TemplateDto,
   RoutingConfig,
   RoutingConfigReference,
+  CreateContactDetailResponse,
 } from 'nhs-notify-backend-client';
 
 type Count = { count: number };
@@ -14,7 +15,8 @@ export const apiSuccess = <
     | RoutingConfig[]
     | RoutingConfigReference[]
     | TemplateDto
-    | TemplateDto[],
+    | TemplateDto[]
+    | CreateContactDetailResponse,
 >(
   statusCode: number,
   result: T

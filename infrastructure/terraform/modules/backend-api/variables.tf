@@ -151,3 +151,9 @@ variable "container_image_tag_suffix" {
   description = "Suffix used for container/image based Lambda image tags"
   default     = "latest"
 }
+
+variable "sender_id" {
+  type = string
+  description = "SMS sender ID"
+  default = "NOTIFYTEST3"
+}

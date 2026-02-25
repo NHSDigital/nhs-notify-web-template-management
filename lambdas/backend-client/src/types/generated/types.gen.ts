@@ -4,6 +4,21 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type CreateContactDetailRequest = {
+  contactDetailValue: string;
+  contactDetailType: string;
+};
+
+export type CreateContactDetailResponseData = {
+  id: string;
+  otp: string;
+};
+
+export type CreateContactDetailResponse = {
+  data: CreateContactDetailResponseData;
+  statusCode: number;
+};
+
 export type AuthoringLetterFiles = {
   docxTemplate?: VersionedFileDetails;
   initialRender?: RenderDetails;
@@ -380,6 +395,36 @@ export type GetV1ClientConfigurationResponses = {
 
 export type GetV1ClientConfigurationResponse =
   GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
+
+export type PostV1CreateContactDetailData = {
+  /**
+   * Letter template to create
+   */
+  body: CreateContactDetailRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/create-contact-detail';
+};
+
+export type PostV1CreateContactDetailErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1CreateContactDetailError =
+  PostV1CreateContactDetailErrors[keyof PostV1CreateContactDetailErrors];
+
+export type PostV1CreateContactDetailResponses = {
+  /**
+   * 201 response
+   */
+  201: CreateContactDetailResponse;
+};
+
+export type PostV1CreateContactDetailResponse =
+  PostV1CreateContactDetailResponses[keyof PostV1CreateContactDetailResponses];
 
 export type PostV1LetterTemplateData = {
   /**

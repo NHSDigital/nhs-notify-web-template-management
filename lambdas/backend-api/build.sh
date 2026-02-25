@@ -16,6 +16,7 @@ npx esbuild \
     --external:pdfjs-dist \
     src/copy-scanned-object-to-internal.ts \
     src/count-routing-configs.ts \
+    src/create-contact-detail.ts \
     src/create-routing-config.ts \
     src/create.ts \
     src/delete-failed-scanned-object.ts \

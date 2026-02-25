@@ -1,6 +1,51 @@
 {
   "components": {
     "schemas": {
+      "CreateContactDetailRequest": {
+        "type": "object",
+        "properties": {
+          "contactDetailValue": {
+            "type": "string"
+          },
+          "contactDetailType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contactDetailValue",
+          "contactDetailType"
+        ]
+      },
+      "CreateContactDetailResponseData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "otp"
+        ]
+      },
+      "CreateContactDetailResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CreateContactDetailResponseData"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "AuthoringLetterFiles": {
         "properties": {
           "docxTemplate": {
@@ -1255,6 +1300,71 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/create-contact-detail": {
+      "post": {
+        "description": "Create contact detail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContactDetailRequest"
+              }
+            }
+          },
+          "description": "Letter template to create",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateContactDetailResponse"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Create a letter template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_CONTACT_DETAIL_LAMBDA_ARN}/invocations"
         }
       }
     },

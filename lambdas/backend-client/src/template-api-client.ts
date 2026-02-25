@@ -4,6 +4,9 @@ import {
   TemplateSuccessList,
   TemplateDto,
   PatchTemplate,
+  CreateContactDetailResponse,
+  CreateContactDetailResponseData,
+  CreateContactDetailRequest,
 } from './types/generated';
 import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
@@ -35,6 +38,28 @@ export const templateApiClient = {
     return {
       data: response.data.data,
     };
+  },
+
+  async createContactDetail(
+    createContactDetailRequest: CreateContactDetailRequest,
+    token: string
+  ): Promise<Result<CreateContactDetailResponseData>> {
+    const response = await catchAxiosError(
+      httpClient.post<CreateContactDetailResponse>('/v1/create-contact-detail', createContactDetailRequest, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return response.data;
   },
 
   async uploadLetterTemplate(

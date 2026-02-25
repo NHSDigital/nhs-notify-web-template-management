@@ -3,6 +3,8 @@
 import { getSessionServer } from '@utils/amplify-utils';
 import {
   $TemplateDto,
+  CreateContactDetailRequest,
+  CreateContactDetailResponseData,
   CreateUpdateTemplate,
   PatchTemplate,
   TemplateDto,
@@ -12,6 +14,28 @@ import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-cl
 import { sortAscByUpdatedAt } from './sort';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+
+export async function createContactDetail(
+  createContactDetailRequest: CreateContactDetailRequest
+): Promise<CreateContactDetailResponseData> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.createContactDetail(
+    createContactDetailRequest,
+    accessToken
+  );
+
+  if (error) {
+    logger.error('Failed to create contact detail', error);
+    throw new Error('Failed to create new contact detail');
+  }
+
+  return data;
+}
 
 export async function createTemplate(
   template: CreateUpdateTemplate

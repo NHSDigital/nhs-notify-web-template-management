@@ -16,6 +16,7 @@ locals {
     AWS_REGION                                    = var.region
     COUNT_ROUTING_CONFIGS_LAMBDA_ARN              = module.count_routing_configs_lambda.function_arn
     CREATE_LAMBDA_ARN                             = module.create_template_lambda.function_arn
+    CREATE_CONTACT_DETAIL_LAMBDA_ARN              = module.create_contact_detail_lambda.function_arn
     CREATE_ROUTING_CONFIG_LAMBDA_ARN              = module.create_routing_config_lambda.function_arn
     DELETE_LAMBDA_ARN                             = module.delete_template_lambda.function_arn
     DELETE_ROUTING_CONFIG_LAMBDA_ARN              = module.delete_routing_config_lambda.function_arn
@@ -35,6 +36,7 @@ locals {
   })
 
   backend_lambda_environment_variables = {
+    CONFIGURATION_SET_NAME                  = "${local.csi}-sms"
     CLIENT_CONFIG_SSM_KEY_PREFIX            = local.client_ssm_path_prefix
     CLIENT_CONFIG_TTL_SECONDS               = 900
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
@@ -48,6 +50,8 @@ locals {
     TEMPLATES_INTERNAL_BUCKET_NAME          = module.s3bucket_internal.id
     TEMPLATES_QUARANTINE_BUCKET_NAME        = module.s3bucket_quarantine.id
     TEMPLATES_TABLE_NAME                    = aws_dynamodb_table.templates.name
+    CONTACT_DETAILS_TABLE_NAME              = aws_dynamodb_table.contact_details.name
+    SENDER_ID                               = var.sender_id
   }
 
   mock_letter_supplier_name = "WTMMOCK"

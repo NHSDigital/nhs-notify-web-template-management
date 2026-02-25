@@ -7,6 +7,7 @@ const protectedPaths = [
   /^\/choose-a-template-type$/,
   /^\/copy-template\/[^/]+$/,
   /^\/create-email-template$/,
+  /^\/create-contact-detail$/,
   /^\/create-nhs-app-template$/,
   /^\/create-text-message-template$/,
   /^\/delete-template\/[^/]+$/,
