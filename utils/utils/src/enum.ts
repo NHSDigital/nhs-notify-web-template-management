@@ -371,6 +371,19 @@ export const MESSAGE_ORDER_OPTIONS_LIST = [
 
 export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
 
+export const getMessageOrderOptions = (
+  features: ClientFeatures
+): MessageOrder[] => {
+  if (!features.letterAuthoring) {
+    return MESSAGE_ORDER_OPTIONS_LIST.filter(
+      (messageOrder): messageOrder is MessageOrder =>
+        !messageOrder.includes('LETTER')
+    );
+  }
+
+  return [...MESSAGE_ORDER_OPTIONS_LIST];
+};
+
 export const ORDINALS = [
   'First',
   'Second',

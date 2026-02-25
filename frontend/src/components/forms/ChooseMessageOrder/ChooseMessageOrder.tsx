@@ -8,12 +8,13 @@ import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotif
 import content from '@content/content';
 import {
   ErrorState,
-  MESSAGE_ORDER_OPTIONS_LIST,
+  getMessageOrderOptions,
   MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $ChooseMessageOrder, chooseMessageOrderAction } from './server-action';
 import { validate } from '@utils/client-validate-form';
+import { useFeatureFlags } from '@providers/client-config-provider';
 
 export const messageOrderDisplayMappings: Record<MessageOrder, string> = {
   NHSAPP: 'NHS App only',
@@ -32,10 +33,11 @@ export const ChooseMessageOrder = () => {
   const [errorState, setErrorState] = useState<ErrorState | undefined>(
     state.errorState
   );
+  const features = useFeatureFlags();
 
   const formValidate = validate($ChooseMessageOrder, setErrorState);
 
-  const options = MESSAGE_ORDER_OPTIONS_LIST.map((messageOrder) => ({
+  const options = getMessageOrderOptions(features).map((messageOrder) => ({
     id: messageOrder,
     text: messageOrderDisplayMappings[messageOrder],
   }));

@@ -38,6 +38,8 @@ import {
   type SupportedLetterType,
   createTemplateUrl,
   isLanguage,
+  getMessageOrderOptions,
+  MESSAGE_ORDER_OPTIONS_LIST,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -554,5 +556,38 @@ describe('isLanguage', () => {
 
   it('returns false when language is not valid', () => {
     expect(isLanguage('not a language')).toBe(false);
+  });
+});
+
+describe('getMessageOrderOptions', () => {
+  const baseFeatures = {
+    digitalProofingEmail: false,
+    digitalProofingNhsApp: false,
+    digitalProofingSms: false,
+    letterAuthoring: true,
+    proofing: false,
+    routing: false,
+  };
+
+  test('returns all options when letterAuthoring is enabled', () => {
+    expect(getMessageOrderOptions(baseFeatures)).toEqual([
+      ...MESSAGE_ORDER_OPTIONS_LIST,
+    ]);
+  });
+
+  test('filters letter options when letterAuthoring is disabled', () => {
+    expect(
+      getMessageOrderOptions({
+        ...baseFeatures,
+        letterAuthoring: false,
+      })
+    ).toEqual([
+      'NHSAPP',
+      'NHSAPP,EMAIL',
+      'NHSAPP,SMS',
+      'NHSAPP,EMAIL,SMS',
+      'NHSAPP,SMS,EMAIL',
+      'EMAIL',
+    ]);
   });
 });
