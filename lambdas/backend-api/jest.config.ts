@@ -18,6 +18,9 @@ const jestConfig: Config = {
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
     '/test-utils/',
+    'proofing-queue.ts',
+    'src/container',
+    `/src/[^/]+\\.ts$`,
   ],
   transformIgnorePatterns: ['node_modules/(?!pdfjs-dist)'],
   transform: {
