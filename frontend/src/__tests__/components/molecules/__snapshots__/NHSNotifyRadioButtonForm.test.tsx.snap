@@ -88,11 +88,11 @@ exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other 
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -213,11 +213,11 @@ exports[`Renders NHSNotifyRadioButtonForm - renders without validation error fie
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -350,11 +350,11 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -482,11 +482,11 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -620,11 +620,11 @@ exports[`Renders NHSNotifyRadioButtonForm with conditional content for a radio o
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -809,11 +809,11 @@ exports[`Renders NHSNotifyRadioButtonForm with conditional radios and validation
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -950,11 +950,11 @@ exports[`Renders NHSNotifyRadioButtonForm with learn more link 1`] = `
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -1127,11 +1127,11 @@ exports[`Renders NHSNotifyRadioButtonForm with nested conditional radio buttons 
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -1259,11 +1259,11 @@ exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLi
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >
@@ -1391,11 +1391,11 @@ exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreTe
       <div
         class="nhsuk-card__content"
       >
-        <h4
+        <h2
           class="nhsuk-card__heading"
         >
           To create a letter template
-        </h4>
+        </h2>
         <p
           class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
         >

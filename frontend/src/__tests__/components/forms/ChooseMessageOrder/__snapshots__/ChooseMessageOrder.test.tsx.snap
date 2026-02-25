@@ -269,11 +269,11 @@ exports[`Choose message order page Client-side validation triggers - invalid for
         <div
           class="nhsuk-card__content"
         >
-          <h4
+          <h2
             class="nhsuk-card__heading"
           >
             To create a letter template
-          </h4>
+          </h2>
           <p
             class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
           >
@@ -547,11 +547,11 @@ exports[`Choose message order page Client-side validation triggers - valid form 
         <div
           class="nhsuk-card__content"
         >
-          <h4
+          <h2
             class="nhsuk-card__heading"
           >
             To create a letter template
-          </h4>
+          </h2>
           <p
             class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
           >
@@ -850,11 +850,11 @@ exports[`Choose message order page renders error component 1`] = `
         <div
           class="nhsuk-card__content"
         >
-          <h4
+          <h2
             class="nhsuk-card__heading"
           >
             To create a letter template
-          </h4>
+          </h2>
           <p
             class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
           >
@@ -1128,11 +1128,11 @@ exports[`Choose message order page renders form 1`] = `
         <div
           class="nhsuk-card__content"
         >
-          <h4
+          <h2
             class="nhsuk-card__heading"
           >
             To create a letter template
-          </h4>
+          </h2>
           <p
             class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
           >

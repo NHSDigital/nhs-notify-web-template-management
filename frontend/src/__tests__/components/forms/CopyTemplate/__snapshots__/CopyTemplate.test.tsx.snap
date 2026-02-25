@@ -169,11 +169,11 @@ exports[`Choose template page Client-side validation triggers - invalid form - e
             <div
               class="nhsuk-card__content"
             >
-              <h4
+              <h2
                 class="nhsuk-card__heading"
               >
                 To create a letter template
-              </h4>
+              </h2>
               <p
                 class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
               >
@@ -342,11 +342,11 @@ exports[`Choose template page Client-side validation triggers - valid form - no 
             <div
               class="nhsuk-card__content"
             >
-              <h4
+              <h2
                 class="nhsuk-card__heading"
               >
                 To create a letter template
-              </h4>
+              </h2>
               <p
                 class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
               >
@@ -540,11 +540,11 @@ exports[`Choose template page renders error component 1`] = `
             <div
               class="nhsuk-card__content"
             >
-              <h4
+              <h2
                 class="nhsuk-card__heading"
               >
                 To create a letter template
-              </h4>
+              </h2>
               <p
                 class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
               >
@@ -713,11 +713,11 @@ exports[`Choose template page selects one radio button at a time 1`] = `
             <div
               class="nhsuk-card__content"
             >
-              <h4
+              <h2
                 class="nhsuk-card__heading"
               >
                 To create a letter template
-              </h4>
+              </h2>
               <p
                 class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
               >
