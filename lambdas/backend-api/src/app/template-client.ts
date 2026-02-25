@@ -9,9 +9,9 @@ import {
   $TemplateDto,
   $TemplateFilter,
   $PatchTemplate,
-  AuthoringLetterFiles,
 } from 'nhs-notify-backend-client';
 import type {
+  AuthoringLetterFiles,
   ClientConfiguration,
   CreateUpdateTemplate,
   PatchTemplate,
