@@ -34,28 +34,14 @@ GHCR_LOGIN_TOKEN="${GITHUB_TOKEN}"
 GHCR_LOGIN_USER="${GITHUB_ACTOR}"
 LAMBDA_NAME="${LAMBDA_NAME:-$(basename "$PWD")}"
 
-## Set image tag suffix based on git metadata.
-# Publish exactly one suffix:
-# - release-<semver>-<shortsha> when HEAD is tagged
-# - sha-<shortsha> otherwise
-echo "Checking git metadata for image tag suffixes..."
-SHORT_SHA="$(git rev-parse --short HEAD)"
-SHA_SUFFIX="sha-${SHORT_SHA}"
-GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
-
-if [ -n "$GIT_TAG" ]; then
-  RELEASE_VERSION="${GIT_TAG#v}"
-  RELEASE_SUFFIX="release-${RELEASE_VERSION}-${SHORT_SHA}"
-  FINAL_SUFFIX="${RELEASE_SUFFIX}"
-  echo "On tag: $GIT_TAG"
-  echo "Publishing suffix: $FINAL_SUFFIX"
-else
-  echo "Not on a tag"
-  FINAL_SUFFIX="${SHA_SUFFIX}"
-  echo "Publishing suffix: $FINAL_SUFFIX"
+## Set image tag suffix from Terraform-provided variable.
+if [ -z "${TF_VAR_container_image_tag_suffix:-}" ]; then
+  echo "Error: TF_VAR_container_image_tag_suffix must be set." >&2
+  exit 1
 fi
 
-export IMAGE_TAG_SUFFIX="$FINAL_SUFFIX"
+FINAL_SUFFIX="${TF_VAR_container_image_tag_suffix}"
+echo "Using TF_VAR_container_image_tag_suffix: ${FINAL_SUFFIX}"
 
 ## Check if we are running in the context of a Terraform apply or plan, and set PUBLISH_LAMBDA_IMAGE accordingly. We only want to push images to ECR on apply, not on plan.
 echo "Checking if ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
@@ -76,7 +62,6 @@ echo "ECR_REPO: ${ECR_REPO:-<unset>}"
 echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
-echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
