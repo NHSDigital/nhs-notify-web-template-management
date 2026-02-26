@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
-import type { ValidationErrorDetail } from 'nhs-notify-backend-client/src/types/generated/types.gen';
+import type { ValidationErrorDetail } from 'nhs-notify-web-template-management-types';
 import type { Personalisation } from '../types/types';
 import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 

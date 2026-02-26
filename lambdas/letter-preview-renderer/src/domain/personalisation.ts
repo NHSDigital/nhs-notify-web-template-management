@@ -1,4 +1,4 @@
-import type { ValidationErrorDetail } from 'nhs-notify-backend-client/src/types/generated/types.gen';
+import type { ValidationErrorDetail } from 'nhs-notify-web-template-management-types';
 import {
   ADDRESS_PERSONALISATIONS,
   DEFAULT_PERSONALISATION_LIST,
