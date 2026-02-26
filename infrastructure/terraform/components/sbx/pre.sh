@@ -18,14 +18,17 @@ echo "REGION=$REGION"
 echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 
+commit_sha=$(git rev-parse --short HEAD)
 GIT_TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+
 if [ -n "${GIT_TAG}" ]; then
   RELEASE_VERSION="${GIT_TAG#v}"
-  export TF_VAR_container_image_tag_suffix="release-${RELEASE_VERSION}-$(git rev-parse --short HEAD)"
-  echo "On tag: $GIT_TAG, image tag suffixes will be: release-${RELEASE_VERSION}-$(git rev-parse --short HEAD)"
+  export TF_VAR_container_image_tag_suffix="release-${RELEASE_VERSION}-${commit_sha}"
+  echo "On tag: $GIT_TAG, image tag suffixes will be: release-${RELEASE_VERSION}-${commit_sha}"
 else
-  export TF_VAR_container_image_tag_suffix="sha-$(git rev-parse --short HEAD)"
-  echo "Not on a tag, image tag suffix will be: sha-$(git rev-parse --short HEAD)"
+  timestamp=$(date +%s)
+  export TF_VAR_container_image_tag_suffix="sha-${commit_sha}-${timestamp}"
+  echo "Not on a tag, image tag suffix will be: sha-${commit_sha}-${timestamp}"
 fi
 
 # change to monorepo root
