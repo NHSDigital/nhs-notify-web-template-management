@@ -64,13 +64,14 @@ export const pdfUploadFixtures = {
 };
 
 export const docxFixtures = {
-  standard: getFile('docx', 'standard-english-template.docx'),
+  corrupted: getFile('docx', 'corrupted.docx'), // word/document.xml is invalid XML
   fakeVirus: getFile('docx', 'eicar-threat-test.docx'),
   incompleteAddress: getFile('docx', 'missing-address-line.docx'),
+  invalidMarkers: getFile('docx', 'invalid-markers.docx'), // contains {d.parameter!}
   nonRenderableMarker: getFile('docx', 'non-renderable-marker.docx'), // contains {c.fullName}
   password: getFile('docx', 'password.docx'),
-  invalidMarkers: getFile('docx', 'invalid-markers.docx'), // contains {d.parameter!}
-  corrupted: getFile('docx', 'corrupted.docx'), // word/document.xml is invalid XML
   randomBytes: getFile('docx', 'random-bytes.docx'),
+  randomBytesZipped: getFile('docx', 'random-bytes-zipped.docx'),
+  standard: getFile('docx', 'standard-english-template.docx'),
   unexpectedAddressLines: getFile('docx', 'unexpected-address-lines.docx'),
 };

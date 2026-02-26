@@ -302,6 +302,29 @@ test.describe('Letter rendering', () => {
       );
     });
 
+    test('docx containing zipped random bytes fails with VALIDATION_FAILED status and no specific validation error', async ({
+      request,
+    }) => {
+      await initialRenderTest(
+        request,
+        docxFixtures.randomBytesZipped.open(),
+        (t: Template) => {
+          expect(t.validationErrors).toBeUndefined();
+
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'VALIDATION_FAILED',
+              files: expect.objectContaining({
+                initialRender: { status: 'FAILED' },
+              }),
+              customPersonalisation: [],
+              systemPersonalisation: [],
+            })
+          );
+        }
+      );
+    });
+
     test('docx containing non-renderable marker is not rendered', async ({
       request,
     }) => {
