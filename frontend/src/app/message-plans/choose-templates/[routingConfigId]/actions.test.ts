@@ -1,14 +1,14 @@
 import { randomUUID } from 'node:crypto';
 import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
-import {
+import type {
   CascadeGroupName,
   Channel,
   ChannelType,
   Language,
   LetterType,
   RoutingConfigStatus,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { redirect } from 'next/navigation';
 import { getChannelsMissingTemplates } from '@utils/routing-utils';
 

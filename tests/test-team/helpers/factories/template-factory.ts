@@ -1,4 +1,7 @@
-import type { Language, LetterType } from 'nhs-notify-backend-client';
+import type {
+  Language,
+  LetterType,
+} from 'nhs-notify-web-template-management-types';
 import type { TestUser } from '../auth/cognito-auth-helper';
 import type { RenderFile, Template, File } from '../types';
 import { randomUUID } from 'node:crypto';

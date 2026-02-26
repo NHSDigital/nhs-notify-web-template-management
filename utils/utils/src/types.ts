@@ -13,7 +13,7 @@ import type {
   TemplateDto,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 
 export type FormId =
   | 'choose-a-template-type'

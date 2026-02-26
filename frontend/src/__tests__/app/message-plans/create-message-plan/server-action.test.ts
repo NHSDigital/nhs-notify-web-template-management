@@ -1,6 +1,9 @@
 import { mock } from 'jest-mock-extended';
 import { redirect, RedirectType } from 'next/navigation';
-import type { CascadeItem, RoutingConfig } from 'nhs-notify-backend-client';
+import type {
+  CascadeItem,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import type { MessageOrder } from 'nhs-notify-web-template-management-utils';
 import { createMessagePlanServerAction } from '@app/message-plans/create-message-plan/server-action';
 import { NextRedirectError } from '@testhelpers/next-redirect';

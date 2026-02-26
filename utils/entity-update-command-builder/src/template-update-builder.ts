@@ -1,10 +1,10 @@
 import type {
-  ValidationErrorDetail,
   PersonalisedRenderDetails,
   RenderDetails,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-backend-client';
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 import { BuilderOptionalArgs } from './types/builders';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { EntityUpdateBuilder } from './common/entity-update-builder';

@@ -1,7 +1,7 @@
 import type {
-  ValidationErrorDetail,
   TemplateStatus,
-} from 'nhs-notify-backend-client';
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';

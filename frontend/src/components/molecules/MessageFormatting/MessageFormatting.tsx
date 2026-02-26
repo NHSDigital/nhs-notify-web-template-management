@@ -1,5 +1,5 @@
 import content from '@content/content';
-import { TemplateType } from 'nhs-notify-backend-client';
+import type { TemplateType } from 'nhs-notify-web-template-management-types';
 import { Details } from 'nhsuk-react-components';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { toKebabCase } from '@utils/kebab-case';

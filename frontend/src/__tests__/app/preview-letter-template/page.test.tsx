@@ -15,8 +15,8 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-import type { VersionedFileDetails } from 'nhs-notify-backend-client';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type { VersionedFileDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

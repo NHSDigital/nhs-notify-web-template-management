@@ -1,6 +1,9 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto, CreateUpdateTemplate } from 'nhs-notify-backend-client';
+import type {
+  TemplateDto,
+  CreateUpdateTemplate,
+} from 'nhs-notify-web-template-management-types';
 import { createHandler } from '../../api/update';
 import { TemplateClient } from '../../app/template-client';
 

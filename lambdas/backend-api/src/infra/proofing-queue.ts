@@ -1,10 +1,10 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { failure, success } from '@backend-api/utils/result';
-import {
-  ErrorCase,
-  type Language,
-  type LetterType,
-} from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client';
+import type {
+  Language,
+  LetterType,
+} from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
 
 export class ProofingQueue {
