@@ -34,4 +34,4 @@ trim_trailing_whitespace = false
 
 [tests/test-team/fixtures/letters/docx/*]
 insert_final_newline = unset
-trim_trailing_whitespace = unset
+end_of_line = unset
