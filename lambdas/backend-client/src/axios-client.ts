@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import axiosRetry from 'axios-retry';
+import type { Failure } from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
-import { Failure } from './types/generated';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isApplicationFailure = (error: any): error is Failure =>

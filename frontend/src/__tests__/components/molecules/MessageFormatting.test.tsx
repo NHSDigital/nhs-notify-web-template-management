@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { TemplateType } from 'nhs-notify-backend-client';
+import { TemplateType } from 'nhs-notify-web-template-management-types';
 
 describe('MessageFormatting component', () => {
   it('renders component correctly with SMS related formatting', () => {

@@ -3,7 +3,7 @@ import type {
   CascadeItem,
   RoutingConfig,
   RoutingConfigStatus,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { BuilderOptionalArgs } from './types/builders';
 import { EntityUpdateBuilder } from './common/entity-update-builder';
 

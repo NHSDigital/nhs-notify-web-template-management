@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import {
+import type {
   CascadeGroupName,
   Channel,
   ChannelType,
@@ -7,7 +7,7 @@ import {
   RoutingConfig,
   Language,
   LetterType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import type {
   FactoryRoutingConfigWithModifiers,
   RoutingConfigDbEntry,

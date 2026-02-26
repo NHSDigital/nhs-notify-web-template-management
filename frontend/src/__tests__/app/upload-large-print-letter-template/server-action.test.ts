@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { uploadLargePrintLetterTemplate } from '@app/upload-large-print-letter-template/server-action';
 import { uploadDocxTemplate } from '@utils/form-actions';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

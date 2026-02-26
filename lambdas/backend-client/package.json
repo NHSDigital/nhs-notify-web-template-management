@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@hey-api/openapi-ts": "^0.90.4",
     "axios": "^1.13.5",
     "axios-retry": "^4.5.0",
     "zod": "^4.0.17"
@@ -12,6 +11,7 @@
     "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.25.9",
     "jest-mock-extended": "^3.0.7",
+    "nhs-notify-web-template-management-types": "^0.0.1",
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "typescript": "^5.9.3"
   },
@@ -22,7 +22,6 @@
   "name": "nhs-notify-backend-client",
   "private": true,
   "scripts": {
-    "generate-dependencies": "npx @hey-api/openapi-ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",

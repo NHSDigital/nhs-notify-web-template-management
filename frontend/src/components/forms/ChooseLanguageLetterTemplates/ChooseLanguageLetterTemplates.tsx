@@ -18,7 +18,7 @@ import { validate } from '@utils/client-validate-form';
 import { getSelectedLanguageTemplateIds } from '@utils/routing-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import classNames from 'classnames';
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import baseContent from '@content/content';
 import { LanguageLetterTemplates } from '@molecules/LanguageLetterTemplates/LanguageLetterTemplates';
 import { interpolate } from '@utils/interpolate';

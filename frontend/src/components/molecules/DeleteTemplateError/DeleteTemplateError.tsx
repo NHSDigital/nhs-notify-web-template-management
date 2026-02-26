@@ -3,7 +3,7 @@
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import Link from 'next/link';
 import { interpolate } from '@utils/interpolate';
-import type { RoutingConfigReference } from 'nhs-notify-backend-client';
+import type { RoutingConfigReference } from 'nhs-notify-web-template-management-types';
 
 import copyText from '@content/content';
 const content = copyText.pages.deleteTemplateErrorPage;

@@ -4,7 +4,7 @@ import type { AuthStatus } from '@aws-amplify/ui';
 import Link from 'next/link';
 import { useAuthStatus } from '@hooks/use-auth-status';
 import content from '@content/content';
-import { ClientFeatures } from 'nhs-notify-backend-client';
+import type { ClientFeatures } from 'nhs-notify-web-template-management-types';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
 const headerContent = content.components.header;
