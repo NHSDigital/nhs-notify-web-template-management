@@ -52,6 +52,7 @@ function initialiseFormState(
   tab: RenderTab
 ): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
+
   const renderedPersonalisation =
     personalisedRender?.status === 'RENDERED' ? personalisedRender : null;
 
@@ -62,11 +63,11 @@ function initialiseFormState(
 
   return {
     fields: Object.fromEntries([
-      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
       ...customPersonalisationFields.map((f) => [
         f,
         personalisationParameters?.[f] ?? '',
       ]),
+      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
     ]),
   };
 }

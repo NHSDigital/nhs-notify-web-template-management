@@ -144,7 +144,7 @@ describe('LetterRenderTab', () => {
     });
 
     it('falls back to initialRender URL when shortFormRender exists but is not RENDERED', () => {
-      const templateWithPendingRender: AuthoringLetterTemplate = {
+      const templateWithFailedRender: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: {
           ...baseTemplate.files,
@@ -161,7 +161,7 @@ describe('LetterRenderTab', () => {
 
       render(
         <LetterRenderTab
-          template={templateWithPendingRender}
+          template={templateWithFailedRender}
           tab='shortFormRender'
         />
       );
@@ -180,7 +180,7 @@ describe('LetterRenderTab', () => {
         files: {
           ...baseTemplate.files,
           longFormRender: {
-            status: 'FAILED',
+            status: 'PENDING',
             systemPersonalisationPackId: 'long-1',
             personalisationParameters: {
               firstName: 'Michael',
@@ -291,12 +291,12 @@ describe('LetterRenderTab', () => {
     });
 
     it('does not pre-populate form when longFormRender exists but is not RENDERED', () => {
-      const templateWithPendingRender: AuthoringLetterTemplate = {
+      const templateWithFailedRender: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: {
           ...baseTemplate.files,
           longFormRender: {
-            status: 'PENDING',
+            status: 'FAILED',
             systemPersonalisationPackId: 'long-2',
             personalisationParameters: {
               firstName: 'Elizabeth',
@@ -309,7 +309,7 @@ describe('LetterRenderTab', () => {
 
       render(
         <LetterRenderTab
-          template={templateWithPendingRender}
+          template={templateWithFailedRender}
           tab='longFormRender'
         />
       );

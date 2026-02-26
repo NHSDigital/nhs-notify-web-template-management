@@ -25,7 +25,7 @@ const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
 
 function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
   const pages =
-    template.files?.initialRender?.status === 'RENDERED'
+    template.files.initialRender?.status === 'RENDERED'
       ? template.files.initialRender.pageCount
       : 0;
 

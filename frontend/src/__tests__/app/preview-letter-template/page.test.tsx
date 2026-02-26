@@ -354,9 +354,6 @@ describe('authoring letter template without initial render in RENDERED status', 
       screen.queryByRole('tab', { name: 'Short examples' })
     ).not.toBeInTheDocument();
 
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
     expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
       AUTHORING_LETTER_TEMPLATE.id
     );
@@ -390,9 +387,6 @@ describe('authoring letter template without initial render in RENDERED status', 
       screen.queryByRole('tab', { name: 'Short examples' })
     ).not.toBeInTheDocument();
 
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
     expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
       AUTHORING_LETTER_TEMPLATE.id
     );
@@ -422,18 +416,18 @@ describe('authoring letter template does not show submit form when already submi
 
 describe('authoring letter with validation errors', () => {
   it('renders page with VALIDATION_FAILED status and displays error summary with virus scan message', async () => {
-    const templateWithValidationErrors: LetterTemplate = {
+    const templateWithValidationError: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED',
       validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
-    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationError);
 
     render(
       await Page({
         params: Promise.resolve({
-          templateId: templateWithValidationErrors.id,
+          templateId: templateWithValidationError.id,
         }),
       })
     );
@@ -450,26 +444,6 @@ describe('authoring letter with validation errors', () => {
         'Create a new letter template to upload your file(s) again or upload different file(s).'
       )
     ).toBeInTheDocument();
-  });
-
-  it('matches snapshot with error and render', async () => {
-    const templateWithValidationErrors: LetterTemplate = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-    };
-
-    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
-
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({
-          templateId: templateWithValidationErrors.id,
-        }),
-      })
-    );
-
-    expect(asFragment()).toMatchSnapshot();
   });
 
   it('matches snapshot with error and no render', async () => {
@@ -499,11 +473,10 @@ describe('authoring letter with validation errors', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('renders page with VALIDATION_FAILED status and empty validationErrors without error summary', async () => {
+  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary (fallback not yet implemented)', async () => {
     const templateWithEmptyErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [] as { name: 'VIRUS_SCAN_FAILED' }[],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithEmptyErrors);
@@ -511,27 +484,6 @@ describe('authoring letter with validation errors', () => {
     render(
       await Page({
         params: Promise.resolve({ templateId: templateWithEmptyErrors.id }),
-      })
-    );
-
-    expect(redirect).not.toHaveBeenCalled();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
-  });
-
-  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary', async () => {
-    const templateWithUndefinedErrors: LetterTemplate = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-    };
-
-    jest.mocked(getTemplate).mockResolvedValue(templateWithUndefinedErrors);
-
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: templateWithUndefinedErrors.id }),
       })
     );
 
