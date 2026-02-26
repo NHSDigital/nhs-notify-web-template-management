@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.911.0",
-    "@aws-sdk/client-s3": "3.911.0",
-    "@aws-sdk/client-sqs": "3.911.0",
-    "@aws-sdk/lib-dynamodb": "3.911.0",
+    "@aws-sdk/client-dynamodb": "3.995.0",
+    "@aws-sdk/client-s3": "3.995.0",
+    "@aws-sdk/client-sqs": "3.995.0",
+    "@aws-sdk/lib-dynamodb": "3.995.0",
     "carbone": "^3.5.6",
     "nhs-notify-backend-client": "^0.0.1",
     "nhs-notify-entity-update-command-builder": "^0.0.1",
