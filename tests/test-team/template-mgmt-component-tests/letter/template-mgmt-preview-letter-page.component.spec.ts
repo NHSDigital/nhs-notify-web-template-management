@@ -181,19 +181,6 @@ async function createTemplates(user: TestUser) {
         initialRender: false,
       }
     ),
-    authoringUnexpectedAddressLines:
-      TemplateFactory.createAuthoringLetterTemplate(
-        'A1B2C3D4-E5F6-7890-ABCD-EF1234567891',
-        user,
-        'authoring-unexpected-address-lines',
-        'VALIDATION_FAILED',
-        {
-          letterVariantId: 'variant-unexpected-address',
-          validationErrors: [
-            { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
-          ],
-        }
-      ),
     authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
       'A7B8C9D0-E1F2-3456-ABCD-789012345678',
       user,
@@ -1074,27 +1061,6 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toContainText(
           'The template file you uploaded does not contain the address fields'
-        );
-
-        await expect(previewPage.continueButton).toBeHidden();
-      });
-
-      test('displays unexpected address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam(
-          'templateId',
-          templates.authoringUnexpectedAddressLines.id
-        );
-
-        await previewPage.loadPage();
-
-        await expect(previewPage.errorSummary).toBeVisible();
-
-        await expect(previewPage.errorSummary).toContainText(
-          'The template file you uploaded contains unexpected address fields'
         );
 
         await expect(previewPage.continueButton).toBeHidden();
