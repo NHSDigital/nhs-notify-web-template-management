@@ -6,10 +6,12 @@ import {
   $UpdateRoutingConfig,
   ErrorCase,
   type ListRoutingConfigFilters,
-  type RoutingConfigReference,
   type Result,
-  type RoutingConfig,
 } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfigReference,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';

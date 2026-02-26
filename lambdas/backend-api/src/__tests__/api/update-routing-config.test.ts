@@ -3,7 +3,7 @@ import { mock } from 'jest-mock-extended';
 import type {
   RoutingConfig,
   UpdateRoutingConfig,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { createHandler } from '../../api/update-routing-config';
 import { RoutingConfigClient } from '../../app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';

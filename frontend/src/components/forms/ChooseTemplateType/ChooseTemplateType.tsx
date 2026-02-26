@@ -15,7 +15,7 @@ import {
   $ChooseTemplateTypeBase,
   $ChooseTemplateTypeWithLetterAuthoring,
 } from './schemas';
-import { TemplateType } from 'nhs-notify-backend-client';
+import type { TemplateType } from 'nhs-notify-web-template-management-types';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';

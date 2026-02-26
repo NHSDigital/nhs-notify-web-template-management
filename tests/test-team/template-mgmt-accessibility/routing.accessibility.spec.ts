@@ -36,7 +36,7 @@ import {
   RoutingPreviewStandardLetterTemplatePage,
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
-import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import type { RoutingConfigStatus } from 'nhs-notify-web-template-management-types';
 
 let userWithMultipleCampaigns: TestUser;
 const routingStorageHelper = new RoutingConfigStorageHelper();

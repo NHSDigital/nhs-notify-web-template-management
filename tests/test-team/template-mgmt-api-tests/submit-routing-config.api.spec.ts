@@ -10,7 +10,7 @@ import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import type { RoutingConfigStatus } from 'nhs-notify-web-template-management-types';
 
 test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
   const authHelper = createAuthHelper();

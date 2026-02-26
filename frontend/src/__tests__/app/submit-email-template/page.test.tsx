@@ -8,7 +8,7 @@ import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTempla
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,

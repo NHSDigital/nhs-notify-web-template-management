@@ -16,15 +16,17 @@ import {
   $RoutingConfig,
   $SubmittableCascade,
   $TemplateDto,
-  CascadeItem,
-  type CreateRoutingConfig,
   ErrorCase,
-  type RoutingConfig,
-  type RoutingConfigReference,
-  RoutingConfigStatus,
-  type TemplateDto,
-  type UpdateRoutingConfig,
 } from 'nhs-notify-backend-client';
+import type {
+  CascadeItem,
+  CreateRoutingConfig,
+  RoutingConfig,
+  RoutingConfigReference,
+  RoutingConfigStatus,
+  TemplateDto,
+  UpdateRoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { RoutingConfigQuery } from './query';
 import {

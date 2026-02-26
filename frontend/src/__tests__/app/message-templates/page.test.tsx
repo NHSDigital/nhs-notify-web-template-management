@@ -5,7 +5,7 @@ import MessageTemplatesPage, {
 } from '@app/message-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 const messageTemplatesContent = content.pages.messageTemplates;
 

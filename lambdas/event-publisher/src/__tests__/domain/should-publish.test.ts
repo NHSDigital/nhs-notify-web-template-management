@@ -1,4 +1,7 @@
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-web-template-management-types';
 import { shouldPublish } from '../../domain/should-publish';
 
 describe('shouldPublish', () => {
