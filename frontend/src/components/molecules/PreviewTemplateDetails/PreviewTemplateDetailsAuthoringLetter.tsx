@@ -53,7 +53,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const pendingValidation = template.templateStatus === 'PENDING_VALIDATION';
   const validationFailed = template.templateStatus === 'VALIDATION_FAILED';
 
-  const hasInitialRender = Boolean(template.files.initialRender);
+  const hasInitialRender = template.files.initialRender?.status !== 'RENDERED';
 
   const unvalidated = pendingValidation || validationFailed;
 
