@@ -160,8 +160,39 @@ test.describe('PATCH /v1/template/:templateId', () => {
     });
   });
 
+  test('returns 403 if the template is not a letter authoring template', async ({
+    request,
+  }) => {
+    const template = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      user1,
+      'NHS App template name'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          name: 'New template name',
+        },
+      }
+    );
+
+    expect(response.status()).toBe(403);
+    expect(await response.json()).toEqual({
+      statusCode: 403,
+      technicalMessage: 'Unsupported for this template type',
+    });
+  });
+
   test('returns 200 and the updated template data', async ({ request }) => {
-    const [letterVariant] =
+    const [letterVariant, letterVariant2] =
       await context.letterVariants.getGlobalLetterVariants();
 
     const template = TemplateFactory.createAuthoringLetterTemplate(
@@ -186,6 +217,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         data: {
           name: 'New template name',
           campaignId: user1.campaignIds?.[1],
+          letterVariantId: letterVariant2.id,
         },
       }
     );
@@ -202,6 +234,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         ...dto,
         name: 'New template name',
         campaignId: user1.campaignIds?.[1],
+        letterVariantId: letterVariant2.id,
         updatedAt: expect.stringMatching(isoDateRegExp),
         lockNumber: template.lockNumber + 1,
         updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
@@ -211,39 +244,574 @@ test.describe('PATCH /v1/template/:templateId', () => {
     expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
   });
 
-  test('returns 400 - cannot set an campaign id not associated with the client', async ({
-    request,
-  }) => {
-    const template = TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      user1,
-      'Template name',
-      'NOT_YET_SUBMITTED',
-      { letterVariantId: 'letter-variant', campaignId: user1.campaignIds?.[0] }
-    );
+  test.describe('updating campaign id', () => {
+    test('returns 200 - retains the global scoped letter variant id', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getGlobalLetterVariants();
 
-    await templateStorageHelper.seedTemplateData([template]);
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Old template name',
+        'NOT_YET_SUBMITTED',
+        {
+          campaignId: user1.campaignIds?.[0],
+          letterVariantId: letterVariant.id,
+        }
+      );
 
-    const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
-        },
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            campaignId: user1.campaignIds?.[1],
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
         data: {
-          campaignId: 'Random value',
+          ...dto,
+          campaignId: user1.campaignIds?.[1],
+          letterVariantId: letterVariant.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
         },
-      }
-    );
+      });
 
-    expect(response.status()).toBe(400);
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
 
-    const body = await response.json();
+    test('returns 200 - retains the client scoped letter variant id', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getClientScopedLetterVariants(
+          user1.clientId
+        );
 
-    expect(body).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Invalid campaign ID in request',
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Old template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: letterVariant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            campaignId: user1.campaignIds?.[1],
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          campaignId: user1.campaignIds?.[1],
+          letterVariantId: letterVariant.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
+
+    test('returns 200 - resets the campaign scoped letter variant id', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getCampaignScopedLetterVariants(
+          user1.clientId,
+          user1.campaignIds?.[0] as string
+        );
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Old template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: letterVariant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            campaignId: user1.campaignIds?.[1],
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          campaignId: user1.campaignIds?.[1],
+          letterVariantId: undefined,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
+
+    test('returns 400 - cannot set an campaign id not associated with the client', async ({
+      request,
+    }) => {
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: 'letter-variant',
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            campaignId: 'Random value',
+          },
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      const body = await response.json();
+
+      expect(body).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Invalid campaign ID in request',
+      });
+    });
+  });
+
+  test.describe('updating letter variant id', () => {
+    test('returns 200 - sets to global scoped variant', async ({ request }) => {
+      const [letterVariant, letterVariant2] =
+        await context.letterVariants.getGlobalLetterVariants();
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: letterVariant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: letterVariant2.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          letterVariantId: letterVariant2.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
+
+    test('returns 200 - sets to client scoped variant, scoped by client id on template', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getClientScopedLetterVariants(
+          user1.clientId
+        );
+      const [globalVariant] =
+        await context.letterVariants.getGlobalLetterVariants();
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: globalVariant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: letterVariant.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          letterVariantId: letterVariant.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
+
+    test('returns 200 - sets to campaign scoped variant, scoped by client/campaign on template', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getCampaignScopedLetterVariants(
+          user1.clientId,
+          user1.campaignIds?.[0] as string
+        );
+      const [globalVariant] =
+        await context.letterVariants.getGlobalLetterVariants();
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: globalVariant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: letterVariant.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          letterVariantId: letterVariant.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    });
+
+    test('returns 400 - cannot set to client scoped variant owned by another client to the template', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getClientScopedLetterVariants(
+          userDifferentClient.clientId
+        );
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: letterVariant.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      const body = await response.json();
+
+      expect(body).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Invalid letterVariantId in request',
+      });
+    });
+
+    test('returns 400 - cannot set to a campaign scoped variant owned by a different campaign to the template', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getCampaignScopedLetterVariants(
+          user1.clientId,
+          user1.campaignIds?.[1] as string
+        );
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: letterVariant.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      const body = await response.json();
+
+      expect(body).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Invalid letterVariantId in request',
+      });
+    });
+
+    test('returns 400 - cannot set to a non-existent variant id', async ({
+      request,
+    }) => {
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            letterVariantId: 'non-existent-variant-id',
+          },
+        }
+      );
+
+      expect(response.status()).toBe(400);
+
+      const body = await response.json();
+
+      expect(body).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Invalid letterVariantId in request',
+      });
+    });
+
+    test('returns 200 - can change campaign scoped letter variant if also changing campaign in request', async ({
+      request,
+    }) => {
+      const [campaign0Variant] =
+        await context.letterVariants.getCampaignScopedLetterVariants(
+          user1.clientId,
+          user1.campaignIds?.[0] as string
+        );
+      const [campaign1Variant] =
+        await context.letterVariants.getCampaignScopedLetterVariants(
+          user1.clientId,
+          user1.campaignIds?.[1] as string
+        );
+
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Template name',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: campaign0Variant.id,
+          campaignId: user1.campaignIds?.[0],
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const start = new Date();
+
+      const response = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            campaignId: user1.campaignIds?.[1],
+            letterVariantId: campaign1Variant.id,
+          },
+        }
+      );
+
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+
+      const { owner, proofingEnabled, version, ...dto } = template;
+
+      expect(body).toEqual({
+        statusCode: 200,
+        data: {
+          ...dto,
+          campaignId: user1.campaignIds?.[1],
+          letterVariantId: campaign1Variant.id,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+          lockNumber: template.lockNumber + 1,
+          updatedBy: `INTERNAL_USER#${user1.internalUserId}`,
+        },
+      });
+
+      expect(body.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
     });
   });
 

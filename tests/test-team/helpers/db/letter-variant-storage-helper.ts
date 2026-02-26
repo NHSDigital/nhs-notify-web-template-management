@@ -88,6 +88,26 @@ export class LetterVariantStorageHelper {
     );
   }
 
+  public async getClientScopedLetterVariants(clientId: string) {
+    const variants = await this.contextFile.getAllLetterVariants();
+
+    return variants.filter(
+      (variant) => variant.clientId === clientId && !variant.campaignId
+    );
+  }
+
+  public async getCampaignScopedLetterVariants(
+    clientId: string,
+    campaignId: string
+  ) {
+    const variants = await this.contextFile.getAllLetterVariants();
+
+    return variants.filter(
+      (variant) =>
+        variant.clientId === clientId && variant.campaignId === campaignId
+    );
+  }
+
   private getScopePk({ clientId, campaignId }: LetterVariant) {
     if (campaignId && clientId) {
       return `CAMPAIGN#${clientId}#${campaignId}`;
