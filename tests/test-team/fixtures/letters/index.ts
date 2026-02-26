@@ -71,5 +71,6 @@ export const docxFixtures = {
   password: getFile('docx', 'password.docx'),
   invalidMarkers: getFile('docx', 'invalid-markers.docx'), // contains {d.parameter!}
   corrupted: getFile('docx', 'corrupted.docx'), // word/document.xml is invalid XML
+  randomBytes: getFile('docx', 'random-bytes.docx'),
   unexpectedAddressLines: getFile('docx', 'unexpected-address-lines.docx'),
 };

@@ -30,7 +30,6 @@ export const LETTER_MULTIPART = {
   },
 };
 
-// From https://github.com/NHSDigital/comms-mgr/blob/main/packages/libs/utils/src/constants.ts
 export const NAME_PERSONALISATION_LIST = [
   'fullName',
   'firstName',

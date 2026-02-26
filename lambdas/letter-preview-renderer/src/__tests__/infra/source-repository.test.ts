@@ -53,7 +53,6 @@ describe('SourceRepository', () => {
       mockUUID.mockReturnValue(uuid);
       mocks.s3.getObjectStream.mockResolvedValue(mockStream);
       mockCreateWriteStream.mockReturnValue(mockWriteStream);
-      mockPipeline.mockResolvedValue();
 
       const handle = await sourceRepository.getSource(request);
 
@@ -81,7 +80,6 @@ describe('SourceRepository', () => {
       mockCreateWriteStream.mockReturnValue(
         {} as ReturnType<typeof createWriteStream>
       );
-      mockPipeline.mockResolvedValue();
 
       const handle = await sourceRepository.getSource(request);
 
@@ -100,7 +98,6 @@ describe('SourceRepository', () => {
       mockCreateWriteStream.mockReturnValue(
         {} as ReturnType<typeof createWriteStream>
       );
-      mockPipeline.mockResolvedValue();
 
       mockUnlinkSync.mockImplementation(() => {
         throw new Error('File not found');

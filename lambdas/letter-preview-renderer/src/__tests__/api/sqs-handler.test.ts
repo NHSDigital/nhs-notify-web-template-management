@@ -50,7 +50,7 @@ describe('createHandler', () => {
     expect(mocks.app.renderInitial).toHaveBeenCalledWith(initialRequest);
   });
 
-  test('returns early without calling app for personalised-short', async () => {
+  test('returns early without calling app for personalised request', async () => {
     const { handler, mocks } = setup();
 
     const record = makeSQSRecord({

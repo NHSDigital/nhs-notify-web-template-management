@@ -14,6 +14,7 @@ describe('CheckRender', () => {
       pdfDoc.addPage();
       pdfDoc.addPage();
       pdfDoc.addPage();
+
       const pdfBytes = await pdfDoc.save();
 
       const result = await checkRender.pageCount(Buffer.from(pdfBytes));
@@ -26,6 +27,7 @@ describe('CheckRender', () => {
 
       const pdfDoc = await PDFDocument.create();
       pdfDoc.addPage();
+
       const pdfBytes = await pdfDoc.save();
 
       const result = await checkRender.pageCount(Buffer.from(pdfBytes));

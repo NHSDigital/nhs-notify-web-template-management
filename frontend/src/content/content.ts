@@ -542,10 +542,12 @@ const previewLetterTemplate = {
       'Create a new letter template to upload your file(s) again or upload different file(s).',
     ],
     INVALID_MARKERS: [
+      // Placeholder content
       'Personalisation fields in letter templates should be written like: {d.fullName}',
       'The template file you uploaded contains incorrect personalisation fields.',
     ],
     UNEXPECTED_ADDRESS_LINES: [
+      // placeholder content
       'The template file you uploaded contains unexpected address fields.',
       'Remove the unexpected address fields from the template file and upload it.',
     ],

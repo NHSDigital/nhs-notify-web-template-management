@@ -42,6 +42,7 @@ describe('Carbone', () => {
       });
 
       expect(result).toBe(expectedBuffer);
+
       expect(mockCarboneRender).toHaveBeenCalledWith(
         '/tmp/template.docx',
         { name: 'value' },
@@ -90,6 +91,7 @@ describe('Carbone', () => {
       expect(result).toEqual(
         new Set(['d.address_line_1', 'd.first_name', 'd.last_name'])
       );
+
       expect(mockExtractMarkers).toHaveBeenCalledWith('/tmp/template.docx');
     });
 

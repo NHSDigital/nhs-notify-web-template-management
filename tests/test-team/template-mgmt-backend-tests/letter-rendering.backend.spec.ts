@@ -13,60 +13,6 @@ import type { Template } from '../helpers/types';
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-async function initialRenderTest(
-  request: APIRequestContext,
-  docx: Buffer,
-  user: TestUser,
-  assert: (t: Template) => void
-) {
-  const { multipart, contentType } =
-    TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-      {
-        templateType: 'LETTER',
-        campaignId: 'Campaign1',
-        letterVersion: 'AUTHORING',
-      },
-      docx
-    );
-
-  const response = await request.post(
-    `${process.env.API_BASE_URL}/v1/docx-letter-template`,
-    {
-      data: multipart,
-      headers: {
-        Authorization: await user.getAccessToken(),
-        'Content-Type': contentType,
-      },
-    }
-  );
-
-  const result = await response.json();
-  const debug = JSON.stringify(result, null, 2);
-
-  expect(response.status(), debug).toBe(201);
-
-  const template = result.data as Template;
-
-  const templateKey = {
-    templateId: template.id,
-    clientId: user.clientId,
-  };
-
-  templateStorageHelper.addAdHocTemplateKey(templateKey);
-
-  expect(template.templateStatus).toBe('PENDING_VALIDATION');
-
-  let updatedTemplate: Template | undefined;
-
-  await expect(async () => {
-    updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
-
-    assert(updatedTemplate);
-  }).toPass({ intervals: [1000] });
-
-  return updatedTemplate as Template;
-}
-
 const customPersonalisation = [
   'gpSurgeryName',
   'gpSurgeryAddress',
@@ -98,12 +44,64 @@ test.describe('Letter rendering', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
+  async function initialRenderTest(
+    request: APIRequestContext,
+    docx: Buffer,
+    assert: (t: Template) => void
+  ) {
+    const { multipart, contentType } =
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
+        {
+          templateType: 'LETTER',
+          campaignId: 'Campaign1',
+          letterVersion: 'AUTHORING',
+        },
+        docx
+      );
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
+      {
+        data: multipart,
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'Content-Type': contentType,
+        },
+      }
+    );
+
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(response.status(), debug).toBe(201);
+
+    const template = result.data as Template;
+
+    const templateKey = {
+      templateId: template.id,
+      clientId: user.clientId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(templateKey);
+
+    expect(template.templateStatus).toBe('PENDING_VALIDATION');
+
+    let updatedTemplate: Template | undefined;
+
+    await expect(async () => {
+      updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
+
+      assert(updatedTemplate);
+    }).toPass({ intervals: [1000] });
+
+    return updatedTemplate as Template;
+  }
+
   test.describe('Initial render', () => {
     test('produces initial render', async ({ request }) => {
       const template = await initialRenderTest(
         request,
         docxFixtures.standard.open(),
-        user,
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({
@@ -154,7 +152,6 @@ test.describe('Letter rendering', () => {
       const template = await initialRenderTest(
         request,
         docxFixtures.fakeVirus.open(),
-        user,
         (t: Template) => {
           expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
@@ -191,7 +188,6 @@ test.describe('Letter rendering', () => {
       const template = await initialRenderTest(
         request,
         docxFixtures.password.open(),
-        user,
         (t: Template) => {
           expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
@@ -228,7 +224,6 @@ test.describe('Letter rendering', () => {
       await initialRenderTest(
         request,
         docxFixtures.incompleteAddress.open(),
-        user,
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({
@@ -266,7 +261,6 @@ test.describe('Letter rendering', () => {
       await initialRenderTest(
         request,
         docxFixtures.corrupted.open(),
-        user,
         (t: Template) => {
           expect(t.validationErrors).toBeUndefined();
 
@@ -285,13 +279,35 @@ test.describe('Letter rendering', () => {
       );
     });
 
+    test('docx containing random bytes fails with VALIDATION_FAILED status and MISSING_ADDRESS_LINES validation error', async ({
+      request,
+    }) => {
+      await initialRenderTest(
+        request,
+        docxFixtures.randomBytes.open(),
+        (t: Template) => {
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'VALIDATION_FAILED',
+              files: expect.objectContaining({
+                // LibreOffice interprets input as a text file! (Unlike MS Word)
+                initialRender: expect.objectContaining({ status: 'RENDERED' }),
+              }),
+              customPersonalisation: [],
+              systemPersonalisation: [],
+              validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
+            })
+          );
+        }
+      );
+    });
+
     test('docx containing non-renderable marker is not rendered', async ({
       request,
     }) => {
       await initialRenderTest(
         request,
         docxFixtures.nonRenderableMarker.open(),
-        user,
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({
@@ -327,7 +343,6 @@ test.describe('Letter rendering', () => {
       await initialRenderTest(
         request,
         docxFixtures.invalidMarkers.open(),
-        user,
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({
@@ -363,7 +378,6 @@ test.describe('Letter rendering', () => {
       await initialRenderTest(
         request,
         docxFixtures.unexpectedAddressLines.open(),
-        user,
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({

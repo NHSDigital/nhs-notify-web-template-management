@@ -87,7 +87,7 @@ describe('TemplateRepository', () => {
       const request = createInitialRequest();
       const personalisation = createPersonalisation();
       const validationErrors = [
-        { name: 'INVALID_MARKERS' as const, issues: ['foo.bar'] },
+        { name: 'INVALID_MARKERS' as const, issues: ['x.y.z'] },
       ];
 
       mocks.ddbDocClient.on(UpdateCommand).resolves({});

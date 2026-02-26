@@ -41,6 +41,7 @@ describe('RenderRepository', () => {
         fileName: `${uuid}.pdf`,
         currentVersion: uuid,
       });
+
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
         `test-client/renders/test-template/${uuid}.pdf`,
@@ -86,12 +87,17 @@ describe('RenderRepository', () => {
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
         `client-abc/renders/tmpl-xyz/${uuid}.pdf`,
-        expect.objectContaining({
-          Metadata: expect.objectContaining({
+        {
+          ContentDisposition: 'inline',
+          ContentType: 'application/pdf',
+          Metadata: {
             'request-type': 'personalised',
             'file-type': 'render',
-          }),
-        })
+            'template-id': 'tmpl-xyz',
+            'page-count': '5',
+            'client-id': 'client-abc',
+          },
+        }
       );
     });
   });

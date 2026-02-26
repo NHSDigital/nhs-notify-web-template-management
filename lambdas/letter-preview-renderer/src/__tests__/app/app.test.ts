@@ -81,9 +81,11 @@ describe('App', () => {
       expect(outcome).toBe('rendered');
 
       expect(mocks.sourceRepo.getSource).toHaveBeenCalledWith(request);
+
       expect(mocks.carbone.extractMarkers).toHaveBeenCalledWith(
         sourceHandle.path
       );
+
       expect(mocks.carbone.render).toHaveBeenCalledWith(
         sourceHandle.path,
         expect.objectContaining({
@@ -97,7 +99,9 @@ describe('App', () => {
           first_name: '{d.first_name}',
         })
       );
+
       expect(mocks.checkRender.pageCount).toHaveBeenCalledWith(pdfBuffer);
+
       expect(mocks.renderRepo.save).toHaveBeenCalledWith(
         pdfBuffer,
         request,
@@ -130,6 +134,7 @@ describe('App', () => {
 
         const request = createInitialRequest();
         const pageCount = 1;
+        const pdfBuffer = Buffer.from('pdf content');
         const fileName = 'abc123.pdf';
         const currentVersion = 'abc123';
 
@@ -148,6 +153,12 @@ describe('App', () => {
         const outcome = await app.renderInitial(request);
 
         expect(outcome).toBe('rendered-invalid');
+
+        expect(mocks.renderRepo.save).toHaveBeenCalledWith(
+          pdfBuffer,
+          request,
+          pageCount
+        );
 
         expect(mocks.templateRepo.updateRendered).toHaveBeenCalledWith(
           request,
@@ -220,6 +231,9 @@ describe('App', () => {
       const outcome = await app.renderInitial(request);
 
       expect(outcome).toBe('not-rendered');
+
+      expect(mocks.renderRepo.save).not.toHaveBeenCalled();
+
       expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request);
     });
 
@@ -238,6 +252,7 @@ describe('App', () => {
       const outcome = await app.renderInitial(request);
 
       expect(outcome).toBe('not-rendered');
+      expect(mocks.renderRepo.save).not.toHaveBeenCalled();
       expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request);
     });
 
@@ -254,6 +269,7 @@ describe('App', () => {
       const outcome = await app.renderInitial(request);
 
       expect(outcome).toBe('not-rendered');
+      expect(mocks.renderRepo.save).not.toHaveBeenCalled();
       expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
         system: [
           'address_line_1',
@@ -282,7 +298,7 @@ describe('App', () => {
       const outcome = await app.renderInitial(request);
 
       expect(outcome).toBe('not-rendered');
-
+      expect(mocks.renderRepo.save).not.toHaveBeenCalled();
       expect(mocks.templateRepo.updateFailure).toHaveBeenCalledWith(request, {
         system: [
           'address_line_1',

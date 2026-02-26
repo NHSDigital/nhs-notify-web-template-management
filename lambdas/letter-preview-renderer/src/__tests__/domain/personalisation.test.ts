@@ -21,8 +21,9 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.personalisation.system).toEqual(
-        expect.arrayContaining([
+      expect(result.personalisation).toEqual({
+        custom: ['myCustomField'],
+        system: [
           'address_line_1',
           'address_line_2',
           'address_line_3',
@@ -31,9 +32,8 @@ describe('analyseMarkers', () => {
           'address_line_6',
           'address_line_7',
           'fullName',
-        ])
-      );
-      expect(result.personalisation.custom).toEqual(['myCustomField']);
+        ],
+      });
     });
 
     it('returns canRender true when all markers are valid', () => {
@@ -54,8 +54,6 @@ describe('analyseMarkers', () => {
       const markers = new Set([...ALL_ADDRESS_MARKERS, 'd.customField']);
 
       const result = analyseMarkers(markers);
-
-      console.log(result.passthroughPersonalisation);
 
       expect(result.passthroughPersonalisation).toEqual({
         address_line_1: '{d.address_line_1}',
@@ -90,11 +88,9 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          { name: 'INVALID_MARKERS', issues: ['c.compliment'] },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'INVALID_MARKERS', issues: ['c.compliment'] },
+      ]);
     });
   });
 
@@ -105,9 +101,9 @@ describe('analyseMarkers', () => {
       const result = analyseMarkers(markers);
 
       expect(result.canRender).toBe(true);
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([{ name: 'INVALID_MARKERS', issues: ['no.d'] }])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'INVALID_MARKERS', issues: ['no.d'] },
+      ]);
     });
 
     it('reports d. markers with invalid characters as invalid renderable', () => {
@@ -116,11 +112,9 @@ describe('analyseMarkers', () => {
       const result = analyseMarkers(markers);
 
       expect(result.canRender).toBe(true);
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          { name: 'INVALID_MARKERS', issues: ['exclaimation!point'] },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'INVALID_MARKERS', issues: ['exclaimation!point'] },
+      ]);
     });
 
     it('includes invalid-renderable markers in passthrough personalisation', () => {
@@ -151,7 +145,7 @@ describe('analyseMarkers', () => {
         expect.arrayContaining([
           {
             name: 'INVALID_MARKERS',
-            issues: expect.arrayContaining(['c.compliment', 'no_prefix']),
+            issues: ['c.compliment', 'no_prefix'],
           },
         ])
       );
@@ -178,9 +172,9 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([{ name: 'MISSING_ADDRESS_LINES' }])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'MISSING_ADDRESS_LINES' },
+      ]);
     });
 
     it('does not report MISSING_ADDRESS_LINES when all seven address lines present', () => {
@@ -202,11 +196,9 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
+      ]);
     });
 
     it('reports UNEXPECTED_ADDRESS_LINES with multiple extra address lines', () => {
@@ -218,17 +210,12 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          {
-            name: 'UNEXPECTED_ADDRESS_LINES',
-            issues: expect.arrayContaining([
-              'address_line_8',
-              'address_line_9',
-            ]),
-          },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        {
+          name: 'UNEXPECTED_ADDRESS_LINES',
+          issues: ['address_line_8', 'address_line_9'],
+        },
+      ]);
     });
 
     it('reports UNEXPECTED_ADDRESS_LINES for address_line_0', () => {
@@ -236,11 +223,9 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_0'] },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_0'] },
+      ]);
     });
 
     it('can report both MISSING_ADDRESS_LINES and UNEXPECTED_ADDRESS_LINES simultaneously', () => {
@@ -252,12 +237,10 @@ describe('analyseMarkers', () => {
 
       const result = analyseMarkers(markers);
 
-      expect(result.validationErrors).toEqual(
-        expect.arrayContaining([
-          { name: 'MISSING_ADDRESS_LINES' },
-          { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
-        ])
-      );
+      expect(result.validationErrors).toEqual([
+        { name: 'MISSING_ADDRESS_LINES' },
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
+      ]);
     });
   });
 

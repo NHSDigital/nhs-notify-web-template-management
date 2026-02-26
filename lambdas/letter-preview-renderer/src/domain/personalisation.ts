@@ -94,6 +94,7 @@ function buildValidationErrors(
   }
 
   const addressLinePattern = /^address_line_\d+$/;
+
   const unexpectedAddressLines = [...classified.valid].filter(
     (marker) =>
       addressLinePattern.test(marker) &&
