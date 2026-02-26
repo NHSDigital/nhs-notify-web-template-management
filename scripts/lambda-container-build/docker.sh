@@ -43,8 +43,6 @@ fi
 FINAL_SUFFIX="${TF_VAR_container_image_tag_suffix}"
 echo "Using TF_VAR_container_image_tag_suffix: ${FINAL_SUFFIX}"
 
-export IMAGE_TAG_SUFFIX="$FINAL_SUFFIX"
-
 ## Check if we are running in the context of a Terraform apply or plan, and set PUBLISH_LAMBDA_IMAGE accordingly. We only want to push images to ECR on apply, not on plan.
 echo "Checking if ACTION is 'apply' to set PUBLISH_LAMBDA_IMAGE..."
 if [ "$ACTION" = "apply" ]; then
@@ -64,7 +62,6 @@ echo "ECR_REPO: ${ECR_REPO:-<unset>}"
 echo "ENVIRONMENT: ${ENVIRONMENT:-<unset>}"
 echo "GHCR_LOGIN_TOKEN: ${GHCR_LOGIN_TOKEN:-<unset>}"
 echo "GHCR_LOGIN_USER: ${GHCR_LOGIN_USER:-<unset>}"
-echo "IMAGE_TAG_SUFFIX: ${IMAGE_TAG_SUFFIX:-<unset>}"
 echo "LAMBDA_NAME: ${LAMBDA_NAME:-<unset>}"
 
 # Authenticate Docker with AWS ECR using an ephemeral login token.
