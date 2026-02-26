@@ -32,5 +32,5 @@ indent_style = tab
 [frontend/src/__tests__/utils/markdownit/fixtures/index.ts]
 trim_trailing_whitespace = false
 
-[tests/test-team/fixtures/letters/docx]
+[tests/test-team/fixtures/letters/docx/*]
 insert_final_newline = false
