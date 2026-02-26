@@ -1,10 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -23,7 +20,7 @@ test.describe('Edit Template Campaign page', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   const templateStorageHelper = new TemplateStorageHelper();
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
   let userMultiCampaignAuthoringEnabled: TestUser;
   let userMultiCampaignAuthoringDisabled: TestUser;
@@ -31,33 +28,35 @@ test.describe('Edit Template Campaign page', () => {
   let userSingleCampaignAuthoringEnabled: TestUser;
 
   test.beforeAll(async () => {
-    const clientMultiCampaignAuthoringEnabled = await authHelper.createClient({
-      campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {
-        proofing: false,
-        letterAuthoring: true,
-      },
-    });
+    const clientMultiCampaignAuthoringEnabled =
+      await context.clients.createClient({
+        campaignIds: ['Campaign 1', 'Campaign 2'],
+        features: {
+          proofing: false,
+          letterAuthoring: true,
+        },
+      });
 
-    const clientMultiCampaignAuthoringDisabled = await authHelper.createClient({
-      campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {
-        proofing: false,
-        letterAuthoring: false,
-      },
-    });
+    const clientMultiCampaignAuthoringDisabled =
+      await context.clients.createClient({
+        campaignIds: ['Campaign 1', 'Campaign 2'],
+        features: {
+          proofing: false,
+          letterAuthoring: false,
+        },
+      });
 
-    userMultiCampaignAuthoringEnabled = await authHelper.createAdHocUser(
+    userMultiCampaignAuthoringEnabled = await context.auth.createAdHocUser(
       clientMultiCampaignAuthoringEnabled
     );
-    userMultiCampaignAuthoringDisabled = await authHelper.createAdHocUser(
+    userMultiCampaignAuthoringDisabled = await context.auth.createAdHocUser(
       clientMultiCampaignAuthoringDisabled
     );
 
-    userSingleCampaignAuthoringDisabled = await authHelper.getTestUser(
+    userSingleCampaignAuthoringDisabled = await context.auth.getTestUser(
       testUsers.User1.userId
     );
-    userSingleCampaignAuthoringEnabled = await authHelper.getTestUser(
+    userSingleCampaignAuthoringEnabled = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
   });

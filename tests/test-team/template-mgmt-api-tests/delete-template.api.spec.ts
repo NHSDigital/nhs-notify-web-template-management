@@ -1,19 +1,16 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { Template } from 'helpers/types';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('DELETE /v1/template/:templateId', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 
@@ -22,9 +19,11 @@ test.describe('DELETE /v1/template/:templateId', () => {
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {

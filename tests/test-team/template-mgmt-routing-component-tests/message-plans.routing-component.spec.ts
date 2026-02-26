@@ -7,10 +7,11 @@ import {
   assertSkipToMainContent,
   assertNoBackLinks,
 } from '../helpers/template-mgmt-common.steps';
-import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigDbEntry } from 'helpers/types';
+import { getTestContext } from 'helpers/context/context';
 
 type MessagePlansPageData = {
   draftNew: RoutingConfigDbEntry;
@@ -20,8 +21,8 @@ type MessagePlansPageData = {
 };
 
 async function createRoutingConfigs(): Promise<MessagePlansPageData> {
-  const authHelper = createAuthHelper();
-  const user = await authHelper.getTestUser(testUsers.User1.userId);
+  const context = getTestContext();
+  const user = await context.auth.getTestUser(testUsers.User1.userId);
 
   return {
     draftNew: RoutingConfigFactory.create(user).dbEntry,

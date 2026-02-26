@@ -14,21 +14,18 @@ import {
   assertSkipToMainContent,
 } from '../../helpers/template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 let routingDisabledUser: TestUser;
 let digitalProofingUser: TestUser;
 
 async function createTemplates() {
-  const authHelper = createAuthHelper();
-  const user = await authHelper.getTestUser(testUsers.User1.userId);
-  routingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
-  digitalProofingUser = await authHelper.getTestUser(
+  const context = getTestContext();
+  const user = await context.auth.getTestUser(testUsers.User1.userId);
+  routingDisabledUser = await context.auth.getTestUser(testUsers.User3.userId);
+  digitalProofingUser = await context.auth.getTestUser(
     testUsers.UserDigitalProofingEnabled.userId
   );
 

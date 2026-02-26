@@ -1,10 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import path from 'node:path';
@@ -18,11 +15,12 @@ const sqsHelper = new SqsHelper();
 const sftpHelper = new SftpHelper();
 
 test.describe('SFTP proof request send', () => {
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

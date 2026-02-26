@@ -3,11 +3,8 @@ import {
   templateManagementEventSubscriber as test,
   expect,
 } from '../fixtures/template-management-event-subscriber';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -44,14 +41,14 @@ function createTemplates(user: TestUser) {
 }
 
 test.describe('Event publishing - Routing Config', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const routingConfigStorageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
 
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

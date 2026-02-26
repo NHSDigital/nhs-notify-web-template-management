@@ -1,10 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -28,10 +25,11 @@ test.describe('Edit Template Name page', () => {
   let userAuthoringDisabled: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(
+    const context = getTestContext();
+    user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    userAuthoringDisabled = await createAuthHelper().getTestUser(
+    userAuthoringDisabled = await context.auth.getTestUser(
       testUsers.User1.userId
     );
   });

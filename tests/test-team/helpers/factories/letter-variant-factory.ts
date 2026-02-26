@@ -1,0 +1,19 @@
+import { randomUUID } from 'node:crypto';
+import { LetterVariant } from 'nhs-notify-backend-client';
+
+export const makeLetterVariant = (
+  overrides: Partial<LetterVariant> = {}
+): LetterVariant => ({
+  id: randomUUID(),
+  name: 'Standard C5',
+  sheetSize: 'A4',
+  maxSheets: 5,
+  bothSides: true,
+  printColour: 'black',
+  envelopeSize: 'C5',
+  dispatchTime: 'standard',
+  postage: 'economy',
+  status: 'PROD',
+  type: 'STANDARD',
+  ...overrides,
+});

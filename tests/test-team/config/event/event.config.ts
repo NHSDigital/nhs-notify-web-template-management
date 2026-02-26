@@ -10,12 +10,12 @@ export default defineConfig({
     {
       name: 'event:setup',
       testMatch: 'event.setup.ts',
+      teardown: 'event:teardown',
     },
     {
       name: 'event',
       testMatch: '*.event.spec.ts',
       dependencies: ['event:setup'],
-      teardown: 'event:teardown',
       fullyParallel: true,
     },
     {

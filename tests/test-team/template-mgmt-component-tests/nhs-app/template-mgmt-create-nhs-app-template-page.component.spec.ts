@@ -10,17 +10,18 @@ import {
   assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
-  createAuthHelper,
   type TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 
 test.describe('Create NHS App Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

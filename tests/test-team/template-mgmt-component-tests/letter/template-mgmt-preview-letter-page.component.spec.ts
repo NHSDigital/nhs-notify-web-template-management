@@ -3,10 +3,10 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
-  createAuthHelper,
   testUsers,
   type TestUser,
 } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
@@ -247,7 +247,8 @@ test.describe('Preview Letter template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -998,7 +999,8 @@ test.describe('Preview Letter template Page', () => {
       let multiCampaignTemplate: Template;
 
       test.beforeAll(async () => {
-        userWithMultipleCampaigns = await createAuthHelper().getTestUser(
+        const context = getTestContext();
+        userWithMultipleCampaigns = await context.auth.getTestUser(
           testUsers.UserWithMultipleCampaigns.userId
         );
 

@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
@@ -37,6 +33,7 @@ import {
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
 import { RoutingConfigStatus } from 'nhs-notify-backend-client';
+import { getTestContext } from 'helpers/context/context';
 
 let userWithMultipleCampaigns: TestUser;
 const routingStorageHelper = new RoutingConfigStorageHelper();
@@ -81,11 +78,11 @@ const routingPages = [
 
 test.describe('Routing', () => {
   test.beforeAll(async () => {
-    const authHelper = createAuthHelper();
+    const context = getTestContext();
 
-    const user = await authHelper.getTestUser(testUsers.User1.userId);
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
-    userWithMultipleCampaigns = await authHelper.getTestUser(
+    userWithMultipleCampaigns = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
 

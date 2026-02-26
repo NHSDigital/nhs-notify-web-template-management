@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import {
@@ -11,14 +7,15 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { pdfUploadFixtures } from '../fixtures/letters';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('POST /v1/letter-template', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

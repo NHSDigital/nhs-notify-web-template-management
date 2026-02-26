@@ -10,11 +10,8 @@ import {
   assertBackLinkTopNotPresent,
   assertAndClickBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
@@ -27,12 +24,12 @@ let routingDisabledProofingEnabledUser: TestUser;
 let proofingDisabledUser: TestUser;
 
 async function createTemplates() {
-  const authHelper = createAuthHelper();
-  routingEnabledUser = await authHelper.getTestUser(testUsers.User1.userId);
-  routingDisabledProofingEnabledUser = await authHelper.getTestUser(
+  const context = getTestContext();
+  routingEnabledUser = await context.auth.getTestUser(testUsers.User1.userId);
+  routingDisabledProofingEnabledUser = await context.auth.getTestUser(
     testUsers.User2.userId
   );
-  proofingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
+  proofingDisabledUser = await context.auth.getTestUser(testUsers.User3.userId);
 
   return {
     empty: {

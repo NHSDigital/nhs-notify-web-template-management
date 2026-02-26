@@ -1,30 +1,29 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('PATCH /v1/template/:templateId', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let userDifferentClient: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    const clientMultipleCampaigns = await authHelper.getStaticClient(
+    const clientMultipleCampaigns = await context.clients.getStaticClient(
       'ClientWithMultipleCampaigns'
     );
-    user1 = await authHelper.getTestUser(
+    user1 = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
-    userDifferentClient = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.createAdHocUser(
+    userDifferentClient = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    userSharedClient = await context.auth.createAdHocUser(
       clientMultipleCampaigns.id
     );
   });
@@ -162,12 +161,15 @@ test.describe('PATCH /v1/template/:templateId', () => {
   });
 
   test('returns 200 and the updated template data', async ({ request }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     const template = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user1,
       'Old template name',
       'NOT_YET_SUBMITTED',
-      { letterVariantId: 'letter-variant', campaignId: user1.campaignIds?.[0] }
+      { letterVariantId: letterVariant.id, campaignId: user1.campaignIds?.[0] }
     );
 
     await templateStorageHelper.seedTemplateData([template]);

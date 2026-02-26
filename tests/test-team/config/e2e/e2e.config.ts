@@ -24,6 +24,7 @@ export default defineConfig({
         headless: true,
         screenshot: 'only-on-failure',
       },
+      teardown: 'e2e:teardown',
     },
     {
       name: 'e2e',
@@ -36,7 +37,6 @@ export default defineConfig({
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['e2e:setup'],
-      teardown: 'e2e:teardown',
     },
     {
       name: 'e2e:teardown',

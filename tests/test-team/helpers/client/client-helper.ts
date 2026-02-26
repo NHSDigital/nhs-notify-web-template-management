@@ -3,7 +3,7 @@ import {
   PutParameterCommand,
   SSMClient,
 } from '@aws-sdk/client-ssm';
-import type { AuthContextFile } from 'helpers/auth/auth-context-file';
+import type { TestContextFile } from 'helpers/context/context-file';
 import { chunk } from 'helpers/chunk';
 
 export type ClientConfiguration = {
@@ -17,6 +17,10 @@ export type ClientConfiguration = {
     digitalProofingSms?: boolean;
   };
   name?: string;
+};
+
+export type ClientConfigurationWithId = ClientConfiguration & {
+  id: string;
 };
 
 export type ClientKey =
@@ -147,18 +151,18 @@ export class ClientConfigurationHelper {
     maxAttempts: 10,
   });
 
-  constructor(
-    private readonly clientSSMKeyPrefix: string,
-    private readonly runId: string,
-    private authContextFile: AuthContextFile
-  ) {}
+  constructor(private authContextFile: TestContextFile) {}
+
+  static clientIdFromKey(clientKey: ClientKey) {
+    return `${clientKey}--${process.env.PLAYWRIGHT_RUN_ID}`;
+  }
 
   async setup() {
     return Promise.all(
       Object.entries(testClients).map(async ([clientKey, value]) => {
         if (value !== undefined) {
-          await this.createClient(
-            this.clientIdFromKey(clientKey as ClientKey),
+          await this.putClient(
+            ClientConfigurationHelper.clientIdFromKey(clientKey as ClientKey),
             value
           );
         }
@@ -167,7 +171,7 @@ export class ClientConfigurationHelper {
   }
 
   async teardown() {
-    const ids = await this.authContextFile.clientIds(this.runId);
+    const ids = await this.authContextFile.getAllClientIds();
 
     if (ids.length > 0) {
       await Promise.all(
@@ -182,7 +186,30 @@ export class ClientConfigurationHelper {
     }
   }
 
-  async createClient(id: string, value: ClientConfiguration) {
+  async createClient(value: ClientConfiguration) {
+    const id = crypto.randomUUID();
+
+    await this.putClient(id, value);
+
+    return id;
+  }
+
+  async getClient(clientId: string) {
+    const client = await this.authContextFile.getClient(clientId);
+
+    if (client === null) {
+      throw new Error(`Client "${clientId}" not found`);
+    }
+
+    return { ...client, id: clientId };
+  }
+
+  public async getStaticClient(clientKey: ClientKey) {
+    const id = ClientConfigurationHelper.clientIdFromKey(clientKey);
+    return this.getClient(id);
+  }
+
+  private async putClient(id: string, value: ClientConfiguration) {
     await this.ssmClient.send(
       new PutParameterCommand({
         Name: this.ssmKey(id),
@@ -192,18 +219,10 @@ export class ClientConfigurationHelper {
       })
     );
 
-    await this.authContextFile.setClient(this.runId, id, value);
-  }
-
-  getClient(clientId: string) {
-    return this.authContextFile.getClient(this.runId, clientId);
-  }
-
-  clientIdFromKey(clientKey: ClientKey) {
-    return `${clientKey}--${this.runId}`;
+    await this.authContextFile.setClient(id, value);
   }
 
   private ssmKey(clientId: string) {
-    return `${this.clientSSMKeyPrefix}/${clientId}`;
+    return `${process.env.CLIENT_SSM_PATH_PREFIX}/${clientId}`;
   }
 }

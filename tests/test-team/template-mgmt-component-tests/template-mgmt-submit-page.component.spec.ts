@@ -10,11 +10,8 @@ import {
   assertBackLinkBottom,
   assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
 import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
@@ -144,7 +141,8 @@ test.describe('Submit template Page', () => {
   let templates: Awaited<ReturnType<typeof createTemplates>>;
 
   test.beforeAll(async () => {
-    routingDisabledUser = await createAuthHelper().getTestUser(
+    const context = getTestContext();
+    routingDisabledUser = await context.auth.getTestUser(
       testUsers.User2.userId
     );
 

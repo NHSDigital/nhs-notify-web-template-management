@@ -1,20 +1,19 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('GET /v1/client-configuration', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   let userWithClientConfig: TestUser;
   let userWithoutClientConfiguration: TestUser;
 
   const url = `${process.env.API_BASE_URL}/v1/client-configuration`;
 
   test.beforeAll(async () => {
-    userWithClientConfig = await authHelper.getTestUser(testUsers.User1.userId);
-    userWithoutClientConfiguration = await authHelper.getTestUser(
+    userWithClientConfig = await context.auth.getTestUser(
+      testUsers.User1.userId
+    );
+    userWithoutClientConfiguration = await context.auth.getTestUser(
       testUsers.User4.userId
     );
   });
@@ -52,7 +51,9 @@ test.describe('GET /v1/client-configuration', () => {
       },
     });
 
-    const client = await authHelper.getClient(userWithClientConfig.clientId);
+    const client = await context.clients.getClient(
+      userWithClientConfig.clientId
+    );
 
     expect(response.status()).toBe(200);
     expect(await response.json()).toEqual({

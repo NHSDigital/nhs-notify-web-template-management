@@ -1,18 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const storageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -22,13 +19,15 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
   let userMultiCampaign: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDifferentClient = await authHelper.getTestUser(
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    userDifferentClient = await context.auth.getTestUser(
       testUsers.UserRoutingEnabled.userId
     );
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-    userMultiCampaign = await authHelper.getTestUser(
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    userMultiCampaign = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
   });

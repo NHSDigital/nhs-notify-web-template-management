@@ -15,11 +15,8 @@ import {
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
 } from '../helpers/types';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 
 function createTemplates(user: TestUser) {
   return {
@@ -62,7 +59,8 @@ test.describe('Copy Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
