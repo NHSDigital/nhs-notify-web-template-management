@@ -147,7 +147,7 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingSms is enab
 </DocumentFragment>
 `;
 
-exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing disabled with letter authoring enabled matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
@@ -269,7 +269,7 @@ exports[`PreviewDigitalTemplate Routing disabled matches error snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing disabled with letter authoring enabled matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
@@ -366,7 +366,7 @@ exports[`PreviewDigitalTemplate Routing disabled matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
+exports[`PreviewDigitalTemplate Routing enabled with letter authoring enabled matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"

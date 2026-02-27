@@ -102,6 +102,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
               isPgeHeading: false,
               size: 'm',
             }}
+            isLetterAuthoringEnabled={features.letterAuthoring}
           />
         </>
       )}

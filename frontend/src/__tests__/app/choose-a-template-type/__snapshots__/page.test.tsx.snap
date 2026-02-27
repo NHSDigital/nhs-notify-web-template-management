@@ -128,28 +128,39 @@ exports[`ChooseATemplateTypePage 1`] = `
                     Text message (SMS)
                   </label>
                 </div>
-                <div
-                  class="nhsuk-radios__item"
-                >
-                  <input
-                    class="nhsuk-radios__input"
-                    data-testid="letter-radio"
-                    id="templateType-letter"
-                    name="templateType"
-                    type="radio"
-                    value="LETTER"
-                  />
-                  <label
-                    class="nhsuk-label nhsuk-radios__label"
-                    for="templateType-letter"
-                    id="templateType-letter--label"
-                  >
-                    Letter
-                  </label>
-                </div>
               </div>
             </div>
           </fieldset>
+        </div>
+        <div
+          class="nhsuk-card nhsuk-card--warning nhsuk-u-reading-width"
+        >
+          <div
+            class="nhsuk-card__content"
+          >
+            <h2
+              class="nhsuk-card__heading"
+            >
+              To create a letter template
+            </h2>
+            <p
+              class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
+            >
+              You cannot upload a letter template using this service.
+            </p>
+            <p
+              class="nhsuk-card__description"
+            >
+              Follow our guidance to 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                upload a letter template (opens in a new tab)
+              </a>
+            </p>
+          </div>
         </div>
         <button
           aria-disabled="false"

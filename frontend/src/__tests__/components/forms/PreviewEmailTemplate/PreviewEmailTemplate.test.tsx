@@ -43,7 +43,9 @@ beforeEach(() => {
 describe('Preview email form renders', () => {
   describe('Routing feature flag - Disabled', () => {
     beforeEach(() => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing: false, letterAuthoring: true });
     });
 
     it('matches error snapshot', () => {
@@ -114,7 +116,9 @@ describe('Preview email form renders', () => {
 
   describe('Routing feature flag - Enabled', () => {
     beforeEach(() => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing: true, letterAuthoring: true });
     });
 
     it('renders component correctly', () => {
@@ -141,7 +145,9 @@ describe('Preview email form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from manage templates screen, when routing is %p',
     (routing) => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing, letterAuthoring: true });
 
       const container = render(
         <PreviewEmailTemplate
@@ -163,7 +169,9 @@ describe('Preview email form renders', () => {
   it.each([true, false])(
     'matches snapshot when navigating from edit screen when routing is %p',
     (routing) => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing, letterAuthoring: true });
 
       const mockSearchParams = new Map([['from', 'edit']]);
       (useSearchParams as jest.Mock).mockImplementationOnce(() => ({

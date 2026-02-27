@@ -88,9 +88,11 @@ const renderPreviewTemplate = <T extends DigitalTemplate['templateType']>(
 };
 
 describe('PreviewDigitalTemplate', () => {
-  describe('Routing disabled', () => {
+  describe('Routing disabled with letter authoring enabled', () => {
     beforeEach(() => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing: false, letterAuthoring: true });
     });
 
     it('matches snapshot', () => {
@@ -149,9 +151,11 @@ describe('PreviewDigitalTemplate', () => {
     });
   });
 
-  describe('Routing enabled', () => {
+  describe('Routing enabled with letter authoring enabled', () => {
     beforeEach(() => {
-      jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+      jest
+        .mocked(useFeatureFlags)
+        .mockReturnValue({ routing: true, letterAuthoring: true });
     });
 
     it('matches snapshot', () => {
