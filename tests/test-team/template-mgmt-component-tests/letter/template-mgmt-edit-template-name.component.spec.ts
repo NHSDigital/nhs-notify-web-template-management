@@ -1,10 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -28,10 +25,11 @@ test.describe('Edit Template Name page', () => {
   let userAuthoringDisabled: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(
+    const context = getTestContext();
+    user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    userAuthoringDisabled = await createAuthHelper().getTestUser(
+    userAuthoringDisabled = await context.auth.getTestUser(
       testUsers.User1.userId
     );
   });
@@ -55,10 +53,9 @@ test.describe('Edit Template Name page', () => {
       await templateStorageHelper.seedTemplateData([template]);
 
       const props = {
-        page: new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          template.id
-        ),
+        page: new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', template.id)
+          .setSearchParam('lockNumber', String(template.lockNumber)),
         baseURL,
       };
 
@@ -84,10 +81,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -114,10 +110,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -128,7 +123,7 @@ test.describe('Edit Template Name page', () => {
       await editPage.submitButton.click();
 
       await expect(page).toHaveURL(
-        `/templates/edit-template-name/${template.id}`
+        `/templates/edit-template-name/${template.id}?lockNumber=${template.lockNumber}`
       );
 
       await expect(editPage.errorSummaryList).toHaveText([
@@ -139,10 +134,9 @@ test.describe('Edit Template Name page', () => {
     test("redirects to invalid template page if template doesn't exist", async ({
       page,
     }) => {
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        'no-exist'
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', 'no-exist')
+        .setSearchParam('lockNumber', '1');
 
       await editPage.loadPage();
 
@@ -156,10 +150,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -173,10 +166,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -190,10 +182,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -211,10 +202,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -235,6 +225,28 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
+
+      await editPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `/templates/preview-submitted-letter-template/${template.id}`
+      );
+    });
+
+    test('redirects to preview page when lockNumber query parameter is missing', async ({
+      page,
+    }) => {
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user,
+        'Letter Template'
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
       const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
         'templateId',
         template.id
@@ -243,7 +255,7 @@ test.describe('Edit Template Name page', () => {
       await editPage.loadPage();
 
       await expect(page).toHaveURL(
-        `/templates/preview-submitted-letter-template/${template.id}`
+        `/templates/preview-letter-template/${template.id}`
       );
     });
   });
@@ -262,10 +274,9 @@ test.describe('Edit Template Name page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-        'templateId',
-        template.id
-      );
+      const editPage = new TemplateMgmtEditTemplateNamePage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 

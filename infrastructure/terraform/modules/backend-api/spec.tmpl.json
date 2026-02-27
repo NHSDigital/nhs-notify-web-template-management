@@ -21,6 +21,21 @@
         ],
         "type": "object"
       },
+      "AuthoringLetterPatch": {
+        "additionalProperties": false,
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "letterVariantId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "AuthoringLetterProperties": {
         "allOf": [
           {
@@ -28,6 +43,9 @@
           },
           {
             "properties": {
+              "clientId": {
+                "type": "string"
+              },
               "customPersonalisation": {
                 "items": {
                   "type": "string"
@@ -60,8 +78,10 @@
               }
             },
             "required": [
+              "clientId",
               "files",
-              "letterVersion"
+              "letterVersion",
+              "sidesCount"
             ],
             "type": "object"
           }
@@ -688,6 +708,110 @@
         ],
         "type": "string"
       },
+      "LetterVariant": {
+        "properties": {
+          "bothSides": {
+            "type": "boolean"
+          },
+          "campaignId": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "dispatchTime": {
+            "type": "string"
+          },
+          "envelopeSize": {
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "maxSheets": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "postage": {
+            "type": "string"
+          },
+          "printColour": {
+            "type": "string"
+          },
+          "sheetSize": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "DISABLED",
+              "DRAFT",
+              "INT",
+              "PROD"
+            ],
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "AUDIO",
+              "BRAILLE",
+              "STANDARD"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "sheetSize",
+          "maxSheets",
+          "bothSides",
+          "printColour",
+          "envelopeSize",
+          "dispatchTime",
+          "postage",
+          "status",
+          "type",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "LetterVariantListSuccess": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/LetterVariant"
+            },
+            "type": "array"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "LetterVariantSuccess": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LetterVariant"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
       "LetterVersion": {
         "enum": [
           "AUTHORING",
@@ -711,18 +835,6 @@
           "message",
           "templateType"
         ],
-        "type": "object"
-      },
-      "PatchTemplate": {
-        "additionalProperties": false,
-        "properties": {
-          "campaignId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
         "type": "object"
       },
       "PdfLetterFiles": {
@@ -1418,6 +1530,71 @@
         }
       }
     },
+    "/v1/letter-variant/{letterVariantId}": {
+      "get": {
+        "description": "Get a letter variant by ID",
+        "parameters": [
+          {
+            "description": "ID of the letter variant",
+            "in": "path",
+            "name": "letterVariantId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LetterVariantSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get a letter variant by ID",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LETTER_VARIANT_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/routing-configuration": {
       "post": {
         "description": "Create a routing configuration",
@@ -2016,7 +2193,7 @@
         }
       },
       "get": {
-        "description": "Get a template template by Id",
+        "description": "Get a template by Id",
         "parameters": [
           {
             "description": "ID of template to return",
@@ -2079,7 +2256,7 @@
         }
       },
       "patch": {
-        "description": "Partial update of a template by Id",
+        "description": "Partial update of an authoring letter template by Id",
         "parameters": [
           {
             "description": "ID of template to update",
@@ -2104,7 +2281,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchTemplate"
+                "$ref": "#/components/schemas/AuthoringLetterPatch"
               }
             }
           },
@@ -2242,6 +2419,71 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template/{templateId}/letter-variants": {
+      "get": {
+        "description": "Get a list of letter variants available for use by a template",
+        "parameters": [
+          {
+            "description": "ID of template",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LetterVariantListSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get a list of letter variants available for use by a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_TEMPLATE_LETTER_VARIANTS_LAMBDA_ARN}/invocations"
         }
       }
     },

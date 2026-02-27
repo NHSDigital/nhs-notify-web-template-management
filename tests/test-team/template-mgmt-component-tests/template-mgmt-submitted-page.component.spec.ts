@@ -10,11 +10,8 @@ import {
 } from '../helpers/template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
@@ -66,7 +63,8 @@ test.describe('Template Submitted Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

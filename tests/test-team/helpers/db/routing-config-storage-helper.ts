@@ -4,6 +4,7 @@ import {
   DynamoDBDocumentClient,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { chunk } from 'helpers/chunk';
 import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 
 type RoutingConfigKey = { id: string; clientId: string };
@@ -102,14 +103,14 @@ export class RoutingConfigStorageHelper {
   async seed(data: RoutingConfig[]) {
     this.seedData.push(...data);
 
-    const chunks = RoutingConfigStorageHelper.chunk(data);
+    const chunks = chunk(data);
 
     await Promise.all(
-      chunks.map(async (chunk) => {
+      chunks.map(async (batch) => {
         await this.dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.ROUTING_CONFIG_TABLE_NAME]: chunk.map(
+              [process.env.ROUTING_CONFIG_TABLE_NAME]: batch.map(
                 (routingConfig) => ({
                   PutRequest: {
                     Item: routingConfig,
@@ -137,14 +138,14 @@ export class RoutingConfigStorageHelper {
   }
 
   private async delete(keys: RoutingConfigKey[]) {
-    const dbChunks = RoutingConfigStorageHelper.chunk(keys);
+    const dbChunks = chunk(keys);
 
     await Promise.all(
-      dbChunks.map((chunk) =>
+      dbChunks.map((batch) =>
         this.dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.ROUTING_CONFIG_TABLE_NAME]: chunk.map(
+              [process.env.ROUTING_CONFIG_TABLE_NAME]: batch.map(
                 ({ id, clientId }) => ({
                   DeleteRequest: {
                     Key: {
@@ -174,19 +175,6 @@ export class RoutingConfigStorageHelper {
   async deleteAdHoc() {
     await this.delete(this.adHocKeys);
     this.adHocKeys = [];
-  }
-
-  /**
-   * Breaks a list into chunks of upto 25 items
-   */
-  private static chunk<T>(list: T[], size = 25): T[][] {
-    const chunks: T[][] = [];
-
-    for (let i = 0; i < list.length; i += size) {
-      chunks.push(list.slice(i, i + size));
-    }
-
-    return chunks;
   }
 
   private clientOwnerKey(clientId: string) {

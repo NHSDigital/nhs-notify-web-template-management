@@ -2,11 +2,8 @@ import {
   templateManagementEventSubscriber as test,
   expect,
 } from '../fixtures/template-management-event-subscriber';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { eventWithId } from '../helpers/events/matchers';
@@ -14,15 +11,17 @@ import { eventWithId } from '../helpers/events/matchers';
 const DIGITAL_CHANNELS = ['NHS_APP', 'SMS', 'EMAIL'] as const;
 
 test.describe('Event publishing - Digital', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
 
   let userRoutingEnabled: TestUser;
   let userRoutingDisabled: TestUser;
 
   test.beforeAll(async () => {
-    userRoutingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
+    userRoutingEnabled = await context.auth.getTestUser(testUsers.User1.userId);
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
   });
 
   test.afterAll(async () => {

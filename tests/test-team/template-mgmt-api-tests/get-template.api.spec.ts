@@ -1,23 +1,20 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('GET /v1/template/:templateId', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
   let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    user2 = await context.auth.getTestUser(testUsers.User2.userId);
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {

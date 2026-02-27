@@ -1,9 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
-import {
-  createAuthHelper,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { pdfUploadFixtures } from '../fixtures/letters';
@@ -11,7 +9,7 @@ import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
 const templateStorageHelper = new TemplateStorageHelper();
-const authHelper = createAuthHelper();
+const context = getTestContext();
 const sftpHelper = new SftpHelper();
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
@@ -27,7 +25,7 @@ test.describe('Letter Proof Polling', () => {
 
   test('proofs are downloaded and linked to the DB entry', async () => {
     const templateId = '599b9a9d-17e1-4e54-bce7-645339818a1b';
-    const user = await authHelper.getTestUser(testUsers.User1.userId);
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
@@ -144,7 +142,7 @@ test.describe('Letter Proof Polling', () => {
 
   test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
     const templateId = 'a3a9c1e2-3870-407a-a8ce-af2fdcd19573';
-    const user = await authHelper.getTestUser(testUsers.User1.userId);
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([

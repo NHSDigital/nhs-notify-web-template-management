@@ -1,0 +1,54 @@
+[
+  {
+    "bothSides": true,
+    "dispatchTime": "standard",
+    "envelopeSize": "C4",
+    "id": "ef547166-6e68-4201-ad5a-a1556536faec",
+    "maxSheets": 20,
+    "name": "Standard C4",
+    "postage": "economy",
+    "printColour": "black",
+    "sheetSize": "A4",
+    "status": "PROD",
+    "type": "STANDARD"
+  },
+  {
+    "bothSides": true,
+    "dispatchTime": "standard",
+    "envelopeSize": "C5",
+    "id": "b2877405-6f8e-4418-a3f9-9982b15e10b4",
+    "maxSheets": 5,
+    "name": "First class C5",
+    "postage": "first class",
+    "printColour": "black",
+    "sheetSize": "A4",
+    "status": "PROD",
+    "type": "STANDARD"
+  },
+  {
+    "bothSides": true,
+    "dispatchTime": "standard",
+    "envelopeSize": "C5",
+    "id": "76e5bbce-0f2d-4bfd-bebe-108d75ff761a",
+    "maxSheets": 5,
+    "name": "Standard C5",
+    "postage": "economy",
+    "printColour": "black",
+    "sheetSize": "A4",
+    "status": "PROD",
+    "type": "STANDARD"
+  },
+  {
+    "bothSides": true,
+    "dispatchTime": "same day",
+    "envelopeSize": "C5",
+    "id": "e39f22aa-f85b-430b-818a-e1dc28ee1f7f",
+    "maxSheets": 20,
+    "name": "Same day dispatch C5",
+    "postage": "first class",
+    "printColour": "black",
+    "sheetSize": "A4",
+    "status": "PROD",
+    "type": "STANDARD"
+  }
+]

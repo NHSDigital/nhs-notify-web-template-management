@@ -19,7 +19,7 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.patchTemplate(
+    const { data, error } = await templateClient.patchLetterAuthoringTemplate(
       templateId,
       updates,
       { internalUserId, clientId },

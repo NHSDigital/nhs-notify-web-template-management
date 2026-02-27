@@ -13,16 +13,13 @@ import {
   assertChooseTemplatePageWithPreviousSelection,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseLargePrintLetterTemplatePage } from 'pages/routing/letter/choose-large-print-letter-template-page';
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
+import { getTestContext } from 'helpers/context/context';
 import { RoutingChooseTemplatesPage } from 'pages/routing';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
@@ -155,7 +152,8 @@ test.describe('Routing - Choose large print letter template page', () => {
   >;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
 
     templates = getTemplates(user);
     routingConfigs = getRoutingConfigs(user);

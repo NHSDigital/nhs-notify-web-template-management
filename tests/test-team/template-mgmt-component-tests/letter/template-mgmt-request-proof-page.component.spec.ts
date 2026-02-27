@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import {
-  createAuthHelper,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { testUsers } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 import { TemplateMgmtPreviewLetterPage } from 'pages/letter/template-mgmt-preview-letter-page';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+  const user = await getTestContext().auth.getTestUser(testUsers.User1.userId);
   return {
     valid: TemplateFactory.uploadLetterTemplate(
       'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',

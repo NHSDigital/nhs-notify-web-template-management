@@ -1,14 +1,11 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
   let userDifferentClient: TestUser;
@@ -16,12 +13,14 @@ test.describe('DELETE /v1/routing-configuration/:routingConfigId', () => {
   let userRoutingDisabled: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userDifferentClient = await authHelper.getTestUser(
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    userDifferentClient = await context.auth.getTestUser(
       testUsers.UserRoutingEnabled.userId
     );
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
   });
 
   test.afterAll(async () => {

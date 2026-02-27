@@ -21,8 +21,10 @@ locals {
     DELETE_ROUTING_CONFIG_LAMBDA_ARN              = module.delete_routing_config_lambda.function_arn
     GET_CLIENT_LAMBDA_ARN                         = module.get_client_lambda.function_arn
     GET_LAMBDA_ARN                                = module.get_template_lambda.function_arn
+    GET_LETTER_VARIANT_LAMBDA_ARN                 = module.get_letter_variant_lambda.function_arn
     GET_ROUTING_CONFIG_LAMBDA_ARN                 = module.get_routing_config_lambda.function_arn
     GET_ROUTING_CONFIGS_BY_TEMPLATE_ID_LAMBDA_ARN = module.get_routing_configs_by_template_id_lambda.function_arn
+    GET_TEMPLATE_LETTER_VARIANTS_LAMBDA_ARN       = module.get_template_letter_variants_lambda.function_arn
     LIST_LAMBDA_ARN                               = module.list_template_lambda.function_arn
     LIST_ROUTING_CONFIGS_LAMBDA_ARN               = module.list_routing_configs_lambda.function_arn
     PATCH_TEMPLATE_LAMBDA_ARN                     = module.patch_template_lambda.function_arn
@@ -40,6 +42,8 @@ locals {
     CLIENT_CONFIG_TTL_SECONDS               = 900
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
     ENVIRONMENT                             = var.environment
+    LETTER_VARIANT_CACHE_TTL_MS             = 300000
+    LETTER_VARIANT_TABLE_NAME               = aws_dynamodb_table.letter_variants.name
     NODE_OPTIONS                            = "--enable-source-maps"
     REQUEST_PROOF_QUEUE_URL                 = module.sqs_sftp_upload.sqs_queue_url
     ROUTING_CONFIG_TABLE_NAME               = aws_dynamodb_table.routing_configuration.name

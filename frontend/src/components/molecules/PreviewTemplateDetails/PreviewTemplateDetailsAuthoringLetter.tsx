@@ -1,6 +1,7 @@
 'use client';
 
 import { Container, SummaryList, Tag } from 'nhsuk-react-components';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import {
   letterTypeDisplayMappings,
   AuthoringLetterTemplate,
@@ -32,10 +33,12 @@ function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
 
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
+  letterVariant,
   hideStatus,
   hideEditActions,
 }: {
   template: AuthoringLetterTemplate;
+  letterVariant?: LetterVariant;
   hideStatus?: boolean;
   hideEditActions?: boolean;
 }) {
@@ -74,6 +77,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           <Link
             href={interpolate(links.editTemplateName, {
               templateId: template.id,
+              lockNumber: template.lockNumber,
             })}
             data-testid='edit-name-link'
           >
@@ -129,6 +133,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
               <ActionLink
                 href={interpolate(links.editTemplateCampaign, {
                   templateId: template.id,
+                  lockNumber: template.lockNumber,
                 })}
                 label={actions.edit}
                 visuallyHiddenText={visuallyHidden.campaign}
@@ -165,15 +170,17 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {/* Printing and postage */}
           {!hidePostageRow && (
             <SummaryList.Row
+              id='printing-and-postage'
               className={template.letterVariantId ? undefined : 'missing-value'}
             >
               <SummaryList.Key>
                 {rowHeadings.printingAndPostage}
               </SummaryList.Key>
-              <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
+              <SummaryList.Value>{letterVariant?.name}</SummaryList.Value>
               <ActionLink
                 href={interpolate(links.choosePrintingAndPostage, {
                   templateId: template.id,
+                  lockNumber: template.lockNumber,
                 })}
                 label={actions.edit}
                 visuallyHiddenText={visuallyHidden.printingAndPostage}

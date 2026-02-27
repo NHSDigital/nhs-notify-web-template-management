@@ -11,7 +11,14 @@ export type AuthoringLetterFiles = {
   shortFormRender?: PersonalisedRenderDetails;
 };
 
+export type AuthoringLetterPatch = {
+  campaignId?: string;
+  letterVariantId?: string;
+  name?: string;
+};
+
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  clientId: string;
   customPersonalisation?: Array<string>;
   files: AuthoringLetterFiles;
   letterVariantId?: string;
@@ -215,16 +222,37 @@ export type LetterValidationError =
   | 'MISSING_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
 
+export type LetterVariant = {
+  bothSides: boolean;
+  campaignId?: string;
+  clientId?: string;
+  dispatchTime: string;
+  envelopeSize: string;
+  id: string;
+  maxSheets: number;
+  name: string;
+  postage: string;
+  printColour: string;
+  sheetSize: string;
+  status: 'DISABLED' | 'DRAFT' | 'INT' | 'PROD';
+  type: 'AUDIO' | 'BRAILLE' | 'STANDARD';
+};
+
+export type LetterVariantListSuccess = {
+  data: Array<LetterVariant>;
+  statusCode: number;
+};
+
+export type LetterVariantSuccess = {
+  data: LetterVariant;
+  statusCode: number;
+};
+
 export type LetterVersion = 'AUTHORING' | 'PDF';
 
 export type NhsAppProperties = {
   message: string;
   templateType: 'NHS_APP';
-};
-
-export type PatchTemplate = {
-  campaignId?: string;
-  name?: string;
 };
 
 export type PdfLetterFiles = {
@@ -446,6 +474,38 @@ export type PostV1LetterTemplateResponses = {
 
 export type PostV1LetterTemplateResponse =
   PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
+
+export type GetV1LetterVariantByLetterVariantIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of the letter variant
+     */
+    letterVariantId: string;
+  };
+  query?: never;
+  url: '/v1/letter-variant/{letterVariantId}';
+};
+
+export type GetV1LetterVariantByLetterVariantIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1LetterVariantByLetterVariantIdError =
+  GetV1LetterVariantByLetterVariantIdErrors[keyof GetV1LetterVariantByLetterVariantIdErrors];
+
+export type GetV1LetterVariantByLetterVariantIdResponses = {
+  /**
+   * 200 response
+   */
+  200: LetterVariantSuccess;
+};
+
+export type GetV1LetterVariantByLetterVariantIdResponse =
+  GetV1LetterVariantByLetterVariantIdResponses[keyof GetV1LetterVariantByLetterVariantIdResponses];
 
 export type PostV1RoutingConfigurationData = {
   /**
@@ -794,7 +854,7 @@ export type PatchV1TemplateByTemplateIdData = {
   /**
    * Updates to apply
    */
-  body: PatchTemplate;
+  body: AuthoringLetterPatch;
   headers: {
     /**
      * Lock number of the current version of the template
@@ -871,6 +931,38 @@ export type PutV1TemplateByTemplateIdResponses = {
 
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
+
+export type GetV1TemplateByTemplateIdLetterVariantsData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/letter-variants';
+};
+
+export type GetV1TemplateByTemplateIdLetterVariantsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1TemplateByTemplateIdLetterVariantsError =
+  GetV1TemplateByTemplateIdLetterVariantsErrors[keyof GetV1TemplateByTemplateIdLetterVariantsErrors];
+
+export type GetV1TemplateByTemplateIdLetterVariantsResponses = {
+  /**
+   * 200 response
+   */
+  200: LetterVariantListSuccess;
+};
+
+export type GetV1TemplateByTemplateIdLetterVariantsResponse =
+  GetV1TemplateByTemplateIdLetterVariantsResponses[keyof GetV1TemplateByTemplateIdLetterVariantsResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;

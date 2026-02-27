@@ -13,15 +13,12 @@ import {
   assertChooseTemplatePageWithTemplatesAvailable,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
+import { getTestContext } from 'helpers/context/context';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -72,7 +69,8 @@ test.describe('Routing - Choose email template page', () => {
   let templates: ReturnType<typeof createTemplates>;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);

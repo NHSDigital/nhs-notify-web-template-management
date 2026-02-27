@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import type {
   AuthoringLetterTemplate,
   TemplatePageProps,
@@ -13,7 +14,7 @@ import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { getTemplate } from '@utils/form-actions';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
@@ -67,6 +68,15 @@ export default async function PreviewLetterTemplatePage({
   // TODO: CCM-13495
   // all of this might need to become a client component
   // because lock number will change when updating previews
+  // update: server action can return form state for this
+
+  let letterVariant: LetterVariant | undefined;
+
+  if (validatedTemplate.letterVariantId) {
+    letterVariant = await getLetterVariantById(
+      validatedTemplate.letterVariantId
+    );
+  }
 
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
@@ -90,6 +100,7 @@ export default async function PreviewLetterTemplatePage({
               <div className='nhsuk-grid-column-full'>
                 <PreviewTemplateDetailsAuthoringLetter
                   template={validatedTemplate}
+                  letterVariant={letterVariant}
                 />
               </div>
             </div>

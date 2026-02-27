@@ -8,6 +8,7 @@ declare global {
       COGNITO_USER_POOL_ID: string;
       ENVIRONMENT: string;
       EVENTS_SNS_TOPIC_ARN: string;
+      LETTER_VARIANTS_TABLE_NAME: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
       ROUTING_CONFIG_TABLE_NAME: string;

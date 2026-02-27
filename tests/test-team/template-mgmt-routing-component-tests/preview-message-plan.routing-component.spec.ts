@@ -1,11 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { Channel } from 'nhs-notify-web-template-management-types';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
@@ -20,6 +16,7 @@ import {
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { RoutingChooseTemplatesPage } from 'pages/routing';
+import { getTestContext } from 'helpers/context/context';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -93,7 +90,8 @@ test.describe('Routing - Preview Message Plan page', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = createTemplates(user);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));

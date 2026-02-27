@@ -45,9 +45,11 @@ No requirements.
 | <a name="module_delete_routing_config_lambda"></a> [delete\_routing\_config\_lambda](#module\_delete\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_delete_template_lambda"></a> [delete\_template\_lambda](#module\_delete\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_get_client_lambda"></a> [get\_client\_lambda](#module\_get\_client\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_get_letter_variant_lambda"></a> [get\_letter\_variant\_lambda](#module\_get\_letter\_variant\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_get_routing_config_lambda"></a> [get\_routing\_config\_lambda](#module\_get\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_get_routing_configs_by_template_id_lambda"></a> [get\_routing\_configs\_by\_template\_id\_lambda](#module\_get\_routing\_configs\_by\_template\_id\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_get_template_letter_variants_lambda"></a> [get\_template\_letter\_variants\_lambda](#module\_get\_template\_letter\_variants\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_lambda_event_publisher"></a> [lambda\_event\_publisher](#module\_lambda\_event\_publisher) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
@@ -84,6 +86,7 @@ No requirements.
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
+| <a name="output_letter_variants_table_name"></a> [letter\_variants\_table\_name](#output\_letter\_variants\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |

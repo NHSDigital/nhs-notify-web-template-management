@@ -12,6 +12,7 @@ import {
   GetCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from '../types';
+import { chunk } from 'helpers/chunk';
 
 type TemplateKey = { clientId: string; templateId: string };
 
@@ -115,14 +116,14 @@ export class TemplateStorageHelper {
   async seedTemplateData(data: Template[]) {
     this.seedData.push(...data);
 
-    const chunks = TemplateStorageHelper.chunk(data);
+    const chunks = chunk(data);
 
     await Promise.all(
-      chunks.map(async (chunk) => {
+      chunks.map(async (batch) => {
         await this.ddbDocClient.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.TEMPLATES_TABLE_NAME]: chunk.map((template) => ({
+              [process.env.TEMPLATES_TABLE_NAME]: batch.map((template) => ({
                 PutRequest: {
                   Item: template,
                 },
@@ -168,14 +169,14 @@ export class TemplateStorageHelper {
   }
 
   private async delete(keys: { id: string; owner: string }[]) {
-    const dbChunks = TemplateStorageHelper.chunk(keys);
+    const dbChunks = chunk(keys);
 
     await Promise.all(
-      dbChunks.map((chunk) =>
+      dbChunks.map((batch) =>
         this.ddbDocClient.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.TEMPLATES_TABLE_NAME]: chunk.map(
+              [process.env.TEMPLATES_TABLE_NAME]: batch.map(
                 ({ id, owner }) => ({
                   DeleteRequest: {
                     Key: {
@@ -196,33 +197,20 @@ export class TemplateStorageHelper {
       `test-data/${this.stripClientOwnerPrefix(owner)}/${id}.csv`,
     ]);
 
-    const s3Chunks = TemplateStorageHelper.chunk(files, 1000);
+    const s3Chunks = chunk(files, 1000);
 
     await Promise.all(
-      s3Chunks.map((chunk) =>
+      s3Chunks.map((batch) =>
         this.s3.send(
           new DeleteObjectsCommand({
             Bucket: process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
             Delete: {
-              Objects: chunk.map((key) => ({ Key: key })),
+              Objects: batch.map((key) => ({ Key: key })),
             },
           })
         )
       )
     );
-  }
-
-  /**
-   * Breaks a list into chunks of upto 25 items
-   */
-  private static chunk<T>(list: T[], size = 25): T[][] {
-    const chunks: T[][] = [];
-
-    for (let i = 0; i < list.length; i += size) {
-      chunks.push(list.slice(i, i + size));
-    }
-
-    return chunks;
   }
 
   /**

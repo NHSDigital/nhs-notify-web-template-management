@@ -1,4 +1,5 @@
 import type {
+  LetterVersion,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
@@ -158,6 +159,21 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
 
   expectNotFinalStatus() {
     this.expectNotStatus(['DELETED', 'SUBMITTED']);
+    return this;
+  }
+
+  setLetterVariantId(letterVariantId: string) {
+    this.updateBuilder.setValue('letterVariantId', letterVariantId);
+    return this;
+  }
+
+  removeLetterVariantId() {
+    this.updateBuilder.removeAttribute('letterVariantId');
+    return this;
+  }
+
+  expectLetterVersion(letterVersion: LetterVersion) {
+    this.updateBuilder.conditions.and('letterVersion', '=', letterVersion);
     return this;
   }
 

@@ -22,7 +22,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
   >
     <a
       data-testid="edit-name-link"
-      href="/edit-template-name/template-id"
+      href="/edit-template-name/template-id?lockNumber=1"
     >
       Edit name
       <span
@@ -90,7 +90,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         >
           <a
             data-testid="campaign-action"
-            href="/edit-template-campaign/template-id"
+            href="/edit-template-campaign/template-id?lockNumber=1"
           >
             Edit
             <span
@@ -151,6 +151,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -159,15 +160,13 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        >
-          variant-123
-        </dd>
+        />
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="printing-postage-action"
-            href="/choose-printing-and-postage/template-id"
+            href="/choose-printing-and-postage/template-id?lockNumber=1"
           >
             Edit
             <span
@@ -347,6 +346,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -355,9 +355,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        >
-          variant-123
-        </dd>
+        />
         <dd
           aria-hidden="true"
           class="nhsuk-summary-list__actions"
@@ -405,7 +403,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without initialRender - page counts are not displayed 1`] = `
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with letter variant name displayed 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-u-reading-width"
@@ -427,7 +425,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
   >
     <a
       data-testid="edit-name-link"
-      href="/edit-template-name/template-id"
+      href="/edit-template-name/template-id?lockNumber=1"
     >
       Edit name
       <span
@@ -495,7 +493,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         >
           <a
             data-testid="campaign-action"
-            href="/edit-template-campaign/template-id"
+            href="/edit-template-campaign/template-id?lockNumber=1"
           >
             Edit
             <span
@@ -512,19 +510,239 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         <dt
           class="nhsuk-summary-list__key"
         >
+          Total pages
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          4
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Sheets
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          2
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="sheets-action"
+            href="https://notify.nhs.uk/pricing-and-commercial/letters"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about sheets
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+        id="printing-and-postage"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
           Printing and postage
         </dt>
         <dd
           class="nhsuk-summary-list__value"
         >
-          variant-123
+          Example Variant Name
         </dd>
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
           <a
             data-testid="printing-postage-action"
-            href="/choose-printing-and-postage/template-id"
+            href="/choose-printing-and-postage/template-id?lockNumber=1"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               printing and postage
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--yellow"
+            data-status="not-yet-submitted"
+            data-testid="status-tag"
+          >
+            Approval needed
+          </strong>
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="status-action"
+            href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               about status
+            </span>
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without initialRender - page counts are not displayed 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      class="preview__heading"
+      data-testid="preview-message__heading"
+    >
+      Authoring Letter
+    </h1>
+  </div>
+  <p
+    class="nhsuk-u-margin-bottom-4"
+  >
+    <a
+      data-testid="edit-name-link"
+      href="/edit-template-name/template-id?lockNumber=1"
+    >
+      Edit name
+      <span
+        class="nhsuk-u-visually-hidden"
+      >
+         for Authoring Letter
+      </span>
+    </a>
+  </p>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value monospace-font"
+          data-testid="preview-template-id"
+        >
+          template-id
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Standard letter
+        </dd>
+        <dd
+          class="nhsuk-summary-list__actions"
+        />
+      </div>
+      <div
+        class="nhsuk-summary-list__row missing-value"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        />
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="campaign-action"
+            href="/edit-template-campaign/template-id?lockNumber=1"
+          >
+            Edit
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+               campaign
+            </span>
+          </a>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+        id="printing-and-postage"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Printing and postage
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        />
+        <dd
+          class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+        >
+          <a
+            data-testid="printing-postage-action"
+            href="/choose-printing-and-postage/template-id?lockNumber=1"
           >
             Edit
             <span
@@ -599,7 +817,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
   >
     <a
       data-testid="edit-name-link"
-      href="/edit-template-name/template-id"
+      href="/edit-template-name/template-id?lockNumber=1"
     >
       Edit name
       <span
@@ -667,7 +885,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         >
           <a
             data-testid="campaign-action"
-            href="/edit-template-campaign/template-id"
+            href="/edit-template-campaign/template-id?lockNumber=1"
           >
             Edit
             <span
@@ -728,6 +946,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
       </div>
       <div
         class="nhsuk-summary-list__row missing-value"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -742,7 +961,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         >
           <a
             data-testid="printing-postage-action"
-            href="/choose-printing-and-postage/template-id"
+            href="/choose-printing-and-postage/template-id?lockNumber=1"
           >
             Edit
             <span

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { test as setup } from '@playwright/test';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
-import { createAuthHelper } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 
 setup('api test setup', async () => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
@@ -10,5 +10,5 @@ setup('api test setup', async () => {
 
   BackendConfigHelper.toEnv(backendConfig);
 
-  await createAuthHelper().setup();
+  await getTestContext().setup();
 });

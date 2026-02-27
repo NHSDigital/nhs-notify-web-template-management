@@ -1,10 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -23,7 +20,7 @@ test.describe('Edit Template Campaign page', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   const templateStorageHelper = new TemplateStorageHelper();
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
   let userMultiCampaignAuthoringEnabled: TestUser;
   let userMultiCampaignAuthoringDisabled: TestUser;
@@ -31,33 +28,35 @@ test.describe('Edit Template Campaign page', () => {
   let userSingleCampaignAuthoringEnabled: TestUser;
 
   test.beforeAll(async () => {
-    const clientMultiCampaignAuthoringEnabled = await authHelper.createClient({
-      campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {
-        proofing: false,
-        letterAuthoring: true,
-      },
-    });
+    const clientMultiCampaignAuthoringEnabled =
+      await context.clients.createClient({
+        campaignIds: ['Campaign 1', 'Campaign 2'],
+        features: {
+          proofing: false,
+          letterAuthoring: true,
+        },
+      });
 
-    const clientMultiCampaignAuthoringDisabled = await authHelper.createClient({
-      campaignIds: ['Campaign 1', 'Campaign 2'],
-      features: {
-        proofing: false,
-        letterAuthoring: false,
-      },
-    });
+    const clientMultiCampaignAuthoringDisabled =
+      await context.clients.createClient({
+        campaignIds: ['Campaign 1', 'Campaign 2'],
+        features: {
+          proofing: false,
+          letterAuthoring: false,
+        },
+      });
 
-    userMultiCampaignAuthoringEnabled = await authHelper.createAdHocUser(
+    userMultiCampaignAuthoringEnabled = await context.auth.createAdHocUser(
       clientMultiCampaignAuthoringEnabled
     );
-    userMultiCampaignAuthoringDisabled = await authHelper.createAdHocUser(
+    userMultiCampaignAuthoringDisabled = await context.auth.createAdHocUser(
       clientMultiCampaignAuthoringDisabled
     );
 
-    userSingleCampaignAuthoringDisabled = await authHelper.getTestUser(
+    userSingleCampaignAuthoringDisabled = await context.auth.getTestUser(
       testUsers.User1.userId
     );
-    userSingleCampaignAuthoringEnabled = await authHelper.getTestUser(
+    userSingleCampaignAuthoringEnabled = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
   });
@@ -81,10 +80,9 @@ test.describe('Edit Template Campaign page', () => {
       await templateStorageHelper.seedTemplateData([template]);
 
       const props = {
-        page: new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          template.id
-        ),
+        page: new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', template.id)
+          .setSearchParam('lockNumber', String(template.lockNumber)),
         baseURL,
       };
 
@@ -112,9 +110,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -141,9 +139,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -154,7 +152,7 @@ test.describe('Edit Template Campaign page', () => {
       await editPage.submitButton.click();
 
       await expect(page).toHaveURL(
-        `/templates/edit-template-campaign/${template.id}`
+        `/templates/edit-template-campaign/${template.id}?lockNumber=${template.lockNumber}`
       );
 
       await expect(editPage.errorSummaryList).toHaveText(['Choose a campaign']);
@@ -163,9 +161,9 @@ test.describe('Edit Template Campaign page', () => {
     test("redirects to invalid template page if template doesn't exist", async ({
       page,
     }) => {
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', 'no-exist');
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', 'no-exist')
+        .setSearchParam('lockNumber', '1');
 
       await editPage.loadPage();
 
@@ -182,9 +180,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -201,9 +199,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -220,9 +218,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -240,9 +238,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -263,6 +261,28 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
+
+      await editPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `/templates/preview-submitted-letter-template/${template.id}`
+      );
+    });
+
+    test('redirects to preview page when lockNumber query parameter is missing', async ({
+      page,
+    }) => {
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        userMultiCampaignAuthoringEnabled,
+        'Letter Template'
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
       const editPage = new TemplateMgmtEditTemplateCampaignPage(
         page
       ).setPathParam('templateId', template.id);
@@ -270,7 +290,7 @@ test.describe('Edit Template Campaign page', () => {
       await editPage.loadPage();
 
       await expect(page).toHaveURL(
-        `/templates/preview-submitted-letter-template/${template.id}`
+        `/templates/preview-letter-template/${template.id}`
       );
     });
   });
@@ -289,9 +309,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -313,9 +333,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 
@@ -339,9 +359,9 @@ test.describe('Edit Template Campaign page', () => {
 
       await templateStorageHelper.seedTemplateData([template]);
 
-      const editPage = new TemplateMgmtEditTemplateCampaignPage(
-        page
-      ).setPathParam('templateId', template.id);
+      const editPage = new TemplateMgmtEditTemplateCampaignPage(page)
+        .setPathParam('templateId', template.id)
+        .setSearchParam('lockNumber', String(template.lockNumber));
 
       await editPage.loadPage();
 

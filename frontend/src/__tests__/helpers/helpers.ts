@@ -1,5 +1,8 @@
 import { mockDeep } from 'jest-mock-extended';
-import { RoutingConfig } from 'nhs-notify-web-template-management-types';
+import {
+  LetterVariant,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import {
   AuthoringLetterTemplate,
   EmailTemplate,
@@ -100,6 +103,7 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
 
 export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   id: 'authoring-letter-template-id',
+  clientId: 'client-1',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
@@ -164,3 +168,20 @@ export const ROUTING_CONFIG: RoutingConfig = {
   lockNumber: 0,
   defaultCascadeGroup: 'standard',
 };
+
+export const makeLetterVariant = (
+  overrides: Partial<LetterVariant> = {}
+): LetterVariant => ({
+  id: 'variant-1',
+  name: 'Standard C5',
+  sheetSize: 'A4',
+  maxSheets: 5,
+  bothSides: true,
+  printColour: 'black',
+  envelopeSize: 'C5',
+  dispatchTime: 'standard',
+  postage: 'economy',
+  status: 'PROD',
+  type: 'STANDARD',
+  ...overrides,
+});

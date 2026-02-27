@@ -143,6 +143,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
             </div>
             <div
               class="nhsuk-summary-list__row"
+              id="printing-and-postage"
             >
               <dt
                 class="nhsuk-summary-list__key"
@@ -151,9 +152,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              >
-                variant-123
-              </dd>
+              />
               <dd
                 aria-hidden="true"
                 class="nhsuk-summary-list__actions"

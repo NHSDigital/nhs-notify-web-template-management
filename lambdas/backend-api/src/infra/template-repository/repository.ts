@@ -9,15 +9,17 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase, FailureResult } from 'nhs-notify-backend-client';
 import type {
   CreateUpdateTemplate,
-  PatchTemplate,
+  AuthoringLetterPatch,
   PdfLetterFiles,
   ProofFileDetails,
   TemplateDto,
   TemplateStatus,
   VirusScanStatus,
+  TemplateType,
+  LetterVersion,
 } from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
@@ -159,7 +161,7 @@ export class TemplateRepository {
 
   async patch(
     templateId: string,
-    updates: PatchTemplate,
+    updates: AuthoringLetterPatch,
     user: User,
     lockNumber: number
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -181,12 +183,20 @@ export class TemplateRepository {
       update.setCampaignId(updates.campaignId);
     }
 
-    const bannedStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
+    if (updates.letterVariantId) {
+      update.setLetterVariantId(updates.letterVariantId);
+    } else if (updates.letterVariantId === '') {
+      update.removeLetterVariantId();
+    }
+
+    const bannedNonFinalStatuses: TemplateStatus[] = ['PROOF_APPROVED'];
 
     update
       .expectTemplateExists()
+      .expectTemplateType('LETTER')
+      .expectLetterVersion('AUTHORING')
       .expectNotFinalStatus()
-      .expectNotStatus(bannedStatuses)
+      .expectNotStatus(bannedNonFinalStatuses)
       .expectLockNumber(lockNumber)
       .setUpdatedByUserAt(this.internalUserKey(user))
       .incrementLockNumber();
@@ -202,7 +212,18 @@ export class TemplateRepository {
         error,
         updates,
         lockNumber,
-        bannedStatuses
+        bannedNonFinalStatuses,
+        (oldItem) => {
+          if (
+            oldItem.templateType !== ('LETTER' as TemplateType) ||
+            oldItem.letterVersion !== ('AUTHORING' as LetterVersion)
+          ) {
+            return failure(
+              ErrorCase.FEATURE_DISABLED,
+              'Unsupported for this template type'
+            );
+          }
+        }
       );
     }
   }
@@ -843,7 +864,8 @@ export class TemplateRepository {
     error: unknown,
     updates: Partial<TemplateDto>,
     lockNumber: number,
-    blockedStatuses: TemplateStatus[] = []
+    blockedStatuses: TemplateStatus[] = [],
+    callback?: (oldItem: Record<string, unknown>) => FailureResult | void
   ) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
@@ -880,6 +902,15 @@ export class TemplateRepository {
           'Lock number mismatch - Template has been modified since last read',
           error
         );
+      }
+
+      if (callback) {
+        const callbackFailure = callback(oldItem);
+
+        if (callbackFailure) {
+          callbackFailure.error.actualError = error;
+          return callbackFailure;
+        }
       }
     }
     return failure(ErrorCase.INTERNAL, 'Failed to update template', error);

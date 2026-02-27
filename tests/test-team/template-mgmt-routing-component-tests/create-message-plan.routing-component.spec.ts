@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from 'helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
@@ -16,6 +12,7 @@ import {
   assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
+import { getTestContext } from 'helpers/context/context';
 
 const chooseTemplatesRegexp =
   /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
@@ -27,10 +24,12 @@ let userWithoutCampaignId: TestUser;
 let userWithMultipleCampaigns: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
-  user = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithoutCampaignId = await authHelper.getTestUser(testUsers.User6.userId);
-  userWithMultipleCampaigns = await authHelper.getTestUser(
+  const context = getTestContext();
+  user = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithoutCampaignId = await context.auth.getTestUser(
+    testUsers.User6.userId
+  );
+  userWithMultipleCampaigns = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
 });

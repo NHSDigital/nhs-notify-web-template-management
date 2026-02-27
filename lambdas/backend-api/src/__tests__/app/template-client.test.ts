@@ -6,6 +6,7 @@ import type {
   TemplateDto,
   CreateUpdateTemplate,
   ClientConfiguration,
+  LetterVariant,
   AuthoringLetterFiles,
 } from 'nhs-notify-web-template-management-types';
 import { TemplateRepository } from '../../infra';
@@ -21,6 +22,8 @@ import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 
 import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import type { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
+import { success } from '@backend-api/utils';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
@@ -42,6 +45,12 @@ const setup = () => {
 
   const routingConfigRepository = mock<RoutingConfigRepository>();
 
+  const letterVariantRepository = mock<LetterVariantRepository>({
+    getGlobalLetterVariants: jest.fn().mockResolvedValue(success([])),
+    getClientScopedLetterVariants: jest.fn().mockResolvedValue(success([])),
+    getCampaignScopedLetterVariants: jest.fn().mockResolvedValue(success([])),
+  });
+
   const { logger, logMessages } = createMockLogger();
 
   const templateClient = new TemplateClient(
@@ -51,6 +60,7 @@ const setup = () => {
     defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
+    letterVariantRepository,
     logger
   );
 
@@ -76,6 +86,7 @@ const setup = () => {
       logger,
       clientConfigRepository,
       routingConfigRepository,
+      letterVariantRepository,
       isRightToLeftMock,
       queryMock,
     },
@@ -379,6 +390,7 @@ describe('templateClient', () => {
       const createdTemplate: DatabaseTemplate = {
         ...dataWithFiles,
         id: templateId,
+        clientId: user.clientId,
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
@@ -732,6 +744,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...dataWithFiles,
         id: templateId,
+        clientId: 'client-id',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
@@ -2004,7 +2017,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('patchTemplate', () => {
+  describe('patchLetterAuthoringTemplate', () => {
     test('should return patched template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -2014,6 +2027,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        clientId: user.clientId,
         name: 'Updated Template Name',
         templateType: 'LETTER',
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -2042,7 +2056,7 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2068,7 +2082,7 @@ describe('templateClient', () => {
         name: '',
       };
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2090,7 +2104,7 @@ describe('templateClient', () => {
 
       const updates = {};
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2125,7 +2139,7 @@ describe('templateClient', () => {
             name: 'Updated Name',
           };
 
-          const result = await templateClient.patchTemplate(
+          const result = await templateClient.patchLetterAuthoringTemplate(
             templateId,
             updates,
             user,
@@ -2152,6 +2166,7 @@ describe('templateClient', () => {
 
         const template: TemplateDto = {
           id: templateId,
+          clientId: user.clientId,
           name: 'Updated Name',
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -2180,7 +2195,7 @@ describe('templateClient', () => {
           data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
-        const result = await templateClient.patchTemplate(
+        const result = await templateClient.patchLetterAuthoringTemplate(
           templateId,
           updates,
           user,
@@ -2214,7 +2229,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2247,6 +2262,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         id: templateId,
+        clientId: user.clientId,
         name: 'Updated Name',
         templateType: 'LETTER',
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -2281,7 +2297,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2305,134 +2321,926 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result when fetching client configuration fails during campaignId update', async () => {
-      const { templateClient, mocks } = setup();
+    describe('when updating campaign id', () => {
+      test('should return a failure result when fetching client configuration', async () => {
+        const { templateClient, mocks } = setup();
 
-      const updates = {
-        campaignId: 'campaign-id',
-      };
+        const updates = {
+          campaignId: 'campaign-id',
+        };
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { errorMeta: { description: 'err', code: 500 } },
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          error: { errorMeta: { description: 'err', code: 500 } },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+          user.clientId
+        );
+
+        expect(result).toEqual({
+          error: { errorMeta: { description: 'err', code: 500 } },
+        });
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
       });
 
-      const result = await templateClient.patchTemplate(
-        templateId,
-        updates,
-        user,
-        5
-      );
+      test('should return a failure result if campaign ID is not valid during patch', async () => {
+        const { templateClient, mocks } = setup();
 
-      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
-        user.clientId
-      );
+        const updates = {
+          campaignId: 'campaign-id',
+        };
 
-      expect(result).toEqual({
-        error: { errorMeta: { description: 'err', code: 500 } },
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: { features: {}, campaignIds: ['fish-campaign'] },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+          user.clientId
+        );
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              description: 'Invalid campaign ID in request',
+              code: 400,
+            },
+          },
+        });
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
       });
 
-      expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+      test('should return failure when unable to get template', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          campaignId: 'campaign-id',
+        };
+
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: {
+            features: {},
+            campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          },
+        });
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          error: {
+            errorMeta: {
+              code: 500,
+              description: 'Internal server error',
+            },
+          },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 500,
+              description: 'Internal server error',
+            },
+          },
+        });
+      });
+
+      test('should return failure when template is not a letter template', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          campaignId: 'campaign-id',
+        };
+
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: {
+            features: {},
+            campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          },
+        });
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: {
+            id: 'template-id',
+            owner: user.clientId,
+            templateType: 'NHS_APP',
+            name: 'nhsapp-template',
+            message: "here's a message for you",
+            templateStatus: 'NOT_YET_SUBMITTED',
+            version: 1,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 403,
+              description: 'Unsupported for this template type',
+            },
+          },
+        });
+      });
+
+      test('should return failure when template is not an authoring letter template', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          campaignId: 'campaign-id',
+        };
+
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: {
+            features: {},
+            campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          },
+        });
+
+        const template: TemplateDto = {
+          id: 'template-id',
+          templateType: 'LETTER',
+          name: 'nhsapp-template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 5,
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'PDF',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '1',
+              virusScanStatus: 'PASSED',
+            },
+          },
+        };
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: user.clientId, version: 1 },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 403,
+              description: 'Unsupported for this template type',
+            },
+          },
+        });
+      });
+
+      test('should successfully patch when campaign ID is valid - no existing letter variant', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          campaignId: 'campaign-id',
+        };
+
+        const template: TemplateDto = {
+          id: templateId,
+          clientId: user.clientId,
+          name: 'Template Name',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x1',
+          language: 'en',
+          letterVersion: 'AUTHORING',
+          files: {
+            docxTemplate: {
+              currentVersion: 'ewgeregeryerf',
+              fileName: 'letter.docx',
+              virusScanStatus: 'PENDING',
+            },
+          },
+          campaignId: 'bean-campaign',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 6,
+        };
+
+        const updated: TemplateDto = {
+          ...template,
+          campaignId: 'campaign-id',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 7,
+        };
+
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: {
+            features: {},
+            campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+          },
+        });
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        mocks.templateRepository.patch.mockResolvedValueOnce({
+          data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(result).toEqual({
+          data: updated,
+        });
+
+        expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+          user.clientId
+        );
+
+        expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+          templateId,
+          user.clientId
+        );
+
+        expect(
+          mocks.letterVariantRepository.getGlobalLetterVariants
+        ).not.toHaveBeenCalled();
+        expect(
+          mocks.letterVariantRepository.getClientScopedLetterVariants
+        ).not.toHaveBeenCalled();
+        expect(
+          mocks.letterVariantRepository.getCampaignScopedLetterVariants
+        ).not.toHaveBeenCalled();
+
+        expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+          templateId,
+          updates,
+          user,
+          5
+        );
+      });
+
+      describe('when existing template has letter variant', () => {
+        test('should return failure when unable to fetch variants', async () => {
+          const { templateClient, mocks } = setup();
+
+          const updates = {
+            campaignId: 'campaign-id',
+          };
+
+          const template: TemplateDto = {
+            id: templateId,
+            clientId: user.clientId,
+            name: 'Template Name',
+            templateType: 'LETTER',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            letterType: 'x1',
+            language: 'en',
+            letterVersion: 'AUTHORING',
+            files: {
+              docxTemplate: {
+                currentVersion: 'ewgeregeryerf',
+                fileName: 'letter.docx',
+                virusScanStatus: 'PENDING',
+              },
+            },
+            campaignId: 'bean-campaign',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            lockNumber: 6,
+            letterVariantId: 'some-global-variant',
+          };
+
+          mocks.clientConfigRepository.get.mockResolvedValueOnce({
+            data: {
+              features: {},
+              campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+            },
+          });
+
+          mocks.templateRepository.get.mockResolvedValueOnce({
+            data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+          });
+
+          mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue(
+            {
+              error: {
+                errorMeta: { code: 500, description: 'Internal server error' },
+              },
+            }
+          );
+
+          const result = await templateClient.patchLetterAuthoringTemplate(
+            templateId,
+            updates,
+            user,
+            5
+          );
+
+          expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+          expect(result).toEqual({
+            error: {
+              errorMeta: { code: 500, description: 'Internal server error' },
+            },
+          });
+        });
+
+        test('should successfully patch when campaign ID is valid - existing letter variant remains valid', async () => {
+          const { templateClient, mocks } = setup();
+
+          const updates = {
+            campaignId: 'campaign-id',
+          };
+
+          const template: TemplateDto = {
+            id: templateId,
+            clientId: user.clientId,
+            name: 'Template Name',
+            templateType: 'LETTER',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            letterType: 'x1',
+            language: 'en',
+            letterVersion: 'AUTHORING',
+            files: {
+              docxTemplate: {
+                currentVersion: 'ewgeregeryerf',
+                fileName: 'letter.docx',
+                virusScanStatus: 'PENDING',
+              },
+            },
+            campaignId: 'bean-campaign',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            lockNumber: 6,
+            letterVariantId: 'some-global-variant',
+          };
+
+          const updated: TemplateDto = {
+            ...template,
+            campaignId: 'campaign-id',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            lockNumber: 7,
+          };
+
+          mocks.clientConfigRepository.get.mockResolvedValueOnce({
+            data: {
+              features: {},
+              campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+            },
+          });
+
+          mocks.templateRepository.get.mockResolvedValueOnce({
+            data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+          });
+
+          mocks.templateRepository.patch.mockResolvedValueOnce({
+            data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
+          });
+
+          mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue(
+            success([mock<LetterVariant>({ id: 'some-global-variant' })])
+          );
+
+          const result = await templateClient.patchLetterAuthoringTemplate(
+            templateId,
+            updates,
+            user,
+            5
+          );
+
+          expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+            user.clientId
+          );
+
+          expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+            templateId,
+            user.clientId
+          );
+
+          expect(
+            mocks.letterVariantRepository.getGlobalLetterVariants
+          ).toHaveBeenCalledWith({
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+          expect(
+            mocks.letterVariantRepository.getClientScopedLetterVariants
+          ).toHaveBeenCalledWith(template.clientId, {
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+          expect(
+            mocks.letterVariantRepository.getCampaignScopedLetterVariants
+          ).toHaveBeenCalledWith(template.clientId, updates.campaignId, {
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+
+          expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+            templateId,
+            updates,
+            user,
+            5
+          );
+
+          expect(result).toEqual({
+            data: updated,
+          });
+        });
+
+        test('should reset letter variant id when campaignId makes existing letter variant become invalid', async () => {
+          const { templateClient, mocks } = setup();
+
+          const updates = {
+            campaignId: 'campaign-id',
+          };
+
+          const template: TemplateDto = {
+            id: templateId,
+            clientId: user.clientId,
+            name: 'Template Name',
+            templateType: 'LETTER',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            letterType: 'x1',
+            language: 'en',
+            letterVersion: 'AUTHORING',
+            files: {
+              docxTemplate: {
+                currentVersion: 'ewgeregeryerf',
+                fileName: 'letter.docx',
+                virusScanStatus: 'PENDING',
+              },
+            },
+            campaignId: 'bean-campaign',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            lockNumber: 6,
+            letterVariantId: 'some-campaign-scoped-variant',
+          };
+
+          const updated: TemplateDto = {
+            ...template,
+            campaignId: 'campaign-id',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            lockNumber: 7,
+            letterVariantId: undefined,
+          };
+
+          mocks.clientConfigRepository.get.mockResolvedValueOnce({
+            data: {
+              features: {},
+              campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
+            },
+          });
+
+          mocks.templateRepository.get.mockResolvedValueOnce({
+            data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+          });
+
+          mocks.templateRepository.patch.mockResolvedValueOnce({
+            data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
+          });
+
+          mocks.letterVariantRepository.getCampaignScopedLetterVariants.mockResolvedValue(
+            success([
+              mock<LetterVariant>({ id: 'some-different-campaign-variant' }),
+            ])
+          );
+
+          const result = await templateClient.patchLetterAuthoringTemplate(
+            templateId,
+            updates,
+            user,
+            5
+          );
+
+          expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+            user.clientId
+          );
+
+          expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+            templateId,
+            user.clientId
+          );
+
+          expect(
+            mocks.letterVariantRepository.getGlobalLetterVariants
+          ).toHaveBeenCalledWith({
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+          expect(
+            mocks.letterVariantRepository.getClientScopedLetterVariants
+          ).toHaveBeenCalledWith(template.clientId, {
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+          expect(
+            mocks.letterVariantRepository.getCampaignScopedLetterVariants
+          ).toHaveBeenCalledWith(template.clientId, updates.campaignId, {
+            type: 'STANDARD',
+            status: 'PROD',
+          });
+
+          expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+            templateId,
+            { ...updates, letterVariantId: '' },
+            user,
+            5
+          );
+
+          expect(result).toEqual({
+            data: updated,
+          });
+        });
+      });
     });
 
-    test('should return a failure result if campaign ID is not valid during patch', async () => {
-      const { templateClient, mocks } = setup();
+    describe('when updating letterVariantId', () => {
+      test('should return failure when unable to get template', async () => {
+        const { templateClient, mocks } = setup();
 
-      const updates = {
-        campaignId: 'campaign-id',
-      };
+        const updates = {
+          letterVariantId: 'new-letter-variant-id',
+        };
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {}, campaignIds: ['fish-campaign'] },
-      });
-
-      const result = await templateClient.patchTemplate(
-        templateId,
-        updates,
-        user,
-        5
-      );
-
-      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
-        user.clientId
-      );
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            description: 'Invalid campaign ID in request',
-            code: 400,
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          error: {
+            errorMeta: {
+              code: 500,
+              description: 'Internal server error',
+            },
           },
-        },
-      });
+        });
 
-      expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
-    });
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
 
-    test('should successfully patch when campaign ID is valid', async () => {
-      const { templateClient, mocks } = setup();
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
 
-      const updates = {
-        campaignId: 'campaign-id',
-      };
-
-      const template: TemplateDto = {
-        id: templateId,
-        name: 'Template Name',
-        templateType: 'LETTER',
-        templateStatus: 'NOT_YET_SUBMITTED',
-        letterType: 'x1',
-        language: 'en',
-        letterVersion: 'AUTHORING',
-        files: {
-          initialRender: {
-            fileName: 'render.pdf',
-            currentVersion: 'v1',
-            status: 'RENDERED',
-            pageCount: 1,
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 500,
+              description: 'Internal server error',
+            },
           },
-          docxTemplate: {
-            currentVersion: 'version-id',
-            fileName: 'template.docx',
-            virusScanStatus: 'PASSED',
+        });
+      });
+
+      test('should return failure when template is not a letter template', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          letterVariantId: 'new-variant-id',
+        };
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: {
+            id: 'template-id',
+            owner: user.clientId,
+            templateType: 'NHS_APP',
+            name: 'nhsapp-template',
+            message: "here's a message for you",
+            templateStatus: 'NOT_YET_SUBMITTED',
+            version: 1,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           },
-        },
-        campaignId: 'campaign-id',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lockNumber: 6,
-      };
+        });
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: {
-          features: {},
-          campaignIds: ['campaign-id', 'bean-campaign', 'pea-campaign'],
-        },
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 403,
+              description: 'Unsupported for this template type',
+            },
+          },
+        });
       });
 
-      mocks.templateRepository.patch.mockResolvedValueOnce({
-        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      test('should return failure when template is not an authoring letter template', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          letterVariantId: 'new-variant-id',
+        };
+
+        const template: TemplateDto = {
+          id: 'template-id',
+          templateType: 'LETTER',
+          name: 'nhsapp-template',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 5,
+          language: 'en',
+          letterType: 'x0',
+          letterVersion: 'PDF',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '1',
+              virusScanStatus: 'PASSED',
+            },
+          },
+        };
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: user.clientId, version: 1 },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 403,
+              description: 'Unsupported for this template type',
+            },
+          },
+        });
       });
 
-      const result = await templateClient.patchTemplate(
-        templateId,
-        updates,
-        user,
-        5
-      );
+      test('should return failure when unable to fetch variants', async () => {
+        const { templateClient, mocks } = setup();
 
-      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
-        user.clientId
-      );
+        const updates = {
+          letterVariantId: 'new-variant-id',
+        };
 
-      expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
-        templateId,
-        updates,
-        user,
-        5
-      );
+        const template: TemplateDto = {
+          id: templateId,
+          clientId: user.clientId,
+          name: 'Template Name',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x1',
+          language: 'en',
+          letterVersion: 'AUTHORING',
+          files: {
+            docxTemplate: {
+              currentVersion: 'ewgeregeryerf',
+              fileName: 'letter.docx',
+              virusScanStatus: 'PENDING',
+            },
+          },
+          campaignId: 'bean-campaign',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 6,
+          letterVariantId: 'some-global-variant',
+        };
 
-      expect(result).toEqual({
-        data: template,
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue(
+          {
+            error: {
+              errorMeta: { code: 500, description: 'Internal server error' },
+            },
+          }
+        );
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: { code: 500, description: 'Internal server error' },
+          },
+        });
+      });
+
+      test('should return failure when returned variants do not include the requested variant id', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          letterVariantId: 'new-variant-id',
+        };
+
+        const template: TemplateDto = {
+          id: templateId,
+          clientId: user.clientId,
+          name: 'Template Name',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x1',
+          language: 'en',
+          letterVersion: 'AUTHORING',
+          files: {
+            docxTemplate: {
+              currentVersion: 'ewgeregeryerf',
+              fileName: 'letter.docx',
+              virusScanStatus: 'PENDING',
+            },
+          },
+          campaignId: 'bean-campaign',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 6,
+          letterVariantId: 'some-global-variant',
+        };
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue(
+          {
+            data: [mock<LetterVariant>({ id: 'some-global-variant' })],
+          }
+        );
+        mocks.letterVariantRepository.getClientScopedLetterVariants.mockResolvedValue(
+          {
+            data: [mock<LetterVariant>({ id: 'some-client-variant' })],
+          }
+        );
+        mocks.letterVariantRepository.getCampaignScopedLetterVariants.mockResolvedValue(
+          {
+            data: [mock<LetterVariant>({ id: 'some-campaign-variant' })],
+          }
+        );
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 400,
+              description: 'Invalid letterVariantId in request',
+            },
+          },
+        });
+      });
+
+      test('should patch the template with the new variant id', async () => {
+        const { templateClient, mocks } = setup();
+
+        const updates = {
+          letterVariantId: 'new-variant-id',
+        };
+
+        const template: TemplateDto = {
+          id: templateId,
+          clientId: user.clientId,
+          name: 'Template Name',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x1',
+          language: 'en',
+          letterVersion: 'AUTHORING',
+          files: {
+            docxTemplate: {
+              currentVersion: 'ewgeregeryerf',
+              fileName: 'letter.docx',
+              virusScanStatus: 'PENDING',
+            },
+          },
+          campaignId: 'bean-campaign',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 6,
+          letterVariantId: 'some-global-variant',
+        };
+
+        const updated: TemplateDto = {
+          ...template,
+          letterVariantId: 'new-variant-id',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lockNumber: 7,
+        };
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        mocks.letterVariantRepository.getCampaignScopedLetterVariants.mockResolvedValue(
+          {
+            data: [mock<LetterVariant>({ id: 'new-variant-id' })],
+          }
+        );
+
+        mocks.templateRepository.patch.mockResolvedValueOnce({
+          data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
+        });
+
+        const result = await templateClient.patchLetterAuthoringTemplate(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(
+          mocks.letterVariantRepository.getGlobalLetterVariants
+        ).toHaveBeenCalledWith({
+          status: 'PROD',
+          type: 'STANDARD',
+        });
+        expect(
+          mocks.letterVariantRepository.getClientScopedLetterVariants
+        ).toHaveBeenCalledWith(template.clientId, {
+          status: 'PROD',
+          type: 'STANDARD',
+        });
+        expect(
+          mocks.letterVariantRepository.getCampaignScopedLetterVariants
+        ).toHaveBeenCalledWith(template.clientId, template.campaignId, {
+          status: 'PROD',
+          type: 'STANDARD',
+        });
+
+        expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
+          templateId,
+          updates,
+          user,
+          5
+        );
+
+        expect(result).toEqual({
+          data: updated,
+        });
       });
     });
 
@@ -2445,6 +3253,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        clientId: user.clientId,
         name: 'Updated Name',
         templateType: 'LETTER',
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -2473,7 +3282,7 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      const result = await templateClient.patchTemplate(
+      const result = await templateClient.patchLetterAuthoringTemplate(
         templateId,
         updates,
         user,
@@ -2491,6 +3300,251 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: template,
+      });
+    });
+  });
+
+  describe('getLetterVariantsForTemplate', () => {
+    test('should return failure when unable to get template', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      const result = await templateClient.getLetterVariantsForTemplate(
+        templateId,
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      expect(
+        mocks.letterVariantRepository.getGlobalLetterVariants
+      ).not.toHaveBeenCalled();
+    });
+
+    test('should return failure when template is not an authoring letter template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        id: templateId,
+        name: 'Template Name',
+        templateType: 'EMAIL',
+        message: 'message',
+        subject: 'subject',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 1,
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      const result = await templateClient.getLetterVariantsForTemplate(
+        templateId,
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 403,
+            description: 'Unsupported for this template type',
+          },
+        },
+      });
+
+      expect(
+        mocks.letterVariantRepository.getGlobalLetterVariants
+      ).not.toHaveBeenCalled();
+    });
+
+    test('should return failure when template is a PDF letter template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        id: templateId,
+        clientId: user.clientId,
+        name: 'Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'PDF',
+        campaignId: 'bean-campaign',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: versionId,
+            virusScanStatus: 'PENDING',
+          },
+          proofs: {},
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 1,
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      const result = await templateClient.getLetterVariantsForTemplate(
+        templateId,
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 403,
+            description: 'Unsupported for this template type',
+          },
+        },
+      });
+
+      expect(
+        mocks.letterVariantRepository.getGlobalLetterVariants
+      ).not.toHaveBeenCalled();
+      expect(
+        mocks.letterVariantRepository.getClientScopedLetterVariants
+      ).not.toHaveBeenCalled();
+      expect(
+        mocks.letterVariantRepository.getCampaignScopedLetterVariants
+      ).not.toHaveBeenCalled();
+    });
+
+    test('should return failure when unable to fetch variants', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        id: templateId,
+        clientId: user.clientId,
+        name: 'Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        files: {
+          docxTemplate: {
+            currentVersion: 'ewgeregeryerf',
+            fileName: 'letter.docx',
+            virusScanStatus: 'PENDING',
+          },
+        },
+        campaignId: 'bean-campaign',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue({
+        error: {
+          errorMeta: { code: 500, description: 'Internal server error' },
+        },
+      });
+
+      const result = await templateClient.getLetterVariantsForTemplate(
+        templateId,
+        user
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: { code: 500, description: 'Internal server error' },
+        },
+      });
+    });
+
+    test('should return variants for an authoring letter template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        id: templateId,
+        clientId: user.clientId,
+        name: 'Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        files: {
+          docxTemplate: {
+            currentVersion: 'ewgeregeryerf',
+            fileName: 'letter.docx',
+            virusScanStatus: 'PENDING',
+          },
+        },
+        campaignId: 'bean-campaign',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lockNumber: 6,
+      };
+
+      const globalVariant = mock<LetterVariant>({ id: 'global-variant' });
+      const clientVariant = mock<LetterVariant>({ id: 'client-variant' });
+      const campaignVariant = mock<LetterVariant>({ id: 'campaign-variant' });
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
+      });
+
+      mocks.letterVariantRepository.getGlobalLetterVariants.mockResolvedValue({
+        data: [globalVariant],
+      });
+      mocks.letterVariantRepository.getClientScopedLetterVariants.mockResolvedValue(
+        { data: [clientVariant] }
+      );
+      mocks.letterVariantRepository.getCampaignScopedLetterVariants.mockResolvedValue(
+        { data: [campaignVariant] }
+      );
+
+      const result = await templateClient.getLetterVariantsForTemplate(
+        templateId,
+        user
+      );
+
+      expect(
+        mocks.letterVariantRepository.getGlobalLetterVariants
+      ).toHaveBeenCalledWith({
+        status: 'PROD',
+        type: 'STANDARD',
+      });
+      expect(
+        mocks.letterVariantRepository.getClientScopedLetterVariants
+      ).toHaveBeenCalledWith(template.clientId, {
+        status: 'PROD',
+        type: 'STANDARD',
+      });
+      expect(
+        mocks.letterVariantRepository.getCampaignScopedLetterVariants
+      ).toHaveBeenCalledWith(template.clientId, template.campaignId, {
+        status: 'PROD',
+        type: 'STANDARD',
+      });
+
+      expect(result).toEqual({
+        data: [globalVariant, clientVariant, campaignVariant],
       });
     });
   });
