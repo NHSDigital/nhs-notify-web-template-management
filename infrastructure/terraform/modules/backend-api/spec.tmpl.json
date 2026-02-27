@@ -833,30 +833,15 @@
         "type": "object"
       },
       "RenderDetails": {
-        "allOf": [
+        "oneOf": [
           {
-            "properties": {
-              "requestedAt": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "requestedAt"
-            ],
-            "type": "object"
+            "$ref": "#/components/schemas/RenderDetailsFailed"
           },
           {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/RenderDetailsFailed"
-              },
-              {
-                "$ref": "#/components/schemas/RenderDetailsPending"
-              },
-              {
-                "$ref": "#/components/schemas/RenderDetailsRendered"
-              }
-            ]
+            "$ref": "#/components/schemas/RenderDetailsPending"
+          },
+          {
+            "$ref": "#/components/schemas/RenderDetailsRendered"
           }
         ]
       },
@@ -876,6 +861,9 @@
       },
       "RenderDetailsPending": {
         "properties": {
+          "requestedAt": {
+            "type": "string"
+          },
           "status": {
             "enum": [
               "PENDING"
